@@ -2,7 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import { streamChat } from '../../../lib/claude';
+import { useAuth } from '../../../hooks/useAuth';
 import ShareCard from '../../ui/ShareCard';
+import UnlockModal from '../../ui/UnlockModal';
 
 interface BuildingBlock {
   id: string;
@@ -36,8 +38,10 @@ type Mode = 'guided' | 'freeform';
 
 export default function PromptMakeover() {
   const isMobile = useIsMobile();
+  const { isPaid } = useAuth();
   const [active, setActive] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<Mode>('guided');
+  const [showUnlockPrompt, setShowUnlockPrompt] = useState(false);
   const [freeformText, setFreeformText] = useState('');
   const [fallbackTyping, setFallbackTyping] = useState(false);
   const [displayedFallback, setDisplayedFallback] = useState('');
@@ -135,6 +139,7 @@ Rules:
       messages: [{ role: 'user', content: `Here is my current prompt:\n\n${currentText}\n\nGenerate a "${block.label}" clause I can add to this prompt.` }],
       systemPrompt,
       maxTokens: 200,
+      source: 'block-gen',
       onChunk: (text) => { generated += text; },
       onDone: () => {
         const trimmed = generated.trim();
@@ -157,6 +162,11 @@ Rules:
   // When switching to freeform, seed the textarea with the current guided prompt
   const handleModeSwitch = (newMode: Mode) => {
     if (newMode === 'freeform' && mode === 'guided') {
+      if (!isPaid) {
+        setShowUnlockPrompt(true);
+        setMode('freeform');
+        return;
+      }
       const guidedText = active.size === 0
         ? ''
         : blocks.filter((b) => active.has(b.id)).map((b) => b.text).join(' ');
@@ -165,6 +175,9 @@ Rules:
       setGeneratingBlock(null);
       blockAbortRef.current?.abort();
       abort();
+    }
+    if (newMode === 'guided') {
+      setShowUnlockPrompt(false);
     }
     setMode(newMode);
   };
@@ -288,6 +301,11 @@ Rules:
                 })}
               </div>
             </>
+          ) : (showUnlockPrompt && !isPaid) ? (
+            /* Unlock prompt shown when non-paid user clicks LIVE AI */
+            <div style={{ display: 'flex', flexDirection: 'column' as const, justifyContent: 'center', minHeight: 280 }}>
+              <UnlockModal feature="Live AI mode" accentColor="#16C79A" />
+            </div>
           ) : (
             /* Freeform mode: editable textarea + suggestion chips */
             <>

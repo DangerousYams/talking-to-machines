@@ -1,9 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { streamChat, type ChatMessage } from '../lib/claude';
+import { streamChat, type ChatMessage, type ChatSource } from '../lib/claude';
 
 interface UseStreamingResponseOptions {
   systemPrompt?: string;
   maxTokens?: number;
+  source?: ChatSource;
 }
 
 interface UseStreamingResponseReturn {
@@ -54,6 +55,7 @@ export function useStreamingResponse(
         messages: chatMessages,
         systemPrompt: options.systemPrompt,
         maxTokens: options.maxTokens,
+        source: options.source,
         onChunk: (text) => {
           accumulated += text;
           setResponse(accumulated);
@@ -72,7 +74,7 @@ export function useStreamingResponse(
 
       controllerRef.current = controller;
     },
-    [options.systemPrompt, options.maxTokens]
+    [options.systemPrompt, options.maxTokens, options.source]
   );
 
   const sendMessage = useCallback(

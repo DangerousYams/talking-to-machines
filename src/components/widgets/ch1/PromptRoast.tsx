@@ -59,6 +59,7 @@ export default function PromptRoast() {
   const [phase, setPhase] = useState<'input' | 'loading' | 'result'>('input');
   const [result, setResult] = useState<RoastResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [throttled, setThrottled] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);
 
   const handleRoast = () => {
@@ -76,6 +77,7 @@ export default function PromptRoast() {
       messages: [{ role: 'user', content: text }],
       systemPrompt: SYSTEM_PROMPT,
       maxTokens: 512,
+      source: 'prompt-roast',
       onChunk: (chunk) => {
         accumulated += chunk;
       },
@@ -102,6 +104,9 @@ export default function PromptRoast() {
         controllerRef.current = null;
       },
       onError: (err) => {
+        if (err.includes('5 free roasts') || err.includes('Daily limit')) {
+          setThrottled(true);
+        }
         setError(err);
         setPhase('input');
         controllerRef.current = null;
@@ -166,7 +171,25 @@ export default function PromptRoast() {
             onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
           />
 
-          {error && (
+          {throttled && (
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(233,69,96,0.06), rgba(245,166,35,0.04))',
+              border: '1px solid rgba(233,69,96,0.15)',
+              borderRadius: 10,
+              padding: '1rem 1.25rem',
+              marginTop: 12,
+              textAlign: 'center' as const,
+            }}>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>
+                Daily roasts used up!
+              </p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
+                Unlock full access for unlimited roasts + all chapters
+              </p>
+            </div>
+          )}
+
+          {error && !throttled && (
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#E94560', marginTop: 8 }}>
               {error}
             </p>
@@ -175,7 +198,7 @@ export default function PromptRoast() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
             <button
               onClick={handleRoast}
-              disabled={!prompt.trim()}
+              disabled={!prompt.trim() || throttled}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -183,16 +206,16 @@ export default function PromptRoast() {
                 padding: '12px 24px',
                 borderRadius: 10,
                 border: 'none',
-                cursor: !prompt.trim() ? 'default' : 'pointer',
+                cursor: (!prompt.trim() || throttled) ? 'default' : 'pointer',
                 fontFamily: 'var(--font-body)',
                 fontSize: '0.9rem',
                 fontWeight: 600,
                 transition: 'all 0.25s',
-                background: !prompt.trim() ? 'rgba(26,26,46,0.08)' : 'linear-gradient(135deg, #E94560, #F5A623)',
-                color: !prompt.trim() ? '#6B7280' : '#FFFFFF',
+                background: (!prompt.trim() || throttled) ? 'rgba(26,26,46,0.08)' : 'linear-gradient(135deg, #E94560, #F5A623)',
+                color: (!prompt.trim() || throttled) ? '#6B7280' : '#FFFFFF',
                 minHeight: 44,
               }}
-              onMouseEnter={(e) => { if (prompt.trim()) e.currentTarget.style.transform = 'scale(1.02)'; }}
+              onMouseEnter={(e) => { if (prompt.trim() && !throttled) e.currentTarget.style.transform = 'scale(1.02)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
             >
               Roast My Prompt

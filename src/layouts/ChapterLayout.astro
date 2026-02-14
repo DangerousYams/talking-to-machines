@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterNav from '../components/ui/ChapterNav';
+import PaywallGate from '../components/ui/PaywallGate';
+import QuotaCounter from '../components/ui/QuotaCounter';
 import { chapters, type Chapter } from '../data/chapters';
 
 interface Props {
@@ -11,6 +13,7 @@ interface Props {
 const { chapter } = Astro.props;
 const prev = chapters.find((c) => c.number === chapter.number - 1);
 const next = chapters.find((c) => c.number === chapter.number + 1);
+const needsPaywall = chapter.number > 1;
 ---
 
 <!doctype html>
@@ -38,12 +41,19 @@ const next = chapters.find((c) => c.number === chapter.number + 1);
           >
             Talking to Machines
           </a>
-          <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
-            {chapter.number} / {chapters.length}
-          </span>
+          <div class="flex items-center gap-3">
+            <QuotaCounter client:load />
+            <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
+              {chapter.number} / {chapters.length}
+            </span>
+          </div>
         </div>
       </div>
     </header>
+
+    {needsPaywall && (
+      <PaywallGate chapterTitle={chapter.title} accentColor={chapter.accent} client:load />
+    )}
 
     <main class="pt-12">
       <slot />
