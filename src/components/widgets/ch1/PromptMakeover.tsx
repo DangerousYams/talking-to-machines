@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import { streamChat } from '../../../lib/claude';
+import ShareCard from '../../ui/ShareCard';
 
 interface BuildingBlock {
   id: string;
@@ -421,6 +422,21 @@ Rules:
           </div>
         </div>
       </div>
+
+      {/* ShareCard — guided mode at 100%, freeform after response finishes */}
+      {((mode === 'guided' && qualityPercent === 100) || (mode === 'freeform' && liveResponse && !isStreaming)) && (
+        <div style={{ padding: isMobile ? '0 1rem 1.25rem' : '0 2rem 1.5rem' }}>
+          <ShareCard
+            title="Prompt Makeover"
+            metric={mode === 'guided' ? '100%' : 'Complete'}
+            metricColor={mode === 'guided' ? '#16C79A' : '#7B61FF'}
+            subtitle="I took a 0% prompt to 100% and watched the AI response completely transform."
+            accentColor="#E94560"
+            tweetText="I took a 0% prompt to 100% and watched the AI response completely transform \u2014 live. Try it:"
+            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-makeover` : undefined}
+          />
+        </div>
+      )}
     </div>
   );
 }

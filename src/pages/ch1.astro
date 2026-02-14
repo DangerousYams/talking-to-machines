@@ -8,6 +8,7 @@ import Divider from '../components/ui/Divider';
 import PromptMakeover from '../components/widgets/ch1/PromptMakeover';
 import GuessThePrompt from '../components/widgets/ch1/GuessThePrompt';
 import IterationLoop from '../components/widgets/ch1/IterationLoop';
+import PromptRoast from '../components/widgets/ch1/PromptRoast';
 
 const chapter = chapters[0];
 ---
@@ -177,7 +178,7 @@ const chapter = chapters[0];
   </section>
 
   <!-- ═══ WIDGET: PROMPT MAKEOVER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
       <PromptMakeover client:visible />
     </FadeInBlock>
@@ -337,9 +338,27 @@ const chapter = chapters[0];
   <Divider accent={chapter.accent} client:load />
 
   <!-- ═══ WIDGET: GUESS THE PROMPT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
       <GuessThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ PROMPT ROAST BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Think you can write a good prompt now? There's only one way to find out.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT ROAST ═══ -->
+  <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptRoast client:visible />
     </FadeInBlock>
   </section>
 

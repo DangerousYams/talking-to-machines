@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { promptChallenges } from '../../../data/prompt-challenges';
+import ShareCard from '../../ui/ShareCard';
+
+function getScoreTier(score: number, total: number): string {
+  const pct = Math.round((score / total) * 100);
+  if (pct === 100) return 'Prompt Psychic';
+  if (pct >= 80) return 'Prompt Detective';
+  if (pct >= 60) return 'Prompt Reader';
+  if (pct >= 40) return 'Prompt Spotter';
+  return 'Prompt Rookie';
+}
 
 export default function GuessThePrompt() {
   const isMobile = useIsMobile();
@@ -43,6 +53,7 @@ export default function GuessThePrompt() {
 
   if (gameOver) {
     const pct = Math.round((score / totalRounds) * 100);
+    const tier = getScoreTier(score, totalRounds);
     const message = pct >= 80 ? "You've got serious prompt intuition." : pct >= 60 ? "Good eye! You're learning to read between the lines." : "The gap between vague and precise is tricky. That's exactly why this matters.";
 
     return (
@@ -52,9 +63,22 @@ export default function GuessThePrompt() {
             {score}/{totalRounds}
           </div>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.1rem', color: '#1A1A2E', marginBottom: '0.5rem' }}>{message}</p>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', marginBottom: '2rem' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', marginBottom: '1.5rem' }}>
             The skill isn't memorizing prompts — it's recognizing what makes one <em>specific enough</em> to produce great output.
           </p>
+
+          <div style={{ maxWidth: 400, margin: '0 auto 1.5rem', textAlign: 'left' as const }}>
+            <ShareCard
+              title={tier}
+              metric={`${score}/${totalRounds}`}
+              metricColor="#E94560"
+              subtitle={message}
+              accentColor="#7B61FF"
+              tweetText={`I scored ${score}/${totalRounds} on Guess The Prompt \u2014 can you reverse-engineer AI output back to its prompt? \u{1F50D} ${tier}`}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#guess-the-prompt` : undefined}
+            />
+          </div>
+
           <button
             onClick={handleRestart}
             style={{
