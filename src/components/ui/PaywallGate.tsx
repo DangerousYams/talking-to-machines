@@ -23,11 +23,16 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
     setError(null);
     try {
       const res = await fetch('/api/unlock', { method: 'POST' });
-      const data = await res.json();
+      const text = await res.text();
+      let data: { token?: string; error?: string };
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error('Server error — please try again later.');
+      }
       if (!res.ok) throw new Error(data.error || 'Failed to unlock');
       if (!data.token) throw new Error('No token received');
       unlock(data.token);
-      // useAuth hook will reactively update isPaid → this component returns null
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
       setLoading(false);
