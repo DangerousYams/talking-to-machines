@@ -1,0 +1,171 @@
+---
+import '../styles/global.css';
+import { chapters } from '../data/chapters';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An interactive, visual AI curriculum for teens. 11 chapters of scrollytelling, live demos, and hands-on projects." />
+    <meta property="og:title" content="Talking to Machines" />
+    <meta property="og:description" content="A hands-on guide to AI for teens. Interactive, visual, project-based." />
+    <title>Talking to Machines — A Hands-On Guide to AI</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- HERO — cinematic, typographic, scroll-inviting     -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      <!-- Warm gradient atmosphere -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(233, 69, 96, 0.04) 0%, transparent 70%);"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse 50% 50% at 80% 70%, rgba(123, 97, 255, 0.03) 0%, transparent 70%);"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse 40% 40% at 20% 80%, rgba(22, 199, 154, 0.02) 0%, transparent 70%);"></div>
+      </div>
+
+      <div class="relative z-10 text-center max-w-[700px]">
+        <!-- Eyebrow -->
+        <p class="text-[11px] tracking-[0.25em] uppercase text-subtle/70 mb-10" style="font-family: var(--font-mono);">
+          A scrollytelling curriculum
+        </p>
+
+        <!-- Title -->
+        <h1 class="mb-8" style="font-family: var(--font-heading);">
+          <span class="block text-deep leading-[1.05]" style="font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800;">
+            Talking to
+          </span>
+          <span class="block leading-[1.05]" style="font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; color: var(--color-accent-red);">
+            Machines
+          </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-xl md:text-2xl leading-relaxed text-deep/70 mb-3" style="font-family: var(--font-body); font-weight: 400;">
+          A hands-on guide to AI for teens
+        </p>
+        <p class="text-[13px] text-subtle/60 mb-14" style="font-family: var(--font-mono);">
+          11 chapters &middot; ~15 min each &middot; ages 14–18
+        </p>
+
+        <!-- CTA -->
+        <a
+          href="/ch1"
+          class="group inline-flex items-center gap-3 no-underline"
+        >
+          <span
+            class="px-8 py-3.5 rounded-full text-[15px] font-medium transition-all duration-300 group-hover:shadow-lg group-hover:shadow-accent-red/10"
+            style="background: var(--color-deep); color: var(--color-cream); font-family: var(--font-body);"
+          >
+            Begin Chapter One
+          </span>
+          <span class="w-10 h-10 rounded-full border border-deep/10 flex items-center justify-center transition-all duration-300 group-hover:bg-deep group-hover:text-cream group-hover:border-deep">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-30 animate-pulse">
+        <div class="w-px h-8 bg-deep/30"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- PHILOSOPHY — four pillars, elegant layout          -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="max-w-[700px] mx-auto px-6 md:px-10 py-24">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-10">
+        {[
+          { label: 'Story First', color: '#E94560', text: 'Every chapter opens with a human hook before naming the concept.' },
+          { label: 'Learn by Doing', color: '#7B61FF', text: 'Every concept has a live interactive element powered by real AI.' },
+          { label: 'Progressive Disclosure', color: '#0EA5E9', text: 'Complexity reveals itself as you scroll. No one left behind.' },
+          { label: 'Beautiful by Default', color: '#16C79A', text: 'Elegant type, warm palettes, scroll-triggered animations.' },
+        ].map((item) => (
+          <div>
+            <div class="w-6 h-0.5 mb-4 rounded-full" style={`background-color: ${item.color};`}></div>
+            <p class="text-[13px] font-bold mb-2 tracking-wide" style={`font-family: var(--font-heading); color: ${item.color};`}>
+              {item.label}
+            </p>
+            <p class="text-[15px] leading-relaxed text-deep/65">
+              {item.text}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- CHAPTERS — editorial table of contents             -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="max-w-[700px] mx-auto px-6 md:px-10 pb-32">
+      <!-- Section heading -->
+      <div class="flex items-center gap-4 mb-16">
+        <div class="w-12 h-px bg-deep/15"></div>
+        <p class="text-[11px] tracking-[0.2em] uppercase text-subtle/70" style="font-family: var(--font-mono);">
+          Table of Contents
+        </p>
+      </div>
+
+      <div class="space-y-0">
+        {chapters.map((ch, i) => (
+          <a
+            href={`/${ch.slug}`}
+            class="group flex items-baseline gap-6 py-5 no-underline border-b border-deep/[0.06] transition-all duration-300 hover:pl-2"
+          >
+            <!-- Chapter number -->
+            <span
+              class="text-[13px] font-medium tabular-nums flex-shrink-0 w-6 text-right transition-colors duration-300"
+              style={`font-family: var(--font-mono); color: var(--color-subtle);`}
+            >
+              {String(ch.number).padStart(2, '0')}
+            </span>
+
+            <!-- Title + hook -->
+            <div class="flex-1 min-w-0">
+              <span
+                class="text-lg font-bold transition-colors duration-300 group-hover:opacity-80"
+                style={`font-family: var(--font-heading); color: ${ch.accent};`}
+              >
+                {ch.title}
+              </span>
+              <span class="text-[14px] text-deep/50 ml-4 hidden sm:inline" style="font-family: var(--font-body); font-style: italic;">
+                {ch.hook}
+              </span>
+            </div>
+
+            <!-- Arrow -->
+            <svg
+              width="16" height="16" viewBox="0 0 16 16" fill="none"
+              class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0"
+            >
+              <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="py-16 px-6">
+      <div class="max-w-[700px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-5 opacity-20">
+          <div class="w-10 h-px bg-deep"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor"/></svg>
+          <div class="w-10 h-px bg-deep"></div>
+        </div>
+        <p class="text-[13px] text-subtle/40" style="font-family: var(--font-body);">
+          Talking to Machines
+        </p>
+        <p class="text-[11px] text-subtle/25 mt-1" style="font-family: var(--font-mono);">
+          Draft v3.0 &middot; February 2026
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

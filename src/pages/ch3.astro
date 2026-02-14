@@ -1,0 +1,351 @@
+---
+import ChapterLayout from '../layouts/ChapterLayout.astro';
+import { chapters } from '../data/chapters';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import AccentBar from '../components/ui/AccentBar';
+import ConceptCard from '../components/ui/ConceptCard';
+import Divider from '../components/ui/Divider';
+import ContextWindowViz from '../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../components/widgets/ch3/ForgettingExperiment';
+import SystemPromptSandbox from '../components/widgets/ch3/SystemPromptSandbox';
+
+const chapter = chapters[2];
+---
+
+<ChapterLayout chapter={chapter}>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chapter Three
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Context<br />Engineering
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI doesn't forget &mdash; it was never<br />remembering in the first place.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Imagine you're having a conversation with a friend, except every few minutes someone erases the whiteboard you've both been writing on. You start over. Your friend looks at what's left and tries to keep going as if nothing happened. That's what it's like inside an AI's "brain" during a long conversation.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Here's the thing that surprises most people: <strong>AI has no memory.</strong> Not in the way you think of memory. It doesn't remember your conversation from yesterday. It doesn't even remember the beginning of <em>this</em> conversation if it's gone on long enough. Every single response it gives is based entirely on what's currently visible to it &mdash; a window of text called the <strong>context window</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Understanding this window &mdash; what goes into it, how big it is, and what happens when it fills up &mdash; is one of the most important skills in working with AI. This chapter is about becoming an engineer of that context.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        The Whiteboard That Gets Erased
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        When you send a message to an AI, here is what actually happens: the system takes your <em>entire conversation</em> &mdash; every message you've sent, every response the AI gave &mdash; and feeds it all back to the model as a single block of text. The AI reads it all, generates the next response, and then... forgets everything.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Next time you send a message, the whole process repeats. The system pastes the entire conversation again, adds your new message, and the AI reads the whole thing fresh. It's like the world's most diligent but amnesiac reader &mdash; completely thorough each time, but starting from scratch every single turn.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Every response an AI generates is based entirely on what's in the context window at that moment. Nothing more. The context window is not memory. It's a whiteboard &mdash; and it has edges.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        This has huge implications. It means the AI is only as good as the information currently in front of it. Leave out a critical detail? The AI won't magically recall it. Fill the window with noise? The AI will get confused. <strong>The context window is your most important resource.</strong> Learning to manage it is what separates casual users from people who get genuinely powerful results.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tokens: The AI's Alphabet
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI doesn't read words the way you do. It reads <strong>tokens</strong> &mdash; chunks of text that are usually about three-quarters of a word. The word "incredible" is two tokens. "AI" is one token. A space before a word is often bundled into the same token.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Quick math</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1 token &asymp; 4 characters &asymp; 0.75 words<br />
+          100 tokens &asymp; 75 words<br />
+          A typical page of text &asymp; 300 tokens<br />
+          A full novel &asymp; 100,000 tokens
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Why does this matter? Because every AI model has a <strong>context window size</strong> measured in tokens. Claude's context window can hold 200,000 tokens &mdash; that's roughly a 500-page book. GPT-4o holds 128,000. These sound enormous, but they fill up faster than you'd think.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Every message you send, every response the AI writes, every system instruction working behind the scenes &mdash; they all consume tokens from the same shared budget. And when that budget runs out, things start falling off the edge.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextWindowViz client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        When the Window Overflows
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        You're ten messages into a conversation. You mentioned your dietary restrictions in message three. By message fifteen, you're deep into restaurant recommendations. You ask: <em>"Wait, what dietary restrictions did I mention?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        And the AI says: <em>"I don't think you mentioned any specific dietary restrictions."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        You feel frustrated. <em>It's right there, I said it!</em> But here's the thing: it's <strong>not</strong> right there. Not anymore. That early message may have slipped out of the visible window, or the model may have deprioritized it in favor of more recent context. The AI isn't being careless. It literally cannot see what's no longer in front of it.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>This isn't a bug. It's architecture.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          The AI processes the context window like a human reading a document in a single sitting. If the document is 100 pages long, details on page 3 might get fuzzy by page 95. The solution isn't a bigger window &mdash; it's smarter packing of what goes in.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ForgettingExperiment client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SYSTEM PROMPT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The System Prompt: Hidden Instructions
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        There's a part of every AI conversation you never see. Before your first message, before the AI says hello, there's a block of text sitting at the very top of the context window. It's called the <strong>system prompt</strong>, and it shapes everything that follows.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        The system prompt is where the AI gets its personality, its rules, its boundaries. When ChatGPT refuses to help you build a weapon, that's the system prompt. When Claude says "I'd be happy to help," that's trained behavior reinforced by the system prompt. When a customer service chatbot stays on topic, that's &mdash; you guessed it &mdash; the system prompt.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Example system prompt</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "You are a helpful cooking assistant. Only answer questions about cooking and food preparation. If asked about anything else, politely redirect the conversation back to cooking topics. Keep responses under 150 words. Use a warm, encouraging tone."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        The system prompt is special because it <strong>stays pinned at the top of the context window</strong>. No matter how long the conversation gets, the system prompt doesn't scroll away. It's always there, always influencing the AI's behavior. That makes it the most valuable real estate in the entire context window.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Think of the system prompt as the AI's job description. It doesn't tell the AI what to say &mdash; it tells the AI who to <em>be</em>.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SystemPromptSandbox client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Strategies for Managing Context
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Now that you understand the window, here's how to manage it like a pro. These are the techniques that separate people who "use AI" from people who get extraordinary results from it.
+      </p>
+    </FadeInBlock>
+
+    <!-- Strategies — editorial layout matching ch1's building blocks -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { num: '1', name: 'Summarize as you go', color: '#7B61FF', text: 'Every 5-10 messages, ask the AI to write a brief recap of key decisions and details. Then paste that summary into your next message. This "resets" the context with the most important information front and center.' },
+        { num: '2', name: 'Front-load what matters', color: '#16C79A', text: 'Put the most critical information at the beginning of your message, not buried at the end. AI pays more attention to what comes first and last — the middle can get lost, especially in long prompts.' },
+        { num: '3', name: 'Start fresh strategically', color: '#0EA5E9', text: 'Don\'t be afraid to start a new conversation when the topic shifts significantly. Carry over a summary of what you decided, not the full history. A clean context is often better than a cluttered one.' },
+        { num: '4', name: 'Be explicit about what to remember', color: '#F5A623', text: '"Important: the user is vegetarian. Do not forget this." Sounds silly, but it works. Explicit reminders act as anchors that the AI weighs more heavily.' },
+        { num: '5', name: 'Use structured formats', color: '#E94560', text: 'Bulleted lists, headers, and clear labels help the AI parse your context more efficiently. A well-organized prompt is worth twice its token count compared to a wall of prose.' },
+      ].map((strategy, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
+              {strategy.num}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {strategy.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {strategy.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Context engineering is the new prompt engineering.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Writing a good prompt is the first step. But deciding what information to put in front of the AI &mdash; and how to structure it &mdash; is where the real leverage is. The best prompt in the world fails if the context is wrong.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KEY CONCEPTS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {chapter.concepts.map((concept, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <ConceptCard
+            name={concept.name}
+            description={concept.description}
+            accent={chapter.accent}
+            index={i}
+            client:load
+          />
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        The AI only knows what you show it. Choose wisely.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        You now understand the invisible architecture behind every AI conversation: tokens, context windows, system prompts, and the strategies that keep long interactions coherent. In the next chapter, we zoom out to explore the full landscape of AI tools available to you right now &mdash; far beyond chatbots.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -1,0 +1,431 @@
+---
+import ChapterLayout from '../layouts/ChapterLayout.astro';
+import { chapters } from '../data/chapters';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import AccentBar from '../components/ui/AccentBar';
+import ConceptCard from '../components/ui/ConceptCard';
+import Divider from '../components/ui/Divider';
+import PromptLaboratory from '../components/widgets/ch2/PromptLaboratory';
+import FlipTheScript from '../components/widgets/ch2/FlipTheScript';
+import DebugThePrompt from '../components/widgets/ch2/DebugThePrompt';
+
+const chapter = chapters[1];
+---
+
+<ChapterLayout chapter={chapter}>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chapter Two
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          The Art of<br />Asking
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          The best prompt is a question that<br />makes the AI ask you questions.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        In the last chapter, you learned the five building blocks of a good prompt — Role, Task, Format, Constraints, Examples. That's the foundation. But knowing the ingredients doesn't make you a chef.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        This chapter is about <em>technique</em>. The difference between someone who types a prompt and someone who <em>crafts</em> one. It's the difference between asking a question and asking the <strong>right</strong> question — the one that unlocks something genuinely useful.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Here's the secret the best AI users know: <strong>you don't need to be an expert on the topic. You need to be an expert at asking.</strong> And asking is a skill you can learn.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SOCRATIC FLIP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        The Socratic Flip
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Most people use AI like a vending machine. Insert prompt, receive answer. But the best results come from <em>conversations</em>, not commands. And the most powerful conversation technique is 2,400 years old.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Socrates never answered a question directly. He asked <em>more</em> questions — probing, clarifying, challenging — until his students arrived at deeper understanding on their own. You can use the same approach with AI, but flipped.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Instead of asking the AI for an answer, ask the AI to interview you. Let it ask the clarifying questions that you forgot to think about.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Think about it: when you type "plan a birthday party," you're leaving out dozens of details that massively change the answer. How many people? What's the budget? Indoor or outdoor? The AI doesn't know — but it can ask.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>The Socratic Prompt</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "I want to plan a birthday party. Before you start planning, ask me 5 specific questions that will help you create a plan tailored to my exact situation. Ask them one at a time and wait for my response."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        This single technique — flipping who asks the questions — is one of the most powerful upgrades you can make. It turns the AI from an answer machine into a <strong>thinking partner</strong>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FlipTheScript client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Show, Don't Tell
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Imagine you're trying to explain a style to a friend. You could spend five minutes describing it in words — "I want something playful but not childish, casual but not sloppy, with short sentences and unexpected comparisons." Or you could just show them an example: <em>"Write it like this."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        That's <strong>few-shot prompting</strong>. Instead of trying to describe what you want in the abstract, you give the AI concrete examples. One example is a "one-shot" prompt. Two or three examples is "few-shot." Zero examples — where you just describe what you want — is "zero-shot."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (describing)</span>
+        <p class="m-0" style="color: var(--color-deep);">"Write me a product description for running shoes. Make it punchy and conversational, with short sentences. Avoid marketing clichés."</p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (showing)</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Write a product description for the CloudRunner X1 running shoe. Here's the style I want:<br /><br />
+          <em>Example: 'The Weekender Tote — Fits your laptop, your lunch, and your questionable life choices. Water-resistant canvas because we know you'll spill something. Five pockets, none of which you'll remember later.'</em><br /><br />
+          Match this tone: short sentences, self-aware humor, specificity over buzzwords."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        The few-shot version will produce dramatically better results. Not because the AI is "smarter" — but because you gave it a <strong>concrete target</strong> instead of a vague direction. One good example is worth a hundred words of description.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          When the AI isn't matching the style you want, don't add more adjectives. Add an example. "Like this" beats "make it more punchy but also warm but not too casual" every time.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHAIN OF THOUGHT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Think Step by Step
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Here's something wild: if you ask AI to solve a math problem, it might get it wrong. But if you ask it to <em>solve the problem step by step</em>, it gets it right far more often. The answer is the same. The question is different.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        This technique is called <strong>chain-of-thought prompting</strong>. Instead of asking for the answer directly, you ask the AI to show its reasoning. "Think through this step by step." "Break this down before answering." "Explain your reasoning as you go."
+      </p>
+    </FadeInBlock>
+
+    <!-- Before/After comparison -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        <div>
+          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
+            <span class="prompt-block-label" style="color: #E94560;">Without chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "A bat and ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost?"
+            </p>
+            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
+              AI answers: $0.10 (wrong)
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
+            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>With chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "A bat and ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost? Think step by step."
+            </p>
+            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
+              AI answers: $0.05 (correct)
+            </p>
+          </div>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Why does this work? AI generates text one token at a time, predicting what comes next. When you force it to write out intermediate steps, each step becomes part of the context for the next prediction. It's like giving the AI scratch paper.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Chain-of-thought doesn't make the AI smarter. It makes it slower — and slower thinking is often better thinking.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        This isn't just for math. Use it whenever the answer requires reasoning: analyzing an argument, comparing options, planning a project, debugging code. Any time you'd want a human to "show their work," ask the AI to do the same.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Assembling Techniques
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        The real power comes from combining techniques. Few-shot examples <em>plus</em> chain-of-thought. A system role <em>plus</em> constraints <em>plus</em> a format specification. Each technique is a lever, and pulling multiple levers at once produces something none of them could achieve alone.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        But here's the nuance that separates beginners from experts: <strong>more isn't always better.</strong> A casual brainstorm needs one or two techniques. A high-stakes essay needs five. An informal question needs zero. The skill is knowing how many levers to pull — and which ones.
+      </p>
+    </FadeInBlock>
+
+    <!-- Technique stack visual -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="margin-bottom: 2.5rem;">
+        {[
+          { label: 'Casual brainstorm', techniques: ['Task'], color: '#6B7280', width: '25%' },
+          { label: 'School assignment', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
+          { label: 'Important project', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
+          { label: 'High-stakes output', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'CoT'], color: '#0F3460', width: '100%' },
+        ].map((level, i) => (
+          <FadeInBlock client:visible delay={i * 0.06} key={i}>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
+                {level.label}
+              </span>
+              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
+                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
+                  {level.techniques.map((t, j) => (
+                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
+                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Over-prompting is a real thing. A 500-word prompt for a simple question doesn't make the answer better — it can actually confuse the AI. Match your prompt complexity to the task complexity.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptLaboratory client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        When Prompts Go Wrong
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Here's the thing about bad AI output: <strong>it's almost never the AI's fault.</strong> When the output is generic, vague, or just plain wrong, the bug is usually in the prompt. And just like debugging code, debugging prompts is a learnable skill.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        The most common prompt bugs fall into five categories. Once you learn to spot them, you'll see them everywhere — in your own prompts and in other people's complaints about AI being "useless."
+      </p>
+    </FadeInBlock>
+
+    <!-- Bug types -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+      {[
+        { name: 'Ambiguous', desc: 'The prompt could mean multiple things. "Write something about dogs" — what kind of writing? For whom? How long?', color: '#E94560' },
+        { name: 'Contradictory', desc: 'The prompt asks for opposing things. "Make it short but comprehensive." "Use a fun tone but keep it formal." Pick one.', color: '#F5A623' },
+        { name: 'Missing context', desc: 'The prompt lacks crucial information. "Fix my code" without sharing the code. "Improve my essay" without the essay.', color: '#0EA5E9' },
+        { name: 'Too many tasks', desc: 'The prompt asks for five things at once. The AI spreads itself thin and does none of them well.', color: '#7B61FF' },
+        { name: 'Leading question', desc: 'The prompt tells the AI what to think. "Don\'t you agree that X is the best?" The AI will agree. That\'s not useful.', color: '#16C79A' },
+      ].map((bug, i) => (
+        <FadeInBlock client:visible delay={i * 0.07}>
+          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
+            <div>
+              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
+                {bug.name}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {bug.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        The most insidious bug is the <em>leading question</em>. It's the hardest to spot because it <em>feels</em> like you're getting great output — the AI is agreeing with you! But agreement isn't accuracy. When you frame a question to confirm your existing belief, you've turned the AI into a yes-man, not a thinking partner.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <DebugThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KEY CONCEPTS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {chapter.concepts.map((concept, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <ConceptCard
+            name={concept.name}
+            description={concept.description}
+            accent={chapter.accent}
+            index={i}
+            client:load
+          />
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        The difference between a good prompt and a great one isn't vocabulary. It's empathy — understanding what the AI needs to know to help you.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        You now have a toolbox of techniques: the Socratic flip, few-shot examples, chain-of-thought reasoning, and prompt debugging. In the next chapter, we'll look under the hood — at the <em>context window</em>, the invisible constraint that shapes every AI conversation.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

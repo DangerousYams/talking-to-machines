@@ -1,0 +1,375 @@
+---
+import ChapterLayout from '../layouts/ChapterLayout.astro';
+import { chapters } from '../data/chapters';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import AccentBar from '../components/ui/AccentBar';
+import ConceptCard from '../components/ui/ConceptCard';
+import Divider from '../components/ui/Divider';
+import ToolCatalog from '../components/widgets/ch5/ToolCatalog';
+import TrustThermometer from '../components/widgets/ch5/TrustThermometer';
+
+const chapter = chapters[4];
+---
+
+<ChapterLayout chapter={chapter}>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chapter Five
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Give It<br />Tools
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          The leap from "answer questions"<br />to "take actions."
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
+        Up until now, every AI interaction you've had follows the same pattern. You type something. The AI types something back. Text in, text out. A really sophisticated autocomplete. But here's the thing: that's not the ceiling. It's just the floor.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        What if the AI could <em>do things</em>? Not just tell you about the weather, but actually check the forecast. Not just write code, but run it and tell you what happened. Not just suggest what to Google, but search the web itself and bring back what it found.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        That's what tool use is. And it changes everything about what AI can be.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Beyond Text-In, Text-Out
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Think about what happens when you ask a chatbot: <em>"What time is it in Tokyo right now?"</em> The AI doesn't actually know. It was trained on data that's months or years old. It has no clock. So it does the only thing it can — it guesses, based on patterns in its training data. Sometimes it's close. Sometimes it's hilariously wrong.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Without tools</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">User:</span> What time is it in Tokyo?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> It should be around 2:30 PM JST. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Just guessing)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Now give that same AI a <strong>tool</strong> — a simple function that returns the current time in any timezone. Suddenly:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>With tools</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">User:</span> What time is it in Tokyo?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI thinks:</span> <span style="color: var(--color-purple); font-size: 0.9em;">I have a timezone tool. Let me use it.</span><br />
+          <span style="font-style: italic; opacity: 0.6;">AI calls:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
+          <span style="font-style: italic; opacity: 0.6;">Tool returns:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> It's currently 2:47 PM in Tokyo (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Verified)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Same question. Completely different reliability. The AI didn't get smarter — it got <strong>connected</strong>. It can now reach outside its own brain and interact with the real world.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        How Tool Use Actually Works
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Here's the mental model. When you give an AI access to tools, you're handing it a <strong>toolbox</strong> and saying: <em>"Here are things you can do. For each tool, here's what it's called, what it accepts, and what it returns. You decide when to use them."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-14">
+        The AI doesn't blindly use every tool on every request. It reasons about which tools are relevant, decides whether to use one, formulates the right input, calls the tool, reads the result, and then incorporates that result into its response. This process is called <strong>function calling</strong> — and it follows a remarkably consistent loop.
+      </p>
+    </FadeInBlock>
+
+    <!-- The Agent Loop — editorial layout -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Observe.', desc: 'Read the user\'s request and any available context.' },
+          { word: 'Think.', desc: 'Decide: "Do I need a tool for this, or can I answer directly?"' },
+          { word: 'Act.', desc: 'Call the appropriate tool with the right arguments.' },
+          { word: 'Observe.', desc: 'Read the tool\'s result.' },
+          { word: 'Respond.', desc: 'Synthesize everything into a useful answer.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        The AI isn't executing a script. It's making a judgment call every time: "Is this a situation where I should use a tool, or can I handle it myself?"
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        This is the <strong>agent loop</strong> — observe, think, act, observe, respond. And it's the same loop whether the AI has one tool or a hundred. The more tools you give it, the more capable it becomes. But also, the more trust you need to place in its judgment about <em>which</em> tool to use and <em>when</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SEVEN TOOLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Seven Tools That Change Everything
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        There are hundreds of specific tools AI can use, but they mostly fall into seven categories. Each one extends what AI can do in a fundamentally different way. Some give it <em>knowledge</em> (web search, databases). Some give it <em>abilities</em> (code execution, image generation). Some give it <em>hands</em> (file editing, API calls).
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Click any tool below to see the AI's full reasoning process — from recognizing it needs a tool, to calling it, to using the result.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolCatalog client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TRUST QUESTION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Trust Question
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Once AI can <em>do</em> things — not just talk about them — a new question emerges. A question that has nothing to do with technology and everything to do with you:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        How much should the AI do on its own before checking with you?
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        This isn't a technical question — it's a human one. And the answer depends on three things:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { name: 'Stakes', color: '#E94560', text: 'What\'s the worst that could happen? Summarizing an article wrong is annoying. Deleting the wrong files is a disaster. Higher stakes demand more human oversight.' },
+          { name: 'Reversibility', color: '#F5A623', text: 'Can you undo it? Editing a file in a git repo is easily reversed. Sending an email to your boss is not. Irreversible actions should almost always require your approval.' },
+          { name: 'Trust', color: '#16C79A', text: 'How well do you know this tool? A calculator you\'ve used a hundred times deserves more autonomy than a brand-new plugin you\'ve never tested. Trust is earned, not assumed.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
+                {i + 1}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {item.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The spectrum of autonomy</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          It's not all-or-nothing. The best AI workflows give the AI freedom on low-stakes, reversible tasks while keeping humans in the loop for high-stakes, irreversible ones. Your job is to design the boundary.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TrustThermometer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Tool-Use Mindset
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        There's a subtle shift that happens when you start thinking about AI as a tool-user instead of just a text-generator. You stop asking <em>"What can the AI say about this?"</em> and start asking <em>"What can the AI do about this?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Instead of asking the AI to <em>describe</em> how to analyze data, you give it a code execution tool and watch it write and run the analysis. Instead of asking for <em>links</em> to research, you give it web search and let it find and synthesize the information itself. The output goes from "here's what you could do" to "here's what I just did."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Old mindset</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          "Explain how I would calculate the compound interest on $5,000 at 6.5% over 10 years."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Tool-use mindset</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Calculate the compound interest on $5,000 at 6.5% APR compounded monthly for 10 years. Show me the exact number."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        The first prompt gets you a tutorial. The second gets you an answer. With tools, the AI goes from <strong>advisor</strong> to <strong>assistant</strong> — from someone who tells you what to do, to someone who actually does it.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KEY CONCEPTS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {chapter.concepts.map((concept, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <ConceptCard
+            name={concept.name}
+            description={concept.description}
+            accent={chapter.accent}
+            index={i}
+            client:load
+          />
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        An AI with tools isn't just smarter. It's a different kind of thing entirely — one that can act, not just advise.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        In the next chapter, we take this further. Tools are the building blocks. Now it's time to wire them together into something that can pursue goals on its own. It's time to build agents.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

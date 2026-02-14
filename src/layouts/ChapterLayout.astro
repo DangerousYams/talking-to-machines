@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+import ScrollProgress from '../components/scroll/ScrollProgress';
+import ChapterNav from '../components/ui/ChapterNav';
+import { chapters, type Chapter } from '../data/chapters';
+
+interface Props {
+  chapter: Chapter;
+}
+
+const { chapter } = Astro.props;
+const prev = chapters.find((c) => c.number === chapter.number - 1);
+const next = chapters.find((c) => c.number === chapter.number + 1);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`Chapter ${chapter.number}: ${chapter.title} — ${chapter.hook}`} />
+    <meta property="og:title" content={`${chapter.title} — Talking to Machines`} />
+    <meta property="og:description" content={chapter.hook} />
+    <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+    <ScrollProgress color={chapter.accent} client:load />
+
+    <!-- Floating header — minimal, stays out of the way -->
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
+          <a
+            href="/"
+            class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+            style="font-family: var(--font-heading); font-weight: 500;"
+          >
+            Talking to Machines
+          </a>
+          <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
+            {chapter.number} / {chapters.length}
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-12">
+      <slot />
+    </main>
+
+    <ChapterNav prev={prev} next={next} client:load />
+
+    <!-- Footer -->
+    <footer class="py-20 px-6">
+      <div class="max-w-[680px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-4 opacity-30">
+          <div class="w-8 h-px bg-deep"></div>
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0l4 4-4 4L0 4z" fill="currentColor"/></svg>
+          <div class="w-8 h-px bg-deep"></div>
+        </div>
+        <p class="text-[13px] text-subtle/60" style="font-family: var(--font-body);">
+          <a href="/" class="no-underline text-subtle/60 hover:text-deep transition-colors">Talking to Machines</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

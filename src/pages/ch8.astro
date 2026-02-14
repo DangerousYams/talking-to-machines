@@ -1,0 +1,412 @@
+---
+import ChapterLayout from '../layouts/ChapterLayout.astro';
+import { chapters } from '../data/chapters';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import AccentBar from '../components/ui/AccentBar';
+import ConceptCard from '../components/ui/ConceptCard';
+import Divider from '../components/ui/Divider';
+import ProjectOrchestrator from '../components/widgets/ch8/ProjectOrchestrator';
+import ContextPacking from '../components/widgets/ch8/ContextPacking';
+
+const chapter = chapters[7];
+---
+
+<ChapterLayout chapter={chapter}>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>8</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chapter Eight
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Orchestrating<br />Complexity
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Managing AI across projects bigger<br />than any context window.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Here is the moment every ambitious beginner hits: you ask AI to build something real — a full game, a website with a backend, a research paper with citations — and the whole thing falls apart. Not because the AI isn't smart enough. Because the project is too big for a single conversation.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        You paste in a wall of requirements, the AI gives you a confident-sounding response, and twenty minutes later you realize it forgot half of what you asked for, contradicted itself on the architecture, and hallucinated a library that doesn't exist. You try again. Same result, different hallucinations.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        This isn't an AI problem. It's an <strong>orchestration problem</strong>. And learning to solve it is the difference between someone who uses AI for one-off tasks and someone who uses it to build real things.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        The One-Prompt Trap
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        When you first learn to use AI, you naturally try to do everything in one shot. One massive prompt. One conversation. One attempt. And for simple tasks — writing an email, brainstorming ideas, explaining a concept — that works fine.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        But complexity breaks the one-prompt approach in three ways:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { num: '1', title: 'Context overflow', text: 'The AI can only hold so much information at once. A full project exceeds that limit, so the AI starts "forgetting" your earlier requirements.' },
+          { num: '2', title: 'Attention dilution', text: 'Even within the context window, asking the AI to juggle twelve different concerns at once means each one gets less focus. Quality drops across the board.' },
+          { num: '3', title: 'Error compounding', text: 'One small mistake in a complex output cascades. If the AI gets the database schema wrong, everything built on that schema is wrong too — and it\'s hard to spot deep in a wall of generated code.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
+            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
+                {item.num}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        The solution isn't a better prompt. It's a better process.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DECOMPOSITION: THE MASTER SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Decomposition: The Master Skill
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Professional software engineers don't build entire applications in one sitting. They break them into pieces — modules, components, functions — each with a clear purpose, clear inputs, and clear outputs. Then they assemble them.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Working with AI on complex projects requires the same discipline. You need to <strong>decompose</strong> your project into tasks that are small enough for a single, focused AI conversation to handle well.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Good decomposition follows three rules:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Single responsibility.', desc: 'Each task does one thing. "Design the database AND build the API AND write the frontend" is three tasks, not one.' },
+          { word: 'Clear interfaces.', desc: 'Every task has a defined input (what it needs to start) and a defined output (what it produces). The output of one task becomes the input of the next.' },
+          { word: 'Minimal dependencies.', desc: 'Tasks that can be done in parallel should be. Only create dependencies when one task genuinely needs another\'s output.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Decomposition is a human skill, not an AI skill.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI can help you brainstorm a task breakdown, but deciding how to split the work, what depends on what, and what to prioritize — that's your job. It's project management, and it's one of the most valuable skills you can develop.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectOrchestrator client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE HANDOFF PATTERN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Handoff Pattern
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Once you've broken a project into tasks, you need a way to connect them. In AI workflows, this connection is the <strong>handoff</strong> — the moment where the output of one conversation becomes the input to the next.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>The Handoff Pattern</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Conversation 1 produces an <strong>artifact</strong> — a document, a schema, a plan.<br />
+          That artifact is pasted into Conversation 2 as <strong>context</strong>.<br />
+          Conversation 2 builds on it and produces the next artifact.<br />
+          Repeat until the project is complete.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Think of it like a relay race. Each runner (conversation) covers their leg and passes the baton (artifact) to the next. The baton is the critical piece — if it's dropped or garbled, the next runner stumbles.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        This means your handoff artifacts need to be <em>crisp</em>. A database schema is a better handoff than a vague description of the data model. A numbered list of API endpoints is better than "I need a backend that handles user stuff." The sharper the artifact, the better the next conversation performs.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        The quality of your handoff artifact determines the quality of everything built downstream. Garbage in, garbage out — across conversations.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT PACKING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Art of Context Packing
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Every time you start a new AI conversation, you're making a decision that most people don't even notice: <strong>what context do you include?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        You have a limited budget — the context window. And you have a pile of potentially relevant information: code files, documentation, previous conversations, error logs, design specs. Not all of it will fit. And even if it did, dumping everything in would dilute the AI's attention.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Context packing is like packing a suitcase for a trip. You can't bring your entire closet. You need to think about where you're going (the task), what you'll need (relevant information), and what you can leave behind (everything else).
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
+        {[
+          { label: 'Too little context', color: '#E94560', text: 'The AI doesn\'t have what it needs and fills the gaps with hallucinations. It sounds confident but invents details.' },
+          { label: 'Too much context', color: '#F5A623', text: 'The AI gets overwhelmed. Important details get lost in the noise. Output becomes generic and unfocused.' },
+          { label: 'The right context', color: '#16C79A', text: 'The AI has exactly what it needs for this specific task. Output is precise, relevant, and actionable.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
+              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
+                {item.label}
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Think like an editor, not a hoarder.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Before every AI interaction, ask yourself: what does the AI <em>need to know</em> to do this specific task? Include that. Leave out everything else. This is context engineering applied to project management.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextPacking client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Keeping Track of What Worked
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Here's a scenario that happens to everyone: you have a great AI conversation that produces exactly the output you need. A week later, you need something similar. You can't remember what you said. You try to recreate it. The results are worse.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Complex AI projects generate a lot of artifacts — prompts that worked, outputs that were good, decisions that were made, approaches that failed. Without a system for tracking this, you'll waste hours rediscovering things you already figured out.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Professional developers use version control (like Git) to track every change in their codebase. You should apply the same mindset to your AI work:
+      </p>
+    </FadeInBlock>
+
+    <!-- Tracking habits list -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
+        {[
+          { icon: '01', title: 'Save your prompts', desc: 'When a prompt produces great output, save it somewhere. A simple notes app, a markdown file, a prompt library. The exact wording matters.' },
+          { icon: '02', title: 'Save the outputs', desc: 'Keep the AI-generated artifacts you build on. Database schemas, API designs, outlines. These are your handoff documents and you\'ll need them again.' },
+          { icon: '03', title: 'Document your decisions', desc: 'When you and the AI explore two approaches and pick one, write down why. Future-you will thank present-you when the project pivots.' },
+          { icon: '04', title: 'Track what failed', desc: 'A prompt that produced garbage is valuable information. Knowing what doesn\'t work is half the battle. Keep a "failure log" so you don\'t repeat mistakes.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
+                {item.icon}
+              </span>
+              <div>
+                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.6}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Your prompt library is like a musician's practice notebook. The more you collect, the faster you get, and the less you start from zero.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KEY CONCEPTS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {chapter.concepts.map((concept, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <ConceptCard
+            name={concept.name}
+            description={concept.description}
+            accent={chapter.accent}
+            index={i}
+            client:load
+          />
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        The best AI users aren't the best prompters. They're the best project managers.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        You've learned to break work into pieces, manage context like a scarce resource, and build a system for tracking what works. In the next chapter, we turn to the hardest skill of all: knowing when AI is wrong — and what to do about it.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>
