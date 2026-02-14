@@ -15,7 +15,11 @@ export default function UnlockModal({ feature = 'Live AI', accentColor = '#7B61F
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/unlock', { method: 'POST' });
+      const res = await fetch('/api/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
       const text = await res.text();
       let data: { token?: string; error?: string };
       try {
