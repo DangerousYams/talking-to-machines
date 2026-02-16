@@ -2,7 +2,6 @@ import { useChapterMode, type ChapterMode } from './ChapterModeContext';
 
 const modes: { id: ChapterMode; label: string; icon: string }[] = [
   { id: 'read', label: 'Read', icon: '\u{1F4D6}' },
-  { id: 'speed-run', label: 'Speed Run', icon: '\u26A1' },
   { id: 'listen', label: 'Listen', icon: '\u{1F3A7}' },
 ];
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useSyncExternalStore } from 'react';
 
-export type ChapterMode = 'read' | 'speed-run' | 'listen';
+export type ChapterMode = 'read' | 'listen';
 
 // ─── Module-level store (shared across all React islands) ───
 let currentMode: ChapterMode = 'read';
