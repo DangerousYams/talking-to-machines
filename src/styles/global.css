@@ -310,3 +310,28 @@ a:hover {
     font-size: clamp(4rem, 20vw, 8rem);
   }
 }
+
+/* ─── Speed Run Mode ─── */
+/* Hide narrative prose sections (680px max-width) but keep widgets (900px) */
+[data-chapter-mode="speed-run"] > section.max-w-\[680px\] {
+  display: none;
+}
+
+/* Hide the full-height hero in speed-run */
+[data-chapter-mode="speed-run"] > section.min-h-\[80vh\] {
+  display: none;
+}
+
+/* Hide dividers inside speed-run beat sections */
+[data-chapter-mode="speed-run"] > div[role="separator"] {
+  display: none;
+}
+
+/* ─── Card Deck Mode ─── */
+body.card-deck-page {
+  overflow: hidden;
+  height: 100dvh;
+}
+body.card-deck-page::before {
+  display: none;
+}

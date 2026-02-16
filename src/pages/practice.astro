@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import PracticePlayground from '../components/PracticePlayground';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="33 interactive practice tools across all 11 chapters. Build prompts, take quizzes, explore visualizations, and run simulations." />
+    <meta property="og:title" content="Practice Tools — Talking to Machines" />
+    <meta property="og:description" content="33 interactive widgets. Pick one and start practicing." />
+    <title>Practice Tools — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+
+    <!-- ═══ NAV BAR ═══ -->
+    <nav style="padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; max-width: 1000px; margin: 0 auto;">
+      <a
+        href="/"
+        style="display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-subtle); text-decoration: none; opacity: 0.6; transition: opacity 0.2s;"
+        onmouseenter="this.style.opacity='1'"
+        onmouseleave="this.style.opacity='0.6'"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Home
+      </a>
+      <span
+        style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.04em; color: var(--color-subtle); opacity: 0.5;"
+      >
+        33 tools
+      </span>
+    </nav>
+
+    <!-- ═══ PLAYGROUND ═══ -->
+    <main>
+      <PracticePlayground client:load />
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer style="padding: 3rem 1.5rem; text-align: center; border-top: 1px solid rgba(26,26,46,0.06);">
+      <p style="font-family: var(--font-body); font-size: 0.9rem; color: var(--color-subtle); margin: 0 0 0.5rem;">
+        Want to learn the concepts behind these tools?
+      </p>
+      <a
+        href="/ch1"
+        style="display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: #E94560; text-decoration: none; transition: opacity 0.2s;"
+        onmouseenter="this.style.opacity='0.7'"
+        onmouseleave="this.style.opacity='1'"
+      >
+        Start with Chapter 1
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </footer>
+  </body>
+</html>

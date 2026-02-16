@@ -1,3 +1,12 @@
+export interface Beat {
+  id: string;
+  number: number;
+  title: string;
+  tldr: string;
+  /** ~minutes of reading + interaction */
+  estimatedMinutes: number;
+}
+
 export interface Chapter {
   number: number;
   slug: string;
@@ -5,6 +14,7 @@ export interface Chapter {
   hook: string;
   accent: string;
   concepts: { name: string; description: string }[];
+  beats?: Beat[];
 }
 
 export const chapters: Chapter[] = [
@@ -18,6 +28,36 @@ export const chapters: Chapter[] = [
       { name: "The 5 Building Blocks", description: "Role, Task, Format, Constraints, Examples" },
       { name: "One-Shot vs. Iteration", description: "A single prompt rarely nails it. The magic is in the back-and-forth: prompt, evaluate, refine, repeat." },
       { name: "The Prompt Spectrum", description: "From vague to precise\u2014learning to move along it is the core skill." },
+    ],
+    beats: [
+      {
+        id: 'communication-gap',
+        number: 1,
+        title: 'The Communication Gap',
+        tldr: 'Vague prompts get vague answers. The gap between what AI can do and what most people get is a communication problem.',
+        estimatedMinutes: 3,
+      },
+      {
+        id: 'building-blocks',
+        number: 2,
+        title: 'The Five Building Blocks',
+        tldr: 'Every good prompt uses some combination of Role, Task, Format, Constraints, and Examples.',
+        estimatedMinutes: 4,
+      },
+      {
+        id: 'iteration-mindset',
+        number: 3,
+        title: 'The Iteration Mindset',
+        tldr: 'Nobody nails it first try. Prompt, evaluate, refine, repeat — that loop is the actual skill.',
+        estimatedMinutes: 3,
+      },
+      {
+        id: 'test-yourself',
+        number: 4,
+        title: 'Test Yourself',
+        tldr: 'Put your new skills to the test — guess the prompt behind AI outputs and get your own prompts roasted.',
+        estimatedMinutes: 4,
+      },
     ],
   },
   {

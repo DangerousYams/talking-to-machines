@@ -1,0 +1,425 @@
+---
+import '../styles/global.css';
+// Ch1 experiments
+import PromptMorphAnimation from '../components/lab/PromptMorphAnimation';
+import TokenFlowCanvas from '../components/lab/TokenFlowCanvas';
+import BuildingBlocksAssembly from '../components/lab/BuildingBlocksAssembly';
+// Ch2 experiments
+import SocraticTree from '../components/lab/SocraticTree';
+import ChainOfThoughtSteps from '../components/lab/ChainOfThoughtSteps';
+// Ch3 experiments
+import ContextWindowFill from '../components/lab/ContextWindowFill';
+import TokenRain from '../components/lab/TokenRain';
+// Ch4 experiments
+import AIConstellationMap from '../components/lab/AIConstellationMap';
+// Ch5 experiments
+import AgentLoopCycle from '../components/lab/AgentLoopCycle';
+// Ch6 experiments
+import MultiAgentHandoff from '../components/lab/MultiAgentHandoff';
+// Ch7 experiments
+import TerminalFlow from '../components/lab/TerminalFlow';
+// Ch8 experiments
+import DecompositionTree from '../components/lab/DecompositionTree';
+// Ch9 experiments
+import HallucinationDetector from '../components/lab/HallucinationDetector';
+// Ch10 experiments
+import HumanAISpectrum from '../components/lab/HumanAISpectrum';
+
+const experiments = [
+  { num: '01', title: 'Prompt Morph', chapter: 'Ch 1', color: 'text-accent-red/60', desc: 'Watch a vague prompt transform into a precise one, building block by building block.', tech: 'CSS transitions with staggered segment reveals. Colors map to the five prompt building blocks.' },
+  { num: '02', title: 'Building Blocks Assembly', chapter: 'Ch 1', color: 'text-accent-red/60', desc: 'The five prompt building blocks fly from scattered positions into an assembled stack.', tech: 'SVG with cubic-bezier easing for a bounce-settle effect. Connection dots and bracket label on completion.' },
+  { num: '03', title: 'Token Flow', chapter: 'Ch 1', color: 'text-accent-red/60', desc: 'A particle system showing tokens streaming into an AI core and responses flowing back out.', tech: 'Canvas2D with requestAnimationFrame. Quadratic bezier curves with randomized offsets. Warm in, cool out.' },
+  { num: '04', title: 'Socratic Question Tree', chapter: 'Ch 2', color: 'text-navy/60', desc: 'A branching tree shows how one vague goal splits into clarifying questions, answers, and a rich result.', tech: 'SVG with bezier connection paths. Nodes reveal sequentially — questions, then answers, then assembled result.' },
+  { num: '05', title: 'Chain of Thought', chapter: 'Ch 2', color: 'text-navy/60', desc: 'Step-by-step reasoning unfolds for a math problem, then contrasts with a one-shot answer.', tech: 'DOM-based card animation with staggered slide-ins. Confidence bars compare CoT vs. direct answers.' },
+  { num: '06', title: 'Context Window', chapter: 'Ch 3', color: 'text-purple/60', desc: 'A glass cylinder fills with message blocks and overflows — old messages fade away as new ones arrive.', tech: 'SVG container with proportional token blocks. System prompt pinned at top. Fill bar and token counter.' },
+  { num: '07', title: 'Token Rain', chapter: 'Ch 3', color: 'text-purple/60', desc: 'Sentences break apart into tokens that fall like digital rain into a token buffer.', tech: 'Canvas2D particle system. Subword tokenization shown visually. Sine-wave drift and stacking buffer.' },
+  { num: '08', title: 'AI Constellation Map', chapter: 'Ch 4', color: 'text-sky/60', desc: 'A starfield of AI tools organized into constellation clusters — image, video, audio, research, coding.', tech: 'Canvas2D on dark background. Twinkling stars, nebula glows, constellation lines. Clusters cycle active states.' },
+  { num: '09', title: 'Agent Loop', chapter: 'Ch 5', color: 'text-amber/60', desc: 'The Observe → Think → Act → Evaluate cycle spins continuously as a pulse travels the loop.', tech: 'SVG circular layout with glowing pulse dot. Action descriptions appear at each node. Loop counter in center.' },
+  { num: '10', title: 'Multi-Agent Handoff', chapter: 'Ch 6', color: 'text-accent-red/60', desc: 'Three specialist agents — Researcher, Writer, Editor — pass work through a pipeline.', tech: 'Three-lane layout with bezier document transfer animations. Lines simulate notes, drafts, and edits.' },
+  { num: '11', title: 'Terminal Flow', chapter: 'Ch 7', color: 'text-purple/60', desc: 'A simulated terminal types out a Claude Code session: specify, generate, verify, fix, verify.', tech: 'Dark terminal with typewriter effect. Syntax-highlighted code, blinking cursor, phase progress bar.' },
+  { num: '12', title: 'Decomposition Tree', chapter: 'Ch 8', color: 'text-navy/60', desc: 'A big task breaks into a tree of subtasks with handoff connections between branches.', tech: 'SVG tree with animated bezier branches. Nodes reveal level by level. Checkmarks and handoff arrows appear.' },
+  { num: '13', title: 'Hallucination Detector', chapter: 'Ch 9', color: 'text-accent-red/60', desc: 'AI text types out, then a scanner sweeps through revealing which statements are hallucinated.', tech: 'DOM typewriter with scanning overlay. Correct vs. hallucinated annotations. Accuracy gauge and tips.' },
+  { num: '14', title: 'Human–AI Spectrum', chapter: 'Ch 10', color: 'text-teal/60', desc: 'Skills slide along a spectrum from "AI excels" to "uniquely human" — the middle is where it gets interesting.', tech: 'SVG with animated pill badges. Color interpolation based on position. Bracket highlights the AI-assisted zone.' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="14 experimental programmatic visualizations exploring AI concepts — pure code, no AI-generated images." />
+    <meta property="og:title" content="The Lab — Talking to Machines" />
+    <meta property="og:description" content="14 experimental visualizations: coded, deterministic, beautiful." />
+    <title>The Lab — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="fixed top-0 left-0 right-0 z-40">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
+          <a
+            href="/"
+            class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+            style="font-family: var(--font-heading); font-weight: 500;"
+          >
+            Talking to Machines
+          </a>
+          <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
+            Lab &middot; 14 experiments
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-12">
+
+      <!-- ═══ HERO ═══ -->
+      <section class="min-h-[50vh] flex flex-col items-center justify-center px-6 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+          <div class="absolute inset-0" style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(123, 97, 255, 0.03) 0%, transparent 70%);"></div>
+          <div class="absolute inset-0" style="background: radial-gradient(ellipse 40% 40% at 30% 60%, rgba(233, 69, 96, 0.02) 0%, transparent 70%);"></div>
+        </div>
+
+        <div class="relative z-10 text-center max-w-[600px]">
+          <p class="text-[11px] tracking-[0.25em] uppercase text-subtle/60 mb-6" style="font-family: var(--font-mono);">
+            Experimental
+          </p>
+          <h1 class="mb-5" style="font-family: var(--font-heading); font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 800; color: var(--color-deep); letter-spacing: -0.03em; line-height: 1.05;">
+            The Lab
+          </h1>
+          <p class="text-lg text-deep/60 mb-3" style="font-family: var(--font-body); font-style: italic; max-width: none;">
+            14 programmatic visualizations across 10 chapters
+          </p>
+          <p class="text-[13px] text-subtle/40" style="font-family: var(--font-mono); max-width: none;">
+            Pure code &middot; No AI-generated images &middot; Canvas2D &middot; SVG &middot; CSS
+          </p>
+        </div>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH1: YOU ALREADY SPEAK AI ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-accent-red/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 1</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">You Already Speak AI</h2>
+      </div>
+
+      <!-- 01: Prompt Morph -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-accent-red/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">01</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Prompt Morph</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">Watch a vague prompt transform into a precise one, building block by building block.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><PromptMorphAnimation client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">CSS transitions &middot; Staggered segment reveals &middot; Color-coded building blocks</p>
+      </section>
+
+      <!-- 02: Building Blocks Assembly -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-accent-red/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">02</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Building Blocks Assembly</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">The five prompt building blocks fly from scattered positions into an assembled stack.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><BuildingBlocksAssembly client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG &middot; Cubic-bezier bounce-settle &middot; Connection dots &middot; Bracket label</p>
+      </section>
+
+      <!-- 03: Token Flow -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-accent-red/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">03</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Token Flow</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A particle system showing tokens streaming into an AI core and responses flowing back out.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><TokenFlowCanvas client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">Canvas2D &middot; Quadratic bezier curves &middot; Warm tones in, cool tones out</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH2: THE ART OF ASKING ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-navy/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 2</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">The Art of Asking</h2>
+      </div>
+
+      <!-- 04: Socratic Tree -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-navy/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">04</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Socratic Question Tree</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A branching tree shows how one vague goal splits into clarifying questions, answers, and a rich result.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><SocraticTree client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG &middot; Bezier connection paths &middot; Sequential node reveals</p>
+      </section>
+
+      <!-- 05: Chain of Thought -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-navy/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">05</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Chain of Thought</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">Step-by-step reasoning unfolds for a math problem, then contrasts with a one-shot answer.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><ChainOfThoughtSteps client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">DOM cards &middot; Staggered slide-ins &middot; Confidence bar comparison</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH3: CONTEXT ENGINEERING ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-purple/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 3</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">Context Engineering</h2>
+      </div>
+
+      <!-- 06: Context Window -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-purple/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">06</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Context Window</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A glass cylinder fills with message blocks and overflows — old messages fade away as new ones arrive.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><ContextWindowFill client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG &middot; Proportional token blocks &middot; Pinned system prompt &middot; Fill bar &middot; Overflow animation</p>
+      </section>
+
+      <!-- 07: Token Rain -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-purple/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">07</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Token Rain</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">Sentences break apart into tokens that fall like digital rain into a token buffer.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><TokenRain client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">Canvas2D &middot; Subword tokenization &middot; Sine-wave drift &middot; Stacking buffer</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH4: THE AI LANDSCAPE ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-sky/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 4</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">The AI Landscape</h2>
+      </div>
+
+      <!-- 08: AI Constellation Map -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-sky/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">08</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">AI Constellation Map</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A starfield of AI tools organized into constellation clusters — image, video, audio, research, coding.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><AIConstellationMap client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">Canvas2D &middot; Dark sky &middot; Twinkling stars &middot; Nebula glows &middot; Cycling cluster highlights</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH5: GIVE IT TOOLS ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-amber/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 5</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">Give It Tools</h2>
+      </div>
+
+      <!-- 09: Agent Loop -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-amber/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">09</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Agent Loop</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">The Observe → Think → Act → Evaluate cycle spins continuously as a pulse travels the loop.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><AgentLoopCycle client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG &middot; Circular layout &middot; Glowing pulse dot &middot; Action descriptions &middot; Loop counter</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH6: BUILDING AGENTS ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-accent-red/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 6</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">Building Agents</h2>
+      </div>
+
+      <!-- 10: Multi-Agent Handoff -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-accent-red/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">10</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Multi-Agent Handoff</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">Three specialist agents — Researcher, Writer, Editor — pass work through a pipeline.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><MultiAgentHandoff client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">Three-lane layout &middot; Bezier document transfer &middot; Notes, drafts, and edits simulation</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH7: MASTERING CLAUDE CODE ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-purple/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 7</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">Mastering Claude Code</h2>
+      </div>
+
+      <!-- 11: Terminal Flow -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-purple/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">11</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Terminal Flow</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A simulated terminal types out a Claude Code session: specify, generate, verify, fix, verify.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><TerminalFlow client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">Dark terminal &middot; Typewriter effect &middot; Syntax highlighting &middot; Phase progress bar</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH8: ORCHESTRATING COMPLEXITY ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-navy/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 8</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">Orchestrating Complexity</h2>
+      </div>
+
+      <!-- 12: Decomposition Tree -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-navy/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">12</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Decomposition Tree</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">A big task breaks into a tree of subtasks with handoff connections between branches.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><DecompositionTree client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG tree &middot; Animated bezier branches &middot; Level-by-level reveal &middot; Handoff arrows</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH9: WHEN AI GETS IT WRONG ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-accent-red/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 9</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">When AI Gets It Wrong</h2>
+      </div>
+
+      <!-- 13: Hallucination Detector -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-accent-red/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">13</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Hallucination Detector</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">AI text types out, then a scanner sweeps through revealing which statements are hallucinated.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><HallucinationDetector client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">DOM typewriter &middot; Scanning overlay &middot; Fact vs. hallucination annotations &middot; Accuracy gauge</p>
+      </section>
+
+      <!-- ═══ DIVIDER ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10">
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-deep/10"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor" opacity="0.15"/></svg>
+          <div class="flex-1 h-px bg-deep/10"></div>
+        </div>
+      </div>
+
+      <!-- ═══ CH10: THE HUMAN EDGE ═══ -->
+      <div class="max-w-[680px] mx-auto px-6 md:px-10 pt-20 pb-4">
+        <p class="text-[11px] tracking-[0.2em] uppercase text-teal/50 mb-1" style="font-family: var(--font-mono); font-weight: 600;">Chapter 10</p>
+        <h2 class="text-lg font-bold" style="font-family: var(--font-heading); color: var(--color-navy);">The Human Edge</h2>
+      </div>
+
+      <!-- 14: Human–AI Spectrum -->
+      <section class="py-16 md:py-20 px-6">
+        <div class="max-w-[680px] mx-auto mb-8">
+          <span class="text-[11px] tracking-[0.15em] uppercase text-teal/60 block mb-2" style="font-family: var(--font-mono); font-weight: 600;">14</span>
+          <h3 class="mb-2" style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--color-navy);">Human–AI Spectrum</h3>
+          <p class="text-[15px] text-deep/60" style="font-family: var(--font-body); max-width: none;">Skills slide along a spectrum from "AI excels" to "uniquely human" — the middle is where it gets interesting.</p>
+        </div>
+        <div class="max-w-[900px] mx-auto"><HumanAISpectrum client:visible /></div>
+        <p class="max-w-[680px] mx-auto mt-6 text-[12px] text-subtle/40 text-center" style="font-family: var(--font-mono); max-width: none;">SVG &middot; Animated pill badges &middot; Color interpolation &middot; AI-assisted zone bracket</p>
+      </section>
+
+    </main>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="py-20 px-6">
+      <div class="max-w-[680px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-5 opacity-20">
+          <div class="w-10 h-px bg-deep"></div>
+          <svg width="6" height="6" viewBox="0 0 6 6" fill="none"><path d="M3 0l3 3-3 3L0 3z" fill="currentColor"/></svg>
+          <div class="w-10 h-px bg-deep"></div>
+        </div>
+        <p class="text-[13px] text-subtle/40" style="font-family: var(--font-body); max-width: none;">
+          <a href="/" class="no-underline text-subtle/40 hover:text-deep transition-colors">Talking to Machines</a>
+        </p>
+        <p class="text-[11px] text-subtle/25 mt-1" style="font-family: var(--font-mono); max-width: none;">
+          The Lab &middot; 14 Experimental Visualizations
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

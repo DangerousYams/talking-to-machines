@@ -4,6 +4,8 @@ import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterNav from '../components/ui/ChapterNav';
 import PaywallGate from '../components/ui/PaywallGate';
 import QuotaCounter from '../components/ui/QuotaCounter';
+import PageViewTracker from '../components/analytics/PageViewTracker';
+import { BeatProgress, ChapterModeBar, ResumePrompt, ListenController } from '../components/chapter/ChapterBeats';
 import { chapters, type Chapter } from '../data/chapters';
 
 interface Props {
@@ -14,6 +16,7 @@ const { chapter } = Astro.props;
 const prev = chapters.find((c) => c.number === chapter.number - 1);
 const next = chapters.find((c) => c.number === chapter.number + 1);
 const needsPaywall = chapter.number > 1;
+const hasBeats = chapter.beats && chapter.beats.length > 0;
 ---
 
 <!doctype html>
@@ -29,6 +32,7 @@ const needsPaywall = chapter.number > 1;
   </head>
   <body class="bg-cream text-deep min-h-screen">
     <ScrollProgress color={chapter.accent} client:load />
+    <PageViewTracker variant="scroll" chapter={chapter.slug} client:load />
 
     <!-- Floating header — minimal, stays out of the way -->
     <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
@@ -42,6 +46,14 @@ const needsPaywall = chapter.number > 1;
             Talking to Machines
           </a>
           <div class="flex items-center gap-3">
+            {hasBeats && (
+              <BeatProgress
+                beats={chapter.beats!}
+                accentColor={chapter.accent}
+                chapterSlug={chapter.slug}
+                client:load
+              />
+            )}
             <QuotaCounter client:load />
             <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
               {chapter.number} / {chapters.length}
@@ -56,8 +68,22 @@ const needsPaywall = chapter.number > 1;
     )}
 
     <main class="pt-12">
+      {hasBeats && (
+        <ChapterModeBar accentColor={chapter.accent} client:load />
+      )}
       <slot />
     </main>
+
+    {hasBeats && (
+      <ResumePrompt
+        beats={chapter.beats!}
+        chapterSlug={chapter.slug}
+        accentColor={chapter.accent}
+        client:load
+      />
+    )}
+
+    <ListenController accentColor={chapter.accent} chapterSlug={chapter.slug} client:load />
 
     <ChapterNav prev={prev} next={next} client:load />
 

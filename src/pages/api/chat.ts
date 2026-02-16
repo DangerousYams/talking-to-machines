@@ -279,6 +279,34 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 // ---------------------------------------------------------------------------
+// AI usage tracking (fire-and-forget)
+// ---------------------------------------------------------------------------
+async function logAiUsage(model: string, source: string | undefined, inputTokens: number, outputTokens: number) {
+  try {
+    const { supabase } = await import('../../lib/supabase');
+    if (!supabase) return;
+
+    const costs: Record<string, [number, number]> = {
+      'claude-haiku-4-5-20251001': [0.25, 1.25],
+      'claude-sonnet-4-20250514': [3, 15],
+    };
+    const [inCost, outCost] = costs[model] || [3, 15];
+    const costUsd = (inputTokens * inCost + outputTokens * outCost) / 1_000_000;
+
+    await supabase.from('ai_usage').insert({
+      widget_name: source || 'unknown',
+      model,
+      input_tokens: inputTokens,
+      output_tokens: outputTokens,
+      cost_usd: costUsd,
+      created_at: new Date().toISOString(),
+    });
+  } catch {
+    // noop
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Proxy to Claude (streaming)
 // ---------------------------------------------------------------------------
 async function proxyToClaude(
@@ -322,6 +350,8 @@ async function proxyToClaude(
 
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
+  let inputTokens = 0;
+  let outputTokens = 0;
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -348,6 +378,10 @@ async function proxyToClaude(
                 controller.enqueue(
                   encoder.encode(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`)
                 );
+              } else if (event.type === 'message_start' && event.message?.usage) {
+                inputTokens = event.message.usage.input_tokens || 0;
+              } else if (event.type === 'message_delta' && event.usage) {
+                outputTokens = event.usage.output_tokens || 0;
               } else if (event.type === 'message_stop') {
                 controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
               }
@@ -358,6 +392,11 @@ async function proxyToClaude(
         }
         controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
         controller.close();
+
+        // Log usage after stream completes (fire-and-forget)
+        if (inputTokens > 0 || outputTokens > 0) {
+          logAiUsage(model, source, inputTokens, outputTokens);
+        }
       } catch (err) {
         controller.error(err);
       }
@@ -421,6 +460,8 @@ async function proxyToClaudeAndCache(
     const reader = upstream.body!.getReader();
     let buffer = '';
     let fullText = '';
+    let inputTokens = 0;
+    let outputTokens = 0;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -439,6 +480,10 @@ async function proxyToClaudeAndCache(
           const event = JSON.parse(data);
           if (event.type === 'content_block_delta' && event.delta?.text) {
             fullText += event.delta.text;
+          } else if (event.type === 'message_start' && event.message?.usage) {
+            inputTokens = event.message.usage.input_tokens || 0;
+          } else if (event.type === 'message_delta' && event.usage) {
+            outputTokens = event.usage.output_tokens || 0;
           }
         } catch {
           // Skip
@@ -450,6 +495,11 @@ async function proxyToClaudeAndCache(
     if (userMessage && fullText) {
       const hash = hashPrompt(userMessage.content);
       await kv.set(`cache:roast:${hash}`, fullText, { ex: 86400 });
+    }
+
+    // Log usage (fire-and-forget)
+    if (inputTokens > 0 || outputTokens > 0) {
+      logAiUsage(model, source, inputTokens, outputTokens);
     }
 
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };

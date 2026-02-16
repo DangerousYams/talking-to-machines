@@ -1,0 +1,129 @@
+---
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import ConceptCard from '../../components/ui/ConceptCard';
+import Divider from '../../components/ui/Divider';
+import {
+  PromptMakeoverFlip,
+  GuessThePromptFlip,
+  IterationLoopFlip,
+  PromptRoastFlip,
+} from '../../components/widgets/ch1/Ch1FlipCards';
+
+const chapter = chapters[0];
+---
+
+<ChapterLayout chapter={chapter}>
+
+  <!-- ═══ COMPACT HERO ═══ -->
+  <section id="top" class="pt-8 pb-10 px-6 md:px-10">
+    <div class="max-w-[680px] mx-auto text-center">
+      <p class="text-[13px] italic text-subtle/60 mb-3" style="font-family: var(--font-body);">
+        Chapter One — Widget-First Layout
+      </p>
+      <h1
+        class="mb-4 leading-[1.1]"
+        style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em;`}
+      >
+        You Already Speak AI
+      </h1>
+      <p class="text-base md:text-lg italic text-deep/40 leading-relaxed max-w-sm mx-auto mb-0" style="font-family: var(--font-body);">
+        {chapter.hook}
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FLIP CARD 1: PROMPT MAKEOVER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 pt-8 pb-4">
+    <FadeInBlock client:visible>
+      <p class="text-center text-sm mb-6 text-deep/60" style="font-family: var(--font-body); max-width: 50ch; margin-left: auto; margin-right: auto;">
+        Toggle the five building blocks on and off to see how each one transforms a vague prompt into something powerful.
+      </p>
+    </FadeInBlock>
+    <PromptMakeoverFlip client:visible />
+  </section>
+
+  <div style="max-width: 680px; margin: 2.5rem auto; padding: 0 1.5rem;">
+    <div style={`height: 1px; background: linear-gradient(90deg, transparent, ${chapter.accent}20, transparent);`}></div>
+  </div>
+
+  <!-- ═══ FLIP CARD 2: GUESS THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 pt-4 pb-4">
+    <FadeInBlock client:visible>
+      <p class="text-center text-sm mb-6 text-deep/60" style="font-family: var(--font-body); max-width: 50ch; margin-left: auto; margin-right: auto;">
+        Can you figure out which prompt produced this AI output? Test your instincts in a five-round quiz.
+      </p>
+    </FadeInBlock>
+    <GuessThePromptFlip client:visible />
+  </section>
+
+  <div style="max-width: 680px; margin: 2.5rem auto; padding: 0 1.5rem;">
+    <div style={`height: 1px; background: linear-gradient(90deg, transparent, ${chapter.accent}20, transparent);`}></div>
+  </div>
+
+  <!-- ═══ FLIP CARD 3: ITERATION LOOP ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 pt-4 pb-4">
+    <FadeInBlock client:visible>
+      <p class="text-center text-sm mb-6 text-deep/60" style="font-family: var(--font-body); max-width: 50ch; margin-left: auto; margin-right: auto;">
+        Step through a real prompt refinement journey and watch the output improve with each iteration.
+      </p>
+    </FadeInBlock>
+    <IterationLoopFlip client:visible />
+  </section>
+
+  <div style="max-width: 680px; margin: 2.5rem auto; padding: 0 1.5rem;">
+    <div style={`height: 1px; background: linear-gradient(90deg, transparent, ${chapter.accent}20, transparent);`}></div>
+  </div>
+
+  <!-- ═══ FLIP CARD 4: PROMPT ROAST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 pt-4 pb-4">
+    <FadeInBlock client:visible>
+      <p class="text-center text-sm mb-6 text-deep/60" style="font-family: var(--font-body); max-width: 50ch; margin-left: auto; margin-right: auto;">
+        Write your own prompt and get it roasted by AI. Find out what's strong and what needs work.
+      </p>
+    </FadeInBlock>
+    <PromptRoastFlip client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KEY CONCEPTS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {chapter.concepts.map((concept, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <ConceptCard
+            name={concept.name}
+            description={concept.description}
+            accent={chapter.accent}
+            index={i}
+            client:load
+          />
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        You already speak AI. You just need to speak it with intention.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        In the next chapter, we go deeper — learning advanced techniques that turn the AI from a simple answer machine into a genuine thinking partner.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>
