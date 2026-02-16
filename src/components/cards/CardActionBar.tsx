@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
+import { useFTUE } from '../../hooks/useFTUE';
 
 interface CardActionBarProps {
   cardIndex: number;
@@ -16,6 +17,8 @@ interface CardActionBarProps {
   onFlipToggle?: () => void;
   /* Facts */
   keyFact?: ReactNode;
+  /* FTUE */
+  isFirstFlippable?: boolean;
 }
 
 export default function CardActionBar({
@@ -30,6 +33,7 @@ export default function CardActionBar({
   flipSide = 'widget',
   onFlipToggle,
   keyFact,
+  isFirstFlippable = false,
 }: CardActionBarProps) {
   const hasAudio = !!(chapterSlug && audioIndices?.length);
   const [factsOpen, setFactsOpen] = useState(false);
@@ -43,6 +47,13 @@ export default function CardActionBar({
 
   const reducedMotion = typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── FTUE coach marks ── */
+  const { seen: ftueSeen, markSeen: ftueMarkSeen } = useFTUE('cards_action_bar');
+  const showFTUE = isFirstFlippable && !ftueSeen;
+  const toggleRef = useRef<HTMLDivElement>(null);
+  const factsRef = useRef<HTMLButtonElement>(null);
+  const listenRef = useRef<HTMLButtonElement>(null);
 
   const audioUrl = useCallback(
     (index: number) => `/audio/cards/${chapterSlug}/${String(index).padStart(3, '0')}.mp3`,
@@ -102,10 +113,69 @@ export default function CardActionBar({
 
   const showingText = flipSide === 'text';
 
+  /* ── FTUE inline tooltip ── */
+  const FTUETooltip = ({ label, delay }: { label: string; delay: number }) => (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: '100%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        marginBottom: 6,
+        pointerEvents: 'none',
+        animation: reducedMotion
+          ? 'none'
+          : `ftue-tooltip-in 0.3s ease ${delay}ms both`,
+        opacity: reducedMotion ? 1 : 0,
+        zIndex: 20,
+      }}
+    >
+      <div
+        style={{
+          background: 'rgba(26,26,46,0.95)',
+          color: '#fff',
+          fontSize: 11,
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 500,
+          padding: '4px 10px',
+          borderRadius: 8,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {label}
+      </div>
+      {/* Caret */}
+      <div
+        style={{
+          width: 0,
+          height: 0,
+          borderLeft: '5px solid transparent',
+          borderRight: '5px solid transparent',
+          borderTop: '5px solid rgba(26,26,46,0.95)',
+          margin: '0 auto',
+        }}
+      />
+    </div>
+  );
+
+  const pulseKeyframes = `
+    @keyframes ftue-pulse {
+      0%   { box-shadow: 0 0 0 0 ${accentColor}66; }
+      70%  { box-shadow: 0 0 0 8px ${accentColor}00; }
+      100% { box-shadow: 0 0 0 0 ${accentColor}00; }
+    }
+    @keyframes ftue-tooltip-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  `;
+
   return (
     <div style={{ flexShrink: 0, position: 'relative', zIndex: 5 }}>
+      {showFTUE && <style>{pulseKeyframes}</style>}
       {/* ── Main bar ── */}
       <div
+        onClick={showFTUE ? ftueMarkSeen : undefined}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -162,6 +232,22 @@ export default function CardActionBar({
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {/* Read ↔ Try segmented control */}
           {hasFlip && (
+            <div ref={toggleRef} style={{ position: 'relative' }}>
+              {/* FTUE pulse ring */}
+              {showFTUE && !reducedMotion && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: -3,
+                    borderRadius: 11,
+                    animation: 'ftue-pulse 1.2s ease-out 3',
+                    pointerEvents: 'none',
+                    zIndex: 10,
+                  }}
+                />
+              )}
+              {/* FTUE tooltip */}
+              {showFTUE && <FTUETooltip label="Tap to switch views" delay={0} />}
             <div
               role="tablist"
               aria-label="View mode"
@@ -231,11 +317,15 @@ export default function CardActionBar({
                 Try it
               </button>
             </div>
+            </div>
           )}
 
           {/* Facts button */}
           {keyFact && (
+            <div style={{ position: 'relative' }}>
+              {showFTUE && <FTUETooltip label="Key facts" delay={200} />}
             <button
+              ref={factsRef}
               onClick={() => setFactsOpen((o) => !o)}
               aria-label={factsOpen ? 'Hide key insight' : 'Show key insight'}
               aria-expanded={factsOpen}
@@ -259,11 +349,15 @@ export default function CardActionBar({
                 <path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z" />
               </svg>
             </button>
+            </div>
           )}
 
           {/* Listen button (always rightmost) */}
           {hasAudio && (
+            <div style={{ position: 'relative' }}>
+              {showFTUE && <FTUETooltip label="Listen to this card" delay={400} />}
             <button
+              ref={listenRef}
               onClick={toggleAudio}
               aria-label={playing ? 'Stop audio' : 'Listen'}
               style={{
@@ -322,6 +416,7 @@ export default function CardActionBar({
                 </svg>
               )}
             </button>
+            </div>
           )}
         </div>
       </div>

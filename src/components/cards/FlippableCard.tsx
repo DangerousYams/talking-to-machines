@@ -14,9 +14,10 @@ interface FlippableCardProps {
   chapterSlug?: string;
   audioIndices?: number[];
   keyFact?: ReactNode;
+  isFirstFlippable?: boolean;
 }
 
-export default function FlippableCard({
+function FlippableCard({
   widgetContent,
   textContent,
   defaultSide = 'widget',
@@ -28,6 +29,7 @@ export default function FlippableCard({
   chapterSlug,
   audioIndices,
   keyFact,
+  isFirstFlippable,
 }: FlippableCardProps) {
   const [side, setSide] = useState<'widget' | 'text'>(defaultSide);
   const [barHeight, setBarHeight] = useState(50);
@@ -77,6 +79,7 @@ export default function FlippableCard({
           flipSide={side}
           onFlipToggle={flip}
           keyFact={keyFact}
+          isFirstFlippable={isFirstFlippable}
         />
       </div>
 
@@ -150,3 +153,6 @@ export default function FlippableCard({
     </div>
   );
 }
+
+FlippableCard.displayName = 'FlippableCard';
+export default FlippableCard;
