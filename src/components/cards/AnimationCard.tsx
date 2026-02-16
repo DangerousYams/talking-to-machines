@@ -23,7 +23,7 @@ export default function AnimationCard({ children, caption, isActive = false, car
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: isMobile ? '16px 12px' : '32px 32px',
+        padding: isMobile ? '8px 8px' : '32px 32px',
         background: 'var(--color-cream)',
         gap: 12,
         position: 'relative',
@@ -82,9 +82,11 @@ export default function AnimationCard({ children, caption, isActive = false, car
         style={{
           maxWidth: 900,
           width: '100%',
+          flex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          minHeight: 0,
         }}
       >
         {isActive ? children : null}

@@ -111,7 +111,7 @@ export default function SkillsSpectrum() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Skills Spectrum</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Place each skill on the AI\u2013Human spectrum</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Place each skill on the AI–Human spectrum</p>
           </div>
         </div>
       </div>

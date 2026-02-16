@@ -101,7 +101,7 @@ function FlippableCard({
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          padding: isMobile ? '12px 12px 24px' : '24px 24px 32px',
+          padding: isMobile ? '12px 12px 56px' : '24px 24px 32px',
         }}
         aria-hidden={!showingWidget}
       >
@@ -128,7 +128,7 @@ function FlippableCard({
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          padding: isMobile ? '20px 20px 24px' : '32px 32px 32px',
+          padding: isMobile ? '20px 20px 56px' : '32px 32px 32px',
         }}
         aria-hidden={showingWidget}
       >

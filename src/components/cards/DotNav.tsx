@@ -33,12 +33,21 @@ export default function DotNav({ total, activeIndex, accentColor, onDotClick }: 
       aria-label="Card navigation"
       style={{
         position: 'fixed',
-        left: isMobile ? 8 : 16,
-        top: '50%',
-        transform: 'translateY(-50%)',
+        ...(isMobile
+          ? {
+              bottom: 12,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              flexDirection: 'row' as const,
+            }
+          : {
+              left: 16,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              flexDirection: 'column' as const,
+            }),
         zIndex: 40,
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         gap: isMobile ? 8 : 10,
       }}

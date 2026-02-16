@@ -140,12 +140,13 @@ export default function ChainOfThoughtSteps() {
 
   const containerStyle: React.CSSProperties = {
     maxWidth: 520,
+    width: '100%',
     margin: '0 auto',
     background: '#FFFFFF',
     borderRadius: 16,
-    border: '1px solid rgba(26, 26, 46, 0.06)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
-    padding: '28px 24px',
+    border: '1px solid rgba(15, 52, 96, 0.12)',
+    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.08), 0 1px 4px rgba(0,0,0,0.04)',
+    padding: '24px 16px',
     overflow: 'hidden',
     opacity: masterOpacity,
     transition: reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`,
