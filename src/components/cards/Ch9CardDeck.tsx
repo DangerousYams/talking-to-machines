@@ -86,7 +86,7 @@ export default function Ch9CardDeck() {
       <ClosingCard
         summaryQuote="This isn't about doubting AI. It's about using it well. Trust, but verify — and build the habits that make verification automatic."
         nextChapterTitle="The Human Edge"
-        nextChapterHref="/ch10"
+        nextChapterHref="/ch10-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

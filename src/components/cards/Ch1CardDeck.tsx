@@ -109,7 +109,7 @@ export default function Ch1CardDeck() {
       <ClosingCard
         summaryQuote="You don't need to memorize magic prompts. You need to develop an instinct for how specific to be — and know how to slide toward precision when the first response isn't good enough."
         nextChapterTitle="The Art of Asking"
-        nextChapterHref="/ch2"
+        nextChapterHref="/ch2-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

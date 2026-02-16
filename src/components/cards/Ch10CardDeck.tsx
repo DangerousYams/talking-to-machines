@@ -113,7 +113,7 @@ export default function Ch10CardDeck() {
       <ClosingCard
         summaryQuote="AI doesn't diminish your value. It clarifies it. The things only you can do become sharper, more visible, more important."
         nextChapterTitle="Build Something Real"
-        nextChapterHref="/ch11"
+        nextChapterHref="/ch11-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

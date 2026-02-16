@@ -113,7 +113,7 @@ export default function Ch3CardDeck() {
       <ClosingCard
         summaryQuote="Context engineering is the new prompt engineering. Writing a good prompt is step one — deciding what information to put in front of the AI is where the real leverage is."
         nextChapterTitle="The AI Landscape"
-        nextChapterHref="/ch4"
+        nextChapterHref="/ch4-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

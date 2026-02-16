@@ -101,7 +101,7 @@ export default function Ch6CardDeck() {
       <ClosingCard
         summaryQuote="An agent is only as good as its architecture. The smartest AI in the world, deployed without guardrails, is just a fast way to make expensive mistakes."
         nextChapterTitle="Mastering Claude Code"
-        nextChapterHref="/ch7"
+        nextChapterHref="/ch7-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

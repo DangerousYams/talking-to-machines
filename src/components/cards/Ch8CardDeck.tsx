@@ -92,7 +92,7 @@ export default function Ch8CardDeck() {
       <ClosingCard
         summaryQuote="The solution isn't a better prompt. It's a better process. Decompose, hand off, pack context wisely, and track what works."
         nextChapterTitle="When AI Gets It Wrong"
-        nextChapterHref="/ch9"
+        nextChapterHref="/ch9-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

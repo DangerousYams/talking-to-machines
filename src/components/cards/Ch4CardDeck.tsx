@@ -107,7 +107,7 @@ export default function Ch4CardDeck() {
       <ClosingCard
         summaryQuote="You don't need to master every tool. You need to know the terrain well enough to pick the right one when it matters."
         nextChapterTitle="Give It Tools"
-        nextChapterHref="/ch5"
+        nextChapterHref="/ch5-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

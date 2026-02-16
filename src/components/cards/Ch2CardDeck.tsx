@@ -113,7 +113,7 @@ export default function Ch2CardDeck() {
       <ClosingCard
         summaryQuote="You don't need to be an expert on the topic to get expert-level output. You need to be an expert at asking — and asking is a skill you can learn."
         nextChapterTitle="Context Engineering"
-        nextChapterHref="/ch3"
+        nextChapterHref="/ch3-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

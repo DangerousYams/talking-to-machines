@@ -107,7 +107,7 @@ export default function Ch7CardDeck() {
       <ClosingCard
         summaryQuote="The best coders in the AI era won't be the fastest typists. They'll be the clearest thinkers."
         nextChapterTitle="Orchestrating Complexity"
-        nextChapterHref="/ch8"
+        nextChapterHref="/ch8-cards"
         accentColor={ACCENT}
       />
     </CardDeck>

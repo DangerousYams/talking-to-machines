@@ -86,7 +86,7 @@ export default function Ch5CardDeck() {
       <ClosingCard
         summaryQuote="Tools are the building blocks. Now it's time to wire them together into something that can pursue goals on its own. It's time to build agents."
         nextChapterTitle="Building Agents"
-        nextChapterHref="/ch6"
+        nextChapterHref="/ch6-cards"
         accentColor={ACCENT}
       />
     </CardDeck>
