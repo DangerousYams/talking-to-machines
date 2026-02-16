@@ -35,7 +35,7 @@ export default function DotNav({ total, activeIndex, accentColor, onDotClick }: 
         position: 'fixed',
         ...(isMobile
           ? {
-              bottom: 12,
+              top: 50,
               left: '50%',
               transform: 'translateX(-50%)',
               flexDirection: 'row' as const,
