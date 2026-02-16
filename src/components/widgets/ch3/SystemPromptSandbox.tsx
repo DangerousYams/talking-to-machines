@@ -184,7 +184,7 @@ export default function SystemPromptSandbox() {
   };
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -195,7 +195,7 @@ export default function SystemPromptSandbox() {
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>System Prompt Sandbox</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Edit the system prompt, then test it with challenges</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Edit the system prompt, then test it with challenges</p>
           </div>
           {/* Live AI toggle */}
           <button
@@ -215,7 +215,7 @@ export default function SystemPromptSandbox() {
               transition: 'all 0.3s',
             }} />
             <span style={{
-              fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
               color: liveMode ? '#16C79A' : '#6B7280', letterSpacing: '0.04em',
             }}>
               {liveMode ? 'LIVE AI' : 'DEMO'}
@@ -224,14 +224,14 @@ export default function SystemPromptSandbox() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? 'auto' : 420 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: System prompt editor */}
         <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#7B61FF' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#7B61FF' }}>
               System Prompt
             </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
               {systemTokens} tokens
             </span>
           </div>
@@ -241,7 +241,7 @@ export default function SystemPromptSandbox() {
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               style={{
-                width: '100%', height: isMobile ? 'auto' : '100%', minHeight: isMobile ? 120 : 180, resize: 'vertical' as const,
+                width: '100%', height: isMobile ? 'auto' : '100%', minHeight: isMobile ? '12dvh' : '15dvh', resize: 'vertical' as const,
                 padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(123,97,255,0.15)',
                 background: 'rgba(123,97,255,0.03)', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.85rem' : '0.78rem',
                 lineHeight: 1.65, color: '#1A1A2E', outline: 'none',
@@ -251,7 +251,7 @@ export default function SystemPromptSandbox() {
 
           {/* Challenge buttons */}
           <div style={{ padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
               Test Challenges
             </span>
             <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 6 }}>
@@ -263,7 +263,7 @@ export default function SystemPromptSandbox() {
                   style={{
                     padding: isMobile ? '12px 10px' : '8px 10px', borderRadius: 8, border: `1px solid ${c.color}25`,
                     background: `${c.color}08`, cursor: isTyping ? 'default' : 'pointer',
-                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                     color: c.color, transition: 'all 0.2s', textAlign: 'left' as const,
                     opacity: isTyping ? 0.5 : 1, minHeight: 44,
                   }}
@@ -277,7 +277,7 @@ export default function SystemPromptSandbox() {
               style={{
                 marginTop: 8, padding: isMobile ? '12px 12px' : '6px 12px', borderRadius: 6, border: '1px solid rgba(26,26,46,0.08)',
                 background: 'transparent', cursor: 'pointer', fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem', color: '#6B7280', width: '100%', minHeight: 44,
+                fontSize: '0.75rem', color: '#6B7280', width: '100%', minHeight: 44,
               }}
             >
               Clear Chat
@@ -288,12 +288,12 @@ export default function SystemPromptSandbox() {
         {/* Right: Chat */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#0F3460' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#0F3460' }}>
               Chat Response
             </span>
           </div>
 
-          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? 280 : 320 }}>
+          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? '30dvh' : '35dvh' }}>
             {messages.length === 0 && !isTyping && !streamingText && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', fontStyle: 'italic', margin: 0, lineHeight: 1.7 }}>
                 {liveMode
@@ -314,7 +314,7 @@ export default function SystemPromptSandbox() {
                   border: msg.role === 'user' ? '1px solid rgba(26,26,46,0.08)' : '1px solid rgba(123,97,255,0.1)',
                 }}>
                   {msg.role === 'assistant' && (
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
                       AI
                     </span>
                   )}
@@ -334,7 +334,7 @@ export default function SystemPromptSandbox() {
                   maxWidth: '88%', padding: '10px 14px', borderRadius: 10,
                   background: 'rgba(123,97,255,0.05)', border: '1px solid rgba(123,97,255,0.1)',
                 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
                     AI
                   </span>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, margin: 0, color: '#1A1A2E' }}>

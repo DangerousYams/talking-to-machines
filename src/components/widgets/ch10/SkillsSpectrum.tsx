@@ -120,9 +120,9 @@ export default function SkillsSpectrum() {
         {/* Spectrum bar */}
         <div style={{ marginBottom: isMobile ? '1.25rem' : '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.55rem' : '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: ACCENT }}>AI handles</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.55rem' : '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623' }}>AI-assisted</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.55rem' : '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560' }}>Only humans</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: ACCENT }}>AI handles</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623' }}>AI-assisted</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560' }}>Only humans</span>
           </div>
 
           <div
@@ -173,7 +173,7 @@ export default function SkillsSpectrum() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: isMobile ? '0.65rem' : '0.55rem',
+                    fontSize: '0.75rem',
                     fontFamily: 'var(--font-mono)',
                     fontWeight: 700,
                     color: 'white',
@@ -197,7 +197,7 @@ export default function SkillsSpectrum() {
             textAlign: 'center',
             marginBottom: '1.5rem',
           }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 8 }}>
               Skill {currentIndex + 1} of {skills.length} {isMobile ? '\u2014 Tap the bar' : '\u2014 Click the bar to place it'}
             </div>
             <div style={{
@@ -261,7 +261,7 @@ export default function SkillsSpectrum() {
               borderRadius: 12,
               border: `1px solid ${ACCENT}20`,
             }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Your accuracy score</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Your accuracy score</div>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', marginTop: 8 }}>
                 {(score ?? 0) >= 75 ? "Excellent intuition! You have a strong sense of where AI helps most." :
@@ -289,7 +289,7 @@ export default function SkillsSpectrum() {
                     width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
                     background: getZoneColor(skill.expertPosition),
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.55rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'white',
+                    fontSize: '0.75rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'white',
                   }}>
                     {i + 1}
                   </div>
@@ -297,7 +297,7 @@ export default function SkillsSpectrum() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2, flexWrap: isMobile ? 'wrap' as const : 'nowrap' as const }}>
                       <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.88rem', fontWeight: 700, color: '#1A1A2E' }}>{skill.name}</span>
                       <span style={{
-                        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                         color: getZoneColor(skill.expertPosition),
                         background: `${getZoneColor(skill.expertPosition)}12`,
                         padding: '2px 8px', borderRadius: 4,

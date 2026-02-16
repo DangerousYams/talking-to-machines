@@ -142,7 +142,7 @@ export function MultiAgentBack() {
               border: `2px solid ${agent.color}`,
             }}>
               <span style={{ fontSize: '0.9rem' }}>{agent.emoji}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: agent.color }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: agent.color }}>
                 {agent.name}
               </span>
             </div>

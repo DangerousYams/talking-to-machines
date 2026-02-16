@@ -187,14 +187,14 @@ Rules:
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem 0.75rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #E94560, #E9456080)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Prompt Makeover</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle building blocks to transform a vague prompt</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle building blocks to transform a vague prompt</p>
           </div>
           {/* Mode toggle */}
           <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
@@ -202,7 +202,7 @@ Rules:
               onClick={() => handleModeSwitch('guided')}
               style={{
                 padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.04em', transition: 'all 0.25s',
                 background: mode === 'guided' ? '#1A1A2E' : 'transparent',
                 color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
@@ -214,7 +214,7 @@ Rules:
               onClick={() => handleModeSwitch('freeform')}
               style={{
                 padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.04em', transition: 'all 0.25s',
                 background: mode === 'freeform' ? '#16C79A' : 'transparent',
                 color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
@@ -228,14 +228,14 @@ Rules:
 
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? 'auto' : 400 }}>
         {/* Left: Prompt */}
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
 
           {mode === 'guided' ? (
             <>
               {/* Quality meter */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Prompt Quality</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Prompt Quality</span>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: qualityPercent > 60 ? '#16C79A' : qualityPercent > 20 ? '#F5A623' : '#6B7280' }}>{qualityPercent}%</span>
                 </div>
                 <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
@@ -310,7 +310,7 @@ Rules:
             /* Freeform mode: editable textarea + suggestion chips */
             <>
               <div style={{ marginBottom: 10 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Your Prompt</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Your Prompt</span>
               </div>
               <textarea
                 ref={textareaRef}
@@ -345,7 +345,7 @@ Rules:
                         display: 'flex', alignItems: 'center', gap: 5,
                         padding: '5px 10px', borderRadius: 100, border: '1px solid',
                         cursor: isDisabled ? 'default' : 'pointer',
-                        transition: 'all 0.2s', fontSize: '0.68rem', fontWeight: 600,
+                        transition: 'all 0.2s', fontSize: '0.75rem', fontWeight: 600,
                         fontFamily: 'var(--font-mono)', letterSpacing: '0.02em',
                         background: isUsed ? `${block.color}10` : isLoading ? `${block.color}08` : 'transparent',
                         borderColor: isUsed ? `${block.color}30` : isLoading ? block.color : 'rgba(26,26,46,0.1)',
@@ -355,7 +355,7 @@ Rules:
                     >
                       <span style={{
                         width: 16, height: 16, borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '0.55rem', fontWeight: 800, color: 'white',
+                        fontSize: '0.75rem', fontWeight: 800, color: 'white',
                         background: isUsed ? `${block.color}60` : !freeformText.trim() ? '#C0C0C0' : block.color,
                         animation: isLoading ? 'pulse 1s infinite' : 'none',
                       }}>
@@ -367,7 +367,7 @@ Rules:
                 })}
               </div>
               {!freeformText.trim() && (
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: '#B0B0B0', marginTop: 6, lineHeight: 1.4 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0', marginTop: 6, lineHeight: 1.4 }}>
                   Type a prompt first — then click blocks to generate tailored additions
                 </p>
               )}
@@ -388,12 +388,12 @@ Rules:
                   {isStreaming ? 'Generating...' : 'Send to Claude →'}
                 </button>
                 {liveError && (
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#E94560' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#E94560' }}>
                     {liveError}
                   </span>
                 )}
               </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', marginTop: 8, lineHeight: 1.5 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', marginTop: 8, lineHeight: 1.5 }}>
                 Building blocks generate AI-tailored additions &middot; Edit freely &middot; Enter to send
               </p>
             </>
@@ -401,21 +401,21 @@ Rules:
         </div>
 
         {/* Right: AI Response */}
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)' }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: '1rem' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: isTyping ? '#16C79A' : '#6B7280', transition: 'background 0.3s' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
               {isTyping ? 'Generating...' : 'AI Response'}
             </span>
             {mode === 'freeform' && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#16C79A', marginLeft: 'auto', background: 'rgba(22,199,154,0.08)', padding: '2px 8px', borderRadius: 100 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#16C79A', marginLeft: 'auto', background: 'rgba(22,199,154,0.08)', padding: '2px 8px', borderRadius: 100 }}>
                 LIVE
               </span>
             )}
           </div>
           <div ref={responseRef} style={{
             fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.84rem' : '0.88rem', lineHeight: 1.75,
-            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 300 : 380, overflowY: 'auto' as const,
+            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 'calc(40dvh)' : 380, overflowY: 'auto' as const,
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {mode === 'freeform' && !liveResponse && !isStreaming ? (

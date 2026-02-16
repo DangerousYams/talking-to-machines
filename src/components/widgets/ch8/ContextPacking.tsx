@@ -248,7 +248,7 @@ export default function ContextPacking() {
   const isOverflowing = totalPacked > MAX_TOKENS;
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -265,7 +265,7 @@ export default function ContextPacking() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Context Packing
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Pack the right context. Too little and the AI hallucinates. Too much and nothing fits.
             </p>
           </div>
@@ -309,11 +309,11 @@ export default function ContextPacking() {
       </div>
 
       {/* Main content: Suitcase + Documents */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? undefined : 380 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: The Suitcase */}
         <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
           <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: accent, marginBottom: 12,
           }}>
@@ -372,7 +372,7 @@ export default function ContextPacking() {
                   transition: 'all 0.2s',
                 }} onClick={() => toggleDocument(docId)}>
                   <span style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                     color: cat.text, padding: '1px 4px', borderRadius: 3,
                     background: `${cat.text}12`,
                   }}>
@@ -381,7 +381,7 @@ export default function ContextPacking() {
                   <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#1A1A2E', flex: 1 }}>
                     {doc.name}
                   </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
                     {doc.tokens.toLocaleString()}
                   </span>
                   {!hasRun && (
@@ -433,7 +433,7 @@ export default function ContextPacking() {
           {!hasRun ? (
             <>
               <div style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 12,
               }}>
@@ -459,7 +459,7 @@ export default function ContextPacking() {
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                         <span style={{
-                          fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+                          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                           color: cat.text, padding: '1px 4px', borderRadius: 3,
                           background: cat.bg,
                         }}>
@@ -472,7 +472,7 @@ export default function ContextPacking() {
                           {doc.name}
                         </span>
                         <span style={{
-                          fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600,
+                          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                           color: wouldOverflow ? '#E94560' : '#6B7280',
                         }}>
                           {doc.tokens.toLocaleString()}
@@ -493,7 +493,7 @@ export default function ContextPacking() {
           ) : result && (
             <>
               <div style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: result.quality === 'great' ? '#16C79A' : result.quality === 'okay' ? '#F5A623' : '#E94560',
                 marginBottom: 12,
@@ -541,7 +541,7 @@ export default function ContextPacking() {
                       : 'Poor output'}
                   </p>
                   <p style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                     color: '#6B7280', margin: 0,
                   }}>
                     {packed.length} document{packed.length !== 1 ? 's' : ''} packed,{' '}
@@ -570,7 +570,7 @@ export default function ContextPacking() {
                 background: 'rgba(15,52,96,0.04)', border: '1px solid rgba(15,52,96,0.08)',
               }}>
                 <p style={{
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                   color: accent, margin: '0 0 4px',
                 }}>
                   OPTIMAL SELECTION:

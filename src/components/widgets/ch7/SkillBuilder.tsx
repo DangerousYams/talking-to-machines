@@ -204,7 +204,7 @@ export default function SkillBuilder() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Skill Builder</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Write reusable instructions for Claude Code</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Write reusable instructions for Claude Code</p>
           </div>
         </div>
 
@@ -216,7 +216,7 @@ export default function SkillBuilder() {
               onClick={() => switchTab(i)}
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.65rem' : '0.7rem',
+                fontSize: '0.75rem',
                 whiteSpace: isMobile ? 'nowrap' as const : undefined,
                 fontWeight: activeTab === i ? 600 : 400,
                 color: activeTab === i ? '#7B61FF' : '#6B7280',
@@ -237,13 +237,13 @@ export default function SkillBuilder() {
       </div>
 
       {/* Two-panel layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? undefined : 420 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: CLAUDE.md Editor */}
         <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.65rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -254,7 +254,7 @@ export default function SkillBuilder() {
             {hasEdited && (
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
+                fontSize: '0.75rem',
                 color: '#F5A623',
                 background: 'rgba(245, 166, 35, 0.1)',
                 padding: '1px 6px',
@@ -271,7 +271,7 @@ export default function SkillBuilder() {
               width: '100%',
               height: isMobile ? 220 : 310,
               fontFamily: 'var(--font-mono)',
-              fontSize: isMobile ? '0.72rem' : '0.76rem',
+              fontSize: '0.76rem',
               lineHeight: 1.65,
               color: '#1A1A2E',
               background: '#FEFDFB',
@@ -296,7 +296,7 @@ export default function SkillBuilder() {
           <div style={{ marginTop: 12 }}>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.6rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
@@ -332,7 +332,7 @@ export default function SkillBuilder() {
                   </div>
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
+                    fontSize: '0.75rem',
                     color: validation[item.key] ? '#16C79A' : '#6B7280',
                     transition: 'color 0.3s ease',
                   }}>
@@ -348,7 +348,7 @@ export default function SkillBuilder() {
         <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', background: 'rgba(26,26,46,0.015)' }}>
           <span style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
@@ -369,7 +369,7 @@ export default function SkillBuilder() {
           }}>
             <span style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.6rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               color: '#7B61FF',
               letterSpacing: '0.08em',
@@ -395,12 +395,12 @@ export default function SkillBuilder() {
             background: '#1A1A2E',
             borderRadius: 8,
             padding: isMobile ? '10px 12px' : '14px 16px',
-            maxHeight: isMobile ? 260 : 340,
+            maxHeight: isMobile ? '35dvh' : '40dvh',
             overflowY: 'auto',
           }}>
             <div style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: isMobile ? '0.65rem' : '0.72rem',
+              fontSize: '0.75rem',
               lineHeight: 1.7,
               color: '#e2e8f0',
               whiteSpace: 'pre-wrap',

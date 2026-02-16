@@ -341,7 +341,7 @@ export default function HandoffChain() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               The Handoff Chain
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Three agents, one pipeline. Watch the research flow.
             </p>
           </div>
@@ -351,7 +351,7 @@ export default function HandoffChain() {
       {/* Topic selection */}
       <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
         <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
           letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF',
           display: 'block', marginBottom: 10,
         }}>
@@ -416,7 +416,7 @@ export default function HandoffChain() {
                     border: handoffs[i - 1] ? '1px solid rgba(123,97,255,0.15)' : '1px solid rgba(26,26,46,0.06)',
                   }}>
                     <span style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                       letterSpacing: '0.05em', color: handoffs[i - 1] ? '#7B61FF' : '#6B7280',
                     }}>
                       HANDOFF
@@ -460,7 +460,7 @@ export default function HandoffChain() {
                   </div>
                   <div style={{
                     display: 'flex', alignItems: 'center', gap: 6,
-                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                     color: statusColors[agent.status],
                   }}>
                     {agent.status === 'working' && (
@@ -478,8 +478,8 @@ export default function HandoffChain() {
                 {/* Agent output */}
                 {agent.text && (
                   <div style={{
-                    padding: isMobile ? '0.75rem' : '1rem', maxHeight: isMobile ? 160 : 200, overflowY: 'auto' as const,
-                    fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.68rem' : '0.75rem',
+                    padding: isMobile ? '0.75rem' : '1rem', maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                     lineHeight: 1.7, color: '#1A1A2E',
                     whiteSpace: 'pre-wrap' as const,
                   }}>

@@ -139,7 +139,7 @@ export default function SycophancyTest() {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 color: '#6B7280',
                 margin: 0,
                 letterSpacing: '0.05em',
@@ -228,7 +228,7 @@ export default function SycophancyTest() {
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.68rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase' as const,
@@ -251,7 +251,7 @@ export default function SycophancyTest() {
                 <p
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.6rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase' as const,
@@ -286,7 +286,7 @@ export default function SycophancyTest() {
                 <p
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.6rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase' as const,
@@ -340,7 +340,7 @@ export default function SycophancyTest() {
               <span
                 style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.68rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase' as const,
@@ -363,7 +363,7 @@ export default function SycophancyTest() {
                 <p
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.6rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase' as const,
@@ -398,7 +398,7 @@ export default function SycophancyTest() {
                 <p
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.6rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase' as const,
@@ -445,7 +445,7 @@ export default function SycophancyTest() {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
@@ -485,7 +485,7 @@ export default function SycophancyTest() {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
@@ -570,7 +570,7 @@ export default function SycophancyTest() {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,

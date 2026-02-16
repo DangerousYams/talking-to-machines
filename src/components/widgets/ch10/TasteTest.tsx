@@ -181,7 +181,7 @@ export default function TasteTest() {
           border: '1px solid rgba(26,26,46,0.06)',
           marginBottom: '1.25rem',
         }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Brief: </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Brief: </span>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: '#1A1A2E' }}>{domain.brief}</span>
         </div>
 
@@ -256,7 +256,7 @@ export default function TasteTest() {
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' as const }}>
                       <span style={{
-                        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                         color: getRankBadgeColor(v.expertRank),
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase' as const,
@@ -265,7 +265,7 @@ export default function TasteTest() {
                       </span>
                       {userRank === v.expertRank && (
                         <span style={{
-                          fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+                          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                           color: ACCENT, background: `${ACCENT}12`,
                           padding: '2px 6px', borderRadius: 4,
                         }}>
@@ -318,7 +318,7 @@ export default function TasteTest() {
               border: `1px solid ${ACCENT}20`,
               marginBottom: '1.25rem',
             }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Taste alignment</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Taste alignment</div>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', marginTop: 8 }}>
                 {(score ?? 0) >= 80 ? "Your taste is razor-sharp. You see what the experts see." :

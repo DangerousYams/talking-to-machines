@@ -133,7 +133,7 @@ export default function ShowcaseGallery() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Student Showcase</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Projects built by learners like you</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Projects built by learners like you</p>
           </div>
         </div>
       </div>
@@ -199,7 +199,7 @@ export default function ShowcaseGallery() {
                     display: 'flex', alignItems: 'center', gap: 6,
                     background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)',
                     padding: '3px 10px', borderRadius: 100,
-                    fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: '#1A1A2E',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: '#1A1A2E',
                   }}>
                     <span>{project.trackIcon}</span> {project.track}
                   </div>
@@ -255,7 +255,7 @@ export default function ShowcaseGallery() {
                       <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
                         {project.tools.map((tool, ti) => (
                           <span key={ti} style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 500,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
                             padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent,
                           }}>
                             {tool}

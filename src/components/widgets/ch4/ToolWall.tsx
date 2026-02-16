@@ -37,7 +37,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' as const }}>
         <span style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.06em',
           textTransform: 'uppercase' as const,
@@ -50,7 +50,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
         </span>
         <span style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
+          fontSize: '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.06em',
           textTransform: 'uppercase' as const,
@@ -113,7 +113,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
       }}>
         <span style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
+          fontSize: '0.75rem',
           color: 'rgba(26,26,46,0.25)',
           letterSpacing: '0.05em',
         }}>
@@ -223,7 +223,7 @@ export default function ToolWall() {
                   border: `1px solid ${isActive ? color + '40' : 'rgba(26,26,46,0.08)'}`,
                   background: isActive ? color + '12' : 'transparent',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
                   color: isActive ? color : '#6B7280',
@@ -279,7 +279,7 @@ export default function ToolWall() {
       }}>
         <p style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.65rem',
+          fontSize: '0.75rem',
           color: 'rgba(26,26,46,0.3)',
           letterSpacing: '0.05em',
           margin: 0,

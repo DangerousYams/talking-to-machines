@@ -227,16 +227,16 @@ export default function PromptLaboratory() {
   const qualityColor = qualityPercent >= 80 ? '#16C79A' : qualityPercent >= 50 ? '#0EA5E9' : qualityPercent >= 25 ? '#F5A623' : '#6B7280';
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column' as const, height: '100%' }}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '1rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #0F3460, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Prompt Laboratory</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle technique blocks to build a sophisticated prompt</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle technique blocks to build a sophisticated prompt</p>
           </div>
           {/* Mode toggle */}
           <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
@@ -244,7 +244,7 @@ export default function PromptLaboratory() {
               onClick={() => handleModeSwitch('guided')}
               style={{
                 padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.04em', transition: 'all 0.25s',
                 background: mode === 'guided' ? '#1A1A2E' : 'transparent',
                 color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
@@ -256,7 +256,7 @@ export default function PromptLaboratory() {
               onClick={() => handleModeSwitch('freeform')}
               style={{
                 padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.04em', transition: 'all 0.25s',
                 background: mode === 'freeform' ? '#16C79A' : 'transparent',
                 color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
@@ -275,7 +275,7 @@ export default function PromptLaboratory() {
               onClick={() => { setTemplate(t.key); setActiveBlocks(new Set(['task'])); abort(); if (mode === 'freeform') setFreeformText(''); }}
               style={{
                 padding: isMobile ? '0.5rem 0.65rem' : '0.5rem 1rem', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.62rem' : '0.7rem', fontWeight: template === t.key ? 700 : 500,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: template === t.key ? 700 : 500,
                 background: template === t.key ? 'rgba(15,52,96,0.06)' : 'transparent',
                 color: template === t.key ? '#0F3460' : '#6B7280',
                 borderRadius: '8px 8px 0 0', transition: 'all 0.25s',
@@ -289,7 +289,7 @@ export default function PromptLaboratory() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? 'auto' : 440 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: Block toggles or freeform editor */}
         <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column' as const, gap: '1rem' }}>
 
@@ -298,7 +298,7 @@ export default function PromptLaboratory() {
               {/* Quality meter */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Sophistication</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Sophistication</span>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: qualityColor }}>{qualityLabel}</span>
                 </div>
                 <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
@@ -346,7 +346,7 @@ export default function PromptLaboratory() {
                         </span>
                         {isActive && (
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: '#6B7280',
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280',
                             display: 'block', marginTop: 2, lineHeight: 1.4,
                             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const,
                           }}>
@@ -361,7 +361,7 @@ export default function PromptLaboratory() {
 
               {/* Footer: count */}
               <div style={{ marginTop: 'auto', paddingTop: 8 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: '#6B7280', letterSpacing: '0.05em' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.05em' }}>
                   {activeCount} of {blocks.length} techniques active
                 </span>
               </div>
@@ -370,7 +370,7 @@ export default function PromptLaboratory() {
             /* Freeform mode: editable textarea */
             <>
               <div>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Your Prompt</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Your Prompt</span>
               </div>
               <textarea
                 value={freeformText}
@@ -378,7 +378,7 @@ export default function PromptLaboratory() {
                 onKeyDown={handleKeyDown}
                 placeholder="Type your prompt here — or switch to Guided mode to build one with technique blocks, then come back to edit and send it..."
                 style={{
-                  width: '100%', flex: 1, minHeight: 200, padding: '1rem 1.25rem',
+                  width: '100%', flex: 1, minHeight: 0, padding: '1rem 1.25rem',
                   fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.8rem' : '0.82rem', lineHeight: 1.7,
                   background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 10,
                   resize: 'vertical' as const, outline: 'none', color: '#1A1A2E',
@@ -403,12 +403,12 @@ export default function PromptLaboratory() {
                   {isStreaming ? 'Running...' : 'Send to Claude \u2192'}
                 </button>
                 {liveError && (
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#E94560' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#E94560' }}>
                     {liveError}
                   </span>
                 )}
               </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', marginTop: -4, lineHeight: 1.5 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', marginTop: -4, lineHeight: 1.5 }}>
                 {isMobile ? 'Tap Send' : 'Cmd+Enter to send'} &middot; Try building in Guided mode first, then editing here
               </p>
             </>
@@ -419,18 +419,18 @@ export default function PromptLaboratory() {
         <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)', display: 'flex', flexDirection: 'column' as const }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: '1rem' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: isTyping ? '#16C79A' : '#6B7280', transition: 'background 0.3s' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
               {isTyping ? 'Generating...' : 'AI Response'}
             </span>
             {mode === 'freeform' && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#16C79A', marginLeft: 'auto', background: 'rgba(22,199,154,0.08)', padding: '2px 8px', borderRadius: 100 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#16C79A', marginLeft: 'auto', background: 'rgba(22,199,154,0.08)', padding: '2px 8px', borderRadius: 100 }}>
                 LIVE
               </span>
             )}
           </div>
           <div ref={responseRef} style={{
             fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75,
-            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: isMobile ? 280 : 380,
+            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: isMobile ? '35dvh' : '40dvh',
           }}>
             {mode === 'freeform' && !liveResponse && !isStreaming ? (
               <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>Write a prompt and hit send to see a real AI response...</p>
@@ -457,6 +457,7 @@ export default function PromptLaboratory() {
       <div style={{
         padding: isMobile ? '1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: 'linear-gradient(135deg, rgba(15,52,96,0.04), rgba(14,165,233,0.04))',
+        flexShrink: 0,
       }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>
           <span style={{ fontWeight: 600, color: '#0F3460', fontStyle: 'normal' }}>Try it: </span>

@@ -49,7 +49,7 @@ export default function ContextWindowViz() {
   const totalVisibleTokens = SYSTEM_TOKENS + visibleMessages.reduce((s, m) => s + m.tokens, 0);
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -61,22 +61,22 @@ export default function ContextWindowViz() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>The Context Window</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Type messages and watch the window fill up</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Type messages and watch the window fill up</p>
           </div>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '280px 1fr', minHeight: isMobile ? 'auto' : 420 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '280px 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: The visual container */}
         <div style={{ padding: isMobile ? '1rem' : '1.5rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF', marginBottom: 12 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF', marginBottom: 12 }}>
             Context Window
           </span>
 
           {/* The glass container */}
           <div ref={containerRef} style={{
-            width: '100%', maxWidth: isMobile ? '100%' : 220, flex: isMobile ? 'none' : 1,
-            minHeight: isMobile ? 240 : 'auto', position: 'relative',
+            width: '100%', maxWidth: isMobile ? '100%' : 220, flex: 1,
+            minHeight: 0, position: 'relative',
             border: '2px solid rgba(26,26,46,0.12)', borderRadius: 12,
             background: 'linear-gradient(180deg, rgba(123,97,255,0.02) 0%, rgba(26,26,46,0.02) 100%)',
             display: 'flex', flexDirection: 'column', overflow: 'hidden',
@@ -87,10 +87,10 @@ export default function ContextWindowViz() {
               borderBottom: '1px solid rgba(123,97,255,0.15)', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>System</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} tok</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>System</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} tok</span>
               </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#7B61FF', margin: 0, opacity: 0.8, lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#7B61FF', margin: 0, opacity: 0.8, lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>
                 {SYSTEM_PROMPT}
               </p>
             </div>
@@ -102,7 +102,7 @@ export default function ContextWindowViz() {
                 <div style={{ position: 'absolute', top: 0, left: -3, width: 7, height: 1, background: 'rgba(123,97,255,0.3)' }} />
                 <div style={{ position: 'absolute', bottom: 0, left: -3, width: 7, height: 1, background: 'rgba(123,97,255,0.3)' }} />
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', color: '#7B61FF', opacity: 0.6, writingMode: 'vertical-rl' as const, textOrientation: 'mixed' as const, letterSpacing: '0.05em' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', opacity: 0.6, writingMode: 'vertical-rl' as const, textOrientation: 'mixed' as const, letterSpacing: '0.05em' }}>
                 AI SEES THIS
               </span>
             </div>
@@ -114,7 +114,7 @@ export default function ContextWindowViz() {
                 padding: '6px 12px', background: 'rgba(26,26,46,0.03)',
                 borderBottom: '1px dashed rgba(26,26,46,0.08)', textAlign: 'center' as const,
               }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#6B7280', fontStyle: 'italic' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
                   {droppedCount} message{droppedCount > 1 ? 's' : ''} dropped
                 </span>
               </div>
@@ -124,7 +124,7 @@ export default function ContextWindowViz() {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '6px' }}>
               {visibleMessages.length === 0 && (
                 <div style={{ textAlign: 'center' as const, padding: '2rem 1rem', opacity: 0.3 }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', margin: 0 }}>Empty — type a message below</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0 }}>Empty — type a message below</p>
                 </div>
               )}
               {visibleMessages.map((msg, i) => {
@@ -141,13 +141,13 @@ export default function ContextWindowViz() {
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <p style={{
-                        fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: '#1A1A2E',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#1A1A2E',
                         margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const,
                         maxWidth: isMobile ? '80%' : 130, lineHeight: 1.4,
                       }}>
                         {msg.text}
                       </p>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', color: '#6B7280', flexShrink: 0, marginLeft: 6 }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', flexShrink: 0, marginLeft: 6 }}>
                         {msg.tokens}t
                       </span>
                     </div>
@@ -159,11 +159,11 @@ export default function ContextWindowViz() {
 
           {/* Token counter */}
           <div style={{ marginTop: 12, textAlign: 'center' as const }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
               Visible: <strong style={{ color: '#7B61FF' }}>{totalVisibleTokens}</strong> tokens
             </span>
             {messages.length > 0 && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', display: 'block', marginTop: 2 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', display: 'block', marginTop: 2 }}>
                 Total sent: {SYSTEM_TOKENS + messages.reduce((s, m) => s + m.tokens, 0)} tokens
               </span>
             )}
@@ -173,8 +173,8 @@ export default function ContextWindowViz() {
         {/* Right: Chat input and message list */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Messages log */}
-          <div style={{ flex: 1, padding: isMobile ? '1rem' : '1.25rem 1.5rem', overflowY: 'auto' as const, maxHeight: isMobile ? 240 : 340 }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 12 }}>
+          <div style={{ flex: 1, padding: isMobile ? '1rem' : '1.25rem 1.5rem', overflowY: 'auto' as const, maxHeight: isMobile ? '30dvh' : '35dvh' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 12 }}>
               Your Messages
             </span>
             {messages.length === 0 && (
@@ -200,9 +200,9 @@ export default function ContextWindowViz() {
                       {msg.text}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, marginLeft: 12 }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#6B7280' }}>{msg.tokens} tok</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{msg.tokens} tok</span>
                       {isDropped && (
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', color: '#E94560', fontWeight: 600 }}>GONE</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#E94560', fontWeight: 600 }}>GONE</span>
                       )}
                     </div>
                   </div>

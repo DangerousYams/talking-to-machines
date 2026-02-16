@@ -138,22 +138,22 @@ export function SpectrumBack() {
 
       <div style={{ marginBottom: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>VAGUE</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>VAGUE</span>
           <div style={{ flex: 1, height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%)' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>PRECISE</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>PRECISE</span>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', textAlign: 'center' as const }}>
           <div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--color-subtle)', margin: '0 0 2px' }}>"help me"</p>
-            <p style={{ fontSize: '0.65rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>generic</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>generic</p>
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#F5A623', margin: '0 0 2px' }}>"write about X"</p>
-            <p style={{ fontSize: '0.65rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>unfocused</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>unfocused</p>
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: ACCENT, fontWeight: 600, margin: '0 0 2px' }}>"R + T + F + C + E"</p>
-            <p style={{ fontSize: '0.65rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>targeted</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-subtle)', opacity: 0.5, margin: 0 }}>targeted</p>
           </div>
         </div>
       </div>

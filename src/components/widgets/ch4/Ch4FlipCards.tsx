@@ -131,7 +131,7 @@ export function PipelinesBack() {
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: step.color }}>
                 {step.tool}
               </span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.6rem', color: 'var(--color-subtle)' }}>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: 'var(--color-subtle)' }}>
                 {step.role}
               </span>
             </div>

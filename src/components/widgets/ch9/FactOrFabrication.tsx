@@ -221,7 +221,7 @@ export default function FactOrFabrication() {
             <p
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 color: '#6B7280',
                 margin: 0,
                 letterSpacing: '0.05em',
@@ -272,7 +272,7 @@ export default function FactOrFabrication() {
         <div
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase' as const,
@@ -315,7 +315,7 @@ export default function FactOrFabrication() {
           <div
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.6rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,

@@ -208,7 +208,7 @@ export default function FailureModesLab() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Failure Modes Lab
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Diagnose buggy agents. Apply the right fix.
             </p>
           </div>
@@ -250,7 +250,7 @@ export default function FailureModesLab() {
             >
               <span>{s.icon} {s.title}</span>
               {completed && (
-                <span style={{ marginLeft: 6, fontSize: '0.7rem', color: '#16C79A' }}>\u2713</span>
+                <span style={{ marginLeft: 6, fontSize: '0.75rem', color: '#16C79A' }}>\u2713</span>
               )}
             </button>
           );
@@ -266,7 +266,7 @@ export default function FailureModesLab() {
           marginBottom: 20,
         }}>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
             display: 'block', marginBottom: 4,
           }}>
@@ -279,7 +279,7 @@ export default function FailureModesLab() {
 
         {/* Execution log */}
         <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
           letterSpacing: '0.08em', textTransform: 'uppercase' as const,
           color: phase === 'fixed' ? '#16C79A' : '#6B7280',
           display: 'block', marginBottom: 10,
@@ -289,18 +289,18 @@ export default function FailureModesLab() {
 
         <div style={{
           background: '#1A1A2E', borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem',
-          marginBottom: 20, maxHeight: 280, overflowY: 'auto' as const,
+          marginBottom: 20, maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
         }}>
           {(phase === 'fixed' ? scenario.fixedLog : scenario.log).map((entry, i) => (
             <div key={i} style={{
               padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 0.75rem', marginBottom: 4, borderRadius: 6,
               background: entry.isError ? 'rgba(233,69,96,0.12)' : 'rgba(255,255,255,0.03)',
-              fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.68rem' : '0.75rem', lineHeight: 1.6,
+              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                <span style={{ color: '#6B7280', fontSize: '0.65rem' }}>Step {entry.step}</span>
+                <span style={{ color: '#6B7280', fontSize: '0.75rem' }}>Step {entry.step}</span>
                 <span style={{
-                  fontSize: '0.6rem', padding: '1px 6px', borderRadius: 4,
+                  fontSize: '0.75rem', padding: '1px 6px', borderRadius: 4,
                   background: entry.isError ? 'rgba(233,69,96,0.2)' : 'rgba(123,97,255,0.15)',
                   color: entry.isError ? '#E94560' : '#7B61FF',
                 }}>
@@ -310,7 +310,7 @@ export default function FailureModesLab() {
               <div style={{ color: entry.isError ? '#E94560' : '#e2e8f0' }}>
                 {entry.action}
               </div>
-              <div style={{ color: entry.isError ? 'rgba(233,69,96,0.7)' : 'rgba(226,232,240,0.5)', fontSize: '0.7rem', marginTop: 2 }}>
+              <div style={{ color: entry.isError ? 'rgba(233,69,96,0.7)' : 'rgba(226,232,240,0.5)', fontSize: '0.75rem', marginTop: 2 }}>
                 \u2192 {entry.result}
               </div>
             </div>

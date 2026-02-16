@@ -99,18 +99,18 @@ export default function GuessThePrompt() {
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' as const, gap: isMobile ? '0.5rem' : 0 }}>
+      <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' as const, gap: isMobile ? '0.5rem' : 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #7B61FF, #7B61FF80)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Guess the Prompt</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Which prompt produced this output?</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Which prompt produced this output?</p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
             {round + 1} / {totalRounds}
           </span>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, color: '#16C79A' }}>
@@ -119,16 +119,16 @@ export default function GuessThePrompt() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem' }}>
+      <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem' }}>
         {/* Output display */}
         <div style={{ marginBottom: '1.5rem' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF', display: 'block', marginBottom: 8 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF', display: 'block', marginBottom: 8 }}>
             AI Output — {challenge.outputType}
           </span>
           <div style={{
             background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
             padding: isMobile ? '1rem' : '1.25rem 1.5rem', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.75rem' : '0.8rem', lineHeight: 1.7,
-            whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 160 : 200, overflowY: 'auto' as const, color: '#1A1A2E',
+            whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '30dvh' : '35dvh', overflowY: 'auto' as const, color: '#1A1A2E',
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {challenge.output}
@@ -166,7 +166,7 @@ export default function GuessThePrompt() {
                 onMouseLeave={(e) => !showResult && (e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)')}
               >
                 <span style={{
-                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                   width: 22, height: 22, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                   background: showResult && isThisCorrect ? '#16C79A' : showResult && isThisSelected ? '#E94560' : 'rgba(26,26,46,0.06)',
                   color: showResult && (isThisCorrect || isThisSelected) ? 'white' : '#6B7280',

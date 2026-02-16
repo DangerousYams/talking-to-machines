@@ -214,7 +214,7 @@ export default function RefactorRace() {
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Refactor Race</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>You vs. Claude Code -- clean up this messy function</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>You vs. Claude Code -- clean up this messy function</p>
           </div>
           {/* Timer */}
           {phase !== 'ready' && (
@@ -293,13 +293,13 @@ export default function RefactorRace() {
 
       {phase === 'racing' && (
         <div>
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? undefined : 400 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
             {/* Left: User's turn */}
             <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -312,7 +312,7 @@ export default function RefactorRace() {
                     onClick={userDone}
                     style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.7rem',
+                      fontSize: '0.75rem',
                       fontWeight: 600,
                       color: '#16C79A',
                       background: 'rgba(22, 199, 154, 0.08)',
@@ -335,7 +335,7 @@ export default function RefactorRace() {
                 ) : (
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
+                    fontSize: '0.75rem',
                     color: '#16C79A',
                     fontWeight: 600,
                   }}>
@@ -381,7 +381,7 @@ export default function RefactorRace() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -400,7 +400,7 @@ export default function RefactorRace() {
                   }} />
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
+                    fontSize: '0.75rem',
                     color: aiProgress < 100 ? '#7B61FF' : '#16C79A',
                     fontWeight: 600,
                   }}>
@@ -448,7 +448,7 @@ export default function RefactorRace() {
             <div>
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
@@ -464,10 +464,10 @@ export default function RefactorRace() {
                 borderRadius: 8,
                 padding: isMobile ? '10px 12px' : '12px 14px',
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.65rem' : '0.72rem',
+                fontSize: '0.75rem',
                 lineHeight: 1.6,
                 whiteSpace: 'pre-wrap',
-                maxHeight: isMobile ? 180 : 220,
+                maxHeight: isMobile ? '35dvh' : '40dvh',
                 overflowY: 'auto',
                 color: '#1A1A2E',
               }}>
@@ -477,7 +477,7 @@ export default function RefactorRace() {
             <div>
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
@@ -493,10 +493,10 @@ export default function RefactorRace() {
                 borderRadius: 8,
                 padding: isMobile ? '10px 12px' : '12px 14px',
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.65rem' : '0.72rem',
+                fontSize: '0.75rem',
                 lineHeight: 1.6,
                 whiteSpace: 'pre-wrap',
-                maxHeight: isMobile ? 180 : 220,
+                maxHeight: isMobile ? '35dvh' : '40dvh',
                 overflowY: 'auto',
                 color: '#e2e8f0',
               }}>
@@ -526,7 +526,7 @@ export default function RefactorRace() {
               }}>
                 <div style={{
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.6rem',
+                  fontSize: '0.75rem',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -537,13 +537,13 @@ export default function RefactorRace() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
                   <div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#0F3460', fontWeight: 600 }}>You</div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#6B7280' }}>{metric.user}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#0F3460', fontWeight: 600 }}>You</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>{metric.user}</div>
                   </div>
                   <div style={{ width: 1, background: 'rgba(26,26,46,0.08)' }} />
                   <div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', fontWeight: 600 }}>AI</div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#6B7280' }}>{metric.ai}</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#7B61FF', fontWeight: 600 }}>AI</div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>{metric.ai}</div>
                   </div>
                 </div>
               </div>

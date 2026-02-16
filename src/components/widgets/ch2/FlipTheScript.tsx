@@ -254,7 +254,7 @@ export default function FlipTheScript() {
           </div>
           <div style={{ flex: 1 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Flip the Script</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>What happens when the AI interviews you first?</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>What happens when the AI interviews you first?</p>
           </div>
           {/* Mode toggle */}
           {phase === 'choose' && (
@@ -263,7 +263,7 @@ export default function FlipTheScript() {
                 onClick={() => setMode('guided')}
                 style={{
                   padding: '5px 10px', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                   letterSpacing: '0.04em', transition: 'all 0.25s',
                   background: mode === 'guided' ? '#1A1A2E' : 'transparent',
                   color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
@@ -275,7 +275,7 @@ export default function FlipTheScript() {
                 onClick={() => setMode('freeform')}
                 style={{
                   padding: '5px 10px', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                   letterSpacing: '0.04em', transition: 'all 0.25s',
                   background: mode === 'freeform' ? '#16C79A' : 'transparent',
                   color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
@@ -333,7 +333,7 @@ export default function FlipTheScript() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '1rem 0 0.5rem' }}>
                 <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', letterSpacing: '0.06em' }}>OR PICK A PRESET</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.06em' }}>OR PICK A PRESET</span>
                 <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
               </div>
             </div>
@@ -377,7 +377,7 @@ export default function FlipTheScript() {
           </div>
 
           {/* Chat history */}
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: isMobile ? 200 : 280, overflowY: 'auto' as const }}>
+          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const }}>
             {liveMode ? (
               // Live mode: show actual message history
               liveMessages.slice(1).map((msg, i) => (
@@ -387,7 +387,7 @@ export default function FlipTheScript() {
                       <div style={{
                         width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'white', fontWeight: 700,
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
                       }}>AI</div>
                       <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
                         {msg.text}
@@ -413,7 +413,7 @@ export default function FlipTheScript() {
                     <div style={{
                       width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'white', fontWeight: 700,
+                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
                     }}>AI</div>
                     <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
                       {scenario!.questions[i]}
@@ -439,7 +439,7 @@ export default function FlipTheScript() {
               <div style={{
                 width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'white', fontWeight: 700,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
               }}>AI</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
                 {liveResponse}
@@ -451,7 +451,7 @@ export default function FlipTheScript() {
               <div style={{
                 width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'white', fontWeight: 700,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
               }}>AI</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontWeight: 600, color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
                 {scenario!.questions[questionIndex]}
@@ -494,7 +494,7 @@ export default function FlipTheScript() {
             </div>
           )}
 
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: '#6B7280', marginTop: 8, textAlign: 'center' as const }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', marginTop: 8, textAlign: 'center' as const }}>
             Question {answers.length + 1} of 5 {!liveMode && '\u2014 press Enter to submit'}
           </p>
         </div>
@@ -506,12 +506,12 @@ export default function FlipTheScript() {
           {!showComparison ? (
             <>
               <div style={{ marginBottom: '1.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
                   Your personalized result
                 </span>
                 <div style={{
                   fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75, color: '#1A1A2E',
-                  whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 280 : 350, overflowY: 'auto' as const,
+                  whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
                 }}>
                   {(() => {
                     const text = liveMode
@@ -557,20 +557,20 @@ export default function FlipTheScript() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
                       Vague prompt
                     </span>
                   </div>
                   <div style={{
                     background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)',
                     borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', marginBottom: 8,
-                    fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.75rem', color: '#6B7280', fontStyle: 'italic',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic',
                   }}>
                     "{scenario ? scenario.vaguePrompt : (liveMessages[0]?.text || customGoal)}"
                   </div>
                   <div style={{
                     fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.8rem', lineHeight: 1.65, color: '#1A1A2E',
-                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 180 : 250, overflowY: 'auto' as const, opacity: 0.8,
+                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const, opacity: 0.8,
                   }}>
                     {scenario ? scenario.vagueResponse : "Without clarifying questions, the AI would have given you a generic checklist — accurate but impersonal. The kind of advice you could find on any website. No details about your situation, your constraints, or what actually matters to you."}
                   </div>
@@ -580,20 +580,20 @@ export default function FlipTheScript() {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
                       After 5 questions
                     </span>
                   </div>
                   <div style={{
                     background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)',
                     borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', marginBottom: 8,
-                    fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.75rem', color: '#6B7280', fontStyle: 'italic',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic',
                   }}>
                     "Same goal + your 5 answers"
                   </div>
                   <div style={{
                     fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.8rem', lineHeight: 1.65, color: '#1A1A2E',
-                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 180 : 250, overflowY: 'auto' as const,
+                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const,
                   }}>
                     {(() => {
                       const text = liveMode

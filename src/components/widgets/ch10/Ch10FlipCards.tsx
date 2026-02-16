@@ -32,9 +32,9 @@ export function SpectrumBack() {
         background: `${ACCENT}08`, borderRadius: '8px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>AI HANDLES</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>AI HANDLES</span>
           <div style={{ flex: 1, height: '3px', borderRadius: '2px', background: `linear-gradient(90deg, ${ACCENT} 0%, #F5A623 50%, #E94560 100%)` }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>FULLY HUMAN</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--color-subtle)', opacity: 0.6 }}>FULLY HUMAN</span>
         </div>
         <p style={{ textAlign: 'center' as const, fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--color-subtle)', margin: 0 }}>
           The most interesting ones fall in the middle — AI-assisted
@@ -182,11 +182,11 @@ export function FirstPrinciplesBack() {
         </p>
         <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
           <div style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', background: '#E9456010', border: '1px solid #E9456030' }}>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#E94560', margin: '0 0 0.25rem' }}>AI says:</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: '#E94560', margin: '0 0 0.25rem' }}>AI says:</p>
             <p style={{ fontSize: '0.8rem', margin: 0 }}>"2x more water" <span style={{ color: '#E94560', fontWeight: 600 }}>(wrong)</span></p>
           </div>
           <div style={{ flex: 1, padding: '0.5rem', borderRadius: '6px', background: `${ACCENT}10`, border: `1px solid ${ACCENT}30` }}>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: ACCENT, margin: '0 0 0.25rem' }}>Physics says:</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: ACCENT, margin: '0 0 0.25rem' }}>Physics says:</p>
             <p style={{ fontSize: '0.8rem', margin: 0 }}>"16x more water" <span style={{ color: ACCENT, fontWeight: 600 }}>(correct)</span></p>
           </div>
         </div>

@@ -255,7 +255,7 @@ export default function HeadToHead() {
         }}>
           <span style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.6rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             letterSpacing: '0.08em',
             textTransform: 'uppercase' as const,
@@ -304,7 +304,7 @@ export default function HeadToHead() {
                   border: `1px solid ${userRating?.a ? category.color : 'rgba(26,26,46,0.1)'}`,
                   background: userRating?.a ? `${category.color}12` : 'transparent',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.6rem',
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   color: userRating?.a ? category.color : '#6B7280',
                   cursor: 'pointer',
@@ -333,7 +333,7 @@ export default function HeadToHead() {
                 <div key={metric} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.55rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     color: '#6B7280',
                     width: 48,
@@ -374,7 +374,7 @@ export default function HeadToHead() {
                   border: `1px solid ${userRating?.b ? category.color : 'rgba(26,26,46,0.1)'}`,
                   background: userRating?.b ? `${category.color}12` : 'transparent',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '0.6rem',
+                  fontSize: '0.75rem',
                   fontWeight: 700,
                   color: userRating?.b ? category.color : '#6B7280',
                   cursor: 'pointer',
@@ -403,7 +403,7 @@ export default function HeadToHead() {
                 <div key={metric} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.55rem',
+                    fontSize: '0.75rem',
                     fontWeight: 600,
                     color: '#6B7280',
                     width: 48,

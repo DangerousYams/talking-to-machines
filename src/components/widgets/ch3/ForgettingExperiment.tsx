@@ -68,7 +68,7 @@ export default function ForgettingExperiment() {
   const summaryVisible = summaryConvo.slice(0, Math.min(step + 1, summaryConvo.length));
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -79,7 +79,7 @@ export default function ForgettingExperiment() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>The Forgetting Experiment</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Same conversation, two approaches. Click through to see what happens.</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Same conversation, two approaches. Click through to see what happens.</p>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@ export default function ForgettingExperiment() {
       {/* Progress bar */}
       <div style={{ padding: isMobile ? '0.75rem 1rem' : '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', fontWeight: 600, letterSpacing: '0.05em', flexShrink: 0 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontWeight: 600, letterSpacing: '0.05em', flexShrink: 0 }}>
             MESSAGE {step + 1} / {maxStep + 1}
           </span>
           <div style={{ flex: 1, height: 4, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
@@ -101,15 +101,15 @@ export default function ForgettingExperiment() {
       </div>
 
       {/* Split-screen chats */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? 'auto' : 380 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: Standard Chat */}
         <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(233,69,96,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
               Standard Chat
             </span>
           </div>
-          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? 240 : 320 }}>
+          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? '30dvh' : '35dvh' }}>
             {standardVisible.map((msg, i) => {
               const isFailure = isForgettingMoment && i === standardVisible.length - 1 && msg.role === 'assistant';
               return (
@@ -139,11 +139,11 @@ export default function ForgettingExperiment() {
         {/* Right: With Summary */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(22,199,154,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
               With Context Summary
             </span>
           </div>
-          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? 240 : 320 }}>
+          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? '30dvh' : '35dvh' }}>
             {summaryVisible.map((msg, i) => {
               const isSuccess = isForgettingMoment && i === summaryVisible.length - 1 && msg.role === 'assistant';
               const isSummary = msg.text.includes('CONTEXT SUMMARY');
@@ -169,13 +169,13 @@ export default function ForgettingExperiment() {
                         : '1px solid transparent',
                   }}>
                     {isSummary && (
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>
                         CONTEXT SUMMARY INJECTED
                       </span>
                     )}
                     <p style={{
                       fontFamily: isSummary ? 'var(--font-mono)' : 'var(--font-body)',
-                      fontSize: isSummary ? '0.72rem' : '0.78rem',
+                      fontSize: isSummary ? '0.75rem' : '0.78rem',
                       lineHeight: 1.5, margin: 0, whiteSpace: 'pre-line' as const,
                       color: isSuccess ? '#16C79A' : '#1A1A2E',
                       fontWeight: isSuccess ? 600 : 400,

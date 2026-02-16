@@ -44,7 +44,7 @@ function TaskBubble({ task, index, isMobile }: { task: CareerTask; index: number
             {task.name}
           </span>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             color, background: `${color}12`, padding: '2px 6px', borderRadius: 4,
             letterSpacing: '0.05em', textTransform: 'uppercase' as const, flexShrink: 0,
             whiteSpace: 'nowrap' as const,
@@ -227,7 +227,7 @@ export default function JobTransformer() {
                 </svg>
                 <div style={{
                   position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: ACCENT,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: ACCENT,
                 }}>
                   {getAiAssistedPercent(career)}%
                 </div>
@@ -243,7 +243,7 @@ export default function JobTransformer() {
               ].map(item => (
                 <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{ width: 10, height: 10, borderRadius: 3, background: item.color, flexShrink: 0 }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', letterSpacing: '0.04em' }}>{item.label}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.04em' }}>{item.label}</span>
                 </div>
               ))}
             </div>

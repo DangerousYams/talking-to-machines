@@ -132,21 +132,21 @@ export default function PromptRoast() {
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #E94560, #F5A623)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>
             <span role="img" aria-label="fire">&#128293;</span>
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Prompt Roast</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Paste any prompt. Get brutally honest feedback.</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Paste any prompt. Get brutally honest feedback.</p>
           </div>
         </div>
       </div>
 
       {/* Input phase */}
       {phase === 'input' && (
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem' }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem' }}>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
@@ -154,7 +154,7 @@ export default function PromptRoast() {
             placeholder="Paste your prompt here... e.g. &quot;write me a story&quot;"
             style={{
               width: '100%',
-              minHeight: 140,
+              minHeight: isMobile ? 100 : 140,
               padding: '1rem 1.25rem',
               fontFamily: 'var(--font-mono)',
               fontSize: isMobile ? '0.82rem' : '0.85rem',
@@ -183,7 +183,7 @@ export default function PromptRoast() {
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>
                 Daily roasts used up!
               </p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
                 Unlock full access for unlimited roasts + all chapters
               </p>
             </div>
@@ -220,7 +220,7 @@ export default function PromptRoast() {
             >
               Roast My Prompt
             </button>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#B0B0B0' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>
               {isMobile ? 'Tap to roast' : 'Cmd+Enter to roast'}
             </span>
           </div>
@@ -229,10 +229,10 @@ export default function PromptRoast() {
 
       {/* Loading phase */}
       {phase === 'loading' && (
-        <div style={{ padding: '3rem 2rem', textAlign: 'center' as const }}>
+        <div style={{ padding: isMobile ? '2rem 0.75rem' : '3rem 2rem', textAlign: 'center' as const }}>
           <div style={{
-            fontSize: '2.5rem',
-            marginBottom: '1rem',
+            fontSize: isMobile ? '1.75rem' : '2.5rem',
+            marginBottom: '0.75rem',
             animation: 'pulse 1s ease-in-out infinite',
           }}>
             &#128293;
@@ -245,12 +245,12 @@ export default function PromptRoast() {
 
       {/* Result phase */}
       {phase === 'result' && result && (
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem' }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem' }}>
           {/* Score + Tier */}
-          <div style={{ textAlign: 'center' as const, marginBottom: '1.5rem' }}>
+          <div style={{ textAlign: 'center' as const, marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
             <div style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: isMobile ? '3.5rem' : '4.5rem',
+              fontSize: isMobile ? '2.5rem' : '4.5rem',
               fontWeight: 800,
               color: getScoreColor(result.score),
               lineHeight: 1,
@@ -317,7 +317,7 @@ export default function PromptRoast() {
             <div style={{ marginBottom: '1.5rem' }}>
               <p style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
@@ -331,7 +331,7 @@ export default function PromptRoast() {
                   <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                     <span style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.65rem',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                       color: '#16C79A',
                       flexShrink: 0,

@@ -283,7 +283,7 @@ export default function ProjectOrchestrator() {
   const accent = '#0F3460';
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -300,7 +300,7 @@ export default function ProjectOrchestrator() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Project Orchestrator
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Break it down. Move tasks through the pipeline. Watch dependencies come alive.
             </p>
           </div>
@@ -345,12 +345,12 @@ export default function ProjectOrchestrator() {
         display: isMobile ? 'flex' : 'grid',
         gridTemplateColumns: isMobile ? undefined : '1fr 1fr 1fr',
         flexDirection: isMobile ? 'column' as const : undefined,
-        minHeight: isMobile ? undefined : 400,
+        flex: 1, minHeight: 0,
       }}>
         {/* To Do */}
         <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', padding: '1rem' }}>
           <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: '#6B7280', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6,
           }}>
@@ -382,7 +382,7 @@ export default function ProjectOrchestrator() {
         {/* In Progress */}
         <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', padding: '1rem', background: 'rgba(15,52,96,0.02)' }}>
           <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: accent, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6,
           }}>
@@ -425,7 +425,7 @@ export default function ProjectOrchestrator() {
         {/* Done */}
         <div style={{ padding: '1rem' }}>
           <div style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: '#16C79A', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6,
           }}>
@@ -510,7 +510,7 @@ function TaskCardUI({
             const done = completedIds.has(depId);
             return (
               <span key={depId} style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
                 padding: '2px 6px', borderRadius: 4,
                 background: done ? 'rgba(22,199,154,0.1)' : 'rgba(233,69,96,0.08)',
                 color: done ? '#16C79A' : '#E94560',
@@ -526,7 +526,7 @@ function TaskCardUI({
         onClick={onMove}
         disabled={blocked}
         style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
           padding: '6px 12px', borderRadius: 6, cursor: blocked ? 'not-allowed' : 'pointer',
           border: 'none', transition: 'all 0.2s',
           background: blocked ? 'rgba(107,114,128,0.1)' : accent,
@@ -558,7 +558,7 @@ function DoneCardUI({ task, accent }: { task: TaskCard; accent: string }) {
       <button
         onClick={() => setShowOutput(!showOutput)}
         style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500,
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
           padding: '4px 10px', borderRadius: 4, border: '1px solid rgba(22,199,154,0.2)',
           background: 'transparent', color: '#16C79A', cursor: 'pointer', marginTop: 6,
           minHeight: 44, minWidth: 44,
@@ -572,7 +572,7 @@ function DoneCardUI({ task, accent }: { task: TaskCard; accent: string }) {
           background: 'rgba(22,199,154,0.06)', border: '1px solid rgba(22,199,154,0.1)',
         }}>
           <p style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#1A1A2E',
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#1A1A2E',
             margin: 0, lineHeight: 1.6, opacity: 0.8,
           }}>
             {task.output}
@@ -588,6 +588,7 @@ function MiniChat({
 }: {
   task: TaskCard; step: number; onAdvance: () => void; accent: string;
 }) {
+  const isMobile = useIsMobile();
   const visibleMessages = task.simulatedChat.slice(0, step + 1);
   const hasMore = step < task.simulatedChat.length - 1;
 
@@ -598,18 +599,18 @@ function MiniChat({
     }}>
       <div style={{
         padding: '0.5rem 0.75rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
-        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
         color: accent, letterSpacing: '0.05em',
       }}>
         SIMULATED CHAT
       </div>
-      <div style={{ padding: '0.5rem 0.75rem', maxHeight: 180, overflowY: 'auto' as const }}>
+      <div style={{ padding: '0.5rem 0.75rem', maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const }}>
         {visibleMessages.map((msg, i) => (
           <div key={i} style={{
             marginBottom: 8, display: 'flex', gap: 6, alignItems: 'flex-start',
           }}>
             <span style={{
-              fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700,
+              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
               flexShrink: 0, padding: '1px 4px', borderRadius: 3, marginTop: 2,
               background: msg.role === 'user' ? 'rgba(15,52,96,0.08)' : 'rgba(22,199,154,0.08)',
               color: msg.role === 'user' ? accent : '#16C79A',
@@ -628,7 +629,7 @@ function MiniChat({
       {hasMore && (
         <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid rgba(26,26,46,0.04)' }}>
           <button onClick={onAdvance} style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             padding: '6px 12px', borderRadius: 4, border: 'none',
             background: accent, color: '#FAF8F5', cursor: 'pointer',
             minHeight: 44, minWidth: 44,

@@ -215,7 +215,7 @@ export default function AgentBlueprint() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Agent Blueprint
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Pick a goal. Watch an agent plan and execute step by step.
             </p>
           </div>
@@ -225,7 +225,7 @@ export default function AgentBlueprint() {
       {/* Goal Selection */}
       <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
         <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
           letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
           display: 'block', marginBottom: 10,
         }}>
@@ -265,7 +265,7 @@ export default function AgentBlueprint() {
               border: '2px solid #E94560',
             }}>
               <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
                 display: 'block', marginBottom: 4,
               }}>
@@ -358,7 +358,7 @@ export default function AgentBlueprint() {
                             {step.label}
                           </span>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             padding: '2px 8px', borderRadius: 6,
                             background: 'rgba(123,97,255,0.08)', color: '#7B61FF',
                           }}>
@@ -392,7 +392,7 @@ export default function AgentBlueprint() {
                         borderTop: '1px solid rgba(26,26,46,0.06)',
                       }}>
                         <span style={{
-                          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                           letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                           color: isCompleted ? '#16C79A' : '#E94560',
                           display: 'block', marginBottom: 6,

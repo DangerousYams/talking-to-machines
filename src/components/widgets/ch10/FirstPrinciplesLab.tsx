@@ -184,11 +184,11 @@ export default function FirstPrinciplesLab() {
                     {correct ? '\u2713' : '\u2717'}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: p.domainColor, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{p.domain}: </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: p.domainColor, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{p.domain}: </span>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E' }}>{p.question}</span>
                   </div>
                   <span style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                     color: '#6B7280', flexShrink: 0,
                     ...(isMobile ? { marginLeft: 32, marginTop: 2 } : {}),
                   }}>
@@ -275,7 +275,7 @@ export default function FirstPrinciplesLab() {
         {/* Domain badge */}
         <div style={{ marginBottom: '1rem' }}>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
             color: problem.domainColor, background: `${problem.domainColor}12`,
             padding: '4px 10px', borderRadius: 6,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
@@ -313,12 +313,12 @@ export default function FirstPrinciplesLab() {
           }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#7B61FF' }} />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
               AI's Answer
             </span>
             {showResult && (
               <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                 color: problem.aiCorrect ? ACCENT : '#E94560',
                 background: problem.aiCorrect ? `${ACCENT}12` : '#E9456012',
                 padding: '2px 8px', borderRadius: 4,
@@ -400,7 +400,7 @@ export default function FirstPrinciplesLab() {
               border: '1px solid rgba(26,26,46,0.06)',
               marginBottom: '1rem',
             }}>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>What happened</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>What happened</p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75, color: '#1A1A2E', margin: 0 }}>{problem.explanation}</p>
             </div>
 
@@ -415,7 +415,7 @@ export default function FirstPrinciplesLab() {
               marginBottom: '1.5rem',
             }}>
               <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: problem.domainColor, borderRadius: '3px 0 0 3px' }} />
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: problem.domainColor, marginBottom: 8 }}>First principles reasoning</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: problem.domainColor, marginBottom: 8 }}>First principles reasoning</p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75, color: '#1A1A2E', margin: 0 }}>{problem.firstPrinciplesReasoning}</p>
             </div>
 

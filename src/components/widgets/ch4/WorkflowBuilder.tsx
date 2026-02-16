@@ -150,7 +150,7 @@ export default function WorkflowBuilder() {
             border: `1px solid ${mode === 'prebuilt' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
             background: mode === 'prebuilt' ? '#7B61FF12' : 'transparent',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             color: mode === 'prebuilt' ? '#7B61FF' : '#6B7280',
             cursor: 'pointer',
@@ -168,7 +168,7 @@ export default function WorkflowBuilder() {
             border: `1px solid ${mode === 'custom' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
             background: mode === 'custom' ? '#7B61FF12' : 'transparent',
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
+            fontSize: '0.75rem',
             fontWeight: 600,
             color: mode === 'custom' ? '#7B61FF' : '#6B7280',
             cursor: 'pointer',
@@ -224,7 +224,7 @@ export default function WorkflowBuilder() {
             {/* Available nodes to add */}
             <p style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.65rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase' as const,
@@ -297,7 +297,7 @@ export default function WorkflowBuilder() {
                     {/* Step number */}
                     <span style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.55rem',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
                       color: node.color,
                       opacity: 0.5,
@@ -331,7 +331,7 @@ export default function WorkflowBuilder() {
                     </span>
                     <span style={{
                       fontFamily: 'var(--font-mono)',
-                      fontSize: '0.6rem',
+                      fontSize: '0.75rem',
                       color: '#6B7280',
                     }}>
                       {node.label}
@@ -353,7 +353,7 @@ export default function WorkflowBuilder() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontSize: '0.65rem',
+                          fontSize: '0.75rem',
                           fontWeight: 700,
                           cursor: 'pointer',
                           lineHeight: 1,
@@ -449,7 +449,7 @@ export default function WorkflowBuilder() {
             <div style={{ marginBottom: '0.75rem' }}>
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
@@ -478,7 +478,7 @@ export default function WorkflowBuilder() {
             <div>
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
+                fontSize: '0.75rem',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase' as const,
@@ -514,7 +514,7 @@ export default function WorkflowBuilder() {
       }}>
         <p style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.65rem',
+          fontSize: '0.75rem',
           color: 'rgba(26,26,46,0.3)',
           letterSpacing: '0.05em',
           margin: 0,

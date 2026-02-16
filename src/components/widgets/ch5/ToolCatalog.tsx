@@ -188,7 +188,7 @@ export default function ToolCatalog() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Tool Catalog
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               Click a tool to see the AI use it
             </p>
           </div>
@@ -284,7 +284,7 @@ export default function ToolCatalog() {
                       <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' as const }}>
                         <div>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                           }}>
                             Accepts
@@ -298,7 +298,7 @@ export default function ToolCatalog() {
                         </div>
                         <div>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                           }}>
                             Returns
@@ -326,7 +326,7 @@ export default function ToolCatalog() {
                     animation: 'fadeInDown 0.3s ease',
                   }}>
                     <p style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                       letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                       color: tool.color, marginBottom: '1rem',
                     }}>
@@ -346,7 +346,7 @@ export default function ToolCatalog() {
                           key={step}
                           onClick={(e) => { e.stopPropagation(); setActiveStep(si); }}
                           style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             padding: isMobile ? '0.5rem 0.85rem' : '0.35rem 0.75rem', borderRadius: 100,
                             border: 'none', cursor: 'pointer',
                             background: activeStep === si ? tool.color : 'rgba(26,26,46,0.05)',
@@ -385,7 +385,7 @@ export default function ToolCatalog() {
                               animation: 'pulse 2s infinite',
                             }} />
                             <span style={{
-                              fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                               color: tool.color, letterSpacing: '0.05em', textTransform: 'uppercase' as const,
                             }}>
                               AI Thinking
@@ -403,14 +403,14 @@ export default function ToolCatalog() {
                       {activeStep === 1 && (
                         <div>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             color: tool.color, letterSpacing: '0.05em', textTransform: 'uppercase' as const,
                             display: 'block', marginBottom: 8,
                           }}>
                             Tool Call
                           </span>
                           <pre style={{
-                            fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem', lineHeight: 1.6,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
                             color: '#e2e8f0', margin: 0, whiteSpace: 'pre-wrap' as const,
                             wordBreak: 'break-word' as const,
                             background: 'transparent', padding: 0, boxShadow: 'none',
@@ -423,14 +423,14 @@ export default function ToolCatalog() {
                       {activeStep === 2 && (
                         <div>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             color: '#16C79A', letterSpacing: '0.05em', textTransform: 'uppercase' as const,
                             display: 'block', marginBottom: 8,
                           }}>
                             Tool Result
                           </span>
                           <pre style={{
-                            fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem', lineHeight: 1.6,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
                             color: '#e2e8f0', margin: 0, whiteSpace: 'pre-wrap' as const,
                             wordBreak: 'break-word' as const,
                             background: 'transparent', padding: 0, boxShadow: 'none',
@@ -443,7 +443,7 @@ export default function ToolCatalog() {
                       {activeStep === 3 && (
                         <div>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                             color: '#16C79A', letterSpacing: '0.05em', textTransform: 'uppercase' as const,
                             display: 'block', marginBottom: 8,
                           }}>

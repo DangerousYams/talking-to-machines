@@ -55,20 +55,20 @@ export default function IterationLoop() {
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #F5A623, #E94560)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>The Iteration Loop</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Same task, 5 rounds. Watch each version improve.</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Same task, 5 rounds. Watch each version improve.</p>
           </div>
         </div>
       </div>
 
       {/* Timeline navigation */}
-      <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
+      <div style={{ padding: isMobile ? '0.75rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
         {/* Progress bar */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 12, overflowX: isMobile ? 'auto' : 'visible', WebkitOverflowScrolling: 'touch' as any, paddingBottom: isMobile ? 4 : 0 }}>
           {frames.map((f, i) => (
@@ -78,7 +78,7 @@ export default function IterationLoop() {
               style={{
                 flex: isMobile ? '0 0 auto' : 1, minWidth: isMobile ? 80 : 'auto', height: isMobile ? 40 : 32, borderRadius: 8, border: '1px solid', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s',
-                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.7rem', fontWeight: i === activeFrame ? 700 : 500,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: i === activeFrame ? 700 : 500,
                 padding: isMobile ? '0 10px' : 0,
                 background: i === activeFrame ? '#1A1A2E' : i < activeFrame ? 'rgba(22,199,154,0.08)' : 'transparent',
                 borderColor: i === activeFrame ? '#1A1A2E' : i < activeFrame ? 'rgba(22,199,154,0.2)' : 'rgba(26,26,46,0.08)',
@@ -92,7 +92,7 @@ export default function IterationLoop() {
 
         {/* Quality meter */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', fontWeight: 600, letterSpacing: '0.05em', flexShrink: 0 }}>QUALITY</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontWeight: 600, letterSpacing: '0.05em', flexShrink: 0 }}>QUALITY</span>
           <div style={{ flex: 1, height: 6, borderRadius: 3, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
             <div style={{
               height: '100%', borderRadius: 3, transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -112,8 +112,8 @@ export default function IterationLoop() {
       {/* Content */}
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', minHeight: isMobile ? 'auto' : 360 }}>
         {/* Left: Prompt */}
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623', display: 'block', marginBottom: 10 }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623', display: 'block', marginBottom: 10 }}>
             Prompt
           </span>
           <div style={{
@@ -125,13 +125,13 @@ export default function IterationLoop() {
         </div>
 
         {/* Right: Response */}
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)' }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#0EA5E9', display: 'block', marginBottom: 10 }}>
+        <div style={{ padding: isMobile ? '0.75rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)' }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#0EA5E9', display: 'block', marginBottom: 10 }}>
             Response
           </span>
           <div style={{
             fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem', lineHeight: 1.7, color: '#1A1A2E',
-            whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 240 : 280, overflowY: 'auto' as const,
+            whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {frame.response}
@@ -141,7 +141,7 @@ export default function IterationLoop() {
 
       {/* Insight bar */}
       <div style={{
-        padding: isMobile ? '1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+        padding: isMobile ? '0.75rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: 'linear-gradient(135deg, rgba(245,166,35,0.04), rgba(233,69,96,0.04))',
       }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>

@@ -232,7 +232,7 @@ function FileTree({ nodes, depth = 0, highlightFiles, revealedCount }: { nodes: 
             <div style={{
               paddingLeft: depth * 14,
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.72rem',
+              fontSize: '0.75rem',
               lineHeight: '1.8',
               color: isHighlighted ? '#16C79A' : '#94a3b8',
               transition: 'color 0.4s ease',
@@ -345,7 +345,7 @@ export default function TerminalPlayground() {
       case 'file':
         return (
           <div key={index} style={{ marginBottom: 8 }}>
-            <div style={{ color: '#7B61FF', fontSize: '0.7rem', marginBottom: 4, letterSpacing: '0.05em' }}>
+            <div style={{ color: '#7B61FF', fontSize: '0.75rem', marginBottom: 4, letterSpacing: '0.05em' }}>
               WRITE
             </div>
             <div style={{
@@ -353,7 +353,7 @@ export default function TerminalPlayground() {
               border: '1px solid rgba(123, 97, 255, 0.15)',
               borderRadius: 6,
               padding: isMobile ? '8px 10px' : '10px 14px',
-              fontSize: isMobile ? '0.65rem' : '0.72rem',
+              fontSize: '0.75rem',
               lineHeight: 1.6,
               whiteSpace: 'pre-wrap',
               overflowX: 'auto',
@@ -418,7 +418,7 @@ export default function TerminalPlayground() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Terminal Playground</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Watch Claude Code think, write, and run</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Watch Claude Code think, write, and run</p>
           </div>
         </div>
       </div>
@@ -485,7 +485,7 @@ export default function TerminalPlayground() {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', minHeight: isMobile ? 320 : 420 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', flex: 1, minHeight: 0 }}>
           {/* File tree sidebar */}
           <div style={{
             borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)',
@@ -496,7 +496,7 @@ export default function TerminalPlayground() {
           }}>
             <div style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.6rem',
+              fontSize: '0.75rem',
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -527,7 +527,7 @@ export default function TerminalPlayground() {
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
               <span style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
+                fontSize: '0.75rem',
                 color: '#6b7280',
                 marginLeft: 8,
               }}>
@@ -545,7 +545,7 @@ export default function TerminalPlayground() {
                 fontSize: isMobile ? '0.7rem' : '0.78rem',
                 lineHeight: 1.65,
                 overflowY: 'auto',
-                maxHeight: isMobile ? 320 : 380,
+                maxHeight: isMobile ? '35dvh' : '40dvh',
               }}
             >
               <div style={{ color: '#6b7280', marginBottom: 12 }}>
@@ -575,7 +575,7 @@ export default function TerminalPlayground() {
                   onClick={reset}
                   style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.72rem',
+                    fontSize: '0.75rem',
                     color: '#7B61FF',
                     background: 'rgba(123, 97, 255, 0.1)',
                     border: '1px solid rgba(123, 97, 255, 0.25)',

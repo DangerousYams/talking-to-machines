@@ -149,12 +149,12 @@ export default function DebugThePrompt() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Debug the Prompt</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Find and diagnose the bugs in each prompt</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Find and diagnose the bugs in each prompt</p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em',
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em',
             padding: '4px 10px', borderRadius: 6,
             background: challenge.level === 'easy' ? 'rgba(22,199,154,0.1)' : challenge.level === 'medium' ? 'rgba(245,166,35,0.1)' : 'rgba(233,69,96,0.1)',
             color: challenge.level === 'easy' ? '#16C79A' : challenge.level === 'medium' ? '#F5A623' : '#E94560',
@@ -172,7 +172,7 @@ export default function DebugThePrompt() {
           <>
             {/* The buggy prompt */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560', display: 'block', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560', display: 'block', marginBottom: 8 }}>
                 The prompt — click the highlighted issues
               </span>
               <div style={{
@@ -218,7 +218,7 @@ export default function DebugThePrompt() {
             {/* Bug type dropdown */}
             {showDropdown && selectedRegion !== null && (
               <div style={{ marginBottom: '1.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', color: '#F5A623', display: 'block', marginBottom: 8 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', color: '#F5A623', display: 'block', marginBottom: 8 }}>
                   What's wrong with this part?
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
@@ -229,7 +229,7 @@ export default function DebugThePrompt() {
                       style={{
                         padding: isMobile ? '10px 14px' : '6px 14px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)',
                         background: 'transparent', cursor: 'pointer', transition: 'all 0.2s',
-                        fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.72rem', fontWeight: 500, color: '#1A1A2E',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, color: '#1A1A2E',
                         minHeight: 44,
                       }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(15,52,96,0.06)'; e.currentTarget.style.borderColor = '#0F346030'; }}
@@ -254,12 +254,12 @@ export default function DebugThePrompt() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                     <span style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                       color: isCorrect ? '#16C79A' : '#E94560',
                     }}>
                       {isCorrect ? 'Correct!' : `Not quite — it's "${region.bugType}"`}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
                       (you said: {type})
                     </span>
                   </div>
@@ -272,13 +272,13 @@ export default function DebugThePrompt() {
 
             {/* The bad output */}
             <div style={{ marginTop: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
                 Resulting output
               </span>
               <div style={{
                 background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
                 padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.82rem', lineHeight: 1.7,
-                color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 150 : 180, overflowY: 'auto' as const,
+                color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const,
               }}>
                 {challenge.badOutput}
               </div>
@@ -312,13 +312,13 @@ export default function DebugThePrompt() {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
                     Buggy prompt
                   </span>
                 </div>
                 <div style={{
                   background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)',
-                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.75rem',
+                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                   lineHeight: 1.6, color: '#1A1A2E', opacity: 0.6,
                 }}>
                   {challenge.prompt}
@@ -327,13 +327,13 @@ export default function DebugThePrompt() {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
                     Fixed prompt
                   </span>
                 </div>
                 <div style={{
                   background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)',
-                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.75rem',
+                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                   lineHeight: 1.6, color: '#1A1A2E',
                 }}>
                   {challenge.fixedPrompt}
@@ -343,12 +343,12 @@ export default function DebugThePrompt() {
 
             {/* Fixed output */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
                 Improved output
               </span>
               <div style={{
                 fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75, color: '#1A1A2E',
-                whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? 220 : 280, overflowY: 'auto' as const,
+                whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '30dvh' : '35dvh', overflowY: 'auto' as const,
               }}>
                 {challenge.fixedOutput.split('\n').map((line, i) => {
                   if (line.startsWith('**') && line.includes('**')) {

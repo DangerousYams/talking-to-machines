@@ -193,7 +193,7 @@ export default function ProjectPlanner() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Project Planner</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Find the perfect capstone project</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Find the perfect capstone project</p>
           </div>
         </div>
       </div>
@@ -205,14 +205,14 @@ export default function ProjectPlanner() {
             <div style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4 }}>
               <div style={{
                 width: isMobile ? 24 : 28, height: isMobile ? 24 : 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.6rem' : '0.7rem', fontWeight: 700,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                 background: i <= step ? accent : 'rgba(26,26,46,0.06)',
                 color: i <= step ? 'white' : '#6B7280',
                 transition: 'all 0.3s ease',
               }}>
                 {i < step ? '\u2713' : i + 1}
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.5rem' : '0.55rem', color: i <= step ? accent : '#6B728080', letterSpacing: '0.04em' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: i <= step ? accent : '#6B728080', letterSpacing: '0.04em' }}>
                 {label}
               </span>
             </div>
@@ -386,7 +386,7 @@ export default function ProjectPlanner() {
                           </h5>
                           <div style={{ display: 'flex', gap: 2 }}>
                             {Array.from({ length: 5 }, (_, j) => (
-                              <span key={j} style={{ fontSize: '0.65rem', color: j < project.difficulty ? accent : '#E5E7EB' }}>
+                              <span key={j} style={{ fontSize: '0.75rem', color: j < project.difficulty ? accent : '#E5E7EB' }}>
                                 {'\u2605'}
                               </span>
                             ))}
@@ -412,7 +412,7 @@ export default function ProjectPlanner() {
                               <div style={{
                                 width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
                                 background: `${accent}15`, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: accent,
+                                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: accent,
                               }}>
                                 {wi + 1}
                               </div>
@@ -425,7 +425,7 @@ export default function ProjectPlanner() {
                           <div style={{ marginTop: 16, display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
                             {project.tools.map((tool, ti) => (
                               <span key={ti} style={{
-                                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 500,
+                                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
                                 padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent,
                               }}>
                                 {tool}

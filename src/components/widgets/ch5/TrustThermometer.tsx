@@ -234,7 +234,7 @@ export default function TrustThermometer() {
                   {choiceCounts[i]}
                 </p>
                 <p style={{
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                   color: '#6B7280', margin: 0, letterSpacing: '0.03em',
                 }}>
                   {label}
@@ -250,7 +250,7 @@ export default function TrustThermometer() {
             marginBottom: '1.5rem',
           }}>
             <p style={{
-              fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
               letterSpacing: '0.08em', textTransform: 'uppercase' as const,
               color: '#6B7280', marginBottom: '1rem',
             }}>
@@ -282,7 +282,7 @@ export default function TrustThermometer() {
                     {/* User choice marker */}
                     {userChoice !== null && (
                       <span style={{
-                        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                         color: choiceColors[userChoice], whiteSpace: 'nowrap' as const,
                       }}>
                         You: {choiceLabels[userChoice]}
@@ -298,7 +298,7 @@ export default function TrustThermometer() {
               {choiceLabels.map((label, i) => (
                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <div style={{ width: 8, height: 8, borderRadius: 2, background: choiceColors[i], opacity: 0.4 }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#6B7280' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
                     {label}
                   </span>
                 </div>
@@ -374,7 +374,7 @@ export default function TrustThermometer() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Trust Thermometer
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
               How much autonomy would you give?
             </p>
           </div>
@@ -405,7 +405,7 @@ export default function TrustThermometer() {
         {/* Stakes badge */}
         <div style={{ marginBottom: '1rem' }}>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: stakesColor[scenario.stakes],
             background: stakesColor[scenario.stakes] + '10',
@@ -423,7 +423,7 @@ export default function TrustThermometer() {
           padding: '1.5rem', marginBottom: '1.5rem',
         }}>
           <p style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.06em', textTransform: 'uppercase' as const,
             color: '#6B7280', marginBottom: '0.5rem',
           }}>
@@ -537,7 +537,7 @@ export default function TrustThermometer() {
               padding: '0.75rem 1rem',
             }}>
               <p style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                 letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: '0.5rem',
               }}>
@@ -554,7 +554,7 @@ export default function TrustThermometer() {
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
                 {scenario.averageDistribution.map((pct, pi) => (
                   <span key={pi} style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.6rem',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                     color: choiceColors[pi], fontWeight: currentChoice === pi ? 700 : 400,
                   }}>
                     {pct}%
