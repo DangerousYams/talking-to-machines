@@ -143,15 +143,32 @@ export default function ListenController({ accentColor, chapterSlug }: Props) {
     });
   }, [speed, highlightParagraph, clearHighlight, audioUrl]);
 
-  // Start playback
+  // Find the first paragraph currently visible in the viewport
+  const findVisibleIndex = useCallback((paragraphs: HTMLElement[]): number => {
+    const viewportTop = window.scrollY;
+    const viewportBottom = viewportTop + window.innerHeight;
+    for (let i = 0; i < paragraphs.length; i++) {
+      const rect = paragraphs[i].getBoundingClientRect();
+      const absTop = rect.top + window.scrollY;
+      // Use the first paragraph whose top is within or above the viewport
+      if (absTop + rect.height > viewportTop && absTop < viewportBottom) {
+        return i;
+      }
+    }
+    return 0;
+  }, []);
+
+  // Start playback from current scroll position
   const play = useCallback(() => {
     if (audioAvailable === false) return;
     const paragraphs = collectParagraphs();
     if (paragraphs.length === 0) return;
 
+    const startIndex = findVisibleIndex(paragraphs);
+    setCurrentIndex(startIndex);
     setIsPlaying(true);
-    playParagraph(currentIndex);
-  }, [audioAvailable, collectParagraphs, playParagraph, currentIndex]);
+    playParagraph(startIndex);
+  }, [audioAvailable, collectParagraphs, playParagraph, findVisibleIndex]);
 
   // Pause
   const pause = useCallback(() => {
