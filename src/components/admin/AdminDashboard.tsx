@@ -32,9 +32,89 @@ interface AiCostData {
 
 type Tab = 'overview' | 'ab-tests' | 'ai-costs';
 
+// --- Auth Gate ---
+
+function AdminAuthGate({ children }: { children: React.ReactNode }) {
+  const [authed, setAuthed] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem('admin_authed');
+    if (stored === '1') setAuthed(true);
+    setChecking(false);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (res.ok) {
+        sessionStorage.setItem('admin_authed', '1');
+        setAuthed(true);
+      } else {
+        setError('Wrong password');
+      }
+    } catch {
+      setError('Failed to verify');
+    }
+  };
+
+  if (checking) return null;
+  if (authed) return <>{children}</>;
+
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      minHeight: '100vh', fontFamily: "'Inter', sans-serif",
+    }}>
+      <form onSubmit={handleSubmit} style={{
+        background: '#1e2240', borderRadius: '12px', padding: '40px',
+        width: '320px', display: 'flex', flexDirection: 'column', gap: '16px',
+      }}>
+        <h2 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 700, margin: 0, textAlign: 'center' }}>
+          Admin Access
+        </h2>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          autoFocus
+          style={{
+            padding: '10px 14px', borderRadius: '8px', border: '1px solid #374151',
+            background: '#161830', color: '#fff', fontSize: '0.9rem', outline: 'none',
+          }}
+        />
+        {error && <p style={{ color: '#f87171', fontSize: '0.8rem', margin: 0, textAlign: 'center' }}>{error}</p>}
+        <button type="submit" style={{
+          padding: '10px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+          background: '#7B61FF', color: '#fff', fontSize: '0.9rem', fontWeight: 600,
+        }}>
+          Enter
+        </button>
+      </form>
+    </div>
+  );
+}
+
 // --- Component ---
 
 export default function AdminDashboard() {
+  return (
+    <AdminAuthGate>
+      <AdminDashboardInner />
+    </AdminAuthGate>
+  );
+}
+
+function AdminDashboardInner() {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   const [dateRange, setDateRange] = useState<7 | 30 | 90>(7);
   const [autoRefresh, setAutoRefresh] = useState(false);
