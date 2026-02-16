@@ -6,6 +6,7 @@ import PaywallGate from '../components/ui/PaywallGate';
 import QuotaCounter from '../components/ui/QuotaCounter';
 import PageViewTracker from '../components/analytics/PageViewTracker';
 import { ListenController } from '../components/chapter/ChapterBeats';
+import ListenButton from '../components/chapter/ListenButton';
 import { chapters, type Chapter } from '../data/chapters';
 
 interface Props {
@@ -46,6 +47,7 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
             Talking to Machines
           </a>
           <div class="flex items-center gap-3">
+            <ListenButton accentColor={chapter.accent} client:load />
             <QuotaCounter client:load />
             <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
               {chapter.number} / {chapters.length}
