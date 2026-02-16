@@ -19,7 +19,7 @@ export default function CardListenButton({ chapterSlug, audioIndices, accentColo
   const animFrameRef = useRef<number>(0);
 
   const audioUrl = useCallback(
-    (index: number) => `/audio/${chapterSlug}/${String(index).padStart(3, '0')}.mp3`,
+    (index: number) => `/audio/cards/${chapterSlug}/${String(index).padStart(3, '0')}.mp3`,
     [chapterSlug],
   );
 

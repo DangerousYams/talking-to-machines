@@ -45,7 +45,7 @@ export default function CardActionBar({
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const audioUrl = useCallback(
-    (index: number) => `/audio/${chapterSlug}/${String(index).padStart(3, '0')}.mp3`,
+    (index: number) => `/audio/cards/${chapterSlug}/${String(index).padStart(3, '0')}.mp3`,
     [chapterSlug],
   );
 
