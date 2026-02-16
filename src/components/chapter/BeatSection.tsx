@@ -1,5 +1,4 @@
 import BeatHeader from './BeatHeader';
-import BeatCompletionCard from './BeatCompletionCard';
 import type { ReactNode } from 'react';
 
 interface Props {
@@ -24,7 +23,6 @@ export default function BeatSection({
   tldr,
   estimatedMinutes,
   accentColor,
-  nextBeatTitle,
   children,
   isFirst = false,
 }: Props) {
@@ -42,14 +40,6 @@ export default function BeatSection({
       )}
 
       {children}
-
-      {/* Beat completion marker */}
-      <BeatCompletionCard
-        beatId={beatId}
-        beatTitle={title}
-        nextBeatTitle={nextBeatTitle}
-        accentColor={accentColor}
-      />
     </div>
   );
 }
