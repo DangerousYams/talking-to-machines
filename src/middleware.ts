@@ -62,6 +62,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
+  // Mobile detection — always serve cards on mobile
+  const ua = request.headers.get('user-agent') || '';
+  const isMobile = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(ua);
+
+  if (isMobile) {
+    const targetPath = routes.cards;
+    if (path !== targetPath) {
+      return context.redirect(targetPath, 302);
+    }
+    return next();
+  }
+
   // Get or create session
   let sessionId = getSessionIdFromCookie(cookieHeader);
   const needsSession = !sessionId;

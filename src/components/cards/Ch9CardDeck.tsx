@@ -34,7 +34,7 @@ export default function Ch9CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch9" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch9" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Here's something uncomfortable: the AI that just helped you write a flawless essay can also, with equal confidence, tell you that Napoleon won the Battle of Waterloo. It won't hesitate. It won't stammer. It will state a completely fabricated "fact" in the same authoritative tone it uses for everything else.
         </p>
@@ -50,7 +50,7 @@ export default function Ch9CardDeck() {
         textContent={<HallucinationBack />}
         widgetContent={<FactOrFabrication />}
         chapterSlug="ch9"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={hallucinationKeyFact}
       />
 
@@ -60,7 +60,7 @@ export default function Ch9CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Confidence vs accuracy */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch9" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch9" audioIndices={[4, 5]}>
         <p>
           There is no correlation between how confident AI sounds and how accurate it actually is. A wrong answer and a right answer look identical from the outside. That's what makes this so tricky — you can't tell from the tone.
         </p>
@@ -73,12 +73,12 @@ export default function Ch9CardDeck() {
         widgetContent={<SycophancyTest />}
         textContent={<SycophancyBack />}
         chapterSlug="ch9"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={sycophancyKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch9" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch9" audioIndices={[8]}>
         The best AI users aren't the ones who trust AI the most. They're the ones who verify the fastest.
       </TextCard>
 

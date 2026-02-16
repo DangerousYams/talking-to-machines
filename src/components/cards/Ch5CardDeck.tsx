@@ -34,7 +34,7 @@ export default function Ch5CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch5" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch5" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Up until now, every AI interaction follows the same pattern. You type something. The AI types something back. Text in, text out. A really sophisticated autocomplete. But that's not the ceiling. It's just the floor.
         </p>
@@ -50,7 +50,7 @@ export default function Ch5CardDeck() {
         textContent={<AgentLoopBack />}
         widgetContent={<ToolCatalog />}
         chapterSlug="ch5"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={agentLoopKeyFact}
       />
 
@@ -60,7 +60,7 @@ export default function Ch5CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Tool use changes everything */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch5" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch5" audioIndices={[4, 5]}>
         <p>
           The AI isn't executing a script. It's making a judgment call every time: "Is this a situation where I should use a tool, or can I handle it myself?" That decision — when to act and when to just respond — is what makes tool-using AI fundamentally different.
         </p>
@@ -73,12 +73,12 @@ export default function Ch5CardDeck() {
         widgetContent={<TrustThermometer />}
         textContent={<TrustBack />}
         chapterSlug="ch5"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={trustKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch5" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch5" audioIndices={[8]}>
         An AI with tools isn't just smarter. It's a different kind of thing entirely — one that can act, not just advise.
       </TextCard>
 

@@ -36,7 +36,7 @@ export default function Ch6CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch6" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch6" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           A chatbot waits for you to speak. An agent doesn't. Give it a goal — "research Mars colonization and write a report" — and it breaks the work into steps, picks the right tools, executes them one by one, checks its own results, and keeps going until the job is done.
         </p>
@@ -52,12 +52,12 @@ export default function Ch6CardDeck() {
         textContent={<AgentArchitectureBack />}
         widgetContent={<AgentBlueprint />}
         chapterSlug="ch6"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={agentArchitectureKeyFact}
       />
 
       {/* Card 4: Failure modes narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch6" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch6" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Most agent failures aren't intelligence failures — they're architecture failures. An agent with great language skills but no evaluator is like a brilliant person who never checks their work.
         </p>
@@ -73,11 +73,11 @@ export default function Ch6CardDeck() {
         widgetContent={<FailureModesLab />}
         textContent={<FailureModesBack />}
         chapterSlug="ch6"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
       />
 
       {/* Card 6: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch6" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch6" audioIndices={[8]}>
         A chatbot is a single turn. An agent is a whole conversation — with itself, its tools, and the world.
       </TextCard>
 
@@ -88,7 +88,7 @@ export default function Ch6CardDeck() {
         widgetContent={<HandoffChain />}
         textContent={<MultiAgentBack />}
         chapterSlug="ch6"
-        audioIndices={[10, 11]}
+        audioIndices={[9, 10]}
         keyFact={multiAgentKeyFact}
       />
 

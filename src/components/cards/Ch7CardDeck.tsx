@@ -37,7 +37,7 @@ export default function Ch7CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch7" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch7" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           There's a moment every coder remembers. You open a terminal, type a natural-language request, and watch an AI read your files, understand your architecture, write code across multiple files, run it, hit an error, fix the error, and run it again — all without you touching a single line. That's Claude Code.
         </p>
@@ -53,7 +53,7 @@ export default function Ch7CardDeck() {
         textContent={<ClaudeCodeBack />}
         widgetContent={<TerminalPlayground />}
         chapterSlug="ch7"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={claudeCodeKeyFact}
       />
 
@@ -63,7 +63,7 @@ export default function Ch7CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Skills explanation */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch7" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch7" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Without skills, you explain the same steps every time. With skills, you explain once and the AI remembers forever.
         </p>
@@ -79,12 +79,12 @@ export default function Ch7CardDeck() {
         widgetContent={<SkillBuilder />}
         textContent={<SkillsBack />}
         chapterSlug="ch7"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={skillsKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch7" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch7" audioIndices={[8]}>
         If you can't read the code Claude generates, you can't verify it. If you can't verify it, you're shipping someone else's guesses into production.
       </TextCard>
 
@@ -95,7 +95,7 @@ export default function Ch7CardDeck() {
         widgetContent={<RefactorRace />}
         textContent={<SkillParadoxBack />}
         chapterSlug="ch7"
-        audioIndices={[10, 11]}
+        audioIndices={[9, 10]}
       />
 
       {/* Card 9: Decomposition tree animation */}

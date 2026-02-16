@@ -36,7 +36,7 @@ export default function Ch4CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch4" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch4" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           When most people say "AI," they mean ChatGPT. That's like saying "the internet" and meaning Google. It's not wrong — it's just a tiny slice of something enormous.
         </p>
@@ -55,7 +55,7 @@ export default function Ch4CardDeck() {
         widgetContent={<ToolWall />}
         textContent={<ToolLandscapeBack />}
         chapterSlug="ch4"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={toolLandscapeKeyFact}
       />
 
@@ -65,7 +65,7 @@ export default function Ch4CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Choosing the right tool */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch4" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch4" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           The person who knows 10 AI tools at a surface level will consistently outperform someone who knows one tool deeply. Breadth of awareness beats depth of expertise — at first.
         </p>
@@ -84,11 +84,11 @@ export default function Ch4CardDeck() {
         widgetContent={<HeadToHead />}
         textContent={<ChoosingToolsBack />}
         chapterSlug="ch4"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch4" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch4" audioIndices={[8]}>
         The most impressive AI-generated work you've seen online wasn't made with one tool. It was made with five, chained together by a human who understood what each one does best.
       </TextCard>
 
@@ -99,7 +99,7 @@ export default function Ch4CardDeck() {
         widgetContent={<WorkflowBuilder />}
         textContent={<PipelinesBack />}
         chapterSlug="ch4"
-        audioIndices={[10, 11]}
+        audioIndices={[9, 10]}
         keyFact={pipelinesKeyFact}
       />
 

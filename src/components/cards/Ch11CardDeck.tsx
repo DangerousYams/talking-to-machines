@@ -29,7 +29,7 @@ export default function Ch11CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           You've made it to the final chapter. Over the last ten chapters, you went from "help me with my essay" to building agents, debugging hallucinations, and thinking about the future of work. You've learned more about AI than most adults know.
         </p>
@@ -39,7 +39,7 @@ export default function Ch11CardDeck() {
       </TextCard>
 
       {/* Card 3: Recap + transition to building */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[3, 4]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[2, 3]}>
         <p style={{ marginBottom: '1.25rem' }}>
           This chapter is about jumping in. Not with a toy exercise or a follow-along tutorial. A real project. Something you choose, something you care about, something you can show to someone and say: <em>"I built this."</em>
         </p>
@@ -55,12 +55,12 @@ export default function Ch11CardDeck() {
         widgetContent={<ProjectPlanner />}
         textContent={<ProjectPlanningBack />}
         chapterSlug="ch11"
-        audioIndices={[5, 6]}
+        audioIndices={[4, 5]}
         keyFact={projectPlanningKeyFact}
       />
 
       {/* Card 5: The 3-Week Sprint */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[7, 8]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch11" audioIndices={[6, 7]}>
         <p style={{ marginBottom: '1.25rem' }}>
           <strong>The 3-Week Sprint:</strong> Week 1 is <em>Ideate & Scope</em> — choose your track, define what "done" looks like, and break the project into pieces. Week 2 is <em>Build</em> — heads down, making the thing, using every technique from this curriculum. Week 3 is <em>Polish & Present</em> — fix the rough edges, write up what you learned, and share it.
         </p>
@@ -76,11 +76,11 @@ export default function Ch11CardDeck() {
         widgetContent={<ShowcaseGallery />}
         textContent={<ShippingBack />}
         chapterSlug="ch11"
-        audioIndices={[9, 10]}
+        audioIndices={[8, 9]}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch11" audioIndices={[11]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch11" audioIndices={[10]}>
         AI is the most powerful tool your generation has ever had access to. But tools don't build things. People with tools build things.
       </TextCard>
 

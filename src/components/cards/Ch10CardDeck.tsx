@@ -38,7 +38,7 @@ export default function Ch10CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch10" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch10" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Every time a new AI capability drops, the same headline appears: "Will AI replace [insert job]?" It's the wrong question. The right one is: "What does this make possible that wasn't possible before?"
         </p>
@@ -54,7 +54,7 @@ export default function Ch10CardDeck() {
         widgetContent={<SkillsSpectrum />}
         textContent={<SpectrumBack />}
         chapterSlug="ch10"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={spectrumKeyFact}
       />
 
@@ -64,7 +64,7 @@ export default function Ch10CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Taste and first principles narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch10" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch10" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           In a world where generating options is nearly free, the ability to choose the right one becomes the most valuable skill you can have. That ability has a name: <strong>taste.</strong>
         </p>
@@ -80,12 +80,12 @@ export default function Ch10CardDeck() {
         widgetContent={<JobTransformer />}
         textContent={<JobShiftBack />}
         chapterSlug="ch10"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={jobShiftKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch10" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch10" audioIndices={[8]}>
         It's not "humans vs. AI." It's humans with AI vs. humans without AI.
       </TextCard>
 
@@ -96,7 +96,7 @@ export default function Ch10CardDeck() {
         widgetContent={<TasteTest />}
         textContent={<TasteBack />}
         chapterSlug="ch10"
-        audioIndices={[10, 11]}
+        audioIndices={[9, 10]}
       />
 
       {/* Card 9: FirstPrinciplesLab widget → first principles explanation */}
@@ -106,7 +106,7 @@ export default function Ch10CardDeck() {
         widgetContent={<FirstPrinciplesLab />}
         textContent={<FirstPrinciplesBack />}
         chapterSlug="ch10"
-        audioIndices={[12, 13]}
+        audioIndices={[11, 12]}
       />
 
       {/* Card 10: Closing */}

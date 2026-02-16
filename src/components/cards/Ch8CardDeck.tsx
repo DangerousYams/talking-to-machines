@@ -34,7 +34,7 @@ export default function Ch8CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch8" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch8" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Here is the moment every ambitious beginner hits: you ask AI to build something real — a full game, a website with a backend, a research paper with citations — and the whole thing falls apart. Not because the AI isn't smart enough. Because the project is too big for a single conversation.
         </p>
@@ -53,12 +53,12 @@ export default function Ch8CardDeck() {
         textContent={<DecompositionBack />}
         widgetContent={<ProjectOrchestrator />}
         chapterSlug="ch8"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={decompositionKeyFact}
       />
 
       {/* Card 4: Handoff pattern narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch8" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch8" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           The quality of your handoff artifact determines the quality of everything built downstream. Garbage in, garbage out — across conversations.
         </p>
@@ -74,12 +74,12 @@ export default function Ch8CardDeck() {
         widgetContent={<ContextPacking />}
         textContent={<ContextPackingBack />}
         chapterSlug="ch8"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={contextPackingKeyFact}
       />
 
       {/* Card 6: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch8" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch8" audioIndices={[8]}>
         The best AI users aren't the best prompters. They're the best project managers.
       </TextCard>
 

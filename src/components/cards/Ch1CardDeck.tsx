@@ -39,7 +39,7 @@ export default function Ch1CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch1" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch1" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           You've been talking to AI for a while now. Maybe you've asked ChatGPT to help with homework, or used an image generator to make something weird. You've typed words into a box and gotten words back.
         </p>
@@ -55,7 +55,7 @@ export default function Ch1CardDeck() {
         textContent={<BuildingBlocksBack />}
         widgetContent={<PromptMakeover />}
         chapterSlug="ch1"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={buildingBlocksKeyFact}
       />
 
@@ -71,12 +71,12 @@ export default function Ch1CardDeck() {
         widgetContent={<IterationLoop />}
         textContent={<IterationBack />}
         chapterSlug="ch1"
-        audioIndices={[5, 6]}
+        audioIndices={[4, 5]}
         keyFact={iterationKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch1" audioIndices={[7]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch1" audioIndices={[6]}>
         One-shot prompts are parlor tricks. The people who get incredible results from AI? They iterate. They refine. They treat it as a conversation, not a coin toss.
       </TextCard>
 
@@ -92,7 +92,7 @@ export default function Ch1CardDeck() {
         widgetContent={<GuessThePrompt />}
         textContent={<SpectrumBack />}
         chapterSlug="ch1"
-        audioIndices={[8]}
+        audioIndices={[7]}
       />
 
       {/* Card 9: PromptRoast widget → vague prompt explanation */}
@@ -102,7 +102,7 @@ export default function Ch1CardDeck() {
         widgetContent={<PromptRoast />}
         textContent={<VaguePromptBack />}
         chapterSlug="ch1"
-        audioIndices={[9]}
+        audioIndices={[8]}
       />
 
       {/* Card 10: Closing */}

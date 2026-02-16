@@ -37,7 +37,7 @@ export default function Ch2CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch2" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch2" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           In the last chapter, you learned the five building blocks of a good prompt. Role, task, format, constraints, examples. That's the vocabulary. This chapter is about <em>technique</em>.
         </p>
@@ -56,7 +56,7 @@ export default function Ch2CardDeck() {
         textContent={<SocraticFlipBack />}
         widgetContent={<FlipTheScript />}
         chapterSlug="ch2"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={socraticKeyFact}
       />
 
@@ -66,7 +66,7 @@ export default function Ch2CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Few-shot prompting explanation */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch2" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch2" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Imagine explaining a style to a friend. You could spend five minutes describing it — "I want something casual but not sloppy, with a bit of humor but not cheesy, and keep it under 200 words." Or you could just <strong>show them an example.</strong>
         </p>
@@ -85,12 +85,12 @@ export default function Ch2CardDeck() {
         widgetContent={<PromptLaboratory />}
         textContent={<TechniqueMixBack />}
         chapterSlug="ch2"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={techniqueMixKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch2" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch2" audioIndices={[8]}>
         The difference between a good prompt and a great one isn't vocabulary. It's empathy — understanding what the AI needs to know to help you.
       </TextCard>
 
@@ -101,7 +101,7 @@ export default function Ch2CardDeck() {
         widgetContent={<DebugThePrompt />}
         textContent={<PromptBugsBack />}
         chapterSlug="ch2"
-        audioIndices={[10]}
+        audioIndices={[9]}
       />
 
       {/* Card 9: Chain-of-thought animation */}

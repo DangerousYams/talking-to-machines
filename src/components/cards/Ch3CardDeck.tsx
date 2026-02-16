@@ -37,7 +37,7 @@ export default function Ch3CardDeck() {
       />
 
       {/* Card 2: Opening narrative */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch3" audioIndices={[1, 2]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch3" audioIndices={[0, 1]}>
         <p style={{ marginBottom: '1.25rem' }}>
           Imagine you're having a conversation with a friend, except every few minutes someone erases the whiteboard you've both been writing on. You start fresh — same friend, same room, but no shared notes. That's what every AI conversation is like under the hood.
         </p>
@@ -56,7 +56,7 @@ export default function Ch3CardDeck() {
         textContent={<ContextWindowBack />}
         widgetContent={<ContextWindowViz />}
         chapterSlug="ch3"
-        audioIndices={[3, 4]}
+        audioIndices={[2, 3]}
         keyFact={contextWindowKeyFact}
       />
 
@@ -66,7 +66,7 @@ export default function Ch3CardDeck() {
       </AnimationCard>
 
       {/* Card 5: Tokens explanation */}
-      <TextCard accentColor={ACCENT} chapterSlug="ch3" audioIndices={[5, 6]}>
+      <TextCard accentColor={ACCENT} chapterSlug="ch3" audioIndices={[4, 5]}>
         <p style={{ marginBottom: '1.25rem' }}>
           AI doesn't read words the way you do. It reads <strong>tokens</strong> — chunks that are about three-quarters of a word long. The word "hamburger" is two tokens. "I" is one. A comma is one. A newline is one.
         </p>
@@ -85,12 +85,12 @@ export default function Ch3CardDeck() {
         widgetContent={<ForgettingExperiment />}
         textContent={<ForgettingBack />}
         chapterSlug="ch3"
-        audioIndices={[7, 8]}
+        audioIndices={[6, 7]}
         keyFact={forgettingKeyFact}
       />
 
       {/* Card 7: Pull quote */}
-      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch3" audioIndices={[9]}>
+      <TextCard variant="pull-quote" accentColor={ACCENT} chapterSlug="ch3" audioIndices={[8]}>
         The AI only knows what you show it. Choose wisely.
       </TextCard>
 
@@ -101,7 +101,7 @@ export default function Ch3CardDeck() {
         widgetContent={<SystemPromptSandbox />}
         textContent={<SystemPromptBack />}
         chapterSlug="ch3"
-        audioIndices={[10]}
+        audioIndices={[9]}
       />
 
       {/* Card 9: Token rain animation */}
