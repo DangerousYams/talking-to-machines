@@ -30,6 +30,14 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
     <meta property="og:title" content={`${chapter.title} — Talking to Machines`} />
     <meta property="og:description" content={chapter.hook} />
     <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
+    <script define:vars={{ slug: chapter.slug }}>
+      if (/Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent)) {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('force') !== 'scroll') {
+          window.location.replace('/' + slug + '-cards' + window.location.search);
+        }
+      }
+    </script>
   </head>
   <body class="bg-cream text-deep min-h-screen">
     <ScrollProgress color={chapter.accent} client:load />
