@@ -30,7 +30,8 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
     (child) =>
       isValidElement(child) &&
       typeof child.type !== 'string' &&
-      (child.type as { displayName?: string }).displayName === 'FlippableCard',
+      ((child.type as any)._isFlippable === true ||
+        (child.type as any).displayName === 'FlippableCard'),
   );
 
   // Track page view on mount

@@ -1,17 +1,19 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const STORAGE_KEY = 'ttm_ftue_dismissed';
 
 export function useFTUE(key: string) {
-  const [seen, setSeen] = useState(() => {
-    if (typeof window === 'undefined') return true;
+  // Start true (suppressed) to match SSR; useEffect flips to false on client
+  const [seen, setSeen] = useState(true);
+
+  useEffect(() => {
     try {
       const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      return !!data[key];
+      if (!data[key]) setSeen(false);
     } catch {
-      return false;
+      setSeen(false);
     }
-  });
+  }, [key]);
 
   const markSeen = useCallback(() => {
     setSeen(true);

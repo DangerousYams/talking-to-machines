@@ -155,4 +155,5 @@ function FlippableCard({
 }
 
 FlippableCard.displayName = 'FlippableCard';
+(FlippableCard as any)._isFlippable = true;
 export default FlippableCard;
