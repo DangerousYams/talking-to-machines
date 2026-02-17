@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface Props {
   accent?: string;
   className?: string;

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 type TemplateKey = 'creative' | 'code' | 'research' | 'debate';
 type Mode = 'guided' | 'freeform';
@@ -673,7 +674,7 @@ export default function PromptLaboratory() {
           </div>
           <div ref={responseRef} style={{
             fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75,
-            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: '40dvh',
+            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: dvhValue(40),
           }}>
             {mode === 'freeform' && !liveResponse && !isStreaming ? (
               <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>Write a prompt and hit send to see a real AI response...</p>

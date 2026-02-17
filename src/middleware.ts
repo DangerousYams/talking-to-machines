@@ -16,6 +16,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     path.startsWith('/lab') ||
     path.startsWith('/tools') ||
     path.startsWith('/practice') ||
+    path.startsWith('/feed') ||
+    path.startsWith('/profile') ||
     path.startsWith('/_') ||
     path.includes('.') // static files
   ) {

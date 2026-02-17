@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface Frame {
   label: string;
@@ -300,9 +301,9 @@ export default function IterationLoop() {
                 Response
               </span>
               <div style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.7, color: '#1A1A2E',
-                whiteSpace: 'pre-wrap' as const, maxHeight: '40dvh', overflowY: 'auto' as const,
-              }}>
+                fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.7, color: 'rgb(26, 26, 46)',
+                whiteSpaceCollapse: 'preserve', textWrapMode: 'wrap', maxHeight: dvhValue(40), overflowY: 'auto' as const,
+              } as React.CSSProperties}>
                 {frame.response}
               </div>
             </div>

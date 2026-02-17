@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, type ReactNode } from 'react';
+import { dvhValue } from '../../lib/css-compat';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -104,7 +105,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
           position: 'relative',
           width: '100%',
           maxWidth: 500,
-          maxHeight: '78dvh',
+          maxHeight: dvhValue(78),
           background: 'var(--color-cream, #FAF8F5)',
           borderRadius: '16px 16px 0 0',
           display: 'flex',

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { streamChat, type ChatMessage as ApiMessage } from '../../../lib/claude';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -559,7 +560,7 @@ export default function SystemPromptSandbox() {
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               style={{
-                width: '100%', height: '100%', minHeight: '15dvh', resize: 'vertical' as const,
+                width: '100%', height: '100%', minHeight: dvhValue(15), resize: 'vertical' as const,
                 padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(123,97,255,0.15)',
                 background: 'rgba(123,97,255,0.03)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem',
                 lineHeight: 1.65, color: '#1A1A2E', outline: 'none',
@@ -611,7 +612,7 @@ export default function SystemPromptSandbox() {
             </span>
           </div>
 
-          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: '35dvh' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: dvhValue(35) }}>
             {messages.length === 0 && !isTyping && !streamingText && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', fontStyle: 'italic', margin: 0, lineHeight: 1.7 }}>
                 {liveMode

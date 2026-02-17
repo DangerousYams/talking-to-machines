@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 /* ─── Types ─── */
 interface TaskCard {
@@ -922,7 +923,7 @@ function MiniChat({
       }}>
         SIMULATED CHAT
       </div>
-      <div style={{ padding: '0.5rem 0.75rem', maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const }}>
+      <div style={{ padding: '0.5rem 0.75rem', maxHeight: isMobile ? dvhValue(25) : dvhValue(30), overflowY: 'auto' as const }}>
         {visibleMessages.map((msg, i) => (
           <div key={i} style={{
             marginBottom: 8, display: 'flex', gap: 6, alignItems: 'flex-start',

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface FileNode {
   name: string;
@@ -666,7 +667,7 @@ export default function TerminalPlayground() {
                 fontSize: '0.78rem',
                 lineHeight: 1.65,
                 overflowY: 'auto',
-                maxHeight: '40dvh',
+                maxHeight: dvhValue(40),
               }}
             >
               <div style={{ color: '#6b7280', marginBottom: 12 }}>

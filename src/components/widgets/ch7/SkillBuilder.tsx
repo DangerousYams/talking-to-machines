@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface SkillTemplate {
   name: string;
@@ -576,7 +577,7 @@ export default function SkillBuilder() {
               background: '#1A1A2E',
               borderRadius: 8,
               padding: '14px 16px',
-              maxHeight: '40dvh',
+              maxHeight: dvhValue(40),
               overflowY: 'auto',
             }}>
               {renderTestResult()}

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface Message {
   id: number;
@@ -409,7 +410,7 @@ export default function ContextWindowViz() {
         {/* Right: Chat input and message list */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Messages log */}
-          <div style={{ flex: 1, padding: '1.25rem 1.5rem', overflowY: 'auto' as const, maxHeight: '35dvh' }}>
+          <div style={{ flex: 1, padding: '1.25rem 1.5rem', overflowY: 'auto' as const, maxHeight: dvhValue(35) }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 12 }}>
               Your Messages
             </span>

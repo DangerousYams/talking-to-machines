@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface AgentOutput {
   text: string;
@@ -494,7 +495,7 @@ export default function HandoffChain() {
                 {/* Agent output */}
                 {agent.text && (
                   <div style={{
-                    padding: '1rem', maxHeight: '40dvh', overflowY: 'auto' as const,
+                    padding: '1rem', maxHeight: dvhValue(40), overflowY: 'auto' as const,
                     fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                     lineHeight: 1.7, color: '#1A1A2E',
                     whiteSpace: 'pre-wrap' as const,

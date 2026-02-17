@@ -10,12 +10,14 @@ import { validateToken } from '../../lib/access-token';
 const MODEL_MAP: Record<string, string> = {
   'prompt-roast': 'claude-haiku-4-5-20251001',
   'block-gen': 'claude-haiku-4-5-20251001',
+  'feed-challenge': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
 const MAX_TOKENS_MAP: Record<string, number> = {
   'prompt-roast': 512,
   'block-gen': 200,
+  'feed-challenge': 512,
 };
 
 // ---------------------------------------------------------------------------

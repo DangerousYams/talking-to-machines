@@ -4,7 +4,12 @@ function getSessionId(): string {
   if (typeof document === 'undefined') return 'ssr';
   const match = document.cookie.match(/(?:^|; )ab_session=([^;]*)/);
   if (match) return match[1];
-  const id = crypto.randomUUID();
+  const id = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0;
+        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+      });
   document.cookie = `ab_session=${id}; path=/; max-age=${60 * 60 * 24 * 90}; SameSite=Lax`;
   return id;
 }
@@ -95,7 +100,7 @@ export async function upsertScrollDepth(params: {
       .eq('chapter_slug', params.chapterSlug)
       .order('created_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (existing) {
       // Only update if the user has progressed further
@@ -136,6 +141,24 @@ export async function upsertScrollDepth(params: {
   } catch {
     // Fire and forget
   }
+}
+
+export function trackChallengeSubmission(challengeId: string, challengeType: string, conceptArea: string, timeMs: number) {
+  enqueue('widget_interactions', {
+    chapter_slug: 'feed',
+    widget_name: `feed-${challengeType}`,
+    action: 'challenge_submit',
+    metadata: { challengeId, conceptArea, timeMs },
+  });
+}
+
+export function trackChallengeCompletion(challengeId: string, challengeType: string, percentile: number) {
+  enqueue('widget_interactions', {
+    chapter_slug: 'feed',
+    widget_name: `feed-${challengeType}`,
+    action: 'challenge_complete',
+    metadata: { challengeId, percentile },
+  });
 }
 
 export function trackAiUsage(chapter: string, widget: string, model: string, inputTokens: number, outputTokens: number) {

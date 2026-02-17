@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface LogEntry {
   step: number;
@@ -338,7 +339,7 @@ export default function FailureModesLab() {
         <div style={{
           background: '#1A1A2E', borderRadius: isMobile ? 8 : 10, padding: isMobile ? '0.5rem' : '1rem',
           marginBottom: isMobile ? 12 : 20,
-          maxHeight: isMobile ? undefined : '40dvh', overflowY: isMobile ? 'hidden' as const : 'auto' as const,
+          maxHeight: isMobile ? undefined : dvhValue(40), overflowY: isMobile ? 'hidden' as const : 'auto' as const,
         }}>
           {(isMobile ? mobileVisibleLog : logEntries).map((entry, i) => renderLogEntry(entry, i))}
         </div>

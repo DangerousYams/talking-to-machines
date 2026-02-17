@@ -3,6 +3,7 @@ import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import ShareCard from '../../ui/ShareCard';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface Scenario {
   id: string;
@@ -533,7 +534,7 @@ export default function FlipTheScript() {
               <div key={i} style={{ width: 8, height: 8, borderRadius: '50%', transition: 'all 0.3s', background: i < answers.length ? '#16C79A' : i === answers.length ? '#0F3460' : 'rgba(26,26,46,0.1)' }} />
             ))}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: '40dvh', overflowY: 'auto' as const }}>
+          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: dvhValue(40), overflowY: 'auto' as const }}>
             {liveMode ? (
               liveMessages.slice(1).map((msg, i) => (
                 <div key={i}>
@@ -599,7 +600,7 @@ export default function FlipTheScript() {
             <>
               <div style={{ marginBottom: '1.25rem' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>Your personalized result</span>
-                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '40dvh', overflowY: 'auto' as const }}>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: dvhValue(40), overflowY: 'auto' as const }}>
                   {(() => {
                     const text = liveMode ? (liveResult || liveResponse || 'Generating your personalized plan...') : scenario!.detailedResponse(answers);
                     return renderResultText(text);
@@ -624,7 +625,7 @@ export default function FlipTheScript() {
                   <div style={{ background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)', borderRadius: 10, padding: '1rem', marginBottom: 8, fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
                     "{scenario ? scenario.vaguePrompt : (liveMessages[0]?.text || customGoal)}"
                   </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const, opacity: 0.8 }}>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: dvhValue(30), overflowY: 'auto' as const, opacity: 0.8 }}>
                     {scenario ? scenario.vagueResponse : "Without clarifying questions, the AI would have given you a generic checklist — accurate but impersonal."}
                   </div>
                 </div>
@@ -636,7 +637,7 @@ export default function FlipTheScript() {
                   <div style={{ background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)', borderRadius: 10, padding: '1rem', marginBottom: 8, fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
                     "Same goal + your 5 answers"
                   </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const }}>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: dvhValue(30), overflowY: 'auto' as const }}>
                     {(() => {
                       const text = liveMode ? (liveResult || liveResponse || '') : scenario!.detailedResponse(answers);
                       return text.split('\n').slice(0, 12).join('\n') + '...';

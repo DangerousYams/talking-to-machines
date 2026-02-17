@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -386,7 +387,7 @@ export default function ForgettingExperiment() {
               Standard Chat
             </span>
           </div>
-          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: '35dvh' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: dvhValue(35) }}>
             {standardVisible.map((msg, i) => {
               const isFailure = isForgettingMoment && i === standardVisible.length - 1 && msg.role === 'assistant';
               return (
@@ -420,7 +421,7 @@ export default function ForgettingExperiment() {
               With Context Summary
             </span>
           </div>
-          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: '35dvh' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: dvhValue(35) }}>
             {summaryVisible.map((msg, i) => {
               const isSuccess = isForgettingMoment && i === summaryVisible.length - 1 && msg.role === 'assistant';
               const isSummary = msg.text.includes('CONTEXT SUMMARY');

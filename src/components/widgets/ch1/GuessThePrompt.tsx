@@ -3,6 +3,7 @@ import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { promptChallenges } from '../../../data/prompt-challenges';
 import ShareCard from '../../ui/ShareCard';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 function getScoreTier(score: number, total: number): string {
   const pct = Math.round((score / total) * 100);
@@ -327,8 +328,8 @@ export default function GuessThePrompt() {
             <div style={{
               background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
               padding: '1.25rem 1.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', lineHeight: 1.7,
-              whiteSpace: 'pre-wrap' as const, maxHeight: '35dvh', overflowY: 'auto' as const, color: '#1A1A2E',
-            }}>
+              whiteSpaceCollapse: 'preserve', textWrapMode: 'wrap', maxHeight: dvhValue(35), overflowY: 'auto' as const, color: 'rgb(26, 26, 46)',
+            } as React.CSSProperties}>
               {challenge.output}
             </div>
           </div>

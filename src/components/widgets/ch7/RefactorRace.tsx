@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 const messyCode = `function d(a,b) {
   let r = [];
@@ -473,7 +474,7 @@ export default function RefactorRace() {
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0F3460', display: 'block', marginBottom: 8 }}>
                 Your Version {userTime && `(${formatTime(userTime)})`}
               </span>
-              <div style={{ background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 8, padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: '40dvh', overflowY: 'auto', color: '#1A1A2E' }}>
+              <div style={{ background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 8, padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: dvhValue(40), overflowY: 'auto', color: '#1A1A2E' }}>
                 {userCode}
               </div>
             </div>
@@ -481,7 +482,7 @@ export default function RefactorRace() {
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#7B61FF', display: 'block', marginBottom: 8 }}>
                 Claude Code Version (~5.5s)
               </span>
-              <div style={{ background: '#1A1A2E', border: '1px solid rgba(123, 97, 255, 0.15)', borderRadius: 8, padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: '40dvh', overflowY: 'auto', color: '#e2e8f0' }}>
+              <div style={{ background: '#1A1A2E', border: '1px solid rgba(123, 97, 255, 0.15)', borderRadius: 8, padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', maxHeight: dvhValue(40), overflowY: 'auto', color: '#e2e8f0' }}>
                 {finalRefactored}
               </div>
             </div>

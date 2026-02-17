@@ -5,7 +5,7 @@ export interface ChatMessage {
   content: string;
 }
 
-export type ChatSource = 'prompt-roast' | 'block-gen';
+export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge';
 
 export interface StreamChatOptions {
   messages: ChatMessage[];

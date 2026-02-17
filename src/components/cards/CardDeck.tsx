@@ -91,24 +91,14 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
     <>
       <div
         ref={containerRef}
-        style={{
-          height: '100dvh',
-          overflowY: 'scroll',
-          scrollSnapType: 'y mandatory',
-        }}
+        className="card-deck-container"
       >
         {childArray.map((child, i) => (
           <div
             key={i}
             ref={(el) => { cardRefs.current[i] = el; }}
             data-card-index={i}
-            style={{
-              height: '100dvh',
-              scrollSnapAlign: 'start',
-              scrollSnapStop: 'always',
-              position: 'relative',
-              overflow: 'clip',
-            }}
+            className="card-deck-card"
           >
             {cloneElement(child as ReactElement<CardChildProps>, {
               isActive: i === activeIndex,

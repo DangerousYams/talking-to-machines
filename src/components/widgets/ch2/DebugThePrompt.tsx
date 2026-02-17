@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { dvhValue } from '../../../lib/css-compat';
 
 interface BugRegion {
   text: string;
@@ -376,7 +377,7 @@ export default function DebugThePrompt() {
             })}
             <div style={{ marginTop: '1.25rem' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>Resulting output</span>
-              <div style={{ background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10, padding: '1rem 1.25rem', fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.7, color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const }}>{challenge.badOutput}</div>
+              <div style={{ background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10, padding: '1rem 1.25rem', fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.7, color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: dvhValue(30), overflowY: 'auto' as const }}>{challenge.badOutput}</div>
             </div>
             <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{foundBugs} of {totalBugs} bugs found ({correctCount} correct)</span>
@@ -399,7 +400,7 @@ export default function DebugThePrompt() {
             </div>
             <div style={{ marginBottom: '1.25rem' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>Improved output</span>
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '35dvh', overflowY: 'auto' as const }}>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: dvhValue(35), overflowY: 'auto' as const }}>
                 {challenge.fixedOutput.split('\n').map((line, i) => {
                   if (line.startsWith('**') && line.includes('**')) { const parts = line.split('**'); return <p key={i} style={{ margin: '0.5em 0' }}>{parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}</p>; }
                   if (line.startsWith('- ') || line.startsWith('\u2022 ')) return <p key={i} style={{ margin: '0.25em 0', paddingLeft: '0.5rem' }}>{line}</p>;

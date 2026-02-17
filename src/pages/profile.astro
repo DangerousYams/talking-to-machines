@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+import ProfileView from '../components/feed/ProfileView';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Your practice profile — track your AI skill development across 8 concept areas." />
+    <meta property="og:title" content="Practice Profile — Talking to Machines" />
+    <meta property="og:description" content="Track your AI skill development across prompt craft, context engineering, tool use, and more." />
+    <title>Practice Profile — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+    <!-- Header -->
+    <header style="position: sticky; top: 0; z-index: 40; background: rgba(250, 248, 245, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(26, 26, 46, 0.04);">
+      <div style="max-width: 960px; margin: 0 auto; padding: 0 16px; height: 48px; display: flex; align-items: center; justify-content: space-between;">
+        <a
+          href="/"
+          style="font-family: var(--font-heading); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; color: var(--color-subtle); text-decoration: none; opacity: 0.7;"
+        >
+          Talking to Machines
+        </a>
+        <a
+          href="/feed"
+          style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-subtle); text-decoration: none; text-transform: uppercase;"
+        >
+          Practice Feed
+        </a>
+      </div>
+    </header>
+
+    <main style="padding-top: 32px;">
+      <ProfileView client:load />
+    </main>
+  </body>
+</html>
