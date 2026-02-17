@@ -248,7 +248,7 @@ export default function PracticePlayground() {
           margin: '0 0 0.75rem',
           lineHeight: 1.1,
         }}>
-          Practice Tools
+          The Sandbox
         </h1>
         <p style={{
           fontFamily: 'var(--font-body)',

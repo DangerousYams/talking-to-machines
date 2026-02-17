@@ -42,7 +42,7 @@ export default function FeedHeroCard({ totalChallenges, completedCount }: FeedHe
         margin: '0 0 0.75rem',
         lineHeight: 1.1,
       }}>
-        Practice Feed
+        The Arena
       </h1>
 
       <p style={{

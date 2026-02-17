@@ -99,7 +99,7 @@ export default function ShareCard({ challenge, percentile, onClose }: ShareCardP
     ctx.fillRect(32, h - 52, w - 64, 1);
     ctx.font = '11px monospace';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.fillText('TALKING TO MACHINES  ·  PRACTICE FEED', 32, h - 24);
+    ctx.fillText('TALKING TO MACHINES  ·  THE ARENA', 32, h - 24);
 
     return canvas;
   }, [challenge, percentile, meta]);
@@ -118,7 +118,7 @@ export default function ShareCard({ challenge, percentile, onClose }: ShareCardP
         const file = new File([blob], 'practice-result.png', { type: 'image/png' });
         const shareData = {
           title: `${challenge.title} — ${percentile}th percentile`,
-          text: `I scored in the ${percentile}th percentile on "${challenge.title}" in the Talking to Machines practice feed!`,
+          text: `I scored in the ${percentile}th percentile on "${challenge.title}" in The Arena — Talking to Machines!`,
           files: [file],
         };
         if (navigator.canShare(shareData)) {

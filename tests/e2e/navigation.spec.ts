@@ -17,10 +17,10 @@ test.describe('Navigation', () => {
     await expect(cta).toHaveAttribute('href', '/ch1');
   });
 
-  test('landing page has Practice Feed link', async ({ page }) => {
+  test('landing page has The Arena link', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    const feedLink = page.getByRole('link', { name: 'Practice Feed' });
+    const feedLink = page.getByRole('link', { name: 'The Arena' });
     await expect(feedLink).toBeVisible();
   });
 

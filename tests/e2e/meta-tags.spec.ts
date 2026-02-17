@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 const PAGES_WITH_META = [
   { path: '/', titleContains: 'Talking to Machines' },
-  { path: '/feed', titleContains: 'Practice Feed' },
-  { path: '/profile', titleContains: 'Practice Profile' },
+  { path: '/feed', titleContains: 'The Arena' },
+  { path: '/profile', titleContains: 'Your Profile' },
   { path: '/ch1', titleContains: 'Ch 1' },
   { path: '/tools', titleContains: 'AI Tool Directory' },
 ];

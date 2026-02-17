@@ -353,7 +353,7 @@ export default function ProfileView() {
             transition: 'opacity 0.2s',
           }}
         >
-          ← Back to Practice Feed
+          ← Back to The Arena
         </a>
       </div>
     </div>
