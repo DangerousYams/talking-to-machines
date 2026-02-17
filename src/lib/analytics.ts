@@ -68,6 +68,76 @@ export function trackWidgetInteraction(chapter: string, widget: string, action: 
   });
 }
 
+/**
+ * Upsert scroll depth for a session+chapter.
+ * Called periodically as the user progresses through content.
+ * Uses direct upsert (not the queue) since we need to update existing rows.
+ */
+export async function upsertScrollDepth(params: {
+  chapterSlug: string;
+  variant: 'scroll' | 'cards';
+  maxSectionIndex: number;
+  maxSectionId: string | null;
+  totalSections: number;
+  percentComplete: number;
+  timeOnPageMs: number;
+  reachedEnd: boolean;
+}) {
+  if (!supabase) return;
+  const sessionId = getSessionId();
+
+  try {
+    // Check for existing row
+    const { data: existing } = await supabase
+      .from('scroll_depth')
+      .select('id, max_section_index, time_on_page_ms')
+      .eq('session_id', sessionId)
+      .eq('chapter_slug', params.chapterSlug)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (existing) {
+      // Only update if the user has progressed further
+      const shouldUpdate =
+        params.maxSectionIndex > existing.max_section_index ||
+        params.timeOnPageMs > (existing.time_on_page_ms || 0);
+
+      if (shouldUpdate) {
+        await supabase
+          .from('scroll_depth')
+          .update({
+            max_section_index: Math.max(params.maxSectionIndex, existing.max_section_index),
+            max_section_id: params.maxSectionId,
+            total_sections: params.totalSections,
+            percent_complete: params.percentComplete,
+            time_on_page_ms: params.timeOnPageMs,
+            reached_end: params.reachedEnd,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', existing.id);
+      }
+    } else {
+      // Insert new row
+      await supabase.from('scroll_depth').insert({
+        session_id: sessionId,
+        chapter_slug: params.chapterSlug,
+        variant: params.variant,
+        max_section_index: params.maxSectionIndex,
+        max_section_id: params.maxSectionId,
+        total_sections: params.totalSections,
+        percent_complete: params.percentComplete,
+        time_on_page_ms: params.timeOnPageMs,
+        reached_end: params.reachedEnd,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    }
+  } catch {
+    // Fire and forget
+  }
+}
+
 export function trackAiUsage(chapter: string, widget: string, model: string, inputTokens: number, outputTokens: number) {
   const costs: Record<string, [number, number]> = {
     'claude-3-5-haiku-20241022': [0.25, 1.25],

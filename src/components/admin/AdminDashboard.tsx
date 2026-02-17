@@ -3,6 +3,7 @@ import StatCard from './StatCard';
 import PageViewsChart from './PageViewsChart';
 import AbTestPanel from './AbTestPanel';
 import AiCostTable from './AiCostTable';
+import EngagementPanel from './EngagementPanel';
 
 // --- Types ---
 
@@ -30,7 +31,20 @@ interface AiCostData {
   byWidget: { widget: string; requests: number; tokens: number; cost: number }[];
 }
 
-type Tab = 'overview' | 'ab-tests' | 'ai-costs';
+interface EngagementData {
+  chapters: {
+    slug: string;
+    sessions: number;
+    reachedEnd: number;
+    completionRate: number;
+    avgPercent: number;
+    avgTimeSeconds: number;
+    buckets: { pct: number; count: number }[];
+    variants: Record<string, { sessions: number; reachedEnd: number; avgPercent: number }>;
+  }[];
+}
+
+type Tab = 'overview' | 'engagement' | 'ab-tests' | 'ai-costs';
 
 // --- Auth Gate ---
 
@@ -120,6 +134,7 @@ function AdminDashboardInner() {
   const [autoRefresh, setAutoRefresh] = useState(false);
 
   const [stats, setStats] = useState<StatsData | null>(null);
+  const [engagement, setEngagement] = useState<EngagementData | null>(null);
   const [experiments, setExperiments] = useState<ExperimentData[]>([]);
   const [aiCosts, setAiCosts] = useState<AiCostData | null>(null);
 
@@ -136,12 +151,12 @@ function AdminDashboardInner() {
       if (!res.ok) throw new Error(`Stats fetch failed: ${res.status}`);
       const data = await res.json();
       setStats({
-        totalViews: data.pageViews?.total ?? 0,
-        uniqueSessions: data.pageViews?.uniqueSessions ?? 0,
-        totalInteractions: data.widgetInteractions?.total ?? 0,
-        totalAiSpend: data.aiUsage?.totalCost ?? 0,
+        totalViews: data.totalViews ?? 0,
+        uniqueSessions: data.uniqueSessions ?? 0,
+        totalInteractions: data.totalInteractions ?? 0,
+        totalAiSpend: data.totalAiSpend ?? 0,
         dailyPageViews: data.dailyPageViews ?? [],
-        topChapters: data.pageViews?.topChapters ?? [],
+        topChapters: data.topChapters ?? [],
       });
     } catch (err: any) {
       console.error('Failed to fetch stats:', err);
@@ -163,15 +178,15 @@ function AdminDashboardInner() {
 
   const fetchAiCosts = useCallback(async () => {
     try {
-      const res = await fetch(`/api/admin/stats?days=${dateRange}`);
+      const res = await fetch(`/api/admin/ai-costs?days=${dateRange}`);
       if (!res.ok) throw new Error(`AI costs fetch failed: ${res.status}`);
       const data = await res.json();
       setAiCosts({
-        totalCost: data.aiUsage?.totalCost ?? 0,
-        totalRequests: data.aiUsage?.totalRequests ?? 0,
-        totalTokens: data.aiUsage?.totalTokens ?? 0,
-        dailyCosts: data.aiUsage?.dailyCosts ?? [],
-        byWidget: data.aiUsage?.byWidget ?? [],
+        totalCost: data.totalCost ?? 0,
+        totalRequests: data.totalRequests ?? 0,
+        totalTokens: data.totalTokens ?? 0,
+        dailyCosts: data.dailyCosts ?? [],
+        byWidget: data.byWidget ?? [],
       });
     } catch (err: any) {
       console.error('Failed to fetch AI costs:', err);
@@ -179,12 +194,24 @@ function AdminDashboardInner() {
     }
   }, [dateRange]);
 
+  const fetchEngagement = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/engagement?days=${dateRange}`);
+      if (!res.ok) throw new Error(`Engagement fetch failed: ${res.status}`);
+      const data = await res.json();
+      setEngagement(data);
+    } catch (err: any) {
+      console.error('Failed to fetch engagement:', err);
+      setError(err.message);
+    }
+  }, [dateRange]);
+
   const fetchAll = useCallback(async () => {
     setLoading(true);
     setError(null);
-    await Promise.all([fetchStats(), fetchExperiments(), fetchAiCosts()]);
+    await Promise.all([fetchStats(), fetchExperiments(), fetchAiCosts(), fetchEngagement()]);
     setLoading(false);
-  }, [fetchStats, fetchExperiments, fetchAiCosts]);
+  }, [fetchStats, fetchExperiments, fetchAiCosts, fetchEngagement]);
 
   // Initial load + dateRange change
   useEffect(() => {
@@ -353,6 +380,9 @@ function AdminDashboardInner() {
         <button onClick={() => setActiveTab('overview')} style={tabStyle('overview')}>
           Overview
         </button>
+        <button onClick={() => setActiveTab('engagement')} style={tabStyle('engagement')}>
+          Engagement
+        </button>
         <button onClick={() => setActiveTab('ab-tests')} style={tabStyle('ab-tests')}>
           A/B Tests
         </button>
@@ -416,6 +446,11 @@ function AdminDashboardInner() {
               </div>
               <PageViewsChart data={stats.dailyPageViews} />
             </div>
+          )}
+
+          {/* Engagement Tab */}
+          {activeTab === 'engagement' && (
+            <EngagementPanel chapters={engagement?.chapters ?? []} />
           )}
 
           {/* A/B Tests Tab */}

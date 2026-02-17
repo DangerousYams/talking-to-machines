@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useCallback, Children, cloneElement, isVal
 import DotNav from './DotNav';
 import NavDrawer from './NavDrawer';
 import { trackPageView } from '../../lib/analytics';
+import ScrollDepthTracker from '../analytics/ScrollDepthTracker';
 
 interface CardDeckProps {
   children: ReactNode;
@@ -40,6 +41,13 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
       trackPageView(window.location.pathname, 'cards', chapterSlug);
     }
   }, [chapterSlug]);
+
+  // Dispatch card-progress event for scroll depth tracking
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent('card-progress', { detail: { index: activeIndex, cardId: null } }),
+    );
+  }, [activeIndex]);
 
   // Set up IntersectionObserver to detect active card
   useEffect(() => {
@@ -115,6 +123,14 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
       </div>
 
       {/* DotNav disabled for now */}
+
+      {chapterSlug && (
+        <ScrollDepthTracker
+          chapterSlug={chapterSlug}
+          variant="cards"
+          totalSections={total}
+        />
+      )}
 
       <NavDrawer
         isOpen={menuOpen}
