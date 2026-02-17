@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { ChallengeComponentProps, TasteCuratorPayload } from '../../../data/challenges';
+import Expandable from '../../ui/Expandable';
 
 export default function TasteCurator({ challenge, onSubmit, isMobile }: ChallengeComponentProps) {
   const payload = challenge.payload as TasteCuratorPayload;
@@ -130,14 +131,16 @@ export default function TasteCurator({ challenge, onSubmit, isMobile }: Challeng
                   {variant.label}
                   {isExpertPick && ' ★ Expert pick'}
                 </span>
-                <span style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '0.85rem',
-                  color: 'var(--color-deep)',
-                  lineHeight: 1.5,
-                }}>
-                  {variant.content}
-                </span>
+                <Expandable maxLines={1} accentColor="#F5A623" forceExpanded={revealed}>
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.85rem',
+                    color: 'var(--color-deep)',
+                    lineHeight: 1.5,
+                  }}>
+                    {variant.content}
+                  </span>
+                </Expandable>
               </div>
             </button>
           );

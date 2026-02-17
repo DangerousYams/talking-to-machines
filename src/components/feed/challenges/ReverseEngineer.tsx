@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { ChallengeComponentProps, ReverseEngineerPayload } from '../../../data/challenges';
 
 export default function ReverseEngineer({ challenge, onSubmit, isMobile }: ChallengeComponentProps) {
   const payload = challenge.payload as ReverseEngineerPayload;
   const [selected, setSelected] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const [outputExpanded, setOutputExpanded] = useState(false);
+  const [outputOverflows, setOutputOverflows] = useState(false);
+  const outputRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = outputRef.current;
+    if (el) setOutputOverflows(el.scrollHeight > el.clientHeight + 1);
+  }, [payload.output]);
 
   const handleSelect = (index: number) => {
     if (revealed) return;
@@ -21,24 +29,69 @@ export default function ReverseEngineer({ challenge, onSubmit, isMobile }: Chall
   };
 
   const isCorrect = selected === payload.correctIndex;
+  const showOutputFull = outputExpanded || revealed;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {/* AI output to reverse-engineer */}
-      <div style={{
-        padding: '14px 16px',
-        borderRadius: 10,
-        border: '1px solid rgba(26, 26, 46, 0.08)',
-        background: '#FFFFFF',
-        fontFamily: payload.outputType === 'code' ? 'var(--font-mono)' : 'var(--font-body)',
-        fontSize: payload.outputType === 'code' ? '0.8rem' : '0.9rem',
-        color: 'var(--color-deep)',
-        lineHeight: 1.65,
-        whiteSpace: 'pre-wrap',
-        maxHeight: isMobile ? 200 : 240,
-        overflowY: 'auto',
-      }}>
-        {payload.output}
+      <div style={{ position: 'relative' }}>
+        <div
+          ref={outputRef}
+          style={{
+            padding: '14px 16px',
+            borderRadius: 10,
+            border: '1px solid rgba(26, 26, 46, 0.08)',
+            background: '#FFFFFF',
+            fontFamily: payload.outputType === 'code' ? 'var(--font-mono)' : 'var(--font-body)',
+            fontSize: payload.outputType === 'code' ? '0.8rem' : '0.9rem',
+            color: 'var(--color-deep)',
+            lineHeight: 1.65,
+            whiteSpace: 'pre-wrap',
+            maxHeight: showOutputFull ? 'none' : (isMobile ? 120 : 160),
+            overflowY: 'hidden',
+            transition: 'max-height 0.2s ease',
+          }}
+        >
+          {payload.output}
+        </div>
+        {!showOutputFull && outputOverflows && (
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 40,
+            background: 'linear-gradient(transparent, #FFFFFF)',
+            borderRadius: '0 0 10px 10px',
+            pointerEvents: 'none',
+          }} />
+        )}
+        {outputOverflows && !revealed && (
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={() => setOutputExpanded((v) => !v)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setOutputExpanded((v) => !v);
+              }
+            }}
+            style={{
+              display: 'inline-block',
+              marginTop: 4,
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.65rem',
+              fontWeight: 600,
+              color: 'var(--color-subtle)',
+              cursor: 'pointer',
+              userSelect: 'none',
+              letterSpacing: '0.02em',
+            }}
+          >
+            {outputExpanded ? '▾ Show less' : '▸ Show full output'}
+          </span>
+        )}
       </div>
 
       {/* Prompt options */}
@@ -59,6 +112,7 @@ export default function ReverseEngineer({ challenge, onSubmit, isMobile }: Chall
           const isSelected = selected === i;
           const isAnswer = revealed && i === payload.correctIndex;
           const isWrong = revealed && isSelected && !isCorrect;
+          const showFull = isSelected || revealed;
 
           let borderColor = 'rgba(26, 26, 46, 0.08)';
           let bgColor = '#FFFFFF';
@@ -108,6 +162,10 @@ export default function ReverseEngineer({ challenge, onSubmit, isMobile }: Chall
                 fontSize: '0.78rem',
                 color: 'var(--color-deep)',
                 lineHeight: 1.5,
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical' as any,
+                WebkitLineClamp: showFull ? 'unset' : 2,
+                overflow: showFull ? 'visible' : 'hidden',
               }}>
                 {option}
               </span>

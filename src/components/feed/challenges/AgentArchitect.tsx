@@ -5,6 +5,7 @@ export default function AgentArchitect({ challenge, onSubmit }: ChallengeCompone
   const payload = challenge.payload as AgentArchitectPayload;
   const [orderedSteps, setOrderedSteps] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [constraintsOpen, setConstraintsOpen] = useState(false);
 
   const availableSteps = payload.steps.filter((s) => !orderedSteps.includes(s.id));
 
@@ -69,25 +70,56 @@ export default function AgentArchitect({ challenge, onSubmit }: ChallengeCompone
         </p>
       </div>
 
-      {/* Constraints */}
+      {/* Constraints — collapsed summary */}
       {payload.constraints.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-          {payload.constraints.map((c, i) => (
-            <span
-              key={i}
-              style={{
-                padding: '3px 8px',
-                borderRadius: 6,
-                background: 'rgba(26, 26, 46, 0.04)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.6rem',
-                fontWeight: 500,
-                color: 'var(--color-subtle)',
-              }}
-            >
-              {c}
-            </span>
-          ))}
+        <div>
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={() => setConstraintsOpen((v) => !v)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setConstraintsOpen((v) => !v);
+              }
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '3px 10px',
+              borderRadius: 6,
+              background: 'rgba(26, 26, 46, 0.04)',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.6rem',
+              fontWeight: 600,
+              color: 'var(--color-subtle)',
+              cursor: 'pointer',
+              userSelect: 'none',
+            }}
+          >
+            {constraintsOpen ? '▾' : '▸'} {payload.constraints.length} constraints
+          </span>
+          {constraintsOpen && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+              {payload.constraints.map((c, i) => (
+                <span
+                  key={i}
+                  style={{
+                    padding: '3px 8px',
+                    borderRadius: 6,
+                    background: 'rgba(26, 26, 46, 0.04)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.6rem',
+                    fontWeight: 500,
+                    color: 'var(--color-subtle)',
+                  }}
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

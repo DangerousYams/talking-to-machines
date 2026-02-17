@@ -11,6 +11,7 @@ export default function TrustCall({ challenge, onSubmit }: ChallengeComponentPro
   const payload = challenge.payload as TrustCallPayload;
   const [selected, setSelected] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const [contextOpen, setContextOpen] = useState(false);
 
   const handleSubmit = () => {
     if (!selected) return;
@@ -37,21 +38,51 @@ export default function TrustCall({ challenge, onSubmit }: ChallengeComponentPro
           fontSize: '0.95rem',
           fontWeight: 600,
           color: 'var(--color-deep)',
-          margin: '0 0 6px',
+          margin: 0,
           lineHeight: 1.4,
         }}>
           {payload.scenario}
         </p>
-        <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.85rem',
-          color: 'var(--color-subtle)',
-          margin: 0,
-          lineHeight: 1.5,
-        }}>
-          {payload.context}
-        </p>
       </div>
+
+      {/* Context toggle */}
+      {payload.context && (
+        <div>
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={() => setContextOpen((v) => !v)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setContextOpen((v) => !v);
+              }
+            }}
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.65rem',
+              fontWeight: 600,
+              color: '#0EA5E9',
+              cursor: 'pointer',
+              userSelect: 'none',
+              letterSpacing: '0.02em',
+            }}
+          >
+            {contextOpen ? '▾ Hide context' : '▸ More context'}
+          </span>
+          {contextOpen && (
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.85rem',
+              color: 'var(--color-subtle)',
+              margin: '6px 0 0',
+              lineHeight: 1.5,
+            }}>
+              {payload.context}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Question */}
       <p style={{

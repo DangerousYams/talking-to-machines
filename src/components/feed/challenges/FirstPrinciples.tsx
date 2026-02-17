@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { ChallengeComponentProps, FirstPrinciplesPayload } from '../../../data/challenges';
+import Expandable from '../../ui/Expandable';
 
 export default function FirstPrinciples({ challenge, onSubmit }: ChallengeComponentProps) {
   const payload = challenge.payload as FirstPrinciplesPayload;
@@ -77,15 +78,17 @@ export default function FirstPrinciples({ challenge, onSubmit }: ChallengeCompon
         }}>
           AI says:
         </span>
-        <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.9rem',
-          color: 'var(--color-deep)',
-          margin: 0,
-          lineHeight: 1.6,
-        }}>
-          {payload.aiAnswer}
-        </p>
+        <Expandable maxLines={2} showMoreText="Read full answer" forceExpanded={revealed}>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.9rem',
+            color: 'var(--color-deep)',
+            margin: 0,
+            lineHeight: 1.6,
+          }}>
+            {payload.aiAnswer}
+          </p>
+        </Expandable>
       </div>
 
       {/* Trust or Challenge */}

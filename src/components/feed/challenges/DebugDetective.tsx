@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { ChallengeComponentProps, DebugDetectivePayload } from '../../../data/challenges';
+import Expandable from '../../ui/Expandable';
 
 const BUG_TYPE_LABELS: Record<string, { label: string; color: string }> = {
   'ambiguous': { label: 'Ambiguous', color: '#F5A623' },
@@ -13,6 +14,7 @@ export default function DebugDetective({ challenge, onSubmit }: ChallengeCompone
   const payload = challenge.payload as DebugDetectivePayload;
   const [identifiedBugs, setIdentifiedBugs] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [activeBugIndex, setActiveBugIndex] = useState<number | null>(null);
 
   const handleBugSelect = (region: string, bugType: string) => {
     if (submitted) return;
@@ -90,17 +92,17 @@ export default function DebugDetective({ challenge, onSubmit }: ChallengeCompone
         }}>
           Result (bad)
         </span>
-        <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.85rem',
-          color: 'var(--color-subtle)',
-          margin: 0,
-          lineHeight: 1.5,
-          maxHeight: 100,
-          overflowY: 'auto',
-        }}>
-          {payload.badOutput}
-        </p>
+        <Expandable maxLines={2} showMoreText="Show bad output" forceExpanded={submitted}>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.85rem',
+            color: 'var(--color-subtle)',
+            margin: 0,
+            lineHeight: 1.5,
+          }}>
+            {payload.badOutput}
+          </p>
+        </Expandable>
       </div>
 
       {/* Bug identification */}
@@ -113,13 +115,14 @@ export default function DebugDetective({ challenge, onSubmit }: ChallengeCompone
         textTransform: 'uppercase',
         margin: 0,
       }}>
-        Diagnose {payload.bugs.length} bugs — select the type for each
+        Diagnose {payload.bugs.length} bugs — tap each to classify
       </p>
 
       {payload.bugs.map((bug, i) => {
         const selected = identifiedBugs[bug.region];
         const isCorrect = submitted && selected === bug.bugType;
         const isWrong = submitted && selected && selected !== bug.bugType;
+        const isActive = submitted || activeBugIndex === i;
 
         return (
           <div
@@ -127,50 +130,91 @@ export default function DebugDetective({ challenge, onSubmit }: ChallengeCompone
             style={{
               padding: '10px 12px',
               borderRadius: 8,
-              border: `1px solid ${isCorrect ? '#16C79A' : isWrong ? '#E94560' : 'rgba(26, 26, 46, 0.06)'}`,
+              border: `1px solid ${isCorrect ? '#16C79A' : isWrong ? '#E94560' : activeBugIndex === i ? 'rgba(123, 97, 255, 0.2)' : 'rgba(26, 26, 46, 0.06)'}`,
               background: isCorrect ? 'rgba(22, 199, 154, 0.04)' : isWrong ? 'rgba(233, 69, 96, 0.02)' : '#FFFFFF',
+              cursor: submitted ? 'default' : 'pointer',
+            }}
+            onClick={() => {
+              if (submitted) return;
+              setActiveBugIndex(activeBugIndex === i ? null : i);
             }}
           >
-            <p style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.78rem',
-              color: 'var(--color-deep)',
-              margin: '0 0 8px',
-              lineHeight: 1.4,
-              fontStyle: 'italic',
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
             }}>
-              "{bug.region}"
-            </p>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-              {bugTypes.map((type) => {
-                const cfg = BUG_TYPE_LABELS[type];
-                const isActive = selected === type;
-                const isAnswer = submitted && type === bug.bugType;
-
-                return (
-                  <button
-                    key={type}
-                    onClick={() => handleBugSelect(bug.region, type)}
-                    disabled={submitted}
-                    style={{
-                      padding: '3px 8px',
-                      borderRadius: 6,
-                      border: `1px solid ${isAnswer ? '#16C79A' : isActive ? cfg.color : 'rgba(26, 26, 46, 0.08)'}`,
-                      background: isAnswer ? 'rgba(22, 199, 154, 0.1)' : isActive ? `${cfg.color}10` : 'transparent',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.6rem',
-                      fontWeight: 600,
-                      color: isAnswer ? '#16C79A' : isActive ? cfg.color : 'var(--color-subtle)',
-                      cursor: submitted ? 'default' : 'pointer',
-                      transition: 'all 0.15s',
-                    }}
-                  >
-                    {cfg.label}
-                  </button>
-                );
-              })}
+              <p style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.78rem',
+                color: 'var(--color-deep)',
+                margin: 0,
+                lineHeight: 1.4,
+                fontStyle: 'italic',
+                flex: 1,
+              }}>
+                "{bug.region}"
+              </p>
+              {selected && !isActive && (
+                <span style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.55rem',
+                  fontWeight: 600,
+                  color: BUG_TYPE_LABELS[selected]?.color || 'var(--color-subtle)',
+                  padding: '2px 6px',
+                  borderRadius: 4,
+                  background: `${BUG_TYPE_LABELS[selected]?.color || '#6B7280'}10`,
+                  flexShrink: 0,
+                }}>
+                  {BUG_TYPE_LABELS[selected]?.label}
+                </span>
+              )}
+              {!submitted && (
+                <span style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.6rem',
+                  color: 'var(--color-subtle)',
+                  flexShrink: 0,
+                }}>
+                  {isActive ? '▾' : '▸'}
+                </span>
+              )}
             </div>
+
+            {isActive && (
+              <div
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 8 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {bugTypes.map((type) => {
+                  const cfg = BUG_TYPE_LABELS[type];
+                  const isBugActive = selected === type;
+                  const isAnswer = submitted && type === bug.bugType;
+
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => handleBugSelect(bug.region, type)}
+                      disabled={submitted}
+                      style={{
+                        padding: '3px 8px',
+                        borderRadius: 6,
+                        border: `1px solid ${isAnswer ? '#16C79A' : isBugActive ? cfg.color : 'rgba(26, 26, 46, 0.08)'}`,
+                        background: isAnswer ? 'rgba(22, 199, 154, 0.1)' : isBugActive ? `${cfg.color}10` : 'transparent',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.6rem',
+                        fontWeight: 600,
+                        color: isAnswer ? '#16C79A' : isBugActive ? cfg.color : 'var(--color-subtle)',
+                        cursor: submitted ? 'default' : 'pointer',
+                        transition: 'all 0.15s',
+                      }}
+                    >
+                      {cfg.label}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
