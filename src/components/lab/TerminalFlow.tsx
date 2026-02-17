@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * TerminalFlow
@@ -140,6 +141,7 @@ export default function TerminalFlow() {
   const mountedRef = useRef(true);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const clearTimers = useCallback(() => {
     timersRef.current.forEach(clearTimeout);
@@ -314,15 +316,16 @@ export default function TerminalFlow() {
   };
 
   const containerStyle: React.CSSProperties = {
-    maxWidth: 650,
+    maxWidth: isMobile ? 'none' : 650,
     margin: '0 auto',
     background: 'linear-gradient(145deg, #1A1A2E 0%, #0F3460 100%)',
-    borderRadius: 16,
-    border: '1px solid rgba(123, 97, 255, 0.15)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.2)',
+    borderRadius: isMobile ? 0 : 16,
+    border: isMobile ? 'none' : '1px solid rgba(123, 97, 255, 0.15)',
+    boxShadow: isMobile ? 'none' : '0 4px 32px rgba(26, 26, 46, 0.2)',
     overflow: 'hidden',
     opacity: masterOpacity,
     transition: reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`,
+    ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const } : {}),
   };
 
   const chromeBarStyle: React.CSSProperties = {
@@ -353,11 +356,12 @@ export default function TerminalFlow() {
   const terminalBodyStyle: React.CSSProperties = {
     padding: '16px 20px 20px',
     fontFamily: "'JetBrains Mono', monospace",
-    fontSize: 12,
+    fontSize: isMobile ? 13 : 12,
     lineHeight: 1.7,
-    maxHeight: 380,
+    maxHeight: isMobile ? 'none' : 380,
     overflowY: 'auto',
     scrollbarWidth: 'thin' as const,
+    ...(isMobile ? { flex: 1 } : {}),
   };
 
   const lineStyle: React.CSSProperties = {

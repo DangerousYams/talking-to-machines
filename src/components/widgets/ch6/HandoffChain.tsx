@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface AgentOutput {
   text: string;
@@ -320,11 +321,21 @@ export default function HandoffChain() {
 
   const handoffs = [handoff1, handoff2];
   const isMobile = useIsMobile();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetAgentIndex, setSheetAgentIndex] = useState<number | null>(null);
+
+  // On mobile, determine the active agent (last agent that is working or has completed)
+  const mobileActiveIndex = (() => {
+    if (editorStatus === 'working' || editorStatus === 'done') return 2;
+    if (writerStatus === 'working' || writerStatus === 'done') return 1;
+    if (researcherStatus === 'working' || researcherStatus === 'done') return 0;
+    return 0;
+  })();
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
@@ -338,35 +349,39 @@ export default function HandoffChain() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               The Handoff Chain
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              Three agents, one pipeline. Watch the research flow.
-            </p>
+            {!isMobile && (
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+                Three agents, one pipeline. Watch the research flow.
+              </p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Topic selection */}
-      <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
-        <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-          letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF',
-          display: 'block', marginBottom: 10,
-        }}>
-          Choose a Topic
-        </span>
-        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, flexWrap: 'wrap' as const, gap: 8 }}>
+      <div style={{ padding: isMobile ? '0.6rem 1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)', flexShrink: 0 }}>
+        {!isMobile && (
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+            letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF',
+            display: 'block', marginBottom: 10,
+          }}>
+            Choose a Topic
+          </span>
+        )}
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'row' as const : 'row' as const, flexWrap: 'wrap' as const, gap: isMobile ? 6 : 8, overflowX: isMobile ? 'auto' as const : undefined }}>
           {presetsData.map((p, i) => (
             <button
               key={i}
               onClick={() => { setSelectedPreset(i); reset(); }}
               style={{
-                padding: isMobile ? '0.65rem 1rem' : '0.5rem 1rem', borderRadius: 8, border: '1px solid',
-                fontFamily: 'var(--font-body)', fontSize: '0.82rem', cursor: 'pointer',
+                padding: isMobile ? '0.4rem 0.7rem' : '0.5rem 1rem', borderRadius: isMobile ? 20 : 8, border: '1px solid',
+                fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.75rem' : '0.82rem', cursor: 'pointer',
                 transition: 'all 0.25s', lineHeight: 1.4,
-                minHeight: isMobile ? 44 : undefined,
+                whiteSpace: isMobile ? 'nowrap' as const : undefined,
                 background: selectedPreset === i ? '#1A1A2E' : 'transparent',
                 borderColor: selectedPreset === i ? '#1A1A2E' : 'rgba(26,26,46,0.1)',
                 color: selectedPreset === i ? '#FAF8F5' : '#1A1A2E',
@@ -377,13 +392,14 @@ export default function HandoffChain() {
           ))}
         </div>
         {selectedPreset !== null && (
-          <div style={{ marginTop: 12 }}>
+          <div style={{ marginTop: isMobile ? 8 : 12 }}>
             <button
               onClick={isRunning ? reset : runChain}
               style={{
-                padding: '0.6rem 1.5rem', borderRadius: 8, border: 'none',
+                padding: isMobile ? '0.5rem 1.25rem' : '0.6rem 1.5rem', borderRadius: 8, border: 'none',
                 fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
-                cursor: 'pointer', transition: 'all 0.3s', minHeight: 44,
+                cursor: 'pointer', transition: 'all 0.3s', minHeight: isMobile ? 40 : 44,
+                width: isMobile ? '100%' : undefined,
                 background: isRunning ? '#6B7280' : 'linear-gradient(135deg, #7B61FF, #16C79A)',
                 color: 'white',
                 boxShadow: isRunning ? 'none' : '0 4px 16px rgba(123,97,255,0.2)',
@@ -395,9 +411,9 @@ export default function HandoffChain() {
         )}
       </div>
 
-      {/* Agent lanes */}
-      {selectedPreset !== null && (
-        <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      {/* Agent lanes - DESKTOP: all lanes, MOBILE: status badges + active agent output */}
+      {selectedPreset !== null && !isMobile && (
+        <div style={{ padding: '1.5rem 2rem' }}>
           {agents.map((agent, i) => (
             <div key={agent.name}>
               {/* Handoff arrow between lanes */}
@@ -421,7 +437,7 @@ export default function HandoffChain() {
                     }}>
                       HANDOFF
                     </span>
-                    <span style={{ fontSize: 14 }}>\u2193</span>
+                    <span style={{ fontSize: 14 }}>{'\u2193'}</span>
                   </div>
                 </div>
               )}
@@ -470,7 +486,7 @@ export default function HandoffChain() {
                         animation: 'blink 1s ease-in-out infinite',
                       }} />
                     )}
-                    {agent.status === 'done' && <span>\u2713</span>}
+                    {agent.status === 'done' && <span>{'\u2713'}</span>}
                     {statusLabels[agent.status]}
                   </div>
                 </div>
@@ -478,7 +494,7 @@ export default function HandoffChain() {
                 {/* Agent output */}
                 {agent.text && (
                   <div style={{
-                    padding: isMobile ? '0.75rem' : '1rem', maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
+                    padding: '1rem', maxHeight: '40dvh', overflowY: 'auto' as const,
                     fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                     lineHeight: 1.7, color: '#1A1A2E',
                     whiteSpace: 'pre-wrap' as const,
@@ -506,12 +522,140 @@ export default function HandoffChain() {
         </div>
       )}
 
+      {/* MOBILE agent lanes */}
+      {selectedPreset !== null && isMobile && (
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+          {/* Agent status badges */}
+          <div style={{ display: 'flex', gap: 6, padding: '0.6rem 1rem', flexShrink: 0 }}>
+            {agents.map((agent, i) => {
+              const isActive = i === mobileActiveIndex;
+              const hasPreviousOutput = agent.status === 'done' && i < mobileActiveIndex;
+              return (
+                <button
+                  key={agent.name}
+                  onClick={() => {
+                    if (hasPreviousOutput) {
+                      setSheetAgentIndex(i);
+                      setSheetOpen(true);
+                    }
+                  }}
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                    padding: '0.35rem 0.5rem', borderRadius: 8,
+                    border: isActive ? `1.5px solid ${agent.color}` : '1px solid rgba(26,26,46,0.08)',
+                    background: isActive ? `${agent.color}10` : 'transparent',
+                    cursor: hasPreviousOutput ? 'pointer' : 'default',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                    color: isActive ? agent.color : '#6B7280',
+                    transition: 'all 0.3s',
+                  }}
+                >
+                  <span style={{ fontSize: 12 }}>{agent.icon}</span>
+                  <span>{agent.name}</span>
+                  {agent.status === 'done' && <span style={{ color: '#16C79A', fontSize: '0.7rem' }}>{'\u2713'}</span>}
+                  {agent.status === 'working' && (
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: agent.color, display: 'inline-block', animation: 'blink 1s ease-in-out infinite' }} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Handoff indicator */}
+          {((handoff1 && mobileActiveIndex >= 1) || (handoff2 && mobileActiveIndex >= 2)) && (
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '2px 0', flexShrink: 0,
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                letterSpacing: '0.05em', color: '#7B61FF',
+                padding: '2px 10px', borderRadius: 10,
+                background: 'rgba(123,97,255,0.08)',
+              }}>
+                {'\u2193'} HANDOFF {'\u2193'}
+              </span>
+            </div>
+          )}
+
+          {/* Active agent output */}
+          <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', padding: '0 1rem 0.5rem' }}>
+            <div style={{
+              flex: 1, minHeight: 0, border: '1px solid',
+              borderColor: agents[mobileActiveIndex].status === 'working' ? `${agents[mobileActiveIndex].color}40` : 'rgba(26,26,46,0.08)',
+              borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column',
+            }}>
+              {/* Mini header */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '0.5rem 0.75rem', flexShrink: 0,
+                background: agents[mobileActiveIndex].status === 'working' ? `${agents[mobileActiveIndex].color}08` : 'rgba(26,26,46,0.02)',
+                borderBottom: '1px solid rgba(26,26,46,0.04)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: 13 }}>{agents[mobileActiveIndex].icon}</span>
+                  <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: '#1A1A2E' }}>
+                    {agents[mobileActiveIndex].name}
+                  </span>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  color: statusColors[agents[mobileActiveIndex].status],
+                }}>
+                  {statusLabels[agents[mobileActiveIndex].status]}
+                </span>
+              </div>
+
+              {/* Output area */}
+              <div style={{
+                flex: 1, minHeight: 0, overflowY: 'auto',
+                padding: '0.5rem 0.75rem',
+                fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
+                lineHeight: 1.7, color: '#1A1A2E',
+                whiteSpace: 'pre-wrap' as const,
+              }}>
+                {agents[mobileActiveIndex].text ? (
+                  <>
+                    {agents[mobileActiveIndex].text}
+                    {agents[mobileActiveIndex].status === 'working' && (
+                      <span style={{ animation: 'blink 0.8s ease-in-out infinite', color: agents[mobileActiveIndex].color }}>|</span>
+                    )}
+                  </>
+                ) : (
+                  <div style={{ textAlign: 'center', color: '#6B7280', fontStyle: 'italic', paddingTop: '2rem' }}>
+                    Waiting for input...
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* "View previous" hint */}
+            {mobileActiveIndex > 0 && agents[mobileActiveIndex - 1].status === 'done' && (
+              <button
+                onClick={() => { setSheetAgentIndex(mobileActiveIndex - 1); setSheetOpen(true); }}
+                style={{
+                  marginTop: 6, padding: '0.35rem 0.75rem', borderRadius: 6,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  color: '#7B61FF', background: 'rgba(123,97,255,0.06)',
+                  border: '1px solid rgba(123,97,255,0.12)', cursor: 'pointer',
+                  textAlign: 'center', flexShrink: 0,
+                }}
+              >
+                View {agents[mobileActiveIndex - 1].name}'s output
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Empty state */}
       {selectedPreset === null && (
-        <div style={{
-          padding: isMobile ? '3rem 1rem' : '4rem 2rem', textAlign: 'center' as const, color: '#6B7280',
+        <div style={isMobile ? {
+          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', color: '#6B7280',
+        } : {
+          padding: '4rem 2rem', textAlign: 'center' as const, color: '#6B7280',
         }}>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.9rem' : '1rem', margin: 0, textAlign: 'center' as const }}>
             Select a topic above to see the handoff chain in action.
           </p>
         </div>
@@ -520,19 +664,42 @@ export default function HandoffChain() {
       {/* Insight */}
       {researcherStatus === 'done' && writerStatus === 'done' && editorStatus === 'done' && (
         <div style={{
-          padding: isMobile ? '1rem' : '1.25rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+          padding: isMobile ? '0.6rem 1rem' : '1.25rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
           background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(22,199,154,0.04))',
+          flexShrink: 0,
         }}>
           <p style={{
-            fontFamily: 'var(--font-body)', fontSize: '0.85rem',
+            fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem',
             fontStyle: 'italic', color: '#1A1A2E', margin: 0,
           }}>
             <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>Key insight: </span>
-            The handoff documents &mdash; research notes and the draft &mdash; are the critical interface.
-            Each agent is a specialist. What makes the chain work isn't any single agent's skill;
-            it's the quality of what gets passed between them.
+            {isMobile
+              ? 'The handoff documents are the critical interface. Tap each agent to see their work.'
+              : <>The handoff documents &mdash; research notes and the draft &mdash; are the critical interface.
+                Each agent is a specialist. What makes the chain work isn't any single agent's skill;
+                it's the quality of what gets passed between them.</>
+            }
           </p>
         </div>
+      )}
+
+      {/* Mobile BottomSheet for previous agent output */}
+      {isMobile && (
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title={sheetAgentIndex !== null ? `${agents[sheetAgentIndex]?.icon} ${agents[sheetAgentIndex]?.name}'s Output` : 'Agent Output'}
+        >
+          {sheetAgentIndex !== null && agents[sheetAgentIndex] && (
+            <div style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem',
+              lineHeight: 1.7, color: '#1A1A2E',
+              whiteSpace: 'pre-wrap' as const,
+            }}>
+              {agents[sheetAgentIndex].text || 'No output yet.'}
+            </div>
+          )}
+        </BottomSheet>
       )}
 
       <style>{`

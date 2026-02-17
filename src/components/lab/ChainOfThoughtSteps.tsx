@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * ChainOfThoughtSteps
@@ -43,6 +44,7 @@ const HOLD_DURATION = 3500;
 const FADE_DURATION = 700;
 
 export default function ChainOfThoughtSteps() {
+  const isMobile = useIsMobile();
   const [visibleSteps, setVisibleSteps] = useState(0);
   const [showCoTAnswer, setShowCoTAnswer] = useState(false);
   const [cotConfidence, setCotConfidence] = useState(0);
@@ -138,27 +140,40 @@ export default function ChainOfThoughtSteps() {
 
   // --- Styles ---
 
-  const containerStyle: React.CSSProperties = {
-    maxWidth: 520,
-    width: '100%',
-    margin: '0 auto',
-    background: '#FFFFFF',
-    borderRadius: 16,
-    border: '1px solid rgba(15, 52, 96, 0.12)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.08), 0 1px 4px rgba(0,0,0,0.04)',
-    padding: '24px 16px',
-    overflow: 'hidden',
-    opacity: masterOpacity,
-    transition: reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`,
-  };
+  const containerStyle: React.CSSProperties = isMobile
+    ? {
+        flex: 1,
+        width: '100%',
+        margin: '0 auto',
+        background: '#FFFFFF',
+        padding: '24px 20px',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        opacity: masterOpacity,
+        transition: reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`,
+      }
+    : {
+        maxWidth: 520,
+        width: '100%',
+        margin: '0 auto',
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: '1px solid rgba(15, 52, 96, 0.12)',
+        boxShadow: '0 4px 32px rgba(26, 26, 46, 0.08), 0 1px 4px rgba(0,0,0,0.04)',
+        padding: '24px 16px',
+        overflow: 'hidden',
+        opacity: masterOpacity,
+        transition: reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`,
+      };
 
   const problemStyle: React.CSSProperties = {
     fontFamily: "'Playfair Display', Georgia, serif",
-    fontSize: 'clamp(1.1rem, 3vw, 1.4rem)',
+    fontSize: isMobile ? 'clamp(1.2rem, 4vw, 1.6rem)' : 'clamp(1.1rem, 3vw, 1.4rem)',
     fontWeight: 700,
     color: DEEP,
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: isMobile ? 12 : 8,
     lineHeight: 1.4,
   };
 
@@ -180,7 +195,7 @@ export default function ChainOfThoughtSteps() {
       display: 'flex',
       alignItems: 'center',
       gap: 14,
-      padding: '12px 16px',
+      padding: isMobile ? '16px 18px' : '12px 16px',
       background: '#FFFFFF',
       borderRadius: 10,
       borderLeft: `3px solid ${NAVY}`,
@@ -237,7 +252,7 @@ export default function ChainOfThoughtSteps() {
 
   const dashedLineStyle = (index: number): React.CSSProperties => ({
     width: 1,
-    height: 16,
+    height: isMobile ? 24 : 16,
     marginLeft: 29,
     borderLeft: `2px dashed ${NAVY}`,
     opacity: index < visibleSteps ? 0.15 : 0,
@@ -246,7 +261,7 @@ export default function ChainOfThoughtSteps() {
 
   const cotAnswerStyle: React.CSSProperties = {
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: isMobile ? 32 : 20,
     opacity: showCoTAnswer ? 1 : 0,
     transform: showCoTAnswer ? 'translateY(0)' : 'translateY(8px)',
     transition,
@@ -308,7 +323,7 @@ export default function ChainOfThoughtSteps() {
   const dividerStyle: React.CSSProperties = {
     height: 1,
     background: 'rgba(26, 26, 46, 0.08)',
-    margin: '24px 0',
+    margin: isMobile ? '32px 0' : '24px 0',
     opacity: showContrast ? 1 : 0,
     transition: reducedMotion ? 'none' : 'opacity 0.4s ease',
   };
@@ -411,7 +426,7 @@ export default function ChainOfThoughtSteps() {
       <div style={sectionLabelStyle}>With &quot;think step by step&quot;</div>
 
       {/* Steps */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', ...(isMobile ? { flex: 1, justifyContent: 'center' } : {}) }}>
         {STEPS.map((step, i) => (
           <div key={i}>
             {/* Dashed connector line */}

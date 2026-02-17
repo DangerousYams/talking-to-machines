@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface ComparisonEntry {
   prompt: string;
@@ -142,6 +143,8 @@ export default function HeadToHead() {
   const [activeCategory, setActiveCategory] = useState(0);
   const [activeComparison, setActiveComparison] = useState(0);
   const [userRatings, setUserRatings] = useState<Record<string, { a: number; b: number }>>({});
+  const [mobileToolTab, setMobileToolTab] = useState<'a' | 'b'>('a');
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const category = categories[activeCategory];
   const comparison = category.comparisons[activeComparison];
@@ -159,10 +162,293 @@ export default function HeadToHead() {
     }));
   };
 
+  // --- MOBILE LAYOUT ---
+  if (isMobile) {
+    const activeTool = mobileToolTab === 'a' ? comparison.toolA : comparison.toolB;
+    const activeQualities = activeTool.qualities;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          padding: '8px 12px', flexShrink: 0,
+          borderBottom: '1px solid rgba(26,26,46,0.06)',
+        }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 6,
+            background: 'linear-gradient(135deg, #F5A623, #F5A62380)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" />
+            </svg>
+          </div>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
+            color: '#1A1A2E', margin: 0, flex: 1,
+          }}>
+            Head to Head
+          </h3>
+        </div>
+
+        {/* Category tabs */}
+        <div style={{
+          display: 'flex', gap: '0.3rem', padding: '8px 12px',
+          overflowX: 'auto', WebkitOverflowScrolling: 'touch' as const,
+          flexShrink: 0,
+        }}>
+          {categories.map((cat, i) => (
+            <button
+              key={cat.name}
+              onClick={() => { setActiveCategory(i); setActiveComparison(0); setMobileToolTab('a'); }}
+              style={{
+                padding: '0.3rem 0.6rem', borderRadius: 6,
+                border: `1px solid ${i === activeCategory ? cat.color + '40' : 'rgba(26,26,46,0.08)'}`,
+                background: i === activeCategory ? cat.color + '0A' : 'transparent',
+                fontFamily: 'var(--font-heading)', fontSize: '0.78rem',
+                fontWeight: i === activeCategory ? 700 : 500,
+                color: i === activeCategory ? cat.color : '#6B7280',
+                cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' as const,
+              }}
+            >
+              {cat.name}
+            </button>
+          ))}
+          {/* Comparison selector dots */}
+          {category.comparisons.length > 1 && category.comparisons.map((_, i) => (
+            <button
+              key={`comp-${i}`}
+              onClick={() => { setActiveComparison(i); setMobileToolTab('a'); }}
+              style={{
+                width: 24, height: 24, borderRadius: 6,
+                border: `1px solid ${i === activeComparison ? category.color + '40' : 'rgba(26,26,46,0.08)'}`,
+                background: i === activeComparison ? category.color + '12' : 'transparent',
+                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                color: i === activeComparison ? category.color : '#6B7280',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+
+        {/* Prompt (clamped to 2 lines) */}
+        <div style={{
+          padding: '6px 12px', flexShrink: 0,
+          borderBottom: '1px solid rgba(26,26,46,0.04)',
+        }}>
+          <p style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.72rem', lineHeight: 1.5,
+            color: '#1A1A2E', margin: 0,
+            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
+            overflow: 'hidden', textOverflow: 'ellipsis',
+          }}>
+            {comparison.prompt}
+          </p>
+        </div>
+
+        {/* Tool A / B tabs */}
+        <div style={{
+          display: 'flex', flexShrink: 0, borderBottom: '1px solid rgba(26,26,46,0.06)',
+        }}>
+          <button
+            onClick={() => setMobileToolTab('a')}
+            style={{
+              flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-heading)', fontSize: '0.82rem', fontWeight: 700,
+              color: mobileToolTab === 'a' ? category.color : '#6B7280',
+              background: mobileToolTab === 'a' ? category.color + '08' : 'transparent',
+              borderBottom: mobileToolTab === 'a' ? `2px solid ${category.color}` : '2px solid transparent',
+            }}
+          >
+            {comparison.toolA.name}
+          </button>
+          <button
+            onClick={() => setMobileToolTab('b')}
+            style={{
+              flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-heading)', fontSize: '0.82rem', fontWeight: 700,
+              color: mobileToolTab === 'b' ? category.color : '#6B7280',
+              background: mobileToolTab === 'b' ? category.color + '08' : 'transparent',
+              borderBottom: mobileToolTab === 'b' ? `2px solid ${category.color}` : '2px solid transparent',
+            }}
+          >
+            {comparison.toolB.name}
+          </button>
+        </div>
+
+        {/* Tool output area */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '10px 12px' }}>
+          <p style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65,
+            color: 'rgba(26,26,46,0.7)', margin: 0,
+          }}>
+            {activeTool.output}
+          </p>
+
+          {/* Quality bars */}
+          <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column' as const, gap: '0.3rem' }}>
+            {(['quality', 'speed', 'style'] as const).map((metric) => (
+              <div key={metric} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                  color: '#6B7280', width: 42, textTransform: 'uppercase' as const, letterSpacing: '0.04em',
+                }}>
+                  {metric}
+                </span>
+                <StarRating value={activeQualities[metric]} color={category.color} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Vote buttons + rating link */}
+        <div style={{
+          padding: '8px 12px', flexShrink: 0,
+          borderTop: '1px solid rgba(26,26,46,0.06)',
+          display: 'flex', gap: '0.5rem', alignItems: 'center',
+        }}>
+          <button
+            onClick={() => handleVote('a')}
+            style={{
+              flex: 1, padding: '10px 0', borderRadius: 8,
+              border: `1px solid ${userRating?.a ? category.color : 'rgba(26,26,46,0.1)'}`,
+              background: userRating?.a ? `${category.color}12` : 'transparent',
+              fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
+              color: userRating?.a ? category.color : '#6B7280',
+              cursor: 'pointer', letterSpacing: '0.04em',
+            }}
+          >
+            {userRating?.a ? 'PICKED' : 'PREFER'} {comparison.toolA.name}
+          </button>
+          <button
+            onClick={() => handleVote('b')}
+            style={{
+              flex: 1, padding: '10px 0', borderRadius: 8,
+              border: `1px solid ${userRating?.b ? category.color : 'rgba(26,26,46,0.1)'}`,
+              background: userRating?.b ? `${category.color}12` : 'transparent',
+              fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
+              color: userRating?.b ? category.color : '#6B7280',
+              cursor: 'pointer', letterSpacing: '0.04em',
+            }}
+          >
+            {userRating?.b ? 'PICKED' : 'PREFER'} {comparison.toolB.name}
+          </button>
+        </div>
+
+        {/* Ratings summary button */}
+        <div style={{
+          padding: '0 12px 8px', flexShrink: 0, textAlign: 'center' as const,
+        }}>
+          <button
+            onClick={() => setSheetOpen(true)}
+            style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+              color: category.color, background: 'transparent', border: 'none',
+              cursor: 'pointer', letterSpacing: '0.04em',
+              textDecoration: 'underline', textUnderlineOffset: '2px',
+            }}
+          >
+            View full comparison
+          </button>
+        </div>
+
+        {/* BottomSheet for rating summary */}
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title="Full Comparison"
+        >
+          <div>
+            {/* Prompt */}
+            <div style={{
+              background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)',
+              borderRadius: 8, padding: '0.75rem', marginBottom: '1rem',
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                color: category.color, display: 'block', marginBottom: '0.35rem',
+              }}>
+                Prompt
+              </span>
+              <p style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
+                color: '#1A1A2E', margin: 0,
+              }}>
+                {comparison.prompt}
+              </p>
+            </div>
+
+            {/* Side-by-side ratings */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+              {/* Tool A ratings */}
+              <div>
+                <h4 style={{
+                  fontFamily: 'var(--font-heading)', fontSize: '0.88rem', fontWeight: 700,
+                  color: '#1A1A2E', margin: '0 0 0.5rem',
+                }}>
+                  {comparison.toolA.name}
+                </h4>
+                {(['quality', 'speed', 'style'] as const).map((metric) => (
+                  <div key={metric} style={{ marginBottom: '0.3rem' }}>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      color: '#6B7280', textTransform: 'uppercase' as const, letterSpacing: '0.05em',
+                    }}>
+                      {metric}: {comparison.toolA.qualities[metric]}/10
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {/* Tool B ratings */}
+              <div>
+                <h4 style={{
+                  fontFamily: 'var(--font-heading)', fontSize: '0.88rem', fontWeight: 700,
+                  color: '#1A1A2E', margin: '0 0 0.5rem',
+                }}>
+                  {comparison.toolB.name}
+                </h4>
+                {(['quality', 'speed', 'style'] as const).map((metric) => (
+                  <div key={metric} style={{ marginBottom: '0.3rem' }}>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      color: '#6B7280', textTransform: 'uppercase' as const, letterSpacing: '0.05em',
+                    }}>
+                      {metric}: {comparison.toolB.qualities[metric]}/10
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Takeaway */}
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(14,165,233,0.04), rgba(123,97,255,0.04))',
+              border: '1px solid rgba(14,165,233,0.1)',
+              borderRadius: 8, padding: '0.75rem',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6,
+                color: '#1A1A2E', margin: 0,
+              }}>
+                <strong style={{ color: category.color }}>The takeaway:</strong> There is no single "best" tool. The right choice depends on your specific task, your quality bar, and how much time you have.
+              </p>
+            </div>
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // --- DESKTOP LAYOUT (unchanged) ---
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
@@ -174,7 +460,7 @@ export default function HeadToHead() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
               Head to Head
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
@@ -184,21 +470,19 @@ export default function HeadToHead() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem' }}>
+      <div style={{ padding: '1.25rem 2rem' }}>
         {/* Category tabs */}
         <div style={{
           display: 'flex', gap: '0.5rem', marginBottom: '1rem',
-          flexWrap: isMobile ? 'nowrap' as const : 'wrap' as const,
-          overflowX: isMobile ? 'auto' as const : 'visible' as const,
-          WebkitOverflowScrolling: 'touch' as const,
-          paddingBottom: isMobile ? '0.25rem' : 0,
+          flexWrap: 'wrap' as const,
+          overflowX: 'visible' as const,
         }}>
           {categories.map((cat, i) => (
             <button
               key={cat.name}
               onClick={() => { setActiveCategory(i); setActiveComparison(0); }}
               style={{
-                padding: isMobile ? '0.5rem 0.85rem' : '0.4rem 0.85rem',
+                padding: '0.4rem 0.85rem',
                 borderRadius: 6,
                 border: `1px solid ${i === activeCategory ? cat.color + '40' : 'rgba(26,26,46,0.08)'}`,
                 background: i === activeCategory ? cat.color + '0A' : 'transparent',
@@ -225,7 +509,7 @@ export default function HeadToHead() {
                 key={i}
                 onClick={() => setActiveComparison(i)}
                 style={{
-                  width: isMobile ? 36 : 24, height: isMobile ? 36 : 24,
+                  width: 24, height: 24,
                   borderRadius: 6,
                   border: `1px solid ${i === activeComparison ? category.color + '40' : 'rgba(26,26,46,0.08)'}`,
                   background: i === activeComparison ? category.color + '12' : 'transparent',
@@ -250,7 +534,7 @@ export default function HeadToHead() {
           background: '#FEFDFB',
           border: '1px solid rgba(26,26,46,0.08)',
           borderRadius: 10,
-          padding: isMobile ? '0.85rem 1rem' : '1rem 1.25rem',
+          padding: '1rem 1.25rem',
           marginBottom: '1.25rem',
         }}>
           <span style={{
@@ -277,13 +561,13 @@ export default function HeadToHead() {
         </div>
 
         {/* Side-by-side outputs */}
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.25rem' }}>
           {/* Tool A */}
           <div style={{
             background: 'white',
             border: `1px solid ${userRating?.a ? category.color + '30' : 'rgba(26,26,46,0.06)'}`,
             borderRadius: 10,
-            padding: isMobile ? '1rem' : '1.25rem',
+            padding: '1.25rem',
             transition: 'border-color 0.2s ease',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
@@ -299,7 +583,7 @@ export default function HeadToHead() {
               <button
                 onClick={() => handleVote('a')}
                 style={{
-                  padding: isMobile ? '0.4rem 0.75rem' : '0.25rem 0.6rem',
+                  padding: '0.25rem 0.6rem',
                   borderRadius: 5,
                   border: `1px solid ${userRating?.a ? category.color : 'rgba(26,26,46,0.1)'}`,
                   background: userRating?.a ? `${category.color}12` : 'transparent',
@@ -310,7 +594,6 @@ export default function HeadToHead() {
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   letterSpacing: '0.05em',
-                  minHeight: isMobile ? 44 : 'auto',
                 }}
               >
                 {userRating?.a ? 'PICKED' : 'PREFER'}
@@ -353,7 +636,7 @@ export default function HeadToHead() {
             background: 'white',
             border: `1px solid ${userRating?.b ? category.color + '30' : 'rgba(26,26,46,0.06)'}`,
             borderRadius: 10,
-            padding: isMobile ? '1rem' : '1.25rem',
+            padding: '1.25rem',
             transition: 'border-color 0.2s ease',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
@@ -369,7 +652,7 @@ export default function HeadToHead() {
               <button
                 onClick={() => handleVote('b')}
                 style={{
-                  padding: isMobile ? '0.4rem 0.75rem' : '0.25rem 0.6rem',
+                  padding: '0.25rem 0.6rem',
                   borderRadius: 5,
                   border: `1px solid ${userRating?.b ? category.color : 'rgba(26,26,46,0.1)'}`,
                   background: userRating?.b ? `${category.color}12` : 'transparent',
@@ -380,7 +663,6 @@ export default function HeadToHead() {
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   letterSpacing: '0.05em',
-                  minHeight: isMobile ? 44 : 'auto',
                 }}
               >
                 {userRating?.b ? 'PICKED' : 'PREFER'}
@@ -424,7 +706,7 @@ export default function HeadToHead() {
           background: 'linear-gradient(135deg, rgba(14,165,233,0.04), rgba(123,97,255,0.04))',
           border: '1px solid rgba(14,165,233,0.1)',
           borderRadius: 10,
-          padding: isMobile ? '0.85rem 1rem' : '1rem 1.25rem',
+          padding: '1rem 1.25rem',
         }}>
           <p style={{
             fontFamily: 'var(--font-body)',

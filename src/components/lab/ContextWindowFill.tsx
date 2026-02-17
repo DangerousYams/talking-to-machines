@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * ContextWindowFill
@@ -21,17 +22,36 @@ interface MessageBlock {
 
 const SYSTEM_PROMPT_TOKENS = 280;
 const MAX_TOKENS = 8192;
-const CONTAINER_WIDTH = 220;
-const CONTAINER_HEIGHT = 380;
-const CONTAINER_X = 90;
-const CONTAINER_Y = 40;
 const SYSTEM_BLOCK_HEIGHT = 32;
 const BLOCK_GAP = 4;
 const BLOCK_INSET = 6;
-const INNER_WIDTH = CONTAINER_WIDTH - BLOCK_INSET * 2;
-const USABLE_HEIGHT = CONTAINER_HEIGHT - SYSTEM_BLOCK_HEIGHT - BLOCK_GAP * 2 - 12;
-const FILL_BAR_X = 60;
 const FILL_BAR_WIDTH = 6;
+
+// Desktop layout
+const CONTAINER_WIDTH_DESKTOP = 220;
+const CONTAINER_HEIGHT_DESKTOP = 380;
+const CONTAINER_X_DESKTOP = 90;
+const CONTAINER_Y_DESKTOP = 40;
+const FILL_BAR_X_DESKTOP = 60;
+
+// Mobile layout (narrower container, taller SVG, token counter below)
+const CONTAINER_WIDTH_MOBILE = 200;
+const CONTAINER_HEIGHT_MOBILE = 500;
+const CONTAINER_X_MOBILE = 80;
+const CONTAINER_Y_MOBILE = 40;
+const FILL_BAR_X_MOBILE = 50;
+
+function getContextLayout(mobile: boolean) {
+  const CONTAINER_WIDTH = mobile ? CONTAINER_WIDTH_MOBILE : CONTAINER_WIDTH_DESKTOP;
+  const CONTAINER_HEIGHT = mobile ? CONTAINER_HEIGHT_MOBILE : CONTAINER_HEIGHT_DESKTOP;
+  const CONTAINER_X = mobile ? CONTAINER_X_MOBILE : CONTAINER_X_DESKTOP;
+  const CONTAINER_Y = mobile ? CONTAINER_Y_MOBILE : CONTAINER_Y_DESKTOP;
+  const FILL_BAR_X = mobile ? FILL_BAR_X_MOBILE : FILL_BAR_X_DESKTOP;
+  const INNER_WIDTH = CONTAINER_WIDTH - BLOCK_INSET * 2;
+  const SVG_WIDTH = mobile ? 360 : 440;
+  const SVG_HEIGHT = mobile ? 680 : 460;
+  return { CONTAINER_WIDTH, CONTAINER_HEIGHT, CONTAINER_X, CONTAINER_Y, FILL_BAR_X, INNER_WIDTH, SVG_WIDTH, SVG_HEIGHT };
+}
 
 const PURPLE = '#7B61FF';
 const CORAL = '#E94560';
@@ -64,6 +84,7 @@ function tokenToHeight(tokens: number): number {
 }
 
 export default function ContextWindowFill() {
+  const isMobile = useIsMobile();
   const [messages, setMessages] = useState<MessageBlock[]>([]);
   const [totalTokens, setTotalTokens] = useState(SYSTEM_PROMPT_TOKENS);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -72,6 +93,9 @@ export default function ContextWindowFill() {
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const messageIdRef = useRef(0);
   const scriptIndexRef = useRef(0);
+
+  const cl = getContextLayout(isMobile);
+  const { CONTAINER_WIDTH, CONTAINER_HEIGHT, CONTAINER_X, CONTAINER_Y, FILL_BAR_X, INNER_WIDTH, SVG_WIDTH, SVG_HEIGHT } = cl;
 
   const clearTimers = useCallback(() => {
     timersRef.current.forEach(clearTimeout);
@@ -261,17 +285,28 @@ export default function ContextWindowFill() {
   const transition = reducedMotion ? 'none' : 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   const fadeTransition = reducedMotion ? 'none' : 'opacity 0.5s ease, transform 0.5s ease';
 
-  const containerStyle: React.CSSProperties = {
-    maxWidth: 520,
-    margin: '0 auto',
-    background: '#FFFFFF',
-    borderRadius: 16,
-    border: '1px solid rgba(26, 26, 46, 0.06)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
-    padding: '24px 16px',
-    overflow: 'hidden',
-    position: 'relative',
-  };
+  const containerStyle: React.CSSProperties = isMobile
+    ? {
+        flex: 1,
+        width: '100%',
+        margin: '0 auto',
+        background: '#FFFFFF',
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+      }
+    : {
+        maxWidth: 520,
+        margin: '0 auto',
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: '1px solid rgba(26, 26, 46, 0.06)',
+        boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
+        padding: '24px 16px',
+        overflow: 'hidden',
+        position: 'relative',
+      };
 
   return (
     <div style={containerStyle}>
@@ -289,8 +324,9 @@ export default function ContextWindowFill() {
       </div>
 
       <svg
-        viewBox="0 0 440 460"
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ width: '100%', height: isMobile ? '100%' : 'auto', display: 'block' }}
         role="img"
         aria-label="Context window container filling with message blocks that overflow when capacity is reached"
       >
@@ -555,11 +591,12 @@ export default function ContextWindowFill() {
           );
         })}
 
-        {/* Token counter (right side) */}
+        {/* Token counter — right side on desktop, below container on mobile */}
         <g>
           <text
-            x={CONTAINER_X + CONTAINER_WIDTH + 28}
-            y={CONTAINER_Y + 20}
+            x={isMobile ? CONTAINER_X + CONTAINER_WIDTH / 2 : CONTAINER_X + CONTAINER_WIDTH + 28}
+            y={isMobile ? CONTAINER_Y + CONTAINER_HEIGHT + 30 : CONTAINER_Y + 20}
+            textAnchor={isMobile ? 'middle' : 'start'}
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 9,
@@ -572,8 +609,9 @@ export default function ContextWindowFill() {
             Used
           </text>
           <text
-            x={CONTAINER_X + CONTAINER_WIDTH + 28}
-            y={CONTAINER_Y + 38}
+            x={isMobile ? CONTAINER_X + CONTAINER_WIDTH / 2 : CONTAINER_X + CONTAINER_WIDTH + 28}
+            y={isMobile ? CONTAINER_Y + CONTAINER_HEIGHT + 48 : CONTAINER_Y + 38}
+            textAnchor={isMobile ? 'middle' : 'start'}
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 14,
@@ -585,8 +623,9 @@ export default function ContextWindowFill() {
             {totalTokens.toLocaleString()}
           </text>
           <text
-            x={CONTAINER_X + CONTAINER_WIDTH + 28}
-            y={CONTAINER_Y + 54}
+            x={isMobile ? CONTAINER_X + CONTAINER_WIDTH / 2 : CONTAINER_X + CONTAINER_WIDTH + 28}
+            y={isMobile ? CONTAINER_Y + CONTAINER_HEIGHT + 64 : CONTAINER_Y + 54}
+            textAnchor={isMobile ? 'middle' : 'start'}
             style={{
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 9,
@@ -599,8 +638,8 @@ export default function ContextWindowFill() {
           </text>
         </g>
 
-        {/* "What AI sees right now" bracket (right side, along the visible blocks) */}
-        {bracketVisible && (() => {
+        {/* "What AI sees right now" bracket (right side, along the visible blocks) — hidden on mobile */}
+        {bracketVisible && !isMobile && (() => {
           const bx = CONTAINER_X + CONTAINER_WIDTH + 20;
           const tipX = bx + 10;
           const bTop = bracketTop;
@@ -666,55 +705,60 @@ export default function ContextWindowFill() {
         })()}
 
         {/* Legend at bottom */}
-        <g>
-          {/* System prompt legend */}
-          <rect x={CONTAINER_X} y={CONTAINER_Y + CONTAINER_HEIGHT + 24} width={10} height={10} rx={3} fill={PURPLE} opacity={0.8} />
-          <text
-            x={CONTAINER_X + 16}
-            y={CONTAINER_Y + CONTAINER_HEIGHT + 31}
-            dominantBaseline="central"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 9,
-              fill: SUBTLE,
-              letterSpacing: '0.03em',
-            }}
-          >
-            System prompt (pinned)
-          </text>
+        {(() => {
+          const legendBaseY = isMobile ? CONTAINER_Y + CONTAINER_HEIGHT + 80 : CONTAINER_Y + CONTAINER_HEIGHT + 24;
+          return (
+            <g>
+              {/* System prompt legend */}
+              <rect x={CONTAINER_X} y={legendBaseY} width={10} height={10} rx={3} fill={PURPLE} opacity={0.8} />
+              <text
+                x={CONTAINER_X + 16}
+                y={legendBaseY + 7}
+                dominantBaseline="central"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 9,
+                  fill: SUBTLE,
+                  letterSpacing: '0.03em',
+                }}
+              >
+                System prompt (pinned)
+              </text>
 
-          {/* User legend */}
-          <rect x={CONTAINER_X} y={CONTAINER_Y + CONTAINER_HEIGHT + 42} width={10} height={10} rx={3} fill={CORAL} opacity={0.8} />
-          <text
-            x={CONTAINER_X + 16}
-            y={CONTAINER_Y + CONTAINER_HEIGHT + 49}
-            dominantBaseline="central"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 9,
-              fill: SUBTLE,
-              letterSpacing: '0.03em',
-            }}
-          >
-            User message
-          </text>
+              {/* User legend */}
+              <rect x={CONTAINER_X} y={legendBaseY + 18} width={10} height={10} rx={3} fill={CORAL} opacity={0.8} />
+              <text
+                x={CONTAINER_X + 16}
+                y={legendBaseY + 25}
+                dominantBaseline="central"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 9,
+                  fill: SUBTLE,
+                  letterSpacing: '0.03em',
+                }}
+              >
+                User message
+              </text>
 
-          {/* AI legend */}
-          <rect x={CONTAINER_X + 130} y={CONTAINER_Y + CONTAINER_HEIGHT + 42} width={10} height={10} rx={3} fill={SKY} opacity={0.8} />
-          <text
-            x={CONTAINER_X + 146}
-            y={CONTAINER_Y + CONTAINER_HEIGHT + 49}
-            dominantBaseline="central"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 9,
-              fill: SUBTLE,
-              letterSpacing: '0.03em',
-            }}
-          >
-            AI response
-          </text>
-        </g>
+              {/* AI legend */}
+              <rect x={CONTAINER_X + 130} y={legendBaseY + 18} width={10} height={10} rx={3} fill={SKY} opacity={0.8} />
+              <text
+                x={CONTAINER_X + 146}
+                y={legendBaseY + 25}
+                dominantBaseline="central"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 9,
+                  fill: SUBTLE,
+                  letterSpacing: '0.03em',
+                }}
+              >
+                AI response
+              </text>
+            </g>
+          );
+        })()}
       </svg>
     </div>
   );

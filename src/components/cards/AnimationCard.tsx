@@ -23,10 +23,10 @@ export default function AnimationCard({ children, caption, isActive = false, car
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: isMobile ? '8px 8px' : '32px 32px',
+        padding: isMobile ? 0 : '32px 32px',
         background: 'var(--color-cream)',
-        gap: 12,
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
       {/* Menu button */}
@@ -73,6 +73,7 @@ export default function AnimationCard({ children, caption, isActive = false, car
             color: 'var(--color-subtle)',
             opacity: 0.4,
             letterSpacing: '0.02em',
+            zIndex: 5,
           }}
         >
           {cardIndex}/{totalCards}
@@ -80,16 +81,30 @@ export default function AnimationCard({ children, caption, isActive = false, car
       )}
       <div
         style={{
-          maxWidth: 900,
+          maxWidth: isMobile ? '100%' : 900,
           width: '100%',
           flex: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: 0,
+          ...(isMobile ? { flexDirection: 'column' as const } : {}),
         }}
       >
-        {isActive ? children : null}
+        {isActive ? (
+          isMobile ? (
+            <div style={{
+              width: '100%',
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0,
+              padding: '8px 0',
+            }}>
+              {children}
+            </div>
+          ) : children
+        ) : null}
       </div>
 
       {caption && (
@@ -99,11 +114,20 @@ export default function AnimationCard({ children, caption, isActive = false, car
             fontSize: '0.65rem',
             fontWeight: 500,
             letterSpacing: '0.04em',
-            color: 'var(--color-subtle)',
+            color: isMobile ? 'rgba(107,114,128,0.9)' : 'var(--color-subtle)',
             textAlign: 'center',
             margin: 0,
-            maxWidth: 360,
-            opacity: 0.6,
+            maxWidth: isMobile ? '100%' : 360,
+            opacity: isMobile ? 1 : 0.6,
+            ...(isMobile ? {
+              position: 'absolute' as const,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: '12px 16px',
+              background: 'linear-gradient(transparent, rgba(248,246,243,0.85) 30%, rgba(248,246,243,0.95))',
+              zIndex: 4,
+            } : {}),
           }}
         >
           {caption}

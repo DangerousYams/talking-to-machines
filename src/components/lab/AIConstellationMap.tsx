@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * AIConstellationMap
@@ -150,11 +151,18 @@ export default function AIConstellationMap() {
   const animFrameRef = useRef<number>(0);
   const mountedRef = useRef(true);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const isMobile = useIsMobile();
+  const isMobileRef = useRef(isMobile);
+  isMobileRef.current = isMobile;
 
   const getCanvasDimensions = useCallback(() => {
+    const mobile = isMobileRef.current;
     const container = containerRef.current;
     if (!container) return { width: 900, height: 506 };
     const rect = container.getBoundingClientRect();
+    if (mobile) {
+      return { width: rect.width, height: rect.height || rect.width * 2 };
+    }
     return { width: rect.width, height: rect.width * (9 / 16) };
   }, []);
 
@@ -511,10 +519,27 @@ export default function AIConstellationMap() {
     };
   }, [reducedMotion, getCanvasDimensions, drawFrame]);
 
+  const mobileContainerStyle: React.CSSProperties = isMobile
+    ? {
+        maxWidth: 'none',
+        borderRadius: 0,
+        border: 'none',
+        boxShadow: 'none',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column' as const,
+      }
+    : {};
+
+  const currentContainerStyle: React.CSSProperties = {
+    ...outerContainerStyle,
+    ...mobileContainerStyle,
+  };
+
   // --- Reduced-motion static fallback ---
   if (reducedMotion) {
     return (
-      <div ref={containerRef} style={outerContainerStyle}>
+      <div ref={containerRef} style={currentContainerStyle}>
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%' }} />
         <div style={staticOverlayStyle}>
           <p
@@ -533,7 +558,7 @@ export default function AIConstellationMap() {
   }
 
   return (
-    <div ref={containerRef} style={outerContainerStyle}>
+    <div ref={containerRef} style={{ ...currentContainerStyle, ...(isMobile ? { flex: 1 } : {}) }}>
       <canvas ref={canvasRef} style={{ display: 'block', width: '100%' }} />
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface ToolExample {
   thinking: string;
@@ -147,12 +148,21 @@ const tools: Tool[] = [
   },
 ];
 
+const steps = ['Thinking', 'Tool Call', 'Result', 'Answer'];
+
 export default function ToolCatalog() {
   const isMobile = useIsMobile();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const [sheetToolIndex, setSheetToolIndex] = useState<number | null>(null);
+  const [sheetStep, setSheetStep] = useState(0);
 
   const handleCardClick = (index: number) => {
+    if (isMobile) {
+      setSheetToolIndex(index);
+      setSheetStep(0);
+      return;
+    }
     if (expandedIndex === index) {
       setExpandedIndex(null);
       setActiveStep(0);
@@ -162,13 +172,257 @@ export default function ToolCatalog() {
     }
   };
 
-  const steps = ['Thinking', 'Tool Call', 'Result', 'Answer'];
+  // --- MOBILE LAYOUT ---
+  if (isMobile) {
+    const sheetTool = sheetToolIndex !== null ? tools[sheetToolIndex] : null;
 
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          padding: '8px 12px', flexShrink: 0,
+          borderBottom: '1px solid rgba(26,26,46,0.06)',
+        }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 6,
+            background: 'linear-gradient(135deg, #F5A623, #F5A62380)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
+            color: '#1A1A2E', margin: 0, flex: 1,
+          }}>
+            Tool Catalog
+          </h3>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+            {tools.length} tools
+          </span>
+        </div>
+
+        {/* Compact card grid (2 per row) */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '8px 10px' }}>
+          <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr',
+            gap: '6px',
+          }}>
+            {tools.map((tool, i) => (
+              <button
+                key={tool.name}
+                onClick={() => handleCardClick(i)}
+                style={{
+                  display: 'flex', flexDirection: 'column' as const, alignItems: 'center',
+                  gap: '4px', padding: '10px 6px', borderRadius: 10,
+                  border: `1px solid ${tool.color}20`,
+                  background: 'rgba(26,26,46,0.015)',
+                  cursor: 'pointer', textAlign: 'center' as const,
+                }}
+              >
+                <div style={{
+                  width: 30, height: 30, borderRadius: 8,
+                  background: `linear-gradient(135deg, ${tool.color}18, ${tool.color}08)`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: tool.color,
+                }}>
+                  {tool.icon}
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-heading)', fontSize: '0.75rem', fontWeight: 700,
+                  color: tool.color, lineHeight: 1.2,
+                }}>
+                  {tool.name}
+                </span>
+                <span style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.62rem',
+                  color: '#6B7280', lineHeight: 1.3,
+                  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
+                  overflow: 'hidden',
+                }}>
+                  {tool.description}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* BottomSheet with mini stepper demo */}
+        <BottomSheet
+          isOpen={sheetTool !== null}
+          onClose={() => { setSheetToolIndex(null); setSheetStep(0); }}
+          title={sheetTool?.name || ''}
+        >
+          {sheetTool && (
+            <div>
+              {/* Tool info */}
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6,
+                color: '#1A1A2E', margin: '0 0 0.5rem', opacity: 0.75,
+              }}>
+                {sheetTool.description}
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.75rem' }}>
+                <div>
+                  <span style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    color: '#6B7280', letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                  }}>Accepts</span>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#1A1A2E', margin: '2px 0 0', opacity: 0.7 }}>
+                    {sheetTool.inputs}
+                  </p>
+                </div>
+                <div>
+                  <span style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    color: '#6B7280', letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                  }}>Returns</span>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#1A1A2E', margin: '2px 0 0', opacity: 0.7 }}>
+                    {sheetTool.outputs}
+                  </p>
+                </div>
+              </div>
+
+              {/* Step indicators */}
+              <div style={{
+                display: 'flex', gap: '0.35rem', marginBottom: '0.75rem',
+              }}>
+                {steps.map((step, si) => (
+                  <button
+                    key={step}
+                    onClick={() => setSheetStep(si)}
+                    style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      padding: '0.35rem 0.6rem', borderRadius: 100,
+                      border: 'none', cursor: 'pointer', flex: 1,
+                      background: sheetStep === si ? sheetTool.color : 'rgba(26,26,46,0.05)',
+                      color: sheetStep === si ? 'white' : '#6B7280',
+                      transition: 'all 0.25s',
+                      whiteSpace: 'nowrap' as const,
+                    }}
+                  >
+                    {si + 1}. {step}
+                  </button>
+                ))}
+              </div>
+
+              {/* Step content */}
+              <div style={{
+                background: sheetStep === 1 || sheetStep === 2
+                  ? 'linear-gradient(145deg, #1A1A2E 0%, #0F3460 100%)'
+                  : 'var(--color-warm-white, #FEFDFB)',
+                border: sheetStep === 1 || sheetStep === 2
+                  ? 'none'
+                  : '1px solid rgba(26,26,46,0.06)',
+                borderRadius: 8,
+                padding: '0.75rem',
+                minHeight: 60,
+              }}>
+                {sheetStep === 0 && (
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
+                      <div style={{
+                        width: 5, height: 5, borderRadius: '50%',
+                        background: sheetTool.color, opacity: 0.6,
+                      }} />
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                        color: sheetTool.color, letterSpacing: '0.05em', textTransform: 'uppercase' as const,
+                      }}>AI Thinking</span>
+                    </div>
+                    <p style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6,
+                      color: '#1A1A2E', fontStyle: 'italic' as const, margin: 0, opacity: 0.8,
+                    }}>
+                      "{sheetTool.example.thinking}"
+                    </p>
+                  </div>
+                )}
+                {sheetStep === 1 && (
+                  <div>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      color: sheetTool.color, letterSpacing: '0.05em', textTransform: 'uppercase' as const,
+                      display: 'block', marginBottom: 6,
+                    }}>Tool Call</span>
+                    <pre style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', lineHeight: 1.5,
+                      color: '#e2e8f0', margin: 0, whiteSpace: 'pre-wrap' as const,
+                      wordBreak: 'break-word' as const, background: 'transparent', padding: 0, boxShadow: 'none',
+                    }}>
+                      {sheetTool.example.call}
+                    </pre>
+                  </div>
+                )}
+                {sheetStep === 2 && (
+                  <div>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      color: '#16C79A', letterSpacing: '0.05em', textTransform: 'uppercase' as const,
+                      display: 'block', marginBottom: 6,
+                    }}>Tool Result</span>
+                    <pre style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', lineHeight: 1.5,
+                      color: '#e2e8f0', margin: 0, whiteSpace: 'pre-wrap' as const,
+                      wordBreak: 'break-word' as const, background: 'transparent', padding: 0, boxShadow: 'none',
+                    }}>
+                      {sheetTool.example.result}
+                    </pre>
+                  </div>
+                )}
+                {sheetStep === 3 && (
+                  <div>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                      color: '#16C79A', letterSpacing: '0.05em', textTransform: 'uppercase' as const,
+                      display: 'block', marginBottom: 6,
+                    }}>AI Response</span>
+                    <p style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6,
+                      color: '#1A1A2E', margin: 0,
+                    }}>
+                      {sheetTool.example.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Progress dots */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                gap: '0.4rem', marginTop: '0.6rem',
+              }}>
+                {steps.map((_, si) => (
+                  <div key={si} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <div style={{
+                      width: 6, height: 6, borderRadius: '50%',
+                      background: si <= sheetStep ? sheetTool.color : 'rgba(26,26,46,0.1)',
+                      transition: 'background 0.3s ease',
+                    }} />
+                    {si < steps.length - 1 && (
+                      <div style={{
+                        width: 14, height: 1,
+                        background: si < sheetStep ? sheetTool.color + '60' : 'rgba(26,26,46,0.08)',
+                      }} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // --- DESKTOP LAYOUT (unchanged) ---
   return (
     <div className="widget-container">
       {/* Header */}
       <div style={{
-        padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem',
+        padding: '1.5rem 2rem',
         borderBottom: '1px solid rgba(26,26,46,0.06)',
         display: 'flex',
         justifyContent: 'space-between',
@@ -185,7 +439,7 @@ export default function ToolCatalog() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Tool Catalog
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
@@ -199,10 +453,10 @@ export default function ToolCatalog() {
       </div>
 
       {/* Tool Grid */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      <div style={{ padding: '1.5rem 2rem' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
           gap: '0.75rem',
         }}>
           {tools.map((tool, i) => {
@@ -215,7 +469,7 @@ export default function ToolCatalog() {
                   style={{
                     width: '100%',
                     textAlign: 'left' as const,
-                    padding: isMobile ? '1rem' : '1.25rem 1.25rem',
+                    padding: '1.25rem 1.25rem',
                     borderRadius: 12,
                     border: `1px solid ${isExpanded ? tool.color + '40' : 'rgba(26,26,46,0.06)'}`,
                     background: isExpanded ? tool.color + '06' : 'rgba(26,26,46,0.015)',
@@ -322,7 +576,7 @@ export default function ToolCatalog() {
                     background: 'rgba(26,26,46,0.02)',
                     border: `1px solid ${tool.color}20`,
                     borderRadius: 12,
-                    padding: isMobile ? '1rem' : '1.5rem',
+                    padding: '1.5rem',
                     animation: 'fadeInDown 0.3s ease',
                   }}>
                     <p style={{
@@ -336,10 +590,8 @@ export default function ToolCatalog() {
                     {/* Step indicators */}
                     <div style={{
                       display: 'flex', gap: '0.5rem', marginBottom: '1.25rem',
-                      flexWrap: isMobile ? 'nowrap' as const : 'wrap' as const,
-                      overflowX: isMobile ? 'auto' as const : 'visible' as const,
-                      WebkitOverflowScrolling: 'touch' as const,
-                      paddingBottom: isMobile ? '0.25rem' : 0,
+                      flexWrap: 'wrap' as const,
+                      overflowX: 'visible' as const,
                     }}>
                       {steps.map((step, si) => (
                         <button
@@ -347,14 +599,13 @@ export default function ToolCatalog() {
                           onClick={(e) => { e.stopPropagation(); setActiveStep(si); }}
                           style={{
                             fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                            padding: isMobile ? '0.5rem 0.85rem' : '0.35rem 0.75rem', borderRadius: 100,
+                            padding: '0.35rem 0.75rem', borderRadius: 100,
                             border: 'none', cursor: 'pointer',
                             background: activeStep === si ? tool.color : 'rgba(26,26,46,0.05)',
                             color: activeStep === si ? 'white' : '#6B7280',
                             transition: 'all 0.25s',
                             flexShrink: 0,
                             whiteSpace: 'nowrap' as const,
-                            minHeight: isMobile ? 44 : 'auto',
                           }}
                         >
                           {si + 1}. {step}
@@ -371,7 +622,7 @@ export default function ToolCatalog() {
                         ? 'none'
                         : '1px solid rgba(26,26,46,0.06)',
                       borderRadius: 10,
-                      padding: isMobile ? '1rem' : '1.25rem 1.5rem',
+                      padding: '1.25rem 1.5rem',
                       minHeight: 80,
                     }}>
                       {activeStep === 0 && (

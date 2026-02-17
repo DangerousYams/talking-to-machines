@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface FileNode {
   name: string;
@@ -405,11 +406,13 @@ export default function TerminalPlayground() {
     }
   };
 
+  const [filesSheetOpen, setFilesSheetOpen] = useState(false);
+
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
+      <div style={{ padding: isMobile ? '0.75rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: isMobile ? '0.75rem' : '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #7B61FF, #7B61FF80)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="4 17 10 11 4 5" />
@@ -417,82 +420,200 @@ export default function TerminalPlayground() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Terminal Playground</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Watch Claude Code think, write, and run</p>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Terminal Playground</h3>
+            {!isMobile && <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Watch Claude Code think, write, and run</p>}
           </div>
         </div>
       </div>
 
       {/* Task picker or terminal */}
       {!selectedPreset ? (
-        <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.95rem',
-            color: '#1A1A2E',
-            marginBottom: '1.5rem',
-            lineHeight: 1.7,
-            maxWidth: '50ch',
+        <div style={isMobile ? { flex: 1, minHeight: 0, overflowY: 'auto', padding: '0.75rem 1rem' } : { padding: '2rem' }}>
+          {!isMobile && (
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '0.95rem',
+              color: '#1A1A2E',
+              marginBottom: '1.5rem',
+              lineHeight: 1.7,
+              maxWidth: '50ch',
+            }}>
+              Pick a task and watch how Claude Code breaks it down, writes the code, and verifies it works.
+            </p>
+          )}
+          {/* Mobile: compact chip-style task picker */}
+          {isMobile ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {Object.entries(presets).map(([key, p]) => (
+                <button
+                  key={key}
+                  onClick={() => startSimulation(key)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '10px 12px',
+                    background: 'rgba(123, 97, 255, 0.04)',
+                    border: '1px solid rgba(123, 97, 255, 0.12)',
+                    borderRadius: 10, cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div style={{
+                    width: 28, height: 28, borderRadius: 7, flexShrink: 0,
+                    background: 'rgba(123,97,255,0.1)', display: 'flex',
+                    alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF',
+                  }}>
+                    {'\u25B6'}
+                  </div>
+                  <div>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 600, color: '#7B61FF', display: 'block' }}>
+                      {p.label}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6B7280' }}>
+                      {p.description}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {Object.entries(presets).map(([key, p]) => (
+                <button
+                  key={key}
+                  onClick={() => startSimulation(key)}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    padding: '14px 18px',
+                    background: 'rgba(123, 97, 255, 0.04)',
+                    border: '1px solid rgba(123, 97, 255, 0.12)',
+                    borderRadius: 10,
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease',
+                    textAlign: 'left',
+                    minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(123, 97, 255, 0.35)';
+                    e.currentTarget.style.background = 'rgba(123, 97, 255, 0.08)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(123, 97, 255, 0.12)';
+                    e.currentTarget.style.background = 'rgba(123, 97, 255, 0.04)';
+                  }}
+                >
+                  <span style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    color: '#7B61FF',
+                    marginBottom: 4,
+                  }}>
+                    {p.label}
+                  </span>
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '0.78rem',
+                    color: '#6B7280',
+                    lineHeight: 1.5,
+                  }}>
+                    {p.description}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : isMobile ? (
+        /* MOBILE: full-card terminal, no file tree sidebar */
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', background: '#1A1A2E' }}>
+          {/* Terminal title bar with Files button */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '6px 12px',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            flexShrink: 0,
           }}>
-            Pick a task and watch how Claude Code breaks it down, writes the code, and verifies it works.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {Object.entries(presets).map(([key, p]) => (
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f57' }} />
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#febc2e' }} />
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#28c840' }} />
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6b7280', marginLeft: 6, flex: 1,
+            }}>
+              ~/my-project
+            </span>
+            <button
+              onClick={() => setFilesSheetOpen(true)}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                color: '#7B61FF', background: 'rgba(123,97,255,0.12)',
+                border: '1px solid rgba(123,97,255,0.2)', borderRadius: 5,
+                padding: '3px 8px', cursor: 'pointer',
+              }}
+            >
+              Files
+            </button>
+          </div>
+
+          {/* Terminal output */}
+          <div
+            ref={terminalRef}
+            style={{
+              flex: 1, minHeight: 0, overflowY: 'auto',
+              padding: '8px 10px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.7rem',
+              lineHeight: 1.65,
+            }}
+          >
+            <div style={{ color: '#6b7280', marginBottom: 8 }}>
+              <span style={{ color: '#16C79A' }}>~/my-project $</span>{' '}
+              <span style={{ color: '#e2e8f0' }}>claude "{preset!.label.toLowerCase()}"</span>
+            </div>
+
+            {preset!.steps.slice(0, typingIndex >= 0 ? visibleSteps + 1 : visibleSteps).map((step, i) =>
+              renderStep(step, i)
+            )}
+
+            {isRunning && typingIndex === -1 && visibleSteps < preset!.steps.length && (
+              <div style={{ color: '#6b7280', fontStyle: 'italic' }}>
+                <span className="thinking-dots">
+                  <span style={{ animation: 'dotPulse 1.4s infinite', animationDelay: '0s' }}>.</span>
+                  <span style={{ animation: 'dotPulse 1.4s infinite', animationDelay: '0.2s' }}>.</span>
+                  <span style={{ animation: 'dotPulse 1.4s infinite', animationDelay: '0.4s' }}>.</span>
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Reset button */}
+          {!isRunning && visibleSteps >= (preset?.steps.length || 0) && (
+            <div style={{ padding: '8px 10px', borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
               <button
-                key={key}
-                onClick={() => startSimulation(key)}
+                onClick={reset}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  padding: isMobile ? '12px 14px' : '14px 18px',
-                  background: 'rgba(123, 97, 255, 0.04)',
-                  border: '1px solid rgba(123, 97, 255, 0.12)',
-                  borderRadius: 10,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                  textAlign: 'left',
-                  minHeight: 44,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(123, 97, 255, 0.35)';
-                  e.currentTarget.style.background = 'rgba(123, 97, 255, 0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(123, 97, 255, 0.12)';
-                  e.currentTarget.style.background = 'rgba(123, 97, 255, 0.04)';
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
+                  color: '#7B61FF', background: 'rgba(123, 97, 255, 0.1)',
+                  border: '1px solid rgba(123, 97, 255, 0.25)',
+                  borderRadius: 6, padding: '6px 14px', minHeight: 40,
+                  cursor: 'pointer', width: '100%',
                 }}
               >
-                <span style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  color: '#7B61FF',
-                  marginBottom: 4,
-                }}>
-                  {p.label}
-                </span>
-                <span style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '0.78rem',
-                  color: '#6B7280',
-                  lineHeight: 1.5,
-                }}>
-                  {p.description}
-                </span>
+                Try another task
               </button>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '180px 1fr', flex: 1, minHeight: 0 }}>
+        /* DESKTOP: grid layout with file tree sidebar */
+        <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', flex: 1, minHeight: 0 }}>
           {/* File tree sidebar */}
           <div style={{
-            borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)',
-            borderBottom: isMobile ? '1px solid rgba(255,255,255,0.06)' : 'none',
+            borderRight: '1px solid rgba(255,255,255,0.06)',
             background: '#141425',
-            padding: isMobile ? '10px 12px' : '14px 12px',
-            display: isMobile ? 'none' : 'block',
+            padding: '14px 12px',
           }}>
             <div style={{
               fontFamily: 'var(--font-mono)',
@@ -540,12 +661,12 @@ export default function TerminalPlayground() {
               ref={terminalRef}
               style={{
                 flex: 1,
-                padding: isMobile ? '10px 12px' : '14px 18px',
+                padding: '14px 18px',
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.7rem' : '0.78rem',
+                fontSize: '0.78rem',
                 lineHeight: 1.65,
                 overflowY: 'auto',
-                maxHeight: isMobile ? '35dvh' : '40dvh',
+                maxHeight: '40dvh',
               }}
             >
               <div style={{ color: '#6b7280', marginBottom: 12 }}>
@@ -570,7 +691,7 @@ export default function TerminalPlayground() {
 
             {/* Reset button */}
             {!isRunning && visibleSteps >= (preset?.steps.length || 0) && (
-              <div style={{ padding: isMobile ? '10px 12px' : '10px 18px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <div style={{ padding: '10px 18px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                 <button
                   onClick={reset}
                   style={{
@@ -598,6 +719,25 @@ export default function TerminalPlayground() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Mobile BottomSheet for file tree */}
+      {isMobile && (
+        <BottomSheet
+          isOpen={filesSheetOpen}
+          onClose={() => setFilesSheetOpen(false)}
+          title="Project Files"
+        >
+          {preset && (
+            <div style={{ background: '#141425', borderRadius: 8, padding: '12px' }}>
+              <FileTree
+                nodes={preset.files}
+                highlightFiles={highlightFiles}
+                revealedCount={visibleSteps}
+              />
+            </div>
+          )}
+        </BottomSheet>
       )}
 
       <style>{`

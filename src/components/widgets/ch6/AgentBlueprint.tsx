@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 
 interface Step {
@@ -194,11 +195,21 @@ export default function AgentBlueprint() {
 
   const goalDisplay = activePreset?.goal || customGoal || 'Select a goal to get started';
   const isMobile = useIsMobile();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetStepIndex, setSheetStepIndex] = useState<number | null>(null);
+
+  // Mobile: open BottomSheet when a step's output is tapped
+  const handleMobileStepTap = (i: number) => {
+    if (isMobile && (completedSteps.includes(i) || (currentStep === i && !completedSteps.includes(i)))) {
+      setSheetStepIndex(i);
+      setSheetOpen(true);
+    }
+  };
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
@@ -212,41 +223,45 @@ export default function AgentBlueprint() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Agent Blueprint
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              Pick a goal. Watch an agent plan and execute step by step.
-            </p>
+            {!isMobile && (
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+                Pick a goal. Watch an agent plan and execute step by step.
+              </p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Goal Selection */}
-      <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)' }}>
-        <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-          letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
-          display: 'block', marginBottom: 10,
-        }}>
-          Choose a Goal
-        </span>
-        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, flexWrap: 'wrap' as const, gap: 8 }}>
+      <div style={{ padding: isMobile ? '0.6rem 1rem' : '1.25rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', background: 'rgba(26,26,46,0.015)', flexShrink: 0 }}>
+        {!isMobile && (
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+            letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
+            display: 'block', marginBottom: 10,
+          }}>
+            Choose a Goal
+          </span>
+        )}
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'row' as const : 'row' as const, flexWrap: 'wrap' as const, gap: isMobile ? 6 : 8, overflowX: isMobile ? 'auto' as const : undefined }}>
           {presets.map((preset, i) => (
             <button
               key={i}
               onClick={() => selectPreset(i)}
               style={{
-                padding: isMobile ? '0.65rem 1rem' : '0.5rem 1rem', borderRadius: 8, border: '1px solid',
-                fontFamily: 'var(--font-body)', fontSize: '0.82rem', cursor: 'pointer',
+                padding: isMobile ? '0.4rem 0.7rem' : '0.5rem 1rem', borderRadius: isMobile ? 20 : 8, border: '1px solid',
+                fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.75rem' : '0.82rem', cursor: 'pointer',
                 transition: 'all 0.25s', lineHeight: 1.4,
-                minHeight: isMobile ? 44 : undefined,
+                whiteSpace: isMobile ? 'nowrap' as const : undefined,
                 background: selectedPreset === i ? '#1A1A2E' : 'transparent',
                 borderColor: selectedPreset === i ? '#1A1A2E' : 'rgba(26,26,46,0.1)',
                 color: selectedPreset === i ? '#FAF8F5' : '#1A1A2E',
               }}
             >
-              {preset.goal}
+              {isMobile ? preset.goal.split(' ').slice(0, 4).join(' ') + '...' : preset.goal}
             </button>
           ))}
         </div>
@@ -254,33 +269,36 @@ export default function AgentBlueprint() {
 
       {/* Agent Plan Flowchart */}
       {activePreset && (
-        <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
+        <div style={isMobile ? { flex: 1, minHeight: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' } : { padding: '2rem' }}>
           {/* Goal node */}
           <div style={{
-            textAlign: 'center' as const, marginBottom: 8,
+            textAlign: 'center' as const, marginBottom: isMobile ? 4 : 8,
+            padding: isMobile ? '0.5rem 1rem 0' : 0,
+            flexShrink: 0,
           }}>
             <div style={{
-              display: 'inline-block', padding: isMobile ? '0.6rem 1rem' : '0.75rem 1.5rem', borderRadius: 12,
+              display: 'inline-block', padding: isMobile ? '0.4rem 0.75rem' : '0.75rem 1.5rem', borderRadius: isMobile ? 8 : 12,
               background: 'linear-gradient(135deg, rgba(233,69,96,0.08), rgba(123,97,255,0.08))',
-              border: '2px solid #E94560',
+              border: isMobile ? '1.5px solid #E94560' : '2px solid #E94560',
             }}>
               <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
-                display: 'block', marginBottom: 4,
+                display: isMobile ? 'inline' : 'block', marginBottom: isMobile ? 0 : 4, marginRight: isMobile ? 6 : 0,
               }}>
                 GOAL
               </span>
               <span style={{
-                fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.9rem' : '1rem', fontWeight: 700, color: '#1A1A2E',
+                fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.8rem' : '1rem', fontWeight: 700, color: '#1A1A2E',
               }}>
                 {goalDisplay}
               </span>
             </div>
           </div>
 
-          {/* Steps */}
-          <div style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
+          {/* Steps - scrollable on mobile */}
+          <div style={isMobile ? { flex: 1, minHeight: 0, overflowY: 'auto', padding: '0 1rem' } : { position: 'relative', maxWidth: 560, margin: '0 auto' }}>
+            <div style={!isMobile ? { position: 'relative', maxWidth: 560, margin: '0 auto' } : undefined}>
             {steps.map((step, i) => {
               const isCompleted = completedSteps.includes(i);
               const isCurrent = currentStep === i && !isCompleted;
@@ -291,7 +309,7 @@ export default function AgentBlueprint() {
                 <div key={i}>
                   {/* Connector line + glow dot */}
                   <div style={{
-                    display: 'flex', justifyContent: 'center', height: 36,
+                    display: 'flex', justifyContent: 'center', height: isMobile ? 20 : 36,
                     position: 'relative',
                   }}>
                     <div style={{
@@ -316,7 +334,9 @@ export default function AgentBlueprint() {
                   {/* Step node */}
                   <div
                     onClick={() => {
-                      if (isCompleted || isCurrent) {
+                      if (isMobile) {
+                        handleMobileStepTap(i);
+                      } else if (isCompleted || isCurrent) {
                         setExpandedStep(isExpanded ? null : i);
                       }
                     }}
@@ -325,7 +345,7 @@ export default function AgentBlueprint() {
                       borderColor: isCompleted ? 'rgba(22,199,154,0.3)'
                         : isCurrent ? 'rgba(233,69,96,0.4)'
                         : 'rgba(26,26,46,0.08)',
-                      borderRadius: 12, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem',
+                      borderRadius: isMobile ? 8 : 12, padding: isMobile ? '0.5rem 0.75rem' : '1rem 1.25rem',
                       background: isCompleted ? 'rgba(22,199,154,0.04)'
                         : isCurrent ? 'rgba(233,69,96,0.04)'
                         : '#FEFDFB',
@@ -334,12 +354,12 @@ export default function AgentBlueprint() {
                       boxShadow: isCurrent ? '0 0 20px rgba(233,69,96,0.08)' : 'none',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 10 : 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 8 : 12 }}>
                       {/* Step number / status */}
                       <div style={{
-                        width: isMobile ? 32 : 36, height: isMobile ? 32 : 36, borderRadius: 10, flexShrink: 0,
+                        width: isMobile ? 26 : 36, height: isMobile ? 26 : 36, borderRadius: isMobile ? 7 : 10, flexShrink: 0,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: isCompleted ? 18 : 14, fontWeight: 700,
+                        fontSize: isCompleted ? (isMobile ? 14 : 18) : (isMobile ? 12 : 14), fontWeight: 700,
                         fontFamily: 'var(--font-mono)',
                         background: isCompleted ? '#16C79A' : isCurrent ? '#E94560' : 'rgba(26,26,46,0.06)',
                         color: isCompleted || isCurrent ? 'white' : '#6B7280',
@@ -350,43 +370,45 @@ export default function AgentBlueprint() {
 
                       {/* Step info */}
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 8, marginBottom: 2, flexWrap: isMobile ? 'wrap' as const : 'nowrap' as const }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <span style={{
-                            fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.88rem' : '0.95rem',
+                            fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.8rem' : '0.95rem',
                             fontWeight: 700, color: '#1A1A2E',
                           }}>
                             {step.label}
                           </span>
                           <span style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                            padding: '2px 8px', borderRadius: 6,
+                            fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem', fontWeight: 600,
+                            padding: '1px 6px', borderRadius: 6,
                             background: 'rgba(123,97,255,0.08)', color: '#7B61FF',
                           }}>
                             {step.toolIcon} {step.tool}
                           </span>
                         </div>
-                        <p style={{
-                          fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280',
-                          margin: 0, lineHeight: 1.5,
-                        }}>
-                          {step.instruction}
-                        </p>
+                        {!isMobile && (
+                          <p style={{
+                            fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280',
+                            margin: 0, lineHeight: 1.5,
+                          }}>
+                            {step.instruction}
+                          </p>
+                        )}
                       </div>
 
                       {/* Expand indicator */}
                       {(isCompleted || isCurrent) && (
                         <div style={{
                           flexShrink: 0, fontSize: 12, color: '#6B7280',
-                          transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transform: !isMobile && isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                           transition: 'transform 0.3s',
                         }}>
-                          \u25BC
+                          {isMobile ? '\u203A' : '\u25BC'}
                         </div>
                       )}
                     </div>
 
-                    {/* Expanded output */}
-                    {isExpanded && (isCompleted || isCurrent) && (
+                    {/* Expanded output - desktop only */}
+                    {!isMobile && isExpanded && (isCompleted || isCurrent) && (
                       <div style={{
                         marginTop: 12, paddingTop: 12,
                         borderTop: '1px solid rgba(26,26,46,0.06)',
@@ -412,15 +434,16 @@ export default function AgentBlueprint() {
                 </div>
               );
             })}
+            </div>
           </div>
 
           {/* Execute button */}
-          <div style={{ textAlign: 'center' as const, marginTop: 24 }}>
+          <div style={{ textAlign: 'center' as const, padding: isMobile ? '0.6rem 1rem' : '0', marginTop: isMobile ? 0 : 24, flexShrink: 0 }}>
             <button
               onClick={isExecuting ? resetExecution : executeAgent}
               style={{
-                padding: isMobile ? '0.75rem 1.5rem' : '0.75rem 2rem', borderRadius: 10, border: 'none',
-                minHeight: 44,
+                padding: isMobile ? '0.6rem 1.5rem' : '0.75rem 2rem', borderRadius: 10, border: 'none',
+                minHeight: 44, width: isMobile ? '100%' : undefined,
                 fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
                 cursor: 'pointer', transition: 'all 0.3s',
                 background: isExecuting ? '#6B7280' : 'linear-gradient(135deg, #E94560, #7B61FF)',
@@ -436,10 +459,12 @@ export default function AgentBlueprint() {
 
       {/* Empty state */}
       {!activePreset && (
-        <div style={{
-          padding: isMobile ? '3rem 1rem' : '4rem 2rem', textAlign: 'center' as const, color: '#6B7280',
+        <div style={isMobile ? {
+          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', color: '#6B7280',
+        } : {
+          padding: '4rem 2rem', textAlign: 'center' as const, color: '#6B7280',
         }}>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.9rem' : '1rem', margin: 0, textAlign: 'center' as const }}>
             Select a goal above to see the agent's plan.
           </p>
         </div>
@@ -448,18 +473,69 @@ export default function AgentBlueprint() {
       {/* Completion summary */}
       {completedSteps.length === steps.length && steps.length > 0 && !isExecuting && (
         <div style={{
-          padding: isMobile ? '1rem' : '1.25rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+          padding: isMobile ? '0.6rem 1rem' : '1.25rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
           background: 'linear-gradient(135deg, rgba(22,199,154,0.04), rgba(123,97,255,0.04))',
+          flexShrink: 0,
         }}>
           <p style={{
-            fontFamily: 'var(--font-body)', fontSize: '0.85rem',
+            fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem',
             fontStyle: 'italic', color: '#1A1A2E', margin: 0,
           }}>
             <span style={{ fontWeight: 600, color: '#16C79A', fontStyle: 'normal' }}>Agent complete. </span>
-            {steps.length} steps executed. The agent broke a complex goal into small, tool-using steps &mdash;
-            each one building on the last. That's the core pattern of every AI agent.
+            {isMobile
+              ? `${steps.length} steps executed. That's the core pattern of every AI agent.`
+              : <>
+                  {steps.length} steps executed. The agent broke a complex goal into small, tool-using steps &mdash;
+                  each one building on the last. That's the core pattern of every AI agent.
+                </>
+            }
           </p>
         </div>
+      )}
+
+      {/* Mobile BottomSheet for step output */}
+      {isMobile && (
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title={sheetStepIndex !== null ? `Step ${sheetStepIndex + 1}: ${steps[sheetStepIndex]?.label}` : 'Step Output'}
+        >
+          {sheetStepIndex !== null && steps[sheetStepIndex] && (
+            <div>
+              <div style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                padding: '2px 8px', borderRadius: 6, display: 'inline-block',
+                background: 'rgba(123,97,255,0.08)', color: '#7B61FF', marginBottom: 10,
+              }}>
+                {steps[sheetStepIndex].toolIcon} {steps[sheetStepIndex].tool}
+              </div>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280',
+                margin: '0 0 12px', lineHeight: 1.6,
+              }}>
+                {steps[sheetStepIndex].instruction}
+              </p>
+              <div style={{
+                borderTop: '1px solid rgba(26,26,46,0.06)', paddingTop: 12,
+              }}>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                  color: completedSteps.includes(sheetStepIndex) ? '#16C79A' : '#E94560',
+                  display: 'block', marginBottom: 6,
+                }}>
+                  {completedSteps.includes(sheetStepIndex) ? 'Output' : 'Processing...'}
+                </span>
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.9rem',
+                  lineHeight: 1.7, color: '#1A1A2E', margin: 0,
+                }}>
+                  {steps[sheetStepIndex].output}
+                </p>
+              </div>
+            </div>
+          )}
+        </BottomSheet>
       )}
 
       <style>{`

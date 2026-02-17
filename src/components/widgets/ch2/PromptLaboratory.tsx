@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
+import BottomSheet from '../../cards/BottomSheet';
 
 type TemplateKey = 'creative' | 'code' | 'research' | 'debate';
 type Mode = 'guided' | 'freeform';
@@ -148,6 +149,9 @@ export default function PromptLaboratory() {
   const [freeformText, setFreeformText] = useState('');
   const [fallbackTyping, setFallbackTyping] = useState(false);
   const [displayedFallback, setDisplayedFallback] = useState('');
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetContent, setSheetContent] = useState<'response' | 'blockDetail' | null>(null);
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const responseRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -173,6 +177,10 @@ export default function PromptLaboratory() {
     const text = freeformText.trim();
     if (!text || isStreaming) return;
     sendMessages([{ role: 'user', content: text }]);
+    if (isMobile) {
+      setSheetContent('response');
+      setSheetOpen(true);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -226,10 +234,245 @@ export default function PromptLaboratory() {
   const qualityLabel = qualityPercent >= 80 ? 'Expert' : qualityPercent >= 50 ? 'Strong' : qualityPercent >= 25 ? 'Basic' : 'Minimal';
   const qualityColor = qualityPercent >= 80 ? '#16C79A' : qualityPercent >= 50 ? '#0EA5E9' : qualityPercent >= 25 ? '#F5A623' : '#6B7280';
 
+  // Render response text
+  const renderResponse = (text: string) => {
+    return text.split('\n').map((line, i) => {
+      if (line.startsWith('```')) return null;
+      if (line.startsWith('**') && line.includes('**')) {
+        const parts = line.split('**');
+        return (
+          <p key={i} style={{ margin: '0.5em 0' }}>
+            {parts.map((p, j) => j % 2 === 1 ? <strong key={j}>{p}</strong> : <span key={j}>{p}</span>)}
+          </p>
+        );
+      }
+      return line ? <p key={i} style={{ margin: '0.4em 0' }}>{line}</p> : <br key={i} />;
+    });
+  };
+
+  // Mobile: open response sheet for guided mode auto-view
+  const handleViewResponse = () => {
+    setSheetContent('response');
+    setSheetOpen(true);
+  };
+
+  // ==================== MOBILE LAYOUT ====================
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header: single row, ~40px */}
+        <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg, #0F3460, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+          </div>
+          <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#1A1A2E', flex: 1 }}>Prompt Lab</span>
+          {/* Mode toggle */}
+          <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
+            <button
+              onClick={() => handleModeSwitch('guided')}
+              style={{
+                padding: '4px 8px', border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                letterSpacing: '0.04em', transition: 'all 0.25s',
+                background: mode === 'guided' ? '#1A1A2E' : 'transparent',
+                color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
+              }}
+            >GUIDED</button>
+            <button
+              onClick={() => handleModeSwitch('freeform')}
+              style={{
+                padding: '4px 8px', border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                letterSpacing: '0.04em', transition: 'all 0.25s',
+                background: mode === 'freeform' ? '#16C79A' : 'transparent',
+                color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
+              }}
+            >LIVE AI</button>
+          </div>
+        </div>
+
+        {/* Template picker as tab bar */}
+        <div style={{ display: 'flex', gap: 2, padding: '0 12px', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, overflowX: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
+          {templateLabels.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => { setTemplate(t.key); setActiveBlocks(new Set(['task'])); abort(); if (mode === 'freeform') setFreeformText(''); }}
+              style={{
+                padding: '8px 10px', border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: template === t.key ? 700 : 500,
+                background: template === t.key ? 'rgba(15,52,96,0.06)' : 'transparent',
+                color: template === t.key ? '#0F3460' : '#6B7280',
+                borderRadius: '8px 8px 0 0', transition: 'all 0.25s',
+                whiteSpace: 'nowrap', flexShrink: 0, minHeight: 36,
+              }}
+            >
+              <span style={{ marginRight: 4 }}>{t.icon}</span>{t.label.split(' ')[0]}
+            </button>
+          ))}
+        </div>
+
+        {/* Main content area */}
+        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+          {mode === 'guided' ? (
+            <>
+              {/* Quality meter - compact */}
+              <div style={{ padding: '8px 12px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Sophistication</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: qualityColor }}>{qualityLabel} ({activeCount}/{blocks.length})</span>
+                </div>
+                <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%', borderRadius: 2, transition: 'all 0.5s ease',
+                    width: `${qualityPercent}%`,
+                    background: `linear-gradient(90deg, ${qualityColor}, ${qualityColor}80)`,
+                  }} />
+                </div>
+              </div>
+
+              {/* Block chips - horizontal scrollable */}
+              <div style={{ padding: '0 12px 8px', flexShrink: 0, overflowX: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  {blocks.map((block) => {
+                    const isActive = activeBlocks.has(block.id);
+                    return (
+                      <button
+                        key={block.id}
+                        onClick={() => toggleBlock(block.id)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 5,
+                          padding: '6px 10px', borderRadius: 100, border: '1px solid',
+                          cursor: 'pointer', transition: 'all 0.25s',
+                          background: isActive ? `${block.color}12` : 'transparent',
+                          borderColor: isActive ? `${block.color}40` : 'rgba(26,26,46,0.1)',
+                          whiteSpace: 'nowrap', flexShrink: 0, minHeight: 32,
+                        }}
+                      >
+                        <div style={{
+                          width: 6, height: 6, borderRadius: '50%',
+                          background: isActive ? block.color : 'rgba(26,26,46,0.2)',
+                          transition: 'background 0.3s',
+                        }} />
+                        <span style={{
+                          fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                          color: isActive ? block.color : '#6B7280',
+                        }}>
+                          {block.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Active blocks stacked - compact preview */}
+              <div style={{ flex: 1, overflow: 'auto', padding: '0 12px 8px' }}>
+                {Array.from(activeBlocks).map((id) => {
+                  const block = blocks.find((b) => b.id === id);
+                  if (!block) return null;
+                  return (
+                    <div key={id} style={{
+                      padding: '6px 10px', marginBottom: 4, borderRadius: 6,
+                      background: `${block.color}06`, borderLeft: `3px solid ${block.color}`,
+                    }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: block.color }}>{block.label}</span>
+                      <p style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280',
+                        margin: '2px 0 0', lineHeight: 1.3,
+                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      }}>
+                        {block.content[template].slice(0, 70)}...
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* View Response button */}
+              <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+                <button
+                  onClick={handleViewResponse}
+                  style={{
+                    width: '100%', padding: '10px', borderRadius: 8, border: 'none',
+                    background: '#0F3460', color: '#FAF8F5', cursor: 'pointer',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    minHeight: 44,
+                  }}
+                >
+                  {isTyping ? 'Generating...' : 'View AI Response'} →
+                </button>
+              </div>
+            </>
+          ) : (
+            /* Freeform mode */
+            <>
+              <div style={{ flex: 1, padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', flexShrink: 0 }}>Your Prompt</span>
+                <textarea
+                  value={freeformText}
+                  onChange={(e) => setFreeformText(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Type your prompt here..."
+                  style={{
+                    width: '100%', flex: 1, minHeight: 0, padding: '10px',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.8rem', lineHeight: 1.6,
+                    background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 8,
+                    resize: 'none', outline: 'none', color: '#1A1A2E',
+                  }}
+                />
+              </div>
+              <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button
+                  onClick={handleSendFreeform}
+                  disabled={!freeformText.trim() || isStreaming}
+                  style={{
+                    flex: 1, padding: '10px', borderRadius: 8, border: 'none', cursor: 'pointer',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                    transition: 'all 0.25s', minHeight: 44,
+                    background: !freeformText.trim() || isStreaming ? 'rgba(26,26,46,0.08)' : '#0F3460',
+                    color: !freeformText.trim() || isStreaming ? '#6B7280' : '#FAF8F5',
+                  }}
+                >
+                  {isStreaming ? 'Running...' : 'Send to Claude →'}
+                </button>
+                {liveError && (
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#E94560' }}>{liveError}</span>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* BottomSheet for response */}
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title="AI Response">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: isTyping ? '#16C79A' : '#6B7280' }} />
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
+              {isTyping ? 'Generating...' : mode === 'freeform' ? 'Live Response' : `Quality: ${qualityLabel}`}
+            </span>
+          </div>
+          <div style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75,
+            color: '#1A1A2E', whiteSpace: 'pre-wrap',
+          }}>
+            {mode === 'freeform' && !liveResponse && !isStreaming ? (
+              <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>Write a prompt and hit send to see a real AI response...</p>
+            ) : (
+              renderResponse(displayedResponse)
+            )}
+            {isTyping && <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#0F3460', marginLeft: 2, animation: 'pulse 1s infinite' }} />}
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // ==================== DESKTOP LAYOUT (unchanged) ====================
   return (
     <div className="widget-container" style={{ display: 'flex', flexDirection: 'column' as const, height: '100%' }}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #0F3460, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
@@ -268,13 +511,13 @@ export default function PromptLaboratory() {
         </div>
 
         {/* Template tabs */}
-        <div style={{ display: 'flex', gap: 2, overflowX: isMobile ? 'auto' as const : 'visible' as const, WebkitOverflowScrolling: 'touch' as any }}>
+        <div style={{ display: 'flex', gap: 2 }}>
           {templateLabels.map((t) => (
             <button
               key={t.key}
               onClick={() => { setTemplate(t.key); setActiveBlocks(new Set(['task'])); abort(); if (mode === 'freeform') setFreeformText(''); }}
               style={{
-                padding: isMobile ? '0.5rem 0.65rem' : '0.5rem 1rem', border: 'none', cursor: 'pointer',
+                padding: '0.5rem 1rem', border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: template === t.key ? 700 : 500,
                 background: template === t.key ? 'rgba(15,52,96,0.06)' : 'transparent',
                 color: template === t.key ? '#0F3460' : '#6B7280',
@@ -283,15 +526,15 @@ export default function PromptLaboratory() {
                 minHeight: 44,
               }}
             >
-              <span style={{ marginRight: isMobile ? 4 : 6 }}>{t.icon}</span>{isMobile ? t.label.split(' ')[0] : t.label}
+              <span style={{ marginRight: 6 }}>{t.icon}</span>{t.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: Block toggles or freeform editor */}
-        <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column' as const, gap: '1rem' }}>
+        <div style={{ padding: '1.5rem 2rem', borderRight: '1px solid rgba(26,26,46,0.06)', display: 'flex', flexDirection: 'column' as const, gap: '1rem' }}>
 
           {mode === 'guided' ? (
             <>
@@ -319,7 +562,7 @@ export default function PromptLaboratory() {
                       key={block.id}
                       onClick={() => toggleBlock(block.id)}
                       style={{
-                        display: 'flex', alignItems: 'center', gap: 10, padding: isMobile ? '10px 12px' : '8px 12px',
+                        display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
                         borderRadius: 8, border: '1px solid', cursor: 'pointer', transition: 'all 0.25s',
                         background: isActive ? `${block.color}08` : 'transparent',
                         borderColor: isActive ? `${block.color}30` : 'rgba(26,26,46,0.06)',
@@ -379,7 +622,7 @@ export default function PromptLaboratory() {
                 placeholder="Type your prompt here — or switch to Guided mode to build one with technique blocks, then come back to edit and send it..."
                 style={{
                   width: '100%', flex: 1, minHeight: 0, padding: '1rem 1.25rem',
-                  fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.8rem' : '0.82rem', lineHeight: 1.7,
+                  fontFamily: 'var(--font-mono)', fontSize: '0.82rem', lineHeight: 1.7,
                   background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 10,
                   resize: 'vertical' as const, outline: 'none', color: '#1A1A2E',
                   transition: 'border-color 0.2s',
@@ -409,14 +652,14 @@ export default function PromptLaboratory() {
                 )}
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', marginTop: -4, lineHeight: 1.5 }}>
-                {isMobile ? 'Tap Send' : 'Cmd+Enter to send'} &middot; Try building in Guided mode first, then editing here
+                Cmd+Enter to send &middot; Try building in Guided mode first, then editing here
               </p>
             </>
           )}
         </div>
 
         {/* Right: AI Response */}
-        <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', background: 'rgba(26,26,46,0.015)', display: 'flex', flexDirection: 'column' as const }}>
+        <div style={{ padding: '1.5rem 2rem', background: 'rgba(26,26,46,0.015)', display: 'flex', flexDirection: 'column' as const }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: '1rem' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: isTyping ? '#16C79A' : '#6B7280', transition: 'background 0.3s' }} />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
@@ -429,24 +672,13 @@ export default function PromptLaboratory() {
             )}
           </div>
           <div ref={responseRef} style={{
-            fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75,
-            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: isMobile ? '35dvh' : '40dvh',
+            fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75,
+            color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, flex: 1, overflowY: 'auto' as const, maxHeight: '40dvh',
           }}>
             {mode === 'freeform' && !liveResponse && !isStreaming ? (
               <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>Write a prompt and hit send to see a real AI response...</p>
             ) : (
-              displayedResponse.split('\n').map((line, i) => {
-                if (line.startsWith('```')) return null;
-                if (line.startsWith('**') && line.includes('**')) {
-                  const parts = line.split('**');
-                  return (
-                    <p key={i} style={{ margin: '0.5em 0' }}>
-                      {parts.map((p, j) => j % 2 === 1 ? <strong key={j}>{p}</strong> : <span key={j}>{p}</span>)}
-                    </p>
-                  );
-                }
-                return line ? <p key={i} style={{ margin: '0.4em 0' }}>{line}</p> : <br key={i} />;
-              })
+              renderResponse(displayedResponse)
             )}
             {isTyping && <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#0F3460', marginLeft: 2, animation: 'pulse 1s infinite' }} />}
           </div>
@@ -455,7 +687,7 @@ export default function PromptLaboratory() {
 
       {/* Footer insight */}
       <div style={{
-        padding: isMobile ? '1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+        padding: '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: 'linear-gradient(135deg, rgba(15,52,96,0.04), rgba(14,165,233,0.04))',
         flexShrink: 0,
       }}>

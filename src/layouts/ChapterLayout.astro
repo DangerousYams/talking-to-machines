@@ -31,11 +31,15 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
     <meta property="og:description" content={chapter.hook} />
     <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
     <script define:vars={{ slug: chapter.slug }}>
-      if (/Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent)) {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('force') !== 'scroll') {
-          window.location.replace('/' + slug + '-cards' + window.location.search);
-        }
+      // Redirect to cards on mobile UA OR narrow viewport (DevTools responsive mode)
+      const params = new URLSearchParams(window.location.search);
+      const forceScroll = params.get('force') === 'scroll' || params.has('desktop');
+      const forceMobile = params.has('mobile');
+      const isMobileUA = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+      const isNarrowViewport = window.innerWidth <= 768;
+
+      if (!forceScroll && (forceMobile || isMobileUA || isNarrowViewport)) {
+        window.location.replace('/' + slug + '-cards' + window.location.search);
       }
     </script>
   </head>

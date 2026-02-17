@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * AgentLoopCycle
@@ -49,8 +50,11 @@ const NODES: LoopNode[] = [
 ];
 
 const ORBIT_RADIUS = 130;
-const CENTER_X = 220;
-const CENTER_Y = 210;
+const ORBIT_RADIUS_MOBILE = 150;
+const CENTER_X_DESKTOP = 220;
+const CENTER_Y_DESKTOP = 210;
+const CENTER_X_MOBILE = 190;
+const CENTER_Y_MOBILE = 320;
 const NODE_RADIUS = 32;
 const STEP_DURATION = 1400; // ms per node
 const PAUSE_AT_NODE = 600; // ms to hold at each node
@@ -61,11 +65,11 @@ function degToRad(deg: number): number {
   return ((deg - 90) * Math.PI) / 180; // -90 so 0deg = top
 }
 
-function getNodePos(angle: number): { x: number; y: number } {
+function getNodePos(angle: number, centerX: number, centerY: number, orbitRadius: number = ORBIT_RADIUS): { x: number; y: number } {
   const rad = degToRad(angle);
   return {
-    x: CENTER_X + ORBIT_RADIUS * Math.cos(rad),
-    y: CENTER_Y + ORBIT_RADIUS * Math.sin(rad),
+    x: centerX + orbitRadius * Math.cos(rad),
+    y: centerY + orbitRadius * Math.sin(rad),
   };
 }
 
@@ -156,6 +160,11 @@ export default function AgentLoopCycle() {
   const pulseStartTimeRef = useRef(0);
   const pulseDurationRef = useRef(STEP_DURATION);
   const isPulseMovingRef = useRef(false);
+  const isMobile = useIsMobile();
+
+  const CENTER_X = isMobile ? CENTER_X_MOBILE : CENTER_X_DESKTOP;
+  const CENTER_Y = isMobile ? CENTER_Y_MOBILE : CENTER_Y_DESKTOP;
+  const currentOrbitRadius = isMobile ? ORBIT_RADIUS_MOBILE : ORBIT_RADIUS;
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
@@ -279,11 +288,8 @@ export default function AgentLoopCycle() {
     let toAngle = NODES[(pulseFromNode + 1) % NODES.length].angle;
     if (toAngle <= fromAngle) toAngle += 360;
     const currentAngle = fromAngle + (toAngle - fromAngle) * pulseProgress;
-    const rad = degToRad(currentAngle);
-    return {
-      x: CENTER_X + ORBIT_RADIUS * Math.cos(rad),
-      y: CENTER_Y + ORBIT_RADIUS * Math.sin(rad),
-    };
+    const pos = getNodePos(currentAngle, CENTER_X, CENTER_Y, currentOrbitRadius);
+    return pos;
   };
 
   // Curved arrow path between two nodes (SVG arc)
@@ -298,12 +304,12 @@ export default function AgentLoopCycle() {
 
     const startRad = degToRad(startAngle);
     const endRad = degToRad(endAngle);
-    const x1 = CENTER_X + ORBIT_RADIUS * Math.cos(startRad);
-    const y1 = CENTER_Y + ORBIT_RADIUS * Math.sin(startRad);
-    const x2 = CENTER_X + ORBIT_RADIUS * Math.cos(endRad);
-    const y2 = CENTER_Y + ORBIT_RADIUS * Math.sin(endRad);
+    const x1 = CENTER_X + currentOrbitRadius * Math.cos(startRad);
+    const y1 = CENTER_Y + currentOrbitRadius * Math.sin(startRad);
+    const x2 = CENTER_X + currentOrbitRadius * Math.cos(endRad);
+    const y2 = CENTER_Y + currentOrbitRadius * Math.sin(endRad);
     const largeArc = (endAngle - startAngle) > 180 ? 1 : 0;
-    const path = `M ${x1} ${y1} A ${ORBIT_RADIUS} ${ORBIT_RADIUS} 0 ${largeArc} 1 ${x2} ${y2}`;
+    const path = `M ${x1} ${y1} A ${currentOrbitRadius} ${currentOrbitRadius} 0 ${largeArc} 1 ${x2} ${y2}`;
 
     // Arrow tip direction: tangent at endpoint (perpendicular to radius)
     const tipAngle = endAngle; // in degrees
@@ -313,14 +319,15 @@ export default function AgentLoopCycle() {
   const pulsePos = getPulsePos();
 
   const containerStyle: React.CSSProperties = {
-    maxWidth: 560,
+    maxWidth: isMobile ? 'none' : 560,
     margin: '0 auto',
     background: '#FFFFFF',
-    borderRadius: 16,
-    border: '1px solid rgba(26, 26, 46, 0.06)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
-    padding: '24px 16px',
+    borderRadius: isMobile ? 0 : 16,
+    border: isMobile ? 'none' : '1px solid rgba(26, 26, 46, 0.06)',
+    boxShadow: isMobile ? 'none' : '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
+    padding: isMobile ? 0 : '24px 16px',
     overflow: 'hidden',
+    ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const } : {}),
   };
 
   const transitionDuration = reducedMotion ? '0ms' : '400ms';
@@ -328,8 +335,9 @@ export default function AgentLoopCycle() {
   return (
     <div style={containerStyle}>
       <svg
-        viewBox="0 0 440 420"
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        viewBox={isMobile ? '0 0 380 680' : '0 0 440 420'}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ width: '100%', height: isMobile ? '100%' : 'auto', display: 'block', ...(isMobile ? { flex: 1 } : {}) }}
         role="img"
         aria-label="Agent loop cycle: Observe, Think, Act, Evaluate repeating in a circle"
       >
@@ -372,7 +380,7 @@ export default function AgentLoopCycle() {
         <circle
           cx={CENTER_X}
           cy={CENTER_Y}
-          r={ORBIT_RADIUS}
+          r={currentOrbitRadius}
           fill="none"
           stroke="rgba(26, 26, 46, 0.06)"
           strokeWidth={1.5}
@@ -411,7 +419,7 @@ export default function AgentLoopCycle() {
 
         {/* Nodes */}
         {NODES.map((node, i) => {
-          const pos = getNodePos(node.angle);
+          const pos = getNodePos(node.angle, CENTER_X, CENTER_Y, currentOrbitRadius);
           const isActive = activeNode === i;
           const nodeScale = isActive ? 1.15 : 1;
           const bgOpacity = isActive ? 0.15 : 0.06;

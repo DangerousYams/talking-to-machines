@@ -45,17 +45,19 @@ function FlippableCard({
     setSide((s) => (s === 'widget' ? 'text' : 'widget'));
   }, []);
 
-  // Track action bar height (changes when facts panel opens/closes)
+  // Track action bar height (changes when facts panel opens/closes).
+  // Guard with Math.round + equality check to prevent sub-pixel oscillation loops.
   useEffect(() => {
     const el = barRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setBarHeight(entry.contentRect.height);
+        const h = Math.round(entry.contentRect.height);
+        setBarHeight((prev) => (prev === h ? prev : h));
       }
     });
     ro.observe(el);
-    setBarHeight(el.offsetHeight);
+    setBarHeight(Math.round(el.offsetHeight));
     return () => ro.disconnect();
   }, []);
 
@@ -97,15 +99,16 @@ function FlippableCard({
             ? 'none'
             : 'opacity 0.4s ease, transform 0.4s ease, top 0.35s ease',
           pointerEvents: showingWidget ? 'auto' : 'none',
-          overflowY: 'auto',
+          overflowY: isMobile ? 'hidden' : 'auto',
           display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          padding: isMobile ? '12px 12px 56px' : '24px 24px 32px',
+          flexDirection: 'column' as const,
+          alignItems: isMobile ? 'stretch' : 'flex-start',
+          justifyContent: isMobile ? 'stretch' : 'center',
+          padding: isMobile ? '0' : '24px 24px 32px',
         }}
         aria-hidden={!showingWidget}
       >
-        <div style={{ maxWidth: 900, width: '100%' }}>
+        <div style={{ maxWidth: isMobile ? '100%' : 900, width: '100%', height: isMobile ? '100%' : 'auto', display: isMobile ? 'flex' : 'block', flexDirection: 'column' as const }}>
           {widgetContent}
         </div>
       </div>

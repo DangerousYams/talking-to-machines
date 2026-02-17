@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface SkillCard {
   id: string;
@@ -27,12 +28,14 @@ export default function SkillsSpectrum() {
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [animatingReveal, setAnimatingReveal] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
   const allPlaced = Object.keys(placements).length === skills.length;
   const currentSkill = skills[currentIndex];
 
+  // Desktop: horizontal bar click
   const handleBarInteraction = useCallback((clientX: number) => {
     if (revealed || currentIndex >= skills.length) return;
     const bar = barRef.current;
@@ -45,16 +48,37 @@ export default function SkillsSpectrum() {
     }
   }, [currentIndex, revealed, currentSkill]);
 
+  // Mobile: vertical bar click (top = 0 = AI, bottom = 1 = Human)
+  const handleVerticalBarInteraction = useCallback((clientY: number) => {
+    if (revealed || currentIndex >= skills.length) return;
+    const bar = barRef.current;
+    if (!bar) return;
+    const rect = bar.getBoundingClientRect();
+    const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+    setPlacements(prev => ({ ...prev, [currentSkill.id]: y }));
+    if (currentIndex < skills.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+    }
+  }, [currentIndex, revealed, currentSkill]);
+
   const handleBarClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    handleBarInteraction(e.clientX);
-  }, [handleBarInteraction]);
+    if (isMobile) {
+      handleVerticalBarInteraction(e.clientY);
+    } else {
+      handleBarInteraction(e.clientX);
+    }
+  }, [handleBarInteraction, handleVerticalBarInteraction, isMobile]);
 
   const handleBarTouch = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.touches.length > 0) {
-      handleBarInteraction(e.touches[0].clientX);
+      if (isMobile) {
+        handleVerticalBarInteraction(e.touches[0].clientY);
+      } else {
+        handleBarInteraction(e.touches[0].clientX);
+      }
     }
-  }, [handleBarInteraction]);
+  }, [handleBarInteraction, handleVerticalBarInteraction, isMobile]);
 
   const handleReveal = () => {
     setAnimatingReveal(true);
@@ -78,6 +102,9 @@ export default function SkillsSpectrum() {
       setRevealed(true);
       setScore(finalScore);
       setAnimatingReveal(false);
+      if (isMobile) {
+        setTimeout(() => setSheetOpen(true), 400);
+      }
     }, 100);
   };
 
@@ -87,6 +114,7 @@ export default function SkillsSpectrum() {
     setRevealed(false);
     setScore(null);
     setAnimatingReveal(false);
+    setSheetOpen(false);
   };
 
   const getZoneColor = (pos: number) => {
@@ -101,10 +129,331 @@ export default function SkillsSpectrum() {
     return 'Mostly human';
   };
 
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Skills Spectrum</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Tap the bar to place each skill</p>
+            </div>
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#6B7280', flexShrink: 0 }}>
+              {Object.keys(placements).length}/{skills.length}
+            </span>
+          </div>
+        </div>
+
+        {/* Main content: vertical spectrum + current skill */}
+        <div style={{ flex: 1, display: 'flex', padding: '0.75rem 1rem', gap: 12, minHeight: 0, overflow: 'hidden' }}>
+          {/* Vertical spectrum bar */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 56, flexShrink: 0 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: ACCENT, marginBottom: 4, textAlign: 'center' }}>AI</span>
+            <div
+              ref={barRef}
+              onClick={handleBarClick}
+              onTouchStart={handleBarTouch}
+              style={{
+                position: 'relative',
+                flex: 1,
+                width: 40,
+                borderRadius: 12,
+                background: `linear-gradient(180deg, ${ACCENT}20 0%, #F5A62320 50%, #E9456020 100%)`,
+                border: '1px solid rgba(26,26,46,0.08)',
+                cursor: !revealed && currentIndex < skills.length ? 'crosshair' : 'default',
+                overflow: 'visible',
+                touchAction: 'none',
+              }}
+            >
+              {/* Zone lines */}
+              <div style={{ position: 'absolute', top: '33.3%', left: 0, right: 0, height: 1, background: 'rgba(26,26,46,0.08)' }} />
+              <div style={{ position: 'absolute', top: '66.6%', left: 0, right: 0, height: 1, background: 'rgba(26,26,46,0.08)' }} />
+
+              {/* Placed markers */}
+              {skills.map((skill) => {
+                const pos = placements[skill.id];
+                if (pos === undefined) return null;
+                return (
+                  <div
+                    key={skill.id}
+                    style={{
+                      position: 'absolute',
+                      top: `${pos * 100}%`,
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      transition: animatingReveal || revealed ? 'top 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none',
+                      zIndex: 10,
+                    }}
+                  >
+                    <div style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '50%',
+                      background: revealed ? getZoneColor(pos) : '#1A1A2E',
+                      border: '2px solid white',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.65rem',
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 700,
+                      color: 'white',
+                      transition: 'background 0.5s ease',
+                    }}>
+                      {skills.findIndex(s => s.id === skill.id) + 1}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560', marginTop: 4, textAlign: 'center' }}>Human</span>
+          </div>
+
+          {/* Right side: current skill / placed list */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+            {!allPlaced && !revealed && currentSkill && (
+              <div style={{
+                background: 'rgba(26,26,46,0.02)',
+                border: '1px solid rgba(26,26,46,0.08)',
+                borderRadius: 10,
+                padding: '0.75rem',
+                textAlign: 'center',
+                marginBottom: 8,
+              }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 4 }}>
+                  Skill {currentIndex + 1} of {skills.length}
+                </div>
+                <div style={{
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  color: '#1A1A2E',
+                  padding: '0.4rem 0.75rem',
+                  display: 'inline-block',
+                  borderRadius: 8,
+                  background: 'white',
+                  border: '1px solid rgba(26,26,46,0.08)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                }}>
+                  {currentSkill.name}
+                </div>
+              </div>
+            )}
+
+            {/* Mini placed list */}
+            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {skills.map((skill, i) => {
+                const pos = placements[skill.id];
+                if (pos === undefined) return null;
+                return (
+                  <div key={skill.id} style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '4px 8px', borderRadius: 6,
+                    background: revealed ? `${getZoneColor(pos)}08` : 'rgba(26,26,46,0.02)',
+                    border: '1px solid rgba(26,26,46,0.04)',
+                  }}>
+                    <div style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      background: revealed ? getZoneColor(pos) : '#1A1A2E',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.55rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'white',
+                      transition: 'background 0.5s ease',
+                    }}>
+                      {i + 1}
+                    </div>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#1A1A2E', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>
+                      {skill.name}
+                    </span>
+                    {revealed && (
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+                        color: getZoneColor(skill.expertPosition),
+                        background: `${getZoneColor(skill.expertPosition)}12`,
+                        padding: '1px 5px', borderRadius: 3,
+                        letterSpacing: '0.04em', textTransform: 'uppercase' as const, whiteSpace: 'nowrap' as const, flexShrink: 0,
+                      }}>
+                        {getZoneLabel(skill.expertPosition)}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom action bar */}
+        <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          {allPlaced && !revealed && (
+            <button
+              onClick={handleReveal}
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontSize: '0.9rem',
+                fontWeight: 700,
+                color: 'white',
+                background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                border: 'none',
+                borderRadius: 10,
+                padding: '12px 0',
+                cursor: 'pointer',
+                boxShadow: `0 4px 16px ${ACCENT}40`,
+                width: '100%',
+                minHeight: 44,
+              }}
+            >
+              Reveal Expert Consensus
+            </button>
+          )}
+          {revealed && (
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                onClick={() => setSheetOpen(true)}
+                style={{
+                  flex: 1,
+                  fontFamily: 'var(--font-heading)',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  color: 'white',
+                  background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                  border: 'none',
+                  borderRadius: 10,
+                  padding: '12px 0',
+                  cursor: 'pointer',
+                  minHeight: 44,
+                }}
+              >
+                View Results ({score}%)
+              </button>
+              <button
+                onClick={handleReset}
+                style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                  color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                  borderRadius: 10, padding: '12px 16px', cursor: 'pointer',
+                  minHeight: 44,
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          )}
+          {!allPlaced && !revealed && (
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#6B7280', margin: 0, textAlign: 'center' }}>
+              Tap the vertical bar to place each skill
+            </p>
+          )}
+        </div>
+
+        {/* BottomSheet for results */}
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={`Your Score: ${score}%`}>
+          {/* Score summary */}
+          <div style={{
+            textAlign: 'center',
+            padding: '1rem',
+            marginBottom: '1rem',
+            background: `linear-gradient(135deg, ${ACCENT}08, #F5A62308)`,
+            borderRadius: 12,
+            border: `1px solid ${ACCENT}20`,
+          }}>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', marginTop: 8, marginBottom: 0 }}>
+              {(score ?? 0) >= 75 ? "Excellent intuition! You have a strong sense of where AI helps most." :
+               (score ?? 0) >= 50 ? "Good instincts. The middle zone is where most people second-guess themselves." :
+               "The spectrum is trickier than it looks. Most skills land in the 'AI-assisted' middle."}
+            </p>
+          </div>
+
+          {/* Skill breakdown */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: '1rem' }}>
+            {skills.map((skill, i) => (
+              <div
+                key={skill.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 10,
+                  padding: '10px 12px',
+                  borderRadius: 10,
+                  background: 'white',
+                  border: '1px solid rgba(26,26,46,0.06)',
+                }}
+              >
+                <div style={{
+                  width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                  background: getZoneColor(skill.expertPosition),
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.65rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'white',
+                }}>
+                  {i + 1}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2, flexWrap: 'wrap' }}>
+                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.82rem', fontWeight: 700, color: '#1A1A2E' }}>{skill.name}</span>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                      color: getZoneColor(skill.expertPosition),
+                      background: `${getZoneColor(skill.expertPosition)}12`,
+                      padding: '2px 6px', borderRadius: 4,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase' as const,
+                      whiteSpace: 'nowrap' as const,
+                    }}>
+                      {getZoneLabel(skill.expertPosition)}
+                    </span>
+                  </div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.5, color: '#6B7280', margin: 0 }}>{skill.explanation}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Insight */}
+          <div style={{
+            padding: '0.75rem 1rem',
+            borderRadius: 12,
+            background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
+            border: `1px solid ${ACCENT}15`,
+            position: 'relative',
+            overflow: 'hidden',
+            marginBottom: '0.75rem',
+          }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.4rem' }}>Key insight</p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
+              The middle is where it gets interesting. Most skills are <strong>AI-assisted</strong>. The real question isn't "will AI take this job?" but "how does AI change what this skill looks like?"
+            </p>
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <button
+              onClick={() => { setSheetOpen(false); handleReset(); }}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                borderRadius: 8, padding: '8px 20px', cursor: 'pointer',
+                letterSpacing: '0.05em', minHeight: 44,
+              }}
+            >
+              Try again
+            </button>
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
@@ -116,9 +465,9 @@ export default function SkillsSpectrum() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
+      <div style={{ padding: '2rem' }}>
         {/* Spectrum bar */}
-        <div style={{ marginBottom: isMobile ? '1.25rem' : '2rem' }}>
+        <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: ACCENT }}>AI handles</span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623' }}>AI-assisted</span>
@@ -131,7 +480,7 @@ export default function SkillsSpectrum() {
             onTouchStart={handleBarTouch}
             style={{
               position: 'relative',
-              height: isMobile ? 64 : 56,
+              height: 56,
               borderRadius: 12,
               background: `linear-gradient(90deg, ${ACCENT}20 0%, #F5A62320 50%, #E9456020 100%)`,
               border: '1px solid rgba(26,26,46,0.08)',
@@ -164,8 +513,8 @@ export default function SkillsSpectrum() {
                   }}
                 >
                   <div style={{
-                    width: isMobile ? 36 : 28,
-                    height: isMobile ? 36 : 28,
+                    width: 28,
+                    height: 28,
                     borderRadius: '50%',
                     background: revealed ? getZoneColor(pos) : '#1A1A2E',
                     border: '2px solid white',
@@ -193,19 +542,19 @@ export default function SkillsSpectrum() {
             background: 'rgba(26,26,46,0.02)',
             border: '1px solid rgba(26,26,46,0.08)',
             borderRadius: 12,
-            padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem',
+            padding: '1.5rem 2rem',
             textAlign: 'center',
             marginBottom: '1.5rem',
           }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 8 }}>
-              Skill {currentIndex + 1} of {skills.length} {isMobile ? '\u2014 Tap the bar' : '\u2014 Click the bar to place it'}
+              Skill {currentIndex + 1} of {skills.length} &mdash; Click the bar to place it
             </div>
             <div style={{
               fontFamily: 'var(--font-heading)',
-              fontSize: isMobile ? '1.05rem' : '1.25rem',
+              fontSize: '1.25rem',
               fontWeight: 700,
               color: '#1A1A2E',
-              padding: isMobile ? '0.5rem 1rem' : '0.5rem 1.5rem',
+              padding: '0.5rem 1.5rem',
               display: 'inline-block',
               borderRadius: 8,
               background: 'white',
@@ -215,7 +564,7 @@ export default function SkillsSpectrum() {
               {currentSkill?.name}
             </div>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', marginTop: 10 }}>
-              Where does this skill fall? {isMobile ? 'Tap' : 'Click'} on the spectrum above.
+              Where does this skill fall? Click on the spectrum above.
             </p>
           </div>
         )}
@@ -235,7 +584,7 @@ export default function SkillsSpectrum() {
                 background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
                 border: 'none',
                 borderRadius: 10,
-                padding: isMobile ? '14px 28px' : '12px 32px',
+                padding: '12px 32px',
                 cursor: 'pointer',
                 boxShadow: `0 4px 16px ${ACCENT}40`,
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
@@ -278,8 +627,8 @@ export default function SkillsSpectrum() {
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: isMobile ? 10 : 12,
-                    padding: isMobile ? '10px 12px' : '12px 16px',
+                    gap: 12,
+                    padding: '12px 16px',
                     borderRadius: 10,
                     background: 'white',
                     border: '1px solid rgba(26,26,46,0.06)',
@@ -294,7 +643,7 @@ export default function SkillsSpectrum() {
                     {i + 1}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2, flexWrap: isMobile ? 'wrap' as const : 'nowrap' as const }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
                       <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.88rem', fontWeight: 700, color: '#1A1A2E' }}>{skill.name}</span>
                       <span style={{
                         fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
@@ -317,7 +666,7 @@ export default function SkillsSpectrum() {
             {/* Insight */}
             <div style={{
               marginTop: '1.5rem',
-              padding: isMobile ? '1rem 1.25rem' : '1.25rem 1.5rem',
+              padding: '1.25rem 1.5rem',
               borderRadius: 12,
               background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
               border: `1px solid ${ACCENT}15`,

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 const ACCENT = '#16C79A';
 
@@ -64,6 +65,7 @@ export default function TasteTest() {
   const [rankings, setRankings] = useState<Record<number, number>>({});
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState<number | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const isMobile = useIsMobile();
 
   const domain = domains[activeDomain];
@@ -102,6 +104,9 @@ export default function TasteTest() {
     const s = Math.round(Math.max(0, (1 - totalDiff / maxDiff)) * 100);
     setScore(s);
     setRevealed(true);
+    if (isMobile) {
+      setTimeout(() => setSheetOpen(true), 200);
+    }
   };
 
   const switchDomain = (index: number) => {
@@ -109,6 +114,7 @@ export default function TasteTest() {
     setRankings({});
     setRevealed(false);
     setScore(null);
+    setSheetOpen(false);
   };
 
   const getRankBadgeColor = (rank: number) => {
@@ -118,10 +124,245 @@ export default function TasteTest() {
     return '#E94560';
   };
 
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Taste Test</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Rank options, compare with experts</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Domain tabs */}
+        <div style={{
+          display: 'flex', gap: 4, padding: '0.5rem 1rem',
+          flexWrap: 'nowrap', overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch' as any,
+          scrollbarWidth: 'none' as const, flexShrink: 0,
+        }}>
+          {domains.map((d, i) => (
+            <button
+              key={d.name}
+              onClick={() => switchDomain(i)}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.65rem',
+                fontWeight: activeDomain === i ? 700 : 500,
+                color: activeDomain === i ? 'white' : '#6B7280',
+                background: activeDomain === i ? `linear-gradient(135deg, ${ACCENT}, #0F3460)` : 'rgba(26,26,46,0.03)',
+                border: '1px solid',
+                borderColor: activeDomain === i ? 'transparent' : 'rgba(26,26,46,0.08)',
+                borderRadius: 6,
+                padding: '6px 10px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+                minHeight: 32,
+              }}
+            >
+              {d.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Brief (1 line) */}
+        <div style={{ padding: '0 1rem', flexShrink: 0 }}>
+          <p style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#6B7280', margin: '0.4rem 0',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
+            <strong style={{ color: '#1A1A2E' }}>Brief:</strong> {domain.brief}
+          </p>
+        </div>
+
+        {/* Compact variation cards */}
+        <div style={{ flex: 1, padding: '0.5rem 1rem', display: 'flex', flexDirection: 'column', gap: 6, minHeight: 0, overflowY: 'auto' }}>
+          {domain.variations.map((v) => {
+            const userRank = rankings[v.id];
+            const isRanked = userRank !== undefined;
+
+            return (
+              <div
+                key={v.id}
+                onClick={() => isRanked ? handleUnrank(v.id) : handleRank(v.id)}
+                style={{
+                  position: 'relative',
+                  padding: '8px 10px',
+                  paddingLeft: isRanked ? '2.5rem' : '10px',
+                  borderRadius: 8,
+                  border: '1px solid',
+                  borderColor: isRanked ? `${getRankBadgeColor(userRank)}30` : 'rgba(26,26,46,0.06)',
+                  background: isRanked ? `${getRankBadgeColor(userRank)}03` : 'white',
+                  cursor: revealed ? 'default' : 'pointer',
+                  transition: 'all 0.2s ease',
+                  minHeight: 40,
+                }}
+              >
+                {isRanked && (
+                  <div style={{
+                    position: 'absolute', left: 8, top: 8,
+                    width: 22, height: 22, borderRadius: '50%',
+                    background: getRankBadgeColor(userRank),
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: 'white',
+                  }}>
+                    {userRank}
+                  </div>
+                )}
+
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5, color: '#1A1A2E', margin: 0,
+                  display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden',
+                }}>
+                  {v.content}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom action */}
+        <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          {!revealed && !allRanked && (
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6B7280', margin: 0, textAlign: 'center' }}>
+              Tap each option in order: 1 = best, {domain.variations.length} = worst. Tap again to undo.
+            </p>
+          )}
+          {allRanked && !revealed && (
+            <button
+              onClick={handleReveal}
+              style={{
+                fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
+                color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                border: 'none', borderRadius: 10, padding: '12px 0', cursor: 'pointer',
+                boxShadow: `0 4px 16px ${ACCENT}40`, width: '100%', minHeight: 44,
+              }}
+            >
+              Compare with Experts
+            </button>
+          )}
+          {revealed && (
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                onClick={() => setSheetOpen(true)}
+                style={{
+                  flex: 1, fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                  color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                  border: 'none', borderRadius: 10, padding: '12px 0', cursor: 'pointer', minHeight: 44,
+                }}
+              >
+                View Results ({score}%)
+              </button>
+              <button
+                onClick={() => switchDomain(activeDomain)}
+                style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                  color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                  borderRadius: 10, padding: '12px 16px', cursor: 'pointer', minHeight: 44,
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* BottomSheet for expert results */}
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={`Taste Alignment: ${score}%`}>
+          {/* Score */}
+          <div style={{
+            textAlign: 'center', padding: '0.75rem', marginBottom: '1rem',
+            borderRadius: 12, background: `linear-gradient(135deg, ${ACCENT}08, #0F346008)`,
+            border: `1px solid ${ACCENT}20`,
+          }}>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280', marginTop: 6, marginBottom: 0 }}>
+              {(score ?? 0) >= 80 ? "Your taste is razor-sharp." :
+               (score ?? 0) >= 50 ? "Solid instincts. Disagreements in middle ranks are normal." :
+               "You see things differently. Understanding WHY helps sharpen your eye."}
+            </p>
+          </div>
+
+          {/* Expert rankings per variation */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: '1rem' }}>
+            {domain.variations.map((v) => {
+              const userRank = rankings[v.id];
+              return (
+                <div key={v.id} style={{
+                  padding: '10px 12px', borderRadius: 10,
+                  border: `1px solid ${v.expertRank === 1 ? `${ACCENT}40` : 'rgba(26,26,46,0.06)'}`,
+                  background: v.expertRank === 1 ? `${ACCENT}05` : 'white',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+                      color: getRankBadgeColor(v.expertRank), letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                    }}>
+                      Expert #{v.expertRank}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+                      You ranked #{userRank}
+                    </span>
+                    {userRank === v.expertRank && (
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                        color: ACCENT, background: `${ACCENT}12`, padding: '1px 5px', borderRadius: 3,
+                      }}>
+                        Match!
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5, color: '#6B7280', margin: 0 }}>
+                    {v.expertReason}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Insight */}
+          <div style={{
+            padding: '0.75rem 1rem', borderRadius: 12,
+            background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
+            border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden',
+          }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.4rem' }}>Key insight</p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
+              <strong>Taste is the skill.</strong> AI generates options. <em>You</em> choose the right one. That judgment is irreplaceable.
+            </p>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
+            <button
+              onClick={() => { setSheetOpen(false); switchDomain(activeDomain); }}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                borderRadius: 8, padding: '8px 20px', cursor: 'pointer', minHeight: 44,
+              }}
+            >
+              Try again
+            </button>
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
@@ -133,39 +374,26 @@ export default function TasteTest() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
+      <div style={{ padding: '2rem' }}>
         {/* Domain tabs */}
         <div style={{
-          display: 'flex',
-          gap: 6,
-          marginBottom: '1.5rem',
-          flexWrap: 'nowrap' as const,
-          overflowX: 'auto' as const,
+          display: 'flex', gap: 6, marginBottom: '1.5rem',
+          flexWrap: 'nowrap' as const, overflowX: 'auto' as const,
           WebkitOverflowScrolling: 'touch' as const,
-          msOverflowStyle: 'none' as const,
-          scrollbarWidth: 'none' as const,
-          paddingBottom: 4,
+          msOverflowStyle: 'none' as const, scrollbarWidth: 'none' as const, paddingBottom: 4,
         }}>
           {domains.map((d, i) => (
             <button
               key={d.name}
               onClick={() => switchDomain(i)}
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.72rem',
+                fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
                 fontWeight: activeDomain === i ? 700 : 500,
                 color: activeDomain === i ? 'white' : '#6B7280',
                 background: activeDomain === i ? `linear-gradient(135deg, ${ACCENT}, #0F3460)` : 'rgba(26,26,46,0.03)',
-                border: '1px solid',
-                borderColor: activeDomain === i ? 'transparent' : 'rgba(26,26,46,0.08)',
-                borderRadius: 8,
-                padding: isMobile ? '10px 14px' : '8px 16px',
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
-                letterSpacing: '0.03em',
-                whiteSpace: 'nowrap' as const,
-                flexShrink: 0,
-                minHeight: 44,
+                border: '1px solid', borderColor: activeDomain === i ? 'transparent' : 'rgba(26,26,46,0.08)',
+                borderRadius: 8, padding: '8px 16px', cursor: 'pointer', transition: 'all 0.25s ease',
+                letterSpacing: '0.03em', whiteSpace: 'nowrap' as const, flexShrink: 0, minHeight: 44,
               }}
             >
               {d.name}
@@ -175,10 +403,8 @@ export default function TasteTest() {
 
         {/* Brief */}
         <div style={{
-          padding: '12px 16px',
-          borderRadius: 10,
-          background: 'rgba(26,26,46,0.02)',
-          border: '1px solid rgba(26,26,46,0.06)',
+          padding: '12px 16px', borderRadius: 10,
+          background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)',
           marginBottom: '1.25rem',
         }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Brief: </span>
@@ -187,7 +413,7 @@ export default function TasteTest() {
 
         {/* Instructions */}
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', marginBottom: '1rem' }}>
-          {revealed ? 'Expert rankings revealed. Compare with yours below.' : `${isMobile ? 'Tap' : 'Click'} each option in order of quality: 1 = best, 4 = worst. ${isMobile ? 'Tap' : 'Click'} again to undo.`}
+          {revealed ? 'Expert rankings revealed. Compare with yours below.' : 'Click each option in order of quality: 1 = best, 4 = worst. Click again to undo.'}
         </p>
 
         {/* Variations */}
@@ -202,39 +428,24 @@ export default function TasteTest() {
                 onClick={() => isRanked ? handleUnrank(v.id) : handleRank(v.id)}
                 style={{
                   position: 'relative',
-                  padding: isMobile ? '0.875rem 1rem' : '1rem 1.25rem',
-                  paddingLeft: isRanked ? (isMobile ? '3rem' : '3.5rem') : (isMobile ? '1rem' : '1.25rem'),
-                  borderRadius: 12,
-                  border: '1px solid',
+                  padding: '1rem 1.25rem',
+                  paddingLeft: isRanked ? '3.5rem' : '1.25rem',
+                  borderRadius: 12, border: '1px solid',
                   borderColor: revealed
                     ? v.expertRank === 1 ? `${ACCENT}50` : 'rgba(26,26,46,0.06)'
                     : isRanked ? `${getRankBadgeColor(userRank)}30` : 'rgba(26,26,46,0.06)',
                   background: revealed && v.expertRank === 1
                     ? `${ACCENT}05`
                     : isRanked ? `${getRankBadgeColor(userRank)}03` : 'white',
-                  cursor: revealed ? 'default' : 'pointer',
-                  transition: 'all 0.25s ease',
-                  minHeight: 44,
+                  cursor: revealed ? 'default' : 'pointer', transition: 'all 0.25s ease', minHeight: 44,
                 }}
               >
-                {/* User rank badge */}
                 {isRanked && (
                   <div style={{
-                    position: 'absolute',
-                    left: 12,
-                    top: isMobile ? 14 : '50%',
-                    transform: isMobile ? 'none' : 'translateY(-50%)',
-                    width: 26,
-                    height: 26,
-                    borderRadius: '50%',
-                    background: getRankBadgeColor(userRank),
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    color: 'white',
+                    position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                    width: 26, height: 26, borderRadius: '50%', background: getRankBadgeColor(userRank),
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: 'white',
                     transition: 'all 0.25s ease',
                   }}>
                     {userRank}
@@ -245,29 +456,22 @@ export default function TasteTest() {
                   {v.content}
                 </p>
 
-                {/* Expert rank shown after reveal */}
                 {revealed && (
                   <div style={{
-                    marginTop: 10,
-                    padding: '8px 12px',
-                    borderRadius: 8,
-                    background: 'rgba(26,26,46,0.02)',
-                    border: '1px solid rgba(26,26,46,0.04)',
+                    marginTop: 10, padding: '8px 12px', borderRadius: 8,
+                    background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.04)',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' as const }}>
                       <span style={{
                         fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
-                        color: getRankBadgeColor(v.expertRank),
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase' as const,
+                        color: getRankBadgeColor(v.expertRank), letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                       }}>
                         Expert rank: #{v.expertRank}
                       </span>
                       {userRank === v.expertRank && (
                         <span style={{
                           fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                          color: ACCENT, background: `${ACCENT}12`,
-                          padding: '2px 6px', borderRadius: 4,
+                          color: ACCENT, background: `${ACCENT}12`, padding: '2px 6px', borderRadius: 4,
                         }}>
                           Match!
                         </span>
@@ -287,18 +491,10 @@ export default function TasteTest() {
             <button
               onClick={handleReveal}
               style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: '0.95rem',
-                fontWeight: 700,
-                color: 'white',
-                background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
-                border: 'none',
-                borderRadius: 10,
-                padding: isMobile ? '14px 28px' : '12px 32px',
-                cursor: 'pointer',
-                boxShadow: `0 4px 16px ${ACCENT}40`,
-                transition: 'transform 0.2s ease',
-                minHeight: 44,
+                fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
+                color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                border: 'none', borderRadius: 10, padding: '12px 32px', cursor: 'pointer',
+                boxShadow: `0 4px 16px ${ACCENT}40`, transition: 'transform 0.2s ease', minHeight: 44,
               }}
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
@@ -311,12 +507,9 @@ export default function TasteTest() {
         {revealed && (
           <>
             <div style={{
-              textAlign: 'center',
-              padding: '1.25rem',
-              borderRadius: 12,
+              textAlign: 'center', padding: '1.25rem', borderRadius: 12,
               background: `linear-gradient(135deg, ${ACCENT}08, #0F346008)`,
-              border: `1px solid ${ACCENT}20`,
-              marginBottom: '1.25rem',
+              border: `1px solid ${ACCENT}20`, marginBottom: '1.25rem',
             }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Taste alignment</div>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
@@ -327,14 +520,10 @@ export default function TasteTest() {
               </p>
             </div>
 
-            {/* Key insight */}
             <div style={{
-              padding: isMobile ? '1rem 1.25rem' : '1.25rem 1.5rem',
-              borderRadius: 12,
+              padding: '1.25rem 1.5rem', borderRadius: 12,
               background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
-              border: `1px solid ${ACCENT}15`,
-              position: 'relative',
-              overflow: 'hidden',
+              border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden',
             }}>
               <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
               <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.5rem' }}>Key insight</p>

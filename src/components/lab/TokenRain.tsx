@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * TokenRain
@@ -146,6 +147,9 @@ function roundRect(
 }
 
 export default function TokenRain() {
+  const isMobile = useIsMobile();
+  const isMobileRef = useRef(isMobile);
+  isMobileRef.current = isMobile;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number>(0);
@@ -174,9 +178,13 @@ export default function TokenRain() {
   });
 
   const getCanvasDimensions = useCallback(() => {
+    const mobile = isMobileRef.current;
     const container = containerRef.current;
-    if (!container) return { width: 500, height: 480 };
+    if (!container) return { width: 500, height: mobile ? 700 : 480 };
     const rect = container.getBoundingClientRect();
+    if (mobile) {
+      return { width: rect.width, height: rect.height || rect.width * 1.6 };
+    }
     const w = Math.min(rect.width, 560);
     return { width: w, height: w * 0.9 };
   }, []);
@@ -519,11 +527,33 @@ export default function TokenRain() {
     };
   }, [reducedMotion, getCanvasDimensions]);
 
+  const dynamicContainerStyle: React.CSSProperties = isMobile
+    ? {
+        width: '100%',
+        margin: '0 auto',
+        background: '#FFFFFF',
+        position: 'relative',
+        overflow: 'hidden',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column' as const,
+      }
+    : {
+        maxWidth: 560,
+        margin: '0 auto',
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: '1px solid rgba(26, 26, 46, 0.06)',
+        boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
+        position: 'relative',
+        overflow: 'hidden',
+      };
+
   // Static fallback for reduced motion
   if (reducedMotion) {
     const sentence = SENTENCES[0];
     return (
-      <div style={containerStyle}>
+      <div style={dynamicContainerStyle}>
         <div style={{ textAlign: 'center', padding: '32px 20px' }}>
           <div style={{
             fontFamily: "'JetBrains Mono', monospace",
@@ -585,7 +615,7 @@ export default function TokenRain() {
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={dynamicContainerStyle}>
       {/* Sentence indicator dots */}
       <div style={{
         position: 'absolute',
@@ -611,7 +641,7 @@ export default function TokenRain() {
         ))}
       </div>
 
-      <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
+      <div ref={containerRef} style={{ width: '100%', position: 'relative', ...(isMobile ? { flex: 1 } : {}) }}>
         <canvas
           ref={canvasRef}
           style={{ display: 'block', width: '100%' }}
@@ -624,6 +654,7 @@ export default function TokenRain() {
         justifyContent: 'center',
         gap: 20,
         padding: '6px 16px 16px',
+        ...(isMobile ? { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2, padding: '8px 16px 12px' } : {}),
       }}>
         <div style={legendItemStyle}>
           <div style={{ ...legendDotStyle, background: NAVY, opacity: 0.6 }} />
@@ -642,16 +673,7 @@ export default function TokenRain() {
   );
 }
 
-const containerStyle: React.CSSProperties = {
-  maxWidth: 560,
-  margin: '0 auto',
-  background: '#FFFFFF',
-  borderRadius: 16,
-  border: '1px solid rgba(26, 26, 46, 0.06)',
-  boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
-  position: 'relative',
-  overflow: 'hidden',
-};
+// containerStyle is now dynamic — see dynamicContainerStyle inside the component
 
 const legendItemStyle: React.CSSProperties = {
   display: 'flex',

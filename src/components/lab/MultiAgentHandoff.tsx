@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * MultiAgentHandoff
@@ -134,6 +135,7 @@ export default function MultiAgentHandoff() {
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const animFrameRef = useRef<number>(0);
   const handoffStartRef = useRef(0);
+  const isMobile = useIsMobile();
 
   const clearTimers = () => {
     timersRef.current.forEach(clearTimeout);
@@ -291,17 +293,17 @@ export default function MultiAgentHandoff() {
     };
   }, [reducedMotion]);
 
-  // Layout constants for SVG
-  const SVG_W = 520;
-  const SVG_H = 440;
-  const LANE_W = 140;
-  const LANE_GAP = 30;
+  // Layout constants for SVG — responsive
+  const SVG_W = isMobile ? 380 : 520;
+  const SVG_H = isMobile ? 700 : 440;
+  const LANE_W = isMobile ? 100 : 140;
+  const LANE_GAP = isMobile ? 14 : 30;
   const LANES_LEFT = (SVG_W - 3 * LANE_W - 2 * LANE_GAP) / 2;
   const HEADER_H = 60;
-  const WORKSPACE_TOP = 110;
-  const WORKSPACE_H = 230;
+  const WORKSPACE_TOP = isMobile ? 130 : 110;
+  const WORKSPACE_H = isMobile ? 460 : 230;
   const LINE_H = 18;
-  const LINE_GAP = 10;
+  const LINE_GAP = isMobile ? 16 : 10;
 
   const getLaneX = (i: number) => LANES_LEFT + i * (LANE_W + LANE_GAP);
 
@@ -350,26 +352,29 @@ export default function MultiAgentHandoff() {
   const td = reducedMotion ? '0ms' : '400ms';
 
   const containerStyle: React.CSSProperties = {
-    maxWidth: 620,
+    maxWidth: isMobile ? 'none' : 620,
     margin: '0 auto',
     background: '#FFFFFF',
-    borderRadius: 16,
-    border: '1px solid rgba(26, 26, 46, 0.06)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
-    padding: '24px 16px',
+    borderRadius: isMobile ? 0 : 16,
+    border: isMobile ? 'none' : '1px solid rgba(26, 26, 46, 0.06)',
+    boxShadow: isMobile ? 'none' : '0 4px 32px rgba(26, 26, 46, 0.06), 0 1px 4px rgba(0,0,0,0.02)',
+    padding: isMobile ? 0 : '24px 16px',
     overflow: 'hidden',
+    ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const } : {}),
   };
 
   return (
     <div style={containerStyle}>
       <svg
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        preserveAspectRatio="xMidYMid meet"
         style={{
           width: '100%',
-          height: 'auto',
+          height: isMobile ? '100%' : 'auto',
           display: 'block',
           opacity: isFading ? 0 : 1,
           transition: isFading ? `opacity ${FADE_DURATION}ms ease` : 'opacity 300ms ease',
+          ...(isMobile ? { flex: 1 } : {}),
         }}
         role="img"
         aria-label="Multi-agent handoff: Researcher passes notes to Writer, Writer passes draft to Editor, Editor produces final report"
@@ -562,7 +567,7 @@ export default function MultiAgentHandoff() {
                           transition: `opacity 350ms ease`,
                         }}
                       >
-                        {line.length > 22 ? line.slice(0, 22) + '...' : line}
+                        {isMobile ? (line.length > 12 ? line.slice(0, 12) + '...' : line) : (line.length > 22 ? line.slice(0, 22) + '...' : line)}
                       </text>
 
                       {/* Editor mark: red underline or green checkmark */}

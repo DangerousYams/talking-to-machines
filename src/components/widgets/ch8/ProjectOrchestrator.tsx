@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 /* ─── Types ─── */
 interface TaskCard {
@@ -279,13 +280,331 @@ export default function ProjectOrchestrator() {
 
   const isMobile = useIsMobile();
 
+  // Mobile bottom sheet state
+  const [mobileSheetTask, setMobileSheetTask] = useState<TaskCard | null>(null);
+
   // Styles
   const accent = '#0F3460';
 
+  const statusColor = (col: Column) =>
+    col === 'done' ? '#16C79A' : col === 'inProgress' ? accent : '#CBD5E1';
+  const statusLabel = (col: Column) =>
+    col === 'done' ? 'Done' : col === 'inProgress' ? 'In Progress' : 'To Do';
+
+  /* ─── MOBILE LAYOUT ─── */
+  if (isMobile) {
+    const openTaskSheet = (task: TaskCard) => {
+      setMobileSheetTask(task);
+      // Initialize chat step if entering in-progress
+      if (getColumn(task.id) === 'inProgress' && chatStep[task.id] === undefined) {
+        setChatStep(prev => ({ ...prev, [task.id]: 0 }));
+      }
+    };
+
+    const doneCount = doneTasks.length;
+    const totalCount = project.tasks.length;
+    const progressPct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: 6, flexShrink: 0,
+            background: `linear-gradient(135deg, ${accent}, #0EA5E9)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+            </svg>
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2 }}>
+            Project Orchestrator
+          </h3>
+        </div>
+
+        {/* Project selector tabs */}
+        <div style={{
+          padding: '0.5rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
+          background: 'rgba(26,26,46,0.015)', display: 'flex', gap: 6,
+          overflowX: 'auto' as const, WebkitOverflowScrolling: 'touch' as const,
+        }}>
+          {(Object.keys(projects) as Array<'game' | 'magazine' | 'app'>).map(key => (
+            <button
+              key={key}
+              onClick={() => handleProjectChange(key)}
+              style={{
+                padding: '0.4rem 0.85rem', borderRadius: 8, border: '1px solid',
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+                background: activeProject === key ? accent : 'transparent',
+                color: activeProject === key ? '#FAF8F5' : '#6B7280',
+                borderColor: activeProject === key ? accent : 'rgba(26,26,46,0.1)',
+                whiteSpace: 'nowrap' as const, flexShrink: 0,
+                minHeight: 36,
+              }}
+            >
+              {projects[key].label}
+            </button>
+          ))}
+        </div>
+
+        {/* Task list */}
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '0.5rem 1rem' }}>
+          {project.tasks.map(task => {
+            const col = getColumn(task.id);
+            const depsReady = task.dependencies.every(d => completedIds.has(d));
+            const blocked = col === 'todo' && task.dependencies.length > 0 && !depsReady;
+            return (
+              <div
+                key={task.id}
+                onClick={() => openTaskSheet(task)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '0.65rem 0.5rem',
+                  borderBottom: '1px solid rgba(26,26,46,0.04)',
+                  opacity: blocked ? 0.5 : 1,
+                  cursor: 'pointer',
+                }}
+              >
+                {/* Status dot */}
+                <div style={{
+                  width: 10, height: 10, borderRadius: '50%', flexShrink: 0,
+                  background: statusColor(col),
+                  border: col === 'todo' ? '2px solid #CBD5E1' : 'none',
+                  boxSizing: 'border-box' as const,
+                }} />
+                {/* Task name */}
+                <span style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 600,
+                  color: col === 'done' ? '#16C79A' : '#1A1A2E',
+                  flex: 1, lineHeight: 1.3,
+                  textDecoration: col === 'done' ? 'line-through' : 'none',
+                }}>
+                  {task.name}
+                </span>
+                {/* Status label */}
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                  letterSpacing: '0.05em', textTransform: 'uppercase' as const,
+                  color: statusColor(col), flexShrink: 0,
+                }}>
+                  {blocked ? 'Blocked' : statusLabel(col)}
+                </span>
+                {/* Chevron */}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress bar at bottom */}
+        <div style={{
+          padding: '0.6rem 1rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+          background: `linear-gradient(135deg, rgba(15,52,96,0.04), rgba(14,165,233,0.04))`,
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+              Progress
+            </span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: accent }}>
+              {doneCount}/{totalCount} tasks ({progressPct}%)
+            </span>
+          </div>
+          <div style={{
+            height: 6, borderRadius: 3, background: 'rgba(26,26,46,0.06)', overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%', borderRadius: 3, transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              width: `${progressPct}%`,
+              background: progressPct === 100 ? '#16C79A' : `linear-gradient(90deg, ${accent}, #0EA5E9)`,
+            }} />
+          </div>
+        </div>
+
+        {/* Bottom Sheet for task details */}
+        <BottomSheet
+          isOpen={mobileSheetTask !== null}
+          onClose={() => setMobileSheetTask(null)}
+          title={mobileSheetTask?.name}
+        >
+          {mobileSheetTask && (() => {
+            const task = mobileSheetTask;
+            const col = getColumn(task.id);
+            const depsReady = task.dependencies.every(d => completedIds.has(d));
+            const blocked = col === 'todo' && task.dependencies.length > 0 && !depsReady;
+            const depNames = task.dependencies.map(depId => {
+              const dep = project.tasks.find(t => t.id === depId);
+              return dep ? dep.name : depId;
+            });
+
+            return (
+              <div>
+                {/* Status badge */}
+                <div style={{
+                  display: 'inline-block', padding: '3px 10px', borderRadius: 100, marginBottom: 10,
+                  background: col === 'done' ? 'rgba(22,199,154,0.1)' : col === 'inProgress' ? `rgba(15,52,96,0.08)` : 'rgba(26,26,46,0.06)',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  color: statusColor(col),
+                }}>
+                  {blocked ? 'Blocked' : statusLabel(col)}
+                </div>
+
+                {/* Description */}
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', lineHeight: 1.6, margin: '0 0 12px' }}>
+                  {task.description}
+                </p>
+
+                {/* AI interactions */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>AI interactions:</span>
+                  <div style={{ display: 'flex', gap: 3 }}>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} style={{
+                        width: 8, height: 8, borderRadius: '50%',
+                        background: i < task.aiInteractions ? accent : 'rgba(26,26,46,0.08)',
+                      }} />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Dependencies */}
+                {depNames.length > 0 && (
+                  <div style={{ marginBottom: 12 }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', display: 'block', marginBottom: 4 }}>Dependencies:</span>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 4 }}>
+                      {depNames.map((name, i) => {
+                        const depId = task.dependencies[i];
+                        const done = completedIds.has(depId);
+                        return (
+                          <span key={depId} style={{
+                            fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 500,
+                            padding: '2px 8px', borderRadius: 4,
+                            background: done ? 'rgba(22,199,154,0.1)' : 'rgba(233,69,96,0.08)',
+                            color: done ? '#16C79A' : '#E94560',
+                          }}>
+                            {done ? '\u2713' : '\u2192'} {name}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Simulated chat (in progress or done) */}
+                {(col === 'inProgress' || col === 'done') && (
+                  <div style={{
+                    margin: '12px 0', borderRadius: 10, overflow: 'hidden',
+                    border: `1px solid ${accent}20`, background: '#FEFDFB',
+                  }}>
+                    <div style={{
+                      padding: '0.5rem 0.75rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
+                      fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                      color: accent, letterSpacing: '0.05em',
+                    }}>
+                      SIMULATED CHAT
+                    </div>
+                    <div style={{ padding: '0.5rem 0.75rem' }}>
+                      {task.simulatedChat.slice(0, (chatStep[task.id] || 0) + 1).map((msg, i) => (
+                        <div key={i} style={{ marginBottom: 8, display: 'flex', gap: 6, alignItems: 'flex-start' }}>
+                          <span style={{
+                            fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                            flexShrink: 0, padding: '1px 4px', borderRadius: 3, marginTop: 2,
+                            background: msg.role === 'user' ? 'rgba(15,52,96,0.08)' : 'rgba(22,199,154,0.08)',
+                            color: msg.role === 'user' ? accent : '#16C79A',
+                          }}>
+                            {msg.role === 'user' ? 'YOU' : 'AI'}
+                          </span>
+                          <p style={{
+                            fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#1A1A2E',
+                            margin: 0, lineHeight: 1.5, whiteSpace: 'pre-wrap' as const,
+                          }}>
+                            {msg.text}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    {col === 'inProgress' && (chatStep[task.id] || 0) < task.simulatedChat.length - 1 && (
+                      <div style={{ padding: '0.5rem 0.75rem', borderTop: '1px solid rgba(26,26,46,0.04)' }}>
+                        <button onClick={() => advanceChat(task.id, task.simulatedChat.length)} style={{
+                          fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                          padding: '6px 12px', borderRadius: 4, border: 'none',
+                          background: accent, color: '#FAF8F5', cursor: 'pointer',
+                          minHeight: 36,
+                        }}>
+                          Next message
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Output (done) */}
+                {col === 'done' && (
+                  <div style={{
+                    marginTop: 8, padding: '0.5rem 0.75rem', borderRadius: 6,
+                    background: 'rgba(22,199,154,0.06)', border: '1px solid rgba(22,199,154,0.1)',
+                  }}>
+                    <p style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                      color: '#16C79A', marginBottom: 4,
+                    }}>OUTPUT</p>
+                    <p style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#1A1A2E',
+                      margin: 0, lineHeight: 1.6, opacity: 0.8,
+                    }}>
+                      {task.output}
+                    </p>
+                  </div>
+                )}
+
+                {/* Action buttons */}
+                <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+                  {col === 'todo' && (
+                    <button
+                      onClick={() => { moveForward(task); if (!blocked && canMoveForward(task)) { /* keep sheet open for in-progress */ } }}
+                      disabled={blocked}
+                      style={{
+                        flex: 1, padding: '0.6rem', borderRadius: 8, border: 'none',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700,
+                        cursor: blocked ? 'not-allowed' : 'pointer',
+                        background: blocked ? 'rgba(107,114,128,0.1)' : accent,
+                        color: blocked ? '#6B7280' : '#FAF8F5',
+                        minHeight: 44,
+                      }}
+                    >
+                      {blocked ? 'Blocked' : 'Start Task'}
+                    </button>
+                  )}
+                  {col === 'inProgress' && (
+                    <button
+                      onClick={() => { moveForward(task); setMobileSheetTask(null); }}
+                      style={{
+                        flex: 1, padding: '0.6rem', borderRadius: 8, border: 'none',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700,
+                        cursor: 'pointer', background: '#16C79A', color: '#FAF8F5',
+                        minHeight: 44,
+                      }}
+                    >
+                      Mark Complete
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })()}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  /* ─── DESKTOP LAYOUT (unchanged) ─── */
   return (
     <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8, flexShrink: 0,
@@ -309,7 +628,7 @@ export default function ProjectOrchestrator() {
 
       {/* Project selector tabs */}
       <div style={{
-        padding: isMobile ? '0.75rem 1rem' : '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
+        padding: '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
         background: 'rgba(26,26,46,0.015)', display: 'flex', gap: 6,
         overflowX: 'auto' as const, WebkitOverflowScrolling: 'touch' as const,
       }}>
@@ -334,7 +653,7 @@ export default function ProjectOrchestrator() {
       </div>
 
       {/* Project description */}
-      <div style={{ padding: isMobile ? '0.75rem 1rem' : '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#6B7280', margin: 0 }}>
           {project.description}
         </p>
@@ -342,13 +661,12 @@ export default function ProjectOrchestrator() {
 
       {/* Kanban columns */}
       <div style={{
-        display: isMobile ? 'flex' : 'grid',
-        gridTemplateColumns: isMobile ? undefined : '1fr 1fr 1fr',
-        flexDirection: isMobile ? 'column' as const : undefined,
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
         flex: 1, minHeight: 0,
       }}>
         {/* To Do */}
-        <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', padding: '1rem' }}>
+        <div style={{ borderRight: '1px solid rgba(26,26,46,0.06)', padding: '1rem' }}>
           <div style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
@@ -380,7 +698,7 @@ export default function ProjectOrchestrator() {
         </div>
 
         {/* In Progress */}
-        <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', padding: '1rem', background: 'rgba(15,52,96,0.02)' }}>
+        <div style={{ borderRight: '1px solid rgba(26,26,46,0.06)', padding: '1rem', background: 'rgba(15,52,96,0.02)' }}>
           <div style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
@@ -443,7 +761,7 @@ export default function ProjectOrchestrator() {
 
       {/* Insight bar */}
       <div style={{
-        padding: isMobile ? '1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+        padding: '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: `linear-gradient(135deg, rgba(15,52,96,0.04), rgba(14,165,233,0.04))`,
       }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>

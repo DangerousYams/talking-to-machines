@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface Scenario {
   action: string;
@@ -133,6 +134,7 @@ export default function TrustThermometer() {
   const [choices, setChoices] = useState<(number | null)[]>(Array(scenarios.length).fill(null));
   const [showTradeoff, setShowTradeoff] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const scenario = scenarios[currentScenario];
   const currentChoice = choices[currentScenario];
@@ -147,7 +149,11 @@ export default function TrustThermometer() {
 
   const handleNext = () => {
     if (currentScenario + 1 >= scenarios.length) {
-      setShowSummary(true);
+      if (isMobile) {
+        setSheetOpen(true);
+      } else {
+        setShowSummary(true);
+      }
     } else {
       setCurrentScenario((s) => s + 1);
       setShowTradeoff(false);
@@ -159,6 +165,7 @@ export default function TrustThermometer() {
     setChoices(Array(scenarios.length).fill(null));
     setShowTradeoff(false);
     setShowSummary(false);
+    setSheetOpen(false);
   };
 
   const profile = getProfile(choices);
@@ -169,6 +176,306 @@ export default function TrustThermometer() {
     high: '#E94560',
   };
 
+  // --- Summary BottomSheet content (shared) ---
+  const summaryContent = () => {
+    const choiceCounts = [0, 0, 0];
+    choices.forEach((c) => { if (c !== null) choiceCounts[c]++; });
+
+    return (
+      <div>
+        {/* Profile title */}
+        <div style={{ textAlign: 'center' as const, marginBottom: '1rem' }}>
+          <p style={{
+            fontFamily: 'var(--font-heading)', fontSize: '1.3rem', fontWeight: 800,
+            color: '#F5A623', margin: '0 0 0.35rem',
+          }}>
+            {profile.title}
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6,
+            color: '#1A1A2E', opacity: 0.75, margin: 0,
+          }}>
+            {profile.description}
+          </p>
+        </div>
+
+        {/* Choice counts */}
+        <div style={{
+          display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1rem',
+        }}>
+          {choiceLabels.map((label, i) => (
+            <div key={label} style={{
+              textAlign: 'center' as const, padding: '0.6rem 0.75rem',
+              borderRadius: 10, background: choiceColors[i] + '08',
+              border: `1px solid ${choiceColors[i]}20`, flex: 1,
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-heading)', fontSize: '1.25rem',
+                fontWeight: 800, color: choiceColors[i], margin: '0 0 0.15rem',
+              }}>
+                {choiceCounts[i]}
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.6rem',
+                color: '#6B7280', margin: 0, letterSpacing: '0.03em',
+              }}>
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Your choices vs average */}
+        <div style={{
+          background: 'rgba(26,26,46,0.02)', borderRadius: 10,
+          border: '1px solid rgba(26,26,46,0.06)', padding: '0.75rem',
+          marginBottom: '1rem',
+        }}>
+          <p style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+            letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+            color: '#6B7280', marginBottom: '0.6rem',
+          }}>
+            Your choices vs. the average
+          </p>
+          {scenarios.map((s, si) => {
+            const userChoice = choices[si];
+            return (
+              <div key={si} style={{ marginBottom: si < scenarios.length - 1 ? '0.5rem' : 0 }}>
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.65rem',
+                  color: '#1A1A2E', margin: '0 0 3px', opacity: 0.7,
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const,
+                }}>
+                  {s.action}
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{
+                    flex: 1, height: 5, borderRadius: 3, overflow: 'hidden' as const,
+                    display: 'flex', background: 'rgba(26,26,46,0.04)',
+                  }}>
+                    {s.averageDistribution.map((pct, pi) => (
+                      <div key={pi} style={{
+                        width: `${pct}%`, height: '100%',
+                        background: choiceColors[pi], opacity: 0.4,
+                      }} />
+                    ))}
+                  </div>
+                  {userChoice !== null && (
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                      color: choiceColors[userChoice], whiteSpace: 'nowrap' as const,
+                    }}>
+                      {choiceLabels[userChoice]}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Key insight */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(245,166,35,0.06), rgba(233,69,96,0.04))',
+          border: '1px solid rgba(245,166,35,0.15)',
+          borderRadius: 10, padding: '0.75rem', marginBottom: '1rem',
+          position: 'relative' as const, overflow: 'hidden' as const,
+        }}>
+          <div style={{
+            position: 'absolute' as const, left: 0, top: 0, bottom: 0, width: 3,
+            background: 'linear-gradient(to bottom, #F5A623, #E94560)',
+            borderRadius: '3px 0 0 3px',
+          }} />
+          <p style={{
+            fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6,
+            color: '#1A1A2E', margin: 0, opacity: 0.8, paddingLeft: '4px',
+          }}>
+            Your autonomy profile should evolve. As you build trust with AI tools, you may find yourself delegating more. The key is being <em>intentional</em> about where you draw the line.
+          </p>
+        </div>
+
+        <div style={{ textAlign: 'center' as const }}>
+          <button
+            onClick={handleRestart}
+            style={{
+              fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 600,
+              padding: '0.55rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer',
+              background: '#1A1A2E', color: '#FAF8F5',
+            }}
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // --- MOBILE LAYOUT ---
+  if (isMobile) {
+    // If summary is showing on desktop, also show sheet on mobile
+    if (showSummary && !sheetOpen) {
+      setSheetOpen(true);
+    }
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          padding: '8px 12px', flexShrink: 0,
+          borderBottom: '1px solid rgba(26,26,46,0.06)',
+        }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 6,
+            background: 'linear-gradient(135deg, #F5A623, #E94560)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
+            color: '#1A1A2E', margin: 0, flex: 1,
+          }}>
+            Trust Thermometer
+          </h3>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+            {currentScenario + 1}/{scenarios.length}
+          </span>
+        </div>
+
+        {/* Progress dots */}
+        <div style={{
+          display: 'flex', gap: 3, padding: '8px 12px 4px', flexShrink: 0,
+        }}>
+          {scenarios.map((_, i) => (
+            <div key={i} style={{
+              flex: 1, height: 3, borderRadius: 2,
+              background: i < currentScenario ? '#F5A623'
+                : i === currentScenario ? '#F5A62360'
+                : 'rgba(26,26,46,0.06)',
+              transition: 'background 0.3s ease',
+            }} />
+          ))}
+        </div>
+
+        {/* Main content area */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '6px 12px', overflow: 'hidden' }}>
+          {/* Stakes badge + scenario text (max 3 lines) */}
+          <div style={{ flexShrink: 0, marginBottom: '8px' }}>
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+              letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+              color: stakesColor[scenario.stakes],
+              background: stakesColor[scenario.stakes] + '10',
+              padding: '2px 6px', borderRadius: 100,
+              border: `1px solid ${stakesColor[scenario.stakes]}20`,
+            }}>
+              {scenario.stakes} stakes
+            </span>
+          </div>
+
+          <p style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
+            color: '#1A1A2E', margin: '0 0 10px', lineHeight: 1.35,
+            display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' as const,
+            overflow: 'hidden',
+          }}>
+            Your AI agent wants to: <span style={{ color: '#F5A623' }}>{scenario.action.toLowerCase()}</span>
+          </p>
+
+          {/* Three large tappable buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
+            {choiceLabels.map((label, i) => {
+              const isSelected = currentChoice === i;
+              const icons = [
+                <svg key="auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>,
+                <svg key="ask" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>,
+                <svg key="never" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
+              ];
+
+              return (
+                <button
+                  key={label}
+                  onClick={() => handleChoice(i)}
+                  disabled={showTradeoff}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.65rem',
+                    padding: '10px 12px', borderRadius: 10,
+                    border: `1px solid ${isSelected ? choiceColors[i] + '50' : 'rgba(26,26,46,0.08)'}`,
+                    background: isSelected ? choiceColors[i] + '08' : 'transparent',
+                    cursor: showTradeoff ? 'default' : 'pointer',
+                    textAlign: 'left' as const, width: '100%',
+                    opacity: showTradeoff && !isSelected ? 0.4 : 1,
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <div style={{
+                    width: 30, height: 30, borderRadius: 8,
+                    background: isSelected ? choiceColors[i] : 'rgba(26,26,46,0.04)',
+                    color: isSelected ? 'white' : '#6B7280',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, transition: 'all 0.2s',
+                  }}>
+                    {icons[i]}
+                  </div>
+                  <div>
+                    <p style={{
+                      fontFamily: 'var(--font-heading)', fontSize: '0.82rem', fontWeight: 700,
+                      color: isSelected ? choiceColors[i] : '#1A1A2E', margin: 0,
+                    }}>
+                      {label}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Inline feedback (2 lines clamped) + Next button */}
+          {showTradeoff && currentChoice !== null && (
+            <div style={{ marginTop: '8px', flexShrink: 0 }}>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5,
+                color: '#1A1A2E', margin: '0 0 8px', opacity: 0.75,
+                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
+                overflow: 'hidden',
+              }}>
+                {currentChoice === 0 && scenario.tradeoffs.auto}
+                {currentChoice === 1 && scenario.tradeoffs.ask}
+                {currentChoice === 2 && scenario.tradeoffs.never}
+              </p>
+              <div style={{ textAlign: 'right' as const }}>
+                <button
+                  onClick={handleNext}
+                  style={{
+                    fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 600,
+                    padding: '0.45rem 1.2rem', borderRadius: 100, border: 'none', cursor: 'pointer',
+                    background: '#1A1A2E', color: '#FAF8F5',
+                  }}
+                >
+                  {currentScenario + 1 >= scenarios.length ? 'See Profile' : 'Next'} &rarr;
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* BottomSheet for final profile */}
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => { setSheetOpen(false); }}
+          title="Your Autonomy Profile"
+        >
+          {summaryContent()}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // --- DESKTOP LAYOUT (unchanged) ---
   if (showSummary) {
     const choiceCounts = [0, 0, 0];
     choices.forEach((c) => { if (c !== null) choiceCounts[c]++; });
@@ -177,7 +484,7 @@ export default function TrustThermometer() {
       <div className="widget-container">
         {/* Header */}
         <div style={{
-          padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem',
+          padding: '1.5rem 2rem',
           borderBottom: '1px solid rgba(26,26,46,0.06)',
           display: 'flex', alignItems: 'center', gap: '0.75rem',
         }}>
@@ -191,17 +498,17 @@ export default function TrustThermometer() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Your Autonomy Profile
             </h3>
           </div>
         </div>
 
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '2rem' }}>
+        <div style={{ padding: '2rem' }}>
           {/* Profile title */}
-          <div style={{ textAlign: 'center' as const, marginBottom: isMobile ? '1.5rem' : '2rem' }}>
+          <div style={{ textAlign: 'center' as const, marginBottom: '2rem' }}>
             <p style={{
-              fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.5rem' : '2rem', fontWeight: 800,
+              fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800,
               color: '#F5A623', margin: '0 0 0.5rem',
             }}>
               {profile.title}
@@ -216,16 +523,15 @@ export default function TrustThermometer() {
 
           {/* Your choices breakdown */}
           <div style={{
-            display: 'flex', gap: isMobile ? '0.5rem' : '1rem', justifyContent: 'center',
-            marginBottom: isMobile ? '1.5rem' : '2rem', flexWrap: 'wrap' as const,
+            display: 'flex', gap: '1rem', justifyContent: 'center',
+            marginBottom: '2rem', flexWrap: 'wrap' as const,
           }}>
             {choiceLabels.map((label, i) => (
               <div key={label} style={{
-                textAlign: 'center' as const, padding: isMobile ? '0.75rem 1rem' : '1rem 1.5rem',
+                textAlign: 'center' as const, padding: '1rem 1.5rem',
                 borderRadius: 12, background: choiceColors[i] + '08',
                 border: `1px solid ${choiceColors[i]}20`,
-                minWidth: isMobile ? 80 : 100,
-                flex: isMobile ? 1 : 'none',
+                minWidth: 100,
               }}>
                 <p style={{
                   fontFamily: 'var(--font-heading)', fontSize: '1.5rem',
@@ -246,7 +552,7 @@ export default function TrustThermometer() {
           {/* Comparison to average */}
           <div style={{
             background: 'rgba(26,26,46,0.02)', borderRadius: 12,
-            border: '1px solid rgba(26,26,46,0.06)', padding: isMobile ? '1rem' : '1.25rem 1.5rem',
+            border: '1px solid rgba(26,26,46,0.06)', padding: '1.25rem 1.5rem',
             marginBottom: '1.5rem',
           }}>
             <p style={{
@@ -261,12 +567,12 @@ export default function TrustThermometer() {
               return (
                 <div key={si} style={{ marginBottom: si < scenarios.length - 1 ? '0.75rem' : 0 }}>
                   <p style={{
-                    fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.7rem' : '0.75rem',
+                    fontFamily: 'var(--font-body)', fontSize: '0.75rem',
                     color: '#1A1A2E', margin: '0 0 4px', opacity: 0.7,
                   }}>
                     {s.action}
                   </p>
-                  <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 8, flexDirection: isMobile ? 'column' as const : 'row' as const }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     {/* Average distribution bar */}
                     <div style={{
                       flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' as const,
@@ -310,7 +616,7 @@ export default function TrustThermometer() {
           <div style={{
             background: 'linear-gradient(135deg, rgba(245,166,35,0.06), rgba(233,69,96,0.04))',
             border: '1px solid rgba(245,166,35,0.15)',
-            borderRadius: 12, padding: isMobile ? '1rem' : '1.25rem 1.5rem',
+            borderRadius: 12, padding: '1.25rem 1.5rem',
             position: 'relative' as const, overflow: 'hidden' as const,
             marginBottom: '1.5rem',
           }}>
@@ -356,7 +662,7 @@ export default function TrustThermometer() {
     <div className="widget-container">
       {/* Header */}
       <div style={{
-        padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem',
+        padding: '1.5rem 2rem',
         borderBottom: '1px solid rgba(26,26,46,0.06)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
       }}>
@@ -371,7 +677,7 @@ export default function TrustThermometer() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Trust Thermometer
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
@@ -386,7 +692,7 @@ export default function TrustThermometer() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      <div style={{ padding: '1.5rem 2rem' }}>
         {/* Progress bar */}
         <div style={{
           display: 'flex', gap: 4, marginBottom: '1.5rem',

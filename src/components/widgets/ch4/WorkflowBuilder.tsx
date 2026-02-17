@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface PipelineNode {
   id: string;
@@ -89,6 +90,7 @@ export default function WorkflowBuilder() {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
   const [customPipeline, setCustomPipeline] = useState<PipelineNode[]>([]);
   const [mode, setMode] = useState<'prebuilt' | 'custom'>('prebuilt');
+  const [sheetNodeIndex, setSheetNodeIndex] = useState<number | null>(null);
 
   const pipeline = prebuiltPipelines[activePipeline];
   const displayNodes = mode === 'prebuilt' ? pipeline.nodes : customPipeline;
@@ -111,10 +113,280 @@ export default function WorkflowBuilder() {
     setSelectedNode(null);
   };
 
+  // --- MOBILE LAYOUT ---
+  if (isMobile) {
+    const sheetNode = sheetNodeIndex !== null && sheetNodeIndex < displayNodes.length
+      ? displayNodes[sheetNodeIndex]
+      : null;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          padding: '8px 12px', flexShrink: 0,
+          borderBottom: '1px solid rgba(26,26,46,0.06)',
+        }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 6,
+            background: 'linear-gradient(135deg, #7B61FF, #7B61FF80)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" />
+              <polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" />
+              <line x1="4" y1="4" x2="9" y2="9" />
+            </svg>
+          </div>
+          <h3 style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
+            color: '#1A1A2E', margin: 0, flex: 1,
+          }}>
+            Workflow Builder
+          </h3>
+        </div>
+
+        {/* Mode toggle + pipeline presets */}
+        <div style={{ padding: '8px 12px 0', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '8px' }}>
+            <button
+              onClick={() => { setMode('prebuilt'); setSelectedNode(null); setSheetNodeIndex(null); }}
+              style={{
+                padding: '0.35rem 0.65rem', borderRadius: 6,
+                border: `1px solid ${mode === 'prebuilt' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
+                background: mode === 'prebuilt' ? '#7B61FF12' : 'transparent',
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                color: mode === 'prebuilt' ? '#7B61FF' : '#6B7280',
+                cursor: 'pointer', textTransform: 'uppercase' as const, letterSpacing: '0.04em',
+              }}
+            >
+              Examples
+            </button>
+            <button
+              onClick={() => { setMode('custom'); setSelectedNode(null); setSheetNodeIndex(null); }}
+              style={{
+                padding: '0.35rem 0.65rem', borderRadius: 6,
+                border: `1px solid ${mode === 'custom' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
+                background: mode === 'custom' ? '#7B61FF12' : 'transparent',
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                color: mode === 'custom' ? '#7B61FF' : '#6B7280',
+                cursor: 'pointer', textTransform: 'uppercase' as const, letterSpacing: '0.04em',
+              }}
+            >
+              Build
+            </button>
+          </div>
+
+          {mode === 'prebuilt' && (
+            <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch' as const, paddingBottom: '4px' }}>
+              {prebuiltPipelines.map((p, i) => (
+                <button
+                  key={p.name}
+                  onClick={() => { setActivePipeline(i); setSheetNodeIndex(null); }}
+                  style={{
+                    padding: '0.35rem 0.65rem', borderRadius: 6,
+                    border: `1px solid ${i === activePipeline ? '#0EA5E940' : 'rgba(26,26,46,0.08)'}`,
+                    background: i === activePipeline ? '#0EA5E90A' : 'transparent',
+                    fontFamily: 'var(--font-heading)', fontSize: '0.78rem',
+                    fontWeight: i === activePipeline ? 700 : 500,
+                    color: i === activePipeline ? '#0EA5E9' : '#6B7280',
+                    cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' as const,
+                  }}
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {mode === 'custom' && (
+            <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap' as const, paddingBottom: '4px' }}>
+              {availableNodes.map((node) => (
+                <button
+                  key={node.id}
+                  onClick={() => addCustomNode(node)}
+                  disabled={customPipeline.length >= 6}
+                  style={{
+                    padding: '0.3rem 0.55rem', borderRadius: 5,
+                    border: `1px solid ${node.color}30`, background: `${node.color}08`,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                    color: node.color, cursor: customPipeline.length >= 6 ? 'not-allowed' : 'pointer',
+                    opacity: customPipeline.length >= 6 ? 0.4 : 1,
+                  }}
+                >
+                  + {node.role}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Vertical pipeline */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '8px 12px' }}>
+          {displayNodes.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              {displayNodes.map((node, i) => (
+                <div key={node.id + i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                  {/* Node button */}
+                  <button
+                    onClick={() => setSheetNodeIndex(i)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '0.6rem',
+                      width: '100%', padding: '8px 10px', borderRadius: 8,
+                      border: `1.5px solid ${node.color}30`,
+                      background: 'white', cursor: 'pointer',
+                      textAlign: 'left' as const, position: 'relative' as const,
+                    }}
+                  >
+                    {/* Step number bubble */}
+                    <div style={{
+                      width: 28, height: 28, borderRadius: '50%',
+                      background: `linear-gradient(135deg, ${node.color}, ${node.color}90)`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.7rem', color: 'white', fontWeight: 700,
+                      fontFamily: 'var(--font-mono)', flexShrink: 0,
+                    }}>
+                      {i + 1}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{
+                        fontFamily: 'var(--font-heading)', fontSize: '0.78rem', fontWeight: 700,
+                        color: node.color, display: 'block',
+                      }}>
+                        {node.role}
+                      </span>
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280',
+                      }}>
+                        {node.label}
+                      </span>
+                    </div>
+                    {/* Chevron */}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                    {/* Remove button for custom */}
+                    {mode === 'custom' && (
+                      <span
+                        onClick={(e) => { e.stopPropagation(); removeCustomNode(i); }}
+                        style={{
+                          position: 'absolute' as const, top: -5, right: -5,
+                          width: 16, height: 16, borderRadius: '50%',
+                          background: '#E94560', color: 'white',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', lineHeight: 1,
+                        }}
+                      >
+                        x
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Arrow connector */}
+                  {i < displayNodes.length - 1 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2px 0' }}>
+                      <div style={{ width: 2, height: 12, background: 'rgba(26,26,46,0.12)' }} />
+                      <div style={{
+                        width: 0, height: 0,
+                        borderLeft: '4px solid transparent', borderRight: '4px solid transparent',
+                        borderTop: '5px solid rgba(26,26,46,0.15)',
+                      }} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{
+              textAlign: 'center' as const, padding: '1.5rem 1rem',
+              border: '2px dashed rgba(26,26,46,0.08)', borderRadius: 10,
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', margin: 0,
+              }}>
+                Tap the buttons above to add steps.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer hint */}
+        <div style={{
+          padding: '6px 12px', borderTop: '1px solid rgba(26,26,46,0.04)',
+          textAlign: 'center' as const, flexShrink: 0,
+        }}>
+          <p style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
+            color: 'rgba(26,26,46,0.3)', letterSpacing: '0.04em', margin: 0,
+          }}>
+            Tap any step for details
+          </p>
+        </div>
+
+        {/* BottomSheet for node detail */}
+        <BottomSheet
+          isOpen={sheetNode !== null}
+          onClose={() => setSheetNodeIndex(null)}
+          title={sheetNode ? `Step ${sheetNodeIndex! + 1}: ${sheetNode.role}` : ''}
+        >
+          {sheetNode && (
+            <div>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6,
+                color: '#6B7280', margin: '0 0 1rem',
+              }}>
+                {sheetNode.desc}
+              </p>
+
+              {/* Input */}
+              <div style={{ marginBottom: '0.75rem' }}>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                  color: '#16C79A', display: 'block', marginBottom: '0.3rem',
+                }}>
+                  Input
+                </span>
+                <div style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.72rem', lineHeight: 1.65,
+                  color: '#1A1A2E', background: 'rgba(22,199,154,0.04)',
+                  border: '1px solid rgba(22,199,154,0.1)', borderRadius: 6,
+                  padding: '0.6rem 0.75rem', wordBreak: 'break-word' as const,
+                }}>
+                  {sheetNode.input}
+                </div>
+              </div>
+
+              {/* Output */}
+              <div>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                  color: '#7B61FF', display: 'block', marginBottom: '0.3rem',
+                }}>
+                  Output
+                </span>
+                <div style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.72rem', lineHeight: 1.65,
+                  color: '#1A1A2E', background: 'rgba(123,97,255,0.04)',
+                  border: '1px solid rgba(123,97,255,0.1)', borderRadius: 6,
+                  padding: '0.6rem 0.75rem', wordBreak: 'break-word' as const,
+                }}>
+                  {sheetNode.output}
+                </div>
+              </div>
+            </div>
+          )}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // --- DESKTOP LAYOUT (unchanged) ---
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
@@ -130,7 +402,7 @@ export default function WorkflowBuilder() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
               Workflow Builder
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
@@ -141,11 +413,11 @@ export default function WorkflowBuilder() {
       </div>
 
       {/* Mode toggle */}
-      <div style={{ padding: isMobile ? '1rem 1rem 0' : '1rem 2rem 0', display: 'flex', gap: '0.5rem' }}>
+      <div style={{ padding: '1rem 2rem 0', display: 'flex', gap: '0.5rem' }}>
         <button
           onClick={() => { setMode('prebuilt'); setSelectedNode(null); }}
           style={{
-            padding: isMobile ? '0.5rem 0.85rem' : '0.35rem 0.75rem',
+            padding: '0.35rem 0.75rem',
             borderRadius: 6,
             border: `1px solid ${mode === 'prebuilt' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
             background: mode === 'prebuilt' ? '#7B61FF12' : 'transparent',
@@ -163,7 +435,7 @@ export default function WorkflowBuilder() {
         <button
           onClick={() => { setMode('custom'); setSelectedNode(null); }}
           style={{
-            padding: isMobile ? '0.5rem 0.85rem' : '0.35rem 0.75rem',
+            padding: '0.35rem 0.75rem',
             borderRadius: 6,
             border: `1px solid ${mode === 'custom' ? '#7B61FF40' : 'rgba(26,26,46,0.08)'}`,
             background: mode === 'custom' ? '#7B61FF12' : 'transparent',
@@ -180,7 +452,7 @@ export default function WorkflowBuilder() {
         </button>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '1.25rem 2rem' }}>
+      <div style={{ padding: '1.25rem 2rem' }}>
         {mode === 'prebuilt' && (
           <>
             {/* Pipeline tabs */}
@@ -265,33 +537,31 @@ export default function WorkflowBuilder() {
           <div style={{ marginBottom: '1.5rem' }}>
             <div style={{
               display: 'flex',
-              flexDirection: isMobile ? 'column' as const : 'row' as const,
+              flexDirection: 'row' as const,
               alignItems: 'center',
               gap: 0,
-              overflowX: isMobile ? 'visible' as const : 'auto' as const,
+              overflowX: 'auto' as const,
               paddingBottom: '0.5rem',
             }}>
               {displayNodes.map((node, i) => (
-                <div key={node.id + i} style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, alignItems: 'center', flexShrink: 0 }}>
+                <div key={node.id + i} style={{ display: 'flex', flexDirection: 'row' as const, alignItems: 'center', flexShrink: 0 }}>
                   {/* Node */}
                   <button
                     onClick={() => setSelectedNode(selectedNode === i ? null : i)}
                     style={{
                       display: 'flex',
-                      flexDirection: isMobile ? 'row' as const : 'column' as const,
+                      flexDirection: 'column' as const,
                       alignItems: 'center',
-                      gap: isMobile ? '0.75rem' : '0.35rem',
-                      padding: isMobile ? '0.75rem 1rem' : '0.75rem 1rem',
+                      gap: '0.35rem',
+                      padding: '0.75rem 1rem',
                       borderRadius: 10,
                       border: `2px solid ${selectedNode === i ? node.color : node.color + '30'}`,
                       background: selectedNode === i ? `${node.color}10` : 'white',
                       cursor: 'pointer',
                       transition: 'all 0.25s ease',
-                      minWidth: isMobile ? '100%' : 90,
-                      width: isMobile ? '100%' : 'auto',
-                      minHeight: isMobile ? 44 : 'auto',
+                      minWidth: 90,
                       position: 'relative' as const,
-                      textAlign: isMobile ? 'left' as const : 'center' as const,
+                      textAlign: 'center' as const,
                     }}
                   >
                     {/* Step number */}
@@ -366,27 +636,15 @@ export default function WorkflowBuilder() {
 
                   {/* Arrow connector */}
                   {i < displayNodes.length - 1 && (
-                    isMobile ? (
-                      <div style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'center', padding: '0.15rem 0' }}>
-                        <div style={{ width: 2, height: 16, background: 'rgba(26,26,46,0.12)' }} />
-                        <div style={{
-                          width: 0, height: 0,
-                          borderLeft: '5px solid transparent',
-                          borderRight: '5px solid transparent',
-                          borderTop: '6px solid rgba(26,26,46,0.15)',
-                        }} />
-                      </div>
-                    ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', padding: '0 0.25rem' }}>
-                        <div style={{ width: 20, height: 2, background: 'rgba(26,26,46,0.12)' }} />
-                        <div style={{
-                          width: 0, height: 0,
-                          borderTop: '5px solid transparent',
-                          borderBottom: '5px solid transparent',
-                          borderLeft: '6px solid rgba(26,26,46,0.15)',
-                        }} />
-                      </div>
-                    )
+                    <div style={{ display: 'flex', alignItems: 'center', padding: '0 0.25rem' }}>
+                      <div style={{ width: 20, height: 2, background: 'rgba(26,26,46,0.12)' }} />
+                      <div style={{
+                        width: 0, height: 0,
+                        borderTop: '5px solid transparent',
+                        borderBottom: '5px solid transparent',
+                        borderLeft: '6px solid rgba(26,26,46,0.15)',
+                      }} />
+                    </div>
                   )}
                 </div>
               ))}
@@ -417,7 +675,7 @@ export default function WorkflowBuilder() {
             background: '#FEFDFB',
             border: `1px solid ${displayNodes[selectedNode].color}20`,
             borderRadius: 10,
-            padding: isMobile ? '1rem' : '1.25rem 1.5rem',
+            padding: '1.25rem 1.5rem',
             transition: 'all 0.3s ease',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
@@ -461,13 +719,13 @@ export default function WorkflowBuilder() {
               </span>
               <div style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.72rem' : '0.78rem',
+                fontSize: '0.78rem',
                 lineHeight: 1.65,
                 color: '#1A1A2E',
                 background: 'rgba(22,199,154,0.04)',
                 border: '1px solid rgba(22,199,154,0.1)',
                 borderRadius: 6,
-                padding: isMobile ? '0.65rem 0.75rem' : '0.75rem 1rem',
+                padding: '0.75rem 1rem',
                 wordBreak: 'break-word' as const,
               }}>
                 {displayNodes[selectedNode].input}
@@ -490,13 +748,13 @@ export default function WorkflowBuilder() {
               </span>
               <div style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: isMobile ? '0.72rem' : '0.78rem',
+                fontSize: '0.78rem',
                 lineHeight: 1.65,
                 color: '#1A1A2E',
                 background: 'rgba(123,97,255,0.04)',
                 border: '1px solid rgba(123,97,255,0.1)',
                 borderRadius: 6,
-                padding: isMobile ? '0.65rem 0.75rem' : '0.75rem 1rem',
+                padding: '0.75rem 1rem',
                 wordBreak: 'break-word' as const,
               }}>
                 {displayNodes[selectedNode].output}
@@ -508,7 +766,7 @@ export default function WorkflowBuilder() {
 
       {/* Footer */}
       <div style={{
-        padding: isMobile ? '1rem' : '1rem 2rem',
+        padding: '1rem 2rem',
         borderTop: '1px solid rgba(26,26,46,0.04)',
         textAlign: 'center' as const,
       }}>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * PromptMorphAnimation
@@ -57,6 +58,7 @@ export default function PromptMorphAnimation() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const mountedRef = useRef(true);
+  const isMobile = useIsMobile();
 
   const clearTimers = useCallback(() => {
     timerRef.current.forEach(clearTimeout);
@@ -129,7 +131,15 @@ export default function PromptMorphAnimation() {
     };
   }, [runCycle, clearTimers]);
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle: React.CSSProperties = isMobile ? {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '40px 24px 24px',
+    position: 'relative',
+    overflow: 'hidden',
+  } : {
     maxWidth: 800,
     margin: '0 auto',
     background: '#FFFFFF',
@@ -143,7 +153,7 @@ export default function PromptMorphAnimation() {
 
   const badPromptStyle: React.CSSProperties = {
     fontFamily: "'Playfair Display', Georgia, serif",
-    fontSize: 'clamp(1.2rem, 3vw, 1.7rem)',
+    fontSize: isMobile ? 'clamp(1.5rem, 5vw, 2.2rem)' : 'clamp(1.2rem, 3vw, 1.7rem)',
     fontWeight: 600,
     lineHeight: 1.5,
     color: '#1A1A2E',
@@ -154,15 +164,15 @@ export default function PromptMorphAnimation() {
     position: phase === 'morphing' || phase === 'good' || phase === 'fading' ? 'absolute' : 'relative',
     width: '100%',
     left: 0,
-    padding: '0 28px',
+    padding: isMobile ? '0 24px' : '0 28px',
     boxSizing: 'border-box',
   };
 
   const goodPromptContainerStyle: React.CSSProperties = {
     fontFamily: "'Source Serif 4', Georgia, serif",
-    fontSize: 'clamp(0.88rem, 2.2vw, 1.1rem)',
+    fontSize: isMobile ? 'clamp(1rem, 3.5vw, 1.4rem)' : 'clamp(0.88rem, 2.2vw, 1.1rem)',
     fontWeight: 500,
-    lineHeight: 1.8,
+    lineHeight: isMobile ? 2.0 : 1.8,
     textAlign: 'left',
     opacity: phase === 'bad' ? 0 : phase === 'fading' ? 0 : 1,
     transform: phase === 'bad' ? 'translateY(20px)' : phase === 'fading' ? 'translateY(-10px)' : 'translateY(0)',
@@ -192,7 +202,7 @@ export default function PromptMorphAnimation() {
     return {
       display: 'inline',
       fontFamily: "'JetBrains Mono', monospace",
-      fontSize: '0.55em',
+      fontSize: isMobile ? '0.65em' : '0.55em',
       fontWeight: 700,
       letterSpacing: '0.06em',
       textTransform: 'uppercase' as const,
@@ -232,27 +242,37 @@ export default function PromptMorphAnimation() {
         ))}
       </div>
 
-      {/* Bad prompt */}
-      <div style={badPromptStyle}>
-        <span style={{ opacity: 0.5, fontStyle: 'italic' }}>help me with my essay</span>
+      {/* Prompt text area — fills available space on mobile, centered vertically */}
+      <div style={isMobile ? {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        position: 'relative',
+      } : undefined}>
+        {/* Bad prompt */}
+        <div style={badPromptStyle}>
+          <span style={{ opacity: 0.5, fontStyle: 'italic' }}>help me with my essay</span>
+        </div>
+
+        {/* Good prompt (morphing in) */}
+        <div style={goodPromptContainerStyle}>
+          {GOOD_SEGMENTS.map((seg, i) => (
+            <span key={seg.id} style={{ display: 'inline' }}>
+              {seg.type !== 'original' && (
+                <span style={labelStyle(seg, i)}>{LABELS[seg.type] || ''}</span>
+              )}
+              <span style={getSegmentStyle(seg, i)}>{seg.text}</span>
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Good prompt (morphing in) */}
-      <div style={goodPromptContainerStyle}>
-        {GOOD_SEGMENTS.map((seg, i) => (
-          <span key={seg.id} style={{ display: 'inline' }}>
-            {seg.type !== 'original' && (
-              <span style={labelStyle(seg, i)}>{LABELS[seg.type] || ''}</span>
-            )}
-            <span style={getSegmentStyle(seg, i)}>{seg.text}</span>
-          </span>
-        ))}
-      </div>
-
-      {/* Quality indicator */}
+      {/* Quality indicator — pushed to bottom on mobile via marginTop auto */}
       <div
         style={{
-          marginTop: 24,
+          marginTop: isMobile ? 'auto' : 24,
+          paddingTop: isMobile ? 24 : 0,
           display: 'flex',
           alignItems: 'center',
           gap: 10,

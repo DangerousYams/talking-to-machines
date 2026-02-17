@@ -76,6 +76,9 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
     }
   }, []);
 
+  const openMenu = useCallback(() => setMenuOpen(true), []);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+
   return (
     <>
       <div
@@ -103,7 +106,7 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
               isActive: i === activeIndex,
               cardIndex: i + 1,
               totalCards: total,
-              onMenuOpen: () => setMenuOpen(true),
+              onMenuOpen: openMenu,
               'data-card-index': i,
               ...(i === firstFlippableIndex ? { isFirstFlippable: true } : {}),
             })}
@@ -111,16 +114,11 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
         ))}
       </div>
 
-      <DotNav
-        total={total}
-        activeIndex={activeIndex}
-        accentColor={accentColor}
-        onDotClick={scrollToCard}
-      />
+      {/* DotNav disabled for now */}
 
       <NavDrawer
         isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
+        onClose={closeMenu}
         accentColor={accentColor}
         currentChapterSlug={chapterSlug}
       />

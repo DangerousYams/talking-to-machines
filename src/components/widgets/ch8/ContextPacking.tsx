@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 /* ─── Types ─── */
 interface Document {
@@ -247,10 +248,303 @@ export default function ContextPacking() {
   const fillPercent = Math.min((totalPacked / MAX_TOKENS) * 100, 100);
   const isOverflowing = totalPacked > MAX_TOKENS;
 
+  // Mobile result sheet state
+  const [mobileResultSheet, setMobileResultSheet] = useState(false);
+
+  // When result changes, auto-open sheet on mobile
+  const runTaskMobile = () => {
+    if (packed.length === 0) return;
+    const evaluation = evaluateSelection(task, packed);
+    setResult(evaluation);
+    setHasRun(true);
+    setMobileResultSheet(true);
+  };
+
+  const resetTaskMobile = () => {
+    resetTask();
+    setMobileResultSheet(false);
+  };
+
+  /* ─── MOBILE LAYOUT ─── */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: 6, flexShrink: 0,
+            background: `linear-gradient(135deg, ${accent}, #7B61FF)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 7V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v3" />
+            </svg>
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2 }}>
+            Context Packing
+          </h3>
+        </div>
+
+        {/* Task tabs */}
+        <div style={{
+          padding: '0.5rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
+          background: 'rgba(26,26,46,0.015)', display: 'flex', gap: 6,
+          overflowX: 'auto' as const, WebkitOverflowScrolling: 'touch' as const,
+        }}>
+          {tasks.map((t, i) => (
+            <button
+              key={t.id}
+              onClick={() => switchTask(i)}
+              style={{
+                padding: '0.4rem 0.85rem', borderRadius: 8, border: '1px solid',
+                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+                background: activeTaskIndex === i ? accent : 'transparent',
+                color: activeTaskIndex === i ? '#FAF8F5' : '#6B7280',
+                borderColor: activeTaskIndex === i ? accent : 'rgba(26,26,46,0.1)',
+                whiteSpace: 'nowrap' as const, flexShrink: 0,
+                minHeight: 36,
+              }}
+            >
+              Task {i + 1}
+            </button>
+          ))}
+        </div>
+
+        {/* Task description (compact) */}
+        <div style={{ padding: '0.6rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+          <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: accent, margin: '0 0 2px' }}>
+            {task.name}
+          </p>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
+            {task.description}
+          </p>
+        </div>
+
+        {/* Token capacity bar */}
+        <div style={{ padding: '0.5rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
+              {totalPacked.toLocaleString()} / {MAX_TOKENS.toLocaleString()} tokens
+            </span>
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+              color: fillPercent > 90 ? '#E94560' : fillPercent > 70 ? '#F5A623' : '#16C79A',
+            }}>
+              {Math.round(fillPercent)}%
+            </span>
+          </div>
+          <div style={{
+            height: 8, borderRadius: 4, background: 'rgba(26,26,46,0.06)', overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%', borderRadius: 4, transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              width: `${fillPercent}%`,
+              background: fillPercent > 90
+                ? 'linear-gradient(90deg, #F5A623, #E94560)'
+                : fillPercent > 70
+                  ? 'linear-gradient(90deg, #16C79A, #F5A623)'
+                  : `linear-gradient(90deg, ${accent}, #0EA5E9)`,
+            }} />
+          </div>
+        </div>
+
+        {/* Document list as tappable rows */}
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '0.25rem 0' }}>
+          {documents.map(doc => {
+            const isPacked = packed.includes(doc.id);
+            const wouldOverflow = !isPacked && (totalPacked + doc.tokens > MAX_TOKENS);
+            const cat = categoryColors[doc.category];
+            const disabled = hasRun || wouldOverflow;
+            return (
+              <div
+                key={doc.id}
+                onClick={() => !disabled && toggleDocument(doc.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '0.55rem 1rem',
+                  borderBottom: '1px solid rgba(26,26,46,0.03)',
+                  opacity: (hasRun && !isPacked) ? 0.4 : wouldOverflow ? 0.4 : 1,
+                  cursor: disabled ? 'default' : 'pointer',
+                  background: isPacked ? `${cat.bg}` : 'transparent',
+                }}
+              >
+                {/* Checkbox */}
+                <div style={{
+                  width: 20, height: 20, borderRadius: 4, flexShrink: 0,
+                  border: `2px solid ${isPacked ? cat.text : 'rgba(26,26,46,0.15)'}`,
+                  background: isPacked ? cat.text : 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.2s',
+                }}>
+                  {isPacked && (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </div>
+                {/* Category badge */}
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                  color: cat.text, padding: '1px 4px', borderRadius: 3,
+                  background: cat.bg, flexShrink: 0,
+                }}>
+                  {cat.label}
+                </span>
+                {/* Name */}
+                <span style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#1A1A2E',
+                  flex: 1, lineHeight: 1.3,
+                }}>
+                  {doc.name}
+                </span>
+                {/* Tokens */}
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                  color: wouldOverflow ? '#E94560' : '#6B7280', flexShrink: 0,
+                }}>
+                  {doc.tokens.toLocaleString()}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Action button */}
+        <div style={{ padding: '0.6rem 1rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          {!hasRun ? (
+            <button
+              onClick={runTaskMobile}
+              disabled={packed.length === 0}
+              style={{
+                width: '100%', padding: '0.6rem', borderRadius: 8,
+                fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700,
+                border: 'none', cursor: packed.length === 0 ? 'not-allowed' : 'pointer',
+                background: packed.length === 0 ? 'rgba(26,26,46,0.06)' : accent,
+                color: packed.length === 0 ? '#6B7280' : '#FAF8F5',
+                transition: 'all 0.2s', minHeight: 44,
+              }}
+            >
+              Run Task ({packed.length} doc{packed.length !== 1 ? 's' : ''})
+            </button>
+          ) : (
+            <button
+              onClick={resetTaskMobile}
+              style={{
+                width: '100%', padding: '0.6rem', borderRadius: 8,
+                fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700,
+                border: `1px solid ${accent}`, cursor: 'pointer',
+                background: 'transparent', color: accent,
+                transition: 'all 0.2s', minHeight: 44,
+              }}
+            >
+              Try Again
+            </button>
+          )}
+        </div>
+
+        {/* Result BottomSheet */}
+        <BottomSheet
+          isOpen={mobileResultSheet}
+          onClose={() => setMobileResultSheet(false)}
+          title="AI Output Quality"
+        >
+          {result && (
+            <div>
+              {/* Score circle */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16,
+                padding: '0.85rem', borderRadius: 10,
+                background: result.quality === 'great'
+                  ? 'rgba(22,199,154,0.06)'
+                  : result.quality === 'okay'
+                    ? 'rgba(245,166,35,0.06)'
+                    : 'rgba(233,69,96,0.06)',
+                border: `1px solid ${
+                  result.quality === 'great' ? 'rgba(22,199,154,0.15)'
+                    : result.quality === 'okay' ? 'rgba(245,166,35,0.15)'
+                    : 'rgba(233,69,96,0.15)'
+                }`,
+              }}>
+                <div style={{
+                  width: 48, height: 48, borderRadius: '50%', display: 'flex',
+                  alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  background: result.quality === 'great' ? '#16C79A'
+                    : result.quality === 'okay' ? '#F5A623' : '#E94560',
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '1.1rem',
+                    fontWeight: 800, color: '#FEFDFB',
+                  }}>
+                    {result.score}
+                  </span>
+                </div>
+                <div>
+                  <p style={{
+                    fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
+                    margin: '0 0 2px',
+                    color: result.quality === 'great' ? '#16C79A'
+                      : result.quality === 'okay' ? '#F5A623' : '#E94560',
+                  }}>
+                    {result.quality === 'great' ? 'Excellent output!'
+                      : result.quality === 'okay' ? 'Partial success'
+                      : 'Poor output'}
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
+                    color: '#6B7280', margin: 0,
+                  }}>
+                    {packed.length} doc{packed.length !== 1 ? 's' : ''}, {totalPacked.toLocaleString()} tokens
+                  </p>
+                </div>
+              </div>
+
+              {/* Feedback */}
+              <div style={{
+                padding: '0.85rem', borderRadius: 10,
+                background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.06)',
+                marginBottom: 14,
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E',
+                  margin: 0, lineHeight: 1.7,
+                }}>
+                  {result.feedback}
+                </p>
+              </div>
+
+              {/* Optimal hint */}
+              <div style={{
+                padding: '0.65rem', borderRadius: 8,
+                background: 'rgba(15,52,96,0.04)', border: '1px solid rgba(15,52,96,0.08)',
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                  color: accent, margin: '0 0 4px',
+                }}>
+                  OPTIMAL SELECTION:
+                </p>
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6B7280',
+                  margin: 0, lineHeight: 1.5,
+                }}>
+                  {task.optimalDocs.map(id => documents.find(d => d.id === id)?.name).join(' + ')}
+                  {' = '}
+                  {task.optimalDocs.reduce((sum, id) => sum + (documents.find(d => d.id === id)?.tokens || 0), 0).toLocaleString()} tokens
+                </p>
+              </div>
+            </div>
+          )}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  /* ─── DESKTOP LAYOUT (unchanged) ─── */
   return (
     <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8, flexShrink: 0,
@@ -274,7 +568,7 @@ export default function ContextPacking() {
 
       {/* Task selector */}
       <div style={{
-        padding: isMobile ? '0.75rem 1rem' : '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
+        padding: '0.75rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)',
         background: 'rgba(26,26,46,0.015)', display: 'flex', gap: 6,
         overflowX: 'auto' as const, WebkitOverflowScrolling: 'touch' as const,
       }}>
@@ -299,7 +593,7 @@ export default function ContextPacking() {
       </div>
 
       {/* Task description */}
-      <div style={{ padding: isMobile ? '1rem' : '1rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: accent, margin: '0 0 4px' }}>
           {task.name}
         </p>
@@ -309,9 +603,9 @@ export default function ContextPacking() {
       </div>
 
       {/* Main content: Suitcase + Documents */}
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: The Suitcase */}
-        <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
+        <div style={{ padding: '1.25rem 1.5rem', borderRight: '1px solid rgba(26,26,46,0.06)' }}>
           <div style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
@@ -357,7 +651,7 @@ export default function ContextPacking() {
                 border: '2px dashed rgba(26,26,46,0.08)', borderRadius: 10,
               }}>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280', fontStyle: 'italic', margin: 0 }}>
-                  {isMobile ? 'Click documents below to pack them' : 'Click documents on the right to pack them'}
+                  Click documents on the right to pack them
                 </p>
               </div>
             ) : packed.map(docId => {
@@ -429,7 +723,7 @@ export default function ContextPacking() {
         </div>
 
         {/* Right: Available documents or results */}
-        <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', background: 'rgba(26,26,46,0.015)' }}>
+        <div style={{ padding: '1.25rem 1.5rem', background: 'rgba(26,26,46,0.015)' }}>
           {!hasRun ? (
             <>
               <div style={{
@@ -591,7 +885,7 @@ export default function ContextPacking() {
 
       {/* Insight bar */}
       <div style={{
-        padding: isMobile ? '1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+        padding: '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: `linear-gradient(135deg, rgba(15,52,96,0.04), rgba(123,97,255,0.04))`,
       }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>

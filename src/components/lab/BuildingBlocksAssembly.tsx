@@ -27,17 +27,33 @@ const BLOCKS: Block[] = [
 ];
 
 const BLOCK_WIDTH = 260;
-const BLOCK_HEIGHT = 58;
 const BLOCK_GAP = 12;
-const STACK_X = 110; // (480 - 260) / 2 = centered in viewBox
-const STACK_TOP = 40;
 const SETTLE_MS = 500;
+
+// Desktop constants
+const BLOCK_HEIGHT_DESKTOP = 58;
+const STACK_X_DESKTOP = 110; // (480 - 260) / 2 = centered in viewBox
+const STACK_TOP_DESKTOP = 40;
+const VIEWBOX_DESKTOP = '0 0 480 420';
+
+// Mobile constants — taller viewBox, bigger blocks, recentered
+const BLOCK_WIDTH_MOBILE = 280;
+const BLOCK_HEIGHT_MOBILE = 76;
+const STACK_X_MOBILE = 50; // center better in the new viewBox
+const STACK_TOP_MOBILE = 40;
+const VIEWBOX_MOBILE = '0 0 380 700';
 
 export default function BuildingBlocksAssembly() {
   const [landedCount, setLandedCount] = useState(0);
   const [showLines, setShowLines] = useState(false);
   const [showBracket, setShowBracket] = useState(false);
   const isMobile = useIsMobile();
+
+  const BLOCK_W = isMobile ? BLOCK_WIDTH_MOBILE : BLOCK_WIDTH;
+  const BLOCK_HEIGHT = isMobile ? BLOCK_HEIGHT_MOBILE : BLOCK_HEIGHT_DESKTOP;
+  const STACK_X = isMobile ? STACK_X_MOBILE : STACK_X_DESKTOP;
+  const STACK_TOP = isMobile ? STACK_TOP_MOBILE : STACK_TOP_DESKTOP;
+  const viewBox = isMobile ? VIEWBOX_MOBILE : VIEWBOX_DESKTOP;
 
   const reducedMotion = typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -69,10 +85,10 @@ export default function BuildingBlocksAssembly() {
     if (index >= landedCount) {
       const sx = finalX + block.scatterX;
       const sy = finalY + block.scatterY;
-      return `translate(${sx}, ${sy}) rotate(${block.scatterRotate}, ${BLOCK_WIDTH / 2}, ${BLOCK_HEIGHT / 2})`;
+      return `translate(${sx}, ${sy}) rotate(${block.scatterRotate}, ${BLOCK_W / 2}, ${BLOCK_HEIGHT / 2})`;
     }
 
-    return `translate(${finalX}, ${finalY}) rotate(0, ${BLOCK_WIDTH / 2}, ${BLOCK_HEIGHT / 2})`;
+    return `translate(${finalX}, ${finalY}) rotate(0, ${BLOCK_W / 2}, ${BLOCK_HEIGHT / 2})`;
   };
 
   const getBlockOpacity = (index: number): number => {
@@ -85,7 +101,7 @@ export default function BuildingBlocksAssembly() {
     return 1;
   };
 
-  const bracketX = STACK_X + BLOCK_WIDTH + 20;
+  const bracketX = STACK_X + BLOCK_W + 20;
   const bracketTop = STACK_TOP + 4;
   const bracketBottom = STACK_TOP + (BLOCKS.length - 1) * (BLOCK_HEIGHT + BLOCK_GAP) + BLOCK_HEIGHT - 4;
   const bracketMid = (bracketTop + bracketBottom) / 2;
@@ -103,7 +119,8 @@ export default function BuildingBlocksAssembly() {
       style={{
         cursor: 'pointer',
         width: '100%',
-        maxWidth: 600,
+        flex: isMobile ? 1 : undefined,
+        maxWidth: isMobile ? undefined : 600,
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
@@ -113,8 +130,9 @@ export default function BuildingBlocksAssembly() {
       }}
     >
       <svg
-        viewBox="0 0 480 420"
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        viewBox={viewBox}
+        style={{ width: '100%', height: isMobile ? '100%' : 'auto', display: 'block' }}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-hidden="true"
       >
@@ -132,7 +150,7 @@ export default function BuildingBlocksAssembly() {
             {/* Shadow */}
             <rect
               x={2} y={3}
-              width={BLOCK_WIDTH} height={BLOCK_HEIGHT}
+              width={BLOCK_W} height={BLOCK_HEIGHT}
               rx={14}
               fill="rgba(0,0,0,0.04)"
               style={{
@@ -144,7 +162,7 @@ export default function BuildingBlocksAssembly() {
             {/* Body */}
             <rect
               x={0} y={0}
-              width={BLOCK_WIDTH} height={BLOCK_HEIGHT}
+              width={BLOCK_W} height={BLOCK_HEIGHT}
               rx={14}
               fill={block.color}
               style={{
@@ -156,7 +174,7 @@ export default function BuildingBlocksAssembly() {
             {/* Top highlight */}
             <rect
               x={10} y={5}
-              width={BLOCK_WIDTH - 20} height={1.5}
+              width={BLOCK_W - 20} height={1.5}
               rx={0.75}
               fill="rgba(255,255,255,0.2)"
               style={{
@@ -205,7 +223,7 @@ export default function BuildingBlocksAssembly() {
 
         {/* Connection dots between landed blocks */}
         {BLOCKS.slice(0, -1).map((_, i) => {
-          const cx = STACK_X + BLOCK_WIDTH / 2;
+          const cx = STACK_X + BLOCK_W / 2;
           const cy = STACK_TOP + i * (BLOCK_HEIGHT + BLOCK_GAP) + BLOCK_HEIGHT + BLOCK_GAP / 2;
 
           return (
@@ -296,7 +314,7 @@ export default function BuildingBlocksAssembly() {
       <p
         style={{
           fontFamily: 'var(--font-mono)',
-          fontSize: isMobile ? '0.7rem' : '0.75rem',
+          fontSize: isMobile ? '0.8rem' : '0.75rem',
           fontWeight: 600,
           letterSpacing: '0.04em',
           color: allLanded ? 'var(--color-subtle)' : (nextBlock?.color || 'var(--color-subtle)'),

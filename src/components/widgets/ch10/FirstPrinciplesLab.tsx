@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 const ACCENT = '#16C79A';
 
@@ -83,6 +84,7 @@ export default function FirstPrinciplesLab() {
   const [answers, setAnswers] = useState<Record<number, 'trust' | 'challenge'>>({});
   const [showResult, setShowResult] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const problem = problems[currentProblem];
   const hasAnswered = answers[problem.id] !== undefined;
@@ -90,14 +92,21 @@ export default function FirstPrinciplesLab() {
   const handleAnswer = (choice: 'trust' | 'challenge') => {
     setAnswers(prev => ({ ...prev, [problem.id]: choice }));
     setShowResult(true);
+    if (isMobile) {
+      setTimeout(() => setSheetOpen(true), 200);
+    }
   };
 
   const handleNext = () => {
+    setSheetOpen(false);
     if (currentProblem < problems.length - 1) {
       setCurrentProblem(prev => prev + 1);
       setShowResult(false);
     } else {
       setFinished(true);
+      if (isMobile) {
+        setTimeout(() => setSheetOpen(true), 200);
+      }
     }
   };
 
@@ -106,6 +115,7 @@ export default function FirstPrinciplesLab() {
     setAnswers({});
     setShowResult(false);
     setFinished(false);
+    setSheetOpen(false);
   };
 
   const isCorrect = (problemItem: Problem, answer: 'trust' | 'challenge') => {
@@ -126,13 +136,331 @@ export default function FirstPrinciplesLab() {
   const currentAnswer = answers[problem.id];
   const currentCorrect = currentAnswer ? isCorrect(problem, currentAnswer) : null;
 
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    const finalScore = finished ? getScore() : 0;
+    const pct = finished ? Math.round((finalScore / problems.length) * 100) : 0;
+
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><circle cx="12" cy="12" r="10" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>First Principles Lab</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Spot when AI gets it wrong</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress dots */}
+        <div style={{ display: 'flex', gap: 5, padding: '0.6rem 1rem 0.4rem', justifyContent: 'center', flexShrink: 0 }}>
+          {problems.map((p, i) => {
+            const a = answers[p.id];
+            const done = a !== undefined;
+            const correct = done ? isCorrect(p, a) : null;
+            return (
+              <div key={p.id} style={{
+                width: 8, height: 8, borderRadius: '50%',
+                background: finished ? (done ? (correct ? ACCENT : '#E94560') : 'rgba(26,26,46,0.1)') : i === currentProblem ? '#1A1A2E' : done ? (correct ? ACCENT : '#E94560') : 'rgba(26,26,46,0.1)',
+                transition: 'all 0.3s ease',
+              }} />
+            );
+          })}
+        </div>
+
+        {/* Main content */}
+        <div style={{ flex: 1, padding: '0.5rem 1rem', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+          {!finished ? (
+            <>
+              {/* Domain badge */}
+              <div style={{ marginBottom: '0.5rem', flexShrink: 0 }}>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
+                  color: problem.domainColor, background: `${problem.domainColor}12`,
+                  padding: '3px 8px', borderRadius: 5,
+                  letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                }}>
+                  {problem.domain}
+                </span>
+              </div>
+
+              {/* Question (compact) */}
+              <div style={{
+                padding: '0.6rem 0.75rem', borderRadius: 8,
+                background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)',
+                marginBottom: '0.5rem', flexShrink: 0,
+              }}>
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 600, lineHeight: 1.4, color: '#1A1A2E', margin: 0 }}>
+                  {problem.question}
+                </p>
+              </div>
+
+              {/* AI Answer (max 4 lines clamped) */}
+              <div style={{
+                padding: '0.6rem 0.75rem', borderRadius: 8,
+                border: '1px solid rgba(26,26,46,0.08)', background: 'white',
+                position: 'relative', flex: 1, minHeight: 0, overflow: 'hidden',
+              }}>
+                <div style={{
+                  position: 'absolute', top: -1, left: '0.75rem', right: '0.75rem', height: 2, borderRadius: 1,
+                  background: showResult ? (problem.aiCorrect ? ACCENT : '#E94560') : '#7B61FF',
+                  transition: 'background 0.3s ease',
+                }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#7B61FF' }} />
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
+                    AI's Answer
+                  </span>
+                  {showResult && (
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                      color: problem.aiCorrect ? ACCENT : '#E94560',
+                      background: problem.aiCorrect ? `${ACCENT}12` : '#E9456012',
+                      padding: '1px 6px', borderRadius: 3, marginLeft: 'auto',
+                    }}>
+                      {problem.aiCorrect ? 'CORRECT' : 'WRONG'}
+                    </span>
+                  )}
+                </div>
+                <p style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0,
+                  display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden',
+                }}>
+                  {problem.aiAnswer}
+                </p>
+              </div>
+            </>
+          ) : (
+            /* Finished state inline (compact) */
+            <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+              <div style={{
+                padding: '1rem', borderRadius: 12,
+                background: `linear-gradient(135deg, ${ACCENT}08, #7B61FF08)`,
+                border: `1px solid ${ACCENT}20`, marginBottom: '0.75rem', width: '100%',
+              }}>
+                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>
+                  {finalScore}/{problems.length}
+                </div>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E', marginTop: 8, marginBottom: 0 }}>
+                  {pct >= 80 ? "Excellent critical thinking." :
+                   pct >= 50 ? "Good instincts, but some AI answers tripped you up." :
+                   "AI's confidence is persuasive. That's why first-principles reasoning matters."}
+                </p>
+              </div>
+              <button
+                onClick={() => setSheetOpen(true)}
+                style={{
+                  fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                  color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                  border: 'none', borderRadius: 10, padding: '12px 28px', cursor: 'pointer', minHeight: 44,
+                }}
+              >
+                View Full Results
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom action bar */}
+        {!finished && (
+          <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+            {!showResult ? (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <button
+                  onClick={() => handleAnswer('trust')}
+                  style={{
+                    fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                    color: ACCENT, background: `${ACCENT}08`,
+                    border: `2px solid ${ACCENT}30`, borderRadius: 10, padding: '12px 16px',
+                    cursor: 'pointer', minHeight: 44,
+                  }}
+                >
+                  Trust AI
+                </button>
+                <button
+                  onClick={() => handleAnswer('challenge')}
+                  style={{
+                    fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                    color: '#E94560', background: '#E9456008',
+                    border: '2px solid #E9456030', borderRadius: 10, padding: '12px 16px',
+                    cursor: 'pointer', minHeight: 44,
+                  }}
+                >
+                  Challenge AI
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  onClick={() => setSheetOpen(true)}
+                  style={{
+                    flex: 1, fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+                    color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                    borderRadius: 10, padding: '12px 0', cursor: 'pointer', minHeight: 44,
+                  }}
+                >
+                  {currentCorrect ? 'Correct!' : 'Wrong'} -- View Explanation
+                </button>
+                <button
+                  onClick={handleNext}
+                  style={{
+                    fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                    color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                    border: 'none', borderRadius: 10, padding: '12px 20px', cursor: 'pointer', minHeight: 44,
+                  }}
+                >
+                  {currentProblem < problems.length - 1 ? 'Next' : 'Results'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {finished && (
+          <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)', textAlign: 'center' }}>
+            <button
+              onClick={handleReset}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                borderRadius: 8, padding: '10px 20px', cursor: 'pointer', minHeight: 44,
+              }}
+            >
+              Play again
+            </button>
+          </div>
+        )}
+
+        {/* BottomSheet for per-question result */}
+        {!finished && showResult && (
+          <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={currentCorrect ? 'Correct!' : 'Not quite.'}>
+            <div style={{
+              padding: '0.75rem', borderRadius: 10, marginBottom: '0.75rem',
+              background: currentCorrect ? `${ACCENT}08` : '#E9456008',
+              border: `1px solid ${currentCorrect ? ACCENT : '#E94560'}20`,
+            }}>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', margin: 0 }}>
+                You {currentAnswer === 'trust' ? 'trusted' : 'challenged'} the AI. It was <strong style={{ color: problem.aiCorrect ? ACCENT : '#E94560' }}>{problem.aiCorrect ? 'right' : 'wrong'}</strong>.
+              </p>
+            </div>
+
+            <div style={{
+              padding: '0.75rem', borderRadius: 10,
+              background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)',
+              marginBottom: '0.75rem',
+            }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 6 }}>What happened</p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>{problem.explanation}</p>
+            </div>
+
+            <div style={{
+              padding: '0.75rem', borderRadius: 10,
+              background: `${problem.domainColor}05`, border: `1px solid ${problem.domainColor}15`,
+              position: 'relative', overflow: 'hidden', marginBottom: '0.75rem',
+            }}>
+              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: problem.domainColor, borderRadius: '3px 0 0 3px' }} />
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: problem.domainColor, marginBottom: 6 }}>First principles reasoning</p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>{problem.firstPrinciplesReasoning}</p>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <button
+                onClick={() => { setSheetOpen(false); handleNext(); }}
+                style={{
+                  fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                  color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                  border: 'none', borderRadius: 10, padding: '12px 28px', cursor: 'pointer', minHeight: 44,
+                }}
+              >
+                {currentProblem < problems.length - 1 ? 'Next Problem' : 'See Results'}
+              </button>
+            </div>
+          </BottomSheet>
+        )}
+
+        {/* BottomSheet for final results */}
+        {finished && (
+          <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={`Results: ${finalScore}/${problems.length}`}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: '1rem' }}>
+              {problems.map(p => {
+                const a = answers[p.id];
+                const correct = a ? isCorrect(p, a) : false;
+                return (
+                  <div key={p.id} style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 8,
+                    padding: '8px 10px', borderRadius: 8,
+                    background: correct ? `${ACCENT}06` : '#E9456006',
+                    border: `1px solid ${correct ? ACCENT : '#E94560'}15`,
+                  }}>
+                    <div style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+                      background: correct ? ACCENT : '#E94560',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.6rem', color: 'white',
+                    }}>
+                      {correct ? '\u2713' : '\u2717'}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, color: p.domainColor, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{p.domain}: </span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#1A1A2E' }}>{p.question}</span>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280', marginTop: 2 }}>
+                        You {a === 'trust' ? 'trusted' : 'challenged'} -- AI was {p.aiCorrect ? 'right' : 'wrong'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div style={{
+              padding: '0.75rem 1rem', borderRadius: 12,
+              background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
+              border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden', marginBottom: '0.75rem',
+            }}>
+              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
+              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.4rem' }}>Key insight</p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
+                <strong>Your knowledge is your BS detector.</strong> The more you understand first principles, the better you can evaluate AI output.
+              </p>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <button
+                onClick={() => { setSheetOpen(false); handleReset(); }}
+                style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                  color: '#6B7280', background: 'transparent', border: '1px solid rgba(26,26,46,0.12)',
+                  borderRadius: 8, padding: '8px 20px', cursor: 'pointer', minHeight: 44,
+                }}
+              >
+                Play again
+              </button>
+            </div>
+          </BottomSheet>
+        )}
+
+        <style>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   if (finished) {
     const finalScore = getScore();
     const pct = Math.round((finalScore / problems.length) * 100);
     return (
       <div className="widget-container">
         {/* Header */}
-        <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+        <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><circle cx="12" cy="12" r="10" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
@@ -144,15 +472,13 @@ export default function FirstPrinciplesLab() {
           </div>
         </div>
 
-        <div style={{ padding: isMobile ? '1.25rem 1rem' : '2rem', textAlign: 'center' }}>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
           <div style={{
-            padding: isMobile ? '1.25rem' : '2rem',
-            borderRadius: 16,
+            padding: '2rem', borderRadius: 16,
             background: `linear-gradient(135deg, ${ACCENT}08, #7B61FF08)`,
-            border: `1px solid ${ACCENT}20`,
-            marginBottom: isMobile ? '1.25rem' : '2rem',
+            border: `1px solid ${ACCENT}20`, marginBottom: '2rem',
           }}>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '2.5rem' : '3.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>
               {finalScore}/{problems.length}
             </div>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', color: '#1A1A2E', marginTop: 12, marginBottom: 0 }}>
@@ -162,16 +488,14 @@ export default function FirstPrinciplesLab() {
             </p>
           </div>
 
-          {/* Summary of each problem */}
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8, textAlign: 'left', marginBottom: isMobile ? '1.25rem' : '2rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8, textAlign: 'left', marginBottom: '2rem' }}>
             {problems.map(p => {
               const a = answers[p.id];
               const correct = a ? isCorrect(p, a) : false;
               return (
                 <div key={p.id} style={{
-                  display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', gap: 10,
-                  flexWrap: isMobile ? 'wrap' as const : 'nowrap' as const,
-                  padding: isMobile ? '10px 12px' : '10px 14px', borderRadius: 8,
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '10px 14px', borderRadius: 8,
                   background: correct ? `${ACCENT}06` : '#E9456006',
                   border: `1px solid ${correct ? ACCENT : '#E94560'}15`,
                 }}>
@@ -187,32 +511,23 @@ export default function FirstPrinciplesLab() {
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: p.domainColor, letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>{p.domain}: </span>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E' }}>{p.question}</span>
                   </div>
-                  <span style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                    color: '#6B7280', flexShrink: 0,
-                    ...(isMobile ? { marginLeft: 32, marginTop: 2 } : {}),
-                  }}>
-                    You {a === 'trust' ? 'trusted' : 'challenged'} \u2014 AI was {p.aiCorrect ? 'right' : 'wrong'}
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', flexShrink: 0 }}>
+                    You {a === 'trust' ? 'trusted' : 'challenged'} &mdash; AI was {p.aiCorrect ? 'right' : 'wrong'}
                   </span>
                 </div>
               );
             })}
           </div>
 
-          {/* Key insight */}
           <div style={{
-            padding: isMobile ? '1rem' : '1.25rem 1.5rem',
-            borderRadius: 12,
+            padding: '1.25rem 1.5rem', borderRadius: 12,
             background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
-            border: `1px solid ${ACCENT}15`,
-            position: 'relative',
-            overflow: 'hidden',
-            textAlign: 'left',
+            border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden', textAlign: 'left',
           }}>
             <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
             <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.5rem' }}>Key insight</p>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', lineHeight: 1.7, color: '#1A1A2E', margin: 0 }}>
-              <strong>You can only catch AI mistakes in domains where you have fundamental understanding.</strong> Your knowledge is your BS detector. The more you understand first principles \u2014 in math, logic, science, history \u2014 the better you can evaluate AI output.
+              <strong>You can only catch AI mistakes in domains where you have fundamental understanding.</strong> Your knowledge is your BS detector. The more you understand first principles &mdash; in math, logic, science, history &mdash; the better you can evaluate AI output.
             </p>
           </div>
 
@@ -238,7 +553,7 @@ export default function FirstPrinciplesLab() {
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><circle cx="12" cy="12" r="10" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
@@ -255,7 +570,7 @@ export default function FirstPrinciplesLab() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '2rem' }}>
+      <div style={{ padding: '2rem' }}>
         {/* Progress dots */}
         <div style={{ display: 'flex', gap: 6, marginBottom: '1.5rem', justifyContent: 'center' }}>
           {problems.map((p, i) => {
@@ -286,28 +601,23 @@ export default function FirstPrinciplesLab() {
 
         {/* Question */}
         <div style={{
-          padding: isMobile ? '1rem' : '1.25rem 1.5rem',
-          borderRadius: 12,
-          background: 'rgba(26,26,46,0.02)',
-          border: '1px solid rgba(26,26,46,0.06)',
+          padding: '1.25rem 1.5rem', borderRadius: 12,
+          background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)',
           marginBottom: '1.25rem',
         }}>
-          <p style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.05rem', fontWeight: 600, lineHeight: 1.5, color: '#1A1A2E', margin: 0 }}>
+          <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.5, color: '#1A1A2E', margin: 0 }}>
             {problem.question}
           </p>
         </div>
 
         {/* AI Answer */}
         <div style={{
-          padding: isMobile ? '1rem' : '1.25rem 1.5rem',
-          borderRadius: 12,
-          border: '1px solid rgba(26,26,46,0.08)',
-          background: 'white',
-          marginBottom: '1.5rem',
-          position: 'relative',
+          padding: '1.25rem 1.5rem', borderRadius: 12,
+          border: '1px solid rgba(26,26,46,0.08)', background: 'white',
+          marginBottom: '1.5rem', position: 'relative',
         }}>
           <div style={{
-            position: 'absolute', top: -1, left: isMobile ? '1rem' : '2rem', right: isMobile ? '1rem' : '2rem', height: 2, borderRadius: 1,
+            position: 'absolute', top: -1, left: '2rem', right: '2rem', height: 2, borderRadius: 1,
             background: showResult ? (problem.aiCorrect ? ACCENT : '#E94560') : '#7B61FF',
             transition: 'background 0.3s ease',
           }} />
@@ -321,8 +631,7 @@ export default function FirstPrinciplesLab() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                 color: problem.aiCorrect ? ACCENT : '#E94560',
                 background: problem.aiCorrect ? `${ACCENT}12` : '#E9456012',
-                padding: '2px 8px', borderRadius: 4,
-                marginLeft: 'auto',
+                padding: '2px 8px', borderRadius: 4, marginLeft: 'auto',
               }}>
                 {problem.aiCorrect ? 'CORRECT' : 'WRONG'}
               </span>
@@ -341,10 +650,8 @@ export default function FirstPrinciplesLab() {
               style={{
                 fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
                 color: ACCENT, background: `${ACCENT}08`,
-                border: `2px solid ${ACCENT}30`,
-                borderRadius: 12, padding: '14px 20px', cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                minHeight: 44,
+                border: `2px solid ${ACCENT}30`, borderRadius: 12, padding: '14px 20px',
+                cursor: 'pointer', transition: 'all 0.2s ease', minHeight: 44,
               }}
               onMouseEnter={e => { e.currentTarget.style.background = `${ACCENT}15`; e.currentTarget.style.borderColor = ACCENT; }}
               onMouseLeave={e => { e.currentTarget.style.background = `${ACCENT}08`; e.currentTarget.style.borderColor = `${ACCENT}30`; }}
@@ -356,10 +663,8 @@ export default function FirstPrinciplesLab() {
               style={{
                 fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
                 color: '#E94560', background: '#E9456008',
-                border: '2px solid #E9456030',
-                borderRadius: 12, padding: '14px 20px', cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                minHeight: 44,
+                border: '2px solid #E9456030', borderRadius: 12, padding: '14px 20px',
+                cursor: 'pointer', transition: 'all 0.2s ease', minHeight: 44,
               }}
               onMouseEnter={e => { e.currentTarget.style.background = '#E9456015'; e.currentTarget.style.borderColor = '#E94560'; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#E9456008'; e.currentTarget.style.borderColor = '#E9456030'; }}
@@ -372,13 +677,10 @@ export default function FirstPrinciplesLab() {
         {/* Result */}
         {showResult && (
           <div style={{ animation: 'fadeIn 0.3s ease' }}>
-            {/* Correct / Wrong badge */}
             <div style={{
-              padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem',
-              borderRadius: 12,
+              padding: '1rem 1.25rem', borderRadius: 12,
               background: currentCorrect ? `${ACCENT}08` : '#E9456008',
-              border: `1px solid ${currentCorrect ? ACCENT : '#E94560'}20`,
-              marginBottom: '1rem',
+              border: `1px solid ${currentCorrect ? ACCENT : '#E94560'}20`, marginBottom: '1rem',
             }}>
               <p style={{
                 fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
@@ -392,45 +694,33 @@ export default function FirstPrinciplesLab() {
               </p>
             </div>
 
-            {/* Explanation */}
             <div style={{
-              padding: isMobile ? '1rem' : '1.25rem 1.5rem',
-              borderRadius: 12,
-              background: 'rgba(26,26,46,0.02)',
-              border: '1px solid rgba(26,26,46,0.06)',
-              marginBottom: '1rem',
+              padding: '1.25rem 1.5rem', borderRadius: 12,
+              background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)', marginBottom: '1rem',
             }}>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>What happened</p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75, color: '#1A1A2E', margin: 0 }}>{problem.explanation}</p>
             </div>
 
-            {/* First principles reasoning */}
             <div style={{
-              padding: isMobile ? '1rem' : '1.25rem 1.5rem',
-              borderRadius: 12,
-              background: `${problem.domainColor}05`,
-              border: `1px solid ${problem.domainColor}15`,
-              position: 'relative',
-              overflow: 'hidden',
-              marginBottom: '1.5rem',
+              padding: '1.25rem 1.5rem', borderRadius: 12,
+              background: `${problem.domainColor}05`, border: `1px solid ${problem.domainColor}15`,
+              position: 'relative', overflow: 'hidden', marginBottom: '1.5rem',
             }}>
               <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: problem.domainColor, borderRadius: '3px 0 0 3px' }} />
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: problem.domainColor, marginBottom: 8 }}>First principles reasoning</p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75, color: '#1A1A2E', margin: 0 }}>{problem.firstPrinciplesReasoning}</p>
             </div>
 
-            {/* Next button */}
             <div style={{ textAlign: 'center' }}>
               <button
                 onClick={handleNext}
                 style={{
                   fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700,
-                  color: 'white',
-                  background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
-                  border: 'none', borderRadius: 10, padding: isMobile ? '14px 28px' : '12px 32px',
+                  color: 'white', background: `linear-gradient(135deg, ${ACCENT}, #0F3460)`,
+                  border: 'none', borderRadius: 10, padding: '12px 32px',
                   cursor: 'pointer', boxShadow: `0 4px 16px ${ACCENT}40`,
-                  transition: 'transform 0.2s ease',
-                  minHeight: 44,
+                  transition: 'transform 0.2s ease', minHeight: 44,
                 }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}

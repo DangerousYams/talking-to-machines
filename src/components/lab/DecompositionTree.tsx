@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * DecompositionTree
@@ -31,31 +32,31 @@ interface TreeNodeData {
   width: number;
 }
 
-// Layout constants
-const SVG_WIDTH = 600;
-const SVG_HEIGHT = 440;
+// Layout constants — desktop defaults
+const SVG_WIDTH_DESKTOP = 600;
+const SVG_HEIGHT_DESKTOP = 440;
+const SVG_WIDTH_MOBILE = 380;
+const SVG_HEIGHT_MOBILE = 700;
 const NODE_HEIGHT = 32;
 const NODE_RX = 8;
 const BORDER_LEFT = 4;
 
-// Root
-const ROOT: TreeNodeData = {
+// Desktop node positions
+const ROOT_DESKTOP: TreeNodeData = {
   id: 'root',
   label: 'Build a Weather App',
   color: NAVY,
-  x: SVG_WIDTH / 2,
+  x: SVG_WIDTH_DESKTOP / 2,
   y: 42,
   width: 180,
 };
 
-// Level 1 children
-const L1_NODES: TreeNodeData[] = [
+const L1_NODES_DESKTOP: TreeNodeData[] = [
   { id: 'frontend', label: 'Frontend UI', color: PURPLE, x: 175, y: 130, parentId: 'root', width: 120 },
   { id: 'backend', label: 'Backend API', color: SKY, x: 425, y: 130, parentId: 'root', width: 120 },
 ];
 
-// Level 2 children
-const L2_NODES: TreeNodeData[] = [
+const L2_NODES_DESKTOP: TreeNodeData[] = [
   { id: 'layout', label: 'Layout Components', color: PURPLE, x: 85, y: 230, parentId: 'frontend', width: 145 },
   { id: 'styling', label: 'Styling', color: PURPLE, x: 215, y: 230, parentId: 'frontend', width: 80 },
   { id: 'state', label: 'State Management', color: PURPLE, x: 330, y: 230, parentId: 'frontend', width: 140 },
@@ -63,7 +64,28 @@ const L2_NODES: TreeNodeData[] = [
   { id: 'caching', label: 'Caching Layer', color: SKY, x: 555, y: 230, parentId: 'backend', width: 120 },
 ];
 
-const ALL_NODES = [ROOT, ...L1_NODES, ...L2_NODES];
+// Mobile node positions — narrower, more vertical spread
+const ROOT_MOBILE: TreeNodeData = {
+  id: 'root',
+  label: 'Build a Weather App',
+  color: NAVY,
+  x: SVG_WIDTH_MOBILE / 2,
+  y: 42,
+  width: 170,
+};
+
+const L1_NODES_MOBILE: TreeNodeData[] = [
+  { id: 'frontend', label: 'Frontend UI', color: PURPLE, x: 120, y: 200, parentId: 'root', width: 110 },
+  { id: 'backend', label: 'Backend API', color: SKY, x: 260, y: 200, parentId: 'root', width: 110 },
+];
+
+const L2_NODES_MOBILE: TreeNodeData[] = [
+  { id: 'layout', label: 'Layout', color: PURPLE, x: 70, y: 380, parentId: 'frontend', width: 80 },
+  { id: 'styling', label: 'Styling', color: PURPLE, x: 170, y: 380, parentId: 'frontend', width: 75 },
+  { id: 'state', label: 'State Mgmt', color: PURPLE, x: 120, y: 460, parentId: 'frontend', width: 100 },
+  { id: 'weather-api', label: 'Weather API', color: SKY, x: 280, y: 380, parentId: 'backend', width: 110 },
+  { id: 'caching', label: 'Caching', color: SKY, x: 280, y: 460, parentId: 'backend', width: 90 },
+];
 
 // Timing
 const INITIAL_DELAY = 800;
@@ -94,6 +116,15 @@ export default function DecompositionTree() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const mountedRef = useRef(true);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const isMobile = useIsMobile();
+
+  // Select layout based on screen size
+  const SVG_WIDTH = isMobile ? SVG_WIDTH_MOBILE : SVG_WIDTH_DESKTOP;
+  const SVG_HEIGHT = isMobile ? SVG_HEIGHT_MOBILE : SVG_HEIGHT_DESKTOP;
+  const ROOT = isMobile ? ROOT_MOBILE : ROOT_DESKTOP;
+  const L1_NODES = isMobile ? L1_NODES_MOBILE : L1_NODES_DESKTOP;
+  const L2_NODES = isMobile ? L2_NODES_MOBILE : L2_NODES_DESKTOP;
+  const ALL_NODES = [ROOT, ...L1_NODES, ...L2_NODES];
 
   const clearTimers = useCallback(() => {
     timersRef.current.forEach(clearTimeout);
@@ -200,14 +231,15 @@ export default function DecompositionTree() {
   const masterTransition = reducedMotion ? 'none' : `opacity ${FADE_DURATION}ms ease`;
 
   const containerStyle: React.CSSProperties = {
-    maxWidth: 650,
+    maxWidth: isMobile ? 'none' : 650,
     margin: '0 auto',
     background: '#FFFFFF',
-    borderRadius: 16,
-    border: '1px solid rgba(26, 26, 46, 0.06)',
-    boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06)',
-    padding: '24px 16px',
+    borderRadius: isMobile ? 0 : 16,
+    border: isMobile ? 'none' : '1px solid rgba(26, 26, 46, 0.06)',
+    boxShadow: isMobile ? 'none' : '0 4px 32px rgba(26, 26, 46, 0.06)',
+    padding: isMobile ? 0 : '24px 16px',
     overflow: 'hidden',
+    ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const } : {}),
   };
 
   // Render a tree node
@@ -331,7 +363,8 @@ export default function DecompositionTree() {
 
   // Handoff arrow: horizontal dashed line from backend leaf area to frontend leaf area
   // Shows output of Backend connecting to input of Frontend
-  const handoffY = 310;
+  const maxL2Y = Math.max(...L2_NODES.map(n => n.y));
+  const handoffY = maxL2Y + 80;
   const backendCenterX = (L2_NODES.find(n => n.id === 'weather-api')!.x + L2_NODES.find(n => n.id === 'caching')!.x) / 2;
   const frontendCenterX = (L2_NODES.find(n => n.id === 'layout')!.x + L2_NODES.find(n => n.id === 'state')!.x) / 2;
 
@@ -346,12 +379,14 @@ export default function DecompositionTree() {
     <div style={containerStyle}>
       <svg
         viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        preserveAspectRatio="xMidYMid meet"
         style={{
           width: '100%',
-          height: 'auto',
+          height: isMobile ? '100%' : 'auto',
           display: 'block',
           opacity: masterOpacity,
           transition: masterTransition,
+          ...(isMobile ? { flex: 1 } : {}),
         }}
         role="img"
         aria-label="Task decomposition tree: Build a Weather App breaks into Frontend UI and Backend API subtasks, with handoff connections"

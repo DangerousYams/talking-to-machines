@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface Project {
   title: string;
@@ -119,14 +120,189 @@ export default function ShowcaseGallery() {
   const isMobile = useIsMobile();
   const [filter, setFilter] = useState('All');
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const accent = '#16C79A';
   const filtered = filter === 'All' ? projects : projects.filter((p) => p.track === filter);
+  const selectedProject = projects.find(p => p.title === expandedProject);
 
+  const handleProjectTap = (title: string) => {
+    if (isMobile) {
+      setExpandedProject(title);
+      setSheetOpen(true);
+    } else {
+      setExpandedProject(expandedProject === title ? null : title);
+    }
+  };
+
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0.75rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${accent}, ${accent}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Student Showcase</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Projects built by learners like you</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Filter chips */}
+        <div style={{
+          display: 'flex', gap: 4, padding: '0.5rem 1rem',
+          flexWrap: 'nowrap', overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch' as any,
+          scrollbarWidth: 'none' as const, flexShrink: 0,
+        }}>
+          {trackFilters.map((t) => (
+            <button
+              key={t}
+              onClick={() => { setFilter(t); setExpandedProject(null); }}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: filter === t ? 600 : 400,
+                padding: '4px 10px', borderRadius: 100, border: 'none', cursor: 'pointer',
+                background: filter === t ? `${accent}15` : 'transparent',
+                color: filter === t ? accent : '#6B7280',
+                whiteSpace: 'nowrap', flexShrink: 0, minHeight: 28,
+              }}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        {/* 2-column compact card grid */}
+        <div style={{ flex: 1, padding: '0.5rem 1rem', minHeight: 0, overflowY: 'auto' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 8,
+          }}>
+            {filtered.map((project) => (
+              <div
+                key={project.title}
+                onClick={() => handleProjectTap(project.title)}
+                style={{
+                  borderRadius: 10, border: '1px solid rgba(26,26,46,0.06)',
+                  overflow: 'hidden', cursor: 'pointer',
+                }}
+              >
+                {/* Compact gradient thumbnail */}
+                <div style={{ height: 56, background: project.gradient, position: 'relative' }}>
+                  <div style={{
+                    position: 'absolute', bottom: 4, left: 6,
+                    display: 'flex', alignItems: 'center', gap: 3,
+                    background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)',
+                    padding: '1px 6px', borderRadius: 100,
+                    fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600, color: '#1A1A2E',
+                  }}>
+                    <span style={{ fontSize: '0.65rem' }}>{project.trackIcon}</span> {project.track}
+                  </div>
+                </div>
+                <div style={{ padding: '6px 8px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.78rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 2px', lineHeight: 1.3 }}>
+                    {project.title}
+                  </h4>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: '#6B7280', margin: 0 }}>
+                    by {project.creator}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Submit CTA */}
+          <div style={{
+            marginTop: 12, padding: '0.75rem', borderRadius: 10,
+            background: `linear-gradient(135deg, ${accent}08, ${accent}03)`,
+            border: `1px dashed ${accent}30`, textAlign: 'center',
+          }}>
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 4px' }}>
+              Your project could be here.
+            </p>
+            <div style={{
+              display: 'inline-block', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+              padding: '4px 12px', borderRadius: 100, background: `${accent}15`, color: accent,
+            }}>
+              Submissions opening soon
+            </div>
+          </div>
+        </div>
+
+        {/* BottomSheet for project detail */}
+        {selectedProject && (
+          <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={selectedProject.title}>
+            {/* Track badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: '0.85rem' }}>{selectedProject.trackIcon}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: accent }}>{selectedProject.track}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>by {selectedProject.creator}</span>
+            </div>
+
+            {/* Full description */}
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: '0 0 1rem' }}>
+              {selectedProject.fullDescription}
+            </p>
+
+            {/* Key prompts */}
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 8px' }}>
+                Key Prompts That Worked
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {selectedProject.prompts.map((prompt, pi) => (
+                  <div key={pi} style={{
+                    background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 6,
+                    padding: '6px 8px', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', lineHeight: 1.5,
+                    color: '#1A1A2E', wordBreak: 'break-word' as const,
+                  }}>
+                    {prompt}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reflection */}
+            <div style={{ marginBottom: 12 }}>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 8px' }}>
+                Creator's Reflection
+              </p>
+              <div style={{
+                borderLeft: `3px solid ${accent}`, paddingLeft: '0.75rem',
+                fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontStyle: 'italic',
+                lineHeight: 1.6, color: '#1A1A2E',
+              }}>
+                "{selectedProject.reflection}"
+              </div>
+            </div>
+
+            {/* Tools */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {selectedProject.tools.map((tool, ti) => (
+                <span key={ti} style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 500,
+                  padding: '2px 8px', borderRadius: 100, background: `${accent}10`, color: accent,
+                }}>
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </BottomSheet>
+        )}
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' as const, gap: 12 }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' as const, gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${accent}, ${accent}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -140,14 +316,8 @@ export default function ShowcaseGallery() {
 
       {/* Filters */}
       <div style={{
-        padding: isMobile ? '0.75rem 1rem' : '1rem 2rem',
-        borderBottom: '1px solid rgba(26,26,46,0.04)',
-        display: 'flex', gap: 6,
-        flexWrap: isMobile ? 'nowrap' as const : 'wrap' as const,
-        overflowX: isMobile ? 'auto' as const : 'visible' as const,
-        WebkitOverflowScrolling: 'touch' as any,
-        msOverflowStyle: 'none' as const,
-        scrollbarWidth: 'none' as const,
+        padding: '1rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.04)',
+        display: 'flex', gap: 6, flexWrap: 'wrap' as const,
       }}>
         {trackFilters.map((t) => (
           <button
@@ -157,12 +327,8 @@ export default function ShowcaseGallery() {
               fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: filter === t ? 600 : 400,
               padding: '5px 12px', borderRadius: 100, border: 'none', cursor: 'pointer',
               background: filter === t ? `${accent}15` : 'transparent',
-              color: filter === t ? accent : '#6B7280',
-              transition: 'all 0.25s',
-              whiteSpace: isMobile ? 'nowrap' as const : undefined,
-              flexShrink: 0,
-              minHeight: 44,
-              display: 'flex', alignItems: 'center',
+              color: filter === t ? accent : '#6B7280', transition: 'all 0.25s',
+              minHeight: 44, display: 'flex', alignItems: 'center',
             }}
             onMouseEnter={(e) => { if (filter !== t) e.currentTarget.style.background = 'rgba(26,26,46,0.04)'; }}
             onMouseLeave={(e) => { if (filter !== t) e.currentTarget.style.background = 'transparent'; }}
@@ -173,11 +339,11 @@ export default function ShowcaseGallery() {
       </div>
 
       {/* Grid */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      <div style={{ padding: '1.5rem 2rem' }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: isMobile ? 12 : 16,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: 16,
         }}>
           {filtered.map((project) => {
             const isExpanded = expandedProject === project.title;
@@ -192,8 +358,7 @@ export default function ShowcaseGallery() {
                   gridColumn: isExpanded ? '1 / -1' : 'auto',
                 }}
               >
-                {/* Thumbnail gradient */}
-                <div style={{ height: isExpanded ? (isMobile ? 80 : 100) : (isMobile ? 100 : 120), background: project.gradient, position: 'relative' }}>
+                <div style={{ height: isExpanded ? 100 : 120, background: project.gradient, position: 'relative' }}>
                   <div style={{
                     position: 'absolute', bottom: 10, left: 12,
                     display: 'flex', alignItems: 'center', gap: 6,
@@ -205,61 +370,36 @@ export default function ShowcaseGallery() {
                   </div>
                 </div>
 
-                <div style={{ padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem' }}>
-                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 4px' }}>
-                    {project.title}
-                  </h4>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: '0 0 8px' }}>
-                    by {project.creator}
-                  </p>
+                <div style={{ padding: '1rem 1.25rem' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 4px' }}>{project.title}</h4>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: '0 0 8px' }}>by {project.creator}</p>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.55, color: '#6B7280', margin: 0 }}>
                     {isExpanded ? project.fullDescription : project.description}
                   </p>
 
-                  {/* Expanded content */}
                   {isExpanded && (
                     <div style={{ marginTop: 20 }}>
-                      {/* Key prompts */}
                       <div style={{ marginBottom: 20 }}>
-                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 10px' }}>
-                          Key Prompts That Worked
-                        </p>
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 10px' }}>Key Prompts That Worked</p>
                         <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8 }}>
                           {project.prompts.map((prompt, pi) => (
                             <div key={pi} style={{
                               background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 8,
-                              padding: isMobile ? '8px 10px' : '10px 14px', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.7rem' : '0.75rem', lineHeight: 1.6,
+                              padding: '10px 14px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
                               color: '#1A1A2E', wordBreak: 'break-word' as const,
-                            }}>
-                              {prompt}
-                            </div>
+                            }}>{prompt}</div>
                           ))}
                         </div>
                       </div>
-
-                      {/* Reflection */}
                       <div style={{ marginBottom: 16 }}>
-                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 10px' }}>
-                          Creator's Reflection
-                        </p>
-                        <div style={{
-                          borderLeft: `3px solid ${accent}`, paddingLeft: '1rem',
-                          fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontStyle: 'italic' as const,
-                          lineHeight: 1.7, color: '#1A1A2E',
-                        }}>
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 10px' }}>Creator's Reflection</p>
+                        <div style={{ borderLeft: `3px solid ${accent}`, paddingLeft: '1rem', fontFamily: 'var(--font-body)', fontSize: '0.88rem', fontStyle: 'italic' as const, lineHeight: 1.7, color: '#1A1A2E' }}>
                           "{project.reflection}"
                         </div>
                       </div>
-
-                      {/* Tools */}
                       <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
                         {project.tools.map((tool, ti) => (
-                          <span key={ti} style={{
-                            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
-                            padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent,
-                          }}>
-                            {tool}
-                          </span>
+                          <span key={ti} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent }}>{tool}</span>
                         ))}
                       </div>
                     </div>
@@ -272,20 +412,15 @@ export default function ShowcaseGallery() {
 
         {/* Submit section */}
         <div style={{
-          marginTop: isMobile ? 16 : 24, padding: isMobile ? '1rem' : '1.5rem', borderRadius: 12,
+          marginTop: 24, padding: '1.5rem', borderRadius: 12,
           background: `linear-gradient(135deg, ${accent}08, ${accent}03)`,
           border: `1px dashed ${accent}30`, textAlign: 'center' as const,
         }}>
-          <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 6px' }}>
-            Your project could be here.
-          </p>
+          <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 6px' }}>Your project could be here.</p>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', margin: '0 0 12px', maxWidth: '45ch', marginLeft: 'auto', marginRight: 'auto' }}>
             Build something you're proud of, document your process, and share it with the community. Every project in this gallery started exactly where you are now.
           </p>
-          <div style={{
-            display: 'inline-block', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-            padding: '8px 20px', borderRadius: 100, background: `${accent}15`, color: accent,
-          }}>
+          <div style={{ display: 'inline-block', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, padding: '8px 20px', borderRadius: 100, background: `${accent}15`, color: accent }}>
             Submissions opening soon
           </div>
         </div>

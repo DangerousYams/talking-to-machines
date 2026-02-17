@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface LogEntry {
   step: number;
@@ -187,11 +188,42 @@ export default function FailureModesLab() {
   };
 
   const isMobile = useIsMobile();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetContent, setSheetContent] = useState<'log' | 'fixed'>('log');
+
+  // On mobile, show truncated log (last 3 entries); full log in BottomSheet
+  const logEntries = phase === 'fixed' ? scenario.fixedLog : scenario.log;
+  const mobileVisibleLog = isMobile ? logEntries.slice(-3) : logEntries;
+
+  const renderLogEntry = (entry: LogEntry, i: number) => (
+    <div key={i} style={{
+      padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 0.75rem', marginBottom: 4, borderRadius: 6,
+      background: entry.isError ? 'rgba(233,69,96,0.12)' : 'rgba(255,255,255,0.03)',
+      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+        <span style={{ color: '#6B7280', fontSize: '0.75rem' }}>Step {entry.step}</span>
+        <span style={{
+          fontSize: '0.75rem', padding: '1px 6px', borderRadius: 4,
+          background: entry.isError ? 'rgba(233,69,96,0.2)' : 'rgba(123,97,255,0.15)',
+          color: entry.isError ? '#E94560' : '#7B61FF',
+        }}>
+          {entry.tool}
+        </span>
+      </div>
+      <div style={{ color: entry.isError ? '#E94560' : '#e2e8f0' }}>
+        {entry.action}
+      </div>
+      <div style={{ color: entry.isError ? 'rgba(233,69,96,0.7)' : 'rgba(226,232,240,0.5)', fontSize: '0.75rem', marginTop: 2 }}>
+        {'\u2192'} {entry.result}
+      </div>
+    </div>
+  );
 
   return (
-    <div className="widget-container">
+    <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: isMobile ? '0.75rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 8,
@@ -205,12 +237,14 @@ export default function FailureModesLab() {
             </svg>
           </div>
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
               Failure Modes Lab
             </h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              Diagnose buggy agents. Apply the right fix.
-            </p>
+            {!isMobile && (
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+                Diagnose buggy agents. Apply the right fix.
+              </p>
+            )}
           </div>
           {totalScore > 0 && (
             <div style={{
@@ -227,7 +261,7 @@ export default function FailureModesLab() {
       {/* Scenario tabs */}
       <div style={{
         display: 'flex', borderBottom: '1px solid rgba(26,26,46,0.06)',
-        background: 'rgba(26,26,46,0.015)',
+        background: 'rgba(26,26,46,0.015)', flexShrink: 0,
         overflowX: isMobile ? 'auto' as const : undefined,
         WebkitOverflowScrolling: 'touch' as any,
       }}>
@@ -238,19 +272,19 @@ export default function FailureModesLab() {
               key={s.id}
               onClick={() => switchTab(i)}
               style={{
-                flex: isMobile ? 'none' : 1, padding: isMobile ? '0.75rem 0.75rem' : '0.75rem 1rem', border: 'none', cursor: 'pointer',
+                flex: isMobile ? 'none' : 1, padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 1rem', border: 'none', cursor: 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.75rem' : '0.82rem', fontWeight: 600,
                 transition: 'all 0.25s', position: 'relative',
                 background: activeTab === i ? 'white' : 'transparent',
                 color: activeTab === i ? '#1A1A2E' : '#6B7280',
                 borderBottom: activeTab === i ? '2px solid #E94560' : '2px solid transparent',
                 whiteSpace: isMobile ? 'nowrap' as const : undefined,
-                minHeight: 44,
+                minHeight: isMobile ? 36 : 44,
               }}
             >
-              <span>{s.icon} {s.title}</span>
+              <span>{s.icon} {isMobile ? s.title.split(' ').slice(-1)[0] : s.title}</span>
               {completed && (
-                <span style={{ marginLeft: 6, fontSize: '0.75rem', color: '#16C79A' }}>\u2713</span>
+                <span style={{ marginLeft: 6, fontSize: '0.75rem', color: '#16C79A' }}>{'\u2713'}</span>
               )}
             </button>
           );
@@ -258,75 +292,67 @@ export default function FailureModesLab() {
       </div>
 
       {/* Scenario content */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      <div style={isMobile ? { flex: 1, minHeight: 0, overflowY: 'auto', padding: '0.75rem 1rem' } : { padding: '1.5rem 2rem' }}>
         {/* Goal */}
         <div style={{
-          padding: '0.75rem 1rem', borderRadius: 10,
+          padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 1rem', borderRadius: isMobile ? 8 : 10,
           background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)',
-          marginBottom: 20,
+          marginBottom: isMobile ? 12 : 20,
         }}>
           <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+            fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
-            display: 'block', marginBottom: 4,
+            display: 'inline', marginRight: 6,
           }}>
-            Agent Goal
+            Goal:
           </span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E' }}>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.9rem', color: '#1A1A2E' }}>
             {scenario.goal}
           </span>
         </div>
 
         {/* Execution log */}
-        <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-          letterSpacing: '0.08em', textTransform: 'uppercase' as const,
-          color: phase === 'fixed' ? '#16C79A' : '#6B7280',
-          display: 'block', marginBottom: 10,
-        }}>
-          {phase === 'fixed' ? 'Fixed Execution Log' : 'Execution Log'}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: isMobile ? 6 : 10 }}>
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
+            letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+            color: phase === 'fixed' ? '#16C79A' : '#6B7280',
+          }}>
+            {phase === 'fixed' ? 'Fixed Log' : 'Execution Log'}
+          </span>
+          {isMobile && logEntries.length > 3 && (
+            <button
+              onClick={() => { setSheetContent(phase === 'fixed' ? 'fixed' : 'log'); setSheetOpen(true); }}
+              style={{
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                color: '#7B61FF', background: 'rgba(123,97,255,0.08)',
+                border: '1px solid rgba(123,97,255,0.15)', borderRadius: 6,
+                padding: '3px 8px', cursor: 'pointer',
+              }}
+            >
+              View all {logEntries.length} steps
+            </button>
+          )}
+        </div>
 
         <div style={{
-          background: '#1A1A2E', borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem',
-          marginBottom: 20, maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
+          background: '#1A1A2E', borderRadius: isMobile ? 8 : 10, padding: isMobile ? '0.5rem' : '1rem',
+          marginBottom: isMobile ? 12 : 20,
+          maxHeight: isMobile ? undefined : '40dvh', overflowY: isMobile ? 'hidden' as const : 'auto' as const,
         }}>
-          {(phase === 'fixed' ? scenario.fixedLog : scenario.log).map((entry, i) => (
-            <div key={i} style={{
-              padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 0.75rem', marginBottom: 4, borderRadius: 6,
-              background: entry.isError ? 'rgba(233,69,96,0.12)' : 'rgba(255,255,255,0.03)',
-              fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                <span style={{ color: '#6B7280', fontSize: '0.75rem' }}>Step {entry.step}</span>
-                <span style={{
-                  fontSize: '0.75rem', padding: '1px 6px', borderRadius: 4,
-                  background: entry.isError ? 'rgba(233,69,96,0.2)' : 'rgba(123,97,255,0.15)',
-                  color: entry.isError ? '#E94560' : '#7B61FF',
-                }}>
-                  {entry.tool}
-                </span>
-              </div>
-              <div style={{ color: entry.isError ? '#E94560' : '#e2e8f0' }}>
-                {entry.action}
-              </div>
-              <div style={{ color: entry.isError ? 'rgba(233,69,96,0.7)' : 'rgba(226,232,240,0.5)', fontSize: '0.75rem', marginTop: 2 }}>
-                \u2192 {entry.result}
-              </div>
-            </div>
-          ))}
+          {(isMobile ? mobileVisibleLog : logEntries).map((entry, i) => renderLogEntry(entry, i))}
         </div>
 
         {/* Phase: Diagnose */}
         {phase === 'diagnose' && (
           <div>
             <p style={{
-              fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700,
-              color: '#1A1A2E', marginBottom: 12,
+              fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.9rem' : '1rem', fontWeight: 700,
+              color: '#1A1A2E', marginBottom: isMobile ? 8 : 12,
             }}>
               What went wrong?
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' as const, gap: isMobile ? 6 : 8 }}>
               {scenario.diagnosisOptions.map((option, i) => {
                 const isSelected = selectedDiagnosis === i;
                 const isCorrect = option.correct;
@@ -338,10 +364,10 @@ export default function FailureModesLab() {
                     onClick={() => selectedDiagnosis === null && submitDiagnosis(i)}
                     disabled={selectedDiagnosis !== null}
                     style={{
-                      padding: isMobile ? '0.75rem 0.85rem' : '0.75rem 1rem', borderRadius: 8, border: '1px solid',
+                      padding: isMobile ? '0.6rem 0.75rem' : '0.75rem 1rem', borderRadius: 8, border: '1px solid',
                       textAlign: 'left' as const, cursor: selectedDiagnosis === null ? 'pointer' : 'default',
-                      fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.5,
-                      minHeight: 44,
+                      fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem', lineHeight: 1.5,
+                      minHeight: isMobile ? 40 : 44,
                       transition: 'all 0.3s',
                       background: showResult && isSelected && isCorrect ? 'rgba(22,199,154,0.06)'
                         : showResult && isSelected && !isCorrect ? 'rgba(233,69,96,0.06)'
@@ -355,8 +381,8 @@ export default function FailureModesLab() {
                       opacity: showResult && !isSelected && !isCorrect ? 0.5 : 1,
                     }}
                   >
-                    {showResult && isCorrect && <span style={{ marginRight: 6 }}>\u2713</span>}
-                    {showResult && isSelected && !isCorrect && <span style={{ marginRight: 6 }}>\u2717</span>}
+                    {showResult && isCorrect && <span style={{ marginRight: 6 }}>{'\u2713'}</span>}
+                    {showResult && isSelected && !isCorrect && <span style={{ marginRight: 6 }}>{'\u2717'}</span>}
                     {option.label}
                   </button>
                 );
@@ -364,7 +390,7 @@ export default function FailureModesLab() {
             </div>
             {showExplanation && (
               <div style={{
-                marginTop: 16, padding: '1rem 1.25rem', borderRadius: 10,
+                marginTop: isMobile ? 10 : 16, padding: isMobile ? '0.75rem' : '1rem 1.25rem', borderRadius: 10,
                 background: 'linear-gradient(135deg, rgba(233,69,96,0.04), rgba(245,166,35,0.04))',
                 border: '1px solid rgba(233,69,96,0.12)',
               }}>
@@ -383,7 +409,7 @@ export default function FailureModesLab() {
                     minHeight: 44,
                   }}
                 >
-                  Next: Apply a Fix \u2192
+                  Next: Apply a Fix {'\u2192'}
                 </button>
               </div>
             )}
@@ -394,12 +420,12 @@ export default function FailureModesLab() {
         {phase === 'guardrail' && (
           <div>
             <p style={{
-              fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700,
-              color: '#1A1A2E', marginBottom: 12,
+              fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.9rem' : '1rem', fontWeight: 700,
+              color: '#1A1A2E', marginBottom: isMobile ? 8 : 12,
             }}>
               Which guardrail would fix this?
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' as const, gap: isMobile ? 6 : 8 }}>
               {scenario.guardrailOptions.map((option, i) => {
                 const isSelected = selectedGuardrail === i;
                 const isCorrect = option.correct;
@@ -411,10 +437,10 @@ export default function FailureModesLab() {
                     onClick={() => selectedGuardrail === null && submitGuardrail(i)}
                     disabled={selectedGuardrail !== null}
                     style={{
-                      padding: isMobile ? '0.75rem 0.85rem' : '0.75rem 1rem', borderRadius: 8, border: '1px solid',
+                      padding: isMobile ? '0.6rem 0.75rem' : '0.75rem 1rem', borderRadius: 8, border: '1px solid',
                       textAlign: 'left' as const, cursor: selectedGuardrail === null ? 'pointer' : 'default',
-                      fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.5,
-                      minHeight: 44,
+                      fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem', lineHeight: 1.5,
+                      minHeight: isMobile ? 40 : 44,
                       transition: 'all 0.3s',
                       background: showResult && isSelected && isCorrect ? 'rgba(22,199,154,0.06)'
                         : showResult && isSelected && !isCorrect ? 'rgba(233,69,96,0.06)'
@@ -428,8 +454,8 @@ export default function FailureModesLab() {
                       opacity: showResult && !isSelected && !isCorrect ? 0.5 : 1,
                     }}
                   >
-                    {showResult && isCorrect && <span style={{ marginRight: 6 }}>\u2713</span>}
-                    {showResult && isSelected && !isCorrect && <span style={{ marginRight: 6 }}>\u2717</span>}
+                    {showResult && isCorrect && <span style={{ marginRight: 6 }}>{'\u2713'}</span>}
+                    {showResult && isSelected && !isCorrect && <span style={{ marginRight: 6 }}>{'\u2717'}</span>}
                     {option.label}
                   </button>
                 );
@@ -437,7 +463,7 @@ export default function FailureModesLab() {
             </div>
             {showExplanation && (
               <div style={{
-                marginTop: 16, padding: '1rem 1.25rem', borderRadius: 10,
+                marginTop: isMobile ? 10 : 16, padding: isMobile ? '0.75rem' : '1rem 1.25rem', borderRadius: 10,
                 background: 'linear-gradient(135deg, rgba(22,199,154,0.04), rgba(123,97,255,0.04))',
                 border: '1px solid rgba(22,199,154,0.15)',
               }}>
@@ -448,7 +474,7 @@ export default function FailureModesLab() {
                   {scenario.guardrailExplanation}
                 </p>
                 <button
-                  onClick={proceedToFixed}
+                  onClick={() => { proceedToFixed(); if (isMobile) { setSheetContent('fixed'); setSheetOpen(true); } }}
                   style={{
                     padding: '0.5rem 1.25rem', borderRadius: 8, border: 'none',
                     fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
@@ -456,7 +482,7 @@ export default function FailureModesLab() {
                     minHeight: 44,
                   }}
                 >
-                  See the Fixed Agent \u2192
+                  See the Fixed Agent {'\u2192'}
                 </button>
               </div>
             )}
@@ -466,7 +492,7 @@ export default function FailureModesLab() {
         {/* Phase: Fixed */}
         {phase === 'fixed' && (
           <div style={{
-            padding: '1rem 1.25rem', borderRadius: 10,
+            padding: isMobile ? '0.75rem' : '1rem 1.25rem', borderRadius: 10,
             background: 'linear-gradient(135deg, rgba(22,199,154,0.04), rgba(123,97,255,0.04))',
             border: '1px solid rgba(22,199,154,0.15)',
           }}>
@@ -475,12 +501,46 @@ export default function FailureModesLab() {
               lineHeight: 1.7, color: '#1A1A2E', margin: 0,
             }}>
               <span style={{ fontWeight: 600, color: '#16C79A', fontStyle: 'normal' }}>Fixed. </span>
-              With the guardrail in place, the agent completes the task successfully.
-              Real agents need error handling designed in from the start &mdash; the happy path is never the only path.
+              {isMobile
+                ? 'The agent completes the task successfully with the guardrail.'
+                : <>With the guardrail in place, the agent completes the task successfully.
+                  Real agents need error handling designed in from the start &mdash; the happy path is never the only path.</>
+              }
             </p>
           </div>
         )}
       </div>
+
+      {/* Mobile BottomSheet for full execution log */}
+      {isMobile && (
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title={sheetContent === 'fixed' ? 'Fixed Execution Log' : 'Full Execution Log'}
+        >
+          <div style={{
+            background: '#1A1A2E', borderRadius: 8, padding: '0.75rem',
+          }}>
+            {(sheetContent === 'fixed' ? scenario.fixedLog : scenario.log).map((entry, i) => renderLogEntry(entry, i))}
+          </div>
+          {sheetContent === 'fixed' && (
+            <div style={{
+              marginTop: 12, padding: '0.75rem', borderRadius: 8,
+              background: 'linear-gradient(135deg, rgba(22,199,154,0.04), rgba(123,97,255,0.04))',
+              border: '1px solid rgba(22,199,154,0.15)',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic',
+                lineHeight: 1.7, color: '#1A1A2E', margin: 0,
+              }}>
+                <span style={{ fontWeight: 600, color: '#16C79A', fontStyle: 'normal' }}>Fixed. </span>
+                With the guardrail in place, the agent completes the task successfully.
+                Real agents need error handling designed in from the start -- the happy path is never the only path.
+              </p>
+            </div>
+          )}
+        </BottomSheet>
+      )}
     </div>
   );
 }

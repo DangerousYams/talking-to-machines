@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { streamChat, type ChatMessage as ApiMessage } from '../../../lib/claude';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -58,6 +59,10 @@ export default function SystemPromptSandbox() {
   const controllerRef = useRef<AbortController | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Mobile-only state
+  const [activeTab, setActiveTab] = useState<'prompt' | 'chat'>('prompt');
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const estimateTokens = (text: string) => Math.max(1, Math.ceil(text.length / 4));
   const systemTokens = estimateTokens(systemPrompt);
@@ -134,6 +139,7 @@ export default function SystemPromptSandbox() {
   const handleChallenge = (challenge: Challenge) => {
     if (liveMode) {
       sendLiveMessage(challenge.userMessage);
+      if (isMobile) setActiveTab('chat');
       return;
     }
 
@@ -141,6 +147,7 @@ export default function SystemPromptSandbox() {
     const userMsg: ChatMessage = { role: 'user', text: challenge.userMessage };
     setMessages(prev => [...prev, userMsg]);
     setIsTyping(true);
+    if (isMobile) setActiveTab('chat');
 
     setTimeout(() => {
       const restricted = hasRestriction(systemPrompt);
@@ -183,10 +190,321 @@ export default function SystemPromptSandbox() {
     setIsTyping(false);
   };
 
+  // Last 2-3 messages for mobile chat preview
+  const recentMessages = messages.slice(-3);
+
+  // ==================== MOBILE LAYOUT ====================
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header with token count + live toggle */}
+        <div style={{ padding: '10px 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg, #7B61FF, #16C79A)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2, flex: 1 }}>System Prompt Sandbox</h3>
+          {/* Token badge */}
+          <div style={{ flexShrink: 0, padding: '2px 7px', borderRadius: 100, background: 'rgba(123,97,255,0.08)', border: '1px solid rgba(123,97,255,0.15)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#7B61FF' }}>
+              {systemTokens}t
+            </span>
+          </div>
+          {/* Live toggle */}
+          <button
+            onClick={() => { setLiveMode((v) => !v); controllerRef.current?.abort(); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              padding: '4px 8px', borderRadius: 100,
+              border: `1px solid ${liveMode ? '#16C79A40' : 'rgba(26,26,46,0.1)'}`,
+              background: liveMode ? 'rgba(22,199,154,0.08)' : 'transparent',
+              cursor: 'pointer', transition: 'all 0.25s', flexShrink: 0,
+            }}
+          >
+            <div style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: liveMode ? '#16C79A' : '#6B7280',
+              boxShadow: liveMode ? '0 0 6px rgba(22,199,154,0.4)' : 'none',
+            }} />
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+              color: liveMode ? '#16C79A' : '#6B7280',
+            }}>
+              {liveMode ? 'LIVE' : 'DEMO'}
+            </span>
+          </button>
+        </div>
+
+        {/* Tab toggle */}
+        <div style={{ padding: '6px 1rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: 4, background: 'rgba(26,26,46,0.04)', borderRadius: 8, padding: 3 }}>
+            <button
+              onClick={() => setActiveTab('prompt')}
+              style={{
+                flex: 1, padding: '7px 0', borderRadius: 6, border: 'none',
+                background: activeTab === 'prompt' ? 'white' : 'transparent',
+                boxShadow: activeTab === 'prompt' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                color: activeTab === 'prompt' ? '#7B61FF' : '#6B7280',
+                cursor: 'pointer', transition: 'all 0.2s', letterSpacing: '0.04em',
+              }}
+            >
+              System Prompt
+            </button>
+            <button
+              onClick={() => setActiveTab('chat')}
+              style={{
+                flex: 1, padding: '7px 0', borderRadius: 6, border: 'none',
+                background: activeTab === 'chat' ? 'white' : 'transparent',
+                boxShadow: activeTab === 'chat' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                color: activeTab === 'chat' ? '#0F3460' : '#6B7280',
+                cursor: 'pointer', transition: 'all 0.2s', letterSpacing: '0.04em',
+                position: 'relative' as const,
+              }}
+            >
+              Chat
+              {messages.length > 0 && (
+                <span style={{
+                  position: 'absolute', top: 2, right: 8,
+                  width: 16, height: 16, borderRadius: '50%',
+                  background: '#7B61FF', color: 'white',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {messages.length}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Tab content */}
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          {activeTab === 'prompt' ? (
+            <>
+              {/* System prompt textarea */}
+              <div style={{ flex: 1, padding: '10px 12px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <textarea
+                  value={systemPrompt}
+                  onChange={(e) => setSystemPrompt(e.target.value)}
+                  style={{
+                    width: '100%', flex: 1, resize: 'none' as const,
+                    padding: '10px 12px', borderRadius: 10, border: '1px solid rgba(123,97,255,0.15)',
+                    background: 'rgba(123,97,255,0.03)', fontFamily: 'var(--font-mono)', fontSize: '0.82rem',
+                    lineHeight: 1.6, color: '#1A1A2E', outline: 'none',
+                  }}
+                />
+              </div>
+
+              {/* Challenge buttons */}
+              <div style={{ padding: '8px 12px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 6 }}>
+                  Test Challenges
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                  {challenges.map((c, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleChallenge(c)}
+                      disabled={isTyping}
+                      style={{
+                        padding: '10px 8px', borderRadius: 8, border: `1px solid ${c.color}25`,
+                        background: `${c.color}08`, cursor: isTyping ? 'default' : 'pointer',
+                        fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                        color: c.color, transition: 'all 0.2s', textAlign: 'left' as const,
+                        opacity: isTyping ? 0.5 : 1, minHeight: 40,
+                      }}
+                    >
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Recent messages preview */}
+              <div style={{ flex: 1, padding: '10px 12px', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                {messages.length === 0 && !isTyping && !streamingText && (
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', fontStyle: 'italic', margin: 0, lineHeight: 1.6, textAlign: 'center' as const, padding: '2rem 0' }}>
+                    {liveMode
+                      ? 'Click a challenge or type below.'
+                      : 'Switch to System Prompt tab and click a challenge to start.'}
+                  </p>
+                )}
+                {recentMessages.map((msg, i) => (
+                  <div key={messages.indexOf(msg)} style={{
+                    marginBottom: 8,
+                    display: 'flex',
+                    justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                  }}>
+                    <div style={{
+                      maxWidth: '88%', padding: '9px 12px', borderRadius: 10,
+                      background: msg.role === 'user' ? 'rgba(26,26,46,0.06)' : 'rgba(123,97,255,0.05)',
+                      border: msg.role === 'user' ? '1px solid rgba(26,26,46,0.08)' : '1px solid rgba(123,97,255,0.1)',
+                    }}>
+                      {msg.role === 'assistant' && (
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 3 }}>AI</span>
+                      )}
+                      <p style={{
+                        fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.5, margin: 0,
+                        color: '#1A1A2E',
+                        display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical' as any,
+                        overflow: 'hidden',
+                      }}>
+                        {msg.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {/* Streaming response */}
+                {streamingText && (
+                  <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 8 }}>
+                    <div style={{
+                      maxWidth: '88%', padding: '9px 12px', borderRadius: 10,
+                      background: 'rgba(123,97,255,0.05)', border: '1px solid rgba(123,97,255,0.1)',
+                    }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 3 }}>AI</span>
+                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.5, margin: 0, color: '#1A1A2E' }}>
+                        {streamingText}
+                        <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#7B61FF', marginLeft: 2, animation: 'pulse 1s infinite' }} />
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {isTyping && !streamingText && (
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div style={{ padding: '9px 12px', borderRadius: 10, background: 'rgba(123,97,255,0.05)', border: '1px solid rgba(123,97,255,0.1)' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#7B61FF' }}>Thinking...</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* View full history + clear */}
+              {messages.length > 3 && (
+                <div style={{ padding: '0 12px 4px', flexShrink: 0 }}>
+                  <button
+                    onClick={() => setSheetOpen(true)}
+                    style={{
+                      width: '100%', padding: '7px', borderRadius: 8,
+                      border: '1px solid rgba(123,97,255,0.15)', background: 'rgba(123,97,255,0.04)',
+                      cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
+                      fontWeight: 600, color: '#7B61FF', letterSpacing: '0.03em',
+                    }}
+                  >
+                    View full chat ({messages.length} messages)
+                  </button>
+                </div>
+              )}
+
+              {/* Chat input + actions */}
+              <div style={{ padding: '8px 12px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button
+                    onClick={handleClear}
+                    disabled={messages.length === 0}
+                    style={{
+                      padding: '10px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.08)',
+                      background: 'transparent', cursor: messages.length === 0 ? 'default' : 'pointer',
+                      color: messages.length === 0 ? '#6B728040' : '#6B7280', flexShrink: 0,
+                      minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                    aria-label="Clear chat"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                  </button>
+                  <input
+                    type="text"
+                    value={customInput}
+                    onChange={(e) => setCustomInput(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleCustomSend(); }}
+                    placeholder={liveMode ? 'Type anything...' : 'Type a message...'}
+                    disabled={isTyping}
+                    style={{
+                      flex: 1, padding: '10px 12px', borderRadius: 8,
+                      border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
+                      fontFamily: 'var(--font-body)', fontSize: '16px', color: '#1A1A2E',
+                      outline: 'none', minHeight: 44, opacity: isTyping ? 0.5 : 1,
+                    }}
+                  />
+                  <button
+                    onClick={handleCustomSend}
+                    disabled={isTyping || !customInput.trim()}
+                    style={{
+                      padding: '10px 16px', borderRadius: 8, border: 'none',
+                      background: isTyping || !customInput.trim() ? '#6B7280' : '#7B61FF', color: 'white',
+                      fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                      cursor: isTyping || !customInput.trim() ? 'default' : 'pointer',
+                      transition: 'all 0.25s', minHeight: 44, flexShrink: 0,
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Compact insight */}
+        <div style={{
+          padding: '8px 12px', borderTop: '1px solid rgba(26,26,46,0.06)',
+          background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(22,199,154,0.04))', flexShrink: 0,
+        }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontStyle: 'italic', color: '#6B7280', margin: 0, lineHeight: 1.4 }}>
+            <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>Try: </span>
+            Edit the system prompt, then run challenges to see how behavior changes.
+          </p>
+        </div>
+
+        {/* BottomSheet: Full chat history */}
+        <BottomSheet
+          isOpen={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title="Full Chat History"
+        >
+          <div>
+            {messages.map((msg, i) => (
+              <div key={i} style={{
+                marginBottom: 10,
+                display: 'flex',
+                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              }}>
+                <div style={{
+                  maxWidth: '88%', padding: '10px 14px', borderRadius: 10,
+                  background: msg.role === 'user' ? 'rgba(26,26,46,0.06)' : 'rgba(123,97,255,0.05)',
+                  border: msg.role === 'user' ? '1px solid rgba(26,26,46,0.08)' : '1px solid rgba(123,97,255,0.1)',
+                }}>
+                  {msg.role === 'assistant' && (
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.06em', display: 'block', marginBottom: 4 }}>AI</span>
+                  )}
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0, color: '#1A1A2E' }}>
+                    {msg.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+            {messages.length === 0 && (
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', fontStyle: 'italic', textAlign: 'center' as const }}>
+                No messages yet.
+              </p>
+            )}
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // ==================== DESKTOP LAYOUT (unchanged) ====================
   return (
     <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #7B61FF, #16C79A)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -194,7 +512,7 @@ export default function SystemPromptSandbox() {
             </svg>
           </div>
           <div style={{ flex: 1 }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>System Prompt Sandbox</h3>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>System Prompt Sandbox</h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Edit the system prompt, then test it with challenges</p>
           </div>
           {/* Live AI toggle */}
@@ -224,10 +542,10 @@ export default function SystemPromptSandbox() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', flex: 1, minHeight: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', flex: 1, minHeight: 0 }}>
         {/* Left: System prompt editor */}
-        <div style={{ borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ borderRight: '1px solid rgba(26,26,46,0.06)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#7B61FF' }}>
               System Prompt
             </span>
@@ -236,32 +554,32 @@ export default function SystemPromptSandbox() {
             </span>
           </div>
 
-          <div style={{ flex: isMobile ? 'none' : 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem' }}>
             <textarea
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               style={{
-                width: '100%', height: isMobile ? 'auto' : '100%', minHeight: isMobile ? '12dvh' : '15dvh', resize: 'vertical' as const,
+                width: '100%', height: '100%', minHeight: '15dvh', resize: 'vertical' as const,
                 padding: '12px 14px', borderRadius: 10, border: '1px solid rgba(123,97,255,0.15)',
-                background: 'rgba(123,97,255,0.03)', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.85rem' : '0.78rem',
+                background: 'rgba(123,97,255,0.03)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem',
                 lineHeight: 1.65, color: '#1A1A2E', outline: 'none',
               }}
             />
           </div>
 
           {/* Challenge buttons */}
-          <div style={{ padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
               Test Challenges
             </span>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 6 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
               {challenges.map((c, i) => (
                 <button
                   key={i}
                   onClick={() => handleChallenge(c)}
                   disabled={isTyping}
                   style={{
-                    padding: isMobile ? '12px 10px' : '8px 10px', borderRadius: 8, border: `1px solid ${c.color}25`,
+                    padding: '8px 10px', borderRadius: 8, border: `1px solid ${c.color}25`,
                     background: `${c.color}08`, cursor: isTyping ? 'default' : 'pointer',
                     fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                     color: c.color, transition: 'all 0.2s', textAlign: 'left' as const,
@@ -275,7 +593,7 @@ export default function SystemPromptSandbox() {
             <button
               onClick={handleClear}
               style={{
-                marginTop: 8, padding: isMobile ? '12px 12px' : '6px 12px', borderRadius: 6, border: '1px solid rgba(26,26,46,0.08)',
+                marginTop: 8, padding: '6px 12px', borderRadius: 6, border: '1px solid rgba(26,26,46,0.08)',
                 background: 'transparent', cursor: 'pointer', fontFamily: 'var(--font-mono)',
                 fontSize: '0.75rem', color: '#6B7280', width: '100%', minHeight: 44,
               }}
@@ -287,13 +605,13 @@ export default function SystemPromptSandbox() {
 
         {/* Right: Chat */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ padding: isMobile ? '10px 1rem' : '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+          <div style={{ padding: '10px 1.25rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#0F3460' }}>
               Chat Response
             </span>
           </div>
 
-          <div style={{ flex: 1, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: isMobile ? '30dvh' : '35dvh' }}>
+          <div style={{ flex: 1, padding: '1rem 1.25rem', overflowY: 'auto' as const, maxHeight: '35dvh' }}>
             {messages.length === 0 && !isTyping && !streamingText && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', fontStyle: 'italic', margin: 0, lineHeight: 1.7 }}>
                 {liveMode
@@ -360,7 +678,7 @@ export default function SystemPromptSandbox() {
           </div>
 
           {/* Custom input (always visible in live mode, also in demo) */}
-          <div style={{ padding: isMobile ? '0.5rem 1rem 0.75rem' : '0.5rem 1.25rem 0.75rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          <div style={{ padding: '0.5rem 1.25rem 0.75rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
             <div style={{ display: 'flex', gap: 6 }}>
               <input
                 type="text"
@@ -372,7 +690,7 @@ export default function SystemPromptSandbox() {
                 style={{
                   flex: 1, padding: '8px 12px', borderRadius: 8,
                   border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
-                  fontFamily: 'var(--font-body)', fontSize: isMobile ? '16px' : '0.8rem', color: '#1A1A2E',
+                  fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#1A1A2E',
                   outline: 'none', minHeight: 40, opacity: isTyping ? 0.5 : 1,
                 }}
               />
@@ -396,10 +714,10 @@ export default function SystemPromptSandbox() {
 
       {/* Insight bar */}
       <div style={{
-        padding: isMobile ? '0.75rem 1rem' : '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
+        padding: '1rem 2rem', borderTop: '1px solid rgba(26,26,46,0.06)',
         background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(22,199,154,0.04))',
       }}>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>
           <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>Try it: </span>
           {liveMode
             ? 'Type your own messages and watch the AI follow (or break) the system prompt rules in real-time. Try editing the prompt to "You are a pirate" and see what happens!'

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 /*
  * HallucinationDetector
@@ -49,6 +50,7 @@ const SCAN_DURATION_MS = 2800;
 const POST_SCAN_HOLD_MS = 4500;
 
 export default function HallucinationDetector() {
+  const isMobile = useIsMobile();
   const [reducedMotion, setReducedMotion] = useState(false);
   const [setIndex, setSetIndex] = useState(0);
   const [phase, setPhase] = useState<'typing' | 'scanning' | 'results'>('typing');
@@ -225,9 +227,9 @@ export default function HallucinationDetector() {
           display: 'flex',
           alignItems: 'flex-start',
           gap: 10,
-          padding: '8px 12px',
+          padding: isMobile ? '14px 12px' : '8px 12px',
           borderLeft: `3px solid ${borderColor}`,
-          marginBottom: 4,
+          marginBottom: isMobile ? 8 : 4,
           borderRadius: '0 6px 6px 0',
           background: showResult && stmt.hallucinated
             ? 'rgba(233, 69, 96, 0.04)'
@@ -235,13 +237,13 @@ export default function HallucinationDetector() {
               ? 'rgba(22, 199, 154, 0.03)'
               : 'transparent',
           transition: reducedMotion ? 'none' : 'all 0.4s ease',
-          minHeight: 28,
+          minHeight: isMobile ? 40 : 28,
         }}
       >
         <div style={{
           flex: 1,
           fontFamily: "'Lora', Georgia, serif",
-          fontSize: 14,
+          fontSize: isMobile ? 18 : 14,
           lineHeight: 1.65,
           color: COLORS.deep,
           letterSpacing: '0.01em',
@@ -309,6 +311,28 @@ export default function HallucinationDetector() {
   const gaugeCircumference = 2 * Math.PI * gaugeRadius;
   const gaugeStroke = gaugeCircumference * (1 - gaugeValue / 100);
 
+  // Dynamic styles based on isMobile
+  const dynContainerStyle: React.CSSProperties = isMobile
+    ? {
+        margin: '0 auto',
+        background: '#FFFFFF',
+        padding: '0 12px 12px',
+        overflow: 'hidden',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column' as const,
+      }
+    : {
+        maxWidth: 650,
+        margin: '0 auto',
+        background: '#FFFFFF',
+        borderRadius: 16,
+        border: '1px solid rgba(26, 26, 46, 0.06)',
+        boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06)',
+        padding: '0 20px 20px',
+        overflow: 'hidden',
+      };
+
   // Reduced motion static fallback
   if (reducedMotion) {
     const staticSet = STATEMENT_SETS[0];
@@ -316,19 +340,22 @@ export default function HallucinationDetector() {
     const staticPct = Math.round((staticCorrect / staticSet.length) * 100);
 
     return (
-      <div style={containerStyle}>
+      <div style={dynContainerStyle}>
         <div style={headerStyle}>
           <span style={headerDotStyle} />
           <span style={headerDotStyle} />
           <span style={headerDotStyle} />
           <span style={headerLabelStyle}>AI Response</span>
         </div>
-        <div style={{ padding: '16px 4px 8px' }}>
+        <div style={{
+          padding: isMobile ? '20px 4px 12px' : '16px 4px 8px',
+          ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const, justifyContent: 'center' } : {}),
+        }}>
           {staticSet.map((stmt, i) => (
             <div key={i} style={{
-              padding: '8px 12px',
+              padding: isMobile ? '14px 12px' : '8px 12px',
               borderLeft: `3px solid ${stmt.hallucinated ? COLORS.red : COLORS.teal}`,
-              marginBottom: 4,
+              marginBottom: isMobile ? 8 : 4,
               borderRadius: '0 6px 6px 0',
               background: stmt.hallucinated ? 'rgba(233, 69, 96, 0.04)' : 'rgba(22, 199, 154, 0.03)',
               display: 'flex',
@@ -338,7 +365,7 @@ export default function HallucinationDetector() {
               <span style={{
                 flex: 1,
                 fontFamily: "'Lora', Georgia, serif",
-                fontSize: 14,
+                fontSize: isMobile ? 18 : 14,
                 lineHeight: 1.65,
                 color: COLORS.deep,
               }}>
@@ -376,7 +403,7 @@ export default function HallucinationDetector() {
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={dynContainerStyle}>
       {/* Blink keyframes */}
       <style>{`
         @keyframes hallDetectorBlink {
@@ -395,8 +422,9 @@ export default function HallucinationDetector() {
       {/* Text area with scanner */}
       <div style={{
         position: 'relative',
-        padding: '16px 4px 8px',
+        padding: isMobile ? '20px 4px 12px' : '16px 4px 8px',
         minHeight: 200,
+        ...(isMobile ? { flex: 1, display: 'flex', flexDirection: 'column' as const, justifyContent: 'center' } : {}),
       }}>
         {/* Scanner line */}
         {phase === 'scanning' && (
@@ -433,9 +461,10 @@ export default function HallucinationDetector() {
 
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 24,
+          gap: isMobile ? 12 : 24,
           padding: '0 12px 12px',
         }}>
           {/* Circular gauge */}
@@ -527,17 +556,6 @@ export default function HallucinationDetector() {
 }
 
 // --- Styles ---
-
-const containerStyle: React.CSSProperties = {
-  maxWidth: 650,
-  margin: '0 auto',
-  background: '#FFFFFF',
-  borderRadius: 16,
-  border: '1px solid rgba(26, 26, 46, 0.06)',
-  boxShadow: '0 4px 32px rgba(26, 26, 46, 0.06)',
-  padding: '0 20px 20px',
-  overflow: 'hidden',
-};
 
 const headerStyle: React.CSSProperties = {
   display: 'flex',

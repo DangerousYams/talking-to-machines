@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface BugRegion {
   text: string;
@@ -59,7 +60,7 @@ const challenges: Challenge[] = [
       { text: 'Use an objective, scientific tone.', bugType: 'Contradictory', severity: 'yellow', explanation: 'You can\'t be objective while following instructions to reach a predetermined conclusion. The tone might sound scientific, but the reasoning is biased by design.' },
     ],
     fixedPrompt: 'Analyze the tradeoffs between renewable energy and fossil fuels for meeting global energy demand by 2050. For each energy source, discuss: current share of global energy, cost trends, scalability challenges, and environmental impact. Include at least one counterintuitive finding that challenges common assumptions. 300 words. Cite specific data points.',
-    fixedOutput: "**The Energy Landscape in Numbers**\n\nFossil fuels still supply 82% of global primary energy (IEA, 2023). Renewables account for ~14%, with solar and wind growing at 25% annually. The gap between ambition and reality is enormous.\n\n**Cost Revolution — With Caveats**\nSolar electricity costs fell 90% between 2010–2023. Wind dropped 70%. On a per-megawatt-hour basis, new solar ($30–50) undercuts new coal ($65–150) in most markets. But here's the counterintuitive part: cheap generation doesn't mean cheap systems. When Germany pushed solar past 30% of electricity, grid integration costs added 30–50% to the effective price. Intermittency is not a hypothetical — it's an engineering problem with expensive solutions.\n\n**The Fossil Fuel Bind**\nCoal and gas plants run 24/7 with 90%+ capacity factors. The best solar farms hit 25–30%. This means replacing a 1GW coal plant requires 3–4GW of solar plus storage. The International Energy Agency estimates $4 trillion in annual clean energy investment is needed by 2030 — current levels are $1.8 trillion.\n\nMeanwhile, natural gas emits half the CO₂ of coal per kWh. Several climate models show gas as a necessary bridge fuel through 2040, not because it's clean, but because shutting coal first matters more than eliminating gas.\n\n**The Honest Assessment**\nRenewables will dominate new electricity generation — that's economically inevitable. But \"electricity\" is only 20% of total energy use. Industry, shipping, aviation, and heating remain stubbornly fossil-dependent. A 2050 net-zero pathway likely requires nuclear (for baseload), hydrogen (for industry), carbon capture (for residual emissions), and behavioral change — not just solar panels.\n\nThe real debate isn't renewables vs. fossil fuels. It's how fast, in what order, and who pays for the transition.",
+    fixedOutput: "**The Energy Landscape in Numbers**\n\nFossil fuels still supply 82% of global primary energy (IEA, 2023). Renewables account for ~14%, with solar and wind growing at 25% annually. The gap between ambition and reality is enormous.\n\n**Cost Revolution — With Caveats**\nSolar electricity costs fell 90% between 2010–2023. Wind dropped 70%. On a per-megawatt-hour basis, new solar ($30–50) undercuts new coal ($65–150) in most markets. But here's the counterintuitive part: cheap generation doesn't mean cheap systems. When Germany pushed solar past 30% of electricity, grid integration costs added 30–50% to the effective price. Intermittency is not a hypothetical — it's an engineering problem with expensive solutions.\n\n**The Fossil Fuel Bind**\nCoal and gas plants run 24/7 with 90%+ capacity factors. The best solar farms hit 25–30%. This means replacing a 1GW coal plant requires 3–4GW of solar plus storage. The International Energy Agency estimates $4 trillion in annual clean energy investment is needed by 2030 — current levels are $1.8 trillion.\n\nMeanwhile, natural gas emits half the CO\u2082 of coal per kWh. Several climate models show gas as a necessary bridge fuel through 2040, not because it's clean, but because shutting coal first matters more than eliminating gas.\n\n**The Honest Assessment**\nRenewables will dominate new electricity generation — that's economically inevitable. But \"electricity\" is only 20% of total energy use. Industry, shipping, aviation, and heating remain stubbornly fossil-dependent. A 2050 net-zero pathway likely requires nuclear (for baseload), hydrogen (for industry), carbon capture (for residual emissions), and behavioral change — not just solar panels.\n\nThe real debate isn't renewables vs. fossil fuels. It's how fast, in what order, and who pays for the transition.",
   },
 ];
 
@@ -70,6 +71,8 @@ export default function DebugThePrompt() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showFixed, setShowFixed] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetContent, setSheetContent] = useState<'feedback' | 'comparison' | null>(null);
   const isMobile = useIsMobile();
 
   const challenge = challenges[challengeIndex];
@@ -97,6 +100,7 @@ export default function DebugThePrompt() {
       setSelectedRegion(null);
       setShowDropdown(false);
       setShowFixed(false);
+      setSheetOpen(false);
     }
   };
 
@@ -107,12 +111,14 @@ export default function DebugThePrompt() {
     setShowDropdown(false);
     setShowFixed(false);
     setGameComplete(false);
+    setSheetOpen(false);
   };
 
+  // Game complete screen (same for mobile and desktop)
   if (gameComplete) {
     return (
-      <div className="widget-container">
-        <div style={{ padding: isMobile ? '2rem 1rem' : '3rem 2rem', textAlign: 'center' as const }}>
+      <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
+        <div style={{ padding: isMobile ? '2rem 1rem' : '3rem 2rem', textAlign: 'center' as const, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.5rem' : '2rem', fontWeight: 800, color: '#0F3460', marginBottom: '0.5rem' }}>
             Debugging Complete
           </div>
@@ -120,7 +126,7 @@ export default function DebugThePrompt() {
             You've worked through all three difficulty levels.
           </p>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', marginBottom: '2rem', lineHeight: 1.7 }}>
-            The hardest bugs to spot aren't contradictions — they're <em>leading questions</em> that make the AI confirm what you already believe. Watch for those in your own prompts.
+            The hardest bugs to spot aren't contradictions — they're <em>leading questions</em> that make the AI confirm what you already believe.
           </p>
           <button
             onClick={handleRestart}
@@ -129,8 +135,6 @@ export default function DebugThePrompt() {
               padding: '0.7rem 2rem', borderRadius: 100, border: 'none', cursor: 'pointer',
               background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44,
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
             Play Again
           </button>
@@ -139,10 +143,181 @@ export default function DebugThePrompt() {
     );
   }
 
+  // ==================== MOBILE LAYOUT ====================
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg, #E94560, #F5A623)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
+          <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#1A1A2E', flex: 1 }}>Debug the Prompt</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>{challengeIndex + 1}/{challenges.length}</span>
+        </div>
+
+        {/* Difficulty tabs */}
+        <div style={{ display: 'flex', gap: 4, padding: '6px 12px', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          {challenges.map((c, i) => {
+            const color = c.level === 'easy' ? '#16C79A' : c.level === 'medium' ? '#F5A623' : '#E94560';
+            return (
+              <button key={i} onClick={() => { setChallengeIndex(i); setIdentifiedBugs({}); setSelectedRegion(null); setShowDropdown(false); setShowFixed(false); }} style={{
+                flex: 1, padding: '6px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                background: challengeIndex === i ? `${color}15` : 'transparent',
+                color: challengeIndex === i ? color : '#6B7280',
+                transition: 'all 0.2s', minHeight: 32,
+              }}>
+                {c.levelLabel}
+              </button>
+            );
+          })}
+        </div>
+
+        {!showFixed ? (
+          <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            {/* Buggy prompt with tappable highlights */}
+            <div style={{ flex: 1, overflow: 'auto', padding: '10px 12px' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560', display: 'block', marginBottom: 6 }}>
+                Tap the highlighted issues
+              </span>
+              <div style={{
+                background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 8,
+                padding: '10px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.8,
+                position: 'relative',
+              }}>
+                {challenge.regions.map((region, i) => {
+                  const isIdentified = identifiedBugs[i] !== undefined;
+                  const isCorrect = identifiedBugs[i] === region.bugType;
+                  const isSelected = selectedRegion === i;
+                  return (
+                    <span key={i}>
+                      <span
+                        onClick={() => { if (isIdentified) return; setSelectedRegion(i); setShowDropdown(true); }}
+                        style={{
+                          cursor: isIdentified ? 'default' : 'pointer',
+                          background: isIdentified ? isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)' : isSelected ? 'rgba(245,166,35,0.2)' : region.severity === 'red' ? 'rgba(233,69,96,0.08)' : 'rgba(245,166,35,0.08)',
+                          borderBottom: isIdentified ? `2px solid ${isCorrect ? '#16C79A' : '#E94560'}` : `2px solid ${region.severity === 'red' ? '#E9456040' : '#F5A62340'}`,
+                          borderRadius: 3, padding: '1px 2px', transition: 'all 0.2s',
+                        }}
+                      >{region.text}</span>{' '}
+                    </span>
+                  );
+                })}
+              </div>
+
+              {/* Feedback for identified bugs */}
+              {Object.entries(identifiedBugs).map(([idx, type]) => {
+                const region = challenge.regions[Number(idx)];
+                const isCorrect = type === region.bugType;
+                return (
+                  <div key={idx} style={{
+                    background: isCorrect ? 'rgba(22,199,154,0.06)' : 'rgba(233,69,96,0.06)',
+                    border: `1px solid ${isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)'}`,
+                    borderRadius: 6, padding: '8px 10px', marginTop: 6,
+                  }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560' }}>
+                      {isCorrect ? 'Correct!' : `Not quite \u2014 it's "${region.bugType}"`}
+                    </span>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.5, color: '#1A1A2E', margin: '2px 0 0', opacity: 0.85 }}>{region.explanation}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bug type selector as bottom-anchored pills */}
+            {showDropdown && selectedRegion !== null && (
+              <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, background: 'rgba(245,166,35,0.03)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#F5A623', display: 'block', marginBottom: 6 }}>What's wrong with this part?</span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {bugTypes.map((type) => (
+                    <button key={type} onClick={() => handleSelectBugType(type)} style={{
+                      padding: '8px 12px', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)',
+                      background: 'white', cursor: 'pointer', fontFamily: 'var(--font-mono)',
+                      fontSize: '0.7rem', fontWeight: 600, color: '#1A1A2E', minHeight: 36,
+                    }}>{type}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Progress + action */}
+            <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>
+                {foundBugs}/{totalBugs} bugs ({correctCount} correct)
+              </span>
+              {allFound && (
+                <button onClick={() => { setSheetContent('comparison'); setSheetOpen(true); setShowFixed(true); }} style={{
+                  padding: '8px 16px', borderRadius: 8, border: 'none', background: '#0F3460',
+                  color: '#FAF8F5', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
+                  fontWeight: 600, minHeight: 36,
+                }}>See Fixed Version</button>
+              )}
+            </div>
+          </div>
+        ) : (
+          /* Show fixed - just a button to view in sheet and next */
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px 12px', gap: 12 }}>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#16C79A', textAlign: 'center' }}>All bugs found!</div>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', textAlign: 'center', lineHeight: 1.5 }}>
+              View the fixed version in the sheet below, then continue.
+            </p>
+            <button onClick={() => { setSheetContent('comparison'); setSheetOpen(true); }} style={{
+              padding: '10px 24px', borderRadius: 8, border: '1px solid rgba(22,199,154,0.3)',
+              background: 'rgba(22,199,154,0.06)', cursor: 'pointer', fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem', fontWeight: 600, color: '#16C79A', minHeight: 44,
+            }}>View Fixed Version</button>
+            <button onClick={handleNext} style={{
+              padding: '10px 24px', borderRadius: 8, border: 'none', background: '#1A1A2E',
+              color: '#FAF8F5', cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem',
+              fontWeight: 600, minHeight: 44,
+            }}>{challengeIndex + 1 >= challenges.length ? 'See Final Results' : 'Next Challenge'} →</button>
+          </div>
+        )}
+
+        {/* BottomSheet for comparison */}
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title="Buggy vs. Fixed">
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#E94560', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Buggy prompt</span>
+            </div>
+            <div style={{ background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)', borderRadius: 8, padding: '8px 10px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', lineHeight: 1.5, color: '#1A1A2E', opacity: 0.6 }}>
+              {challenge.prompt}
+            </div>
+          </div>
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#16C79A', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Fixed prompt</span>
+            </div>
+            <div style={{ background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)', borderRadius: 8, padding: '8px 10px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', lineHeight: 1.5, color: '#1A1A2E' }}>
+              {challenge.fixedPrompt}
+            </div>
+          </div>
+          <div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#16C79A', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>Improved output</span>
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.7, color: '#1A1A2E', whiteSpace: 'pre-wrap' }}>
+              {challenge.fixedOutput.split('\n').map((line, i) => {
+                if (line.startsWith('**') && line.includes('**')) {
+                  const parts = line.split('**');
+                  return <p key={i} style={{ margin: '0.5em 0' }}>{parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}</p>;
+                }
+                if (line.startsWith('- ') || line.startsWith('\u2022 ')) return <p key={i} style={{ margin: '0.25em 0', paddingLeft: '0.5rem' }}>{line}</p>;
+                return line ? <p key={i} style={{ margin: '0.5em 0' }}>{line}</p> : <br key={i} />;
+              })}
+            </div>
+          </div>
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // ==================== DESKTOP LAYOUT (unchanged) ====================
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' as const, gap: isMobile ? '0.5rem' : 0 }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #E94560, #F5A623)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4M12 16h.01"/></svg>
@@ -153,232 +328,87 @@ export default function DebugThePrompt() {
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{
-            fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em',
-            padding: '4px 10px', borderRadius: 6,
-            background: challenge.level === 'easy' ? 'rgba(22,199,154,0.1)' : challenge.level === 'medium' ? 'rgba(245,166,35,0.1)' : 'rgba(233,69,96,0.1)',
-            color: challenge.level === 'easy' ? '#16C79A' : challenge.level === 'medium' ? '#F5A623' : '#E94560',
-          }}>
-            {challenge.levelLabel}
-          </span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>
-            {challengeIndex + 1} / {challenges.length}
-          </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', padding: '4px 10px', borderRadius: 6, background: challenge.level === 'easy' ? 'rgba(22,199,154,0.1)' : challenge.level === 'medium' ? 'rgba(245,166,35,0.1)' : 'rgba(233,69,96,0.1)', color: challenge.level === 'easy' ? '#16C79A' : challenge.level === 'medium' ? '#F5A623' : '#E94560' }}>{challenge.levelLabel}</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{challengeIndex + 1} / {challenges.length}</span>
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+      <div style={{ padding: '1.5rem 2rem' }}>
         {!showFixed ? (
           <>
-            {/* The buggy prompt */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560', display: 'block', marginBottom: 8 }}>
-                The prompt — click the highlighted issues
-              </span>
-              <div style={{
-                background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
-                padding: isMobile ? '0.85rem 1rem' : '1.25rem 1.5rem', fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.75rem' : '0.82rem', lineHeight: 1.8,
-                position: 'relative' as const,
-              }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560', display: 'block', marginBottom: 8 }}>The prompt — click the highlighted issues</span>
+              <div style={{ background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10, padding: '1.25rem 1.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.82rem', lineHeight: 1.8, position: 'relative' as const }}>
                 {challenge.regions.map((region, i) => {
                   const isIdentified = identifiedBugs[i] !== undefined;
                   const isCorrect = identifiedBugs[i] === region.bugType;
                   const isSelected = selectedRegion === i;
-
                   return (
                     <span key={i}>
-                      <span
-                        onClick={() => {
-                          if (isIdentified) return;
-                          setSelectedRegion(i);
-                          setShowDropdown(true);
-                        }}
-                        style={{
-                          cursor: isIdentified ? 'default' : 'pointer',
-                          background: isIdentified
-                            ? isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)'
-                            : isSelected ? 'rgba(245,166,35,0.2)' : region.severity === 'red' ? 'rgba(233,69,96,0.08)' : 'rgba(245,166,35,0.08)',
-                          borderBottom: isIdentified
-                            ? `2px solid ${isCorrect ? '#16C79A' : '#E94560'}`
-                            : `2px solid ${region.severity === 'red' ? '#E9456040' : '#F5A62340'}`,
-                          borderRadius: 3,
-                          padding: '1px 2px',
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {region.text}
-                      </span>
-                      {' '}
+                      <span onClick={() => { if (isIdentified) return; setSelectedRegion(i); setShowDropdown(true); }} style={{ cursor: isIdentified ? 'default' : 'pointer', background: isIdentified ? isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)' : isSelected ? 'rgba(245,166,35,0.2)' : region.severity === 'red' ? 'rgba(233,69,96,0.08)' : 'rgba(245,166,35,0.08)', borderBottom: isIdentified ? `2px solid ${isCorrect ? '#16C79A' : '#E94560'}` : `2px solid ${region.severity === 'red' ? '#E9456040' : '#F5A62340'}`, borderRadius: 3, padding: '1px 2px', transition: 'all 0.2s' }}>{region.text}</span>{' '}
                     </span>
                   );
                 })}
               </div>
             </div>
-
-            {/* Bug type dropdown */}
             {showDropdown && selectedRegion !== null && (
               <div style={{ marginBottom: '1.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', color: '#F5A623', display: 'block', marginBottom: 8 }}>
-                  What's wrong with this part?
-                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', color: '#F5A623', display: 'block', marginBottom: 8 }}>What's wrong with this part?</span>
                 <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
                   {bugTypes.map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => handleSelectBugType(type)}
-                      style={{
-                        padding: isMobile ? '10px 14px' : '6px 14px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)',
-                        background: 'transparent', cursor: 'pointer', transition: 'all 0.2s',
-                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, color: '#1A1A2E',
-                        minHeight: 44,
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(15,52,96,0.06)'; e.currentTarget.style.borderColor = '#0F346030'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'; }}
-                    >
-                      {type}
-                    </button>
+                    <button key={type} onClick={() => handleSelectBugType(type)} style={{ padding: '6px 14px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)', background: 'transparent', cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, color: '#1A1A2E', minHeight: 44 }} onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(15,52,96,0.06)'; e.currentTarget.style.borderColor = '#0F346030'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'; }}>{type}</button>
                   ))}
                 </div>
               </div>
             )}
-
-            {/* Feedback for identified bugs */}
             {Object.entries(identifiedBugs).map(([idx, type]) => {
               const region = challenge.regions[Number(idx)];
               const isCorrect = type === region.bugType;
               return (
-                <div key={idx} style={{
-                  background: isCorrect ? 'rgba(22,199,154,0.06)' : 'rgba(233,69,96,0.06)',
-                  border: `1px solid ${isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)'}`,
-                  borderRadius: 8, padding: '0.75rem 1rem', marginBottom: 8,
-                }}>
+                <div key={idx} style={{ background: isCorrect ? 'rgba(22,199,154,0.06)' : 'rgba(233,69,96,0.06)', border: `1px solid ${isCorrect ? 'rgba(22,199,154,0.15)' : 'rgba(233,69,96,0.15)'}`, borderRadius: 8, padding: '0.75rem 1rem', marginBottom: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
-                      color: isCorrect ? '#16C79A' : '#E94560',
-                    }}>
-                      {isCorrect ? 'Correct!' : `Not quite — it's "${region.bugType}"`}
-                    </span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
-                      (you said: {type})
-                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560' }}>{isCorrect ? 'Correct!' : `Not quite — it's "${region.bugType}"`}</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>(you said: {type})</span>
                   </div>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0, opacity: 0.85 }}>
-                    {region.explanation}
-                  </p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0, opacity: 0.85 }}>{region.explanation}</p>
                 </div>
               );
             })}
-
-            {/* The bad output */}
             <div style={{ marginTop: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>
-                Resulting output
-              </span>
-              <div style={{
-                background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
-                padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.82rem', lineHeight: 1.7,
-                color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const,
-              }}>
-                {challenge.badOutput}
-              </div>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 8 }}>Resulting output</span>
+              <div style={{ background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10, padding: '1rem 1.25rem', fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.7, color: '#1A1A2E', opacity: 0.7, whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const }}>{challenge.badOutput}</div>
             </div>
-
-            {/* Progress + show fix button */}
-            <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, justifyContent: 'space-between', alignItems: isMobile ? 'stretch' as const : 'center', gap: isMobile ? '0.75rem' : 0 }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>
-                {foundBugs} of {totalBugs} bugs found ({correctCount} correct)
-              </span>
+            <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{foundBugs} of {totalBugs} bugs found ({correctCount} correct)</span>
               {allFound && (
-                <button
-                  onClick={() => setShowFixed(true)}
-                  style={{
-                    fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                    padding: isMobile ? '0.75rem 1.5rem' : '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer',
-                    background: '#0F3460', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44,
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  See the Fixed Version →
-                </button>
+                <button onClick={() => setShowFixed(true)} style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer', background: '#0F3460', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44 }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>See the Fixed Version →</button>
               )}
             </div>
           </>
         ) : (
           <>
-            {/* Fixed version */}
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '1rem' : '1.25rem', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
-                    Buggy prompt
-                  </span>
-                </div>
-                <div style={{
-                  background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)',
-                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
-                  lineHeight: 1.6, color: '#1A1A2E', opacity: 0.6,
-                }}>
-                  {challenge.prompt}
-                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}><div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} /><span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>Buggy prompt</span></div>
+                <div style={{ background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)', borderRadius: 10, padding: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, color: '#1A1A2E', opacity: 0.6 }}>{challenge.prompt}</div>
               </div>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
-                    Fixed prompt
-                  </span>
-                </div>
-                <div style={{
-                  background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)',
-                  borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
-                  lineHeight: 1.6, color: '#1A1A2E',
-                }}>
-                  {challenge.fixedPrompt}
-                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}><div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} /><span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>Fixed prompt</span></div>
+                <div style={{ background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)', borderRadius: 10, padding: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: 1.6, color: '#1A1A2E' }}>{challenge.fixedPrompt}</div>
               </div>
             </div>
-
-            {/* Fixed output */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
-                Improved output
-              </span>
-              <div style={{
-                fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75, color: '#1A1A2E',
-                whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '30dvh' : '35dvh', overflowY: 'auto' as const,
-              }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>Improved output</span>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '35dvh', overflowY: 'auto' as const }}>
                 {challenge.fixedOutput.split('\n').map((line, i) => {
-                  if (line.startsWith('**') && line.includes('**')) {
-                    const parts = line.split('**');
-                    return (
-                      <p key={i} style={{ margin: '0.5em 0' }}>
-                        {parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}
-                      </p>
-                    );
-                  }
-                  if (line.startsWith('- ') || line.startsWith('• ')) {
-                    return <p key={i} style={{ margin: '0.25em 0', paddingLeft: '0.5rem' }}>{line}</p>;
-                  }
+                  if (line.startsWith('**') && line.includes('**')) { const parts = line.split('**'); return <p key={i} style={{ margin: '0.5em 0' }}>{parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}</p>; }
+                  if (line.startsWith('- ') || line.startsWith('\u2022 ')) return <p key={i} style={{ margin: '0.25em 0', paddingLeft: '0.5rem' }}>{line}</p>;
                   return line ? <p key={i} style={{ margin: '0.5em 0' }}>{line}</p> : <br key={i} />;
                 })}
               </div>
             </div>
-
-            <div style={{ textAlign: isMobile ? 'center' as const : 'right' as const }}>
-              <button
-                onClick={handleNext}
-                style={{
-                  fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                  padding: isMobile ? '0.75rem 1.5rem' : '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer',
-                  background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s',
-                  minHeight: 44, width: isMobile ? '100%' : 'auto',
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              >
+            <div style={{ textAlign: 'right' as const }}>
+              <button onClick={handleNext} style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer', background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44 }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                 {challengeIndex + 1 >= challenges.length ? 'See Final Results' : 'Next Challenge'} →
               </button>
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface ProjectIdea {
   title: string;
@@ -141,6 +142,7 @@ export default function ProjectPlanner() {
   const [time, setTime] = useState('');
   const [selectedProject, setSelectedProject] = useState<ProjectIdea | null>(null);
   const [copied, setCopied] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const accent = '#16C79A';
 
@@ -181,12 +183,342 @@ export default function ProjectPlanner() {
     });
   };
 
+  const handleProjectTap = (project: ProjectIdea) => {
+    setSelectedProject(project);
+    if (isMobile) {
+      setSheetOpen(true);
+    }
+  };
+
   const stepLabels = ['Interests', 'Experience', 'Timeline', 'Your Projects'];
 
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0.75rem', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${accent}, ${accent}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Project Planner</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Find your capstone project</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress dots (compact) */}
+        <div style={{ display: 'flex', gap: 4, padding: '0.5rem 1rem', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          {stepLabels.map((label, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                <div style={{
+                  width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                  background: i <= step ? accent : 'rgba(26,26,46,0.06)',
+                  color: i <= step ? 'white' : '#6B7280',
+                  transition: 'all 0.3s ease',
+                }}>
+                  {i < step ? '\u2713' : i + 1}
+                </div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: i <= step ? accent : '#6B728080' }}>
+                  {label}
+                </span>
+              </div>
+              {i < 3 && (
+                <div style={{ width: 12, height: 1, background: i < step ? accent : 'rgba(26,26,46,0.08)', marginBottom: 14 }} />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Main content area */}
+        <div style={{ flex: 1, padding: '0.5rem 1rem', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+          {/* Step 0: Interests */}
+          {step === 0 && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.25rem', textAlign: 'center' }}>
+                What interests you?
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#6B7280', textAlign: 'center', margin: '0 0 0.75rem' }}>
+                Pick one or more topics.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, flex: 1 }}>
+                {interestOptions.map((opt) => {
+                  const isActive = interests.includes(opt.id);
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => toggleInterest(opt.id)}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+                        padding: '0.5rem', borderRadius: 10,
+                        border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                        background: isActive ? `${accent}0A` : 'transparent',
+                        cursor: 'pointer', minHeight: 44,
+                      }}
+                    >
+                      <span style={{ fontSize: '1.25rem' }}>{opt.icon}</span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E' }}>
+                        {opt.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 1: Experience */}
+          {step === 1 && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.25rem', textAlign: 'center' }}>
+                Coding experience?
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#6B7280', textAlign: 'center', margin: '0 0 0.75rem' }}>
+                Be honest -- great projects at every level.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {experienceLevels.map((opt) => {
+                  const isActive = experience === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => setExperience(opt.id)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        padding: '0.65rem 0.75rem', borderRadius: 10,
+                        border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                        background: isActive ? `${accent}0A` : 'transparent',
+                        cursor: 'pointer', textAlign: 'left', minHeight: 44,
+                      }}
+                    >
+                      <div style={{
+                        width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                        border: `2px solid ${isActive ? accent : 'rgba(26,26,46,0.15)'}`,
+                        background: isActive ? accent : 'transparent',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        {isActive && <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'white' }} />}
+                      </div>
+                      <div>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E', display: 'block' }}>
+                          {opt.label}
+                        </span>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6B7280' }}>{opt.desc}</span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Time */}
+          {step === 2 && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.25rem', textAlign: 'center' }}>
+                How much time?
+              </h4>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#6B7280', textAlign: 'center', margin: '0 0 0.75rem' }}>
+                Every timeframe produces something real.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                {timeOptions.map((opt) => {
+                  const isActive = time === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => setTime(opt.id)}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
+                        padding: '0.75rem 0.5rem', borderRadius: 10,
+                        border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                        background: isActive ? `${accent}0A` : 'transparent',
+                        cursor: 'pointer', minHeight: 44,
+                      }}
+                    >
+                      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, color: isActive ? accent : '#1A1A2E' }}>
+                        {opt.label}
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.65rem', color: '#6B7280' }}>{opt.desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Results (compact cards) */}
+          {step === 3 && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' }}>
+                Your Project Ideas
+              </h4>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'auto' }}>
+                {projects.map((project, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleProjectTap(project)}
+                    style={{
+                      borderRadius: 10, border: `1.5px solid ${selectedProject?.title === project.title ? accent : 'rgba(26,26,46,0.08)'}`,
+                      background: selectedProject?.title === project.title ? `${accent}05` : 'white',
+                      padding: '0.75rem', cursor: 'pointer', textAlign: 'left', width: '100%',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <h5 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700, color: '#1A1A2E', margin: 0, flex: 1 }}>
+                        {project.title}
+                      </h5>
+                      <div style={{ display: 'flex', gap: 1, flexShrink: 0 }}>
+                        {Array.from({ length: 5 }, (_, j) => (
+                          <span key={j} style={{ fontSize: '0.6rem', color: j < project.difficulty ? accent : '#E5E7EB' }}>{'\u2605'}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <p style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5, color: '#6B7280', margin: 0,
+                      display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any, overflow: 'hidden',
+                    }}>
+                      {project.description}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+                      {project.tools.slice(0, 3).map((tool, ti) => (
+                        <span key={ti} style={{
+                          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 500,
+                          padding: '1px 6px', borderRadius: 100, background: `${accent}10`, color: accent,
+                        }}>
+                          {tool}
+                        </span>
+                      ))}
+                      {project.tools.length > 3 && (
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280' }}>+{project.tools.length - 3}</span>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom nav */}
+        <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+          {step < 3 ? (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <button
+                onClick={() => setStep((s) => s - 1)}
+                disabled={step === 0}
+                style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 500,
+                  padding: '0.5rem 1rem', borderRadius: 100,
+                  border: '1px solid rgba(26,26,46,0.12)', background: 'transparent',
+                  cursor: step === 0 ? 'default' : 'pointer', color: step === 0 ? '#CBD5E1' : '#6B7280',
+                  opacity: step === 0 ? 0.4 : 1, minHeight: 44,
+                }}
+              >
+                Back
+              </button>
+              <button
+                onClick={() => setStep((s) => s + 1)}
+                disabled={!canProceed()}
+                style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 600,
+                  padding: '0.5rem 1.25rem', borderRadius: 100, border: 'none',
+                  cursor: canProceed() ? 'pointer' : 'default',
+                  background: canProceed() ? '#1A1A2E' : '#E5E7EB',
+                  color: canProceed() ? '#FAF8F5' : '#9CA3AF',
+                  minHeight: 44,
+                }}
+              >
+                {step === 2 ? 'Find Projects' : 'Next'}
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => { setStep(0); setInterests([]); setExperience(''); setTime(''); setSelectedProject(null); }}
+              style={{
+                fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 500,
+                padding: '0.5rem 1.25rem', borderRadius: 100,
+                border: '1px solid rgba(26,26,46,0.12)', background: 'transparent',
+                cursor: 'pointer', color: '#6B7280', width: '100%', minHeight: 44,
+              }}
+            >
+              Start Over
+            </button>
+          )}
+        </div>
+
+        {/* BottomSheet for full project details */}
+        {selectedProject && (
+          <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={selectedProject.title}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#6B7280', margin: '0 0 1rem' }}>
+              {selectedProject.description}
+            </p>
+
+            <div style={{ display: 'flex', gap: 2, marginBottom: '1rem' }}>
+              {Array.from({ length: 5 }, (_, j) => (
+                <span key={j} style={{ fontSize: '0.75rem', color: j < selectedProject.difficulty ? accent : '#E5E7EB' }}>{'\u2605'}</span>
+              ))}
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', marginLeft: 4 }}>
+                {selectedProject.difficulty}/5 difficulty
+              </span>
+            </div>
+
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 0.5rem' }}>
+              Week-by-Week Plan
+            </p>
+            {selectedProject.weeks.map((week, wi) => (
+              <div key={wi} style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+                <div style={{
+                  width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
+                  background: `${accent}15`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: accent,
+                }}>
+                  {wi + 1}
+                </div>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.5, color: '#1A1A2E', margin: 0 }}>
+                  {week}
+                </p>
+              </div>
+            ))}
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
+              {selectedProject.tools.map((tool, ti) => (
+                <span key={ti} style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 500,
+                  padding: '3px 8px', borderRadius: 100, background: `${accent}10`, color: accent,
+                }}>
+                  {tool}
+                </span>
+              ))}
+            </div>
+
+            <div style={{ marginTop: 16, textAlign: 'center' }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); exportPlan(selectedProject); }}
+                style={{
+                  fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 600,
+                  padding: '0.5rem 1.25rem', borderRadius: 100, border: 'none', cursor: 'pointer',
+                  background: '#1A1A2E', color: '#FAF8F5', minHeight: 44,
+                }}
+              >
+                {copied ? 'Copied!' : 'Export Plan'}
+              </button>
+            </div>
+          </BottomSheet>
+        )}
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${accent}, ${accent}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
@@ -199,16 +531,15 @@ export default function ProjectPlanner() {
       </div>
 
       {/* Progress indicators */}
-      <div style={{ padding: isMobile ? '1rem 1rem 0' : '1.25rem 2rem 0', display: 'flex', gap: isMobile ? 4 : 8, alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ padding: '1.25rem 2rem 0', display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'center' }}>
         {stepLabels.map((label, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 8 }}>
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4 }}>
               <div style={{
-                width: isMobile ? 24 : 28, height: isMobile ? 24 : 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                 background: i <= step ? accent : 'rgba(26,26,46,0.06)',
-                color: i <= step ? 'white' : '#6B7280',
-                transition: 'all 0.3s ease',
+                color: i <= step ? 'white' : '#6B7280', transition: 'all 0.3s ease',
               }}>
                 {i < step ? '\u2713' : i + 1}
               </div>
@@ -217,45 +548,31 @@ export default function ProjectPlanner() {
               </span>
             </div>
             {i < 3 && (
-              <div style={{ width: isMobile ? 16 : 32, height: 1, background: i < step ? accent : 'rgba(26,26,46,0.08)', transition: 'all 0.3s ease', marginBottom: 16 }} />
+              <div style={{ width: 32, height: 1, background: i < step ? accent : 'rgba(26,26,46,0.08)', transition: 'all 0.3s ease', marginBottom: 16 }} />
             )}
           </div>
         ))}
       </div>
 
-      <div style={{ padding: isMobile ? '1.25rem 1rem' : '1.5rem 2rem 2rem' }}>
-
-        {/* Step 0: Interests */}
+      <div style={{ padding: '1.5rem 2rem 2rem' }}>
         {step === 0 && (
           <div>
-            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.1rem' : '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' as const }}>
-              What interests you?
-            </h4>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center' as const, margin: '0 0 1.5rem' }}>
-              Pick one or more topics that excite you.
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' }}>What interests you?</h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center', margin: '0 0 1.5rem' }}>Pick one or more topics that excite you.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
               {interestOptions.map((opt) => {
                 const isActive = interests.includes(opt.id);
                 return (
-                  <button
-                    key={opt.id}
-                    onClick={() => toggleInterest(opt.id)}
-                    style={{
-                      display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6,
-                      padding: isMobile ? '0.75rem 0.5rem' : '1rem 0.75rem', borderRadius: 12,
-                      border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
-                      background: isActive ? `${accent}0A` : 'transparent',
-                      cursor: 'pointer', transition: 'all 0.25s',
-                      minHeight: 44,
-                    }}
-                    onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
-                    onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
-                  >
+                  <button key={opt.id} onClick={() => toggleInterest(opt.id)} style={{
+                    display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 6,
+                    padding: '1rem 0.75rem', borderRadius: 12,
+                    border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                    background: isActive ? `${accent}0A` : 'transparent', cursor: 'pointer', transition: 'all 0.25s', minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
+                  onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}>
                     <span style={{ fontSize: '1.5rem' }}>{opt.icon}</span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E' }}>
-                      {opt.label}
-                    </span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E' }}>{opt.label}</span>
                   </button>
                 );
               })}
@@ -263,48 +580,27 @@ export default function ProjectPlanner() {
           </div>
         )}
 
-        {/* Step 1: Experience */}
         {step === 1 && (
           <div>
-            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.1rem' : '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' as const }}>
-              How much coding experience do you have?
-            </h4>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center' as const, margin: '0 0 1.5rem' }}>
-              Be honest. There's a great project for every level.
-            </p>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' }}>How much coding experience do you have?</h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center', margin: '0 0 1.5rem' }}>Be honest. There's a great project for every level.</p>
             <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10, maxWidth: 400, margin: '0 auto' }}>
               {experienceLevels.map((opt) => {
                 const isActive = experience === opt.id;
                 return (
-                  <button
-                    key={opt.id}
-                    onClick={() => setExperience(opt.id)}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: isMobile ? 10 : 14, padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem', borderRadius: 12,
-                      border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
-                      background: isActive ? `${accent}0A` : 'transparent',
-                      cursor: 'pointer', transition: 'all 0.25s', textAlign: 'left' as const,
-                      minHeight: 44,
-                    }}
-                    onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
-                    onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
-                  >
-                    <div style={{
-                      width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-                      border: `2px solid ${isActive ? accent : 'rgba(26,26,46,0.15)'}`,
-                      background: isActive ? accent : 'transparent',
-                      transition: 'all 0.25s',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
+                  <button key={opt.id} onClick={() => setExperience(opt.id)} style={{
+                    display: 'flex', alignItems: 'center', gap: 14, padding: '1rem 1.25rem', borderRadius: 12,
+                    border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                    background: isActive ? `${accent}0A` : 'transparent', cursor: 'pointer', transition: 'all 0.25s', textAlign: 'left' as const, minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
+                  onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}>
+                    <div style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0, border: `2px solid ${isActive ? accent : 'rgba(26,26,46,0.15)'}`, background: isActive ? accent : 'transparent', transition: 'all 0.25s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {isActive && <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'white' }} />}
                     </div>
                     <div>
-                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E', display: 'block' }}>
-                        {opt.label}
-                      </span>
-                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280' }}>
-                        {opt.desc}
-                      </span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', fontWeight: isActive ? 600 : 400, color: isActive ? accent : '#1A1A2E', display: 'block' }}>{opt.label}</span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280' }}>{opt.desc}</span>
                     </div>
                   </button>
                 );
@@ -313,39 +609,24 @@ export default function ProjectPlanner() {
           </div>
         )}
 
-        {/* Step 2: Time */}
         {step === 2 && (
           <div>
-            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.1rem' : '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' as const }}>
-              How much time do you have?
-            </h4>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center' as const, margin: '0 0 1.5rem' }}>
-              Every timeframe can produce something real.
-            </p>
-            <div style={{ display: isMobile ? 'grid' : 'flex', gridTemplateColumns: isMobile ? '1fr 1fr 1fr' : undefined, gap: isMobile ? 8 : 12, justifyContent: 'center', flexWrap: 'wrap' as const }}>
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' }}>How much time do you have?</h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center', margin: '0 0 1.5rem' }}>Every timeframe can produce something real.</p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' as const }}>
               {timeOptions.map((opt) => {
                 const isActive = time === opt.id;
                 return (
-                  <button
-                    key={opt.id}
-                    onClick={() => setTime(opt.id)}
-                    style={{
-                      display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4,
-                      padding: isMobile ? '1rem 0.5rem' : '1.25rem 2rem', borderRadius: 12, minWidth: isMobile ? 0 : 130,
-                      border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
-                      background: isActive ? `${accent}0A` : 'transparent',
-                      cursor: 'pointer', transition: 'all 0.25s',
-                      minHeight: 44,
-                    }}
-                    onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
-                    onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
-                  >
-                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: isActive ? accent : '#1A1A2E' }}>
-                      {opt.label}
-                    </span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.7rem' : '0.8rem', color: '#6B7280' }}>
-                      {opt.desc}
-                    </span>
+                  <button key={opt.id} onClick={() => setTime(opt.id)} style={{
+                    display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 4,
+                    padding: '1.25rem 2rem', borderRadius: 12, minWidth: 130,
+                    border: `1.5px solid ${isActive ? accent : 'rgba(26,26,46,0.08)'}`,
+                    background: isActive ? `${accent}0A` : 'transparent', cursor: 'pointer', transition: 'all 0.25s', minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.borderColor = `${accent}40`; }}
+                  onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}>
+                    <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: isActive ? accent : '#1A1A2E' }}>{opt.label}</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280' }}>{opt.desc}</span>
                   </button>
                 );
               })}
@@ -353,100 +634,44 @@ export default function ProjectPlanner() {
           </div>
         )}
 
-        {/* Step 3: Results */}
         {step === 3 && (
           <div>
-            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1.1rem' : '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' as const }}>
-              Your Project Ideas
-            </h4>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center' as const, margin: '0 0 1.5rem' }}>
-              Based on your interests, experience, and timeline. Click one to see the full plan.
-            </p>
-
+            <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 0.5rem', textAlign: 'center' }}>Your Project Ideas</h4>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', textAlign: 'center', margin: '0 0 1.5rem' }}>Based on your interests, experience, and timeline. Click one to see the full plan.</p>
             <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12 }}>
               {projects.map((project, i) => {
                 const isExpanded = selectedProject?.title === project.title;
                 return (
-                  <div
-                    key={i}
-                    style={{
-                      borderRadius: 12, border: `1.5px solid ${isExpanded ? accent : 'rgba(26,26,46,0.08)'}`,
-                      background: isExpanded ? `${accent}05` : 'transparent',
-                      overflow: 'hidden', transition: 'all 0.3s ease', cursor: 'pointer',
-                    }}
-                  >
-                    <div
-                      onClick={() => setSelectedProject(isExpanded ? null : project)}
-                      style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: isMobile ? 10 : 16 }}
-                    >
+                  <div key={i} style={{ borderRadius: 12, border: `1.5px solid ${isExpanded ? accent : 'rgba(26,26,46,0.08)'}`, background: isExpanded ? `${accent}05` : 'transparent', overflow: 'hidden', transition: 'all 0.3s ease', cursor: 'pointer' }}>
+                    <div onClick={() => setSelectedProject(isExpanded ? null : project)} style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                          <h5 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1A2E', margin: 0 }}>
-                            {project.title}
-                          </h5>
+                          <h5 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1A2E', margin: 0 }}>{project.title}</h5>
                           <div style={{ display: 'flex', gap: 2 }}>
-                            {Array.from({ length: 5 }, (_, j) => (
-                              <span key={j} style={{ fontSize: '0.75rem', color: j < project.difficulty ? accent : '#E5E7EB' }}>
-                                {'\u2605'}
-                              </span>
-                            ))}
+                            {Array.from({ length: 5 }, (_, j) => (<span key={j} style={{ fontSize: '0.75rem', color: j < project.difficulty ? accent : '#E5E7EB' }}>{'\u2605'}</span>))}
                           </div>
                         </div>
-                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6, color: '#6B7280', margin: 0 }}>
-                          {project.description}
-                        </p>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6, color: '#6B7280', margin: 0 }}>{project.description}</p>
                       </div>
-                      <span style={{ fontSize: '1rem', color: '#6B7280', flexShrink: 0, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.25s' }}>
-                        {'\u25BC'}
-                      </span>
+                      <span style={{ fontSize: '1rem', color: '#6B7280', flexShrink: 0, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.25s' }}>{'\u25BC'}</span>
                     </div>
-
                     {isExpanded && (
-                      <div style={{ padding: isMobile ? '0 1rem 1rem' : '0 1.5rem 1.5rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
+                      <div style={{ padding: '0 1.5rem 1.5rem', borderTop: '1px solid rgba(26,26,46,0.06)' }}>
                         <div style={{ paddingTop: '1.25rem' }}>
-                          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 0.75rem' }}>
-                            Week-by-Week Plan
-                          </p>
+                          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: accent, margin: '0 0 0.75rem' }}>Week-by-Week Plan</p>
                           {project.weeks.map((week, wi) => (
                             <div key={wi} style={{ display: 'flex', gap: 12, marginBottom: 10 }}>
-                              <div style={{
-                                width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
-                                background: `${accent}15`, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: accent,
-                              }}>
-                                {wi + 1}
-                              </div>
-                              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
-                                {week}
-                              </p>
+                              <div style={{ width: 24, height: 24, borderRadius: '50%', flexShrink: 0, background: `${accent}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700, color: accent }}>{wi + 1}</div>
+                              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>{week}</p>
                             </div>
                           ))}
-
                           <div style={{ marginTop: 16, display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
-                            {project.tools.map((tool, ti) => (
-                              <span key={ti} style={{
-                                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500,
-                                padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent,
-                              }}>
-                                {tool}
-                              </span>
-                            ))}
+                            {project.tools.map((tool, ti) => (<span key={ti} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 500, padding: '3px 10px', borderRadius: 100, background: `${accent}10`, color: accent }}>{tool}</span>))}
                           </div>
-
-                          <div style={{ marginTop: 16, textAlign: isMobile ? 'center' as const : 'right' as const }}>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); exportPlan(project); }}
-                              style={{
-                                fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 600,
-                                padding: '0.5rem 1.25rem', borderRadius: 100, border: 'none', cursor: 'pointer',
-                                background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s',
-                                minHeight: 44,
-                              }}
+                          <div style={{ marginTop: 16, textAlign: 'right' as const }}>
+                            <button onClick={(e) => { e.stopPropagation(); exportPlan(project); }} style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 600, padding: '0.5rem 1.25rem', borderRadius: 100, border: 'none', cursor: 'pointer', background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44 }}
                               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                            >
-                              {copied ? 'Copied!' : 'Export Plan'}
-                            </button>
+                              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>{copied ? 'Copied!' : 'Export Plan'}</button>
                           </div>
                         </div>
                       </div>
@@ -455,58 +680,28 @@ export default function ProjectPlanner() {
                 );
               })}
             </div>
-
-            <div style={{ marginTop: 20, textAlign: 'center' as const }}>
-              <button
-                onClick={() => { setStep(0); setInterests([]); setExperience(''); setTime(''); setSelectedProject(null); }}
-                style={{
-                  fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 500,
-                  padding: '0.5rem 1.25rem', borderRadius: 100,
-                  border: '1px solid rgba(26,26,46,0.12)', background: 'transparent',
-                  cursor: 'pointer', color: '#6B7280', transition: 'all 0.25s',
-                  minHeight: 44,
-                }}
+            <div style={{ marginTop: 20, textAlign: 'center' }}>
+              <button onClick={() => { setStep(0); setInterests([]); setExperience(''); setTime(''); setSelectedProject(null); }} style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 500, padding: '0.5rem 1.25rem', borderRadius: 100, border: '1px solid rgba(26,26,46,0.12)', background: 'transparent', cursor: 'pointer', color: '#6B7280', transition: 'all 0.25s', minHeight: 44 }}
                 onMouseEnter={(e) => e.currentTarget.style.borderColor = accent}
-                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.12)'}
-              >
-                Start Over
-              </button>
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.12)'}>Start Over</button>
             </div>
           </div>
         )}
 
-        {/* Navigation */}
         {step < 3 && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: isMobile ? '1.5rem' : '2rem' }}>
-            <button
-              onClick={() => setStep((s) => s - 1)}
-              disabled={step === 0}
-              style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 500,
-                padding: '0.6rem 1.25rem', borderRadius: 100,
-                border: '1px solid rgba(26,26,46,0.12)', background: 'transparent',
-                cursor: step === 0 ? 'default' : 'pointer', color: step === 0 ? '#CBD5E1' : '#6B7280',
-                transition: 'all 0.25s', opacity: step === 0 ? 0.4 : 1,
-                minHeight: 44,
-              }}
-            >
-              {'\u2190'} Back
-            </button>
-            <button
-              onClick={() => setStep((s) => s + 1)}
-              disabled={!canProceed()}
-              style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none',
-                cursor: canProceed() ? 'pointer' : 'default',
-                background: canProceed() ? '#1A1A2E' : '#E5E7EB',
-                color: canProceed() ? '#FAF8F5' : '#9CA3AF',
-                transition: 'all 0.25s',
-                minHeight: 44,
-              }}
-              onMouseEnter={(e) => canProceed() && (e.currentTarget.style.transform = 'scale(1.02)')}
-              onMouseLeave={(e) => canProceed() && (e.currentTarget.style.transform = 'scale(1)')}
-            >
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem' }}>
+            <button onClick={() => setStep((s) => s - 1)} disabled={step === 0} style={{
+              fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 500, padding: '0.6rem 1.25rem', borderRadius: 100,
+              border: '1px solid rgba(26,26,46,0.12)', background: 'transparent', cursor: step === 0 ? 'default' : 'pointer',
+              color: step === 0 ? '#CBD5E1' : '#6B7280', transition: 'all 0.25s', opacity: step === 0 ? 0.4 : 1, minHeight: 44,
+            }}>{'\u2190'} Back</button>
+            <button onClick={() => setStep((s) => s + 1)} disabled={!canProceed()} style={{
+              fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none',
+              cursor: canProceed() ? 'pointer' : 'default', background: canProceed() ? '#1A1A2E' : '#E5E7EB',
+              color: canProceed() ? '#FAF8F5' : '#9CA3AF', transition: 'all 0.25s', minHeight: 44,
+            }}
+            onMouseEnter={(e) => canProceed() && (e.currentTarget.style.transform = 'scale(1.02)')}
+            onMouseLeave={(e) => canProceed() && (e.currentTarget.style.transform = 'scale(1)')}>
               {step === 2 ? 'Find Projects' : 'Next'} {'\u2192'}
             </button>
           </div>

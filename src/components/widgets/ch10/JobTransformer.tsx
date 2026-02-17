@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { careers, type Career, type CareerTask } from '../../../data/career-skills';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import BottomSheet from '../../cards/BottomSheet';
 
 const ACCENT = '#16C79A';
 
@@ -145,19 +146,230 @@ function CareerCard({ career, isSelected, onClick, isMobile }: { career: Career;
 
 export default function JobTransformer() {
   const [selectedCareer, setSelectedCareer] = useState<string | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const isMobile = useIsMobile();
 
   const career = careers.find(c => c.name === selectedCareer);
 
-  const getAiAssistedPercent = (career: Career) => {
-    const count = career.tasks.filter(t => t.aiLevel >= 0.35).length;
-    return Math.round((count / career.tasks.length) * 100);
+  const getAiAssistedPercent = (careerItem: Career) => {
+    const count = careerItem.tasks.filter(t => t.aiLevel >= 0.35).length;
+    return Math.round((count / careerItem.tasks.length) * 100);
   };
 
+  const getColor = (level: number) => {
+    if (level >= 0.65) return ACCENT;
+    if (level >= 0.35) return '#F5A623';
+    return '#E94560';
+  };
+
+  const getLabel = (level: number) => {
+    if (level >= 0.65) return 'High AI assist';
+    if (level >= 0.35) return 'Moderate AI assist';
+    return 'Mostly human';
+  };
+
+  const handleCareerClick = (name: string) => {
+    if (isMobile) {
+      setSelectedCareer(name);
+      setSheetOpen(true);
+    } else {
+      setSelectedCareer(selectedCareer === name ? null : name);
+    }
+  };
+
+  /* ============ MOBILE LAYOUT ============ */
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Header */}
+        <div style={{ padding: '1rem 1rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '0.75rem' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 7h-9" /><path d="M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></svg>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Job Transformer</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Tap a career to explore</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Compact 2x4 career grid */}
+        <div style={{ flex: 1, padding: '0.75rem 1rem', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 8,
+            flex: 1,
+          }}>
+            {careers.map(c => (
+              <button
+                key={c.name}
+                onClick={() => handleCareerClick(c.name)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '10px 12px',
+                  borderRadius: 10,
+                  border: '1px solid',
+                  borderColor: selectedCareer === c.name ? `${ACCENT}50` : 'rgba(26,26,46,0.06)',
+                  background: selectedCareer === c.name ? `${ACCENT}08` : 'white',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  minHeight: 44,
+                  width: '100%',
+                }}
+              >
+                <span style={{ fontSize: '1.25rem', lineHeight: 1, flexShrink: 0 }}>{c.emoji}</span>
+                <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+                  <span style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    color: selectedCareer === c.name ? ACCENT : '#1A1A2E',
+                    display: 'block',
+                  }}>
+                    {c.name}
+                  </span>
+                  <span style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.6rem',
+                    color: '#6B7280',
+                  }}>
+                    {getAiAssistedPercent(c)}% AI-assisted
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* BottomSheet for career details */}
+        {career && (
+          <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={`${career.emoji} ${career.name}`}>
+            {/* Career summary */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              padding: '0.75rem',
+              borderRadius: 10,
+              background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
+              border: `1px solid ${ACCENT}15`,
+              marginBottom: '1rem',
+            }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', margin: 0 }}>
+                  <strong style={{ color: ACCENT }}>{getAiAssistedPercent(career)}%</strong> of tasks are AI-assisted.{' '}
+                  <span style={{ fontStyle: 'italic' }}>The job shape-shifts, it doesn't disappear.</span>
+                </p>
+              </div>
+              {/* Mini ring chart */}
+              <div style={{ position: 'relative', width: 44, height: 44, flexShrink: 0 }}>
+                <svg width="44" height="44" viewBox="0 0 44 44">
+                  <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(26,26,46,0.06)" strokeWidth="3.5" />
+                  <circle
+                    cx="22" cy="22" r="18" fill="none"
+                    stroke={ACCENT} strokeWidth="3.5" strokeLinecap="round"
+                    strokeDasharray={`${getAiAssistedPercent(career) * 1.131} 113.1`}
+                    transform="rotate(-90 22 22)"
+                  />
+                </svg>
+                <div style={{
+                  position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: ACCENT,
+                }}>
+                  {getAiAssistedPercent(career)}%
+                </div>
+              </div>
+            </div>
+
+            {/* Color legend */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+              {[
+                { color: ACCENT, label: 'High AI (65%+)' },
+                { color: '#F5A623', label: 'Moderate' },
+                { color: '#E94560', label: 'Human (<35%)' },
+              ].map(item => (
+                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 2, background: item.color, flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280' }}>{item.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Task list */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {career.tasks.map((task, i) => {
+                const color = getColor(task.aiLevel);
+                return (
+                  <div key={task.name} style={{
+                    padding: '10px 12px',
+                    borderRadius: 8,
+                    border: '1px solid rgba(26,26,46,0.06)',
+                    background: 'white',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 600, color: '#1A1A2E', flex: 1 }}>
+                        {task.name}
+                      </span>
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
+                        color, background: `${color}12`, padding: '2px 6px', borderRadius: 4,
+                        letterSpacing: '0.04em', textTransform: 'uppercase' as const, flexShrink: 0,
+                        whiteSpace: 'nowrap' as const,
+                      }}>
+                        {getLabel(task.aiLevel)}
+                      </span>
+                    </div>
+                    {/* Fill meter */}
+                    <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden', marginBottom: 6 }}>
+                      <div style={{
+                        height: '100%',
+                        width: `${task.aiLevel * 100}%`,
+                        borderRadius: 2,
+                        background: `linear-gradient(90deg, ${color}80, ${color})`,
+                      }} />
+                    </div>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5, color: '#6B7280', margin: 0 }}>
+                      {task.explanation}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Insight */}
+            <div style={{
+              marginTop: '1rem',
+              padding: '0.75rem 1rem',
+              borderRadius: 10,
+              background: 'rgba(26,26,46,0.02)',
+              border: '1px solid rgba(26,26,46,0.06)',
+            }}>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6, color: '#6B7280', margin: 0, textAlign: 'center' }}>
+                Tasks closest to <strong style={{ color: '#E94560' }}>red</strong> are where <em>your</em> unique human value matters most.
+              </p>
+            </div>
+          </BottomSheet>
+        )}
+
+        <style>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  /* ============ DESKTOP LAYOUT (unchanged) ============ */
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1.25rem 1rem 0' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: '1.25rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 7h-9" /><path d="M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></svg>
@@ -169,13 +381,13 @@ export default function JobTransformer() {
         </div>
       </div>
 
-      <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
+      <div style={{ padding: '2rem' }}>
         {/* Career grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 10,
-          marginBottom: career ? (isMobile ? '1.25rem' : '2rem') : 0,
+          marginBottom: career ? '2rem' : 0,
         }}>
           {careers.map(c => (
             <CareerCard
@@ -183,7 +395,7 @@ export default function JobTransformer() {
               career={c}
               isSelected={selectedCareer === c.name}
               onClick={() => setSelectedCareer(selectedCareer === c.name ? null : c.name)}
-              isMobile={isMobile}
+              isMobile={false}
             />
           ))}
         </div>
@@ -196,14 +408,13 @@ export default function JobTransformer() {
             {/* Career summary */}
             <div style={{
               display: 'flex',
-              alignItems: isMobile ? 'flex-start' : 'center',
-              gap: isMobile ? 12 : 16,
-              padding: isMobile ? '1rem' : '1.25rem 1.5rem',
+              alignItems: 'center',
+              gap: 16,
+              padding: '1.25rem 1.5rem',
               borderRadius: 12,
               background: `linear-gradient(135deg, ${ACCENT}06, #F5A62306)`,
               border: `1px solid ${ACCENT}15`,
               marginBottom: '1.25rem',
-              flexWrap: isMobile ? 'wrap' as const : 'nowrap' as const,
             }}>
               <span style={{ fontSize: '2rem', flexShrink: 0 }}>{career.emoji}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -235,7 +446,7 @@ export default function JobTransformer() {
             </div>
 
             {/* Color legend */}
-            <div style={{ display: 'flex', gap: isMobile ? 10 : 16, marginBottom: '1rem', flexWrap: 'wrap' as const }}>
+            <div style={{ display: 'flex', gap: 16, marginBottom: '1rem', flexWrap: 'wrap' as const }}>
               {[
                 { color: ACCENT, label: 'High AI assist (65%+)' },
                 { color: '#F5A623', label: 'Moderate (35\u201365%)' },
@@ -251,24 +462,24 @@ export default function JobTransformer() {
             {/* Task bubbles */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(260px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
               gap: 10,
             }}>
               {career.tasks.map((task, i) => (
-                <TaskBubble key={task.name} task={task} index={i} isMobile={isMobile} />
+                <TaskBubble key={task.name} task={task} index={i} isMobile={false} />
               ))}
             </div>
 
             {/* Insight */}
             <div style={{
               marginTop: '1.5rem',
-              padding: isMobile ? '0.75rem 1rem' : '1rem 1.25rem',
+              padding: '1rem 1.25rem',
               borderRadius: 10,
               background: 'rgba(26,26,46,0.02)',
               border: '1px solid rgba(26,26,46,0.06)',
             }}>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.7, color: '#6B7280', margin: 0, textAlign: 'center' }}>
-                {isMobile ? 'Tap' : 'Hover or tap'} any task to see exactly how AI changes it. Notice: the tasks closest to <strong style={{ color: '#E94560' }}>red</strong> are where <em>your</em> unique human value matters most.
+                Hover or tap any task to see exactly how AI changes it. Notice: the tasks closest to <strong style={{ color: '#E94560' }}>red</strong> are where <em>your</em> unique human value matters most.
               </p>
             </div>
           </div>

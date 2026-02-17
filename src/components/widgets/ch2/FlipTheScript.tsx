@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import ShareCard from '../../ui/ShareCard';
+import BottomSheet from '../../cards/BottomSheet';
 
 interface Scenario {
   id: string;
@@ -111,6 +112,8 @@ export default function FlipTheScript() {
   const [customGoal, setCustomGoal] = useState('');
   const [liveMessages, setLiveMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
   const [liveResult, setLiveResult] = useState('');
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetContent, setSheetContent] = useState<'history' | 'comparison' | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -120,20 +123,21 @@ export default function FlipTheScript() {
   const { response: liveResponse, isStreaming, error: liveError, sendMessages, abort } =
     useStreamingResponse({ systemPrompt: FLIP_SYSTEM_PROMPT, maxTokens: 1500 });
 
-  // Auto-scroll chat
+  // Auto-scroll chat (desktop only)
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [liveMessages, liveResponse]);
+    if (!isMobile) {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [liveMessages, liveResponse, isMobile]);
 
   const liveMode = mode === 'freeform';
 
   // When streaming completes, capture the response
   useEffect(() => {
     if (!isStreaming && liveResponse && liveMode && phase === 'questioning') {
-      // AI finished its response, add to messages
       setLiveMessages((prev) => {
         const last = prev[prev.length - 1];
-        if (last?.role === 'assistant') return prev; // already added
+        if (last?.role === 'assistant') return prev;
         return [...prev, { role: 'assistant', text: liveResponse }];
       });
     }
@@ -180,27 +184,18 @@ export default function FlipTheScript() {
     setCurrentAnswer('');
 
     if (liveMode) {
-      // Add user answer to live messages
       setLiveMessages((prev) => [...prev, { role: 'user', text: answer }]);
-
-      // Build full message history for the API
       const apiMessages: { role: 'user' | 'assistant'; content: string }[] = [];
-      // Use the first live message as the initial goal (works for both preset and custom)
       const initialGoal = liveMessages[0]?.text || customGoal || 'Help me plan something';
       apiMessages.push({ role: 'user', content: initialGoal });
-
-      // Interleave AI questions and user answers
       for (let i = 0; i < liveMessages.length; i++) {
         const msg = liveMessages[i];
-        if (msg.role === 'user' && i === 0) continue; // skip initial goal, already added
+        if (msg.role === 'user' && i === 0) continue;
         apiMessages.push({ role: msg.role, content: msg.text });
       }
       apiMessages.push({ role: 'user', content: answer });
-
       const isDone = questionIndex + 1 >= 5;
-      if (isDone) {
-        setPhase('result');
-      }
+      if (isDone) setPhase('result');
       sendMessages(apiMessages);
     } else {
       if (questionIndex + 1 >= (scenario?.questions.length || 5)) {
@@ -228,12 +223,11 @@ export default function FlipTheScript() {
     setShowComparison(false);
     setLiveMessages([]);
     setLiveResult('');
+    setSheetOpen(false);
   };
 
-  // Get the current AI question for display
   const getCurrentQuestion = () => {
     if (liveMode) {
-      // In live mode, the question is the last assistant message or the streaming response
       if (isStreaming) return liveResponse;
       const lastAssistant = [...liveMessages].reverse().find((m) => m.role === 'assistant');
       return lastAssistant?.text || '';
@@ -241,13 +235,246 @@ export default function FlipTheScript() {
     return scenario?.questions[questionIndex] || '';
   };
 
-  // Determine if we're waiting for AI question
   const waitingForQuestion = liveMode && isStreaming && liveMessages.filter((m) => m.role === 'assistant').length <= answers.length;
 
+  // Render result text
+  const renderResultText = (text: string) => {
+    return text.split('\n').map((line, i) => {
+      if (line.startsWith('**') && line.includes('**')) {
+        const parts = line.split('**');
+        return (
+          <p key={i} style={{ margin: '0.6em 0' }}>
+            {parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}
+          </p>
+        );
+      }
+      if (line.startsWith('\u2022')) {
+        return <p key={i} style={{ margin: '0.3em 0', paddingLeft: '0.5rem' }}>{line}</p>;
+      }
+      return line ? <p key={i} style={{ margin: '0.5em 0' }}>{line}</p> : <br key={i} />;
+    });
+  };
+
+  // ==================== MOBILE LAYOUT ====================
+  if (isMobile) {
+    return (
+      <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Compact header */}
+        <div style={{ padding: '8px 12px', borderBottom: '1px solid rgba(26,26,46,0.06)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg, #16C79A, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#1A1A2E' }}>Flip the Script</span>
+          </div>
+          {phase === 'choose' && (
+            <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
+              <button onClick={() => setMode('guided')} style={{ padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: mode === 'guided' ? '#1A1A2E' : 'transparent', color: mode === 'guided' ? '#FAF8F5' : '#6B7280' }}>GUIDED</button>
+              <button onClick={() => setMode('freeform')} style={{ padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: mode === 'freeform' ? '#16C79A' : 'transparent', color: mode === 'freeform' ? '#FFFFFF' : '#6B7280' }}>LIVE AI</button>
+            </div>
+          )}
+        </div>
+
+        {/* CHOOSE PHASE */}
+        {phase === 'choose' && (
+          <div style={{ flex: 1, overflow: 'auto', padding: '10px 12px' }}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', marginBottom: 12, lineHeight: 1.6 }}>
+              {liveMode ? 'Type a goal or pick a preset.' : 'Pick a goal. The AI asks 5 questions first.'}
+            </p>
+            {liveMode && (
+              <div style={{ marginBottom: 10 }}>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleCustomGoal(); }} placeholder="Type your own goal..." style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '16px', color: '#1A1A2E', outline: 'none', minHeight: 40 }} />
+                  <button onClick={handleCustomGoal} disabled={!customGoal.trim()} style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, minHeight: 40 }}>Go</button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '10px 0 6px' }}>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>OR PRESET</span>
+                  <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
+                </div>
+              </div>
+            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {scenarios.map((s) => (
+                <button key={s.id} onClick={() => handlePickScenario(s.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.08)', background: 'transparent', cursor: 'pointer', textAlign: 'left', minHeight: 44 }}>
+                  <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 600, color: '#0F3460' }}>{s.label}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{'\u2192'}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* QUESTIONING PHASE - Mobile: show only current Q+A pair */}
+        {phase === 'questioning' && (scenario || scenarioId === 'custom') && (
+          <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '10px 12px' }}>
+            {/* Progress dots */}
+            <div style={{ display: 'flex', gap: 6, marginBottom: 10, justifyContent: 'center', flexShrink: 0 }}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} style={{
+                  width: 8, height: 8, borderRadius: '50%', transition: 'all 0.3s',
+                  background: i < answers.length ? '#16C79A' : i === answers.length ? '#0F3460' : 'rgba(26,26,46,0.1)',
+                }} />
+              ))}
+            </div>
+
+            {/* Current question only */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+              {waitingForQuestion ? (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'white', fontWeight: 700 }}>AI</div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.5 }}>
+                    {liveResponse}
+                    <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#16C79A', marginLeft: 2, animation: 'pulse 1s infinite' }} />
+                  </p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'white', fontWeight: 700 }}>AI</div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: 0, lineHeight: 1.5 }}>
+                    {getCurrentQuestion()}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* View history button */}
+            {answers.length > 0 && (
+              <button onClick={() => { setSheetContent('history'); setSheetOpen(true); }} style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid rgba(26,26,46,0.08)', background: 'transparent', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', marginBottom: 8, flexShrink: 0, textAlign: 'center' }}>
+                View chat history ({answers.length} Q&A)
+              </button>
+            )}
+
+            {/* Answer input */}
+            {!waitingForQuestion && (
+              <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                <input type="text" value={currentAnswer} onChange={(e) => setCurrentAnswer(e.target.value)} onKeyDown={handleKeyDown} placeholder={!liveMode ? scenario!.placeholders[questionIndex] : 'Type your answer...'} style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '16px', color: '#1A1A2E', outline: 'none', minHeight: 44 }} />
+                <button onClick={handleSubmitAnswer} disabled={isStreaming} style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: isStreaming ? '#6B7280' : '#0F3460', color: '#FAF8F5', cursor: isStreaming ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, minHeight: 44, flexShrink: 0 }}>
+                  {answers.length >= 4 ? 'Done' : 'Answer'}
+                </button>
+              </div>
+            )}
+
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', marginTop: 6, textAlign: 'center', flexShrink: 0 }}>
+              Question {answers.length + 1} of 5
+            </p>
+          </div>
+        )}
+
+        {/* RESULT PHASE */}
+        {phase === 'result' && (scenario || scenarioId === 'custom') && (
+          <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '10px 12px' }}>
+            {!showComparison ? (
+              <>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', flexShrink: 0, marginBottom: 8 }}>
+                  Your personalized result
+                </span>
+                <div style={{ flex: 1, overflow: 'auto', fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.7, color: '#1A1A2E', whiteSpace: 'pre-wrap' }}>
+                  {(() => {
+                    const text = liveMode ? (liveResult || liveResponse || 'Generating...') : scenario!.detailedResponse(answers);
+                    return renderResultText(text);
+                  })()}
+                  {isStreaming && <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#16C79A', marginLeft: 2, animation: 'pulse 1s infinite' }} />}
+                </div>
+                {!isStreaming && (
+                  <div style={{ display: 'flex', gap: 6, flexShrink: 0, marginTop: 8 }}>
+                    <button onClick={() => { setSheetContent('comparison'); setSheetOpen(true); }} style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1px solid rgba(15,52,96,0.2)', background: 'rgba(15,52,96,0.04)', cursor: 'pointer', fontFamily: 'var(--font-heading)', fontSize: '0.82rem', fontWeight: 600, color: '#0F3460', minHeight: 44 }}>
+                      Compare Results
+                    </button>
+                    <button onClick={handleReset} style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: '#1A1A2E', color: '#FAF8F5', cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.82rem', fontWeight: 600, minHeight: 44, flexShrink: 0 }}>
+                      Restart
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              /* Desktop-only comparison inline - won't happen on mobile since we use sheet */
+              <></>
+            )}
+          </div>
+        )}
+
+        {/* BottomSheet */}
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={sheetContent === 'history' ? 'Chat History' : 'Vague vs. Socratic'}>
+          {sheetContent === 'history' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {liveMode ? (
+                liveMessages.slice(1).map((msg, i) => (
+                  <div key={i}>
+                    {msg.role === 'assistant' ? (
+                      <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
+                        <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'white', fontWeight: 700 }}>AI</div>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E', margin: 0, lineHeight: 1.5 }}>{msg.text}</p>
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <div style={{ background: 'rgba(15,52,96,0.06)', borderRadius: 8, padding: '6px 10px', fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#0F3460', maxWidth: '85%', lineHeight: 1.4 }}>{msg.text}</div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                answers.map((answer, i) => (
+                  <div key={i}>
+                    <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
+                      <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'white', fontWeight: 700 }}>AI</div>
+                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#1A1A2E', margin: 0, lineHeight: 1.5 }}>{scenario!.questions[i]}</p>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <div style={{ background: 'rgba(15,52,96,0.06)', borderRadius: 8, padding: '6px 10px', fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#0F3460', maxWidth: '85%', lineHeight: 1.4 }}>{answer}</div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+          {sheetContent === 'comparison' && (
+            <div>
+              {/* Vague section */}
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>Vague prompt</span>
+                </div>
+                <div style={{ background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)', borderRadius: 8, padding: '8px 10px', marginBottom: 6, fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', fontStyle: 'italic' }}>
+                  "{scenario ? scenario.vaguePrompt : (liveMessages[0]?.text || customGoal)}"
+                </div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', whiteSpace: 'pre-wrap', opacity: 0.7 }}>
+                  {scenario ? scenario.vagueResponse : "Without clarifying questions, the AI would have given you a generic checklist -- no details about your situation."}
+                </div>
+              </div>
+              {/* Socratic section */}
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>After 5 questions</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.6, color: '#1A1A2E', whiteSpace: 'pre-wrap' }}>
+                  {(() => {
+                    const text = liveMode ? (liveResult || liveResponse || '') : scenario!.detailedResponse(answers);
+                    return text.split('\n').slice(0, 12).join('\n') + '...';
+                  })()}
+                </div>
+              </div>
+              {/* Insight */}
+              <div style={{ background: 'linear-gradient(135deg, rgba(22,199,154,0.06), rgba(15,52,96,0.06))', border: '1px solid rgba(22,199,154,0.15)', borderRadius: 8, padding: '10px 12px', marginBottom: 12 }}>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
+                  <strong style={{ color: '#0F3460' }}>The Socratic Method works.</strong> Five questions turned a generic checklist into a plan built around <em>your</em> specific situation.
+                </p>
+              </div>
+              <ShareCard title="Socratic Method" metric="5 Qs" metricColor="#16C79A" subtitle="A vague prompt got a generic checklist. After 5 AI questions, I got a plan built for MY situation." accentColor="#16C79A" tweetText="A vague prompt got me a generic checklist. After 5 AI questions, I got a plan built for MY situation. Try the Socratic method:" shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch2#flip-the-script` : undefined} />
+            </div>
+          )}
+        </BottomSheet>
+      </div>
+    );
+  }
+
+  // ==================== DESKTOP LAYOUT (unchanged) ====================
   return (
     <div className="widget-container">
       {/* Header */}
-      <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+      <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, #16C79A, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -256,33 +483,10 @@ export default function FlipTheScript() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Flip the Script</h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>What happens when the AI interviews you first?</p>
           </div>
-          {/* Mode toggle */}
           {phase === 'choose' && (
             <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-              <button
-                onClick={() => setMode('guided')}
-                style={{
-                  padding: '5px 10px', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                  letterSpacing: '0.04em', transition: 'all 0.25s',
-                  background: mode === 'guided' ? '#1A1A2E' : 'transparent',
-                  color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
-                }}
-              >
-                GUIDED
-              </button>
-              <button
-                onClick={() => setMode('freeform')}
-                style={{
-                  padding: '5px 10px', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                  letterSpacing: '0.04em', transition: 'all 0.25s',
-                  background: mode === 'freeform' ? '#16C79A' : 'transparent',
-                  color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
-                }}
-              >
-                LIVE AI
-              </button>
+              <button onClick={() => setMode('guided')} style={{ padding: '5px 10px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', transition: 'all 0.25s', background: mode === 'guided' ? '#1A1A2E' : 'transparent', color: mode === 'guided' ? '#FAF8F5' : '#6B7280' }}>GUIDED</button>
+              <button onClick={() => setMode('freeform')} style={{ padding: '5px 10px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', transition: 'all 0.25s', background: mode === 'freeform' ? '#16C79A' : 'transparent', color: mode === 'freeform' ? '#FFFFFF' : '#6B7280' }}>LIVE AI</button>
             </div>
           )}
         </div>
@@ -290,46 +494,18 @@ export default function FlipTheScript() {
 
       {/* Choose phase */}
       {phase === 'choose' && (
-        <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.9rem' : '0.95rem', color: '#1A1A2E', marginBottom: '1.5rem', lineHeight: 1.7 }}>
+        <div style={{ padding: '2rem' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#1A1A2E', marginBottom: '1.5rem', lineHeight: 1.7 }}>
             {liveMode
               ? <>Type your own goal, or pick a preset. The AI will ask you <strong>5 real clarifying questions</strong> before planning.</>
               : <>Pick a goal. Instead of giving you a generic answer, the AI will ask you <strong>5 clarifying questions</strong> first. Watch how much better the result gets.</>
             }
           </p>
-
-          {/* Custom goal input (live mode) */}
           {liveMode && (
             <div style={{ marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', gap: 8, flexDirection: isMobile ? 'column' as const : 'row' as const }}>
-                <input
-                  type="text"
-                  value={customGoal}
-                  onChange={(e) => setCustomGoal(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') handleCustomGoal(); }}
-                  placeholder="Type your own goal... e.g., Help me learn guitar"
-                  style={{
-                    flex: 1, padding: isMobile ? '12px 14px' : '10px 14px', borderRadius: 10,
-                    border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
-                    fontFamily: 'var(--font-body)', fontSize: isMobile ? '16px' : '0.9rem', color: '#1A1A2E',
-                    outline: 'none', minHeight: 44,
-                  }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = '#16C79A40'}
-                  onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'}
-                />
-                <button
-                  onClick={handleCustomGoal}
-                  disabled={!customGoal.trim()}
-                  style={{
-                    padding: isMobile ? '12px 20px' : '10px 20px', borderRadius: 10, border: 'none',
-                    background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF',
-                    cursor: !customGoal.trim() ? 'default' : 'pointer',
-                    fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                    transition: 'all 0.25s', flexShrink: 0, minHeight: 44,
-                  }}
-                >
-                  Go →
-                </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleCustomGoal(); }} placeholder="Type your own goal... e.g., Help me learn guitar" style={{ flex: 1, padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E', outline: 'none', minHeight: 44 }} onFocus={(e) => e.currentTarget.style.borderColor = '#16C79A40'} onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'} />
+                <button onClick={handleCustomGoal} disabled={!customGoal.trim()} style={{ padding: '10px 20px', borderRadius: 10, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.25s', flexShrink: 0, minHeight: 44 }}>Go →</button>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '1rem 0 0.5rem' }}>
                 <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
@@ -338,25 +514,11 @@ export default function FlipTheScript() {
               </div>
             </div>
           )}
-
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
             {scenarios.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => handlePickScenario(s.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: isMobile ? '0.85rem 1rem' : '1rem 1.25rem', borderRadius: 10, border: '1px solid rgba(26,26,46,0.08)',
-                  background: 'transparent', cursor: 'pointer', transition: 'all 0.25s',
-                  textAlign: 'left' as const, minHeight: 44,
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0F346030'; e.currentTarget.style.background = 'rgba(15,52,96,0.03)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; e.currentTarget.style.background = 'transparent'; }}
-              >
-                <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 600, color: '#0F3460' }}>
-                  {s.label}
-                </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>\u2192</span>
+              <button key={s.id} onClick={() => handlePickScenario(s.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderRadius: 10, border: '1px solid rgba(26,26,46,0.08)', background: 'transparent', cursor: 'pointer', transition: 'all 0.25s', textAlign: 'left' as const, minHeight: 44 }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0F346030'; e.currentTarget.style.background = 'rgba(15,52,96,0.03)'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; e.currentTarget.style.background = 'transparent'; }}>
+                <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 600, color: '#0F3460' }}>{s.label}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{'\u2192'}</span>
               </button>
             ))}
           </div>
@@ -365,82 +527,46 @@ export default function FlipTheScript() {
 
       {/* Questioning phase */}
       {phase === 'questioning' && (scenario || scenarioId === 'custom') && (
-        <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
-          {/* Progress dots */}
+        <div style={{ padding: '1.5rem 2rem' }}>
           <div style={{ display: 'flex', gap: 6, marginBottom: '1.5rem', justifyContent: 'center' }}>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} style={{
-                width: 8, height: 8, borderRadius: '50%', transition: 'all 0.3s',
-                background: i < answers.length ? '#16C79A' : i === answers.length ? '#0F3460' : 'rgba(26,26,46,0.1)',
-              }} />
+              <div key={i} style={{ width: 8, height: 8, borderRadius: '50%', transition: 'all 0.3s', background: i < answers.length ? '#16C79A' : i === answers.length ? '#0F3460' : 'rgba(26,26,46,0.1)' }} />
             ))}
           </div>
-
-          {/* Chat history */}
-          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const }}>
+          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 12, marginBottom: '1.5rem', maxHeight: '40dvh', overflowY: 'auto' as const }}>
             {liveMode ? (
-              // Live mode: show actual message history
               liveMessages.slice(1).map((msg, i) => (
                 <div key={i}>
                   {msg.role === 'assistant' ? (
                     <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
-                      <div style={{
-                        width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
-                      }}>AI</div>
-                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
-                        {msg.text}
-                      </p>
+                      <div style={{ width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700 }}>AI</div>
+                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>{msg.text}</p>
                     </div>
                   ) : (
                     <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-                      <div style={{
-                        background: 'rgba(15,52,96,0.06)', borderRadius: 10, padding: '8px 14px',
-                        fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#0F3460', maxWidth: '80%', lineHeight: 1.5,
-                      }}>
-                        {msg.text}
-                      </div>
+                      <div style={{ background: 'rgba(15,52,96,0.06)', borderRadius: 10, padding: '8px 14px', fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#0F3460', maxWidth: '80%', lineHeight: 1.5 }}>{msg.text}</div>
                     </div>
                   )}
                 </div>
               ))
             ) : (
-              // Demo mode: show hardcoded history
               answers.map((answer, i) => (
                 <div key={i}>
                   <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
-                    <div style={{
-                      width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
-                    }}>AI</div>
-                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
-                      {scenario!.questions[i]}
-                    </p>
+                    <div style={{ width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700 }}>AI</div>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>{scenario!.questions[i]}</p>
                   </div>
                   <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-                    <div style={{
-                      background: 'rgba(15,52,96,0.06)', borderRadius: 10, padding: '8px 14px',
-                      fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#0F3460', maxWidth: '80%', lineHeight: 1.5,
-                    }}>
-                      {answer}
-                    </div>
+                    <div style={{ background: 'rgba(15,52,96,0.06)', borderRadius: 10, padding: '8px 14px', fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#0F3460', maxWidth: '80%', lineHeight: 1.5 }}>{answer}</div>
                   </div>
                 </div>
               ))
             )}
             <div ref={chatEndRef} />
           </div>
-
-          {/* Current question or streaming indicator */}
           {liveMode && isStreaming && liveMessages.filter((m) => m.role === 'assistant').length <= answers.length ? (
             <div style={{ display: 'flex', gap: 10, marginBottom: '1rem' }}>
-              <div style={{
-                width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
-              }}>AI</div>
+              <div style={{ width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700 }}>AI</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
                 {liveResponse}
                 <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#16C79A', marginLeft: 2, animation: 'pulse 1s infinite' }} />
@@ -448,52 +574,18 @@ export default function FlipTheScript() {
             </div>
           ) : !liveMode ? (
             <div style={{ display: 'flex', gap: 10, marginBottom: '1rem' }}>
-              <div style={{
-                width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700,
-              }}>AI</div>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontWeight: 600, color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
-                {scenario!.questions[questionIndex]}
-              </p>
+              <div style={{ width: 24, height: 24, borderRadius: 6, background: '#0F3460', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'white', fontWeight: 700 }}>AI</div>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontWeight: 600, color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>{scenario!.questions[questionIndex]}</p>
             </div>
           ) : null}
-
-          {/* Answer input */}
           {!waitingForQuestion && (
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, gap: 8 }}>
-              <input
-                type="text"
-                value={currentAnswer}
-                onChange={(e) => setCurrentAnswer(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={!liveMode ? scenario!.placeholders[questionIndex] : 'Type your answer...'}
-                style={{
-                  flex: 1, padding: isMobile ? '12px 14px' : '10px 14px', borderRadius: 10,
-                  border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
-                  fontFamily: 'var(--font-body)', fontSize: isMobile ? '16px' : '0.85rem', color: '#1A1A2E',
-                  outline: 'none', minHeight: 44,
-                }}
-                onFocus={(e) => e.currentTarget.style.borderColor = '#0F346040'}
-                onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'}
-              />
-              <button
-                onClick={handleSubmitAnswer}
-                disabled={isStreaming}
-                style={{
-                  padding: isMobile ? '12px 20px' : '10px 20px', borderRadius: 10, border: 'none',
-                  background: isStreaming ? '#6B7280' : '#0F3460', color: '#FAF8F5', cursor: isStreaming ? 'default' : 'pointer',
-                  fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                  transition: 'all 0.25s', flexShrink: 0, minHeight: 44,
-                }}
-                onMouseEnter={(e) => { if (!isStreaming) e.currentTarget.style.background = '#1a4a80'; }}
-                onMouseLeave={(e) => { if (!isStreaming) e.currentTarget.style.background = '#0F3460'; }}
-              >
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input type="text" value={currentAnswer} onChange={(e) => setCurrentAnswer(e.target.value)} onKeyDown={handleKeyDown} placeholder={!liveMode ? scenario!.placeholders[questionIndex] : 'Type your answer...'} style={{ flex: 1, padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', outline: 'none', minHeight: 44 }} onFocus={(e) => e.currentTarget.style.borderColor = '#0F346040'} onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'} />
+              <button onClick={handleSubmitAnswer} disabled={isStreaming} style={{ padding: '10px 20px', borderRadius: 10, border: 'none', background: isStreaming ? '#6B7280' : '#0F3460', color: '#FAF8F5', cursor: isStreaming ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.25s', flexShrink: 0, minHeight: 44 }} onMouseEnter={(e) => { if (!isStreaming) e.currentTarget.style.background = '#1a4a80'; }} onMouseLeave={(e) => { if (!isStreaming) e.currentTarget.style.background = '#0F3460'; }}>
                 {answers.length >= 4 ? 'Done' : 'Answer'}
               </button>
             </div>
           )}
-
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', marginTop: 8, textAlign: 'center' as const }}>
             Question {answers.length + 1} of 5 {!liveMode && '\u2014 press Enter to submit'}
           </p>
@@ -502,141 +594,65 @@ export default function FlipTheScript() {
 
       {/* Result phase */}
       {phase === 'result' && (scenario || scenarioId === 'custom') && (
-        <div style={{ padding: isMobile ? '1rem' : '1.5rem 2rem' }}>
+        <div style={{ padding: '1.5rem 2rem' }}>
           {!showComparison ? (
             <>
               <div style={{ marginBottom: '1.25rem' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>
-                  Your personalized result
-                </span>
-                <div style={{
-                  fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.85rem', lineHeight: 1.75, color: '#1A1A2E',
-                  whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '35dvh' : '40dvh', overflowY: 'auto' as const,
-                }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'block', marginBottom: 8 }}>Your personalized result</span>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.75, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '40dvh', overflowY: 'auto' as const }}>
                   {(() => {
-                    const text = liveMode
-                      ? (liveResult || liveResponse || 'Generating your personalized plan...')
-                      : scenario!.detailedResponse(answers);
-                    return text.split('\n').map((line, i) => {
-                      if (line.startsWith('**') && line.includes('**')) {
-                        const parts = line.split('**');
-                        return (
-                          <p key={i} style={{ margin: '0.6em 0' }}>
-                            {parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}
-                          </p>
-                        );
-                      }
-                      if (line.startsWith('\u2022')) {
-                        return <p key={i} style={{ margin: '0.3em 0', paddingLeft: '0.5rem' }}>{line}</p>;
-                      }
-                      return line ? <p key={i} style={{ margin: '0.5em 0' }}>{line}</p> : <br key={i} />;
-                    });
+                    const text = liveMode ? (liveResult || liveResponse || 'Generating your personalized plan...') : scenario!.detailedResponse(answers);
+                    return renderResultText(text);
                   })()}
                   {isStreaming && <span style={{ display: 'inline-block', width: 2, height: '1em', background: '#16C79A', marginLeft: 2, animation: 'pulse 1s infinite' }} />}
                 </div>
               </div>
               {!isStreaming && (
-                <button
-                  onClick={() => setShowComparison(true)}
-                  style={{
-                    width: '100%', padding: '0.75rem', borderRadius: 10, border: '1px solid rgba(15,52,96,0.2)',
-                    background: 'rgba(15,52,96,0.04)', cursor: 'pointer', transition: 'all 0.25s',
-                    fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 600, color: '#0F3460',
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(15,52,96,0.08)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(15,52,96,0.04)'}
-                >
-                  Compare: What would a vague prompt have gotten? \u2192
+                <button onClick={() => setShowComparison(true)} style={{ width: '100%', padding: '0.75rem', borderRadius: 10, border: '1px solid rgba(15,52,96,0.2)', background: 'rgba(15,52,96,0.04)', cursor: 'pointer', transition: 'all 0.25s', fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 600, color: '#0F3460' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(15,52,96,0.08)'} onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(15,52,96,0.04)'}>
+                  Compare: What would a vague prompt have gotten? {'\u2192'}
                 </button>
               )}
             </>
           ) : (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '1rem' : '1.25rem', marginBottom: '1.25rem' }}>
-                {/* Vague side */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94560' }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>
-                      Vague prompt
-                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#E94560' }}>Vague prompt</span>
                   </div>
-                  <div style={{
-                    background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)',
-                    borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', marginBottom: 8,
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic',
-                  }}>
+                  <div style={{ background: 'rgba(233,69,96,0.04)', border: '1px solid rgba(233,69,96,0.12)', borderRadius: 10, padding: '1rem', marginBottom: 8, fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
                     "{scenario ? scenario.vaguePrompt : (liveMessages[0]?.text || customGoal)}"
                   </div>
-                  <div style={{
-                    fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.8rem', lineHeight: 1.65, color: '#1A1A2E',
-                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const, opacity: 0.8,
-                  }}>
-                    {scenario ? scenario.vagueResponse : "Without clarifying questions, the AI would have given you a generic checklist — accurate but impersonal. The kind of advice you could find on any website. No details about your situation, your constraints, or what actually matters to you."}
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const, opacity: 0.8 }}>
+                    {scenario ? scenario.vagueResponse : "Without clarifying questions, the AI would have given you a generic checklist — accurate but impersonal."}
                   </div>
                 </div>
-
-                {/* Socratic side */}
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#16C79A' }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>
-                      After 5 questions
-                    </span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#16C79A' }}>After 5 questions</span>
                   </div>
-                  <div style={{
-                    background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)',
-                    borderRadius: 10, padding: isMobile ? '0.75rem' : '1rem', marginBottom: 8,
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic',
-                  }}>
+                  <div style={{ background: 'rgba(22,199,154,0.04)', border: '1px solid rgba(22,199,154,0.12)', borderRadius: 10, padding: '1rem', marginBottom: 8, fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
                     "Same goal + your 5 answers"
                   </div>
-                  <div style={{
-                    fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.78rem' : '0.8rem', lineHeight: 1.65, color: '#1A1A2E',
-                    whiteSpace: 'pre-wrap' as const, maxHeight: isMobile ? '25dvh' : '30dvh', overflowY: 'auto' as const,
-                  }}>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', lineHeight: 1.65, color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: '30dvh', overflowY: 'auto' as const }}>
                     {(() => {
-                      const text = liveMode
-                        ? (liveResult || liveResponse || '')
-                        : scenario!.detailedResponse(answers);
+                      const text = liveMode ? (liveResult || liveResponse || '') : scenario!.detailedResponse(answers);
                       return text.split('\n').slice(0, 12).join('\n') + '...';
                     })()}
                   </div>
                 </div>
               </div>
-
-              {/* Insight */}
-              <div style={{
-                background: 'linear-gradient(135deg, rgba(22,199,154,0.06), rgba(15,52,96,0.06))',
-                border: '1px solid rgba(22,199,154,0.15)', borderRadius: 10, padding: isMobile ? '0.85rem 1rem' : '1rem 1.25rem', marginBottom: '1rem',
-              }}>
+              <div style={{ background: 'linear-gradient(135deg, rgba(22,199,154,0.06), rgba(15,52,96,0.06))', border: '1px solid rgba(22,199,154,0.15)', borderRadius: 10, padding: '1rem 1.25rem', marginBottom: '1rem' }}>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65, color: '#1A1A2E', margin: 0 }}>
-                  <strong style={{ color: '#0F3460' }}>The Socratic Method works.</strong> Five questions turned a generic checklist into a plan built around <em>your</em> specific situation. The AI didn't get smarter \u2014 it just had better context.
+                  <strong style={{ color: '#0F3460' }}>The Socratic Method works.</strong> Five questions turned a generic checklist into a plan built around <em>your</em> specific situation. The AI didn't get smarter {'\u2014'} it just had better context.
                 </p>
               </div>
-
               <div style={{ marginBottom: '1rem' }}>
-                <ShareCard
-                  title="Socratic Method"
-                  metric="5 Qs"
-                  metricColor="#16C79A"
-                  subtitle="A vague prompt got a generic checklist. After 5 AI questions, I got a plan built for MY situation."
-                  accentColor="#16C79A"
-                  tweetText="A vague prompt got me a generic checklist. After 5 AI questions, I got a plan built for MY situation. Try the Socratic method:"
-                  shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch2#flip-the-script` : undefined}
-                />
+                <ShareCard title="Socratic Method" metric="5 Qs" metricColor="#16C79A" subtitle="A vague prompt got a generic checklist. After 5 AI questions, I got a plan built for MY situation." accentColor="#16C79A" tweetText="A vague prompt got me a generic checklist. After 5 AI questions, I got a plan built for MY situation. Try the Socratic method:" shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch2#flip-the-script` : undefined} />
               </div>
-
-              <button
-                onClick={handleReset}
-                style={{
-                  fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
-                  padding: isMobile ? '0.75rem 1.5rem' : '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer',
-                  background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44,
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              >
+              <button onClick={handleReset} style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer', background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44 }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                 Try Another Scenario
               </button>
             </>
