@@ -3,7 +3,10 @@ import { MOBILE_UA } from './helpers';
 
 test.describe('Middleware — responsive routing', () => {
   test('mobile UA on /ch1 redirects to /ch1-cards', async ({ browser }) => {
-    const context = await browser.newContext({ userAgent: MOBILE_UA });
+    const context = await browser.newContext({
+      userAgent: MOBILE_UA,
+      viewport: { width: 375, height: 812 },
+    });
     const page = await context.newPage();
 
     await page.goto('/ch1', { waitUntil: 'load' });
@@ -17,10 +20,16 @@ test.describe('Middleware — responsive routing', () => {
   test('desktop UA on /ch1 stays on /ch1', async ({ browser }) => {
     const desktopUA =
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-    const context = await browser.newContext({ userAgent: desktopUA });
+    // Use a wide viewport to prevent narrow-viewport redirect
+    const context = await browser.newContext({
+      userAgent: desktopUA,
+      viewport: { width: 1280, height: 800 },
+    });
     const page = await context.newPage();
 
     await page.goto('/ch1', { waitUntil: 'load' });
+    // Wait a moment to confirm no redirect
+    await page.waitForTimeout(1000);
     // Desktop should stay on scroll variant
     expect(page.url()).toMatch(/\/ch1(\?|$)/);
 
@@ -35,7 +44,10 @@ test.describe('Middleware — responsive routing', () => {
   });
 
   test('?force=scroll prevents mobile redirect', async ({ browser }) => {
-    const context = await browser.newContext({ userAgent: MOBILE_UA });
+    const context = await browser.newContext({
+      userAgent: MOBILE_UA,
+      viewport: { width: 375, height: 812 },
+    });
     const page = await context.newPage();
 
     await page.goto('/ch1?force=scroll', { waitUntil: 'load' });
@@ -48,14 +60,24 @@ test.describe('Middleware — responsive routing', () => {
     await context.close();
   });
 
-  test('?mobile param redirects to cards', async ({ page }) => {
+  test('?mobile param redirects to cards', async ({ browser }) => {
+    const context = await browser.newContext({
+      viewport: { width: 375, height: 812 },
+    });
+    const page = await context.newPage();
+
     await page.goto('/ch1?mobile', { waitUntil: 'load' });
     await page.waitForURL('**/ch1-cards**', { timeout: 5000 });
     expect(page.url()).toContain('/ch1-cards');
+
+    await context.close();
   });
 
   test('?desktop param prevents mobile redirect', async ({ browser }) => {
-    const context = await browser.newContext({ userAgent: MOBILE_UA });
+    const context = await browser.newContext({
+      userAgent: MOBILE_UA,
+      viewport: { width: 375, height: 812 },
+    });
     const page = await context.newPage();
 
     await page.goto('/ch1?desktop', { waitUntil: 'load' });
@@ -74,7 +96,10 @@ test.describe('Middleware — responsive routing', () => {
   });
 
   test('non-chapter routes skip middleware (no redirect)', async ({ browser }) => {
-    const context = await browser.newContext({ userAgent: MOBILE_UA });
+    const context = await browser.newContext({
+      userAgent: MOBILE_UA,
+      viewport: { width: 375, height: 812 },
+    });
     const page = await context.newPage();
 
     // /feed, /profile, /tools should NOT be redirected even with mobile UA

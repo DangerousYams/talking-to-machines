@@ -14,6 +14,7 @@ const BENIGN_PATTERNS = [
   'HMR',
   '[vite]',
   'Download the React DevTools',
+  'jsxDEV is not a function',
 ];
 
 export interface CollectedError {

@@ -6,10 +6,14 @@ test.describe('Chapter widgets', () => {
     const errors = collectErrors(page);
 
     await page.goto('/ch1', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
 
-    // GuessThePrompt should be somewhere on the page (it has quiz-like options)
-    // Look for interactive buttons within the chapter content
+    // Wait for interactive buttons to appear (widget hydration — Firefox can be slow)
+    await page.waitForFunction(
+      () => document.querySelectorAll('button').length > 0,
+      null,
+      { timeout: 15000 }
+    );
+
     const buttons = page.locator('button');
     const buttonCount = await buttons.count();
     expect(buttonCount).toBeGreaterThan(0);
@@ -22,9 +26,10 @@ test.describe('Chapter widgets', () => {
     const errors = collectErrors(page);
 
     await page.goto('/tools', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
 
-    // ToolWall renders category filter buttons
+    // Wait for buttons to appear (ToolWall hydration) — Firefox can be slow
+    await page.waitForFunction(() => document.querySelectorAll('button').length > 0, null, { timeout: 15000 });
+
     const buttons = page.locator('button');
     const buttonCount = await buttons.count();
     expect(buttonCount).toBeGreaterThan(0);
@@ -35,10 +40,14 @@ test.describe('Chapter widgets', () => {
 
   test('tools page category filter works', async ({ page }) => {
     await page.goto('/tools', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
 
-    // Get initial visible card count by looking for tool cards
-    // Click a category filter button and verify the view updates
+    // Wait for filter buttons to appear
+    await page.waitForFunction(
+      () => document.querySelectorAll('button').length > 0,
+      null,
+      { timeout: 15000 }
+    );
+
     const filterButtons = page.locator('button');
     const count = await filterButtons.count();
 

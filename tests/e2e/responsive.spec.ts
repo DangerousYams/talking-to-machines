@@ -33,9 +33,10 @@ test.describe('Responsive layout', () => {
   test('feed page works at mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/feed', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
 
-    // Page should still render correctly
+    // Wait for content to render
+    await page.waitForFunction(() => document.body.innerText.trim().length > 0, null, { timeout: 10000 });
+
     const body = await page.locator('body').innerText();
     expect(body.trim().length).toBeGreaterThan(0);
   });
@@ -43,7 +44,9 @@ test.describe('Responsive layout', () => {
   test('feed page works at desktop viewport', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/feed', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2000);
+
+    // Wait for content to render
+    await page.waitForFunction(() => document.body.innerText.trim().length > 0, null, { timeout: 10000 });
 
     const body = await page.locator('body').innerText();
     expect(body.trim().length).toBeGreaterThan(0);

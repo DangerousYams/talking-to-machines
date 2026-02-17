@@ -7,10 +7,9 @@ test.describe('Feed flow', () => {
 
     await page.goto('/feed', { waitUntil: 'domcontentloaded' });
 
-    // Wait for React hydration — the PracticeFeed component renders
-    await page.waitForTimeout(2000);
+    // Wait for actual content to appear rather than a fixed timeout
+    await page.waitForFunction(() => document.body.innerText.trim().length > 0, null, { timeout: 10000 });
 
-    // Page should have visible content
     const body = await page.locator('body').innerText();
     expect(body.trim().length).toBeGreaterThan(0);
 
@@ -21,10 +20,13 @@ test.describe('Feed flow', () => {
   test('feed renders challenge cards after hydration', async ({ page }) => {
     await page.goto('/feed', { waitUntil: 'domcontentloaded' });
 
-    // Wait for hydration
-    await page.waitForTimeout(3000);
+    // Wait for interactive elements to appear (React hydration — Firefox can be slow)
+    await page.waitForFunction(
+      () => document.querySelectorAll('button, [role="button"], a').length > 0,
+      null,
+      { timeout: 15000 }
+    );
 
-    // The feed should have interactive content — look for buttons or cards
     const hasInteractiveContent =
       (await page.locator('button').count()) > 0 ||
       (await page.locator('[role="button"]').count()) > 0 ||
