@@ -240,7 +240,7 @@ function AdminDashboardInner() {
   const handleToggleExperiment = async (id: string, newStatus: 'active' | 'paused') => {
     try {
       const res = await fetch(`/api/admin/experiments`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status: newStatus }),
       });
