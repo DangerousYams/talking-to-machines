@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ url }) => {
       .from('session_progress')
       .select('*')
       .eq('session_id', sessionId)
-      .single();
+      .maybeSingle();
 
     if (!data) {
       return new Response(JSON.stringify({

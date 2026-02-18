@@ -74,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
       .from('challenge_aggregates')
       .select('*')
       .eq('challenge_id', challengeId)
-      .single();
+      .maybeSingle();
 
     if (data) {
       aggregate = {
@@ -115,7 +115,7 @@ export const POST: APIRoute = async ({ request }) => {
       .from('session_progress')
       .select('*')
       .eq('session_id', sessionId)
-      .single();
+      .maybeSingle();
 
     if (existing) {
       const completedIds = existing.completed_ids || [];

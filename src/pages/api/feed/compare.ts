@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ url }) => {
       .from('challenge_aggregates')
       .select('*')
       .eq('challenge_id', challengeId)
-      .single();
+      .maybeSingle();
 
     if (!aggregate) {
       return new Response(JSON.stringify({
@@ -53,7 +53,7 @@ export const GET: APIRoute = async ({ url }) => {
         .eq('challenge_id', challengeId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (submission?.time_ms) {
         percentile = computePercentile(
