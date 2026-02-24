@@ -15,21 +15,20 @@ export default function UnlockModal({ feature = 'Live AI', accentColor = '#7B61F
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/unlock', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: '{}',
       });
       const text = await res.text();
-      let data: { token?: string; error?: string };
+      let data: { url?: string; error?: string };
       try {
         data = JSON.parse(text);
       } catch {
         throw new Error('Server error — please try again later.');
       }
-      if (!res.ok) throw new Error(data.error || 'Failed to unlock');
-      if (!data.token) throw new Error('No token received');
-      unlock(data.token);
+      if (!res.ok) throw new Error(data.error || 'Failed to start checkout');
+      if (!data.url) throw new Error('No checkout URL received');
+      window.location.href = data.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Try again.');
       setLoading(false);
@@ -60,7 +59,7 @@ export default function UnlockModal({ feature = 'Live AI', accentColor = '#7B61F
         margin: '0 0 1rem',
         lineHeight: 1.5,
       }}>
-        Unlock all chapters + 30 AI interactions/day
+        Unlock all chapters + AI tools
       </p>
       <button
         onClick={handleUnlock}
@@ -79,7 +78,7 @@ export default function UnlockModal({ feature = 'Live AI', accentColor = '#7B61F
           minHeight: 40,
         }}
       >
-        {loading ? 'Unlocking...' : 'Unlock'}
+        {loading ? 'Redirecting...' : 'Unlock \u2014 $29'}
       </button>
       {error && (
         <p style={{

@@ -22,21 +22,20 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/unlock', {
+      const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: '{}',
       });
       const text = await res.text();
-      let data: { token?: string; error?: string };
+      let data: { url?: string; error?: string };
       try {
         data = JSON.parse(text);
       } catch {
         throw new Error('Server error — please try again later.');
       }
-      if (!res.ok) throw new Error(data.error || 'Failed to unlock');
-      if (!data.token) throw new Error('No token received');
-      unlock(data.token);
+      if (!res.ok) throw new Error(data.error || 'Failed to start checkout');
+      if (!data.url) throw new Error('No checkout URL received');
+      window.location.href = data.url;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
       setLoading(false);
@@ -104,8 +103,9 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
         }}>
           {[
             'All 11 chapters of interactive content',
-            '30 AI-powered interactions per day',
-            'Live AI prompting, debugging & agent tools',
+            'Access to all our AI tools',
+            'New content added regularly',
+            'One-time purchase — yours forever',
           ].map((item, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
               <span style={{ color: accentColor, fontSize: '0.9rem', flexShrink: 0, marginTop: 1 }}>
@@ -141,7 +141,7 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
             minHeight: 48,
           }}
         >
-          {loading ? 'Unlocking...' : 'Get Full Access'}
+          {loading ? 'Redirecting to checkout...' : 'Get Full Access \u2014 $29'}
         </button>
 
         {error && (
@@ -155,15 +155,6 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
           </p>
         )}
 
-        <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
-          color: '#B0B0B0',
-          marginTop: 14,
-          lineHeight: 1.5,
-        }}>
-          Chapter 1 is free &middot; Unlock for the full experience
-        </p>
       </div>
     </div>
   );

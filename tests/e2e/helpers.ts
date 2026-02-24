@@ -83,4 +83,5 @@ export const ALL_ROUTES = [
   '/ch10-cards',
   '/ch11',
   '/ch11-cards',
+  '/success',
 ];
