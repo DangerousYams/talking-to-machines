@@ -91,8 +91,7 @@ export default function SuccessRedeemer() {
           fontFamily: 'var(--font-body)', fontSize: '1rem',
           color: '#6B7280', margin: '0 0 32px', lineHeight: 1.6,
         }}>
-          All chapters and AI interactions are now unlocked.
-          Your access is active for 30 days.
+          All chapters, AI tools, and future updates are now yours.
         </p>
 
         <a
