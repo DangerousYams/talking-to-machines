@@ -1,8 +1,9 @@
-import { createHmac, randomBytes } from 'node:crypto';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
 
-interface TokenPayload {
+export interface TokenPayload {
   uid: string;
   tier: 'free' | 'paid';
+  cid: string | null;
   iat: number;
   exp: number;
 }
@@ -31,16 +32,30 @@ function fromBase64(str: string): unknown {
 }
 
 /**
- * Create a signed access token.
- * Default expiry: 30 days for paid, 1 day for free.
+ * Compute a privacy-preserving customer ID from an email address.
  */
-export function createToken(tier: 'free' | 'paid'): string {
+export function computeCustomerId(email: string): string {
+  return createHash('sha256').update(email.toLowerCase().trim()).digest('hex');
+}
+
+/**
+ * Create a signed access token.
+ * Default expiry: 30 days for paid, 1 day for free, 365 days for code-redeemed.
+ */
+export function createToken(
+  tier: 'free' | 'paid',
+  cid?: string | null,
+  options?: { expiryDays?: number },
+): string {
   const now = Math.floor(Date.now() / 1000);
+  const defaultDays = tier === 'paid' ? 30 : 1;
+  const expiryDays = options?.expiryDays ?? defaultDays;
   const payload: TokenPayload = {
     uid: randomBytes(16).toString('hex'),
     tier,
+    cid: cid ?? null,
     iat: now,
-    exp: now + (tier === 'paid' ? 30 * 86400 : 86400),
+    exp: now + expiryDays * 86400,
   };
   const encoded = toBase64(payload);
   const signature = sign(encoded);
@@ -49,8 +64,12 @@ export function createToken(tier: 'free' | 'paid'): string {
 
 /**
  * Validate a token and return the payload, or null if invalid/expired.
+ * Pass `ignoreExpiry: true` to skip the expiry check (used for token refresh).
  */
-export function validateToken(token: string): TokenPayload | null {
+export function validateToken(
+  token: string,
+  options?: { ignoreExpiry?: boolean },
+): TokenPayload | null {
   const parts = token.split('.');
   if (parts.length !== 2) return null;
 
@@ -68,7 +87,9 @@ export function validateToken(token: string): TokenPayload | null {
   try {
     const payload = fromBase64(encoded) as TokenPayload;
     if (!payload.uid || !payload.tier || !payload.exp) return null;
-    if (payload.exp < Math.floor(Date.now() / 1000)) return null;
+    // Backward compat: old tokens without cid get null
+    if (payload.cid === undefined) payload.cid = null;
+    if (!options?.ignoreExpiry && payload.exp < Math.floor(Date.now() / 1000)) return null;
     return payload;
   } catch {
     return null;

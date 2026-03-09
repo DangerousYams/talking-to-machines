@@ -3,6 +3,7 @@ const TOKEN_KEY = 'ttm_access_token';
 interface TokenPayload {
   uid: string;
   tier: 'free' | 'paid';
+  cid: string | null;
   iat: number;
   exp: number;
 }
@@ -58,4 +59,20 @@ export function isPaid(): boolean {
   if (payload.tier !== 'paid') return false;
   // Check expiry
   return payload.exp > Math.floor(Date.now() / 1000);
+}
+
+/** Check if the token will expire within `days` days. */
+export function isTokenExpiringSoon(days = 7): boolean {
+  const payload = getTokenPayload();
+  if (!payload) return false;
+  if (payload.tier !== 'paid') return false;
+  const now = Math.floor(Date.now() / 1000);
+  // Already expired or expires within threshold
+  return payload.exp > 0 && payload.exp - now < days * 86400;
+}
+
+/** Get the customer ID from the current token (null for old/free tokens). */
+export function getCustomerId(): string | null {
+  const payload = getTokenPayload();
+  return payload?.cid ?? null;
 }

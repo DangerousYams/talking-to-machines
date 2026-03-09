@@ -2,7 +2,8 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
-import { createToken } from '../../lib/access-token';
+import { createToken, computeCustomerId } from '../../lib/access-token';
+import { registerDevice } from '../../lib/devices';
 import { supabase } from '../../lib/supabase';
 
 function jsonResponse(data: object, status: number): Response {
@@ -40,6 +41,10 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ error: 'Payment not completed' }, 402);
     }
 
+    const email = session.customer_details?.email || null;
+    const cid = email ? computeCustomerId(email) : null;
+    const ua = request.headers.get('user-agent') || '';
+
     // Idempotency: check if already redeemed
     if (supabase) {
       const { data: existing } = await supabase
@@ -51,10 +56,14 @@ export const POST: APIRoute = async ({ request }) => {
       if (existing) {
         // Already recorded — still generate a fresh token (user may have
         // cleared localStorage) but don't insert a duplicate row
-        const token = createToken('paid');
+        const token = createToken('paid', cid);
         const payload = JSON.parse(
           Buffer.from(token.split('.')[0], 'base64url').toString(),
         );
+        // Register device (fire-and-forget, ignore limit for re-redeem)
+        if (cid && email) {
+          registerDevice(cid, email, payload.uid, ua).catch(() => {});
+        }
         return jsonResponse({
           token,
           expiresAt: new Date(payload.exp * 1000).toISOString(),
@@ -63,7 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Generate paid access token
-    const token = createToken('paid');
+    const token = createToken('paid', cid);
     const payload = JSON.parse(
       Buffer.from(token.split('.')[0], 'base64url').toString(),
     );
@@ -73,7 +82,8 @@ export const POST: APIRoute = async ({ request }) => {
       supabase.from('purchases').insert({
         stripe_session_id: session_id,
         stripe_payment_intent: session.payment_intent as string,
-        customer_email: session.customer_details?.email || null,
+        customer_email: email,
+        cid,
         amount_cents: session.amount_total,
         currency: session.currency,
         token_uid: payload.uid,
@@ -81,6 +91,11 @@ export const POST: APIRoute = async ({ request }) => {
         source: 'redirect',
         created_at: new Date().toISOString(),
       }).then(() => {}).catch(() => {});
+    }
+
+    // Register device (fire-and-forget)
+    if (cid && email) {
+      registerDevice(cid, email, payload.uid, ua).catch(() => {});
     }
 
     return jsonResponse({

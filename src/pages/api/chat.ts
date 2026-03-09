@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { createHash } from 'node:crypto';
 import { validateToken } from '../../lib/access-token';
+import { touchDevice } from '../../lib/devices';
 
 // ---------------------------------------------------------------------------
 // Model routing — server-side only, never trust client model choice
@@ -96,6 +97,18 @@ function checkBurstLimit(ip: string): boolean {
   if (entry.count >= 20) return false;
   entry.count++;
   return true;
+}
+
+// ---------------------------------------------------------------------------
+// Device touch (debounced — once per hour per uid)
+// ---------------------------------------------------------------------------
+function touchDeviceDebounced(kv: KVStore, uid: string): void {
+  const key = `device:seen:${uid}`;
+  kv.get(key).then((val) => {
+    if (val) return; // Already touched recently
+    kv.set(key, '1', { ex: 3600 }).catch(() => {});
+    touchDevice(uid).catch(() => {});
+  }).catch(() => {});
 }
 
 // ---------------------------------------------------------------------------
@@ -220,7 +233,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (isPaidUser) {
       // Paid users: deduct from daily quota
-      const quota = await checkAndIncrQuota(kv, `quota:paid:${tokenPayload!.uid}`, 30);
+      const quotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
+      const quota = await checkAndIncrQuota(kv, quotaKey, 30);
       if (!quota.allowed) {
         return jsonResponse(
           { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -228,6 +242,8 @@ export const POST: APIRoute = async ({ request }) => {
           quotaHeaders(quota.remaining, quota.limit, quota.reset)
         );
       }
+      // Touch device (fire-and-forget, debounced)
+      if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
       // Proxy with Haiku, return quota headers, cache result
       return proxyToClaudeAndCache(apiKey, messages, systemPrompt, source, userMessage, kv, quota);
     } else {
@@ -250,7 +266,8 @@ export const POST: APIRoute = async ({ request }) => {
     if (!isPaidUser) {
       return jsonResponse({ error: 'This feature requires full access' }, 401);
     }
-    const quota = await checkAndIncrQuota(kv, `quota:paid:${tokenPayload!.uid}`, 30);
+    const blockQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
+    const quota = await checkAndIncrQuota(kv, blockQuotaKey, 30);
     if (!quota.allowed) {
       return jsonResponse(
         { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -258,6 +275,7 @@ export const POST: APIRoute = async ({ request }) => {
         quotaHeaders(quota.remaining, quota.limit, quota.reset)
       );
     }
+    if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
     return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
   }
 
@@ -268,7 +286,8 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'This feature requires full access' }, 401);
   }
 
-  const quota = await checkAndIncrQuota(kv, `quota:paid:${tokenPayload!.uid}`, 30);
+  const defaultQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
+  const quota = await checkAndIncrQuota(kv, defaultQuotaKey, 30);
   if (!quota.allowed) {
     return jsonResponse(
       { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -277,6 +296,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
+  if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
   return proxyToClaude(apiKey, messages, systemPrompt, source || undefined, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
 };
 

@@ -4,6 +4,7 @@ import PageViewsChart from './PageViewsChart';
 import AbTestPanel from './AbTestPanel';
 import AiCostTable from './AiCostTable';
 import EngagementPanel from './EngagementPanel';
+import AccessCodesPanel from './AccessCodesPanel';
 
 // --- Types ---
 
@@ -44,7 +45,7 @@ interface EngagementData {
   }[];
 }
 
-type Tab = 'overview' | 'engagement' | 'ab-tests' | 'ai-costs';
+type Tab = 'overview' | 'engagement' | 'ab-tests' | 'ai-costs' | 'access-codes';
 
 // --- Auth Gate ---
 
@@ -71,6 +72,7 @@ function AdminAuthGate({ children }: { children: React.ReactNode }) {
       });
       if (res.ok) {
         sessionStorage.setItem('admin_authed', '1');
+        sessionStorage.setItem('admin_password', password);
         setAuthed(true);
       } else {
         setError('Wrong password');
@@ -389,6 +391,9 @@ function AdminDashboardInner() {
         <button onClick={() => setActiveTab('ai-costs')} style={tabStyle('ai-costs')}>
           AI Costs
         </button>
+        <button onClick={() => setActiveTab('access-codes')} style={tabStyle('access-codes')}>
+          Access Codes
+        </button>
       </div>
 
       {/* Error banner */}
@@ -501,6 +506,9 @@ function AdminDashboardInner() {
               <AiCostTable byWidget={aiCosts.byWidget} dailyCosts={aiCosts.dailyCosts} />
             </div>
           )}
+
+          {/* Access Codes Tab */}
+          {activeTab === 'access-codes' && <AccessCodesPanel />}
         </>
       ) : null}
     </div>
