@@ -75,14 +75,18 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'This code has reached its usage limit' }, 410);
   }
 
-  // Atomic increment with re-check
-  const { data: updated, error: updateErr } = await supabase
+  // Atomic increment with race-condition guard
+  let updateQuery = supabase
     .from('access_codes')
     .update({ times_used: accessCode.times_used + 1 })
-    .eq('id', accessCode.id)
-    .or(accessCode.max_uses === null
-      ? 'max_uses.is.null'
-      : `times_used.lt.${accessCode.max_uses}`)
+    .eq('id', accessCode.id);
+
+  // Only add usage guard when there's actually a limit
+  if (accessCode.max_uses !== null) {
+    updateQuery = updateQuery.lt('times_used', accessCode.max_uses);
+  }
+
+  const { data: updated, error: updateErr } = await updateQuery
     .select('id')
     .maybeSingle();
 
