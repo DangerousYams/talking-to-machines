@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect, useCallback, Children, cloneElement, isValidElement, type ReactNode, type ReactElement } from 'react';
 import DotNav from './DotNav';
 import NavDrawer from './NavDrawer';
+import PaywallGate from '../ui/PaywallGate';
 import { trackPageView } from '../../lib/analytics';
+import { chapters } from '../../data/chapters';
 import ScrollDepthTracker from '../analytics/ScrollDepthTracker';
 
 interface CardDeckProps {
@@ -87,8 +89,15 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
   const openMenu = useCallback(() => setMenuOpen(true), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
+  // Paywall for chapters 2+
+  const chapterData = chapterSlug ? chapters.find((c) => c.slug === chapterSlug) : null;
+  const needsPaywall = chapterData && chapterData.number > 1;
+
   return (
     <>
+      {needsPaywall && (
+        <PaywallGate chapterTitle={chapterData.title} accentColor={accentColor} />
+      )}
       <div
         ref={containerRef}
         className="card-deck-container"
