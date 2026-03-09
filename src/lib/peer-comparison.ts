@@ -40,42 +40,30 @@ export function generateInsight(
   const mid = percentile >= 40;
 
   switch (challengeType) {
-    case 'taste-curator':
-      if (high) return "Your taste aligns strongly with the expert panel. You've got a sharp eye for quality.";
-      if (mid) return "Your picks were reasonable, though the experts saw something different. Taste develops with exposure.";
-      return "You and the experts went different directions. That's not wrong — but understanding why they chose differently is the skill.";
+    case 'snap-judgment':
+      if (high) return "Sharp BS detector. You don't fall for plausible-sounding nonsense.";
+      if (mid) return "Decent instincts, but some of those fakes are tricky. The best defense is healthy skepticism.";
+      return "Those fakes are designed to fool you — and they did. The more you verify, the better your radar gets.";
 
-    case 'trust-call':
-    case 'first-principles':
-      if (high) return "Strong critical thinking. You caught what most people miss.";
-      if (mid) return "Decent instincts, but there's room to sharpen your reasoning.";
-      return "This one trips up a lot of people. The key is slowing down and reasoning from first principles.";
+    case 'taste-off':
+      if (high) return "Great taste. You and the experts see things the same way.";
+      if (mid) return "Solid eye. Your picks were reasonable — the experts just weighed things a bit differently.";
+      return "Interesting choices. Taste is a muscle — the more you compare, the sharper it gets.";
 
-    case 'prompt-forge':
-    case 'context-surgeon':
-      if (high) return "You completed this faster and more thoroughly than most. Your prompting instincts are strong.";
-      if (mid) return "Solid approach. With practice, you'll develop the muscle memory for great prompts.";
-      return "This is a skill that improves dramatically with practice. Try the hint next time for a boost.";
+    case 'speed-prompt':
+      if (high) return "Fast and precise. You write prompts under pressure like a pro.";
+      if (mid) return "Good instincts. With more practice, your prompts will get specific even faster.";
+      return "Time pressure is brutal. The key: specificity over length. One clear detail beats three vague sentences.";
 
-    case 'reverse-engineer':
-      if (high) return "You can read AI output like a fingerprint. That's a genuinely valuable skill.";
-      if (mid) return "Good eye. Reverse-engineering prompts gets easier as you write more of them.";
-      return "Prompt-to-output mapping is tricky. The more you practice writing prompts, the better you'll read them.";
+    case 'odd-one-out':
+      if (high) return "Pattern spotter. You see the connections others miss.";
+      if (mid) return "Good eye for categories. The trickier ones test deeper conceptual understanding.";
+      return "These patterns are subtle. Knowing the conceptual boundaries between AI concepts takes time — and you're building it.";
 
-    case 'debug-detective':
-      if (high) return "Sharp debugging instincts. You spotted the issues that most people overlook.";
-      if (mid) return "You caught some bugs but missed others. The subtle ones are where the real skill is.";
-      return "Prompt debugging is one of the hardest skills. Each miss teaches you what to look for next time.";
-
-    case 'tool-chain':
-      if (high) return "Your workflow design is efficient and logical. You understand how AI tools fit together.";
-      if (mid) return "Good pipeline thinking. Consider the data flow between tools — that's where optimization happens.";
-      return "Orchestrating tools is complex. Think about what each tool needs as input and what it produces.";
-
-    case 'agent-architect':
-      if (high) return "Your agent design shows strong systems thinking. You understand decomposition and tool assignment.";
-      if (mid) return "Good architecture. Think about failure modes and what guardrails each step needs.";
-      return "Agent design has a lot of moving parts. Focus on clear handoffs between steps — that's where agents break.";
+    case 'detective':
+      if (high) return "Natural debugger. You spotted the prompt flaw instantly.";
+      if (mid) return "Decent diagnosis. Prompt bugs are like code bugs — they get easier to spot with practice.";
+      return "Tricky one! Prompt bugs are sneaky because the output looks wrong, but the real problem is upstream in the prompt.";
 
     default:
       if (high) return "Impressive performance! You're building strong AI skills.";

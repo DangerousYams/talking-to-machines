@@ -1,32 +1,24 @@
 import type { Challenge, ChallengeType, ConceptArea } from '../data/challenges';
 
 // Import all challenge content
-import { promptForgeChallenges } from '../data/challenge-content/prompt-forge';
-import { reverseEngineerChallenges } from '../data/challenge-content/reverse-engineer';
-import { tasteCuratorChallenges } from '../data/challenge-content/taste-curator';
-import { trustCallChallenges } from '../data/challenge-content/trust-call';
-import { firstPrinciplesChallenges } from '../data/challenge-content/first-principles';
-import { contextSurgeonChallenges } from '../data/challenge-content/context-surgeon';
-import { debugDetectiveChallenges } from '../data/challenge-content/debug-detective';
-import { toolChainChallenges } from '../data/challenge-content/tool-chain';
-import { agentArchitectChallenges } from '../data/challenge-content/agent-architect';
+import { snapJudgmentChallenges } from '../data/challenge-content/snap-judgment';
+import { tasteOffChallenges } from '../data/challenge-content/taste-off';
+import { speedPromptChallenges } from '../data/challenge-content/speed-prompt';
+import { oddOneOutChallenges } from '../data/challenge-content/odd-one-out';
+import { detectiveChallenges } from '../data/challenge-content/detective';
 
 export const ALL_CHALLENGES: Challenge[] = [
-  ...promptForgeChallenges,
-  ...reverseEngineerChallenges,
-  ...tasteCuratorChallenges,
-  ...trustCallChallenges,
-  ...firstPrinciplesChallenges,
-  ...contextSurgeonChallenges,
-  ...debugDetectiveChallenges,
-  ...toolChainChallenges,
-  ...agentArchitectChallenges,
+  ...snapJudgmentChallenges,
+  ...tasteOffChallenges,
+  ...speedPromptChallenges,
+  ...oddOneOutChallenges,
+  ...detectiveChallenges,
 ];
 
-// Low-barrier types that make good first challenges
-const STARTER_TYPES: ChallengeType[] = ['prompt-forge', 'taste-curator', 'reverse-engineer'];
+// Low-barrier types that make good first challenges (instant interaction)
+const STARTER_TYPES: ChallengeType[] = ['snap-judgment', 'taste-off', 'odd-one-out'];
 // AI-using types (manage API costs by alternating)
-const AI_TYPES: ChallengeType[] = ['prompt-forge', 'context-surgeon'];
+const AI_TYPES: ChallengeType[] = ['speed-prompt'];
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -39,7 +31,7 @@ function shuffle<T>(arr: T[]): T[] {
 
 /**
  * Build an infinite feed sequence:
- * 1. Start with a low-barrier challenge (Prompt Forge, Taste Curator, or Reverse Engineer)
+ * 1. Start with a low-barrier challenge (Snap Judgment, Taste Off, or Odd One Out)
  * 2. Alternate between AI-using and non-AI challenges
  * 3. Ensure concept area diversity (no 3 of the same area in a row)
  * 4. Never repeat a completed challenge in same session

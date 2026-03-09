@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Challenge } from '../../data/challenges';
-import { CHALLENGE_TYPE_META, CONCEPT_AREA_LABELS } from '../../data/challenges';
+import { CHALLENGE_TYPE_META } from '../../data/challenges';
 
 interface FeedCardProps {
   challenge: Challenge;
@@ -10,7 +10,6 @@ interface FeedCardProps {
 
 export default function FeedCard({ challenge, children, isCompleted }: FeedCardProps) {
   const meta = CHALLENGE_TYPE_META[challenge.type];
-  const conceptLabel = CONCEPT_AREA_LABELS[challenge.conceptArea];
 
   return (
     <div
@@ -24,7 +23,7 @@ export default function FeedCard({ challenge, children, isCompleted }: FeedCardP
         overflow: 'hidden',
       }}
     >
-      {/* Top bar: type badge + concept tag */}
+      {/* Top bar: type badge only (lighter) */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -53,17 +52,6 @@ export default function FeedCard({ challenge, children, isCompleted }: FeedCardP
             {meta.label}
           </span>
         </div>
-
-        <span style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.6rem',
-          fontWeight: 500,
-          letterSpacing: '0.04em',
-          color: 'var(--color-subtle)',
-          textTransform: 'uppercase',
-        }}>
-          {conceptLabel}
-        </span>
       </div>
 
       {/* Title + brief */}

@@ -174,31 +174,16 @@ function computeQualityScore(
   timeMs?: number,
 ): number | null {
   switch (type) {
-    case 'reverse-engineer':
-    case 'first-principles':
-    case 'trust-call':
+    case 'snap-judgment':
+    case 'odd-one-out':
+    case 'detective':
       return submission.isCorrect ? 1 : 0;
 
-    case 'taste-curator':
+    case 'taste-off':
       return submission.matchesExpert ? 1 : 0.5;
 
-    case 'debug-detective':
+    case 'speed-prompt':
       return typeof submission.score === 'number' ? submission.score : null;
-
-    case 'tool-chain':
-    case 'agent-architect':
-      return typeof submission.score === 'number' ? submission.score : null;
-
-    case 'prompt-forge':
-    case 'context-surgeon': {
-      // Score based on criteria matched and time
-      const criteria = submission.criteriaMatched as number | undefined;
-      const total = submission.totalCriteria as number | undefined;
-      if (criteria !== undefined && total) {
-        return criteria / total;
-      }
-      return null;
-    }
 
     default:
       return null;

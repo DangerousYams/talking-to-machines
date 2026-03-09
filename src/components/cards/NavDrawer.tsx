@@ -53,8 +53,7 @@ export default function NavDrawer({ isOpen, onClose, accentColor, currentChapter
   }, [onClose]);
 
   const resources = [
-    { label: 'Tool Directory', emoji: '\uD83D\uDD27', href: '/tools' },
-    { label: 'Lab', emoji: '\uD83E\uDDEA', href: '/lab' },
+    { label: 'The Sandbox', emoji: '\uD83E\uDDEA', href: '/practice' },
   ];
 
   return (

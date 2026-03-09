@@ -1,15 +1,11 @@
 // ─── Challenge Types ───
 
 export type ChallengeType =
-  | 'prompt-forge'
-  | 'reverse-engineer'
-  | 'taste-curator'
-  | 'trust-call'
-  | 'first-principles'
-  | 'context-surgeon'
-  | 'debug-detective'
-  | 'tool-chain'
-  | 'agent-architect';
+  | 'snap-judgment'
+  | 'taste-off'
+  | 'speed-prompt'
+  | 'odd-one-out'
+  | 'detective';
 
 export type ConceptArea =
   | 'prompt-craft'
@@ -38,101 +34,59 @@ export const CHALLENGE_TYPE_META: Record<ChallengeType, {
   usesAI: boolean;
   icon: string;
 }> = {
-  'prompt-forge': { label: 'Prompt Forge', color: '#E94560', usesAI: true, icon: '🔨' },
-  'reverse-engineer': { label: 'Reverse Engineer', color: '#7B61FF', usesAI: false, icon: '🔍' },
-  'taste-curator': { label: 'Taste Curator', color: '#F5A623', usesAI: false, icon: '🎨' },
-  'trust-call': { label: 'Trust Call', color: '#0EA5E9', usesAI: false, icon: '⚖️' },
-  'first-principles': { label: 'First Principles', color: '#16C79A', usesAI: false, icon: '🧠' },
-  'context-surgeon': { label: 'Context Surgeon', color: '#7B61FF', usesAI: true, icon: '✂️' },
-  'debug-detective': { label: 'Debug Detective', color: '#E94560', usesAI: false, icon: '🐛' },
-  'tool-chain': { label: 'Tool Chain', color: '#0EA5E9', usesAI: false, icon: '🔗' },
-  'agent-architect': { label: 'Agent Architect', color: '#F5A623', usesAI: false, icon: '🏗️' },
+  'snap-judgment': { label: 'Real or Fake?', color: '#E94560', usesAI: false, icon: '⚡' },
+  'taste-off': { label: 'Taste Off', color: '#F5A623', usesAI: false, icon: '🎯' },
+  'speed-prompt': { label: 'Speed Prompt', color: '#7B61FF', usesAI: true, icon: '⏱️' },
+  'odd-one-out': { label: 'Odd One Out', color: '#0EA5E9', usesAI: false, icon: '🔍' },
+  'detective': { label: 'Detective', color: '#16C79A', usesAI: false, icon: '🐛' },
 };
 
 // ─── Per-type payloads ───
 
-export interface PromptForgePayload {
-  task: string;
-  hint?: string;
-  exampleGood?: string;
-  systemPrompt: string;
-  evaluationCriteria: string[];
-}
-
-export interface ReverseEngineerPayload {
-  output: string;
-  outputType: 'text' | 'code' | 'email' | 'poem' | 'analysis';
-  options: string[];
-  correctIndex: number;
+export interface SnapJudgmentPayload {
+  statement: string;
+  isReal: boolean;
+  source?: string;
+  correction?: string;
   explanation: string;
 }
 
-export interface TasteCuratorPayload {
+export interface TasteOffPayload {
   domain: string;
-  brief: string;
-  variants: { id: string; label: string; content: string }[];
-  expertTopPick: string;
+  optionA: { label: string; content: string };
+  optionB: { label: string; content: string };
+  expertPick: 'A' | 'B';
   expertReasoning: string;
 }
 
-export interface TrustCallPayload {
-  scenario: string;
-  context: string;
-  options: { id: string; label: string; risk: 'low' | 'medium' | 'high' }[];
-  bestChoice: string;
-  explanation: string;
-}
-
-export interface FirstPrinciplesPayload {
-  question: string;
-  domain: string;
-  aiAnswer: string;
-  aiIsCorrect: boolean;
-  correctAnswer: string;
-  reasoning: string;
-}
-
-export interface ContextSurgeonPayload {
+export interface SpeedPromptPayload {
   task: string;
-  documents: { id: string; label: string; tokens: number; content: string; relevance: 'high' | 'medium' | 'low' }[];
-  budgetTokens: number;
-  optimalIds: string[];
+  timeLimitSeconds: number;
   systemPrompt: string;
 }
 
-export interface DebugDetectivePayload {
+export interface OddOneOutPayload {
+  items: [string, string, string, string];
+  oddIndex: number;
+  pattern: string;
+  explanation: string;
+}
+
+export interface DetectivePayload {
   prompt: string;
   badOutput: string;
-  bugs: { region: string; bugType: 'ambiguous' | 'contradictory' | 'missing-context' | 'too-many-tasks' | 'leading' }[];
+  options: { id: string; label: string }[];
+  correctId: string;
   fixedPrompt: string;
   explanation: string;
 }
 
-export interface ToolChainPayload {
-  goal: string;
-  availableTools: { id: string; name: string; category: string; description: string }[];
-  optimalChain: string[];
-  explanation: string;
-}
-
-export interface AgentArchitectPayload {
-  goal: string;
-  constraints: string[];
-  steps: { id: string; label: string; tool: string; instruction: string }[];
-  failureMode?: string;
-  guardRail?: string;
-}
-
 export type ChallengePayload =
-  | PromptForgePayload
-  | ReverseEngineerPayload
-  | TasteCuratorPayload
-  | TrustCallPayload
-  | FirstPrinciplesPayload
-  | ContextSurgeonPayload
-  | DebugDetectivePayload
-  | ToolChainPayload
-  | AgentArchitectPayload;
+  | SnapJudgmentPayload
+  | TasteOffPayload
+  | SpeedPromptPayload
+  | OddOneOutPayload
+  | DetectivePayload;
 
 // ─── Challenge definition ───
 

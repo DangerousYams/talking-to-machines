@@ -10,15 +10,11 @@ import PeerComparison from './PeerComparison';
 
 // Lazy-loaded challenge components
 const CHALLENGE_COMPONENTS: Record<ChallengeType, React.LazyExoticComponent<React.ComponentType<any>>> = {
-  'prompt-forge': lazy(() => import('./challenges/PromptForge')),
-  'reverse-engineer': lazy(() => import('./challenges/ReverseEngineer')),
-  'taste-curator': lazy(() => import('./challenges/TasteCurator')),
-  'trust-call': lazy(() => import('./challenges/TrustCall')),
-  'first-principles': lazy(() => import('./challenges/FirstPrinciples')),
-  'context-surgeon': lazy(() => import('./challenges/ContextSurgeon')),
-  'debug-detective': lazy(() => import('./challenges/DebugDetective')),
-  'tool-chain': lazy(() => import('./challenges/ToolChain')),
-  'agent-architect': lazy(() => import('./challenges/AgentArchitect')),
+  'snap-judgment': lazy(() => import('./challenges/SnapJudgment')),
+  'taste-off': lazy(() => import('./challenges/TasteOff')),
+  'speed-prompt': lazy(() => import('./challenges/SpeedPrompt')),
+  'odd-one-out': lazy(() => import('./challenges/OddOneOut')),
+  'detective': lazy(() => import('./challenges/Detective')),
 };
 
 function LoadingFallback() {
@@ -118,7 +114,7 @@ export default function PracticeFeed() {
           conceptArea: challenge.conceptArea,
           submission,
           timeMs,
-          usedAi: ['prompt-forge', 'context-surgeon'].includes(challenge.type),
+          usedAi: challenge.type === 'speed-prompt',
         }),
       });
 

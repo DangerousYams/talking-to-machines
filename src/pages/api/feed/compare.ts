@@ -68,18 +68,14 @@ export const GET: APIRoute = async ({ url }) => {
 
     // Determine challenge type from ID prefix
     const typeMap: Record<string, ChallengeType> = {
-      'pf': 'prompt-forge',
-      're': 'reverse-engineer',
-      'tc': 'taste-curator',
-      'trc': 'trust-call',
-      'fp': 'first-principles',
-      'cs': 'context-surgeon',
-      'dd': 'debug-detective',
-      'tlc': 'tool-chain',
-      'aa': 'agent-architect',
+      'sj': 'snap-judgment',
+      'to': 'taste-off',
+      'sp': 'speed-prompt',
+      'ooo': 'odd-one-out',
+      'dt': 'detective',
     };
     const prefix = challengeId.split('-')[0];
-    const challengeType = typeMap[prefix] || 'prompt-forge';
+    const challengeType = typeMap[prefix] || 'snap-judgment';
 
     const insight = generateInsight(challengeType, percentile);
 
