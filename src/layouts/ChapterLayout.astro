@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterNav from '../components/ui/ChapterNav';
 import ChapterDrawer from '../components/ui/ChapterDrawer';
@@ -121,5 +122,6 @@ const isTranslated = locale !== 'en';
         <a href="/" class="text-[13px] text-subtle/60 no-underline hover:text-deep transition-colors" style="font-family: var(--font-body);">Talking to Machines</a>
       </div>
     </footer>
+    <Analytics />
   </body>
 </html>

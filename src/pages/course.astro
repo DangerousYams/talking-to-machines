@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 // ── Replace these with real URLs ──
 const FORM_URL_WEEKEND = '#register-weekend';
@@ -1043,6 +1044,6 @@ const FORM_URL_CONSULT = '#register-consult';
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     </script>
 
-
+    <Analytics />
   </body>
 </html>
