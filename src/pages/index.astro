@@ -44,13 +44,21 @@ import { chapters } from '../data/chapters';
           </span>
         </h1>
 
-        <!-- Subtitle -->
-        <p class="text-xl md:text-2xl leading-relaxed text-deep/70 mb-3" style="font-family: var(--font-body); font-weight: 400;">
-          A hands-on guide to AI
-        </p>
-        <p class="text-[13px] text-subtle/60 mb-14" style="font-family: var(--font-mono);">
-          11 chapters &middot; ~15 min each
-        </p>
+        <!-- Animated subtitle -->
+        <div class="mb-14 h-8 md:h-9 relative overflow-hidden" aria-label="A hands-on guide to AI">
+          <p
+            class="text-xl md:text-2xl leading-relaxed text-deep/70"
+            style="font-family: var(--font-body); font-weight: 400;"
+          >
+            <span
+              id="cycling-part"
+              class="inline-block transition-all duration-500 ease-in-out"
+            >Write</span><span
+              id="cycling-suffix"
+              class="inline-block transition-opacity duration-500 ease-in-out opacity-100"
+            >&nbsp;better with AI</span>
+          </p>
+        </div>
 
         <!-- CTA -->
         <a
@@ -70,18 +78,6 @@ import { chapters } from '../data/chapters';
           </span>
         </a>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 mt-5">
-          <a
-            href="/practice"
-            class="inline-flex items-center gap-2 no-underline transition-opacity duration-200 hover:opacity-70"
-            style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; color: var(--color-subtle); letter-spacing: 0.04em;"
-          >
-            The Sandbox
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
       </div>
 
       <!-- Scroll indicator -->
@@ -93,54 +89,267 @@ import { chapters } from '../data/chapters';
     <!-- ═══════════════════════════════════════════════════ -->
     <!-- CHAPTERS — editorial table of contents             -->
     <!-- ═══════════════════════════════════════════════════ -->
-    <section class="max-w-[700px] mx-auto px-6 md:px-10 pb-32">
+    <section class="max-w-[900px] mx-auto px-6 md:px-10 pb-32">
       <!-- Section heading -->
-      <div class="flex items-center gap-4 mb-16">
+      <div class="flex items-center gap-4 mb-20">
         <div class="flex-1 h-px bg-deep/15"></div>
         <p class="text-[11px] tracking-[0.2em] uppercase text-subtle/70" style="font-family: var(--font-mono);">
-          Table of Contents
+          The Curriculum
         </p>
         <div class="flex-1 h-px bg-deep/15"></div>
       </div>
 
-      <div class="space-y-0">
-        {chapters.map((ch, i) => (
-          <a
-            href={`/${ch.slug}`}
-            class="group flex items-baseline gap-6 py-5 no-underline border-b border-deep/[0.06] transition-all duration-300 hover:pl-2"
-          >
-            <!-- Chapter number -->
-            <span
-              class="text-[13px] font-medium tabular-nums flex-shrink-0 w-6 text-right transition-colors duration-300"
-              style={`font-family: var(--font-mono); color: var(--color-subtle);`}
+      <!-- Part I -->
+      <div class="mb-20">
+        <div class="mb-8 flex items-baseline gap-4">
+          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-accent-red);">
+            Part I
+          </span>
+          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
+            The Fundamentals
+          </span>
+          <div class="flex-1 h-px bg-deep/8"></div>
+        </div>
+        <div class="grid gap-4">
+          {chapters.slice(0, 3).map((ch) => (
+            <a
+              href={`/${ch.slug}`}
+              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
             >
-              {String(ch.number).padStart(2, '0')}
-            </span>
+              <div class="flex items-start gap-5 md:gap-7">
+                <!-- Accent bar + number -->
+                <div class="flex flex-col items-center gap-2 pt-0.5">
+                  <span
+                    class="text-[12px] font-semibold tabular-nums"
+                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
+                  >
+                    {String(ch.number).padStart(2, '0')}
+                  </span>
+                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
+                </div>
 
-            <!-- Title + hook -->
-            <div class="flex-1 min-w-0">
-              <span
-                class="text-lg font-bold transition-colors duration-300 group-hover:opacity-80"
-                style={`font-family: var(--font-heading); color: ${ch.accent};`}
-              >
-                {ch.title}
-              </span>
-              <span class="text-[14px] text-deep/50 ml-4 hidden sm:inline" style="font-family: var(--font-body); font-style: italic;">
-                {ch.hook}
-              </span>
-            </div>
-
-            <!-- Arrow -->
-            <svg
-              width="16" height="16" viewBox="0 0 16 16" fill="none"
-              class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0"
-            >
-              <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        ))}
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline gap-3 mb-1.5">
+                    <h3
+                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
+                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
+                    >
+                      {ch.title}
+                    </h3>
+                    <svg
+                      width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
+                    >
+                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
+                    {ch.hook}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {ch.concepts.slice(0, 3).map((c) => (
+                      <span
+                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
+                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
+                      >
+                        {c.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
+
+      <!-- Part II -->
+      <div class="mb-20">
+        <div class="mb-8 flex items-baseline gap-4">
+          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-sky);">
+            Part II
+          </span>
+          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
+            The Toolkit
+          </span>
+          <div class="flex-1 h-px bg-deep/8"></div>
+        </div>
+        <div class="grid gap-4">
+          {chapters.slice(3, 7).map((ch) => (
+            <a
+              href={`/${ch.slug}`}
+              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
+            >
+              <div class="flex items-start gap-5 md:gap-7">
+                <div class="flex flex-col items-center gap-2 pt-0.5">
+                  <span
+                    class="text-[12px] font-semibold tabular-nums"
+                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
+                  >
+                    {String(ch.number).padStart(2, '0')}
+                  </span>
+                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline gap-3 mb-1.5">
+                    <h3
+                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
+                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
+                    >
+                      {ch.title}
+                    </h3>
+                    <svg
+                      width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
+                    >
+                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
+                    {ch.hook}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {ch.concepts.slice(0, 3).map((c) => (
+                      <span
+                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
+                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
+                      >
+                        {c.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Part III -->
+      <div class="mb-20">
+        <div class="mb-8 flex items-baseline gap-4">
+          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-teal);">
+            Part III
+          </span>
+          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
+            The Craft
+          </span>
+          <div class="flex-1 h-px bg-deep/8"></div>
+        </div>
+        <div class="grid gap-4">
+          {chapters.slice(7, 11).map((ch) => (
+            <a
+              href={`/${ch.slug}`}
+              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
+            >
+              <div class="flex items-start gap-5 md:gap-7">
+                <div class="flex flex-col items-center gap-2 pt-0.5">
+                  <span
+                    class="text-[12px] font-semibold tabular-nums"
+                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
+                  >
+                    {String(ch.number).padStart(2, '0')}
+                  </span>
+                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline gap-3 mb-1.5">
+                    <h3
+                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
+                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
+                    >
+                      {ch.title}
+                    </h3>
+                    <svg
+                      width="16" height="16" viewBox="0 0 16 16" fill="none"
+                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
+                    >
+                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
+                    {ch.hook}
+                  </p>
+                  <div class="flex flex-wrap gap-2">
+                    {ch.concepts.slice(0, 3).map((c) => (
+                      <span
+                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
+                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
+                      >
+                        {c.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Practice + Course links -->
+      <div class="flex flex-col sm:flex-row gap-4 mt-8">
+        <a
+          href="/feed"
+          class="group flex-1 flex items-center gap-4 no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
+        >
+          <span class="text-2xl">⚡</span>
+          <div>
+            <h3 class="text-[17px] font-bold leading-tight mb-0.5" style="font-family: var(--font-heading); color: var(--color-purple);">
+              Practice Arena
+            </h3>
+            <p class="text-[13px] text-deep/50 leading-relaxed" style="font-family: var(--font-body);">
+              Quick challenges to sharpen your AI skills
+            </p>
+          </div>
+        </a>
+        <a
+          href="/course"
+          class="group flex-1 flex items-center gap-4 no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
+        >
+          <span class="text-2xl">🎓</span>
+          <div>
+            <h3 class="text-[17px] font-bold leading-tight mb-0.5" style="font-family: var(--font-heading); color: var(--color-accent-red);">
+              Live Course
+            </h3>
+            <p class="text-[13px] text-deep/50 leading-relaxed" style="font-family: var(--font-body);">
+              Hands-on workshops with small cohorts on Zoom
+            </p>
+          </div>
+        </a>
+      </div>
+
     </section>
 
+    <script>
+      const lines = [
+        { verb: 'Write' },
+        { verb: 'Code' },
+        { verb: 'Research' },
+        { verb: 'Create' },
+        { verb: 'Solve problems' },
+        { verb: 'Think' },
+      ];
+
+      const part = document.getElementById('cycling-part');
+      if (part) {
+        let i = 0;
+        setInterval(() => {
+          part.style.opacity = '0';
+          part.style.transform = 'translateY(6px)';
+          setTimeout(() => {
+            i = (i + 1) % lines.length;
+            part.textContent = lines[i].verb;
+            part.style.transform = 'translateY(-6px)';
+            void part.offsetHeight;
+            part.style.opacity = '1';
+            part.style.transform = 'translateY(0)';
+          }, 400);
+        }, 2800);
+      }
+    </script>
   </body>
 </html>
