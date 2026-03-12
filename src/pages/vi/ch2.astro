@@ -1,0 +1,420 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
+import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
+import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+
+const chapter = chapters[1];
+---
+
+<ChapterLayout chapter={chapter} locale="vi">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chương Hai
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Nghệ thuật<br />đặt câu hỏi
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Prompt hay nhất là câu hỏi khiến<br />AI hỏi ngược lại bạn.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Ở chương trước, bạn đã học năm khối xây dựng của một prompt tốt — Vai trò, Nhiệm vụ, Định dạng, Ràng buộc, Ví dụ. Đó là nền tảng. Nhưng biết nguyên liệu chưa làm bạn thành đầu bếp.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Chương này nói về <em>kỹ thuật</em>. Sự khác biệt giữa người gõ prompt và người <em>chế tác</em> prompt. Đó là sự khác biệt giữa đặt một câu hỏi và đặt câu hỏi <strong>đúng</strong> — câu hỏi mở ra thứ thực sự hữu ích.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Người dùng AI giỏi nhất không phải chuyên gia về chủ đề — <strong>họ là chuyên gia đặt câu hỏi.</strong> Và đặt câu hỏi là kỹ năng có thể học được.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SOCRATIC FLIP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Đảo ngược kiểu Socrates
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đa số mọi người dùng AI như máy bán hàng tự động. Bỏ prompt vào, nhận câu trả lời ra. Nhưng kết quả tốt nhất đến từ <em>cuộc trò chuyện</em>, không phải mệnh lệnh. Và kỹ thuật trò chuyện mạnh nhất đã có từ 2.400 năm trước.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Socrates không bao giờ trả lời câu hỏi trực tiếp. Ông hỏi <em>thêm</em> câu hỏi — thăm dò, làm rõ, thách thức — cho đến khi học trò tự tìm ra hiểu biết sâu hơn. Bạn có thể dùng cách tiếp cận tương tự với AI, nhưng đảo ngược.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Thay vì hỏi AI cho câu trả lời, hãy nhờ AI phỏng vấn bạn. Để nó hỏi những câu làm rõ mà bạn quên nghĩ tới.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nghĩ mà xem: khi bạn gõ "lên kế hoạch tiệc sinh nhật", bạn đang bỏ qua hàng chục chi tiết thay đổi hoàn toàn câu trả lời. Bao nhiêu người? Ngân sách bao nhiêu? Trong nhà hay ngoài trời? AI không biết — nhưng nó có thể hỏi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Prompt kiểu Socrates</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Mình muốn lên kế hoạch tiệc sinh nhật. Trước khi bắt đầu lên kế hoạch, hãy hỏi mình 5 câu hỏi cụ thể giúp bạn tạo ra kế hoạch phù hợp với tình huống của mình. Hỏi từng câu một và đợi mình trả lời."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Chỉ một kỹ thuật duy nhất — đảo ngược ai là người hỏi — là một trong những nâng cấp mạnh nhất bạn có thể thực hiện. Nó biến AI từ máy trả lời thành <strong>đối tác tư duy</strong>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FlipTheScript client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Cho xem, đừng chỉ nói
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Tưởng tượng bạn đang giải thích một phong cách cho bạn bè. Bạn có thể mất năm phút mô tả bằng lời — "Mình muốn thứ gì đó vui nhộn nhưng không trẻ con, thoải mái nhưng không cẩu thả, câu ngắn và so sánh bất ngờ." Hoặc bạn chỉ cần đưa ra ví dụ: <em>"Viết kiểu thế này."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đó là <strong>few-shot prompting</strong>. Thay vì cố mô tả trừu tượng thứ bạn muốn, bạn cho AI ví dụ cụ thể. Một ví dụ là "one-shot". Hai hoặc ba ví dụ là "few-shot". Không ví dụ — chỉ mô tả — là "zero-shot".
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (mô tả)</span>
+        <p class="m-0" style="color: var(--color-deep);">"Viết mô tả sản phẩm giày chạy bộ. Viết ngắn gọn, hội thoại, câu ngắn. Tránh sáo ngữ marketing."</p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (cho ví dụ)</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Viết mô tả sản phẩm cho giày chạy CloudRunner X1. Đây là phong cách mình muốn:<br /><br />
+          <em>Ví dụ: 'The Weekender Tote — Đựng được laptop, đồ ăn trưa, và cả những lựa chọn đáng ngờ trong cuộc đời bạn. Vải chống nước vì chúng tôi biết bạn sẽ đổ gì đó. Năm ngăn, chẳng cái nào bạn nhớ nổi sau đó.'</em><br /><br />
+          Giữ giọng này: câu ngắn, hài hước tự nhận thức, cụ thể thay vì sáo rỗng."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Phiên bản few-shot sẽ cho kết quả tốt hơn rõ rệt. Không phải vì AI "thông minh hơn" — mà vì bạn cho nó một <strong>mục tiêu cụ thể</strong> thay vì hướng dẫn mơ hồ. Một ví dụ tốt đáng giá hơn trăm từ mô tả.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Khi AI không viết đúng phong cách bạn muốn, đừng thêm tính từ. Thêm ví dụ. "Kiểu thế này" luôn thắng "viết mạnh mẽ hơn nhưng cũng ấm áp nhưng đừng quá thoải mái" mọi lúc.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ MINI-CHALLENGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
+        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
+          Thí nghiệm nhanh
+        </p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
+          Nghĩ về thứ gì bạn đã nhờ AI viết gần đây — email, truyện, bài đăng mạng xã hội. Bây giờ tưởng tượng nếu bạn kèm theo một ví dụ cụ thể về giọng điệu muốn dùng. Kết quả sẽ khác thế nào?
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
+          Ghi nhớ điều này. Phòng thí nghiệm Prompt bên dưới sẽ cho bạn thử nghiệm thực tế.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHAIN OF THOUGHT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Nghĩ từng bước một
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đây là điều khá bất ngờ: nếu bạn hỏi AI giải bài toán, nó có thể sai. Nhưng nếu bạn bảo nó <em>giải từng bước một</em>, nó đúng thường xuyên hơn nhiều. Câu trả lời giống nhau. Câu hỏi khác.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kỹ thuật này gọi là <strong>chain-of-thought prompting</strong>. Thay vì hỏi đáp án trực tiếp, bạn yêu cầu AI trình bày lập luận. "Suy nghĩ từng bước." "Phân tích trước khi trả lời." "Giải thích cách suy luận khi làm."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        <div>
+          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
+            <span class="prompt-block-label" style="color: #E94560;">Không có chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "Một cây gậy bóng chày và quả bóng tổng cộng $1.10. Gậy đắt hơn bóng $1.00. Quả bóng giá bao nhiêu?"
+            </p>
+            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
+              AI trả lời: $0.10 (sai)
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
+            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Có chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "Một cây gậy bóng chày và quả bóng tổng cộng $1.10. Gậy đắt hơn bóng $1.00. Quả bóng giá bao nhiêu? Hãy suy nghĩ từng bước."
+            </p>
+            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
+              AI trả lời: $0.05 (đúng)
+            </p>
+          </div>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Tại sao cách này hiệu quả? Khi bạn yêu cầu AI trình bày lập luận từng bước, mỗi bước dẫn tới bước tiếp theo. Giống như cho AI giấy nháp — càng viết ra nhiều suy nghĩ, đáp án cuối cùng càng tốt.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Chain-of-thought không làm AI thông minh hơn. Nó làm AI chậm hơn — và suy nghĩ chậm hơn thường là suy nghĩ tốt hơn.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Điều này không chỉ áp dụng cho toán. Dùng nó bất cứ khi nào câu trả lời cần lập luận: phân tích luận điểm, so sánh lựa chọn, lên kế hoạch dự án, debug code. Bất cứ khi nào bạn muốn người ta "trình bày bài làm", hãy yêu cầu AI làm tương tự.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Kết hợp kỹ thuật
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sức mạnh thực sự đến từ việc kết hợp các kỹ thuật. Ví dụ few-shot <em>cộng</em> chain-of-thought. Vai trò hệ thống <em>cộng</em> ràng buộc <em>cộng</em> định dạng. Mỗi kỹ thuật là một đòn bẩy, và kéo nhiều đòn bẩy cùng lúc tạo ra thứ mà không đòn bẩy nào đơn lẻ có thể đạt được.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nhưng đây là sự tinh tế phân biệt người mới và người chuyên: <strong>nhiều hơn không phải lúc nào cũng tốt hơn.</strong> Brainstorm thoải mái cần một hai kỹ thuật. Bài luận quan trọng cần năm. Câu hỏi bình thường thì không cần gì cả. Kỹ năng là biết kéo bao nhiêu đòn bẩy — và đòn bẩy nào.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="margin-bottom: 2.5rem;">
+        {[
+          { label: 'Brainstorm thoải mái', techniques: ['Task'], color: '#6B7280', width: '25%' },
+          { label: 'Bài tập trên lớp', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
+          { label: 'Dự án quan trọng', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
+          { label: 'Kết quả quan trọng cao', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
+        ].map((level, i) => (
+          <FadeInBlock client:visible delay={i * 0.06} key={i}>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
+                {level.label}
+              </span>
+              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
+                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
+                  {level.techniques.map((t, j) => (
+                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
+                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Viết prompt quá nhiều là có thật. Prompt 500 từ cho một câu hỏi đơn giản không làm câu trả lời tốt hơn — thực ra có thể khiến AI rối. Độ phức tạp prompt cần khớp với độ phức tạp nhiệm vụ.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptLaboratory client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Khi prompt gặp sự cố
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kết quả AI tệ <strong>gần như không bao giờ là lỗi của AI.</strong> Khi kết quả chung chung, mơ hồ, hay sai bét, lỗi thường nằm ở prompt. Và giống như debug code, debug prompt là kỹ năng có thể học được.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Các lỗi prompt phổ biến nhất rơi vào năm loại. Khi bạn học cách nhận ra chúng, bạn sẽ thấy chúng ở khắp nơi — trong prompt của chính mình và trong những lời phàn nàn của người khác rằng AI "vô dụng."
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+      {[
+        { name: 'Mơ hồ', desc: 'Prompt có thể hiểu nhiều nghĩa. "Viết gì đó về chó" — viết kiểu gì? Cho ai? Bao dài?', color: '#E94560' },
+        { name: 'Mâu thuẫn', desc: 'Prompt yêu cầu hai thứ đối lập. "Viết ngắn nhưng toàn diện." "Giọng vui nhộn nhưng giữ trang trọng." Chọn một thôi.', color: '#F5A623' },
+        { name: 'Thiếu ngữ cảnh', desc: 'Prompt thiếu thông tin quan trọng. "Sửa code giùm" mà không gửi code. "Cải thiện bài luận" mà không có bài luận.', color: '#0EA5E9' },
+        { name: 'Quá nhiều nhiệm vụ', desc: 'Prompt yêu cầu năm thứ cùng lúc. AI dàn trải và không làm tốt cái nào.', color: '#7B61FF' },
+        { name: 'Câu hỏi dẫn dắt', desc: 'Prompt nói cho AI nghĩ gì. "Bạn có đồng ý X là tốt nhất không?" AI sẽ đồng ý. Nhưng không có ích gì.', color: '#16C79A' },
+      ].map((bug, i) => (
+        <FadeInBlock client:visible delay={i * 0.07}>
+          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
+            <div>
+              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
+                {bug.name}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {bug.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        Lỗi nguy hiểm nhất là <em>câu hỏi dẫn dắt</em>. Nó khó phát hiện nhất vì nó <em>có vẻ</em> cho kết quả tuyệt vời — AI đang đồng ý với bạn mà! Nhưng đồng ý không phải chính xác. Khi bạn đặt câu hỏi để xác nhận niềm tin sẵn có, bạn đã biến AI thành kẻ xu nịnh, không phải đối tác tư duy.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <DebugThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Đầu chương bạn gõ lệnh đơn lẻ. Giờ bạn biết cách đảo ngược câu hỏi, cho ví dụ thay vì mô tả, và debug prompt bị lỗi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Nhưng mọi kỹ thuật bạn học đều va vào cùng một bức tường vô hình: <em>cửa sổ ngữ cảnh</em>. Tiếp theo, chúng ta sẽ mổ xẻ nó và học cách thiết kế những gì AI thực sự nhìn thấy.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

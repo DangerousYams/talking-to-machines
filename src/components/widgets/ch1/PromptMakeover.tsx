@@ -482,7 +482,7 @@ Rules:
                 metricColor={mode === 'guided' ? '#16C79A' : '#7B61FF'}
                 subtitle="I took a 0% prompt to 100% and watched the AI response completely transform."
                 accentColor="#E94560"
-                tweetText={`I took a 0% prompt to 100% and watched the AI response completely transform \u2014 live. Try it:`}
+                tweetText={`I took a 0% prompt to 100% and watched the AI response completely transform \u2014 live.\n\nLearn to prompt like a pro at TalkingToMachines.xyz`}
                 shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-makeover` : undefined}
               />
             )}
@@ -676,7 +676,7 @@ Rules:
               </div>
               <div ref={responseRef} style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75,
-                color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: 380, overflowY: 'auto' as const,
+                color: '#1A1A2E', whiteSpace: 'pre-wrap' as const, maxHeight: 'calc(100vh - 280px)', overflowY: 'auto' as const,
               }}>
                 {renderResponse()}
               </div>
@@ -692,7 +692,7 @@ Rules:
                 metricColor={mode === 'guided' ? '#16C79A' : '#7B61FF'}
                 subtitle="I took a 0% prompt to 100% and watched the AI response completely transform."
                 accentColor="#E94560"
-                tweetText={`I took a 0% prompt to 100% and watched the AI response completely transform \u2014 live. Try it:`}
+                tweetText={`I took a 0% prompt to 100% and watched the AI response completely transform \u2014 live.\n\nLearn to prompt like a pro at TalkingToMachines.xyz`}
                 shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-makeover` : undefined}
               />
             </div>

@@ -4,7 +4,6 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
 import Divider from '../components/ui/Divider';
 import ContextWindowViz from '../components/widgets/ch3/ContextWindowViz';
 import ForgettingExperiment from '../components/widgets/ch3/ForgettingExperiment';
@@ -59,13 +58,13 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-8">
-        Here's the thing that surprises most people: <strong>AI has no memory.</strong> Not in the way you think of memory. It doesn't remember your conversation from yesterday. It doesn't even remember the beginning of <em>this</em> conversation if it's gone on long enough. Every single response it gives is based entirely on what's currently visible to it &mdash; a window of text called the <strong>context window</strong>.
+        <strong>AI has no memory.</strong> Not in the way you think of memory. It doesn't remember your conversation from yesterday. It doesn't even remember the beginning of <em>this</em> conversation if it's gone on long enough. Every single response it gives is based entirely on what's currently visible to it &mdash; a window of text called the <strong>context window</strong>.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85]">
-        Understanding this window &mdash; what goes into it, how big it is, and what happens when it fills up &mdash; is one of the most important skills in working with AI. This chapter is about becoming an engineer of that context.
+        Understanding this window &mdash; what goes into it, how big it is, and what happens when it fills up &mdash; is one of the most important skills in working with AI.
       </p>
     </FadeInBlock>
   </section>
@@ -311,40 +310,17 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        The AI only knows what you show it. Choose wisely.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Every conversation you have with AI is now different. You see the whiteboard. You feel the edges of the window. You know when to summarize, when to start fresh, and where the system prompt hides.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        You now understand the invisible architecture behind every AI conversation: tokens, context windows, system prompts, and the strategies that keep long interactions coherent. In the next chapter, we zoom out to explore the full landscape of AI tools available to you right now &mdash; far beyond chatbots.
+        So far we've been working with chatbots. Next, we zoom out &mdash; hundreds of AI tools exist beyond the chat window, and knowing the landscape changes what you think is possible.
       </p>
     </FadeInBlock>
   </section>

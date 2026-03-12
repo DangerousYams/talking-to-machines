@@ -1,0 +1,332 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="ko">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          10장
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          인간의<br />우위
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI가 대체할 수 없는 것 &mdash;<br />그리고 10배 쉽게 만드는 것.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        새로운 AI 능력이 나올 때마다 똑같은 헤드라인이 등장해: <em>"AI가 [직업]을 대체할까?"</em> 잘못된 질문이야. 항상 잘못된 질문이었어. 맞는 질문은 이거야: <em>"이것 덕분에 이전에 불가능했던 뭐가 가능해졌을까?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AI는 사람을 대체하지 않아. <strong>업무</strong>를 대체해. 그리고 어떤 직업 — 어떤 커리어, 어떤 창작 활동, 어떤 직종이든 — 을 자세히 들여다보면 혼합을 발견하게 돼: AI가 탁월하게 처리하는 업무, AI가 보조하는 업무, 그리고 꿋꿋하고 아름답게 인간적인 채로 남는 업무.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        이 장은 그 경계선을 찾는 거야. 두려워하라고가 아니라, <strong>그 경계의 올바른 편에 설 수 있도록</strong> — 네 고유한 인간적 스킬이 덜 가치 있어지는 게 아니라 더 가치 있어지는 그 편에.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        절벽이 아니라 스펙트럼
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI와 일자리에 대한 대부분의 대화는 이분법으로 다뤄: AI가 네 일을 할 수 있거나 없거나. 로봇 종말 아니면 평소대로. 하지만 현실은 스펙트럼이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        어떤 업무는 거의 완전히 자동화 가능해. 어떤 건 AI로 향상돼. 어떤 건 영향을 안 받아. 그리고 가장 흥미로운 것들 — 주목할 가치가 있는 것들 — 은 인간과 AI가 함께 일하는 그 중간 어딘가에 있어.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        데이터 입력? AI가 처리해. 회의 일정 잡기? 기본적으로 해결됐어. 초안 쓰기? AI가 놀라울 정도로 잘해. 하지만 <em>뭘 만들지 선택하기</em>, <em>위기 상황에서 분위기 읽기</em>, <em>데이터가 뭘 의미하는지 결정하기</em> — 이런 건 AI에게 없는 무언가를 필요로 해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        각 스킬이 실제로 어디에 해당하는지 네 직감을 시험해봐.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        직업은 사라지지 않아 — 변형돼
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        1970년대에 ATM이 등장했을 때, 모두가 은행 창구 직원이 사라질 거라고 예측했어. 대신, 은행 창구 직원 수가 <em>증가</em>했어. 왜? ATM 덕분에 새 지점을 여는 비용이 줄었고, 창구 직원의 업무가 현금 세기에서 금융 상품 판매와 고객 관계 구축으로 바뀌었으니까.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI가 같은 일을 하고 있어, 하지만 더 빠르고 모든 산업에 동시에. 직업 타이틀은 그대로야. 직업 <em>설명</em>은 극적으로 달라져. 2025년의 기자는 2015년의 기자와 같은 일을 하지 않아, 바이라인은 똑같아 보여도.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>새로운 커리어 공식</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          "인간 vs. AI"가 아니야. <strong>AI를 쓰는 인간 vs. AI를 안 쓰는 인간</strong>이야. AI 도구와 함께 일하는 법을 배우는 사람들은 직업을 잃지 않아 — 더 빠르고, 더 잘, 이전에 없던 능력을 가지고 일해.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        아래에서 직업을 골라보고 AI가 내부에서 어떻게 변화시키는지 정확히 확인해봐. 단 하나의 업무도 완전히 사라지지 않아. 하지만 모든 직업의 모양이 변하고 있어.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        취향: 대체 불가능한 스킬
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI는 1분 만에 로고 컨셉 백 개를 생성할 수 있어. 네가 커피를 다 마시기 전에 에세이 서론 열 개를 쓸 수 있어. 앱 디자인 다섯 개, 태그라인 네 개, 사업 계획 세 개를 만들 수 있어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        하지만 어떤 게 <em>맞는지</em>는 말해줄 수 없어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        선택지를 생성하는 게 거의 무료인 세상에서, <em>맞는 걸 고르는 능력</em>이 네가 가질 수 있는 가장 가치 있는 스킬이 돼. 그 능력에는 이름이 있어: 취향.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        취향은 신비로운 게 아니야. 훈련되는 거야. 좋은 작업을 많이 보고 나쁜 작업을 많이 보면서, 왜 하나가 다른 것보다 나은지 <em>설명할 수 있게</em> 되면서 발전해. 어떤 사진을 남겨야 하는지 아는 사진작가. 어떤 문장을 잘라야 하는지 아는 작가. 덜한 게 더 나은 때를 아는 디자이너.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        AI가 생성해. 네가 큐레이션해. 이게 새로운 분업이야. 네 취향이 얼마나 날카로운지 확인해보자.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        네 지식이 곧 네 헛소리 감지기
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        9장에서 AI 할루시네이션에 대해 얘기했어 — AI가 완벽한 자신감으로 거짓을 말하는 것. 하지만 불편한 후속 질문이 있어: <strong>어떻게 잡아내?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        답은 제1원리 사고야. AI가 파이프의 반지름을 두 배로 하면 물 흐름이 두 배가 된다고 하면, 면적이 반지름의 <em>제곱</em>에 비례한다는 걸 알아야만 그 실수를 잡을 수 있어. AI가 삼단논법이 유효하다고 하면, 연역의 규칙을 이해해야만 논리적 오류를 발견할 수 있어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI는 존재하는 것을 리믹스해. 제1원리 사고는 근본 진실에서부터 추론해. 그렇게 진정으로 새로운 영역에 도달하는 거야 — 그리고 자신 있게 틀리는 AI를 잡아내는 방법이기도 해.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        이게 모든 분야의 전문가가 되어야 한다는 뜻은 아니야. 하지만 네가 일하고 창작하는 영역에서, 기초적인 이해가 AI 출력을 무작정 복붙하는 사람과 너를 구분하는 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        직접 테스트해봐. 아래 AI가 여러 분야의 여섯 가지 문제에 자신 있게 답해. 어떤 건 맞고 어떤 건 미묘하게 틀려. 구별할 수 있어?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        인간으로 남는 것
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        지금까지 탐구한 모든 것을 보면, 패턴이 나타나. 가장 인간적으로 남는 스킬은 무작위가 아니야 — AI에 근본적으로 없는 몇 가지 깊은 능력 주위에 모여 있어.
+      </p>
+    </FadeInBlock>
+
+    <!-- Human edge capabilities -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: '판단력', color: '#16C79A', text: '뭐가 중요한지 선택하기. 뭘 만들지, 뭘 자를지, 뭘 출시할지, 뭘 폐기할지. AI는 결정에 정보를 줄 수 있지만 결정을 내릴 수는 없어 — 결정에는 가치관이 필요하고, 가치관은 인간의 것이니까.' },
+        { icon: '🤝', name: '공감', color: '#0EA5E9', text: '다른 사람이 어떻게 느끼는지 이해하고 진심 어린 관심으로 반응하기. AI는 텍스트로 공감을 시뮬레이션해. 인간은 관계 속에서, 위기 속에서, 가장 중요한 순간에 공감을 실천해.' },
+        { icon: '🧭', name: '비전', color: '#7B61FF', text: '아직 존재하지 않는 것을 보고 그것이 존재해야 한다고 결심하기. 모든 제품, 모든 회사, 모든 창작물은 세상에 새로운 무언가가 필요하다는 누군가의 확신에서 시작됐어. AI는 뭔가를 원할 수 없어.' },
+        { icon: '⚡', name: '리더십', color: '#F5A623', text: '사람들에게 영감을 주고, 갈등을 헤쳐나가고, 신뢰를 구축하기. 이것들은 근본적으로 사회적 스킬이야 — 존재감, 감성 지능, 그리고 책임질 수 있는 능력이 필요해.' },
+        { icon: '🔍', name: '독창적인 질문하기', color: '#E94560', text: 'AI는 질문에 답하는 걸 잘해. 인간은 아무도 생각하지 못한 질문을 하는 걸 잘해. 과학, 비즈니스, 예술에서 가장 중요한 돌파구는 답이 아니라 질문에서 시작됐어.' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 인사이트</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          이것들은 그냥 "있으면 좋은" 소프트 스킬이 아니야. AI가 강화된 세상에서, 이게 <strong>하드 스킬</strong>이야. 판단하고, 공감하고, 이끌고, 구상하는 능력 — 이것들이 바로 AI가 나머지를 다 처리하기 <em>때문에</em> 가장 경쟁력 있는 무기가 돼.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        취향. 판단력. 공감. 비전. 제1원리 추론. 이것들은 AI가 다 가져간 후에 남은 찌꺼기가 아니야 &mdash; 네가 테이블에 가져오는 것을 <em>정의하는</em> 스킬이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        마지막 장이 하나 남았어. 더 이상 이론은 없어. 지금까지 배운 모든 걸 합쳐서 진짜 무언가를 만들 시간이야 &mdash; 오직 네가 만들 생각을 할 수 있는 무언가를.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

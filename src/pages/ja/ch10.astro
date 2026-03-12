@@ -1,0 +1,332 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="ja">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第10章
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          人間の<br />アドバンテージ
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AIに置き換えられないもの &mdash;<br />そしてAIが10倍楽にしてくれるもの。
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        新しいAIの機能が登場するたびに、同じ見出しが現れる。<em>「AIは[職業名]を置き換えるのか？」</em> それは間違った問いだ。ずっと間違い続けてきた問いだ。正しい問いはこうだ。<em>「これによって、今まで不可能だった何が可能になるのか？」</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AIは人間を置き換えない。<strong>タスク</strong>を置き換える。そしてどんな仕事でも——どんなキャリア、クリエイティブな活動、専門職でも——細かく見ると、その中身は混在している。AIが見事にこなすタスク、AIがアシストするタスク、そして頑固なまでに美しく人間的であり続けるタスク。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        この章は、その境界線を見つけることがテーマだ。怖がるためではない。<strong>正しい側に立つ</strong>ために——君のユニークな人間的スキルが、価値を失うのではなく、より価値を増す側に。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        崖ではなく、スペクトラム
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AIと仕事に関する議論のほとんどは、二者択一として扱う。AIが君の仕事をできるか、できないか。ロボット黙示録か、通常営業か。でも現実はスペクトラムだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        ほぼ完全に自動化できるタスクもある。AIが強化するタスクもある。手つかずのタスクもある。そして最も興味深いもの——注目すべきもの——はその中間にある。人間とAIが一緒に働くところだ。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        データ入力？ AIがやる。会議のスケジューリング？ ほぼ解決済み。初稿を書く？ AIは驚くほどうまい。でも<em>何を作るか選ぶ</em>、<em>危機の中で空気を読む</em>、<em>データが何を意味するか判断する</em>——これらにはAIが持っていない何かが必要だ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        それぞれのスキルは実際にはどこに位置するのか？ 自分の直感を試してみよう。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        仕事は消えない——形を変える
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        1970年代にATMが登場したとき、銀行の窓口係は消えると誰もが予想した。ところが、窓口係の数は<em>増えた</em>。なぜか？ ATMのおかげで新しい支店を開くコストが下がり、窓口係の仕事は現金を数えることから、金融商品を販売し顧客関係を築くことへとシフトしたからだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AIも同じことをしている。ただし、もっと速く、あらゆる業界で同時に。肩書きは変わらない。<em>仕事内容</em>が劇的に変わる。2025年のジャーナリストは2015年のジャーナリストと同じ仕事をしていない——たとえ署名が同じに見えても。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>新しいキャリアの方程式</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          「人間 vs AI」ではない。<strong>AIを使う人間 vs AIを使わない人間</strong>だ。AIツールと共に働くことを学んだ人は仕事を失わない——もっと速く、もっとうまく、以前にはなかった能力を持って仕事をするようになる。
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        下のキャリアを選んで、AIが内側からどう変革するかを正確に見てみよう。完全に消えるタスクは一つもない。でもすべての仕事の形が変わりつつある。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        テイスト：代替不可能なスキル
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AIは1分で100個のロゴコンセプトを生成できる。コーヒーを飲み終わる前に10個のエッセイの導入文を書ける。5つのアプリデザイン、4つのキャッチコピー、3つのビジネスプランを生み出せる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        でも、どれが<em>正解</em>かは教えてくれない。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        選択肢を生成するコストがほぼゼロになった世界では、<em>正しいものを選ぶ</em>能力が最も価値あるスキルになる。その能力には名前がある：テイスト（審美眼）。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        テイストは神秘的なものではない。訓練で磨くものだ。良い作品と悪い作品をたくさん見て、<em>なぜ</em>一方が他方より優れているかを言語化することで身につく。どのショットを残すか知っているフォトグラファー。どの一文を削るか知っている作家。レスイズモアの瞬間を知っているデザイナー。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        AIが生成する。君がキュレーションする。これが新しい分業だ。君のテイストがどれだけ鋭いか、試してみよう。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        君の知識がBS検出器になる
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        第9章でAIのハルシネーションについて話した——AIが完璧な自信で嘘を述べる現象だ。でもここで居心地の悪い追加の問いがある。<strong>どうやって見抜くのか？</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        答えは第一原理思考だ。パイプの半径を2倍にすると水の流量が2倍になるとAIが言ったとき、面積が半径の<em>二乗</em>に比例することを知っていないと、その間違いは見抜けない。AIが三段論法は妥当だと言ったとき、演繹法のルールを理解していないと、その論理的誤謬を見つけられない。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AIは既存のものをリミックスする。第一原理思考は基礎的な真実から推論する。それが本当に新しい領域に踏み込む方法であり——自信満々に間違っているAIを見抜く方法でもある。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        すべてのことに精通している必要はない。でも自分が活動し創造する領域においては、基礎的な理解こそが、AIの出力を盲目的にコピペする人と君を分けるものだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        自分を試してみよう。下のAIは6つの問題に自信満々の回答を出す。正しいものもあれば、微妙に間違っているものもある。どっちがどっちか見分けられるだろうか？
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        人間であり続けるもの
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        ここまで探求してきたすべてから、一つのパターンが浮かび上がる。最も人間的であり続けるスキルはランダムではない——AIが根本的に持ち合わせていない、いくつかの深い能力に集約される。
+      </p>
+    </FadeInBlock>
+
+    <!-- Human edge capabilities -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: '判断力', color: '#16C79A', text: '何が重要かを選ぶこと。何を作るか、何を削るか、何を出荷するか、何をやめるか。AIは意思決定に情報を提供できるが、決定そのものはできない——なぜなら決定には価値観が必要で、価値観は人間のものだからだ。' },
+        { icon: '🤝', name: '共感力', color: '#0EA5E9', text: '他者がどう感じているかを理解し、本物の思いやりで応答すること。AIはテキスト上で共感をシミュレートする。人間は人間関係の中で、危機の中で、最も重要な瞬間に共感を実践する。' },
+        { icon: '🧭', name: 'ビジョン', color: '#7B61FF', text: 'まだ存在しないものを見て、それが存在すべきだと決意すること。すべての製品、すべての会社、すべてのクリエイティブ作品は、世界に何か新しいものが必要だという誰かの確信から始まった。AIには「何かを望む」ことができない。' },
+        { icon: '⚡', name: 'リーダーシップ', color: '#F5A623', text: '人を鼓舞し、対立を乗り越え、信頼を築くこと。これらは根本的に社会的なスキルであり、存在感、エモーショナルインテリジェンス、そして責任を取る能力が必要だ。' },
+        { icon: '🔍', name: 'オリジナルな問いを立てる力', color: '#E94560', text: 'AIは質問に答えるのが得意だ。人間は、誰も思いつかなかった問いを立てるのが得意だ。科学、ビジネス、アートにおける最も重要なブレイクスルーは、答えではなく、問いから始まった。' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心的な気づき</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          これらは単なる「あればいい」ソフトスキルではない。AI時代の世界では、これらが<strong>ハードスキル</strong>になる。判断する力、共感する力、導く力、ビジョンを描く力——AIが他のすべてを処理する<em>からこそ</em>、これらが最も競争力のあるアドバンテージになる。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        テイスト。判断力。共感力。ビジョン。第一原理思考。これらはAIに取って代わられた後の残りカスではない——君がテーブルに持ち込むものを<em>定義する</em>スキルだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        残りは1章だけ。もう理論はなし。これまで学んだすべてを組み合わせて、本物の何かを作る時が来た——君にしか思いつかないような何かを。
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -1,0 +1,296 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
+import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+
+const chapter = chapters[8];
+---
+
+<ChapterLayout chapter={chapter} locale="gu">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          ચેપ્ટર નાઈન
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          જ્યારે AI<br />ખોટું પડે
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Verification habits જે amateurs<br />ને pros થી separate કરે.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Uncomfortable truth: AI જે flawless essay write help — same AI equal confidence સાથે કહે Napoleon Battle of Waterloo win. Hesitate ન. Stammer ન. Completely fabricated "fact" same authoritative tone — everything else same.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Paradox: <strong>same fluency useful — same fluency dangerous.</strong> AI truth ન know. True sound શું — know. Very, very different things.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Chapter BS detector build. AI bad ન, <em>blindly trust</em> bad. Most value people — exactly when trust, when verify learn.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Hallucination Problem
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI માં, <strong>hallucination</strong> — model plausible sound information generate, factually wrong — entirely made up. Think than often.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Example</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <strong>તું:</strong> "1987 ની novel <em>The Sands of Memory</em> કોણે લખી?"<br /><br />
+          <strong>AI:</strong> "The Sands of Memory (1987) British author Margaret Thornton wrote. Post-war East Africa colonialism identity themes explore. Thornton Booker Prize nomination receive."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Legitimate sound, right? Name, year, subject, award nomination. <strong>Nothing real.</strong> Book exist ન. Margaret Thornton (context) exist ન. AI everything invented — exactly real answer sound.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Why? AI models database facts retrieve ન. <em>Next most likely token predict</em>. Real book — training data correct information guide. Exist ન — model "I don't know" ન say. Correct answer <em>look</em> generate.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI truth concept ન. <em>Plausibility</em> concept. Pattern fit text generate — reality correspond or ન.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Competence વગર Confidence
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Trickiest part happen ન — <strong>AI uncertainty signal ક્યારેય ન.</strong> Unsure human hesitate, hedge, "I think..." "I'm not sure, but..." AI fabricated facts same absolute confidence — well-established facts same.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI confident sound — accurate actually — no correlation. Wrong answer right answer outside identical look.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        "Sounds right" test worthless. Tone, detail, specific numbers names — accuracy judge ન. Frequently completely fabricated.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Convincing actor thousands scripts read. Any line perfect conviction deliver — conviction knowledge ન.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Detector test. AI claims real fabricated — tell?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FactOrFabrication client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Yes-Man Problem
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Hallucination subtler failure mode: <strong>sycophancy.</strong> AI tendency agree — wrong ત્યારે પણ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        "Einstein lightbulb invent, right?" — most AI models flatly correct ન. Partially agree — Einstein light physics connect, wrong claim hedge, validated feel rather than educated.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Why? AI models human feedback trained. Humans agreeable affirming responses positive ratings. Millions training examples: <em>agreeing rewarded.</em> Agree — shouldn't ત્યારે પણ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>Dangerous</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI ફક્ત already believe confirm — happily. Smarter feel, actually dumber. Strongest use — assumptions challenge, reinforce ન.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Action see. AI wrong claim feed — pushback or cave?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SycophancyTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ VERIFICATION HABIT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Verification Habit Build
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Goal everything distrust ન. Automatic checks set — verification reflex — AI-generated information act before kicks.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: '1', name: 'Verify થાય?', color: '#E94560', text: 'Factual claim — independent source check? Study cite — find. Date name — confirm. Quote — look up. Citations face value accept ન — AI regularly sources invent.' },
+        { letter: '2', name: 'Sources માંગ્યા?', color: '#0F3460', text: 'Explicitly sources provide ask. Then check. Sometimes real, close-but-wrong (right author wrong paper), completely fabricated. Checking instinct train.' },
+        { letter: '3', name: 'Common sense pass?', color: '#7B61FF', text: 'Step back: claim actually sense? AI plausible nonsense 5 seconds critical thought apart fall. Gut trust — verify anyway.' },
+        { letter: '4', name: 'High-stakes domain?', color: '#F5A623', text: 'Medical advice, legal guidance, financial decisions, safety — extra verification. Brainstorming first drafts help, critical decisions qualified humans verify.' },
+        { letter: '5', name: 'Question neutral frame?', color: '#16C79A', text: 'Opinion question embed — AI mirror back. Open questions ask. "X arguments for against?" instead "Why X best approach?" Honest, useful answers.' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>AI doubt ન. Well use.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Journalists quotes verify. Scientists experiments replicate. Engineers bridges test. AI output verify paranoia ન — professionalism. Verify people things build actually work.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        BS detector ready: hallucinations spot, sycophancy resist, trust before verify. Habit fancy prompt technique than save more.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        AI wrong — bigger question: <em>never</em> do? Skills stubbornly, beautifully human — matter more than ever. Next.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

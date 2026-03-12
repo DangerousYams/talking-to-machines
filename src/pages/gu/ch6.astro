@@ -1,0 +1,321 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
+import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
+import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+
+const chapter = chapters[5];
+---
+
+<ChapterLayout chapter={chapter} locale="gu">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          ચેપ્ટર સિક્સ
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Agents<br />Build કરવા
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI agent scratch થી design,<br />wire, અને deploy કર.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Chatbot તારી wait કરે. Agent ન કરે. Goal આપ — "Mars colonization research કરીને report લખ" — એ work steps માં break કરે, right tools pick કરે, one by one execute કરે, results check કરે, job done ન થાય ત્યાં સુધી continue. Hand-holding ન જોઈએ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        <em>Instructions ને respond</em> અને <em>goal pursue</em> — આ distinction calculator અને coworker વચ્ચેનો ફરક છે. Chatbots questions answer. Agents problems solve.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        આ chapter agents actually hood ની under કેવી રીતે work — loop, architecture, અને failure modes — બધા વિશે છે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Agent Loop
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Chapter 5 માં basic tool-use loop જોયું: observe, think, act. Agents એને extend કરીને ambitious બનાવે — five-step cycle, દરેક different internal component powered:
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'G', word: 'Goal', color: '#E94560', desc: 'Human પાસેથી high-level objective receive. Clear goal વગર agent decide ન કરી શકે done છે કે નહીં. "Mars research" goal નથી. "Mars colonization challenges ની 500-word summary, sources સાથે" goal છે.' },
+        { letter: 'P', word: 'Plan', color: '#7B61FF', desc: 'Goal ને concrete steps માં break. Best planners flexible plans create — step fail ત્યારે adapt. Bad planners rigid scripts — first surprise પર break.' },
+        { letter: 'T', word: 'Execute', color: '#0EA5E9', desc: 'દરેક step right tool સાથે run — search engines, code interpreters, file readers, APIs, calculators. Agents think ન કરે ફક્ત. Act કરે.' },
+        { letter: 'M', word: 'Observe', color: '#16C79A', desc: 'શું થયું record કર, results check. Memory વગર agent loop માં same failing action forever repeat કરે.' },
+        { letter: 'E', word: 'Evaluate', color: '#F5A623', desc: 'Work થયું? Data reliable? Goal closer? Evaluator agent ને script થી separate કરે. Off હોય — plan adjust, loop again.' },
+      ].map((step, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Key word <em>loop</em>. Agent once plan ન કરે blindly execute. Plan, act, observe, evaluate, adjust. Best agents step three sideways ગયો ત્યારે gracefully recover.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Chatbot single turn. Agent આખી conversation — પોતાની સાથે, tools સાથે, world સાથે.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Build કરવાનો time. Scratch થી agent design કર.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <AgentBlueprint client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN AGENTS FAIL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        જ્યારે Agents Fail થાય
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Agents chatbots ની જેમ fail ન થાય. Chatbot bad answer આપે, wait. Agent bad answer પોતાને આપે, <em>act on it</em>, broken result next decision માટે use. Failures compound.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Agents wrong જવાના ત્રણ classic ways:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Failure Mode 1: Infinite Loop</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agent same action repeat કરતું stuck. Research agent "one more source" search કરતો રહે, writing never start. Stopping condition વગર plug pull ન કરે — કે API credits ખતમ ન થાય — ત્યાં સુધી run.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
+        <span class="prompt-block-label" style="color: #7B61FF;">Failure Mode 2: Wrong Tool</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agent job ન કરી શકે એવું tool select. Hard drive ની file web-search, essay summarize માટે calculator. Stupid નથી — toolbox માંથી pick કર્યું without checking fit.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
+        <span class="prompt-block-label" style="color: #F5A623;">Failure Mode 3: Hallucinated Actions</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agent exist ન કરે એવા tools કે APIs invent, fake results સાથે "call". Fake call fail — data fabricate. Double hallucination: fake tool, fake output.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Fix same principle: <strong>unhappy path માટે design.</strong> Max iterations, tool validation, output verification, human checkpoints. Goal failure prevent નથી — failure recoverable બનાવવું.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO FAILURE MODES LAB -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Broken agent diagnose કરી શકે? Bug શોધ, guardrail add.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FailureModesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF MANY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ઘણા ની Power
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        One agent useful. Multiple agents together — single system overwhelm થાય એવી problems tackle. Trick specialization.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Newsroom ની જેમ વિચાર. Same person story investigate, article write, publication edit — ન કહે. દરેક role different mindset, tools, standards.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Multi-agent systems same way work. <strong>Researcher</strong> agent information gather. <strong>Writer</strong> agent raw notes ને polished prose. <strong>Editor</strong> agent review, fact-check, improvements suggest. દરેક agent ને own system prompt, own tools, own success criteria.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Multi-agent design નો critical question "agent કેટલું smart?" નથી. <strong>"Handoff કેટલું good?"</strong> Researcher Writer ને notes pass — clearly structured? Writer Editor ને draft pass — enough context useful feedback?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Handoff document multi-agent system ની most important artifact. Brilliant writer sloppy research notes save ન કરે. Agents વચ્ચે interface — ત્યાં quality win or lost.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        ત્રણ agents collaborate જો. Handoff documents ધ્યાન થી &mdash; ત્યાં magic.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HandoffChain client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN IN THE LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Loop માં Human
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Chapter 5 માં trust framework શીખ્યું: stakes, reversibility, trust determine autonomy. Agents સાથે even more critical — agents questions ફક્ત answer ન કરે. <em>Actions</em> લે, chain together, unchecked mistakes compound.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85]">
+        Best agent builders autonomy maximize ન કરે. <strong>Thoughtful checkpoints</strong> design — moments agent pause, work show, human decide continue. Great agent ખબર ક્યારે ask.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Agents inside out જોયા: loop, architecture, failure modes. Carelessly build થાય ત્યારે dangerous.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Theory એક thing. Next, real agent use &mdash; code read, changes write, tests run, mistakes fix. Claude Code meet.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

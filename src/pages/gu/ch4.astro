@@ -1,0 +1,394 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="gu">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          ચેપ્ટર ફોર
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          AI નું<br />Landscape
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          દરેક AI tool ની field guide<br />જે તું અત્યારે જ use કરી શકે.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        મોટાભાગના લોકો "AI" કહે ત્યારે ChatGPT ને mean કરે. કદાચ Google ના Gemini, કે Claude ના નામ સાંભળ્યા હોય. "Internet" કહીને Google mean કરવા જેવું છે. Wrong નથી. પણ ઘણી monstrous thing નો tiny slice છે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        અત્યારે, સેંકડો AI tools છે જે તું today use કરી શકે — theoretical future માં નહીં, literally right now, browser માંથી. Tools જે sentence થી photorealistic images generate કરે. Full songs compose કરે. Research topic ના દરેક academic paper વાંચીને ત્રણ paragraphs માં consensus summarize કરે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        આ chapter તારી field guide છે. Exhaustive catalog નહીં — next Tuesday સુધી outdated થઈ જાય — પણ <strong>terrain નો map</strong>. Important categories, worth knowing tools, અને right tool pick કરવાનું thinking framework.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Chatbot ની પાર
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Chatbot iceberg ની tip છે. Surface ની નીચે, AI ડઝનો specialized capabilities માં split થઈ ગયું છે, દરેક different work માટે different tool.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Musical instruments ની જેમ વિચાર. Piano અને drum kit બંને "musical instruments" છે, પણ pianist ને beat નાખવાનું ન કહે, drummer ને concerto play કરવાનું ન કહે. AI tools same way. Image generation માટે built tool code માટેના tool થી fundamentally different છે — different architecture, different training data, different strengths.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        જે 10 AI tools surface level પર જાણે એ consistently outperform કરશે એને જે one tool deeply જાણે. Breadth of awareness depth of expertise ને beat કરે — શરૂઆતમાં.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        આ landscape today — tools actually <em>શું</em> કરે એ according organized.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        આઠ Families
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        તને મળનાર દરેક AI tool આ categories માંથી એકમાં fit થાય. કેટલાક boundaries cross કરે, પણ families સમજવાથી chaos ને sense બનાવવા mental map મળે.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text જાય, images આવે. Photorealistic scenes થી anime થી oil paintings. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. સૌથી democratizing category — words થી visual art કોઈ પણ create કરી શકે.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'Real image થી start કરીને transform કર. Backgrounds remove કર, resolution upscale કર, objects replace કર, scenes relight કર. Photoshop AI, Magnific, Clipdrop. Human photographers ને replace ના બદલે augment કરે.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Newest frontier. Text કે still images થી video clips generate કર. Sora, Runway, Kling, Pika. હજુ early — most clips 30 seconds ની under — પણ staggering pace થી improve. Filmmaking ક્યારેય same ન રહેશે.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Text description થી full songs, 30-second sample થી voice cloning, on demand sound effects. Suno, Udio, ElevenLabs. Studio અને team ની work ને single prompt માં compress.' },
+        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'AI જે internet (કે academic databases) read કરે. Perplexity search અને cite કરે. Elicit papers વાંચે. Consensus scientific agreement શોધે. NotebookLM documents ને expert બનાવે.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'Agents જે web navigate કરે human ની જેમ. Buttons click કરે, forms fill કરે, pages navigate કરે. Arc, Operator, Claude Computer Use. "Questions answer" અને "tasks do" વચ્ચેનો bridge.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'AI જે code write, edit, run, debug કરે. Claude Code terminal માંથી work કરે. Cursor અને Windsurf full editors. Copilot inline suggest કરે. Replit Agent scratch થી entire apps build.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'General-purpose conversational AI: ChatGPT, Claude, Gemini. Swiss army knives — ઘણી things માં good, best ત્યારે જ્યારે prompt કરતા આવડે (જે Chapters 1-3 થી આવડે).' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          આ categories converge થઈ રહી છે. Image generators video add કરે. Chatbots tool use gain કરે. Coding tools agents બને. બે years માં boundaries blur થશે. પણ અત્યારે specialists હજુ generalists ને beat કરે specialty માં.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Full catalog explore કર. કોઈ પણ tool click કરીને જાણ શું કરે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Right Tool Choose કરવું
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        આટલા options સાથે, hard part AI tool શોધવું નથી. <em>Right</em> AI tool શોધવું છે. આ framework work કરે:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Output શું છે?', desc: 'Text? Image? Code? Video? Audio? આ immediately 1-2 families સુધી narrow કરી દે.' },
+          { word: 'Quality bar શું છે?', desc: 'પોતા માટે quick draft, કે audience માટે polished output? Different tools different standards માટે.' },
+          { word: 'Budget શું છે?', desc: 'ઘણા tools free tiers offer કરે જે surprisingly capable છે. Pay કરતા પહેલા actually need શું છે જાણ.' },
+          { word: 'Workflow શું છે?', desc: 'Standalone task, કે longer chain નો one step? Integration raw power કરતા matter કરે.' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Most beginners same mistake કરે: everything માટે one general-purpose AI વાપરે. Technically work કરે, પણ right specialized tools સાથે faster better results મળે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        Opposite trap માં પણ ન પડ. 47 AI subscriptions ની જરૂર નથી. <strong>Different categories ના 3-4 tools pick કર, well learn કર, ત્યાંથી expand કર.</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Pipelines ની Power
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Real unlock: <strong>tools chain together થાય ત્યારે exponentially powerful બને.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Single AI tool capability આપે. AI tools ની chain <em>workflow</em> આપે. Perplexity research શોધે. Claude article લખે. Midjourney illustrations create કરે. દરેક tool best work કરે, અને એક નું output next ના input બને.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Online જોયેલું most impressive AI-generated work one tool થી ન બન્યું. Five tools chain together, human જે each one best at શું છે એ સમજે — એનાથી બન્યું.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Landscape સમજવું why matter કરે એ. Pipeline build ન થાય જો ફક્ત one tool જાણે. Right specialist choose ન થાય જો specialists exist છે એ ખબર ન હોય.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        જાતે build કરીને try કર:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        કોઈ "Best" Tool નથી
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        દર week કોઈ AI tools ની definitive ranking post કરે. દર week એ wrong હોય. Ranking ખરાબ નથી, "best" entirely depend કરે — શું કરે, કેવી રીતે, શું value.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney DALL-E 3 કરતા artistic images બનાવે. પણ DALL-E 3 instructions precisely follow કરે. Ideogram text rendering best કરે. કયું "best"? Movie poster, product photo, કે logo — depend કરે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude nuance સાથે write કરે. GPT faster. Gemini ને more context. તને શું matter? Task પર depend.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Real skill one tool master કરવું નથી. કયું tool કયા job fit થાય — એની taste develop કરવી.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Professional carpenter ને favorite tool ન હોય. <em>દરેક task માટે</em> favorite tool હોય. Develop કરવાની mindset આ છે.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        જાતે જો. Same prompt, different tools &mdash; કયું output prefer કરે?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Landscape Move થઈ રહ્યું છે
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Uncomfortable truth: ઉપર catalog ના કેટલાક tools year માં exist ન કરે. બીજા જે exist ન કરે એ essential બનશે. AI landscape history ના કોઈ technology landscape કરતા faster move કરે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        તો specific tools learn કરવાનો point? <strong>Categories stable છે tools ન હોય ત્યારે પણ.</strong> Image generators, code assistants, research agents હંમેશા હશે. Names change. Underlying capabilities અને mental models ન change.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Transferable Skills</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1. AI tools ની categories exist કરે એ જાણવું<br />
+          2. New tool ને 15 minutes માં evaluate કરતા આવડવું<br />
+          3. Tools ને workflows માં chain કરતા આવડવું<br />
+          4. Tools switch vs. prompts refine — ક્યારે કરવું જાણવું
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        આ ચાર skills serve કરશે — next year કે એ પછી ગમે which specific tools dominate. Landscape shift થાય, navigator effective રહે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        હવે AI landscape નો map છે &mdash; tools ની આઠ families, choose કરવાનું framework, અને pipeline mindset જે chain together કરે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        પણ અત્યાર સુધી tools ફક્ત respond કરે. જો <em>જાતે actions લઈ શકે</em> તો? Tool થી agent — આ leap બધું બદલી નાખે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

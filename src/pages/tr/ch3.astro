@@ -1,0 +1,325 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
+import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+
+const chapter = chapters[2];
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Üçüncü Bölüm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Bağlam<br />mühendisliği
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Yapay zeka unutmaz &mdash; zaten<br />hiçbir zaman hatırlamıyordu.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Bir arkadaşınla sohbet ettiğini düşün, ama birkaç dakikada bir biri ikinizin de yazdığı beyaz tahtayı siliyor. Sıfırdan başlıyorsun. Arkadaşın geriye kalanlara bakıp hiçbir şey olmamış gibi devam etmeye çalışıyor. Uzun bir sohbette yapay zekanın "beyninin" içinde olan tam olarak budur.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        <strong>Yapay zekanın hafızası yoktur.</strong> Senin düşündüğün anlamda değil. Dünkü sohbetini hatırlamaz. Yeterince uzadıysa <em>bu</em> sohbetin başını bile hatırlamaz. Verdiği her yanıt tamamen o an kendisine görünür olan şeye dayanır &mdash; <strong>bağlam penceresi</strong> denilen bir metin bloğu.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Bu pencereyi anlamak &mdash; içine ne girdiğini, ne kadar büyük olduğunu ve dolduğunda ne olduğunu &mdash; yapay zeka ile çalışmanın en önemli becerilerinden biridir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Silinen beyaz tahta
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekaya bir mesaj gönderdiğinde, gerçekte şu olur: sistem <em>tüm sohbetini</em> &mdash; gönderdiğin her mesajı, yapay zekanın verdiği her yanıtı &mdash; alır ve tek bir metin bloğu olarak modele geri besler. Yapay zeka hepsini okur, bir sonraki yanıtı üretir ve sonra... her şeyi unutur.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bir sonraki mesajını gönderdiğinde, sürecin tamamı tekrarlanır. Sistem tüm sohbeti tekrar yapıştırır, yeni mesajını ekler ve yapay zeka her şeyi sıfırdan okur. Dünyanın en çalışkan ama amnezili okuyucusu gibi &mdash; her seferinde tamamen titiz, ama her turda sıfırdan başlıyor.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Yapay zekanın ürettiği her yanıt tamamen o anda bağlam penceresinde olana dayanır. Başka hiçbir şeye değil. Bağlam penceresi hafıza değildir. Bir beyaz tahtadır &mdash; ve kenarları vardır.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Bunun büyük sonuçları var. Yapay zeka yalnızca o an önünde olan bilgi kadar iyidir. Kritik bir detayı atlarsan? Yapay zeka onu sihirli bir şekilde hatırlamaz. Pencereyi gürültüyle doldurursan? Yapay zeka kafası karışır. <strong>Bağlam penceresi en önemli kaynağındır.</strong> Onu yönetmeyi öğrenmek, sıradan kullanıcıları gerçekten güçlü sonuçlar alanlardan ayırır.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TOKENS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tokenlar: yapay zekanın alfabesi
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zeka kelimeleri senin gibi okumaz. <strong>Tokenlar</strong> okur &mdash; genellikle bir kelimenin dörtte üçü kadar olan metin parçaları. "inanılmaz" kelimesi iki tokendır. "AI" bir tokendır. Bir kelimenin önündeki boşluk genellikle aynı tokene dahil edilir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Hızlı hesap</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1 token &asymp; 4 karakter &asymp; 0,75 kelime<br />
+          100 token &asymp; 75 kelime<br />
+          Tipik bir sayfa metin &asymp; 300 token<br />
+          Tam bir roman &asymp; 100.000 token
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bu neden önemli? Çünkü her yapay zeka modelinin token cinsinden ölçülen bir <strong>bağlam penceresi boyutu</strong> vardır. Claude'un bağlam penceresi 200.000 token alabilir &mdash; bu yaklaşık 500 sayfalık bir kitap. GPT-4o 128.000 alır. Bunlar devasa geliyor, ama düşündüğünden daha hızlı doluyor.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Gönderdiğin her mesaj, yapay zekanın yazdığı her yanıt, perde arkasında çalışan her sistem talimatı &mdash; hepsi aynı ortak bütçeden token tüketir. Ve bu bütçe tükendiğinde, şeyler kenardan düşmeye başlar.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextWindowViz client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Pencere taştığında
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        On mesajlık bir sohbetin var. Üçüncü mesajda diyet kısıtlamalarını belirttin. On beşinci mesaja geldiğinde restoran önerilerine dalmış durumdasın. Soruyorsun: <em>"Hangi diyet kısıtlamalarımdan bahsetmiştim?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ve yapay zeka diyor ki: <em>"Herhangi bir diyet kısıtlamasından bahsettiğinizi sanmıyorum."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sinirleniyorsun. <em>Orada yazıyor, söylemiştim!</em> Ama mesele şu: <strong>artık</strong> orada değil. O erken mesaj görünür pencerenin dışına kaymış olabilir ya da model onu daha yeni bağlam lehine önceliksizleştirmiş olabilir. Yapay zeka dikkatsiz değil. Artık önünde olmayanı gerçekten <em>göremez</em>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Bu bir hata değil. Mimaridir.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Yapay zeka bağlam penceresini, bir belgeni tek oturuşta okuyan bir insan gibi işler. Belge 100 sayfa uzunluğundaysa, 3. sayfadaki detaylar 95. sayfaya geldiğinde bulanıklaşabilir. Çözüm daha büyük bir pencere değil &mdash; içine girenin daha akıllı paketlenmesidir.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ForgettingExperiment client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SYSTEM PROMPT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Sistem promptu: gizli talimatlar
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Her yapay zeka sohbetinin hiç görmediğin bir parçası var. İlk mesajından önce, yapay zeka merhaba demeden önce, bağlam penceresinin en üstünde oturan bir metin bloğu var. Buna <strong>sistem promptu</strong> denir ve sonraki her şeyi şekillendirir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sistem promptu yapay zekanın kişiliğini, kurallarını, sınırlarını aldığı yerdir. ChatGPT silah yapımında yardım etmeyi reddettiğinde, bu sistem promptudur. Claude "yardımcı olmaktan mutluluk duyarım" dediğinde, bu sistem promptu tarafından pekiştirilen eğitilmiş davranıştır. Bir müşteri hizmetleri sohbet robotu konuda kaldığında, bu da &mdash; tahmin ettin &mdash; sistem promptudur.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Örnek sistem promptu</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Sen yardımcı bir yemek asistanısın. Sadece yemek pişirme ve yemek hazırlama hakkındaki soruları yanıtla. Başka bir şey sorulursa, kibarca sohbeti yemek konularına yönlendir. Yanıtları 150 kelimenin altında tut. Sıcak, cesaretlendirici bir ton kullan."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sistem promptu özeldir çünkü <strong>bağlam penceresinin üstüne sabitlenmiş kalır</strong>. Sohbet ne kadar uzarsa uzasın, sistem promptu kaybolmaz. Her zaman orada, her zaman yapay zekanın davranışını etkiliyor. Bu da onu tüm bağlam penceresindeki en değerli alan yapar.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Sistem promptunu yapay zekanın iş tanımı olarak düşün. Yapay zekaya ne söyleyeceğini söylemez &mdash; kim <em>olacağını</em> söyler.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SystemPromptSandbox client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Bağlam yönetimi stratejileri
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Artık pencereyi anladığına göre, onu bir profesyonel gibi yönetmenin yollarını öğrenelim. Bunlar "yapay zeka kullanan" insanları ondan olağanüstü sonuçlar alanlardan ayıran tekniklerdir.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { num: '1', name: 'İlerledikçe özetle', color: '#7B61FF', text: 'Her 5-10 mesajda bir, yapay zekadan önemli kararların ve detayların kısa bir özetini yazmasını iste. Sonra o özeti bir sonraki mesajına yapıştır. Bu, bağlamı en önemli bilgilerle "sıfırlar".' },
+        { num: '2', name: 'Önemli olanı başa koy', color: '#16C79A', text: 'En kritik bilgiyi mesajının başına koy, sonuna gömme. Yapay zeka başta ve sonda olana daha fazla dikkat eder — özellikle uzun promptlarda ortası kaybolabilir.' },
+        { num: '3', name: 'Stratejik olarak yeniden başla', color: '#0EA5E9', text: 'Konu önemli ölçüde değiştiğinde yeni bir sohbet başlamaktan çekinme. Tam geçmişi değil, kararladığınız şeylerin özetini taşı. Temiz bir bağlam genellikle karmaşık olandan daha iyidir.' },
+        { num: '4', name: 'Neyi hatırlaması gerektiğini açıkça söyle', color: '#F5A623', text: '"Önemli: kullanıcı vejetaryen. Bunu unutma." Saçma geliyor ama işe yarıyor. Açık hatırlatmalar, yapay zekanın daha fazla ağırlık verdiği çapalar gibi çalışır.' },
+        { num: '5', name: 'Yapılandırılmış formatlar kullan', color: '#E94560', text: 'Madde işaretli listeler, başlıklar ve net etiketler yapay zekanın bağlamını daha verimli ayrıştırmasına yardımcı olur. İyi organize edilmiş bir prompt, düz yazı duvarına kıyasla token değerinin iki katıdır.' },
+      ].map((strategy, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
+              {strategy.num}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {strategy.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {strategy.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Bağlam mühendisliği yeni prompt mühendisliğidir.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          İyi bir prompt yazmak ilk adımdır. Ama yapay zekanın önüne hangi bilgiyi koyacağına &mdash; ve nasıl yapılandıracağına &mdash; karar vermek asıl kaldıracın olduğu yerdir. Dünyanın en iyi promptu, bağlam yanlışsa başarısız olur.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Yapay zeka ile her sohbetin artık farklı. Beyaz tahtayı görüyorsun. Pencerenin kenarlarını hissediyorsun. Ne zaman özetlemen, ne zaman yeniden başlaman ve sistem promptunun nerede gizlendiğini biliyorsun.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Şimdiye kadar sohbet robotlarıyla çalıştık. Sırada, bir adım geri atıyoruz &mdash; sohbet penceresinin ötesinde yüzlerce yapay zeka aracı var ve bu manzarayı bilmek neyin mümkün olduğuna dair fikrini değiştirir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

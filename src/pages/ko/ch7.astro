@@ -1,0 +1,404 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
+import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
+import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+
+const chapter = chapters[6];
+---
+
+<ChapterLayout chapter={chapter} locale="ko">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>7</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          7장
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Claude Code<br />마스터하기
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI 페어 프로그래머, 첫 명령부터<br />커스텀 Skills까지.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        모든 개발자가 기억하는 순간이 있어. 터미널을 열고, 자연어로 요청을 치면, AI가 파일을 읽고, 아키텍처를 이해하고, 여러 파일에 걸쳐 코드를 쓰고, 실행하고, 에러를 만나면 고치고, 다시 실행해 — 네가 코드 한 줄도 안 건드리고. 그게 Claude Code야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        자동완성이 아냐. 코드 조각을 쓰는 챗봇이 아냐. Claude Code는 <em>에이전틱</em> 코딩 도구야 — 네 프로젝트 전체를 볼 수 있고, 파일 간에 수정하고, 쉘 명령을 실행하고, 자기 실수를 반복하는 커맨드라인 파트너. 코드를 제안만 하는 게 아냐. 코드를 <strong>배포</strong>해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        근데 도구는 그걸 다루는 사람만큼만 좋아. Claude Code는 몇 초 만에 완벽한 코드 천 줄을 쓸 수도 있고 — 그럴듯하게 보이는 쓰레기 천 줄을 쓸 수도 있어. 차이는 너야.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Claude Code의 사고 방식
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude Code한테 작업을 주면, 바로 타이핑을 시작하지 않아. 챕터 6의 에이전트 루프를 코드에 특화해서 돌려:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: '읽기.', desc: '코드베이스를 스캔해 — 파일, import, 테스트, 설정. 뭐가 있는지 파악.' },
+          { word: '계획.', desc: '뭘 바꿀지, 어떤 파일에서, 어떤 순서로 할지 결정.' },
+          { word: '쓰기.', desc: '편집 반영. 파일 생성. 코드 수정.' },
+          { word: '실행.', desc: '명령 실행 — 빌드, 테스트, 린트. 결과 확인.' },
+          { word: '고치기.', desc: '뭔가 깨지면 에러를 읽고, 조정하고, 다시 시도.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        이 읽기-계획-쓰기-실행-고치기 루프가 Claude Code를 단순한 코드 생성기와 다르게 만들어. 코드 조각을 주고 사라지지 않아. <em>루프 안에 남아</em> — 코드가 실제로 작동할 때까지 반복해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        페어 프로그래밍이라고 생각해. 네가 원하는 걸 설명해. Claude Code가 써. 테스트 실패. Claude Code가 에러를 읽고, 조정하고, 다시 돌려. 이 사이클이 세 번, 다섯 번, 열 번 일어날 수 있어 — 전부 몇 초 만에.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        루프를 실전에서 봐. 요청을 타이핑하고 Claude Code가 작업하는 걸 지켜봐.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TerminalPlayground client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        CLAUDE.md 파일
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        대부분의 초보가 놓치는 거: <strong>Claude Code한테 영구적인 지시를 줄 수 있어.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        프로젝트 루트에 <code>CLAUDE.md</code>라는 파일을 넣으면, Claude Code가 매 세션 시작할 때 읽어. 코드베이스 전체를 위한 system prompt 같은 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
+          # My Project<br /><br />
+          Tech stack: Astro + React + Tailwind<br />
+          Always use TypeScript with strict mode.<br />
+          Put components in src/components/.<br />
+          Write tests for every new function.<br />
+          Use Prettier formatting — never change the config.<br /><br />
+          ## Style Rules<br />
+          - Prefer named exports over default exports<br />
+          - Use CSS modules, not inline styles<br />
+          - Keep components under 150 lines
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        CLAUDE.md 없이는 매 세션 처음 몇 분을 네 선호도를 다시 설명하는 데 써. 있으면 Claude Code가 이미 네 스택, 규칙, 경계를 알고 있어. 챕터 3의 context engineering을 코딩에 적용한 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>CLAUDE.md를 프로젝트의 헌법이라고 생각해.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          이미 내린 결정을 기록하는 거야 — AI가 진짜 새로운 결정에 집중할 수 있게. CLAUDE.md가 구체적일수록, 같은 말을 반복할 필요가 적어져.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BUILDING SKILLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Skills 만들기
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        CLAUDE.md는 Claude Code한테 프로젝트에 대한 일반적인 지식을 줘. 근데 구체적이고 반복적인 작업은? 그게 <strong>Skills</strong>가 필요한 부분이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Skill은 CLAUDE.md 안에 있는 지시 세트로, Claude Code한테 특정 종류의 작업을 처리하는 법을 가르쳐. 레시피라고 생각해: "누군가 새 React 컴포넌트를 만들어달라고 하면, 정확히 이렇게 해."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Skills 없이는 매번 같은 단계를 설명해. Skills가 있으면 한 번 설명하면 AI가 영원히 기억해.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        좋은 skill은 세 부분이 있어:
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'T', name: '트리거', color: '#7B61FF', text: '이 skill이 언제 활성화돼? "컴포넌트를 만들라고 할 때..." 또는 "테스트 실패를 고칠 때..." 명확한 트리거가 AI가 잘못된 레시피를 쓰는 걸 방지해.' },
+        { letter: 'S', name: '단계', color: '#16C79A', text: '정확히 뭘 할지, 순서대로? 번호가 매겨진 단계가 가장 잘 통해. 파일 위치, 네이밍 컨벤션, 필요한 패턴에 대해 구체적으로.' },
+        { letter: 'E', name: '예시', color: '#F5A623', text: '성공한 결과가 어떻게 생겼는지 보여줘. 전후 비교, 예시 파일 구조, 샘플 출력. 예시 앞에서 모호함은 사라져.' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+  </section>
+
+  <!-- BRIDGE TO SKILL BUILDER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        직접 만들어봐. 트리거부터 단계, 예시까지 skill을 구축해.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        명세, 생성, 검증
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude Code랑 일할 때, 네 역할이 바뀌어. 더 이상 모든 줄을 쓰는 사람이 아냐. 뭘 만들지 <strong>명세</strong>하고, AI가 <strong>생성</strong>하게 하고, 실제로 맞는지 <strong>검증</strong>하는 사람이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        이 루프 — 명세, 생성, 검증 — 이 기본 워크플로우야:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        {[
+          { step: '01', title: '명세', desc: '원하는 걸 정확하게 말해. 요청이 명확할수록 결과물을 고치는 데 드는 시간이 줄어. 엣지 케이스, 파일 위치, 기대되는 동작을 포함해.', color: '#7B61FF' },
+          { step: '02', title: '생성', desc: 'Claude Code가 일하게 둬. 에이전트 루프를 지켜봐 — 읽기, 계획, 쓰기, 실행, 고치기. 중간에 끼어들고 싶은 충동을 참아.', color: '#0EA5E9' },
+          { step: '03', title: '검증', desc: '이게 네 가장 중요한 일이야. 코드를 읽어. 테스트를 돌려. 엣지 케이스를 확인해. 정말 원했던 대로야? 네 이름을 걸 수 있는 코드야?', color: '#16C79A' },
+        ].map((item) => (
+          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
+            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
+            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
+            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
+              {item.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        대부분의 초보가 세 번째 단계를 건너뛰어. 코드가 나타나고, 괜찮아 보이면, 넘어가. 그 사람이 되지 마. <strong>생성된 코드는 초안이야.</strong> 네 검증이 출판 가능하게 만드는 편집이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        아이러니하게도? AI가 코드를 빨리 생성할수록, 네 검증이 <em>더 중요</em>해져. 판단 없는 속도는 그냥 더 빠른 실수야.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SKILL PARADOX ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        실력의 역설
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI 보조 코딩에 대한 불편한 진실: <strong>직접 안 짰더라도 결과물을 판단할 수 있을 만큼은 알아야 해.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Claude가 생성한 코드를 읽을 수 없으면, 검증할 수 없어. 검증할 수 없으면, 남의 추측을 프로덕션에 배포하는 거야.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        이게 역설을 만들어: 초보가 코드를 쓰는 걸 도와주는 도구가, 동시에 그 코드를 평가할 만한 지식을 요구해. 빠져나가는 방법은? Claude Code를 생산만이 아니라 <em>배움을</em> 위해서도 써.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude Code가 이해 안 되는 걸 쓰면, 그냥 받아들이지 마. 물어봐: "이 코드가 뭘 하고 왜 이 접근법을 택했는지 설명해줘." AI를 타이피스트가 아니라 튜터로 써.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>목표는 모든 줄을 쓰는 게 아냐 — 모든 줄을 이해하는 거야.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          최고의 Claude Code 사용자들은 코드를 가장 많이 생성하는 사람이 아냐. 가장 좋은 질문을 하고 가장 미묘한 버그를 잡는 사람이야. 네 지식이 품질 필터야.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO REFACTOR RACE -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        너 vs. Claude Code. 같은 엉망인 코드, 같은 목표. 누가 더 잘 리팩토링해?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <RefactorRace client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        CLAUDE.md, 커스텀 skills, 명세-생성-검증 리듬이 갖춰졌어. Claude Code는 너 <em>대신</em> 코드를 쓰는 게 아냐 — 너<em>와 함께</em> 쓰는 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        하나의 대화가 하나의 작업을 처리해. 근데 실제 프로젝트에는 수십 개가 있어. 다음: 큰 야망을 AI가 실제로 실행할 수 있는 조각들로 쪼개는 법.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

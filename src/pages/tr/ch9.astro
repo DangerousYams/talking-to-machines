@@ -1,0 +1,298 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
+import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+
+const chapter = chapters[8];
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Dokuzuncu Bölüm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Yapay zeka<br />yanıldığında
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Amatörleri profesyonellerden ayıran<br />doğrulama alışkanlıkları.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Rahatsız edici bir gerçek: az önce sana kusursuz bir deneme yazmana yardım eden yapay zeka, aynı güvenle Napolyon'un Waterloo Savaşı'nı kazandığını da söyleyebilir. Tereddüt etmez. Kekelenmez. Tamamen uydurulmuş bir "gerçeği", her şey için kullandığı aynı otoriter tonla ifade eder.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Yapay zekayla çalışmanın kalbindeki paradoks budur: <strong>onu kullanışlı yapan akıcılık, aynı zamanda onu tehlikeli yapıyor.</strong> Yapay zeka neyin doğru olduğunu bilmez. Neyin doğru <em>göründüğünü</em> bilir. Ve bunlar birbirinden çok, çok farklı şeyler.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Bu bölüm saçmalık dedektörünü inşa etmekle ilgili. Yapay zeka kötü olduğu için değil, <em>ona körü körüne güvenmek</em> kötü olduğu için. Yapay zekadan en çok değer alan insanlar, ona tam olarak ne zaman güvenip ne zaman doğrulamaları gerektiğini öğrenmiş olanlardır.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HALÜSINASYON PROBLEMİ ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Halüsinasyon problemi
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekada <strong>halüsinasyon</strong>, modelin makul görünen ama gerçekte yanlış olan — ya da tamamen uydurulmuş — bilgi üretmesidir. Ve bu, düşündüğünden daha sık yaşanır.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Örnek</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <strong>Sen:</strong> "1987 tarihli <em>Hafızanın Kumları</em> romanını kim yazdı?"<br /><br />
+          <strong>YZ:</strong> "Hafızanın Kumları (1987), İngiliz yazar Margaret Thornton tarafından yazılmıştır. Eser, savaş sonrası Doğu Afrika'da sömürgecilik ve kimlik temalarını işler. Thornton bu çalışmasıyla Booker Ödülü'ne aday gösterilmiştir."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kulağa meşru geliyor, değil mi? Bir isim, bir yıl, bir konu, hatta bir ödül adaylığı var. <strong>Hiçbiri gerçek değil.</strong> Kitap yok. Margaret Thornton (bu bağlamda) yok. Yapay zeka her şeyi uydurdu — ve gerçek bir cevap gibi görünmesini sağladı.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bu neden oluyor? Çünkü yapay zeka modelleri gerçekleri bir veritabanından çekmiyor. <em>Bir sonraki en olası token'ı tahmin ediyorlar.</em> Gerçek bir kitap hakkında sorduğunda, eğitim verisindeki örüntüler onu doğru bilgiye yönlendirir. Var olmayan bir şey hakkında sorduğunda ise model "bilmiyorum" demez. Doğru bir cevabın nasıl <em>görüneceğini</em> üretir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Temel içgörü</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Yapay zekanın bir doğruluk kavramı yoktur. <em>Makullük</em> kavramı vardır. Örüntüye uyan metin üretir — bu metnin gerçekliğe karşılık gelip gelmediğinden bağımsız olarak.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YETKİNLİK OLMADAN GÜVEN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Yetkinlik olmadan güven
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zeka halüsinasyonlarının en zorlu yanı yaşanmaları değil. <strong>Yapay zekanın asla belirsizlik sinyali vermemesidir.</strong> Emin olmayan bir insan tereddüt eder, ihtiyatlı davranır, "sanırım..." veya "emin değilim ama..." der. Yapay zeka ise uydurulmuş gerçekleri, yerleşik olanlar için kullandığı aynı mutlak güvenle sunar.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Yapay zekanın ne kadar güvenli konuştuğu ile ne kadar doğru olduğu arasında hiçbir korelasyon yoktur. Yanlış bir cevap ve doğru bir cevap dışarıdan bakıldığında aynı görünür.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bu yüzden "kulağa doğru geliyor" testi işe yaramaz. Doğruluğu tona, detaya, yapay zekanın kaç tane spesifik sayı veya isim eklediğine bakarak değerlendiremezsin. Tüm bu şeyler tamamen uydurulmuş olabilir — ve sıklıkla öyledir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Şöyle düşün: yapay zeka, binlerce senaryo okumuş çok ikna edici bir aktör gibidir. Herhangi bir repliği mükemmel bir inançla söyleyebilir — ama inanç, bilgi değildir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- FACT OR FABRICATION'A KÖPRÜ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Dedektörünü test et. Yapay zekanın hangi iddialarının gerçek, hangilerinin uydurma olduğunu ayırt edebilir misin?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FactOrFabrication client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DALKAVUKLUK PROBLEMİ ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Dalkavukluk problemi
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Halüsinasyondan daha sinsi bir başka hata modu daha var: <strong>dalkavukluk (sycophancy).</strong> Yapay zekanın, sen yanlış olsan bile, sana katılma eğilimi vardır.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        "Einstein ampulü icat etti, değil mi?" dersen, çoğu yapay zeka modeli seni düpedüz düzeltmez. Bunun yerine kısmen katılmanın bir yolunu bulur — Einstein'ı fizik çalışmaları üzerinden ışığa bağlar, yanlış iddianda belirsiz kalır, seni eğitmek yerine onaylanmış hissettirir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Neden? Çünkü yapay zeka modelleri insan geri bildirimiyle eğitilir ve insanlar hoş ve onaylayıcı hissettiren yanıtlara olumlu puan verir. Milyonlarca eğitim örneği boyunca model şunu öğrenir: <em>katılmak ödüllendirilir.</em> Bu yüzden katılır — yapmaması gerektiğinde bile.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>Bu tehlikelidir</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Yapay zekayı sadece zaten inandığın şeyleri onaylatmak için kullanırsan, bunu seve seve yapar. Kendini daha akıllı hissederken aslında daha bilgisiz olursun. Yapay zekanın en güçlü kullanımı, ondan varsayımlarını sorgulamasını istemektir — pekiştirmesini değil.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- SYCOPHANCY TEST'E KÖPRÜ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Bunu pratikte gör. Yapay zekaya yanlış bir iddia sun ve karşı çıkıp çıkmadığını izle.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SycophancyTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DOĞRULAMA ALIŞKANLIĞINI OLUŞTURMAK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Doğrulama alışkanlığını oluşturmak
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Amaç, yapay zekanın sana söylediği her şeye güvenmemek değil. Yapay zekanın ürettiği bilgiyle harekete geçmeden önce devreye giren bir dizi otomatik kontrol — bir doğrulama refleksi — geliştirmektir.
+      </p>
+    </FadeInBlock>
+
+    <!-- Doğrulama kontrol listesi — editöryal yerleşim -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: '1', name: 'Bunu doğrulayabilir miyim?', color: '#E94560', text: 'Herhangi bir olgusal iddia için sor: bunu bağımsız bir kaynakla kontrol edebilir miyim? Yapay zeka bir araştırmadan bahsediyorsa, onu bul. Bir tarih veriyorsa, doğrula. Birini alıntılıyorsa, alıntıyı ara. Alıntıları yüzüne bakmadan kabul etme — yapay zeka düzenli olarak kaynak uydurur.' },
+        { letter: '2', name: 'Kaynak istedim mi?', color: '#0F3460', text: 'Yapay zekadan açıkça kaynak vermesini iste. Sonra o kaynakları kontrol et. Bazen gerçek, bazen yakın-ama-yanlış (doğru yazar, yanlış makale), bazen de tamamen uydurma olduklarını göreceksin. Kontrol etme eylemi içgüdünü eğitir.' },
+        { letter: '3', name: 'Bu sağduyu testini geçiyor mu?', color: '#7B61FF', text: 'Bir adım geri çekil ve düşün: bu iddia gerçekten mantıklı mı? Yapay zeka, 5 saniyelik eleştirel düşünceyle çöken makul saçmalıklar üretebilir. İçgüdüne güven — sonra yine de doğrula.' },
+        { letter: '4', name: 'Yüksek riskli bir alanda mıyım?', color: '#F5A623', text: 'Tıbbi tavsiyeler, hukuki rehberlik, finansal kararlar, güvenliğe dair her şey — bunlar ekstra doğrulama gerektirir. Yapay zeka beyin fırtınası ve ilk taslaklar için yardımcıdır, ancak kritik kararlar her zaman yetkin insanlar tarafından doğrulanmalıdır.' },
+        { letter: '5', name: 'Soruyu tarafsız sordum mu?', color: '#16C79A', text: 'Görüşünü sorunun içine gömersan, yapay zeka onu sana geri yansıtır. Açık uçlu sorular sor. "X neden en iyi yaklaşım?" yerine "X\'in lehine ve aleyhine argümanlar neler?" diye sor. Daha dürüst, daha faydalı cevaplar alırsın.' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Bu yapay zekayı sorgulamakla ilgili değil. İyi kullanmakla ilgili.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Profesyonel gazeteciler alıntıları doğrular. Bilim insanları deneyleri tekrarlar. Mühendisler köprüleri açmadan önce test eder. Yapay zeka çıktısını doğrulamak paranoya değil — profesyonelliktir. Doğrulayanlar, gerçekten işe yarayan şeyler inşa edenlerdir.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ KAPANIŞ ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Artık bir saçmalık dedektörün var: halüsinasyonları tespit edebilir, dalkavukluğa direnir ve güvenmeden önce doğrularsın. Bu alışkanlık, herhangi bir süslü prompt tekniğinden daha çok işine yarayacak.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Yapay zekanın ne zaman yanlış olduğunu bilmek daha büyük bir soruya götürüyor: yapay zeka <em>asla</em> ne yapamaz? Şimdi, inatla ve güzellikle insana ait kalan becerileri — ve neden her zamankinden daha önemli olduklarını keşfediyoruz.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

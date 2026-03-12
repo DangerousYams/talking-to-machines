@@ -1,0 +1,321 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
+import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
+import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+
+const chapter = chapters[5];
+---
+
+<ChapterLayout chapter={chapter} locale="zh">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第六章
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          构建<br />代理
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          从零开始设计、连接和<br />部署一个 AI 代理。
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        聊天机器人等你开口。代理不会。给它一个目标——"研究火星殖民并写一份报告"——它会把工作拆成步骤，选对工具，逐一执行，检查自己的结果，然后继续直到任务完成。不需要手把手指导。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        这个区别——<em>响应指令</em>和<em>追求目标</em>之间——就是计算器和同事的区别。聊天机器人回答问题。代理解决问题。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        这一章讲的是代理在底层到底是怎么运作的——驱动它们的循环、让它们可靠的架构，以及在构建不当时让它们变得危险的失败模式。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        代理循环
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        在第五章，你看到了基本的工具使用循环：观察、思考、行动。代理将其扩展为更宏大的东西——一个五步循环，每一步由不同的内部组件驱动：
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'G', word: '目标', color: '#E94560', desc: '从人类那里接收一个高层目标。没有清晰的目标，代理无法判断任务是否完成。"研究火星"不是目标。"写一份500字的火星殖民挑战总结，附来源"才是。' },
+        { letter: 'P', word: '规划', color: '#7B61FF', desc: '将目标拆解为具体步骤。最好的规划者创建灵活的计划，能在某个步骤失败时自适应。差的规划者创建死板的脚本，第一个意外就崩溃。' },
+        { letter: 'T', word: '执行', color: '#0EA5E9', desc: '使用正确的工具运行每个步骤——搜索引擎、代码解释器、文件阅读器、API、计算器。代理不只是思考，它们还行动。' },
+        { letter: 'M', word: '观察', color: '#16C79A', desc: '记录发生了什么并检查结果。没有对已做和已发现的事情的记忆，循环中的代理可能会永远重复同一个失败的动作。' },
+        { letter: 'E', word: '评估', color: '#F5A623', desc: '这管用吗？这个数据可靠吗？我离目标更近了吗？评估器把代理和"运行并期待最好结果"的脚本区分开来。如果有什么不对，调整计划并再次循环。' },
+      ].map((step, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <p class="text-lg leading-[1.85] mb-10">
+        关键词是<em>循环</em>。代理不是规划一次然后盲目执行。它规划、行动、观察、评估、调整。最好的代理是那些在第三步出问题时能优雅恢复的。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        聊天机器人是一个回合。代理是一整场对话——与自己、工具和世界的对话。
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        动手时间。从零开始设计你自己的代理。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <AgentBlueprint client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN AGENTS FAIL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        当代理失败时
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        代理的失败方式跟聊天机器人不一样。聊天机器人给你一个糟糕的回答然后等着。代理给自己一个糟糕的回答，<em>按照它行动</em>，然后用这个错误的结果来做下一个决定。失败会累积。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        代理出错有三种经典方式：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>失败模式1：无限循环</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          代理卡在重复同一个动作上。一个研究代理不停地搜索"再多一个来源"，永远不开始写作。没有停止条件，它会一直跑到你拔插头——或者 API 额度用光。
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
+        <span class="prompt-block-label" style="color: #7B61FF;">失败模式2：选错工具</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          代理选了一个做不了这项工作的工具。它试图用网络搜索来找你硬盘上的文件，或者调用计算器来总结一篇文章。不是代理笨——只是它没检查工具是否适合任务就从工具箱里拿了。
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
+        <span class="prompt-block-label" style="color: #F5A623;">失败模式3：幻觉行为</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          代理发明了不存在的工具或 API，然后"调用"它们并得到假结果。当假调用失败时，它有时会编造它本该获取的数据。双重幻觉：假工具，假输出。
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        解决方案始终是同一个原则：<strong>为不顺利的路径设计。</strong>最大迭代次数、工具验证、输出检验和人类检查点。目标不是防止所有失败——而是让失败变得可恢复。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO FAILURE MODES LAB -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        能诊断一个坏掉的代理吗？找到 bug 并加上防护栏。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FailureModesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF MANY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        多个代理的力量
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        一个代理很有用。多个代理协作，可以应对任何单一系统都应付不了的问题。诀窍是专业化。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        把它想象成一个新闻编辑部。你不会让同一个人去调查故事、写文章、又负责编辑出版。每个角色需要不同的思维方式、不同的工具和不同的标准。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        多代理系统也是同样的道理。一个<strong>研究员</strong>代理收集信息。一个<strong>写手</strong>代理把原始笔记变成精炼的文字。一个<strong>编辑</strong>代理审查、核实事实并提出改进建议。每个代理有自己的系统提示词、自己的工具和自己的成功标准。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        多代理设计中最关键的问题不是"每个代理有多聪明"，而是<strong>"交接做得怎么样？"</strong>当研究员把笔记传给写手时，笔记结构清晰吗？当写手把草稿传给编辑时，编辑有足够的上下文来提供有用的反馈吗？
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心要点</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          交接文档是多代理系统中最重要的产物。一个出色的写手也救不了潦草的研究笔记。代理之间的接口，才是质量成败的关键。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        看看三个代理如何协作。注意交接文档——那才是魔法发生的地方。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HandoffChain client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN IN THE LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        人在回路中
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        在第五章，你学了信任框架：风险、可逆性和信任决定了给多少自主权。对代理来说，这变得更加关键——因为代理不只是回答问题。它们<em>采取行动</em>，把行动串联起来，如果不加检查，错误会不断累积。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85]">
+        最好的代理构建者不是那些最大化自主权的人。他们设计<strong>有意义的检查点</strong>——代理暂停、展示工作并让人类决定是否继续的时刻。一个好的代理知道什么时候该问。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        你已经从内部了解了代理：驱动它们的循环、让它们运作的架构，以及构建不当时让它们变得危险的失败模式。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        理论是一回事。接下来，你将使用一个真正的代理——一个能读你的代码、写改动、运行测试、修复自己错误的代理。来认识 Claude Code。
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

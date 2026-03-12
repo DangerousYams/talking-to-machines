@@ -59,6 +59,7 @@ export default function PromptRoast() {
   const [prompt, setPrompt] = useState('');
   const [phase, setPhase] = useState<'input' | 'loading' | 'result'>('input');
   const [result, setResult] = useState<RoastResult | null>(null);
+  const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [throttled, setThrottled] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -116,11 +117,21 @@ export default function PromptRoast() {
     });
   };
 
+  const handleRetry = () => {
+    controllerRef.current?.abort();
+    if (result) setPreviousScore(result.score);
+    setPhase('input');
+    setResult(null);
+    setError(null);
+    setSheetOpen(false);
+  };
+
   const handleReset = () => {
     controllerRef.current?.abort();
     setPhase('input');
     setPrompt('');
     setResult(null);
+    setPreviousScore(null);
     setError(null);
     setSheetOpen(false);
   };
@@ -222,6 +233,20 @@ export default function PromptRoast() {
             <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '0.5rem 0.75rem' }}>
               {/* Score + Tier */}
               <div style={{ textAlign: 'center' as const, marginBottom: 8, flexShrink: 0 }}>
+                {previousScore !== null && (
+                  <p style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    color: result.score > previousScore ? '#16C79A' : result.score === previousScore ? '#6B7280' : '#E94560',
+                    margin: '0 0 0.35rem',
+                    letterSpacing: '0.06em',
+                  }}>
+                    {result.score > previousScore
+                      ? `+${result.score - previousScore} from last attempt`
+                      : result.score === previousScore
+                        ? 'Same score \u2014 try a different approach'
+                        : `${result.score - previousScore} from last attempt`}
+                  </p>
+                )}
                 <div style={{
                   fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800,
                   color: getScoreColor(result.score), lineHeight: 1, marginBottom: '0.15rem',
@@ -324,8 +349,19 @@ export default function PromptRoast() {
                   shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-roast` : undefined}
                 />
 
-                {/* Roast Another */}
-                <div style={{ textAlign: 'center' as const, marginTop: '1rem' }}>
+                {/* Retry / Reset */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: '1rem' }}>
+                  <button
+                    onClick={handleRetry}
+                    style={{
+                      fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
+                      padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none',
+                      background: 'linear-gradient(135deg, #E94560, #F5A623)',
+                      color: '#FFFFFF', cursor: 'pointer', minHeight: 44,
+                    }}
+                  >
+                    Improve &amp; Retry
+                  </button>
                   <button
                     onClick={handleReset}
                     style={{
@@ -334,7 +370,7 @@ export default function PromptRoast() {
                       background: 'transparent', color: '#6B7280', cursor: 'pointer', minHeight: 44,
                     }}
                   >
-                    Roast Another Prompt
+                    Start Fresh
                   </button>
                 </div>
               </BottomSheet>
@@ -412,6 +448,20 @@ export default function PromptRoast() {
             <div style={{ padding: '1.5rem 2rem' }}>
               {/* Score + Tier */}
               <div style={{ textAlign: 'center' as const, marginBottom: '1.5rem' }}>
+                {previousScore !== null && (
+                  <p style={{
+                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                    color: result.score > previousScore ? '#16C79A' : result.score === previousScore ? '#6B7280' : '#E94560',
+                    margin: '0 0 0.5rem',
+                    letterSpacing: '0.06em',
+                  }}>
+                    {result.score > previousScore
+                      ? `+${result.score - previousScore} from last attempt`
+                      : result.score === previousScore
+                        ? 'Same score \u2014 try a different approach'
+                        : `${result.score - previousScore} from last attempt`}
+                  </p>
+                )}
                 <div style={{
                   fontFamily: 'var(--font-heading)', fontSize: '4.5rem', fontWeight: 800,
                   color: getScoreColor(result.score), lineHeight: 1, marginBottom: '0.25rem',
@@ -484,8 +534,21 @@ export default function PromptRoast() {
                 shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-roast` : undefined}
               />
 
-              {/* Try again */}
-              <div style={{ textAlign: 'center' as const, marginTop: '1.25rem' }}>
+              {/* Retry / Reset */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: '1.25rem' }}>
+                <button
+                  onClick={handleRetry}
+                  style={{
+                    fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600,
+                    padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none',
+                    background: 'linear-gradient(135deg, #E94560, #F5A623)',
+                    color: '#FFFFFF', cursor: 'pointer', transition: 'all 0.25s', minHeight: 44,
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                >
+                  Improve &amp; Retry
+                </button>
                 <button
                   onClick={handleReset}
                   style={{
@@ -497,7 +560,7 @@ export default function PromptRoast() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#1A1A2E'; e.currentTarget.style.color = '#1A1A2E'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.15)'; e.currentTarget.style.color = '#6B7280'; }}
                 >
-                  Roast Another Prompt
+                  Start Fresh
                 </button>
               </div>
             </div>

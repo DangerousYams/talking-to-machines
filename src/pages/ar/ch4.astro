@@ -1,0 +1,396 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="ar">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          الفصل الرابع
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          خريطة<br />الذكاء الاصطناعي
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          دليلك الميداني لكل أداة ذكاء<br />اصطناعي يمكنك استخدامها الآن.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        عندما يقول معظم الناس "الذكاء الاصطناعي"، فهم يعنون ChatGPT. ربما يعنون Gemini من جوجل، أو سمعوا شخصاً يذكر Claude. هذا يشبه قول "الإنترنت" وأنت تقصد جوجل. ليس خطأ، لكنه مجرد شريحة صغيرة من شيء ضخم.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        الآن، هناك مئات أدوات الذكاء الاصطناعي التي يمكنك استخدامها اليوم -- ليس في مستقبل نظري، بل حرفياً الآن، من متصفحك. أدوات تُنتج صوراً واقعية من جملة واحدة. أدوات تؤلف أغاني كاملة. أدوات تقرأ كل ورقة أكاديمية كُتبت في موضوع بحثك وتلخص الإجماع في ثلاث فقرات.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        هذا الفصل هو دليلك الميداني. ليس كتالوجاً شاملاً -- سيكون قديماً بحلول الثلاثاء القادم -- بل <strong>خريطة للتضاريس</strong>. الفئات التي تهم، الأدوات التي تستحق المعرفة، وإطار التفكير الذي يساعدك على اختيار الأداة المناسبة.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        ما وراء الروبوت المحادث
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        الروبوت المحادث هو مجرد قمة جبل الجليد. تحت السطح، انقسم الذكاء الاصطناعي إلى عشرات القدرات المتخصصة، كل منها نوع مختلف من الأدوات لنوع مختلف من العمل.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        فكر في الأمر مثل الآلات الموسيقية. البيانو والطبول كلاهما "آلات موسيقية"، لكنك لن تطلب من عازف بيانو إيقاعاً نارياً، ولن تطلب من عازف طبول عزف كونشيرتو. أدوات الذكاء الاصطناعي بنفس الطريقة. أداة مصممة لتوليد الصور مختلفة جوهرياً عن أداة مصممة للبرمجة -- معمارية مختلفة، بيانات تدريب مختلفة، نقاط قوة مختلفة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        الشخص الذي يعرف 10 أدوات ذكاء اصطناعي على مستوى سطحي سيتفوق باستمرار على شخص يعرف أداة واحدة بعمق. اتساع الوعي يتغلب على عمق الخبرة -- في البداية.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        إليك المشهد كما هو اليوم، منظم حسب ما تفعله هذه الأدوات <em>فعلاً</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        العائلات الثمان
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        كل أداة ذكاء اصطناعي ستصادفها تدخل في إحدى هذه الفئات. بعض الأدوات تعبر الحدود، لكن فهم هذه العائلات يمنحك خريطة ذهنية لفهم الفوضى.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '1', name: 'مولدات الصور', color: '#E94560', text: 'النص يدخل، الصور تخرج. من المشاهد الواقعية إلى الأنمي إلى الرسم الزيتي. Midjourney، DALL-E 3، Stable Diffusion، Flux، Ideogram. الفئة الأكثر ديمقراطية -- أي شخص يمكنه إنشاء فن بصري من الكلمات.' },
+        { icon: '2', name: 'محررات الصور', color: '#F5A623', text: 'ابدأ بصورة حقيقية وحولها. احذف الخلفيات، اشحن الدقة، استبدل الكائنات، أعد إضاءة المشاهد. Photoshop AI، Magnific، Clipdrop. هذه تساعد المصورين والمصممين البشر بدلاً من استبدالهم.' },
+        { icon: '3', name: 'منشئو الفيديو', color: '#7B61FF', text: 'الحدود الأحدث. توليد مقاطع الفيديو من النص أو الصور الثابتة. Sora، Runway، Kling، Pika. لا تزال مبكرة -- معظم المقاطع أقل من 30 ثانية -- لكنها تتحسن بوتيرة مذهلة. صناعة الأفلام لن تكون كما كانت.' },
+        { icon: '4', name: 'الموسيقى والصوت', color: '#16C79A', text: 'أغاني كاملة من وصف نصي، استنساخ الصوت من عينة 30 ثانية، المؤثرات الصوتية عند الطلب. Suno، Udio، ElevenLabs. هذه الأدوات تضغط ما كان يحتاج استوديو وفريق في استعلام واحد.' },
+        { icon: '5', name: 'وكلاء البحث', color: '#0EA5E9', text: 'ذكاء اصطناعي يقرأ الإنترنت (أو قواعد البيانات الأكاديمية) لك. Perplexity يبحث ويستشهد. Elicit يقرأ الأوراق. Consensus يجد الاتفاق العلمي. NotebookLM يحول مستنداتك إلى خبير.' },
+        { icon: '6', name: 'متصفحات الذكاء الاصطناعي', color: '#6B7280', text: 'وكلاء يمكنهم التنقل في الويب مثل الإنسان. ينقرون الأزرار، يملؤون النماذج، يتنقلون بين الصفحات. Arc، Operator، Claude Computer Use. الجسر بين "الإجابة على الأسئلة" و"القيام بالمهام".' },
+        { icon: '7', name: 'أدوات البرمجة', color: '#E94560', text: 'ذكاء اصطناعي يكتب ويحرر وينفذ ويصحح الكود. Claude Code يعمل من الطرفية. Cursor و Windsurf محررات كاملة. Copilot يقترح في السطر. Replit Agent يبني تطبيقات كاملة من الصفر.' },
+        { icon: '8', name: 'الروبوتات المحادثة والمساعدات', color: '#0F3460', text: 'الذكاء الاصطناعي المحادث العام الذي تعرفه: ChatGPT، Claude، Gemini. هم السكاكين السويسرية -- جيدة في أشياء كثيرة، الأفضل عندما تعرف كيف تتعامل معها (وأنت تعرف، بفضل الفصول 1-3).' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>الرؤية الرئيسية</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          هذه الفئات تتقارب. مولدات الصور تضيف الفيديو. الروبوتات المحادثة تكتسب استخدام الأدوات. أدوات البرمجة تصبح وكلاء. في عامين، الحدود ستختفي. لكن الآن، المختصون لا يزالون يتفوقون على العموميين في تخصصهم.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        استكشف الكتالوج الكامل. انقر على أي أداة لتعلم ما تفعله.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        اختيار الأداة المناسبة
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        مع كل هذه الخيارات، الجزء الصعب ليس العثور على أداة ذكاء اصطناعي. بل العثور على أداة الذكاء الاصطناعي <em>المناسبة</em>. إليك الإطار الذي يعمل:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'ما هو الناتج؟', desc: 'نص؟ صورة؟ كود؟ فيديو؟ صوت؟ هذا يحصرك فوراً في 1-2 عائلات.' },
+          { word: 'ما هو معيار الجودة؟', desc: 'مسودة سريعة لك، أم ناتج مصقول للجمهور؟ أدوات مختلفة لمعايير مختلفة.' },
+          { word: 'ما هي الميزانية؟', desc: 'أدوات كثيرة تقدم مستويات مجانية مدهشة القدرات. اعرف ما تحتاجه فعلاً قبل الدفع.' },
+          { word: 'ما هو سير العمل؟', desc: 'مهمة منفردة، أم خطوة في سلسلة أطول؟ التكامل يهم أكثر من القوة الخام.' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        معظم المبتدئين يرتكبون نفس الخطأ: يستخدمون ذكاءً اصطناعياً عاماً واحداً لكل شيء. هذا يعمل تقنياً، لكنك ستحصل على نتائج أفضل وأسرع مع الأدوات المتخصصة المناسبة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        مع ذلك، لا تقع في الفخ المعاكس أيضاً. لا تحتاج 47 اشتراكاً في أدوات الذكاء الاصطناعي. <strong>اختر 3-4 أدوات من فئات مختلفة، تعلمها جيداً، ثم توسع من هناك.</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        قوة خطوط الإنتاج
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        إليك الكشف الحقيقي: <strong>الأدوات تصبح أقوى بشكل أسي عندما تربطها معاً.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        أداة ذكاء اصطناعي واحدة تعطيك قدرة. سلسلة من أدوات الذكاء الاصطناعي تعطيك <em>سير عمل</em>. Perplexity يجد البحث. Claude يكتب المقال. Midjourney ينشئ الرسوم التوضيحية. كل أداة تفعل ما تجيده أكثر، وناتج واحدة يصبح مدخل الأخرى.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        أكثر الأعمال المُنتجة بالذكاء الاصطناعي إعجاباً التي رأيتها على الإنترنت لم تُصنع بأداة واحدة. صُنعت بخمس أدوات، مربوطة معاً بواسطة إنسان فهم ما تجيده كل واحدة أكثر.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        لهذا فهم المشهد مهم. لا يمكنك بناء خط إنتاج إذا كنت تعرف أداة واحدة فقط. لا يمكنك اختيار المختص المناسب إذا لم تعرف ما هم المختصون الموجودون.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        جرب بناء واحد بنفسك:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        لا توجد أداة "الأفضل"
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        كل أسبوع، يضع شخص ما ترتيباً نهائياً لأدوات الذكاء الاصطناعي. كل أسبوع، يكون خاطئاً. ليس لأن الترتيب سيء، بل لأن "الأفضل" يعتمد كلياً على ما تفعله، وكيف تفعله، وما تقدره.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney ينتج صوراً أكثر فنية من DALL-E 3. لكن DALL-E 3 يتبع التعليمات بدقة أكبر. Ideogram يرسم النص أفضل من كليهما. أيهما "الأفضل"؟ يعتمد على ما إذا كنت تصنع ملصق فيلم، أو صورة منتج، أو شعار.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude يكتب بدقة أكثر من GPT. GPT أسرع. Gemini لديه سياق أكثر. أيهما يهمك؟ يعتمد على مهمتك.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>المهارة الحقيقية ليست إتقان أداة واحدة. بل تطوير الذوق لأي أداة تناسب أي عمل.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          النجار المحترف ليس له أداة مفضلة. له أداة مفضلة <em>لكل مهمة</em>. هذا هو العقل الذي يجب تطويره.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        شاهد بنفسك. نفس التعليمة، أدوات مختلفة &mdash; أي ناتج تفضل؟
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        المشهد يتحرك
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        إليك الحقيقة المزعجة: بعض الأدوات في الكتالوج أعلاه لن تكون موجودة خلال عام. أخرى غير موجودة الآن ستصبح أساسية. مشهد الذكاء الاصطناعي يتحرك أسرع من أي مشهد تكنولوجي في التاريخ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        فلماذا تهتم بتعلم أدوات محددة من الأساس؟ لأن <strong>الفئات مستقرة حتى لو لم تكن الأدوات كذلك</strong>. سيكون هناك دائماً مولدات صور، ومساعدو كود، ووكلاء بحث. الأسماء ستتغير. القدرات الأساسية والنماذج الذهنية لن تتغير.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>المهارات القابلة للنقل</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1. معرفة ما هي فئات أدوات الذكاء الاصطناعي الموجودة<br />
+          2. معرفة كيفية تقييم أداة جديدة في 15 دقيقة<br />
+          3. معرفة كيفية ربط الأدوات في سير عمل<br />
+          4. معرفة متى تبدل الأدوات مقابل تحسين التعليمات
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        هذه المهارات الأربع ستخدمك بغض النظر عن أي أدوات محددة تهيمن العام القادم أو بعده. المشهد يتغير، لكن الملاح يبقى فعالاً.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        لديك الآن خريطة مشهد الذكاء الاصطناعي &mdash; ثمان عائلات من الأدوات، وإطار للاختيار بينها، وعقلية خط الإنتاج التي تربطها معاً.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        لكن حتى الآن، هذه الأدوات فقط تستجيب لك. ماذا لو كان بإمكانها <em>اتخاذ إجراءات بنفسها</em>؟ هذه هي القفزة من أداة إلى وكيل &mdash; وهذا يغير كل شيء.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

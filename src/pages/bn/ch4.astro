@@ -1,0 +1,396 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="bn">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>৪</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          অধ্যায় চার
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          AI-এর<br />বিস্তৃত জগৎ
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          এই মুহূর্তে তুমি যত AI টুল<br />ব্যবহার করতে পারো, তার একটি গাইড।
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        বেশিরভাগ মানুষ যখন "AI" বলে, তারা ChatGPT বোঝায়। হয়তো Google-এর Gemini বা Claude-এর নাম শুনেছে। এটা অনেকটা "ইন্টারনেট" বলে শুধু Google বোঝানোর মতো। ভুল নয়, কিন্তু বিশাল কিছুর খুবই ছোট একটা অংশ।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        এই মুহূর্তে শত শত AI টুল আছে যেগুলো তুমি আজই ব্যবহার করতে পারো -- কোনো কাল্পনিক ভবিষ্যতে নয়, আজ, তোমার ব্রাউজার থেকেই। এমন টুল যা একটা বাক্য থেকে ফটোরিয়েলিস্টিক ছবি বানায়। পুরো গান বানায়। তোমার রিসার্চ টপিকের উপর যতগুলো একাডেমিক পেপার আছে সব পড়ে তিন প্যারাগ্রাফে সামারি করে দেয়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        এই অধ্যায়টা তোমার ফিল্ড গাইড। সব টুলের তালিকা না -- সেটা পরের মঙ্গলবারেই পুরনো হয়ে যাবে -- বরং <strong>এলাকার একটা ম্যাপ</strong>। কোন ক্যাটেগরিগুলো গুরুত্বপূর্ণ, কোন টুলগুলো জানার মতো, আর কোনটা বেছে নেওয়ার চিন্তাভাবনা।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        চ্যাটবটের বাইরে
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        চ্যাটবট হলো হিমশৈলের চূড়া। এর নিচে, AI ভেঙে গেছে ডজনখানেক বিশেষায়িত ক্ষমতায়, প্রতিটা আলাদা ধরনের কাজের জন্য আলাদা ধরনের টুল।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        সঙ্গীতের যন্ত্রের কথা ভেবে দেখো। পিয়ানো আর ড্রামস দুটোই "সঙ্গীতের যন্ত্র", কিন্তু তুমি একজন পিয়ানিস্টকে বিট দিতে বলবে না, আর একজন ড্রামারকে কনসার্টো বাজাতে বলবে না। AI টুলগুলোও একই রকম। ছবি বানানোর জন্য তৈরি টুল আর কোড লেখার জন্য তৈরি টুল সম্পূর্ণ আলাদা -- আলাদা আর্কিটেকচার, আলাদা ট্রেনিং ডেটা, আলাদা শক্তি।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        যে ব্যক্তি ১০টা AI টুল সাধারণ লেভেলে জানে, সে একটা টুল গভীরভাবে জানা কারো চেয়ে ধারাবাহিকভাবে ভালো করবে। জানার প্রশস্ততা দক্ষতার গভীরতাকে হারায় -- প্রথমে।
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        আজকের দিনে এই জগৎটা কেমন দাঁড়িয়ে আছে, এই টুলগুলো আসলে <em>কী করে</em> সেই ভিত্তিতে সাজানো:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        আট পরিবার
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        যে AI টুলের সাথেই তুমি দেখা করবে, সেটা এই ক্যাটেগরিগুলোর মধ্যেই পড়বে। কিছু টুল সীমানা পার হয়, কিন্তু এই পরিবারগুলো বুঝলে তোমার মনে একটা ম্যাপ থাকবে এই বিশৃঙ্খলার মধ্যে অর্থ খুঁজে নিতে।
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '১', name: 'ইমেজ জেনারেটর', color: '#E94560', text: 'টেক্সট ঢুকে, ছবি বেরিয়ে আসে। ফটোরিয়েলিস্টিক দৃশ্য থেকে অ্যানিমে থেকে তেল রঙের পেইন্টিং। Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram। সবচেয়ে গণতান্ত্রিক ক্যাটেগরি -- যে কেউ কথা থেকে ভিজুয়াল আর্ট বানাতে পারে।' },
+        { icon: '২', name: 'ইমেজ এডিটর', color: '#F5A623', text: 'আসল ছবি দিয়ে শুরু করে সেটাকে বদলাও। ব্যাকগ্রাউন্ড সরাও, রেজোলিউশন বাড়াও, অবজেক্ট বদলাও, লাইটিং পরিবর্তন করো। Photoshop AI, Magnific, Clipdrop। এরা মানব ফটোগ্রাফার আর ডিজাইনারদের প্রতিস্থাপিত করার বদলে তাদের সাহায্য করে।' },
+        { icon: '৩', name: 'ভিডিও ক্রিয়েটর', color: '#7B61FF', text: 'সবচেয়ে নতুন সীমানা। টেক্সট বা স্থির ছবি থেকে ভিডিও ক্লিপ তৈরি করো। Sora, Runway, Kling, Pika। এখনও প্রাথমিক -- বেশিরভাগ ক্লিপ ৩০ সেকেন্ডের নিচে -- কিন্তু চমকপ্রদ গতিতে উন্নতি হচ্ছে। ফিল্ম মেকিং আর আগের মতো থাকবে না।' },
+        { icon: '৪', name: 'সঙ্গীত ও অডিও', color: '#16C79A', text: 'টেক্সট বর্ণনা থেকে পুরো গান, ৩০ সেকেন্ড নমুনা থেকে কণ্ঠস্বর ক্লোনিং, চাহিদামতো সাউন্ড এফেক্ট। Suno, Udio, ElevenLabs। এই টুলগুলো স্টুডিও আর টিমের দরকার যা ছিল সেটাকে একটা প্রম্পটে কমিয়ে এনেছে।' },
+        { icon: '৫', name: 'রিসার্চ এজেন্ট', color: '#0EA5E9', text: 'যে AI তোমার জন্য ইন্টারনেট (বা একাডেমিক ডেটাবেস) পড়ে। Perplexity খুঁজে এবং উদ্ধৃত করে। Elicit পেপার পড়ে। Consensus বৈজ্ঞানিক মতৈক্য খুঁজে পায়। NotebookLM তোমার ডকুমেন্টগুলোকে এক্সপার্ট বানায়।' },
+        { icon: '৬', name: 'AI ব্রাউজার', color: '#6B7280', text: 'এজেন্ট যারা মানুষের মতো ওয়েব নেভিগেট করতে পারে। বোতামে ক্লিক করে, ফর্ম ভরে, পেজের মধ্যে যায়। Arc, Operator, Claude Computer Use। "প্রশ্নের উত্তর দেওয়া" আর "কাজ করা"র মধ্যে সেতু।' },
+        { icon: '৭', name: 'কোডিং টুল', color: '#E94560', text: 'AI যা কোড লেখে, এডিট করে, চালায়, আর ডিবাগ করে। Claude Code তোমার টার্মিনাল থেকে কাজ করে। Cursor আর Windsurf পূর্ণ এডিটর। Copilot ইনলাইন সাজেশন দেয়। Replit Agent স্ক্র্যাচ থেকে পুরো অ্যাপ বানায়।' },
+        { icon: '৮', name: 'চ্যাটবট ও অ্যাসিস্ট্যান্ট', color: '#0F3460', text: 'সাধারণ উদ্দেশ্যের কথোপকথনমূলক AI যা তুমি আগে থেকেই চেনো: ChatGPT, Claude, Gemini। এরা সুইস আর্মি নাইফের মতো -- অনেক কিছুতে ভালো, যখন তুমি জানো কীভাবে প্রম্পট করতে হয় তখন সেরা (যা তুমি জানো, অধ্যায় ১-৩-এর জন্য ধন্যবাদ)।' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল অন্তর্দৃষ্টি</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          এই ক্যাটেগরিগুলো মিশে যাচ্ছে। ইমেজ জেনারেটরে ভিডিও যোগ হচ্ছে। চ্যাটবট টুল ব্যবহার শিখছে। কোডিং টুল এজেন্ট হয়ে উঠছে। দুই বছরে সীমানাগুলো ঝাপসা হয়ে যাবে। কিন্তু এখনই, বিশেষজ্ঞরা তাদের বিশেষত্বে জেনারেলিস্টদের হারায়।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        পুরো ক্যাটালগ এক্সপ্লোর করো। যেকোনো টুলে ক্লিক করো জানতে সেটা কী করে।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        সঠিক টুল বেছে নেওয়া
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        এত অপশন থাকলে কঠিন দিকটা AI টুল খুঁজে পাওয়া না। <em>সঠিক</em> AI টুল খুঁজে পাওয়া। এই ফ্রেমওয়ার্কটা কাজ করে:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'আউটপুট কী?', desc: 'টেক্সট? ইমেজ? কোড? ভিডিও? অডিও? এটাই তোমাকে সরাসরি ১-২ পরিবারে নিয়ে যাবে।' },
+          { word: 'কোয়ালিটি বার কী?', desc: 'নিজের জন্য তাড়াতাড়ি ড্রাফট, নাকি অন্যদের জন্য পলিশড আউটপুট? ভিন্ন মানের জন্য ভিন্ন টুল।' },
+          { word: 'বাজেট কী?', desc: 'অনেক টুলেই ফ্রি টায়ার আছে যেগুলো আশ্চর্যজনকভাবে সক্ষম। টাকা দেওয়ার আগে জানো আসলে কী দরকার।' },
+          { word: 'ওয়ার্কফ্লো কী?', desc: 'একা একটা কাজ, নাকি লম্বা চেইনের এক ধাপ? ইন্টিগ্রেশন শুধু পাওয়ার চেয়ে বেশি গুরুত্বপূর্ণ।' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        বেশিরভাগ শিক্ষানবিস একই ভুল করে: তারা সবকিছুর জন্য একটা সাধারণ উদ্দেশ্যের AI ব্যবহার করে। টেকনিক্যালি কাজ করে, কিন্তু সঠিক বিশেষায়িত টুল দিয়ে তুমি দ্রুত ভালো রেজাল্ট পাবে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        তবে হ্যাঁ, উল্টো ফাঁদেও পড়ো না। তোমার ৪৭টা AI সাবস্ক্রিপশনের দরকার নেই। <strong>বিভিন্ন ক্যাটেগরি জুড়ে ৩-৪টা টুল বেছে নাও, সেগুলো ভালোভাবে শেখো, তারপর বাড়াও।</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        পাইপলাইনের শক্তি
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        আসল আনলক এখানে: <strong>টুলগুলো যখন একসাথে চেইন করো তখন সেগুলো এক্সপোনেন্শিয়ালি বেশি শক্তিশালী হয়।</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        একটা AI টুল তোমাকে একটা সক্ষমতা দেয়। AI টুলের চেইন তোমাকে <em>ওয়ার্কফ্লো</em> দেয়। Perplexity রিসার্চ খুঁজে দেয়। Claude আর্টিকেল লেখে। Midjourney ইলাস্ট্রেশন বানায়। প্রতিটা টুল যেটায় সেরা সেটাই করে, আর একটার আউটপুট অন্যটার ইনপুট হয়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        সবচেয়ে চিত্তাকর্ষক AI-জেনারেটেড কাজ যা তুমি অনলাইনে দেখেছো, সেটা একটা টুল দিয়ে বানানো হয়নি। পাঁচটা টুল দিয়ে বানানো, একজন মানুষের দ্বারা চেইন করা যে বুঝতো প্রতিটা কীসে সেরা।
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        এজন্যই ল্যান্ডস্কেপ বোঝা গুরুত্বপূর্ণ। তুমি যদি একটা টুলই জানো তাহলে পাইপলাইন বানাতে পারবে না। কোন বিশেষজ্ঞরা আছে সেটা না জানলে সঠিক বিশেষজ্ঞ বেছে নিতে পারবে না।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        নিজেই একটা বানানোর চেষ্টা করো:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        "সেরা" টুল বলে কিছু নেই
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        প্রতি সপ্তাহে কেউ না কেউ AI টুলের চূড়ান্ত র‍্যাঙ্কিং পোস্ট করে। প্রতি সপ্তাহে সেটা ভুল। র‍্যাঙ্কিং খারাপ বলে না, বরং "সেরা" সম্পূর্ণভাবে নির্ভর করে তুমি কী করছো, কীভাবে করছো, আর কী মূল্য দাও তার উপর।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney DALL-E 3 থেকে বেশি আর্টিস্টিক ছবি বানায়। কিন্তু DALL-E 3 নির্দেশনা বেশি নির্ভুলভাবে মানে। Ideogram দুটোর চেয়ে টেক্সট ভালো রেন্ডার করে। কোনটা "সেরা"? নির্ভর করে তুমি মুভি পোস্টার, প্রোডাক্ট ফোটো, নাকি লোগো বানাচ্ছো।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude GPT-এর চেয়ে বেশি সূক্ষ্মতায় লেখে। GPT দ্রুত। Gemini-তে বেশি কনটেক্সট আছে। তোমার কাছে কোনটা গুরুত্বপূর্ণ? তা নির্ভর করে তোমার কাজের উপর।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>আসল দক্ষতা একটা টুলে মাস্টার হওয়া না। কোন টুল কোন কাজের জন্য ফিট করে তার স্বাদ বোঝা।</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          পেশাদার ছুতোরমিস্ত্রির প্রিয় টুল নেই। প্রতিটা কাজের জন্য প্রিয় টুল আছে। <em>সেই মানসিকতা তৈরি করতে হবে।</em>
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        নিজেই দেখো। একই প্রম্পট, ভিন্ন টুল &mdash; কোন আউটপুট তুমি পছন্দ করো?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ল্যান্ডস্কেপ নড়ছে
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        অস্বস্তিকর সত্য: উপরের ক্যাটালগের কিছু টুল এক বছরে আর থাকবে না। আবার এখন যেগুলো নেই সেগুলো জরুরি হয়ে উঠবে। AI ল্যান্ডস্কেপ ইতিহাসের যেকোনো টেকনোলজি ল্যান্ডস্কেপের চেয়ে দ্রুত নড়ছে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        তাহলে নির্দিষ্ট টুল শেখার ঝামেলায় যাওয়া কেন? কারণ <strong>টুলগুলো না থাকলেও ক্যাটেগরিগুলো স্থিতিশীল</strong>। সবসময় ইমেজ জেনারেটর, কোড অ্যাসিস্ট্যান্ট, আর রিসার্চ এজেন্ট থাকবে। নামগুলো বদলাবে। মূল সক্ষমতা আর মানসিক মডেলগুলো থাকবে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>যে দক্ষতা ট্রান্সফার হয়</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          ১. কী ক্যাটেগরির AI টুল আছে সেটা জানা<br />
+          ২. ১৫ মিনিটে নতুন টুল কীভাবে মূল্যায়ন করতে হয় জানা<br />
+          ৩. টুলগুলোকে ওয়ার্কফ্লোতে চেইন করতে জানা<br />
+          ৪. কখন টুল বদলাতে হবে বনাম প্রম্পট রিফাইন করতে হবে জানা
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        এই চারটা দক্ষতা তোমার কাজে লাগবে পরের বছর বা তার পরের বছর কোন নির্দিষ্ট টুল ডমিনেট করুক না কেন। ল্যান্ডস্কেপ শিফট করে, কিন্তু নেভিগেটর কার্যকর থাকে।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        তোমার কাছে এখন AI ল্যান্ডস্কেপের একটা ম্যাপ আছে &mdash; আট পরিবারের টুল, তাদের মধ্যে বেছে নেওয়ার ফ্রেমওয়ার্ক, আর পাইপলাইনের মানসিকতা যা সেগুলোকে একসাথে চেইন করে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        কিন্তু এ পর্যন্ত, এই টুলগুলো শুধু তোমার কথার জবাব দেয়। যদি তারা <em>নিজেদের থেকে অ্যাকশন নিতে পারে</em> তাহলে কী হবে? সেটাই টুল থেকে এজেন্টে লাফ &mdash; আর সেটা সবকিছু বদলে দেয়।
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

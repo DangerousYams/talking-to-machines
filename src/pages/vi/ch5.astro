@@ -1,0 +1,359 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
+import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+
+const chapter = chapters[4];
+---
+
+<ChapterLayout chapter={chapter} locale="vi">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chương Năm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Trao cho nó<br />công cụ
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Bước nhảy từ "trả lời câu hỏi"<br />sang "thực hiện hành động."
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
+        Cho đến giờ, mọi tương tác AI của bạn đều theo cùng pattern. Bạn gõ gì đó. AI gõ lại. Văn bản vào, văn bản ra. Một autocomplete cực kỳ tinh vi. Nhưng đó không phải trần. Đó mới chỉ là sàn.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Nếu AI có thể <em>làm</em> mọi thứ thì sao? Không chỉ kể về thời tiết, mà thực sự kiểm tra dự báo. Không chỉ viết code, mà chạy nó và kể cho bạn kết quả. Không chỉ gợi ý nên Google gì, mà tự tìm kiếm web và mang về những gì tìm được.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Đó là tool use. Và nó thay đổi hoàn toàn AI có thể là gì.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Xa hơn văn bản vào, văn bản ra
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nghĩ xem chuyện gì xảy ra khi bạn hỏi chatbot: <em>"Bây giờ mấy giờ ở Tokyo?"</em> AI thực sự không biết. Nó được huấn luyện trên dữ liệu cũ vài tháng hoặc vài năm. Nó không có đồng hồ. Nên nó làm điều duy nhất có thể — đoán, dựa trên pattern trong dữ liệu huấn luyện. Có khi gần đúng. Có khi sai buồn cười.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Không có tool</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">Người dùng:</span> Bây giờ mấy giờ ở Tokyo?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> Khoảng 2:30 chiều JST. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Chỉ đoán thôi)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Giờ cho AI đó một <strong>tool</strong> — một hàm đơn giản trả về giờ hiện tại ở bất kỳ múi giờ nào. Bỗng nhiên:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Có tool</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">Người dùng:</span> Bây giờ mấy giờ ở Tokyo?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI nghĩ:</span> <span style="color: var(--color-purple); font-size: 0.9em;">Mình có tool múi giờ. Dùng nó thôi.</span><br />
+          <span style="font-style: italic; opacity: 0.6;">AI gọi:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
+          <span style="font-style: italic; opacity: 0.6;">Tool trả về:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> Hiện tại là 2:47 chiều ở Tokyo (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Đã xác minh)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Cùng câu hỏi. Độ tin cậy hoàn toàn khác. AI không thông minh hơn — nó được <strong>kết nối</strong>. Giờ nó có thể vươn ra ngoài bộ não của mình và tương tác với thế giới thực.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tool use thực sự hoạt động thế nào
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Mô hình tư duy là thế này. Khi bạn cho AI truy cập tool, bạn đang đưa cho nó <strong>hộp đồ nghề</strong> và nói: <em>"Đây là những gì bạn có thể làm. Mỗi tool tên gì, nhận cái gì, trả về cái gì. Bạn tự quyết khi nào dùng."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-14">
+        AI không mù quáng dùng mọi tool cho mọi yêu cầu. Nó suy luận tool nào liên quan, quyết định có nên dùng không, thiết lập đầu vào đúng, gọi tool, đọc kết quả, rồi tích hợp kết quả vào câu trả lời. Quá trình này gọi là <strong>function calling</strong> — và nó theo một vòng lặp nhất quán đáng kinh ngạc.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Quan sát.', desc: 'Đọc yêu cầu người dùng và ngữ cảnh có sẵn.' },
+          { word: 'Suy nghĩ.', desc: 'Quyết định: "Mình cần tool cho việc này, hay trả lời trực tiếp được?"' },
+          { word: 'Hành động.', desc: 'Gọi tool phù hợp với tham số đúng.' },
+          { word: 'Quan sát.', desc: 'Đọc kết quả tool trả về.' },
+          { word: 'Phản hồi.', desc: 'Tổng hợp tất cả thành câu trả lời hữu ích.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI không chạy script. Nó đưa ra phán đoán mỗi lần: "Đây có phải tình huống nên dùng tool, hay mình tự xử lý được?"
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Đây là <strong>agent loop</strong> — quan sát, suy nghĩ, hành động, quan sát, phản hồi. Và vòng lặp giống nhau dù AI có một tool hay một trăm. Càng nhiều tool, AI càng mạnh. Nhưng đồng thời, bạn cần đặt nhiều niềm tin hơn vào phán đoán của nó về <em>tool nào</em> dùng và <em>khi nào</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SEVEN TOOLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Bảy tool thay đổi tất cả
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Có hàng trăm tool cụ thể AI có thể dùng, nhưng chúng chủ yếu rơi vào bảy danh mục. Mỗi loại mở rộng năng lực AI theo cách hoàn toàn khác. Một số cho nó <em>kiến thức</em> (tìm kiếm web, cơ sở dữ liệu). Một số cho nó <em>khả năng</em> (chạy code, tạo ảnh). Một số cho nó <em>đôi tay</em> (sửa file, gọi API).
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nhấn vào tool bất kỳ bên dưới để xem toàn bộ quá trình suy luận của AI — từ nhận ra cần tool, đến gọi nó, đến dùng kết quả.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolCatalog client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TRUST QUESTION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Câu hỏi về niềm tin
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Khi AI có thể <em>làm</em> mọi thứ — không chỉ nói về chúng — một câu hỏi mới xuất hiện. Câu hỏi chẳng liên quan gì đến công nghệ mà hoàn toàn liên quan đến bạn:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI nên tự làm bao nhiêu trước khi hỏi ý kiến bạn?
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đây không phải câu hỏi kỹ thuật — mà là câu hỏi con người. Và câu trả lời phụ thuộc vào ba yếu tố:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { name: 'Mức độ nghiêm trọng', color: '#E94560', text: 'Tệ nhất có thể xảy ra là gì? Tóm tắt bài viết sai thì khó chịu. Xóa nhầm file thì thảm họa. Hậu quả càng lớn thì cần giám sát con người càng nhiều.' },
+          { name: 'Khả năng hoàn tác', color: '#F5A623', text: 'Bạn có thể undo không? Sửa file trong git repo thì dễ đảo ngược. Gửi email cho sếp thì không. Hành động không thể hoàn tác gần như luôn cần sự phê duyệt của bạn.' },
+          { name: 'Niềm tin', color: '#16C79A', text: 'Bạn biết tool này tốt cỡ nào? Máy tính bỏ túi bạn dùng hàng trăm lần xứng đáng được tự do hơn plugin mới toanh chưa test. Niềm tin phải kiếm được, không phải mặc định.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
+                {i + 1}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {item.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Phổ tự chủ</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Không phải tất cả hoặc không. Quy trình AI tốt nhất cho AI tự do ở việc nhỏ, có thể hoàn tác, đồng thời giữ con người kiểm soát ở việc lớn, không thể hoàn tác. Nhiệm vụ của bạn là thiết kế ranh giới.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Bạn sẽ vạch ranh giới ở đâu? Đặt mức tự chủ của riêng bạn.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TrustThermometer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tư duy tool-use
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Có một sự thay đổi tinh tế khi bạn bắt đầu nghĩ AI như người dùng tool thay vì chỉ là máy tạo văn bản. Bạn ngừng hỏi <em>"AI nói gì về việc này?"</em> và bắt đầu hỏi <em>"AI có thể làm gì về việc này?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Thay vì hỏi AI <em>mô tả</em> cách phân tích dữ liệu, bạn cho nó tool chạy code và xem nó viết và chạy phân tích. Thay vì hỏi <em>link</em> nghiên cứu, bạn cho nó web search và để nó tự tìm và tổng hợp thông tin. Đầu ra chuyển từ "đây là những gì bạn có thể làm" sang "đây là những gì tôi vừa làm."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Tư duy cũ</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          "Giải thích cách tính lãi kép trên $5,000 lãi suất 6.5% trong 10 năm."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Tư duy tool-use</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Tính lãi kép trên $5,000 lãi suất 6.5% APR lãi ghép hàng tháng trong 10 năm. Cho mình con số chính xác."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Prompt đầu cho bạn bài hướng dẫn. Prompt sau cho bạn đáp án. Với tool, AI chuyển từ <strong>cố vấn</strong> sang <strong>trợ lý</strong> — từ người nói bạn nên làm gì, sang người thực sự làm luôn.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Bạn đã cho AI đôi tay. Nó có thể tìm kiếm, tính toán, duyệt web, và viết file. Và bạn đã học phần khó nhất: quyết định trao bao nhiêu tự do.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Tool là khối xây dựng. Tiếp theo, chúng ta nối chúng thành thứ có thể tự theo đuổi mục tiêu &mdash; lên kế hoạch, thực hiện, phục hồi từ lỗi. Đến lúc xây agent.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

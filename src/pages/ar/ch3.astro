@@ -1,0 +1,328 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
+import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+
+const chapter = chapters[2];
+---
+
+<ChapterLayout chapter={chapter} locale="ar">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          الفصل الثالث
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          هندسة<br />السياق
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          الذكاء الاصطناعي لا ينسى &mdash; هو لم يكن<br />يتذكر من الأساس.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        تخيّل أنك تتحدث مع صديق، لكن كل بضع دقائق يمحو أحدهم السبورة التي كنتما تكتبان عليها. تبدأ من جديد. صديقك ينظر لما تبقى ويحاول المتابعة كما لو أن شيئاً لم يحدث. هذا تماماً ما يحصل داخل "دماغ" الذكاء الاصطناعي أثناء المحادثات الطويلة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        <strong>الذكاء الاصطناعي لا يملك ذاكرة.</strong> ليس بالطريقة التي تفكر بها. لا يتذكر محادثتكما من الأمس. لا يتذكر حتى بداية محادثة <em>اليوم</em> إذا طالت أكثر من اللازم. كل إجابة يعطيها تعتمد بالكامل على ما يراه أمامه الآن &mdash; نافذة نص تُسمى <strong>نافذة السياق</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        فهم هذه النافذة &mdash; ما الذي يدخلها، كم حجمها، وماذا يحدث عندما تمتلئ &mdash; هو من أهم المهارات في التعامل مع الذكاء الاصطناعي.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        السبورة التي تُمحى
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        عندما ترسل رسالة للذكاء الاصطناعي، إليك ما يحدث بالفعل: النظام يأخذ <em>محادثتكما كاملة</em> &mdash; كل رسالة أرسلتها، كل إجابة أعطاها الذكاء الاصطناعي &mdash; ويغذيها جميعاً للنموذج كقطعة نص واحدة. الذكاء الاصطناعي يقرأ كل شيء، يولّد الإجابة التالية، ثم... ينسى كل شيء.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        في المرة القادمة التي ترسل رسالة، العملية تتكرر. النظام يلصق المحادثة كاملة مرة أخرى، يضيف رسالتك الجديدة، والذكاء الاصطناعي يقرأ كل شيء من جديد. كأنه قارئ مجتهد لكن مصاب بفقدان الذاكرة &mdash; شامل تماماً في كل مرة، لكنه يبدأ من الصفر في كل دورة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        كل إجابة يولّدها الذكاء الاصطناعي تعتمد بالكامل على ما هو موجود في نافذة السياق في تلك اللحظة. لا شيء أكثر. نافذة السياق ليست ذاكرة. إنها سبورة &mdash; ولها حدود.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        لهذا تداعيات كبيرة. يعني أن الذكاء الاصطناعي جيد فقط بقدر المعلومات الموجودة أمامه حالياً. نسيت تفصيل مهم؟ الذكاء الاصطناعي لن يتذكره بطريقة سحرية. ملأت النافذة بالضوضاء؟ الذكاء الاصطناعي سيتشوش. <strong>نافذة السياق هي أهم مورد لديك.</strong> تعلُّم إدارتها هو ما يفصل بين المستخدمين العاديين والأشخاص الذين يحصلون على نتائج قوية فعلاً.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        الرموز: أبجدية الذكاء الاصطناعي
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        الذكاء الاصطناعي لا يقرأ الكلمات مثلك تماماً. يقرأ <strong>الرموز</strong> &mdash; قطع نص عادة ما تكون حوالي ثلاثة أرباع الكلمة. كلمة "incredible" هي رمزان. "AI" رمز واحد. المسافة قبل الكلمة غالباً ما تُجمع مع نفس الرمز.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>حسبة سريعة</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1 رمز ≈ 4 أحرف ≈ 0.75 كلمة<br />
+          100 رمز ≈ 75 كلمة<br />
+          صفحة نص عادية ≈ 300 رمز<br />
+          رواية كاملة ≈ 100,000 رمز
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        لماذا هذا مهم؟ لأن كل نموذج ذكاء اصطناعي له <strong>حجم نافذة سياق</strong> يُقاس بالرموز. نافذة سياق Claude يمكن أن تحتوي على 200,000 رمز &mdash; أي تقريباً كتاب من 500 صفحة. GPT-4o يحتوي على 128,000. هذه أرقام تبدو ضخمة، لكنها تمتلئ أسرع مما تعتقد.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        كل رسالة ترسلها، كل إجابة يكتبها الذكاء الاصطناعي، كل تعليمة نظام تعمل في الخلفية &mdash; جميعها تستهلك رموز من نفس الميزانية المشتركة. وعندما تنفد هذه الميزانية، تبدأ الأشياء بالسقوط من الحافة.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextWindowViz client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        عندما تفيض النافذة
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        أنت في الرسالة العاشرة من المحادثة. ذكرت قيودك الغذائية في الرسالة الثالثة. بحلول الرسالة الخامسة عشرة، أنت غارق في توصيات المطاعم. تسأل: <em>"انتظر، ما هي القيود الغذائية التي ذكرتها؟"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        والذكاء الاصطناعي يقول: <em>"لا أعتقد أنك ذكرت أي قيود غذائية محددة."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        تشعر بالإحباط. <em>إنها موجودة هناك، قلتها!</em> لكن إليك الحقيقة: <strong>ليست</strong> موجودة هناك. ليس بعد الآن. تلك الرسالة المبكرة ربما انزلقت خارج النافذة المرئية، أو النموذج ربما أعطاها أولوية أقل لصالح السياق الأحدث. الذكاء الاصطناعي لا يتهاون. إنه حرفياً لا يستطيع رؤية ما لم يعد أمامه.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>هذا ليس خطأ. هذه هندسة.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          الذكاء الاصطناعي يعالج نافذة السياق مثل إنسان يقرأ وثيقة في جلسة واحدة. إذا كانت الوثيقة 100 صفحة، التفاصيل في الصفحة 3 قد تصبح ضبابية بحلول الصفحة 95. الحل ليس نافذة أكبر &mdash; بل تعبئة أذكى لما يدخل فيها.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ForgettingExperiment client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SYSTEM PROMPT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        موجه النظام: تعليمات مخفية
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        هناك جزء في كل محادثة مع الذكاء الاصطناعي لا تراه أبداً. قبل رسالتك الأولى، قبل أن يقول الذكاء الاصطناعي مرحباً، هناك قطعة نص جالسة في أعلى نافذة السياق تماماً. تُسمى <strong>موجه النظام</strong>، وهي تشكّل كل ما يتبع.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        موجه النظام هو المكان الذي يحصل فيه الذكاء الاصطناعي على شخصيته، قواعده، حدوده. عندما يرفض ChatGPT مساعدتك في صنع سلاح، هذا موجه النظام. عندما يقول Claude "سأكون سعيداً لمساعدتك"، هذا سلوك مدرب معزز بموجه النظام. عندما يبقى روبوت خدمة العملاء في الموضوع، هذا &mdash; خمنت &mdash; موجه النظام.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>مثال موجه النظام</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "أنت مساعد طبخ مفيد. أجب فقط على الأسئلة المتعلقة بالطبخ وتحضير الطعام. إذا سُئلت عن أي شيء آخر، اعد توجيه المحادثة بأدب إلى مواضيع الطبخ. احتفظ بالإجابات تحت 150 كلمة. استخدم نبرة دافئة ومشجعة."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        موجه النظام مميز لأنه <strong>يبقى مثبتاً في أعلى نافذة السياق</strong>. مهما طالت المحادثة، موجه النظام لا ينزلق. يبقى هناك دائماً، يؤثر دائماً على سلوك الذكاء الاصطناعي. هذا يجعله أثمن عقار في نافذة السياق كلها.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        فكر في موجه النظام كوصف وظيفة الذكاء الاصطناعي. لا يخبر الذكاء الاصطناعي ماذا يقول &mdash; يخبره <em>من</em> يكون.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SystemPromptSandbox client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        استراتيجيات إدارة السياق
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        الآن بعد أن فهمت النافذة، إليك كيفية إدارتها كالمحترفين. هذه هي التقنيات التي تفصل بين الناس الذين "يستخدمون الذكاء الاصطناعي" والناس الذين يحصلون على نتائج استثنائية منه.
+      </p>
+    </FadeInBlock>
+
+    <!-- Strategies — editorial layout matching ch1's building blocks -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { num: '1', name: 'لخّص أثناء التقدم', color: '#7B61FF', text: 'كل 5-10 رسائل، اطلب من الذكاء الاصطناعي كتابة ملخص موجز للقرارات والتفاصيل المهمة. ثم الصق هذا الملخص في رسالتك التالية. هذا "يعيد ضبط" السياق مع أهم المعلومات في المقدمة والوسط.' },
+        { num: '2', name: 'ضع المهم في المقدمة', color: '#16C79A', text: 'ضع المعلومات الأكثر أهمية في بداية رسالتك، ليس مدفونة في النهاية. الذكاء الاصطناعي يعطي انتباه أكثر لما يأتي أولاً وآخراً — الوسط يمكن أن يضيع، خاصة في الموجهات الطويلة.' },
+        { num: '3', name: 'ابدأ من جديد بذكاء', color: '#0EA5E9', text: 'لا تخف من بدء محادثة جديدة عندما يتغير الموضوع بشكل كبير. انقل ملخص ما قررته، ليس التاريخ الكامل. السياق النظيف غالباً أفضل من المزدحم.' },
+        { num: '4', name: 'كن صريح حول ما يجب تذكره', color: '#F5A623', text: '"مهم: المستخدم نباتي. لا تنس هذا." يبدو سخيفاً، لكنه يعمل. التذكيرات الصريحة تعمل كمراسي يزنها الذكاء الاصطناعي بثقل أكبر.' },
+        { num: '5', name: 'استخدم تنسيقات منظمة', color: '#E94560', text: 'القوائم النقطية، العناوين، والتسميات الواضحة تساعد الذكاء الاصطناعي على تحليل سياقك بكفاءة أكبر. الموجه المنظم جيداً يساوي ضعف عدد الرموز مقارنة بجدار النثر.' },
+      ].map((strategy, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
+              {strategy.num}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {strategy.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {strategy.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>هندسة السياق هي هندسة الموجهات الجديدة.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          كتابة موجه جيد هو الخطوة الأولى. لكن تحديد المعلومات التي تضعها أمام الذكاء الاصطناعي &mdash; وكيفية تنظيمها &mdash; هو المكان الذي توجد فيه الرافعة الحقيقية. أفضل موجه في العالم يفشل إذا كان السياق خطأ.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        كل محادثة تخوضها مع الذكاء الاصطناعي مختلفة الآن. ترى السبورة. تشعر بحدود النافذة. تعرف متى تلخص، متى تبدأ من جديد، وأين يختبئ موجه النظام.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        حتى الآن كنا نعمل مع روبوتات المحادثة. تالياً، نبتعد قليلاً &mdash; مئات أدوات الذكاء الاصطناعي موجودة خارج نافذة المحادثة، ومعرفة المشهد تغيّر ما تعتقد أنه ممكن.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

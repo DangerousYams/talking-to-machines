@@ -1,0 +1,321 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
+import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
+import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+
+const chapter = chapters[5];
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Altıncı Bölüm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Ajanlar<br />inşa etmek
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Sıfırdan bir yapay zeka ajanı<br />tasarla, bağla ve devreye al.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Sohbet robotu senin konuşmanı bekler. Ajan beklemez. Ona bir hedef ver — "Mars kolonizasyonunu araştır ve bir rapor yaz" — ve işi adımlara böler, doğru araçları seçer, onları tek tek yürütür, kendi sonuçlarını kontrol eder ve iş bitene kadar devam eder. El tutmaya gerek yok.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Bu ayrım — <em>talimatlara yanıt vermek</em> ile <em>bir hedefi takip etmek</em> arasındaki — hesap makinesi ile iş arkadaşı arasındaki farktır. Sohbet robotları soruları cevaplar. Ajanlar sorunları çözer.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Bu bölüm ajanların kaputun altında nasıl çalıştığını anlatıyor — onları harekete geçiren döngü, güvenilir yapan mimari ve dikkatsizce inşa edildiğinde tehlikeli kılan başarısızlık modları.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Ajan döngüsü
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bölüm 5'te temel araç kullanım döngüsünü gördün: gözlemle, düşün, harekete geç. Ajanlar bunu daha iddialı bir şeye genişletir — her biri farklı bir iç bileşen tarafından desteklenen beş adımlı bir döngü:
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'H', word: 'Hedef', color: '#E94560', desc: 'İnsandan üst düzey bir amaç al. Net bir hedef olmadan, ajanın bitip bitmediğine karar verme şansı yok. "Mars\'ı araştır" bir hedef değil. "Mars kolonizasyonunun zorluklarının kaynaklarıyla birlikte 500 kelimelik bir özetini yaz" bir hedeftir.' },
+        { letter: 'P', word: 'Planla', color: '#7B61FF', desc: 'Hedefi somut adımlara böl. En iyi plancılar, bir adım başarısız olduğunda uyum sağlayan esnek planlar oluşturur. Kötü plancılar, ilk sürprizde kırılan katı senaryolar oluşturur.' },
+        { letter: 'Y', word: 'Yürüt', color: '#0EA5E9', desc: 'Her adımı doğru aracı kullanarak çalıştır — arama motorları, kod yorumlayıcıları, dosya okuyucuları, API\'ler, hesap makineleri. Ajanlar sadece düşünmez. Harekete geçer.' },
+        { letter: 'G', word: 'Gözlemle', color: '#16C79A', desc: 'Ne olduğunu kaydet ve sonuçları kontrol et. Ne yaptığının ve bulduğunun hafızası olmadan, döngüdeki bir ajan aynı başarısız eylemi sonsuza dek tekrarlayabilir.' },
+        { letter: 'D', word: 'Değerlendir', color: '#F5A623', desc: 'Bu işe yaradı mı? Bu veri güvenilir mi? Hedefe daha yakın mıyım? Değerlendirici, ajanı sadece çalışıp en iyisini uman bir komut dosyasından ayırır. Bir şey yanlışsa, planı ayarla ve tekrar döngüye gir.' },
+      ].map((step, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Anahtar kelime <em>döngü</em>dür. Ajan bir kez planlayıp körü körüne yürütmez. Planlar, harekete geçer, gözlemler, değerlendirir ve ayarlar. En iyi ajanlar, üçüncü adım ters gittiğinde zarif bir şekilde toparlananlardır.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Sohbet robotu tek bir tur. Ajan bütün bir sohbet — kendisiyle, araçlarıyla ve dünyayla.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Bir tane inşa etmenin zamanı geldi. Kendi ajanını sıfırdan tasarla.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <AgentBlueprint client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN AGENTS FAIL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Ajanlar başarısız olduğunda
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ajanlar sohbet robotları gibi başarısız olmaz. Sohbet robotu sana kötü bir cevap verir ve bekler. Ajan kendine kötü bir cevap verir, <em>ona göre hareket eder</em>, sonra bozuk sonucu kullanarak bir sonraki kararı verir. Başarısızlıklar birikir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ajanların ters gitmesinin üç klasik yolu var:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Başarısızlık modu 1: sonsuz döngü</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Ajan aynı eylemi tekrarlayarak takılır. Bir araştırma ajanı "bir kaynak daha" aramaya devam eder ve asla yazmaya başlamaz. Durdurma koşulu olmadan, sen fişi çekene kadar — ya da API kredileri bitene kadar — çalışır.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
+        <span class="prompt-block-label" style="color: #7B61FF;">Başarısızlık modu 2: yanlış araç</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Ajan işi yapamayacak bir araç seçer. Sabit diskindeki bir dosyayı web'de aramaya çalışır ya da bir makaleyi özetlemek için hesap makinesi çağırır. Ajan aptal değil — sadece aracın göreve uyup uymadığını kontrol etmeden alet çantasından seçti.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
+        <span class="prompt-block-label" style="color: #F5A623;">Başarısızlık modu 3: hayal edilmiş eylemler</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Ajan var olmayan araçlar veya API'ler icat eder, sonra onları sahte sonuçlarla "çağırır". Sahte çağrı başarısız olduğunda, bazen alması gereken veriyi uydurur. Çift halüsinasyon: sahte araç, sahte çıktı.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Çözüm her zaman aynı ilkedir: <strong>mutsuz yol için tasarla.</strong> Maksimum iterasyon, araç doğrulama, çıktı doğrulama ve insan kontrol noktaları. Amaç tüm başarısızlıkları önlemek değil — başarısızlığı kurtarılabilir yapmak.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO FAILURE MODES LAB -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Bozuk bir ajanı teşhis edebilir misin? Hatayı bul ve korkuluğu ekle.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FailureModesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF MANY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Çokluğun gücü
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Tek ajan faydalıdır. Birlikte çalışan birden fazla ajan, tek bir sistemi bunaltacak sorunlarla başa çıkabilir. İşin sırrı uzmanlaşmadır.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Bunu bir haber odası gibi düşün. Aynı kişiden haberi araştırmasını, makaleyi yazmasını ve yayın için düzenlemesini istemezsin. Her rol farklı bir zihniyet, farklı araçlar ve farklı standartlar gerektirir.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Çoklu ajan sistemleri aynı şekilde çalışır. Bir <strong>Araştırmacı</strong> ajan bilgi toplar. Bir <strong>Yazar</strong> ajan ham notları cilalı düzyazıya dönüştürür. Bir <strong>Editör</strong> ajan gözden geçirir, doğrular ve iyileştirmeler önerir. Her ajanın kendi sistem promptu, kendi araçları ve kendi başarı kriterleri vardır.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Çoklu ajan tasarımındaki kritik soru "her ajan ne kadar akıllı?" değildir. <strong>"Devir teslim ne kadar iyi?"</strong> sorusudur. Araştırmacı notları Yazar'a aktardığında, bu notlar net yapılandırılmış mı? Yazar taslağı Editör'e aktardığında, Editör'ün yararlı geri bildirim verecek kadar bağlamı var mı?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Devir teslim belgesi çoklu ajan sistemindeki en önemli üründür. Parlak bir yazar özensiz araştırma notlarını kurtaramaz. Ajanlar arasındaki arayüz, kalitenin kazanıldığı veya kaybedildiği yerdir.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Üç ajanın birlikte çalışmasını izle. Devir teslim belgelerine dikkat et &mdash; sihir orada gerçekleşir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HandoffChain client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN IN THE LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Döngüdeki insan
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bölüm 5'te güven çerçevesini öğrendin: risk, geri alınabilirlik ve güven ne kadar özerklik verileceğini belirler. Ajanlarla bu daha da kritik hale gelir — çünkü ajanlar sadece soruları cevaplamaz. <em>Harekete geçer</em>, onları zincirler ve kontrol edilmezse hataları biriktirir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85]">
+        En iyi ajan geliştiricileri özerkliği maksimize edenler değildir. <strong>Düşünceli kontrol noktaları</strong> tasarlayanlar — ajanın durup çalışmasını gösterdiği ve bir insanın devam edip etmeyeceğine karar verdiği anlar. Harika bir ajan ne zaman sorması gerektiğini bilir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Ajanları içeriden gördün: onları harekete geçiren döngü, çalışmalarını sağlayan mimari ve dikkatsizce inşa edildiğinde tehlikeli kılan başarısızlık modları.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Teori bir şey. Sırada, gerçek bir ajan kullanacaksın &mdash; kodunu okuyan, değişiklikler yazan, testleri çalıştıran ve kendi hatalarını düzelten bir ajan. Claude Code ile tanış.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

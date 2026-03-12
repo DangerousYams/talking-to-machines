@@ -1,0 +1,405 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
+import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+
+const chapter = chapters[7];
+---
+
+<ChapterLayout chapter={chapter} locale="ja">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>8</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第八章
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          複雑さを<br />オーケストレーションする
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          コンテキストウィンドウより大きな<br />プロジェクトでAIを管理する。
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        野心的な初心者が必ずぶつかる瞬間がある：AIに本格的なもの——フルゲーム、バックエンド付きのWebサイト、引用付きの研究論文——を作らせようとして、全部崩壊する。AIが十分に賢くないからじゃない。プロジェクトが1回の会話には大きすぎるからだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        要件の壁をペーストして、AIが自信ありげなレスポンスを返して、20分後に気づく——頼んだことの半分を忘れ、アーキテクチャで矛盾し、存在しないライブラリをハルシネーションしている。もう一回やる。同じ結果、違うハルシネーション。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        これはAIの問題じゃない。<strong>オーケストレーションの問題</strong>だ。これを解決する方法を学ぶことが、AIを単発のタスクに使う人と、本物を作る人の違いだ。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        ワンプロンプトの罠
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AIの使い方を覚えたての頃は、すべてを一発でやろうとするのが自然だ。巨大なプロンプト1つ。会話1回。試行1回。シンプルなタスク——メールを書く、アイデアをブレストする、概念を説明する——にはそれでうまくいく。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        しかし複雑さは、ワンプロンプトアプローチを3つの点で壊す：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { num: '1', title: 'コンテキストのオーバーフロー', text: 'AIが一度に保持できる情報には限りがある。フルプロジェクトはその限界を超えるので、AIは初期の要件を「忘れ」始める。' },
+          { num: '2', title: '注意力の希薄化', text: 'コンテキストウィンドウ内でも、12の異なる懸念を同時にジャグリングさせると、それぞれへの注意力が下がる。全般的に品質が落ちる。' },
+          { num: '3', title: 'エラーの連鎖', text: '複雑なアウトプットの中の小さなミス1つが連鎖する。AIがデータベーススキーマを間違えたら、そのスキーマ上に構築されたすべてが間違いだ——生成されたコードの山の中では見つけにくい。' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
+            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
+                {item.num}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        解決策はより良いプロンプトじゃない。より良いプロセスだ。
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DECOMPOSITION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        分解：マスタースキル
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        プロのソフトウェアエンジニアはアプリケーション全体を一気に作らない。パーツに分ける——モジュール、コンポーネント、関数——それぞれに明確な目的、明確な入力、明確な出力がある。それから組み立てる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AIで複雑なプロジェクトに取り組むのにも同じ規律が必要だ。プロジェクトを、1回の集中したAI会話でうまく処理できるサイズのタスクに<strong>分解</strong>する必要がある。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        良い分解は3つのルールに従う：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: '単一責任。', desc: '各タスクは1つのことをする。「データベースを設計してAPIを構築してフロントエンドを書く」は1つじゃなく3つのタスクだ。' },
+          { word: '明確なインターフェース。', desc: 'すべてのタスクに定義された入力（始めるのに必要なもの）と定義された出力（生み出すもの）がある。あるタスクの出力が次のタスクの入力になる。' },
+          { word: '最小限の依存関係。', desc: '並行してできるタスクはそうすべきだ。あるタスクが本当に別のタスクの出力を必要とする場合にのみ依存関係を作る。' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>分解は人間のスキルであり、AIのスキルじゃない。</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AIはタスク分割のブレストを手伝える。でもどう分けるか、何が何に依存するか、何を優先するか——それは君の仕事だ。プロジェクトマネジメントであり、身につけられる最も価値のあるスキルの1つだ。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        実際のプロジェクトを分解してみよう。タスクをドラッグして、依存関係を追い、計画が形になるのを見よう。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectOrchestrator client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE HANDOFF PATTERN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ハンドオフパターン
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        プロジェクトをタスクに分けたら、それらを繋ぐ方法が必要だ。AIワークフローでは、この接続が<strong>ハンドオフ</strong>だ——ある会話の出力が次の会話の入力になる瞬間だ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>ハンドオフパターン</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          会話1が<strong>成果物</strong>を生む——ドキュメント、スキーマ、計画。<br />
+          その成果物が会話2に<strong>コンテキスト</strong>として貼り付けられる。<br />
+          会話2がそれを基に構築し、次の成果物を生む。<br />
+          プロジェクトが完成するまで繰り返す。
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        リレー走のようなものだ。各走者（会話）が自分の区間を走り、バトン（成果物）を次に渡す。バトンが重要——落としたりぐちゃぐちゃにしたら、次の走者がつまずく。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        だからハンドオフの成果物は<em>明快</em>じゃないといけない。データベーススキーマの方が、データモデルの曖昧な説明より良いハンドオフだ。APIエンドポイントの番号付きリストの方が「ユーザー関連を処理するバックエンドが必要」より良い。成果物が鋭いほど、次の会話のパフォーマンスが上がる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        ハンドオフ成果物の品質が、その下流に構築されるすべての品質を決める。ゴミを入れればゴミが出る——会話をまたいで。
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT PACKING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        コンテキストパッキングの技術
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        新しいAI会話を始めるたびに、ほとんどの人が気づいてすらいない決断をしている：<strong>どのコンテキストを含めるか？</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        バジェットは限られている——コンテキストウィンドウだ。そして潜在的に関連する情報の山がある：コードファイル、ドキュメント、過去の会話、エラーログ、デザイン仕様。全部は入らない。入ったとしても、全部ぶち込んだらAIの注意力が薄まる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        コンテキストパッキングは旅行のスーツケース詰めのようなものだ。クローゼット全部は持っていけない。行き先（タスク）、必要なもの（関連情報）、置いていけるもの（それ以外すべて）を考える必要がある。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
+        {[
+          { label: 'コンテキストが少なすぎ', color: '#E94560', text: 'AIに必要な情報がなく、ギャップをハルシネーションで埋める。自信ありげだけど詳細を捏造する。' },
+          { label: 'コンテキストが多すぎ', color: '#F5A623', text: 'AIが圧倒される。重要な詳細がノイズに埋もれる。アウトプットが汎用的で焦点がぼやける。' },
+          { label: 'ちょうど良いコンテキスト', color: '#16C79A', text: 'AIがこの特定のタスクに必要なものだけを持っている。アウトプットが精密で、関連性があり、実行可能。' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
+              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
+                {item.label}
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ため込む人じゃなく、編集者のように考えよう。</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          すべてのAIインタラクションの前に自問しよう：このタスクをこなすためにAIが<em>知る必要がある</em>ことは何か？それを入れる。他はすべて外す。プロジェクトマネジメントに適用されたコンテキストエンジニアリングだ。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO CONTEXT PACKING -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        コンテキストのスーツケースを詰めよう。溢れさせずに大事なものを入れられるかな？
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextPacking client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ VERSION CONTROL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        うまくいったものを記録する
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        誰にでも起こるシナリオ：AIとの素晴らしい会話で、まさに必要なアウトプットが得られた。1週間後、似たようなものが必要になる。何を言ったか思い出せない。再現しようとする。結果は悪い。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        複雑なAIプロジェクトは多くの成果物を生む——うまくいったプロンプト、良かったアウトプット、決定事項、失敗したアプローチ。これらを追跡するシステムがないと、すでに解決したことの再発見に何時間も費やすことになる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        プロの開発者はバージョン管理（Gitなど）を使ってコードベースのすべての変更を追跡する。同じ考え方をAI作業にも適用すべきだ：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
+        {[
+          { icon: '01', title: 'プロンプトを保存する', desc: 'プロンプトが素晴らしいアウトプットを出したら、どこかに保存しよう。シンプルなメモアプリ、マークダウンファイル、プロンプトライブラリ。正確な言い回しが重要だ。' },
+          { icon: '02', title: 'アウトプットを保存する', desc: 'その上に構築するAI生成の成果物を保管しよう。データベーススキーマ、API設計、アウトライン。これらはハンドオフドキュメントで、また必要になる。' },
+          { icon: '03', title: '決定事項を記録する', desc: '君とAIが2つのアプローチを検討して1つを選んだとき、理由を書き留める。プロジェクトが方向転換したとき、未来の君が今の君に感謝する。' },
+          { icon: '04', title: '失敗を追跡する', desc: 'ゴミを生んだプロンプトも貴重な情報だ。何がダメかを知ることは戦いの半分。「失敗ログ」をつけて同じミスを繰り返さないようにしよう。' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
+                {item.icon}
+              </span>
+              <div>
+                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.6}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        プロンプトライブラリはミュージシャンの練習ノートのようなものだ。集めれば集めるほど速くなり、ゼロから始めることが減る。
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        ワンプロンプト思考から、分解、ハンドオフパターン、コンテキストパッキングへ。複雑なプロジェクトはもう怖くない &mdash; 明快な成果物で繋がれた一連の集中した会話にすぎない。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        もう1つ、これらすべてより重要なスキルがある：AIが<em>間違っている</em>ときを知ること。ハルシネーション、追従、そして正直さを保つ検証の習慣。それが次だ。
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

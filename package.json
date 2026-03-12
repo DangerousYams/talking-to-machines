@@ -12,9 +12,12 @@
     "test:headed": "playwright test --headed",
     "test:smoke": "playwright test --grep @smoke",
     "test:screenshots": "playwright test --grep @screenshot",
-    "test:report": "playwright show-report tests/report"
+    "test:report": "playwright show-report tests/report",
+    "record": "npx tsx scripts/record-chapters.ts",
+    "record:mobile": "npx tsx scripts/record-chapters.ts --mobile"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@astrojs/react": "^4.4.2",
     "@astrojs/vercel": "^9.0.4",
     "@gsap/react": "^2.1.2",

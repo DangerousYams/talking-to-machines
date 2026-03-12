@@ -1,0 +1,349 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectPlanner from '../../components/widgets/ch11/ProjectPlanner';
+import ShowcaseGallery from '../../components/widgets/ch11/ShowcaseGallery';
+
+const chapter = chapters[10];
+---
+
+<ChapterLayout chapter={chapter} locale="pt">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>11</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Capítulo Onze
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Construa algo<br />real
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Conhecimento sem criação é curiosidade.<br />É hora de colocar no ar.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Você chegou ao último capítulo. Nos últimos dez capítulos, você evoluiu de "me ajuda com meu texto" para criar agentes, debuggar alucinações e pensar sobre o futuro do trabalho. Você aprendeu mais sobre IA do que a maioria dos adultos sabe. Mas aqui está a verdade desconfortável: <strong>nada disso importa até você construir algo.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Ler sobre IA é como ler sobre natação. Você pode estudar a física da flutuação, assistir corridas olímpicas, memorizar todas as técnicas de nado. Mas até você entrar na água, você não <em>sabe</em> nada disso. Você apenas <em>conhece sobre</em> isso.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Este capítulo é sobre pular na água. Não com um exercício de brincadeira ou um tutorial passo-a-passo. Um projeto real. Algo que você escolhe. Algo que você se importa. Algo que você pode mostrar para alguém e dizer: <em>"Eu construí isso."</em>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR TOOLKIT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Seu kit de ferramentas
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Dez capítulos de habilidades, prontas para usar:
+      </p>
+    </FadeInBlock>
+
+    <!-- Compact 2-column grid of chapter skills -->
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { ch: '1', label: 'Arquitetura de prompts', color: '#E94560' },
+          { ch: '2', label: 'Técnicas avançadas', color: '#0F3460' },
+          { ch: '3', label: 'Engenharia de contexto', color: '#7B61FF' },
+          { ch: '4', label: 'O panorama da IA', color: '#0EA5E9' },
+          { ch: '5', label: 'Uso de ferramentas e agentes', color: '#F5A623' },
+          { ch: '6', label: 'Arquitetura de agentes', color: '#E94560' },
+          { ch: '7', label: 'Programação com IA', color: '#7B61FF' },
+          { ch: '8', label: 'Orquestração', color: '#0F3460' },
+          { ch: '9', label: 'Pensamento crítico', color: '#E94560' },
+          { ch: '10', label: 'A vantagem humana', color: '#16C79A' },
+        ].map((item) => (
+          <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0;">
+            <span style={`font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: ${item.color}; opacity: 0.7; width: 1.25rem; text-align: right; flex-shrink: 0;`}>{item.ch}</span>
+            <span style={`font-family: var(--font-body); font-size: 0.9rem; color: var(--color-deep); opacity: 0.8;`}>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        A pergunta agora é: o que você vai fazer com isso?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ PLAN BEFORE YOU BUILD ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Planeje antes de construir
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        O maior erro dos iniciantes? Eles pular direto para as ferramentas. Abrem o Claude, digitam um prompt gigante e tentam construir tudo de uma vez. Falha. Ficam frustrados. Desistem.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Os melhores projetos não começam com um prompt. Começam com um plano no papel. O que você está construindo? Para quem? Como é "pronto"? Responda isso antes de tocar no teclado.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Lembra do Capítulo 8 — orquestrando complexidade? Seu projeto final é uma versão miniatura disso. Divida o trabalho em partes. Saiba o que está construindo antes de construir. Use IA como colaboradora em cada parte, não como uma varinha mágica para o projeto inteiro.
+      </p>
+    </FadeInBlock>
+
+    <!-- Planning Steps -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Escolha.', desc: 'Pique algo que você realmente se importa. Paixão alimenta persistência nas partes difíceis.' },
+          { word: 'Reduza.', desc: 'Corte pela metade. Depois corte pela metade de novo. Um projeto pequeno terminado vale mais que um grande abandonado.' },
+          { word: 'Decomponha.', desc: 'Divida em 5-8 tarefas. Cada tarefa deve ser completável em uma sessão.' },
+          { word: 'Construa.', desc: 'Uma tarefa por vez. Use IA para cada pedaço. Verifique cada resultado antes de seguir.' },
+          { word: 'Lance.', desc: 'Feito é melhor que perfeito. Compartilhe. Receba feedback. Iterate.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Mais uma coisa: documente conforme você vai. O projeto em si é metade da história. Como você construiu — as decisões, as iterações, os becos sem saída — é a outra metade. Um projeto terminado que você pode explicar vale mais que qualquer nota de teste.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT PLANNER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectPlanner client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE 3-WEEK SPRINT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        O sprint de 3 semanas
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Seja seu projeto um fim de semana ou um semestre, o ritmo é o mesmo. Aqui está um framework testado em batalha para lançar algo real:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        {[
+          {
+            week: 'Semana 1',
+            title: 'Idear e delimitar',
+            color: '#F5A623',
+            tasks: [
+              'Escolha seu projeto. Use o Planejador de Projeto acima.',
+              'Escreva uma descrição de um parágrafo do que é "pronto".',
+              'Divida o projeto em 5-8 tarefas com entregas claras.',
+              'Identifique quais ferramentas de IA você usará para cada tarefa.',
+              'Construa um protótipo minúsculo da parte mais difícil primeiro. Se isso funcionar, o resto segue.',
+            ],
+          },
+          {
+            week: 'Semana 2',
+            title: 'Construir',
+            color: chapter.accent,
+            tasks: [
+              'Trabalhe nas tarefas uma por vez. Não pule à frente.',
+              'Para cada tarefa, use o loop prompt-avaliar-refinar do Capítulo 1.',
+              'Mantenha um registro de "prompts que funcionaram". Você vai se agradecer depois.',
+              'Quando travar, releia o capítulo relevante. A resposta geralmente está numa técnica que você não tentou.',
+              'Peça feedback de um amigo ou familiar no meio da semana. Olhos novos vêem o que os seus perdem.',
+            ],
+          },
+          {
+            week: 'Semana 3',
+            title: 'Polir e apresentar',
+            color: '#7B61FF',
+            tasks: [
+              'Conserte as três bordas mais óbvias. Ignore todo o resto.',
+              'Escreva uma descrição do projeto: o que faz, como você construiu, o que aprendeu.',
+              'Documente 3 prompts-chave que foram críticos para seu processo.',
+              'Crie uma demonstração de 2 minutos (vídeo, slides ou demo ao vivo).',
+              'Compartilhe. Com um professor, um amigo, online, na vitrine de estudantes.',
+            ],
+          },
+        ].map((week, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.1}>
+            <div style={`background: ${week.color}06; border: 1px solid ${week.color}15; border-radius: 12px; padding: 1.5rem 1.75rem;`}>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${week.color}; background: ${week.color}15; padding: 3px 10px; border-radius: 100;`}>
+                  {week.week}
+                </span>
+                <span style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-deep);`}>
+                  {week.title}
+                </span>
+              </div>
+              <ul style="margin: 0; padding-left: 1.25rem;">
+                {week.tasks.map((task) => (
+                  <li style="font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.8; margin-bottom: 0.35rem;">
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- BRIDGE TO SHOWCASE GALLERY -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Veja o que outros estudantes construíram. Depois adicione o seu à galeria.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SHOWCASE GALLERY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ShowcaseGallery client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING — THE SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Onze capítulos atrás, você digitou "me ajuda com meu texto" e torceu para dar certo. Agora você engenharia contexto, projeta agentes, verifica resultados e traz julgamento a cada passo.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Ferramentas não constroem coisas. <strong>Pessoas com ferramentas constroem coisas.</strong> E você tem o melhor kit de ferramentas que sua geração já teve acesso.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Vá fazer algo que só você pensaria em fazer.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-center mt-8" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
+        Lance no ar.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ COURSE COMPLETE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-24">
+    <FadeInBlock client:visible>
+      <div style={`text-align: center; padding: 3rem 2rem; border-radius: 16px; background: ${chapter.accent}06; border: 1px solid ${chapter.accent}15; position: relative; overflow: hidden;`}>
+        <!-- Decorative corner accents -->
+        <div style={`position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid ${chapter.accent}40; border-left: 2px solid ${chapter.accent}40; border-radius: 16px 0 0 0;`}></div>
+        <div style={`position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid ${chapter.accent}40; border-right: 2px solid ${chapter.accent}40; border-radius: 0 0 16px 0;`}></div>
+
+        <p style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-subtle); margin: 0 0 0.75rem;">
+          Curso completo
+        </p>
+        <p style={`font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: ${chapter.accent}; margin: 0 0 0.75rem; letter-spacing: -0.02em;`}>
+          Você terminou todos os 11 capítulos.
+        </p>
+        <p style="font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.6; max-width: 40ch; margin: 0 auto 2rem;">
+          Agora o aprendizado real começa — vá construir algo e volte a qualquer capítulo quando precisar.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+          <a
+            href="/"
+            style={`display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; background: ${chapter.accent}; color: white; transition: all 0.3s;`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            Voltar ao início
+          </a>
+          <a
+            href="/pt/ch1"
+            style="display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); color: var(--color-deep); transition: all 0.3s;"
+          >
+            Reler o capítulo 1
+          </a>
+        </div>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

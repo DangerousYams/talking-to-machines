@@ -73,9 +73,10 @@ export default function GuessThePrompt() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.3, flex: 1 }}>Guess the Prompt</h3>
           </div>
 
+          <style>{animStyle}</style>
           {/* Score + message */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem 0.75rem' }}>
-            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: '#E94560', marginBottom: '0.25rem' }}>
+            <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: '#E94560', marginBottom: '0.25rem', animation: 'gtp-scoreUp 0.5s ease both' }}>
               {score}/{totalRounds}
             </div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#7B61FF', margin: '0 0 0.5rem' }}>{tier}</p>
@@ -125,11 +126,12 @@ export default function GuessThePrompt() {
       );
     }
 
-    // Desktop game-over (unchanged)
+    // Desktop game-over
     return (
       <div className="widget-container">
+        <style>{animStyle}</style>
         <div style={{ padding: '3rem 2rem', textAlign: 'center' as const }}>
-          <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', fontWeight: 800, color: '#E94560', marginBottom: '0.5rem' }}>
+          <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3rem', fontWeight: 800, color: '#E94560', marginBottom: '0.5rem', animation: 'gtp-scoreUp 0.5s ease both' }}>
             {score}/{totalRounds}
           </div>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.1rem', color: '#1A1A2E', marginBottom: '0.5rem' }}>{message}</p>
@@ -166,9 +168,16 @@ export default function GuessThePrompt() {
     );
   }
 
+  const animStyle = `
+    @keyframes gtp-slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes gtp-popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes gtp-scoreUp { from { opacity: 0; transform: scale(0.8) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  `;
+
   // --- ACTIVE GAME ---
   return (
     <div className="widget-container" style={isMobile ? { display: 'flex', flexDirection: 'column', height: '100%' } : undefined}>
+      <style>{animStyle}</style>
       {/* Header */}
       {isMobile ? (
         <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid rgba(26,26,46,0.06)', display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
@@ -273,12 +282,12 @@ export default function GuessThePrompt() {
 
           {/* Explanation + Next (inline compact) */}
           {showResult && (
-            <div style={{ flexShrink: 0, marginTop: 8 }}>
+            <div style={{ flexShrink: 0, marginTop: 8, animation: 'gtp-slideUp 0.35s ease both' }}>
               <div style={{
                 background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(22,199,154,0.04))',
                 border: '1px solid rgba(123,97,255,0.12)', borderRadius: 8, padding: '0.5rem 0.75rem', marginBottom: 8,
               }}>
-                <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.78rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560', marginBottom: 2, margin: 0 }}>
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.78rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560', marginBottom: 2, margin: 0, animation: 'gtp-popIn 0.3s ease both 0.1s' }}>
                   {isCorrect ? 'Correct!' : 'Not quite.'}
                 </p>
                 <p style={{
@@ -385,8 +394,9 @@ export default function GuessThePrompt() {
             <div style={{
               background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(22,199,154,0.04))',
               border: '1px solid rgba(123,97,255,0.12)', borderRadius: 10, padding: '1.25rem 1.5rem', marginBottom: '1rem',
+              animation: 'gtp-slideUp 0.4s ease both',
             }}>
-              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560', marginBottom: 6 }}>
+              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: isCorrect ? '#16C79A' : '#E94560', marginBottom: 6, animation: 'gtp-popIn 0.3s ease both 0.15s' }}>
                 {isCorrect ? 'Correct!' : 'Not quite.'}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65, color: '#1A1A2E', margin: 0 }}>

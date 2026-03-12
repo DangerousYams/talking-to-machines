@@ -1,0 +1,329 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="gu">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          પ્રકરણ દસ
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          માનવીય<br />ધાર
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI શું બદલી ન શકે &mdash;<br />અને શું દસ ગણું સહેલું બનાવે.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        દર વખતે AI ની કોઈ નવી તાકાત બહાર આવે, એ જ મથાળું છપાય: <em>"શું AI [આ નોકરી] ની જગ્યા લઈ લેશે?"</em> ખોટો સવાલ છે. હંમેશાથી ખોટો રહ્યો છે. સાચો સવાલ આ છે: <em>"આનાથી શું શક્ય બનશે જે પહેલાં શક્ય ન હતું?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AI માણસોની જગ્યા નથી લેતું. એ <strong>કામો</strong>ની જગ્યા લે છે. અને કોઈ પણ નોકરી — કોઈ પણ કારકિર્દી, સર્જનાત્મક કામ, કે વ્યવસાય — નજીકથી જોઈશ તો મિશ્રણ મળશે: કેટલાક કામ AI ઉત્તમ રીતે સંભાળી લે, કેટલાકમાં મદદ કરે, અને કેટલાક જિદ્દીપણે, સુંદર રીતે માણસના જ રહે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        આ પ્રકરણ એ ભેદરેખા શોધવા વિશે છે. ડરવા માટે નહીં, પણ <strong>સાચી બાજુ ઊભા રહેવા</strong> — જ્યાં તારી અનન્ય માનવીય કુશળતા વધુ મૂલ્યવાન બને, ઓછી નહીં.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        પટ્ટી છે, ખડક નહીં
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI અને નોકરીઓ વિશે મોટા ભાગની ચર્ચા બે છેડાની હોય છે: કાં તો AI તારું કામ કરી શકે — કાં ન કરી શકે. રોબોટનો સર્વનાશ, અથવા બધું જેમ છે તેમ. પણ હકીકત એક પટ્ટી છે — બે છેડા વચ્ચે ઘણા શેડ છે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        કેટલાક કામ લગભગ પૂર્ણપણે સ્વયંચાલિત થઈ શકે. કેટલાક AI ની મદદથી વધુ સારા થાય. કેટલાક અડોઅડ રહે. અને સૌથી રસપ્રદ — જેના પર ધ્યાન આપવા જેવું છે — વચ્ચે પડે, જ્યાં માણસો અને AI સાથે મળીને કામ કરે.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        માહિતી ભરવાનું કામ? AI સંભાળી લે. મિટિંગો ગોઠવવી? લગભગ ઉકેલાઈ ગયું. પહેલો મુસદ્દો લખવો? AI ગજબ છે. પણ <em>શું બનાવવું એ નક્કી કરવું</em>, <em>મુશ્કેલ ઘડીમાં માહોલ વાંચવો</em>, <em>આંકડાનો અર્થ તારવવો</em> — એમાં કંઈક જોઈએ જે AI પાસે નથી.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        દરેક કૌશલ્ય ખરેખર ક્યાં પડે? તારી સમજ ચકાસ.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        નોકરીઓ ગાયબ નથી થતી — આકાર બદલે છે
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        1970 ના દાયકામાં ATM આવ્યા ત્યારે બધાએ ધાર્યું કે બેંકના કારકુનો ગાયબ થઈ જશે. એના બદલે, કારકુનોની સંખ્યા <em>વધી</em>. કેમ? ATM ને કારણે નવી શાખાઓ ખોલવી સસ્તી થઈ, અને કારકુનનું કામ રોકડ ગણવાથી ખસીને નાણાકીય ઉત્પાદનો વેચવા અને ગ્રાહક સંબંધો બાંધવા તરફ ગયું.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI એ જ કરી રહ્યું છે, પણ વધુ ઝડપથી અને દરેક ઉદ્યોગમાં એકસાથે. નોકરીનું નામ એ જ રહે. નોકરીનું <em>વર્ણન</em> ધરમૂળથી બદલાય. 2025 નો પત્રકાર 2015 ના પત્રકાર જેવું કામ નથી કરતો, ભલે નામ સરખું દેખાય.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>નવું કારકિર્દી ગણિત</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          "માણસ વિરુદ્ધ AI" નથી. <strong>AI સાથેના માણસો વિરુદ્ધ AI વગરના માણસો</strong> છે. જે લોકો AI સાધનો સાથે કામ કરતાં શીખે છે એ નોકરી ગુમાવતા નથી — વધુ ઝડપથી, વધુ સારી રીતે, અને પહેલાં ન હતી એવી ક્ષમતાઓ સાથે કામ કરે છે.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        નીચે કોઈ કારકિર્દી પસંદ કર અને જો કે AI એને અંદરથી કેવી રીતે બદલી રહ્યું છે. એક પણ કામ પૂરેપૂરું ગાયબ નથી થતું. પણ દરેક નોકરીનો આકાર બદલાઈ રહ્યો છે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        રુચિ: બદલી ન શકાય એવું કૌશલ્ય
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI એક મિનિટમાં સો લોગો ખ્યાલો બનાવી શકે. તારી ચા ઠંડી થાય એ પહેલાં દસ નિબંધની શરૂઆત લખી આપે. પાંચ ઍપ ડિઝાઇન, ચાર સૂત્રો, ત્રણ વ્યાપાર યોજનાઓ કાઢે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        પણ કયું <em>સાચું</em> છે — એ કહી ન શકે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        એવી દુનિયામાં જ્યાં વિકલ્પો બનાવવા લગભગ મફત છે, <em>સાચો વિકલ્પ પસંદ કરવાની</em> ક્ષમતા સૌથી કીમતી કૌશલ્ય બની જાય છે. એ ક્ષમતાનું નામ છે: રુચિ.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        રુચિ રહસ્યમય નથી. એ કેળવાય છે. ઘણું સારું કામ અને ઘણું ખરાબ કામ જોઈને, અને <em>કેમ</em> એક બીજા કરતાં સારું છે એ સમજાવતા શીખીને તારી રુચિ ઘડાય. ફોટોગ્રાફર જે જાણે કે કયો ફોટો રાખવો. લેખક જે જાણે કે કયું વાક્ય કાઢી નાખવું. ડિઝાઇનર જે જાણે કે ક્યારે ઓછું જ વધુ છે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        AI બનાવે. તું ચૂંટે. આ નવું શ્રમ-વિભાજન છે. ચાલ જોઈએ તારી રુચિ કેટલી ધારદાર છે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        તારું જ્ઞાન એ જ તારું ગપ્પાં-પકડક યંત્ર
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        પ્રકરણ 9 માં આપણે AI ના ભ્રમોની વાત કરી — AI કેવી રીતે પૂરા આત્મવિશ્વાસ સાથે ખોટી વાત કહે છે. પણ અકળાવનારો આગળનો સવાલ આ છે: <strong>તું એ ભૂલ પકડીશ કેવી રીતે?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        જવાબ છે મૂળભૂત સિદ્ધાંતોથી વિચારવું. AI કહે કે નળીની ત્રિજ્યા બમણી કરવાથી પાણીનો પ્રવાહ બમણો થાય — આ ભૂલ ત્યારે જ પકડાય જ્યારે તને ખબર હોય કે ક્ષેત્રફળ ત્રિજ્યાના <em>વર્ગ</em> પ્રમાણે વધે. AI કહે કે તર્કશાસ્ત્રનું સૂત્ર સાચું છે — તાર્કિક ભૂલ ત્યારે જ દેખાય જ્યારે તું અનુમાનના નિયમો સમજતો હોય.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI જે છે એમાંથી ફેરબદલ કરે. મૂળભૂત સિદ્ધાંતોની વિચારસરણી જમીની સત્યમાંથી તર્ક કરે. સાચે જ નવી ભૂમિમાં પ્રવેશવાનો રસ્તો આ છે — અને આત્મવિશ્વાસથી ખોટું બોલતા AI ને પકડવાનો પણ.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        એનો અર્થ એ નથી કે તારે બધામાં નિષ્ણાત હોવું જોઈએ. પણ જે ક્ષેત્રોમાં તું કામ કરે અને સર્જન કરે, ત્યાં તારી પાયાની સમજ — એ જ તને AI ના જવાબો આંખ બંધ કરીને વાપરનારાઓથી અલગ પાડે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        ચકાસી જો. નીચે AI જુદા જુદા ક્ષેત્રોના છ સવાલોના ભરોસાભર્યા જવાબો આપે છે. કેટલાક સાચા છે. કેટલાક ચાલાકીથી ખોટા. તને ફરક દેખાશે?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        શું માનવીય રહે છે
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        આ બધું ચકાસ્યા પછી, એક ઢાંચો ઉભરે છે. સૌથી વધુ માનવીય રહેતી કુશળતાઓ અવ્યવસ્થિત નથી — થોડી ઊંડી ક્ષમતાઓની આસપાસ ભેગી થાય છે જે AI માં મૂળભૂત રીતે ખૂટે છે.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: 'વિવેકબુદ્ધિ', color: '#16C79A', text: 'શું મહત્ત્વનું છે એ પસંદ કરવું. શું બનાવવું, શું કાઢવું, શું મોકલવું, શું બંધ કરવું. AI નિર્ણયો માટે માહિતી આપી શકે પણ નિર્ણય લઈ ન શકે — કારણ કે નિર્ણયોમાં મૂલ્યો જોઈએ, અને મૂલ્યો માનવીય છે.' },
+        { icon: '🤝', name: 'સહાનુભૂતિ', color: '#0EA5E9', text: 'બીજી વ્યક્તિ શું અનુભવે છે એ સમજવું અને સાચી કાળજીથી પ્રતિભાવ આપવો. AI લખાણમાં સહાનુભૂતિ દેખાડે. માણસો એને સંબંધોમાં, કટોકટીમાં, ખરેખર મહત્ત્વની ક્ષણોમાં જીવે.' },
+        { icon: '🧭', name: 'દ્રષ્ટિ', color: '#7B61FF', text: 'જે હજુ અસ્તિત્વમાં નથી એ જોવું અને નક્કી કરવું કે એ હોવું જોઈએ. દરેક ઉત્પાદન, કંપની, સર્જનાત્મક કૃતિ — કોઈકની ખાતરીથી શરૂ થઈ કે દુનિયાને કંઈક નવું જોઈએ. AI ઈચ્છા રાખી જ ન શકે.' },
+        { icon: '⚡', name: 'નેતૃત્વ', color: '#F5A623', text: 'લોકોને પ્રેરણા આપવી, મતભેદ ઉકેલવા, ભરોસો કેળવવો. આ મૂળભૂત રીતે સામાજિક કૌશલ્યો છે — જેમાં હાજરી, ભાવનાત્મક સૂઝ, અને જવાબદાર બનવાની ક્ષમતા જોઈએ.' },
+        { icon: '🔍', name: 'મૌલિક સવાલો પૂછવા', color: '#E94560', text: 'AI જવાબ આપવામાં ઉત્તમ છે. માણસો એવા સવાલ પૂછવામાં ઉત્તમ છે જે કોઈને પૂછવાનું સૂઝ્યું જ નહોતું. વિજ્ઞાન, વ્યાપાર, અને કલાની સૌથી મોટી શોધો સવાલથી શરૂ થઈ, જવાબથી નહીં.' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>મુખ્ય સમજ</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          આ ફક્ત "સારું હોય તો સારું" એવી નરમ કુશળતાઓ નથી. AI ની દુનિયામાં, આ જ <strong>કઠણ કુશળતાઓ</strong> છે. નિર્ણય લેવો, સહાનુભૂતિ રાખવી, આગેવાની કરવી, કલ્પના કરવી — આ તારા સૌથી મોટા સ્પર્ધાત્મક ફાયદા બને છે, ખાસ <em>એટલા માટે</em> કે AI બાકી બધું સંભાળી લે છે.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        રુચિ. વિવેકબુદ્ધિ. સહાનુભૂતિ. દ્રષ્ટિ. મૂળભૂત સિદ્ધાંતોથી વિચારવું. AI બધું સંભાળી લે પછી વધેલા ટુકડા નથી આ — આ જ <em>ઓળખાવે</em> કે તું ટેબલ પર શું લાવે છે.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        એક પ્રકરણ બાકી છે. હવે વધુ સિદ્ધાંત નહીં. તેં જે બધું શીખ્યું એ ભેગું કરવાનો અને કંઈક અસલી બનાવવાનો વખત આવ્યો છે &mdash; કંઈક એવું જે ફક્ત તને જ બનાવવાનું સૂઝે.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

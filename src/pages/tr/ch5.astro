@@ -1,0 +1,359 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
+import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+
+const chapter = chapters[4];
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Beşinci Bölüm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Ona araçlar<br />ver
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          "Soruları cevapla"dan<br />"harekete geç"e geçiş.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
+        Şimdiye kadar her yapay zeka etkileşimin aynı kalıbı izledi. Sen bir şey yazıyorsun. Yapay zeka bir şey yazıyor. Metin girer, metin çıkar. Gerçekten sofistike bir otomatik tamamlama. Ama bu tavan değil. Sadece zemin.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Ya yapay zeka bir şeyler <em>yapabilseydi</em>? Sadece hava durumundan bahsetmek değil, gerçekten tahmini kontrol etmek. Sadece kod yazmak değil, çalıştırıp ne olduğunu söylemek. Sadece ne arayacağını önermek değil, internette kendisi arayıp bulduklarını getirmek.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Araç kullanımı işte budur. Ve yapay zekanın ne olabileceğini tamamen değiştirir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Metin girer, metin çıkar'ın ötesinde
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bir sohbet robotuna şunu sorduğunda ne olduğunu düşün: <em>"Tokyo'da şu an saat kaç?"</em> Yapay zeka aslında bilmiyor. Aylarca veya yıllarca önceki verilerle eğitildi. Saati yok. Bu yüzden yapabileceği tek şeyi yapar — eğitim verisindeki kalıplara dayanarak tahmin eder. Bazen yakın tutar. Bazen komik derecede yanlış.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Araçsız</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">Kullanıcı:</span> Tokyo'da saat kaç?<br />
+          <span style="font-style: italic; opacity: 0.6;">Yapay zeka:</span> Yaklaşık 14:30 JST olmalı. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Sadece tahmin)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Şimdi aynı yapay zekaya bir <strong>araç</strong> ver — herhangi bir saat dilimindeki güncel saati döndüren basit bir fonksiyon. Birden:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Araçla</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">Kullanıcı:</span> Tokyo'da saat kaç?<br />
+          <span style="font-style: italic; opacity: 0.6;">Yapay zeka düşünür:</span> <span style="color: var(--color-purple); font-size: 0.9em;">Saat dilimi aracım var. Kullanayım.</span><br />
+          <span style="font-style: italic; opacity: 0.6;">Yapay zeka çağırır:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
+          <span style="font-style: italic; opacity: 0.6;">Araç döndürür:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
+          <span style="font-style: italic; opacity: 0.6;">Yapay zeka:</span> Tokyo'da şu an saat 14:47 (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Doğrulanmış)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Aynı soru. Tamamen farklı güvenilirlik. Yapay zeka daha akıllı olmadı — <strong>bağlandı</strong>. Artık kendi beyninin dışına çıkıp gerçek dünyayla etkileşime girebiliyor.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Araç kullanımı gerçekte nasıl çalışır
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Zihinsel model şu. Yapay zekaya araçlara erişim verdiğinde, ona bir <strong>alet çantası</strong> verip diyorsun ki: <em>"İşte yapabileceğin şeyler. Her araç için adı, neyi kabul ettiği ve ne döndürdüğü burada. Ne zaman kullanacağına sen karar ver."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Yapay zeka her istekte her aracı körü körüne kullanmaz. Hangi araçların ilgili olduğunu düşünür, birini kullanıp kullanmamaya karar verir, doğru girdiyi formüle eder, aracı çağırır, sonucu okur ve ardından o sonucu yanıtına dahil eder. Bu sürece <strong>fonksiyon çağrısı</strong> denir — ve son derece tutarlı bir döngü izler.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Gözlemle.', desc: 'Kullanıcının isteğini ve mevcut bağlamı oku.' },
+          { word: 'Düşün.', desc: 'Karar ver: "Bunun için araca mı ihtiyacım var, yoksa doğrudan cevaplayabilir miyim?"' },
+          { word: 'Harekete geç.', desc: 'Uygun aracı doğru argümanlarla çağır.' },
+          { word: 'Gözlemle.', desc: 'Aracın sonucunu oku.' },
+          { word: 'Yanıtla.', desc: 'Her şeyi yararlı bir cevaba sentezle.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Yapay zeka bir komut dosyası çalıştırmıyor. Her seferinde bir yargılama yapıyor: "Bu, araç kullanmam gereken bir durum mu, yoksa kendim halledebilir miyim?"
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Bu <strong>ajan döngüsü</strong> — gözlemle, düşün, harekete geç, gözlemle, yanıtla. Ve yapay zekanın bir aracı olsa da yüz aracı olsa da aynı döngüdür. Ne kadar çok araç verirsen, o kadar yetenekli olur. Ama aynı zamanda, <em>hangi</em> aracı <em>ne zaman</em> kullanacağına dair yargısına o kadar çok güvenmen gerekir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SEVEN TOOLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Her şeyi değiştiren yedi araç
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekanın kullanabileceği yüzlerce spesifik araç var, ama çoğu yedi kategoriye düşer. Her biri yapay zekanın yapabileceğini temelden farklı bir şekilde genişletir. Bazıları <em>bilgi</em> verir (web araması, veritabanları). Bazıları <em>yetenek</em> verir (kod çalıştırma, görsel üretimi). Bazıları <em>eller</em> verir (dosya düzenleme, API çağrıları).
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekanın tam akıl yürütme sürecini görmek için aşağıdaki herhangi bir araca tıkla — araca ihtiyacı olduğunu fark etmesinden, onu çağırmasına, sonucu kullanmasına kadar.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolCatalog client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TRUST QUESTION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Güven sorusu
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zeka bir şeyler <em>yapmaya</em> başladığında — sadece onlar hakkında konuşmak değil — yeni bir soru ortaya çıkıyor. Teknolojiyle hiç ilgisi olmayan, tamamen seninle ilgili bir soru:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Yapay zeka seninle görüşmeden önce ne kadarını kendi başına yapmalı?
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bu teknik bir soru değil — insani bir soru. Ve cevap üç şeye bağlı:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { name: 'Risk', color: '#E94560', text: 'Olabilecek en kötü şey ne? Bir makaleyi yanlış özetlemek sinir bozucu. Yanlış dosyaları silmek felaket. Risk arttıkça insan denetimi de artmalı.' },
+          { name: 'Geri alınabilirlik', color: '#F5A623', text: 'Geri alabilir misin? Git reposundaki bir dosyayı düzenlemek kolayca geri alınır. Patronuna e-posta göndermek alınmaz. Geri alınamaz eylemler neredeyse her zaman onayını gerektirmeli.' },
+          { name: 'Güven', color: '#16C79A', text: 'Bu aracı ne kadar tanıyorsun? Yüz kez kullandığın bir hesap makinesi, hiç denemediğin yepyeni bir eklentiden daha fazla özerkliği hak eder. Güven kazanılır, varsayılmaz.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
+                {i + 1}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {item.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Özerklik spektrumu</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Ya hep ya hiç değil. En iyi yapay zeka iş akışları, düşük riskli, geri alınabilir görevlerde yapay zekaya özgürlük verirken, yüksek riskli, geri alınamaz görevlerde insanları döngüde tutar. Senin işin sınırı tasarlamak.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Çizgiyi nereye çekerdin? Kendi özerklik seviyelerini belirle.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TrustThermometer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Araç kullanımı zihniyeti
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekayı sadece metin üreten değil, araç kullanan olarak düşünmeye başladığında ince bir değişim olur. <em>"Yapay zeka bu konuda ne söyleyebilir?"</em> diye sormayı bırakıp <em>"Yapay zeka bu konuda ne yapabilir?"</em> diye sormaya başlarsın.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Yapay zekadan veriyi nasıl analiz edeceğini <em>anlatmasını</em> istemek yerine, ona bir kod çalıştırma aracı verir ve analizi yazıp çalıştırmasını izlersin. Araştırma <em>linkleri</em> istemek yerine, ona web araması verir ve bilgiyi kendisinin bulup sentezlemesine izin verirsin. Çıktı "yapabileceğin şey bu"dan "az önce yaptığım şey bu"ya dönüşür.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Eski zihniyet</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          "5.000 TL'nin yıllık %6,5 faizle 10 yıl boyunca bileşik faizini nasıl hesaplayacağımı açıkla."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Araç kullanımı zihniyeti</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "5.000 TL'nin aylık bileşik %6,5 yıllık faiz oranıyla 10 yıl boyunca bileşik faizini hesapla. Tam sayıyı göster."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        İlk prompt sana bir eğitim verir. İkincisi sana bir cevap verir. Araçlarla, yapay zeka <strong>danışmandan</strong> <strong>asistana</strong> dönüşür — ne yapman gerektiğini söyleyen birinden, gerçekten yapan birine.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Yapay zekaya eller verdin. Arayabilir, hesaplayabilir, tarayabilir ve dosya yazabilir. Ve en zor kısmı öğrendin: ne kadar özgürlük vereceğine karar vermek.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Araçlar yapı taşlarıdır. Sırada, onları kendi başına bir hedef peşinde koşabilen bir şeye bağlıyoruz &mdash; planlayan, yürüten, hatalardan toparlanabilen. Ajanlar inşa etmenin zamanı geldi.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

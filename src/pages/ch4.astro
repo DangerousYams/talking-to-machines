@@ -4,7 +4,6 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
 import Divider from '../components/ui/Divider';
 import ToolWall from '../components/widgets/ch4/ToolWall';
 import WorkflowBuilder from '../components/widgets/ch4/WorkflowBuilder';
@@ -59,7 +58,7 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-8">
-        Right now, in early 2025, there are hundreds of AI tools you can use today -- not in some theoretical future, but literally right now, from your browser. Tools that generate photorealistic images from a sentence. Tools that compose full songs. Tools that read every academic paper ever written about your research topic and summarize the consensus in three paragraphs.
+        Right now, there are hundreds of AI tools you can use today -- not in some theoretical future, but literally right now, from your browser. Tools that generate photorealistic images from a sentence. Tools that compose full songs. Tools that read every academic paper ever written about your research topic and summarize the consensus in three paragraphs.
       </p>
     </FadeInBlock>
 
@@ -162,6 +161,15 @@ const chapter = chapters[3];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Explore the full catalog. Click any tool to learn what it does.
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: TOOL WALL ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -210,7 +218,7 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.4}>
       <p class="text-lg leading-[1.85] mb-10">
-        Most beginners make the same mistake: they use one general-purpose AI for everything. It's like using a Swiss army knife to build a house. It technically works, but you'll get better results faster with the right specialized tools.
+        Most beginners make the same mistake: they use one general-purpose AI for everything. It technically works, but you'll get better results faster with the right specialized tools.
       </p>
     </FadeInBlock>
 
@@ -309,6 +317,15 @@ const chapter = chapters[3];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        See for yourself. Same prompt, different tools &mdash; which output do you prefer?
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -361,40 +378,17 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        You don't need to master every tool. You need to know the terrain well enough to pick the right one when it matters.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        You now have a map of the AI landscape &mdash; eight families of tools, a framework for choosing between them, and the pipeline mindset that chains them together.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Now that you know what AI tools can do, the next chapter takes a leap forward: what happens when you give AI the ability to <em>take actions</em> -- not just generate outputs, but use tools of its own.
+        But so far, these tools just respond to you. What if they could <em>take actions on their own</em>? That's the leap from tool to agent &mdash; and it changes everything.
       </p>
     </FadeInBlock>
   </section>

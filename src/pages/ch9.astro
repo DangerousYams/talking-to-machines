@@ -4,7 +4,7 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
+
 import Divider from '../components/ui/Divider';
 import FactOrFabrication from '../components/widgets/ch9/FactOrFabrication';
 import SycophancyTest from '../components/widgets/ch9/SycophancyTest';
@@ -154,6 +154,15 @@ const chapter = chapters[8];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Test your detector. Can you tell which AI claims are real and which are fabricated?
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -197,6 +206,15 @@ const chapter = chapters[8];
           If you only use AI to confirm what you already believe, it will happily do that. You'll feel smarter while actually getting dumber. The strongest use of AI is asking it to challenge your assumptions — not reinforce them.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO SYCOPHANCY TEST -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        See it in action. Feed AI a wrong claim and watch whether it pushes back or caves.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -263,40 +281,17 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        The best AI users aren't the ones who trust AI the most. They're the ones who verify the fastest.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        You now have a BS detector: you can spot hallucinations, resist sycophancy, and verify before you trust. That habit will save you more than any fancy prompt technique.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        In the next chapter, we explore the flip side: the things AI genuinely can't do, and the irreplaceable human skills that become even more valuable in an AI-powered world.
+        Knowing when AI is wrong leads to a bigger question: what can it <em>never</em> do? Next, we explore the skills that stay stubbornly, beautifully human &mdash; and why they matter more than ever.
       </p>
     </FadeInBlock>
   </section>

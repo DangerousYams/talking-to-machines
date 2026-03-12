@@ -1,0 +1,151 @@
+---
+import { languages } from '../../data/languages';
+
+interface Props {
+  currentLocale?: string;
+  chapterSlug: string;
+}
+
+const { currentLocale = 'en', chapterSlug } = Astro.props;
+const currentLang = languages.find(l => l.code === currentLocale) || languages[0];
+const tiers = [
+  { label: 'Global', langs: languages.filter(l => l.tier === 1) },
+  { label: 'Indian Regional', langs: languages.filter(l => l.tier === 2) },
+  { label: 'More', langs: languages.filter(l => l.tier === 3) },
+];
+---
+
+<details class="lang-sel">
+  <summary class="lang-sel-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+    <span>{currentLang.code.toUpperCase()}</span>
+  </summary>
+  <nav class="lang-sel-dropdown">
+    {tiers.map(tier => (
+      <div class="lang-sel-group">
+        <p class="lang-sel-tier">{tier.label}</p>
+        {tier.langs.map(lang => {
+          const href = lang.code === 'en' ? `/${chapterSlug}` : `/${lang.code}/${chapterSlug}`;
+          const isCurrent = lang.code === currentLocale;
+          return (
+            <a
+              href={href}
+              class:list={['lang-sel-item', { 'lang-sel-active': isCurrent }]}
+              aria-current={isCurrent ? 'page' : undefined}
+            >
+              <span class="lang-sel-native">{lang.nativeName}</span>
+              {lang.code !== 'en' && <span class="lang-sel-en">{lang.name}</span>}
+            </a>
+          );
+        })}
+      </div>
+    ))}
+  </nav>
+</details>
+
+<script>
+  // Close dropdown on click outside
+  document.addEventListener('click', (e) => {
+    const el = document.querySelector('.lang-sel');
+    if (el && !el.contains(e.target as Node)) {
+      el.removeAttribute('open');
+    }
+  });
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelector('.lang-sel')?.removeAttribute('open');
+    }
+  });
+</script>
+
+<style>
+  .lang-sel {
+    position: relative;
+  }
+  .lang-sel-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--color-subtle);
+    opacity: 0.6;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    list-style: none;
+  }
+  .lang-sel-btn::-webkit-details-marker { display: none; }
+  .lang-sel-btn:hover {
+    opacity: 1;
+    background: var(--color-deep, #1A1A2E);
+    background: rgba(26, 26, 46, 0.05);
+  }
+  .lang-sel-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 6px;
+    width: 220px;
+    max-height: 420px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid rgba(26, 26, 46, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    padding: 8px 0;
+    z-index: 100;
+  }
+  .lang-sel-group {
+    padding: 4px 0;
+  }
+  .lang-sel-group + .lang-sel-group {
+    border-top: 1px solid rgba(26, 26, 46, 0.06);
+  }
+  .lang-sel-tier {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-subtle);
+    opacity: 0.5;
+    padding: 6px 14px 4px;
+    margin: 0;
+  }
+  .lang-sel-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 14px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .lang-sel-item:hover {
+    background: rgba(26, 26, 46, 0.04);
+  }
+  .lang-sel-active {
+    background: rgba(26, 26, 46, 0.06);
+  }
+  .lang-sel-native {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-deep);
+    font-weight: 500;
+  }
+  .lang-sel-active .lang-sel-native {
+    font-weight: 700;
+  }
+  .lang-sel-en {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-subtle);
+    opacity: 0.5;
+  }
+</style>

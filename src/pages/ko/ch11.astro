@@ -1,0 +1,349 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectPlanner from '../../components/widgets/ch11/ProjectPlanner';
+import ShowcaseGallery from '../../components/widgets/ch11/ShowcaseGallery';
+
+const chapter = chapters[10];
+---
+
+<ChapterLayout chapter={chapter} locale="ko">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>11</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          11장
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          진짜 뭔가를<br />만들어봐
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          만들지 않는 지식은 퀴즈 문제일 뿐이야.<br />이제 출시할 시간이야.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        마지막 장까지 왔어. 지난 열 개 장에 걸쳐, "내 에세이 좀 도와줘"에서 에이전트 구축, 할루시네이션 디버깅, 미래 일자리에 대한 사고까지 왔어. 대부분의 어른보다 AI에 대해 더 많이 배웠어. 하지만 불편한 진실이 있어: <strong>뭔가를 만들기 전까진 아무것도 의미 없어.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AI에 대해 읽는 건 수영에 대해 읽는 것과 같아. 부력의 물리학을 공부하고, 올림픽 경기를 보고, 모든 영법 기술을 외울 수 있어. 하지만 물에 들어가기 전까진, 그걸 <em>아는</em> 게 아니야. 그것에 <em>대해</em> 아는 것뿐이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        이 장은 뛰어드는 거야. 장난감 연습 문제나 따라하기 튜토리얼이 아니야. 진짜 프로젝트. 네가 선택하는 것. 네가 관심 있는 것. 누군가에게 보여주면서 말할 수 있는 것: <em>"이거 내가 만들었어."</em>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR TOOLKIT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        네 도구함
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        열 개 장의 스킬, 바로 사용 가능:
+      </p>
+    </FadeInBlock>
+
+    <!-- Compact 2-column grid of chapter skills -->
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { ch: '1', label: '프롬프트 구조', color: '#E94560' },
+          { ch: '2', label: '고급 기법', color: '#0F3460' },
+          { ch: '3', label: 'Context engineering', color: '#7B61FF' },
+          { ch: '4', label: 'AI 지형도', color: '#0EA5E9' },
+          { ch: '5', label: '도구 사용 & 에이전트', color: '#F5A623' },
+          { ch: '6', label: '에이전트 아키텍처', color: '#E94560' },
+          { ch: '7', label: 'AI 페어 프로그래밍', color: '#7B61FF' },
+          { ch: '8', label: '오케스트레이션', color: '#0F3460' },
+          { ch: '9', label: '비판적 사고', color: '#E94560' },
+          { ch: '10', label: '인간의 우위', color: '#16C79A' },
+        ].map((item) => (
+          <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0;">
+            <span style={`font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: ${item.color}; opacity: 0.7; width: 1.25rem; text-align: right; flex-shrink: 0;`}>{item.ch}</span>
+            <span style={`font-family: var(--font-body); font-size: 0.9rem; color: var(--color-deep); opacity: 0.8;`}>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        이제 질문은: 이걸로 뭘 할 거야?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ PLAN BEFORE YOU BUILD ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        만들기 전에 계획해
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        처음 만드는 사람들이 가장 많이 하는 실수? 바로 도구부터 열어. Claude를 열고, 거대한 프롬프트를 입력하고, 전체를 한 번에 만들려고 해. 실패해. 좌절해. 포기해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        최고의 프로젝트는 프롬프트로 시작하지 않아. 종이 위의 계획으로 시작해. 뭘 만들고 있어? 누구를 위한 거야? "완성"은 어떤 모습이야? 키보드에 손 대기 전에 이 질문에 답해.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        8장 기억나지 — 복잡성 오케스트레이션? 네 캡스톤 프로젝트는 그것의 축소판이야. 작업을 조각조각 나눠. 만들기 전에 뭘 만들지 파악해. AI를 전체에 대한 마법 지팡이가 아니라, 각 조각의 협력자로 활용해.
+      </p>
+    </FadeInBlock>
+
+    <!-- Planning Steps -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: '선택해.', desc: '진짜 관심 있는 걸 골라. 열정이 어려운 부분을 견디는 원동력이 돼.' },
+          { word: '범위를 줄여.', desc: '반으로 줄여. 그리고 다시 반으로 줄여. 완성된 작은 프로젝트가 포기한 큰 프로젝트보다 나아.' },
+          { word: '분해해.', desc: '5~8개 작업으로 쪼개. 각 작업은 한 번에 완료할 수 있어야 해.' },
+          { word: '만들어.', desc: '한 번에 하나씩. 각 조각에 AI를 활용해. 다음으로 넘어가기 전에 모든 출력을 검증해.' },
+          { word: '출시해.', desc: '완벽보다 완성이 나아. 공유해. 피드백 받아. 반복해.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        한 가지 더: 진행하면서 기록해. 프로젝트 자체가 이야기의 절반이야. 어떻게 만들었는지 — 결정들, 반복들, 막다른 길들 — 이 나머지 절반이야. 설명할 수 있는 완성된 프로젝트가 어떤 시험 점수보다 가치 있어.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT PLANNER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectPlanner client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE 3-WEEK SPRINT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        3주 스프린트
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        프로젝트가 주말이 걸리든 한 학기가 걸리든, 리듬은 같아. 진짜 뭔가를 출시하기 위한 검증된 프레임워크야:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        {[
+          {
+            week: '1주차',
+            title: '아이디어 & 범위 설정',
+            color: '#F5A623',
+            tasks: [
+              '프로젝트를 골라. 위의 Project Planner를 활용해.',
+              '"완성"이 어떤 모습인지 한 문단으로 써.',
+              '프로젝트를 명확한 결과물이 있는 5~8개 작업으로 나눠.',
+              '각 작업에 어떤 AI 도구를 쓸지 파악해.',
+              '가장 어려운 부분의 작은 프로토타입을 먼저 만들어. 그게 되면, 나머지도 될 거야.',
+            ],
+          },
+          {
+            week: '2주차',
+            title: '빌드',
+            color: chapter.accent,
+            tasks: [
+              '작업을 하나씩 처리해. 건너뛰지 마.',
+              '각 작업에 1장의 프롬프트-평가-개선 루프를 활용해.',
+              '"잘 된 프롬프트" 로그를 유지해. 나중에 고마워할 거야.',
+              '막히면, 해당 장을 다시 읽어. 답은 보통 아직 안 써본 기법에 있어.',
+              '주 중간에 친구나 가족한테 피드백을 받아. 새로운 눈이 네 눈이 놓치는 걸 잡아내.',
+            ],
+          },
+          {
+            week: '3주차',
+            title: '다듬기 & 발표',
+            color: '#7B61FF',
+            tasks: [
+              '가장 눈에 띄는 거친 부분 세 가지를 고쳐. 나머진 무시해.',
+              '프로젝트 설명을 써: 뭘 하는지, 어떻게 만들었는지, 뭘 배웠는지.',
+              '프로세스에 핵심이었던 프롬프트 3개를 기록해.',
+              '2분짜리 워크스루를 만들어 (영상, 슬라이드, 또는 라이브 데모).',
+              '공유해. 선생님, 친구, 온라인, 학생 쇼케이스에.',
+            ],
+          },
+        ].map((week, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.1}>
+            <div style={`background: ${week.color}06; border: 1px solid ${week.color}15; border-radius: 12px; padding: 1.5rem 1.75rem;`}>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${week.color}; background: ${week.color}15; padding: 3px 10px; border-radius: 100;`}>
+                  {week.week}
+                </span>
+                <span style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-deep);`}>
+                  {week.title}
+                </span>
+              </div>
+              <ul style="margin: 0; padding-left: 1.25rem;">
+                {week.tasks.map((task) => (
+                  <li style="font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.8; margin-bottom: 0.35rem;">
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- BRIDGE TO SHOWCASE GALLERY -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        다른 학생들이 뭘 만들었는지 구경해봐. 그리고 네 것도 갤러리에 추가해.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SHOWCASE GALLERY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ShowcaseGallery client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING — THE SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        11개 장 전에, 너는 "내 에세이 좀 도와줘"라고 치고 최선을 바랐어. 이제 너는 context를 설계하고, 에이전트를 디자인하고, 출력을 검증하고, 매 단계마다 판단력을 발휘해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        도구는 아무것도 만들지 않아. <strong>도구를 가진 사람이 만들어.</strong> 그리고 너에게는 네 세대가 접해본 최고의 도구함이 있어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        오직 네가 만들 생각을 할 수 있는 무언가를 만들어봐.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-center mt-8" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
+        출시해.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ COURSE COMPLETE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-24">
+    <FadeInBlock client:visible>
+      <div style={`text-align: center; padding: 3rem 2rem; border-radius: 16px; background: ${chapter.accent}06; border: 1px solid ${chapter.accent}15; position: relative; overflow: hidden;`}>
+        <!-- Decorative corner accents -->
+        <div style={`position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid ${chapter.accent}40; border-left: 2px solid ${chapter.accent}40; border-radius: 16px 0 0 0;`}></div>
+        <div style={`position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid ${chapter.accent}40; border-right: 2px solid ${chapter.accent}40; border-radius: 0 0 16px 0;`}></div>
+
+        <p style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-subtle); margin: 0 0 0.75rem;">
+          과정 완료
+        </p>
+        <p style={`font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: ${chapter.accent}; margin: 0 0 0.75rem; letter-spacing: -0.02em;`}>
+          11개 장을 모두 완료했어.
+        </p>
+        <p style="font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.6; max-width: 40ch; margin: 0 auto 2rem;">
+          이제 진짜 배움이 시작돼 — 뭔가를 만들고, 필요할 때 아무 장이든 다시 돌아와.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+          <a
+            href="/ko"
+            style={`display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; background: ${chapter.accent}; color: white; transition: all 0.3s;`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            홈으로 돌아가기
+          </a>
+          <a
+            href="/ko/ch1"
+            style="display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); color: var(--color-deep); transition: all 0.3s;"
+          >
+            1장 다시 읽기
+          </a>
+        </div>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

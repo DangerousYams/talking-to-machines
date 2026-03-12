@@ -4,7 +4,6 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
 import Divider from '../components/ui/Divider';
 import PromptLaboratory from '../components/widgets/ch2/PromptLaboratory';
 import FlipTheScript from '../components/widgets/ch2/FlipTheScript';
@@ -65,7 +64,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85]">
-        Here's the secret the best AI users know: <strong>you don't need to be an expert on the topic. You need to be an expert at asking.</strong> And asking is a skill you can learn.
+        The best AI users aren't experts on the topic — <strong>they're experts at asking.</strong> And asking is a skill you can learn.
       </p>
     </FadeInBlock>
   </section>
@@ -187,6 +186,23 @@ const chapter = chapters[1];
     </FadeInBlock>
   </section>
 
+  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
+        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
+          Quick experiment
+        </p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
+          Think of something you've asked AI to write recently — an email, a story, a social media post. Now imagine you had included one concrete example of the tone you wanted. How would the output have changed?
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
+          Keep that in your back pocket. The Prompt Laboratory below will let you test it for real.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
   <!-- ═══ CHAIN OF THOUGHT ═══ -->
@@ -241,7 +257,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.25}>
       <p class="text-lg leading-[1.85] mb-10">
-        Why does this work? AI generates text one token at a time, predicting what comes next. When you force it to write out intermediate steps, each step becomes part of the context for the next prediction. It's like giving the AI scratch paper.
+        Why does this work? When you ask the AI to show its reasoning step by step, each step feeds into the next. It's like giving the AI scratch paper — the more it writes out its thinking, the better the final answer gets.
       </p>
     </FadeInBlock>
 
@@ -288,7 +304,7 @@ const chapter = chapters[1];
           { label: 'Casual brainstorm', techniques: ['Task'], color: '#6B7280', width: '25%' },
           { label: 'School assignment', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
           { label: 'Important project', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
-          { label: 'High-stakes output', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'CoT'], color: '#0F3460', width: '100%' },
+          { label: 'High-stakes output', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
         ].map((level, i) => (
           <FadeInBlock client:visible delay={i * 0.06} key={i}>
             <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
@@ -340,7 +356,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10">
-        Here's the thing about bad AI output: <strong>it's almost never the AI's fault.</strong> When the output is generic, vague, or just plain wrong, the bug is usually in the prompt. And just like debugging code, debugging prompts is a learnable skill.
+        Bad AI output is <strong>almost never the AI's fault.</strong> When the output is generic, vague, or just plain wrong, the bug is usually in the prompt. And just like debugging code, debugging prompts is a learnable skill.
       </p>
     </FadeInBlock>
 
@@ -391,40 +407,17 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        The difference between a good prompt and a great one isn't vocabulary. It's empathy — understanding what the AI needs to know to help you.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        You started this chapter typing single-shot commands. Now you know how to flip the questioning, show instead of tell, and debug prompts that go sideways.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        You now have a toolbox of techniques: the Socratic flip, few-shot examples, chain-of-thought reasoning, and prompt debugging. In the next chapter, we'll look under the hood — at the <em>context window</em>, the invisible constraint that shapes every AI conversation.
+        But every technique you've learned runs into the same invisible wall: the <em>context window</em>. Next up, we crack it open and learn how to engineer what the AI actually sees.
       </p>
     </FadeInBlock>
   </section>

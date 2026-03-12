@@ -1,0 +1,406 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import BeatSection from '../../components/chapter/BeatSection';
+import PromptMakeover from '../../components/widgets/ch1/PromptMakeover';
+import GuessThePrompt from '../../components/widgets/ch1/GuessThePrompt';
+import IterationLoop from '../../components/widgets/ch1/IterationLoop';
+import PromptRoast from '../../components/widgets/ch1/PromptRoast';
+import PromptComparison from '../../components/widgets/ch1/PromptComparison';
+import BeatCompletionCard from '../../components/chapter/BeatCompletionCard';
+
+const chapter = chapters[0];
+const beats = chapter.beats!;
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
+  <BeatSection
+    beatId={beats[0].id}
+    beatNumber={1}
+    totalBeats={beats.length}
+    title="İletişim uçurumu"
+    tldr="Belirsiz promptlar belirsiz yanıtlar alır. Yapay zekanın yapabilecekleri ile çoğu insanın elde ettikleri arasındaki uçurum bir iletişim sorunudur."
+    estimatedMinutes={beats[0].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="Beş yapı taşı"
+    isFirst={true}
+    client:load
+  >
+    <!-- HERO -->
+    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+
+      <div class="max-w-[680px] mx-auto text-center relative z-10">
+        <FadeInBlock client:visible>
+          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+            Birinci Bölüm
+          </p>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.15}>
+          <h1
+            class="mb-8 leading-[1.08]"
+            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+          >
+            Zaten yapay zeka<br />ile konuşuyorsun
+          </h1>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.3}>
+          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+            İlk denemen sihir olmayacak.<br />Ama üçüncüsü olabilir.
+          </p>
+        </FadeInBlock>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+        <div class="w-px h-10 bg-deep/40"></div>
+      </div>
+    </section>
+
+    <!-- STORY OPENER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+      <FadeInBlock client:visible>
+        <p class="drop-cap text-lg leading-[1.85] mb-8">
+          Aslında hayatın boyunca yapay zeka ile konuşuyorsun. Arama çubuğuna bir şey yazdığında, Siri'ye soru sorduğunda ya da Netflix'ten bir öneri aldığında, bir algoritma seni dinliyordu. Ama bir makineye bir şey <em>söylemek</em> ile onunla <em>konuşmak</em> arasında büyük bir fark var.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-8">
+          Şu an milyonlarca insan ChatGPT'ye bir prompt yazıyor, vasat bir yanıt alıyor ve şöyle düşünüyor: <em>"Demek yapay zeka o kadar da akıllı değilmiş."</em> Yanılıyorlar. Yapay zeka olağanüstü yetenekli. Sadece doğru şekilde sormuyorlar.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85]">
+          <strong>Yapay zekanın yapabilecekleri</strong> ile <strong>çoğu insanın ondan elde ettikleri</strong> arasındaki uçurum devasa. Ve bu bir teknoloji sorunu değil — bir iletişim sorunu. Zaten nasıl çözeceğini bildiğin türden bir sorun.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE VAGUE PROMPT PROBLEM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+          Belirsiz prompt sorunu
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          İki kişi aynı yapay zekadan bir yazıda yardım istiyor. Biri işe yaramaz bir yanıt alıyor. Diğeri gerçekten parlak bir şey alıyor. Aynı yapay zeka. Tek fark nasıl sordukları.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
+      <FadeInBlock client:visible delay={0.2}>
+        <PromptComparison accentColor={chapter.accent} client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[0].id} beatTitle="İletişim uçurumu" nextBeatTitle="Beş yapı taşı" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
+  <BeatSection
+    beatId={beats[1].id}
+    beatNumber={2}
+    totalBeats={beats.length}
+    title="Beş yapı taşı"
+    tldr="Her iyi prompt Rol, Görev, Format, Kısıtlamalar ve Örnekler'in bir kombinasyonunu kullanır."
+    estimatedMinutes={beats[1].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="İterasyon zihniyeti"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Beş yapı taşı
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-6">
+          Yapay zekadan inanılmaz sonuçlar alan insanları, sıradan şeyler alanlardan ayıran şey işte bu. Yetenek değil. Gizli bir araç değil. Bir formül — her seferinde işe yarayan beş yapı taşı.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-14">
+          Her zaman beşine birden ihtiyacın olmayacak. Ama var olduklarını bilmek, Matrix'i görmeyi öğrenmek gibi. Kalıbı bir kez gördüğünde, artık görmezden gelemezsin.
+        </p>
+      </FadeInBlock>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { letter: 'R', name: 'Rol', color: '#E94560', text: 'Yapay zeka kim olmalı? "Sen bir edebiyat öğretmenisin" her şeyi değiştirir. Bir öğretmen açıklar. Bir profesör ders verir. Bir arkadaş doğaçlama yapar. Rol; tonu, kelime dağarcığını ve derinliği belirler.' },
+          { letter: 'G', name: 'Görev', color: '#0F3460', text: 'Tam olarak ne yapmalı? "Yazımda bana yardım et" değil, "tez cümlemi güçlendir." Acımasızca spesifik ol. Prompt başına bir görev, neredeyse her zaman üçünden daha iyidir.' },
+          { letter: 'F', name: 'Format', color: '#7B61FF', text: 'Yanıt nasıl görünmeli? "Bana 3 alternatif ver" bir formattır. "Madde işaretli liste olarak", "100 kelimeden kısa" veya "artı ve eksileri karşılaştıran bir tablo olarak" da öyle. Format, boş konuşmayı engeller.' },
+          { letter: 'K', name: 'Kısıtlamalar', color: '#16C79A', text: 'Ne yapmamalı? "Klişe kullanma." "200 kelimeden kısa tut." Kısıtlamalar korkuluktur. Yapay zekanın işe yaramaz yerlere gitmesini engellerler.' },
+          { letter: 'Ö', name: 'Örnekler', color: '#F5A623', text: 'Anlat değil, göster. Belirli bir stil istiyorsan, "iyi" olanın neye benzediğine dair bir örnek ver. Bir örnek, yüz kelimelik açıklamadan daha değerlidir.' },
+        ].map((block, i) => (
+          <FadeInBlock client:visible delay={i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+                {block.letter}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {block.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {block.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+
+      <FadeInBlock client:visible delay={0.5}>
+        <div class="insight-box">
+          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Önemli nokta</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            Her seferinde beşine birden ihtiyacın yok. Sıradan bir soru için kısıtlama ve örnek gerekmez. Ama yapay zeka sana çöp verdiğinde, neyin eksik olduğuna bak. Neredeyse her zaman bu beşten biridir.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- BRIDGE TO PROMPT MAKEOVER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Yeterince teori. Yapı taşlarını pratikte görmenin zamanı geldi.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT MAKEOVER -->
+    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptMakeover client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[1].id} beatTitle="Beş yapı taşı" nextBeatTitle="İterasyon zihniyeti" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
+  <BeatSection
+    beatId={beats[2].id}
+    beatNumber={3}
+    totalBeats={beats.length}
+    title="İterasyon zihniyeti"
+    tldr="Kimse ilk denemede tutturamaz. Prompt yaz, değerlendir, iyileştir, tekrarla — bu döngü asıl beceridir."
+    estimatedMinutes={beats[2].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="Kendini test et"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Mükemmellik değil, iterasyon
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-10">
+          İlk prompt neredeyse hiçbir zaman işe yaramaz. Ve sorun yok. <strong>Zaten mesele de bu.</strong>
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+          Yapay zekanın harika bir şey ürettiği bir demo gördüğünde, gördüğün son prompttur — birinin beş, on, belki yirmi tur iyileştirmeden sonra ulaştığı prompt. En iyi anları görüyorsun, antrenman seanslarını değil.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Gerçek iş akışı şöyle görünür:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+          {[
+            { word: 'Prompt yaz.', desc: 'En iyi ilk denemenle başla.' },
+            { word: 'Değerlendir.', desc: 'Yanıtı oku. Ne iyi? Ne eksik?' },
+            { word: 'İyileştir.', desc: 'Promptu düzelt. Başarısız olduğu yerde daha spesifik ol.' },
+            { word: 'Tekrarla.', desc: 'Çıktı gerçekten kullanabileceğin bir şey olana kadar.' },
+          ].map((step, i) => (
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Bu döngü — prompt yaz, değerlendir, iyileştir, tekrarla — yapay zeka ile çalışmanın <em>asıl becerisidir</em>. İlk denemede sihirli mükemmel bir prompt yaratmak değil. O bir efsane.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.35}>
+        <div class="insight-box">
+          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>İyi bir sonuç ortalama 3-5 iterasyon sürer, 1 değil.</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            İlk denemede tutturuyorsan, muhtemelen yeterince zorlamıyorsundur. En iyi çıktılar, senin ve yapay zekanın birlikte iyileştirdiği bir ileri-geri sürecinden gelir.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: ITERATION LOOP -->
+    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <IterationLoop client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE PROMPT SPECTRUM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Prompt spektrumu
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          Her promptu belirsizden kesin'e uzanan bir spektrumda düşün:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div style="margin-bottom: 3rem;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">BELİRSİZ</span>
+            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">KESİN</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"bana yardım et"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">sıradan yanıt</p>
+            </div>
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"X hakkında yaz"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">idare eder ama odaksız</p>
+            </div>
+            <div>
+              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"beş yapı taşı"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">hedefli, kullanışlı</p>
+            </div>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Amacın her zaman "kesin" ucunda olmak değil. Rahat bir beyin fırtınası bilerek belirsiz olabilir. Ama <strong>spektrumda nerede olduğunu bilinçli olarak seçmelisin</strong>, tesadüfen oraya düşmemeli.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <p class="text-lg leading-[1.85]">
+          Yapay zekadan en çok verim alan insanlar sihirli promptları ezberlemez. <em>Ne kadar spesifik olmaları gerektiğine</em> dair bir sezgi geliştirirler — ve ilk yanıt yeterince iyi olmadığında, tam olarak hangi düğmeyi çevireceklerini bilirler.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[2].id} beatTitle="İterasyon zihniyeti" nextBeatTitle="Kendini test et" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 4: Test Yourself ═══ -->
+  <BeatSection
+    beatId={beats[3].id}
+    beatNumber={4}
+    totalBeats={beats.length}
+    title="Kendini test et"
+    tldr="Yeni becerilerini teste sok — yapay zeka çıktılarının arkasındaki promptu tahmin et ve kendi promptlarını eleştirt."
+    estimatedMinutes={beats[3].estimatedMinutes}
+    accentColor={chapter.accent}
+    client:load
+  >
+    <!-- WIDGET: GUESS THE PROMPT -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Hepsini anladın mı? Hadi teste koyalım.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <GuessThePrompt client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- PROMPT ROAST BRIDGE -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Artık iyi bir prompt yazabileceğini mi düşünüyorsun? Öğrenmenin tek bir yolu var.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT ROAST -->
+    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptRoast client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- CLOSING -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+      <FadeInBlock client:visible>
+        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+          Zaten yapay zeka ile konuşuyorsun. Sadece bilinçli konuşman gerekiyor.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+          Sıradaki: basit bir soru-cevabı gerçek bir sohbete dönüştüren teknikler — yapay zekanın sadece cevap vermediği, seninle birlikte <em>düşündüğü</em> teknikler.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[3].id} beatTitle="Kendini test et" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+</ChapterLayout>

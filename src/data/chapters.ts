@@ -22,7 +22,7 @@ export const chapters: Chapter[] = [
     number: 1,
     slug: "ch1",
     title: "You Already Speak AI",
-    hook: "One-shot prompts are parlor tricks. Iteration is the real pipeline.",
+    hook: "Your first draft won't be magic. But your third one might be.",
     accent: "#E94560",
     concepts: [
       { name: "The 5 Building Blocks", description: "Role, Task, Format, Constraints, Examples" },

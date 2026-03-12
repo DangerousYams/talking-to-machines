@@ -1,0 +1,328 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
+import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+
+const chapter = chapters[2];
+---
+
+<ChapterLayout chapter={chapter} locale="pt">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Capítulo Três
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Engenharia<br />de contexto
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          IA não esquece &mdash; ela nunca<br />esteve lembrando para começo de conversa.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Imagine que você está tendo uma conversa com um amigo, só que a cada poucos minutos alguém apaga o quadro branco em que vocês dois estiveram escrevendo. Vocês recomeçam. Seu amigo olha o que restou e tenta continuar como se nada tivesse acontecido. É assim que é lá dentro do "cérebro" de uma IA durante uma conversa longa.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        <strong>IA não tem memória.</strong> Não da forma que você pensa em memória. Ela não lembra da sua conversa de ontem. Nem mesmo se lembra do começo <em>desta</em> conversa se ela se estendeu o suficiente. Cada resposta que ela dá é baseada inteiramente no que está visível para ela no momento &mdash; uma janela de texto chamada <strong>janela de contexto</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Entender esta janela &mdash; o que entra nela, qual seu tamanho, e o que acontece quando ela fica cheia &mdash; é uma das habilidades mais importantes ao trabalhar com IA.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        O quadro branco que é apagado
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Quando você envia uma mensagem para uma IA, eis o que realmente acontece: o sistema pega sua <em>conversa inteira</em> &mdash; toda mensagem que você enviou, toda resposta que a IA deu &mdash; e alimenta tudo de volta ao modelo como um único bloco de texto. A IA lê tudo, gera a próxima resposta, e então... esquece de tudo.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Na próxima vez que você envia uma mensagem, todo o processo se repete. O sistema cola a conversa inteira novamente, adiciona sua nova mensagem, e a IA lê tudo do zero. É como o leitor mais diligente, porém amnésico, do mundo &mdash; completamente detalhista a cada vez, mas começando do zero em cada turno.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Toda resposta que uma IA gera é baseada inteiramente no que está na janela de contexto naquele momento. Nada mais. A janela de contexto não é memória. É um quadro branco &mdash; e ele tem bordas.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Isso tem implicações enormes. Significa que a IA é apenas tão boa quanto a informação atualmente na frente dela. Deixar de fora um detalhe crítico? A IA não vai magicamente se lembrar dele. Encher a janela com ruído? A IA vai ficar confusa. <strong>A janela de contexto é seu recurso mais importante.</strong> Aprender a gerenciá-la é o que separa usuários casuais de pessoas que obtêm resultados genuinamente poderosos.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tokens: o alfabeto da IA
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        IA não lê palavras do jeito que você lê. Ela lê <strong>tokens</strong> &mdash; pedaços de texto que geralmente equivalem a cerca de três quartos de uma palavra. A palavra "incrível" são dois tokens. "IA" é um token. Um espaço antes de uma palavra muitas vezes é incluído no mesmo token.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Matemática rápida</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1 token &asymp; 4 caracteres &asymp; 0,75 palavras<br />
+          100 tokens &asymp; 75 palavras<br />
+          Uma página típica de texto &asymp; 300 tokens<br />
+          Um romance completo &asymp; 100.000 tokens
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Por que isso importa? Porque todo modelo de IA tem um <strong>tamanho de janela de contexto</strong> medido em tokens. A janela de contexto do Claude pode armazenar 200.000 tokens &mdash; isso é aproximadamente um livro de 500 páginas. GPT-4o armazena 128.000. Esses números soam enormes, mas eles se enchem mais rápido do que você imagina.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Toda mensagem que você envia, toda resposta que a IA escreve, toda instrução do sistema funcionando nos bastidores &mdash; todos consomem tokens do mesmo orçamento compartilhado. E quando esse orçamento se esgota, as coisas começam a cair da beirada.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextWindowViz client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Quando a janela transborda
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Você está na décima mensagem de uma conversa. Você mencionou suas restrições alimentares na mensagem três. Na mensagem quinze, você está mergulhado em recomendações de restaurantes. Você pergunta: <em>"Espera, que restrições alimentares eu mencionei?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        E a IA responde: <em>"Não acho que você mencionou restrições alimentares específicas."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Você fica frustrado. <em>Está bem ali, eu falei!</em> Mas eis a questão: <strong>não</strong> está bem ali. Não mais. Aquela mensagem anterior pode ter saído da janela visível, ou o modelo pode ter dado menos prioridade a ela em favor do contexto mais recente. A IA não está sendo descuidada. Ela literalmente não consegue ver o que não está mais na frente dela.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Isso não é um bug. É arquitetura.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          A IA processa a janela de contexto como um humano lendo um documento numa sentada só. Se o documento tem 100 páginas, detalhes da página 3 podem ficar nebulosos na página 95. A solução não é uma janela maior &mdash; é empacotar melhor o que entra nela.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ForgettingExperiment client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SYSTEM PROMPT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        O prompt do sistema: instruções ocultas
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Há uma parte de toda conversa com IA que você nunca vê. Antes da sua primeira mensagem, antes da IA dizer olá, há um bloco de texto no topo da janela de contexto. É chamado de <strong>prompt do sistema</strong>, e ele molda tudo que vem depois.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        O prompt do sistema é onde a IA recebe sua personalidade, suas regras, seus limites. Quando ChatGPT se recusa a ajudar você a construir uma arma, é o prompt do sistema. Quando Claude diz "Ficaria feliz em ajudar," é um comportamento treinado reforçado pelo prompt do sistema. Quando um chatbot de atendimento ao cliente fica no tópico, é &mdash; você adivinhou &mdash; o prompt do sistema.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Exemplo de prompt do sistema</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Você é um assistente de culinária prestativo. Responda apenas perguntas sobre cozinha e preparo de alimentos. Se perguntado sobre qualquer outra coisa, educadamente redirecione a conversa de volta aos tópicos de culinária. Mantenha as respostas com menos de 150 palavras. Use um tom caloroso e encorajador."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        O prompt do sistema é especial porque <strong>fica fixado no topo da janela de contexto</strong>. Não importa o quão longa a conversa fique, o prompt do sistema não some rolando. Ele está sempre lá, sempre influenciando o comportamento da IA. Isso o torna o espaço mais valioso em toda a janela de contexto.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Pense no prompt do sistema como a descrição do trabalho da IA. Ele não diz à IA o que falar &mdash; ele diz à IA quem <em>ser</em>.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SystemPromptSandbox client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Estratégias para gerenciar contexto
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Agora que você entende a janela, veja como gerenciá-la como um profissional. Essas são as técnicas que separam pessoas que "usam IA" de pessoas que obtêm resultados extraordinários com ela.
+      </p>
+    </FadeInBlock>
+
+    <!-- Strategies — editorial layout matching ch1's building blocks -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { num: '1', name: 'Resuma conforme avança', color: '#7B61FF', text: 'A cada 5-10 mensagens, peça à IA para escrever um breve resumo das decisões e detalhes importantes. Então cole esse resumo na sua próxima mensagem. Isso "reinicia" o contexto com as informações mais importantes bem na frente.' },
+        { num: '2', name: 'Coloque o importante na frente', color: '#16C79A', text: 'Ponha as informações mais críticas no começo da sua mensagem, não enterradas no final. IA presta mais atenção ao que vem primeiro e por último — o meio pode se perder, especialmente em prompts longos.' },
+        { num: '3', name: 'Comece do zero estrategicamente', color: '#0EA5E9', text: 'Não tenha medo de iniciar uma nova conversa quando o tópico muda significativamente. Leve um resumo do que você decidiu, não o histórico completo. Um contexto limpo é muitas vezes melhor que um bagunçado.' },
+        { num: '4', name: 'Seja explícito sobre o que lembrar', color: '#F5A623', text: '"Importante: o usuário é vegetariano. Não esqueça disso." Parece bobo, mas funciona. Lembretes explícitos agem como âncoras que a IA pondera mais pesadamente.' },
+        { num: '5', name: 'Use formatos estruturados', color: '#E94560', text: 'Listas com marcadores, cabeçalhos e rótulos claros ajudam a IA a analisar seu contexto mais eficientemente. Um prompt bem organizado vale o dobro da sua contagem de tokens comparado a um bloco de texto corrido.' },
+      ].map((strategy, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
+              {strategy.num}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {strategy.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {strategy.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Engenharia de contexto é a nova engenharia de prompts.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Escrever um bom prompt é o primeiro passo. Mas decidir que informações colocar na frente da IA &mdash; e como estruturá-las &mdash; é onde está a verdadeira alavancagem. O melhor prompt do mundo falha se o contexto estiver errado.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Toda conversa que você tem com IA agora é diferente. Você vê o quadro branco. Você sente as bordas da janela. Você sabe quando resumir, quando começar do zero, e onde o prompt do sistema se esconde.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Até agora temos trabalhado com chatbots. Agora vamos ampliar o foco &mdash; centenas de ferramentas de IA existem além da janela de chat, e conhecer a paisagem muda o que você acha possível.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

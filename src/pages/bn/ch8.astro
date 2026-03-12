@@ -1,0 +1,408 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
+import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+
+const chapter = chapters[7];
+---
+
+<ChapterLayout chapter={chapter} locale="bn">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>৮</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          অধ্যায় আট
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          জটিলতার<br />অর্কেস্ট্রেশন
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          যেকোনো কনটেক্সট উইন্ডোর চেয়ে<br />বড় প্রজেক্টে AI ম্যানেজ করা।
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        প্রতিটা উচ্চাকাঙ্ক্ষী নতুন ব্যবহারকারী একটা মুহূর্তে এসে আটকে যায়: তুমি AI-কে বলেছ সত্যিকারের কিছু বানাতে — একটা পুরো গেম, একটা ব্যাকএন্ডসহ ওয়েবসাইট, সাইটেশনসহ একটা রিসার্চ পেপার — আর পুরো জিনিসটা ভেঙে পড়ে। AI যথেষ্ট স্মার্ট না বলে না। প্রজেক্টটা একটা মাত্র কথোপকথনের জন্য অনেক বড় বলে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        তুমি একগাদা requirements পেস্ট করলে, AI আত্মবিশ্বাসী টোনে উত্তর দিল, আর বিশ মিনিট পরে বুঝলে সে তোমার অর্ধেক চাহিদা ভুলে গেছে, আর্কিটেকচারে নিজের সাথে নিজে বিরোধ করেছে, আর এমন একটা লাইব্রেরির নাম বানিয়েছে যার অস্তিত্বই নেই। আবার চেষ্টা করলে। একই ফলাফল, ভিন্ন বানোয়াট।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        এটা AI সমস্যা না। এটা একটা <strong>অর্কেস্ট্রেশন সমস্যা</strong>। আর এটা সমাধান করতে শেখাই আলাদা করে দেয় যে AI-কে ছোটখাটো কাজে ব্যবহার করে আর যে আসল জিনিস বানায়।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        ওয়ান-প্রম্পট ফাঁদ
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        তুমি যখন প্রথম AI ব্যবহার করতে শেখো, স্বাভাবিকভাবেই সব কিছু এক শটে করতে চাও। একটা বিশাল প্রম্পট। একটা কথোপকথন। একটা চেষ্টা। আর সাধারণ কাজের জন্য — একটা ইমেইল লেখা, আইডিয়া ব্রেইনস্টর্ম করা, একটা কনসেপ্ট ব্যাখ্যা করা — এটা ঠিকই কাজ করে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        কিন্তু জটিলতা ওয়ান-প্রম্পট পদ্ধতি তিনভাবে ভেঙে দেয়:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { num: '১', title: 'কনটেক্সট ওভারফ্লো', text: 'AI একবারে এতটুকুই তথ্য ধরতে পারে। একটা পুরো প্রজেক্ট সেই সীমা ছাড়িয়ে যায়, তাই AI তোমার আগের requirements "ভুলে" যেতে থাকে।' },
+          { num: '২', title: 'মনোযোগ পাতলা হওয়া', text: 'কনটেক্সট উইন্ডোর মধ্যেও, AI-কে একসাথে বারোটা বিষয় নিয়ে মাথা ঘামাতে বললে প্রতিটায় কম ফোকাস পড়ে। সবকিছুর মান কমে।' },
+          { num: '৩', title: 'ভুলের চেইন রিঅ্যাকশন', text: 'জটিল আউটপুটে একটা ছোট ভুল ক্যাসকেড করে। AI যদি ডেটাবেস স্কিমা ভুল করে, সেই স্কিমার উপর বানানো সবকিছু ভুল — আর জেনারেটেড কোডের স্তূপে সেটা ধরা কঠিন।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
+            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
+                {item.num}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        সমাধান আরো ভালো প্রম্পট না। সমাধান আরো ভালো প্রক্রিয়া।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DECOMPOSITION: THE MASTER SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ডিকম্পোজিশন: মাস্টার স্কিল
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        প্রফেশনাল সফটওয়্যার ইঞ্জিনিয়াররা পুরো অ্যাপ্লিকেশন এক বসায় বানায় না। তারা টুকরো করে — মডিউল, কম্পোনেন্ট, ফাংশন — প্রতিটার একটা স্পষ্ট উদ্দেশ্য, স্পষ্ট ইনপুট, আর স্পষ্ট আউটপুট। তারপর সেগুলো জোড়া লাগায়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        জটিল প্রজেক্টে AI-এর সাথে কাজ করতেও একই শৃঙ্খলা লাগে। তোমাকে প্রজেক্টটাকে <strong>ডিকম্পোজ</strong> করতে হবে এমন কাজে যা একটা মাত্র, ফোকাসড AI কথোপকথনে ভালোভাবে সামলানো যায়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        ভালো ডিকম্পোজিশনের তিনটা নিয়ম:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'একক দায়িত্ব।', desc: 'প্রতিটা কাজ একটাই জিনিস করে। "ডেটাবেস ডিজাইন করো আর API বানাও আর ফ্রন্টএন্ড লেখো" তিনটা কাজ, একটা না।' },
+          { word: 'স্পষ্ট ইন্টারফেস।', desc: 'প্রতিটা কাজের একটা সংজ্ঞায়িত ইনপুট (শুরু করতে কি লাগবে) আর একটা সংজ্ঞায়িত আউটপুট (কি তৈরি করবে)। একটা কাজের আউটপুট পরেরটার ইনপুট হয়।' },
+          { word: 'ন্যূনতম নির্ভরতা।', desc: 'যেসব কাজ সমান্তরালে করা যায় সেগুলো করো। শুধু তখনই নির্ভরতা তৈরি করো যখন একটা কাজের সত্যিই আরেকটার আউটপুট দরকার।' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ডিকম্পোজিশন মানুষের স্কিল, AI-এর না।</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI কাজ ভাঙার ব্রেইনস্টর্মে সাহায্য করতে পারে, কিন্তু কিভাবে কাজ ভাগ করবে, কিসের উপর কি নির্ভর করে, আর কোনটা আগে করবে — এটা তোমার কাজ। এটা প্রজেক্ট ম্যানেজমেন্ট, আর এটা তুমি যেসব স্কিল ডেভেলপ করতে পারো তার মধ্যে সবচেয়ে মূল্যবানগুলোর একটা।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        একটা আসল প্রজেক্ট ডিকম্পোজ করে দেখো। কাজ টানো, নির্ভরতা ট্র্যাক করো, প্ল্যান তৈরি হতে দেখো।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectOrchestrator client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE HANDOFF PATTERN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        হ্যান্ডঅফ প্যাটার্ন
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        প্রজেক্টটাকে কাজে ভাগ করার পর, তোমার সেগুলো সংযুক্ত করার উপায় দরকার। AI ওয়ার্কফ্লোতে, এই সংযোগটা হলো <strong>হ্যান্ডঅফ</strong> — সেই মুহূর্ত যখন একটা কথোপকথনের আউটপুট পরেরটার ইনপুট হয়ে যায়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>হ্যান্ডঅফ প্যাটার্ন</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          কথোপকথন ১ একটা <strong>আর্টিফ্যাক্ট</strong> তৈরি করে — একটা ডকুমেন্ট, একটা স্কিমা, একটা প্ল্যান।<br />
+          সেই আর্টিফ্যাক্ট কথোপকথন ২-তে <strong>কনটেক্সট</strong> হিসেবে পেস্ট করা হয়।<br />
+          কথোপকথন ২ সেটার উপর বানায় আর পরের আর্টিফ্যাক্ট তৈরি করে।<br />
+          প্রজেক্ট সম্পূর্ণ না হওয়া পর্যন্ত চলতে থাকে।
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        এটাকে রিলে রেসের মতো ভাবো। প্রতিটা রানার (কথোপকথন) তার অংশ দৌড়ায় আর ব্যাটন (আর্টিফ্যাক্ট) পরেরজনের কাছে পাস করে। ব্যাটনটাই ক্রিটিক্যাল — এটা পড়ে গেলে বা গুলিয়ে গেলে, পরের রানার হোঁচট খায়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        মানে তোমার হ্যান্ডঅফ আর্টিফ্যাক্টগুলো <em>ঝকঝকে</em> হতে হবে। একটা ডেটাবেস স্কিমা ডেটা মডেলের অস্পষ্ট বর্ণনার চেয়ে ভালো হ্যান্ডঅফ। API endpoints-এর নম্বরযুক্ত লিস্ট "ইউজারের ব্যাপারগুলো হ্যান্ডেল করা ব্যাকএন্ড চাই"-এর চেয়ে ভালো। আর্টিফ্যাক্ট যত ধারালো, পরের কথোপকথন তত ভালো পারফর্ম করে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        তোমার হ্যান্ডঅফ আর্টিফ্যাক্টের মানই ঠিক করে দেয় এরপরে বানানো সবকিছুর মান। আবর্জনা ঢোকালে আবর্জনা বেরোয় — কথোপকথন জুড়ে।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT PACKING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        কনটেক্সট প্যাকিংয়ের কলা
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        প্রতিবার নতুন AI কথোপকথন শুরু করার সময় তুমি এমন একটা সিদ্ধান্ত নিচ্ছ যা বেশিরভাগ মানুষ খেয়ালই করে না: <strong>কোন কনটেক্সট অন্তর্ভুক্ত করবে?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        তোমার সীমিত বাজেট আছে — কনটেক্সট উইন্ডো। আর তোমার কাছে একগাদা সম্ভাব্য প্রাসঙ্গিক তথ্য আছে: কোড ফাইল, ডকুমেন্টেশন, আগের কথোপকথন, এরর লগ, ডিজাইন স্পেক। সব ঢুকবে না। আর ঢুকলেও, সব কিছু ঢেলে দিলে AI-এর মনোযোগ পাতলা হয়ে যায়।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        কনটেক্সট প্যাকিং হলো ট্রিপের জন্য সুটকেস গোছানোর মতো। পুরো আলমারি নিয়ে যেতে পারবে না। ভাবতে হবে কোথায় যাচ্ছ (কাজটা), কি লাগবে (প্রাসঙ্গিক তথ্য), আর কি রেখে যেতে পারো (বাকি সব)।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
+        {[
+          { label: 'খুব কম কনটেক্সট', color: '#E94560', text: 'AI-এর কাছে দরকারি তথ্য নেই আর সে ফাঁকগুলো হ্যালুসিনেশন দিয়ে ভরাট করে। আত্মবিশ্বাসী শোনায় কিন্তু ডিটেইল বানিয়ে দেয়।' },
+          { label: 'খুব বেশি কনটেক্সট', color: '#F5A623', text: 'AI overwhelmed হয়ে যায়। গুরুত্বপূর্ণ বিষয়গুলো গোলমালে হারিয়ে যায়। আউটপুট জেনেরিক আর ভাসাভাসা হয়।' },
+          { label: 'ঠিক কনটেক্সট', color: '#16C79A', text: 'AI-এর কাছে এই নির্দিষ্ট কাজের জন্য ঠিক যা দরকার তাই আছে। আউটপুট সুনির্দিষ্ট, প্রাসঙ্গিক, আর কাজে লাগে।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
+              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
+                {item.label}
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>সম্পাদকের মতো ভাবো, জমাকারীর মতো না।</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          প্রতিটা AI ইন্টার্যাকশনের আগে নিজেকে জিজ্ঞেস করো: এই নির্দিষ্ট কাজটা করতে AI-কে <em>কি জানা দরকার</em>? সেটা অন্তর্ভুক্ত করো। বাকি সব বাদ দাও। এটা কনটেক্সট ইঞ্জিনিয়ারিং প্রজেক্ট ম্যানেজমেন্টে প্রয়োগ করা।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO CONTEXT PACKING -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        একটা কনটেক্সটের সুটকেস গোছাও। উপচে না ফেলে দরকারি সব ঢোকাতে পারো?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextPacking client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        কি কাজ করেছে তার হিসাব রাখা
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        এমন একটা পরিস্থিতি সবার সাথে ঘটে: তোমার একটা দারুণ AI কথোপকথন হলো যা ঠিক তোমার দরকারি আউটপুট দিল। এক সপ্তাহ পর একই রকম কিছু লাগল। তুমি কি বলেছিলে মনে করতে পারছ না। আবার চেষ্টা করলে। ফলাফল খারাপ।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        জটিল AI প্রজেক্ট অনেক আর্টিফ্যাক্ট তৈরি করে — যেসব প্রম্পট কাজ করেছে, ভালো আউটপুট, নেওয়া সিদ্ধান্ত, ব্যর্থ পদ্ধতি। এগুলো ট্র্যাক করার সিস্টেম ছাড়া, তুমি ঘণ্টার পর ঘণ্টা নষ্ট করবে ইতিমধ্যে বের করা জিনিস আবার আবিষ্কার করতে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        প্রফেশনাল ডেভেলপাররা ভার্সন কন্ট্রোল (যেমন Git) ব্যবহার করে কোডবেসের প্রতিটা পরিবর্তন ট্র্যাক করতে। তোমার AI কাজেও একই মানসিকতা প্রয়োগ করা উচিত:
+      </p>
+    </FadeInBlock>
+
+    <!-- Tracking habits list -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
+        {[
+          { icon: '০১', title: 'প্রম্পটগুলো সেভ করো', desc: 'যখন একটা প্রম্পট দারুণ আউটপুট দেয়, কোথাও সেভ করো। একটা সাধারণ নোটস অ্যাপ, একটা markdown ফাইল, একটা প্রম্পট লাইব্রেরি। সঠিক শব্দচয়নটাই গুরুত্বপূর্ণ।' },
+          { icon: '০২', title: 'আউটপুটগুলো সেভ করো', desc: 'AI-জেনারেটেড যেসব আর্টিফ্যাক্টের উপর তুমি বানাচ্ছ সেগুলো রেখে দাও। ডেটাবেস স্কিমা, API ডিজাইন, আউটলাইন। এগুলো তোমার হ্যান্ডঅফ ডকুমেন্ট আর আবার লাগবে।' },
+          { icon: '০৩', title: 'সিদ্ধান্তগুলো লিখে রাখো', desc: 'তুমি আর AI যখন দুটো পদ্ধতি explore করে একটা বেছে নিয়েছ, কেন বেছে নিলে লিখে রাখো। ভবিষ্যতের তুমি বর্তমানের তোমাকে ধন্যবাদ জানাবে যখন প্রজেক্টের দিক বদলাবে।' },
+          { icon: '০৪', title: 'কি ব্যর্থ হয়েছে তা ট্র্যাক করো', desc: 'আবর্জনা দেওয়া একটা প্রম্পটও মূল্যবান তথ্য। কি কাজ করে না জানাটা অর্ধেক লড়াই। একটা "failure log" রাখো যাতে একই ভুল না করো।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
+                {item.icon}
+              </span>
+              <div>
+                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.6}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        তোমার প্রম্পট লাইব্রেরি একজন মিউজিশিয়ানের প্র্যাকটিস নোটবুকের মতো। যত বেশি জমাবে, তত দ্রুত হবে, আর তত কম শূন্য থেকে শুরু করতে হবে।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        তুমি ওয়ান-প্রম্পট চিন্তা থেকে ডিকম্পোজিশন, হ্যান্ডঅফ প্যাটার্ন, আর কনটেক্সট প্যাকিংয়ে পৌঁছেছ। জটিল প্রজেক্ট আর ভয়ের না &mdash; এগুলো শুধু ফোকাসড কথোপকথনের সিরিজ, ঝকঝকে আর্টিফ্যাক্ট দিয়ে সংযুক্ত।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        এসবের চেয়ে বেশি গুরুত্বপূর্ণ আরেকটা স্কিল আছে: জানা কখন AI <em>ভুল</em> করে। হ্যালুসিনেশন, সাইকোফ্যান্সি, আর সেই যাচাইয়ের অভ্যাস যা তোমাকে সৎ রাখে। সেটাই পরের পর্ব।
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

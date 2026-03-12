@@ -1,0 +1,332 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="te">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          అధ్యాయం పది
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          మానవ<br />ఆధిక్యం
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI భర్తీ చేయలేనిది &mdash;<br />మరియు 10 రెట్లు సులభం చేసేది.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        ప్రతిసారి కొత్త AI సామర్థ్యం వచ్చినప్పుడు, అదే శీర్షిక కనిపిస్తుంది: <em>"AI [ఫలానా ఉద్యోగాన్ని] భర్తీ చేస్తుందా?"</em> ఇది తప్పు ప్రశ్న. ఇది ఎప్పుడూ తప్పు ప్రశ్నే. సరైన ప్రశ్న: <em>"ఇంతకు ముందు సాధ్యం కానిది ఇది ఏమి సాధ్యం చేస్తుంది?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AI మనుషులను భర్తీ చేయదు. <strong>పనులను</strong> భర్తీ చేస్తుంది. ఏ ఉద్యోగంలోకైనా — ఏ వృత్తి, ఏ సృజనాత్మక రంగం, ఏ వృత్తిలోకైనా — దగ్గరగా చూస్తే, మిశ్రమం కనిపిస్తుంది: కొన్ని పనులను AI అద్భుతంగా నిర్వహిస్తుంది, కొన్నిటిలో సహాయం చేస్తుంది, మరియు కొన్ని మొండిగా, అందంగా మానవంగానే ఉంటాయి.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        ఈ అధ్యాయం ఆ గీతను కనుగొనడం గురించి. దాని గురించి భయపడటానికి కాదు, <strong>దాని సరైన వైపు నిలబడటానికి</strong> — నీ ప్రత్యేక మానవ నైపుణ్యాలు మరింత విలువైనవి అయ్యే వైపు, తగ్గే వైపు కాదు.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        వర్ణపటం, అంచు కాదు
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI మరియు ఉద్యోగాల గురించి చాలా సంభాషణలు దీన్ని అవును-కాదు విషయంగా చూస్తాయి: AI నీ పని చేయగలదు లేదా చేయలేదు. రోబోట్ ప్రళయం లేదా ఎప్పటిలానే. కానీ వాస్తవం ఒక వర్ణపటం.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        కొన్ని పనులు దాదాపు పూర్తిగా ఆటోమేట్ చేయదగ్గవి. కొన్ని AI వల్ల మెరుగుపడతాయి. కొన్ని తాకబడవు. మరియు అత్యంత ఆసక్తికరమైనవి — శ్రద్ధ పెట్టాల్సినవి — మధ్యలో ఉంటాయి, మనుషులు మరియు AI కలిసి పని చేసే చోట.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        డేటా ఎంట్రీ? AI చేసేస్తుంది. సమావేశాలు షెడ్యూల్ చేయడం? దాదాపు పరిష్కారమైపోయింది. మొదటి డ్రాఫ్ట్ రాయడం? AI ఆశ్చర్యకరంగా బాగా చేస్తుంది. కానీ <em>ఏమి నిర్మించాలో ఎంచుకోవడం</em>, <em>సంక్షోభంలో వాతావరణం అర్థం చేసుకోవడం</em>, <em>డేటా అర్థమేమిటో నిర్ణయించడం</em> — వాటికి AI దగ్గర లేనిది కావాలి.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        ప్రతి నైపుణ్యం నిజంగా ఎక్కడ వస్తుంది? నీ అంతర్దృష్టిని పరీక్షించు.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        ఉద్యోగాలు అదృశ్యమవ్వవు — రూపాంతరం చెందుతాయి
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        1970లలో ATMలు వచ్చినప్పుడు, బ్యాంక్ టెల్లర్లు మాయమవుతారని అందరూ అంచనా వేశారు. బదులుగా, బ్యాంక్ టెల్లర్ల సంఖ్య <em>పెరిగింది</em>. ఎందుకు? ATMలు కొత్త శాఖలు తెరవడం చౌకగా చేశాయి, మరియు టెల్లర్ పని డబ్బు లెక్కించడం నుండి ఆర్థిక ఉత్పత్తులు అమ్మడం మరియు కస్టమర్ సంబంధాలు నిర్మించడం వైపు మారింది.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI అదే చేస్తుంది, కానీ వేగంగా మరియు ప్రతి రంగంలో ఒకేసారి. ఉద్యోగ శీర్షిక అలానే ఉంటుంది. ఉద్యోగ <em>వివరణ</em> నాటకీయంగా మారుతుంది. 2025లో జర్నలిస్ట్ 2015లో జర్నలిస్ట్ చేసిన పని చేయడం లేదు, పేరు ఒకేలా కనిపించినా.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కొత్త వృత్తి లెక్క</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          "మనుషులు vs. AI" కాదు. <strong>AI తో మనుషులు vs. AI లేకుండా మనుషులు</strong>. AI టూల్స్‌తో పని చేయడం నేర్చుకున్న వాళ్ళు ఉద్యోగాలు కోల్పోరు — వేగంగా, బాగా, మరియు ఇంతకు ముందు లేని సామర్థ్యాలతో ఉద్యోగాలు చేస్తారు.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        కింద ఒక వృత్తి ఎంచుకుని AI దాన్ని లోపల నుండి ఎలా మారుస్తుందో చూడు. ఒక్క పని కూడా పూర్తిగా అదృశ్యమవ్వదు. కానీ ప్రతి ఉద్యోగం ఆకారం మారుతుంది.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        అభిరుచి: భర్తీ కాని నైపుణ్యం
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI ఒక నిమిషంలో వంద లోగో భావనలను తయారు చేయగలదు. నీ కాఫీ అయిపోయేలోపు పది వ్యాసాల ప్రారంభాలు రాయగలదు. ఐదు యాప్ డిజైన్లు, నాలుగు నినాదాలు, మూడు వ్యాపార ప్రణాళికలు చేయగలదు.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        కానీ ఏది <em>సరైనది</em> అనేది చెప్పలేదు.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        ఎంపికలు తయారు చేయడం దాదాపు ఉచితమైన ప్రపంచంలో, <em>సరైన ఎంపిక ఎంచుకోగల</em> సామర్థ్యం అత్యంత విలువైన నైపుణ్యం అవుతుంది. ఆ సామర్థ్యానికి ఒక పేరు ఉంది: అభిరుచి.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        అభిరుచి మంత్రం కాదు. శిక్షణతో వస్తుంది. చాలా మంచి పనిని మరియు చాలా చెడ్డ పనిని చూసి, ఒకటి ఎందుకు మెరుగో వ్యక్తం చేయడం నేర్చుకోవడం ద్వారా అభివృద్ధి అవుతుంది. ఏ ఫోటో ఉంచాలో తెలిసిన ఫోటోగ్రాఫర్. ఏ వాక్యం తీసేయాలో తెలిసిన రచయిత. తక్కువే ఎక్కువ ఎప్పుడో తెలిసిన డిజైనర్.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        AI తయారు చేస్తుంది. నువ్వు ఎంచుకుంటావ్. ఇదే కొత్త శ్రమ విభజన. నీ అభిరుచి ఎంత పదునుగా ఉందో చూద్దాం.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        నీ జ్ఞానమే నీ అబద్ధాల పసిగట్టేది
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        అధ్యాయం 9లో AI భ్రమల గురించి మాట్లాడాం — AI పూర్తి ఆత్మవిశ్వాసంతో అబద్ధాలను ఎలా చెబుతుందో. కానీ ఇబ్బందికరమైన తదుపరి ప్రశ్న: <strong>దాన్ని ఎలా పట్టుకుంటావ్?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        సమాధానం మూలసూత్ర ఆలోచన. AI పైపు వ్యాసార్ధం రెట్టింపు చేస్తే నీటి ప్రవాహం రెట్టింపు అవుతుందని చెప్తే, వైశాల్యం వ్యాసార్ధం <em>వర్గం</em>తో పెరుగుతుందని తెలిస్తేనే ఆ తప్పును పట్టుకోగలవు. AI ఒక తార్కిక వాదం సరైనదని చెప్తే, తర్క నియమాలు అర్థమైతేనే తార్కిక లోపాన్ని గుర్తించగలవు.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI ఉన్నదాన్ని మళ్ళీ కలుపుతుంది. మూలసూత్ర ఆలోచన ఆధార సత్యం నుండి తర్కిస్తుంది. నిజంగా కొత్త ప్రాంతంలోకి ముందుకు వెళ్ళడం అలా — మరియు ఆత్మవిశ్వాసంగా తప్పు చెప్పే AI ని పట్టుకోవడం కూడా అలానే.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        ఇది అంటే అన్నిటిలో నిపుణుడవ్వాలని కాదు. కానీ నువ్వు పని చేసి సృష్టించే రంగాలలో, నీ పునాది అవగాహన AI ఫలితాన్ని గుడ్డిగా కాపీ చేసే వ్యక్తి నుండి నిన్ను వేరు చేస్తుంది.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        నిన్ను నువ్వు పరీక్షించుకో. కింద AI వేరు వేరు రంగాలలో ఆరు సమస్యలకు ఆత్మవిశ్వాసంతో సమాధానాలు ఇస్తుంది. కొన్ని సరైనవి. కొన్ని సూక్ష్మంగా తప్పు. ఏది ఏదో చెప్పగలవా?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        మానవంగా ఉండేది
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        మనం అన్వేషించిన అన్నిటి తర్వాత, ఒక నమూనా కనిపిస్తుంది. అత్యంత మానవంగా ఉండే నైపుణ్యాలు యాదృచ్ఛికం కాదు — AI కి మౌలికంగా లేని కొన్ని లోతైన సామర్థ్యాల చుట్టూ గుంపు కడతాయి.
+      </p>
+    </FadeInBlock>
+
+    <!-- Human edge capabilities -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: 'విచక్షణ', color: '#16C79A', text: 'ఏది ముఖ్యమో ఎంచుకోవడం. ఏమి నిర్మించాలో, ఏమి తీసేయాలో, ఏమి బయటకు పంపాలో, ఏమి ఆపేయాలో. AI నిర్ణయాలకు సమాచారం ఇవ్వగలదు కానీ తీసుకోలేదు — ఎందుకంటే నిర్ణయాలకు విలువలు కావాలి, విలువలు మానవమైనవి.' },
+        { icon: '🤝', name: 'సానుభూతి', color: '#0EA5E9', text: 'మరో వ్యక్తి ఏమి అనుభవిస్తున్నారో అర్థం చేసుకుని నిజమైన శ్రద్ధతో స్పందించడం. AI టెక్స్ట్‌లో సానుభూతిని అనుకరిస్తుంది. మనుషులు సంబంధాలలో, సంక్షోభంలో, అత్యంత ముఖ్యమైన క్షణాలలో ఆచరిస్తారు.' },
+        { icon: '🧭', name: 'దూరదృష్టి', color: '#7B61FF', text: 'ఇంకా లేనిది చూసి అది ఉండాలని నిర్ణయించడం. ప్రతి ఉత్పత్తి, ప్రతి సంస్థ, ప్రతి సృజనాత్మక పని ఎవరో నమ్మకంతో మొదలైంది — ప్రపంచానికి కొత్తది కావాలని. AI ఏదీ కోరుకోలేదు.' },
+        { icon: '⚡', name: 'నాయకత్వం', color: '#F5A623', text: 'మనుషులను ప్రేరేపించడం, ఘర్షణలో నావిగేట్ చేయడం, నమ్మకం నిర్మించడం. ఇవి మౌలికంగా సామాజిక నైపుణ్యాలు — ఉనికి, భావోద్వేగ మేధస్సు, మరియు బాధ్యత వహించగల సామర్థ్యం కావాలి.' },
+        { icon: '🔍', name: 'అసలైన ప్రశ్నలు అడగడం', color: '#E94560', text: 'AI ప్రశ్నలకు సమాధానాలివ్వడంలో గొప్పది. మనుషులు ఎవరూ అడగాలని ఊహించని ప్రశ్నలు అడగడంలో గొప్పవాళ్ళు. సైన్సు, వ్యాపారం, మరియు కళలో అత్యంత ముఖ్యమైన ఆవిష్కరణలు ప్రశ్నతో మొదలయ్యాయి, సమాధానంతో కాదు.' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలకమైన అంతర్దృష్టి</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          ఇవి "ఉంటే మంచిది" అనే మెత్తని నైపుణ్యాలు మాత్రమే కాదు. AI సహాయంతో నడిచే ప్రపంచంలో, ఇవి <strong>కఠిన నైపుణ్యాలు</strong>. విచక్షణ చూపగల, సానుభూతి పడగల, నాయకత్వం వహించగల, దూరదృష్టి కలిగిన సామర్థ్యం — ఇవి ఖచ్చితంగా <em>ఎందుకంటే</em> AI మిగతా అన్నీ నిర్వహిస్తుంది కాబట్టి నీ అత్యంత పోటీతత్వ ఆధిక్యాలు అవుతాయి.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        అభిరుచి. విచక్షణ. సానుభూతి. దూరదృష్టి. మూలసూత్ర ఆలోచన. ఇవి AI తీసుకున్న తర్వాత మిగిలినవి కాదు &mdash; నువ్వు బల్ల మీదకు ఏమి తీసుకొస్తావో <em>నిర్వచించే</em> నైపుణ్యాలు.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        ఒక అధ్యాయం మిగిలింది. ఇక సిద్ధాంతం లేదు. నువ్వు నేర్చుకున్నదంతా కలిపి నిజమైన ఏదైనా నిర్మించాల్సిన సమయం &mdash; నువ్వు మాత్రమే చేయాలని ఊహించే ఏదైనా.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

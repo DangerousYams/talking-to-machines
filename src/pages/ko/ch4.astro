@@ -1,0 +1,394 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="ko">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          4장
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          AI<br />지형도
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          지금 당장 쓸 수 있는<br />모든 AI 도구의 필드 가이드.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        대부분의 사람들이 "AI"라고 하면 ChatGPT를 떠올려. Google Gemini나 Claude를 들어본 사람도 있겠지. "인터넷"이라고 하면서 Google만 의미하는 것과 같아. 틀린 건 아냐. 그냥 엄청나게 큰 것의 아주 작은 조각일 뿐.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        지금 당장, 오늘 쓸 수 있는 수백 개의 AI 도구가 있어 — 먼 미래가 아니라, 말 그대로 지금 당장, 브라우저에서. 문장 하나로 실사 이미지를 만드는 도구. 완성된 노래를 작곡하는 도구. 네 연구 주제에 대해 쓰인 모든 학술 논문을 읽고 합의점을 세 문단으로 요약하는 도구.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        이 챕터는 필드 가이드야. 완전한 카탈로그는 아냐 — 그건 다음 주 화요일이면 구닥다리가 될 테니까 — 근데 <strong>지형의 지도</strong>야. 중요한 카테고리, 알아둘 가치가 있는 도구, 그리고 올바른 걸 고르는 데 도움이 되는 사고 프레임워크.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        챗봇 너머
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        챗봇은 빙산의 일각이야. 수면 아래에서, AI는 수십 가지 전문화된 능력으로 나뉘어져 있어, 각각 다른 종류의 작업을 위한 다른 종류의 도구야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        악기에 비유해봐. 피아노와 드럼 킷은 둘 다 "악기"지만, 피아니스트한테 비트를 깔아달라고 하거나 드러머한테 협주곡을 연주해달라고 하진 않잖아. AI 도구도 마찬가지야. 이미지 생성용 도구는 코드 작성용 도구와 근본적으로 달라 — 아키텍처, 학습 데이터, 강점이 다 다르거든.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        10개의 AI 도구를 얕게 아는 사람이 하나의 도구를 깊게 아는 사람보다 꾸준히 더 좋은 성과를 내. 인식의 폭이 전문성의 깊이를 이겨 — 처음에는.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        오늘의 지형도야, 이 도구들이 실제로 <em>뭘 하는지</em> 기준으로 정리했어.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        여덟 가지 패밀리
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        네가 만날 모든 AI 도구는 이 카테고리 중 하나에 들어가. 경계를 넘는 도구도 있지만, 이 패밀리들을 이해하면 혼돈 속에서 방향을 잡을 수 있는 멘탈 맵이 생겨.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '1', name: '이미지 생성기', color: '#E94560', text: '텍스트를 넣으면 이미지가 나와. 사실적인 장면부터 애니메이션, 유화까지. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. 가장 민주적인 카테고리 — 누구나 말로 시각 예술을 만들 수 있어.' },
+        { icon: '2', name: '이미지 편집기', color: '#F5A623', text: '실제 이미지에서 시작해 변환해. 배경 제거, 해상도 업스케일, 물체 교체, 조명 변경. Photoshop AI, Magnific, Clipdrop. 사진작가와 디자이너를 대체하기보다 강화하는 도구들이야.' },
+        { icon: '3', name: '비디오 크리에이터', color: '#7B61FF', text: '가장 새로운 프론티어. 텍스트나 정지 이미지에서 비디오 클립을 생성해. Sora, Runway, Kling, Pika. 아직 초기 단계 — 대부분 30초 미만 — 하지만 놀라운 속도로 발전 중. 영화 제작이 완전히 바뀔 거야.' },
+        { icon: '4', name: '음악 & 오디오', color: '#16C79A', text: '텍스트 설명으로 완성곡, 30초 샘플로 음성 복제, 주문형 효과음. Suno, Udio, ElevenLabs. 스튜디오와 팀이 필요했던 걸 하나의 prompt로 압축하는 도구들이야.' },
+        { icon: '5', name: '리서치 에이전트', color: '#0EA5E9', text: '인터넷(또는 학술 데이터베이스)을 대신 읽어주는 AI. Perplexity는 검색하고 인용해. Elicit은 논문을 읽어. Consensus는 과학적 합의를 찾아. NotebookLM은 네 문서를 전문가로 만들어줘.' },
+        { icon: '6', name: 'AI 브라우저', color: '#6B7280', text: '사람처럼 웹을 탐색할 수 있는 에이전트. 버튼 클릭, 양식 작성, 페이지 간 이동. Arc, Operator, Claude Computer Use. "질문에 답하기"와 "작업 수행하기" 사이의 다리야.' },
+        { icon: '7', name: '코딩 도구', color: '#E94560', text: '코드를 작성, 편집, 실행, 디버깅하는 AI. Claude Code는 터미널에서 작동해. Cursor와 Windsurf는 완전한 에디터야. Copilot은 인라인 제안을 해. Replit Agent는 처음부터 전체 앱을 만들어.' },
+        { icon: '8', name: '챗봇 & 어시스턴트', color: '#0F3460', text: '이미 알고 있는 범용 대화형 AI: ChatGPT, Claude, Gemini. 만능 도구 같은 거야 — 많은 것을 잘하고, prompt하는 법을 알면 최고야 (1-3장 덕분에 이미 알지).' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 인사이트</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          이 카테고리들은 수렴하고 있어. 이미지 생성기에 비디오가 추가되고 있어. 챗봇이 도구 사용 능력을 얻고 있어. 코딩 도구가 에이전트가 되고 있어. 2년 후엔 경계가 흐려질 거야. 근데 지금은 아직 전문 도구가 범용 도구를 각자의 전문 분야에서 이겨.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        전체 카탈로그를 탐색해봐. 아무 도구나 클릭하면 뭘 하는지 알 수 있어.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        올바른 도구 고르기
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        이렇게 많은 옵션이 있으면, 어려운 건 AI 도구를 찾는 게 아냐. <em>맞는</em> AI 도구를 찾는 거야. 통하는 프레임워크는 이거야:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: '결과물이 뭐야?', desc: '텍스트? 이미지? 코드? 비디오? 오디오? 이것만으로 바로 1-2개 패밀리로 좁혀져.' },
+          { word: '품질 기준이 뭐야?', desc: '나만 볼 빠른 초안이야, 아니면 사람들한테 보여줄 다듬은 결과물이야? 기준마다 다른 도구야.' },
+          { word: '예산이 얼마야?', desc: '많은 도구가 놀랄 만큼 유능한 무료 티어를 제공해. 돈을 내기 전에 진짜 필요한 게 뭔지 파악해.' },
+          { word: '워크플로우가 뭐야?', desc: '단독 작업이야, 긴 체인의 한 단계야? 통합이 순수한 성능보다 더 중요할 때가 있어.' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        대부분의 초보가 같은 실수를 해: 하나의 범용 AI를 모든 것에 써. 기술적으론 되긴 하는데, 맞는 전문 도구를 쓰면 더 빨리 더 좋은 결과를 얻을 수 있어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        그렇다고 반대의 함정에 빠지지도 마. AI 구독 47개가 필요하진 않아. <strong>다른 카테고리에서 3-4개 도구를 골라, 잘 배우고, 거기서 확장해.</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        파이프라인의 힘
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        진짜 핵심은 이거야: <strong>도구들을 연결하면 기하급수적으로 더 강력해져.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        하나의 AI 도구는 능력 하나를 줘. 여러 AI 도구의 체인은 <em>워크플로우</em>를 줘. Perplexity가 리서치를 찾고. Claude가 글을 쓰고. Midjourney가 일러스트를 만들어. 각 도구가 가장 잘하는 걸 하고, 하나의 결과물이 다음의 입력이 되는 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        온라인에서 봤던 가장 인상적인 AI 생성 작품은 하나의 도구로 만든 게 아냐. 다섯 개를 연결한 거야, 각각이 뭘 가장 잘하는지 이해하는 사람이.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        지형도를 이해하는 게 중요한 이유가 이거야. 하나의 도구만 알면 파이프라인을 만들 수 없어. 어떤 전문 도구가 있는지 모르면 올바른 전문 도구를 고를 수 없어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        직접 하나 만들어봐:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        "최고의" 도구는 없어
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        매주 누군가가 AI 도구의 확정 랭킹을 올려. 매주 그건 틀려. 랭킹이 나빠서가 아니라, "최고"는 네가 뭘 하느냐, 어떻게 하느냐, 뭘 중시하느냐에 전적으로 달려있거든.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney가 DALL-E 3보다 더 예술적인 이미지를 만들어. 근데 DALL-E 3가 지시를 더 정확하게 따라. Ideogram이 텍스트 렌더링은 둘 다보다 나아. 뭐가 "최고"야? 영화 포스터를 만드느냐, 제품 사진을 만드느냐, 로고를 만드느냐에 달린 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude가 GPT보다 더 뉘앙스 있게 써. GPT가 더 빨라. Gemini가 더 많은 context를 가져. 뭐가 중요해? 네 작업에 달렸어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>진짜 실력은 하나의 도구를 마스터하는 게 아냐. 어떤 도구가 어떤 작업에 맞는지 감을 키우는 거야.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          전문 목수는 좋아하는 도구가 없어. <em>각 작업에 맞는</em> 좋아하는 도구가 있지. 그런 마인드셋을 키워야 해.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        직접 확인해봐. 같은 prompt, 다른 도구 &mdash; 어떤 결과가 더 마음에 들어?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        지형은 움직이고 있어
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        불편한 진실: 위 카탈로그의 일부 도구는 1년 안에 사라질 거야. 아직 존재하지 않는 다른 도구들이 필수가 될 거야. AI 지형은 역사상 그 어떤 기술보다 빠르게 변하고 있어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        그러면 왜 특정 도구를 배우냐고? <strong>도구는 바뀌어도 카테고리는 안정적이거든</strong>. 이미지 생성기, 코드 어시스턴트, 리서치 에이전트는 항상 있을 거야. 이름은 바뀌어. 기반 능력과 멘탈 모델은 안 바뀌어.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>이전 가능한 스킬</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1. 어떤 카테고리의 AI 도구가 있는지 아는 것<br />
+          2. 새 도구를 15분 안에 평가하는 법을 아는 것<br />
+          3. 도구들을 워크플로우로 연결하는 법을 아는 것<br />
+          4. 도구를 바꿔야 할 때와 prompt를 다듬어야 할 때를 아는 것
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        이 네 가지 스킬은 내년에 어떤 도구가 지배하든 상관없이 유효해. 지형은 바뀌어도, 항해사는 여전히 효과적이야.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        이제 AI 지형의 지도가 있어 &mdash; 여덟 가지 도구 패밀리, 선택을 위한 프레임워크, 그리고 도구들을 연결하는 파이프라인 사고방식.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        근데 지금까지 이 도구들은 그냥 너한테 응답했어. 만약 <em>스스로 행동을 취할 수 있다면</em>? 그게 도구에서 에이전트로의 도약이야 &mdash; 그리고 모든 걸 바꿔.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

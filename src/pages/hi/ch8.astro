@@ -1,0 +1,408 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
+import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+
+const chapter = chapters[7];
+---
+
+<ChapterLayout chapter={chapter} locale="hi">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>8</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          अध्याय आठ
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Complexity का<br />Orchestration
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI को manage करना projects के लिए<br />जो किसी भी context window से बड़े हैं।
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        यही वो moment है जब हर ambitious beginner फंसता है: तुम AI से कुछ real बनाने को कहते हो — एक पूरा game, backend के साथ website, citations के साथ research paper — और सब कुछ बिखर जाता है। इसलिए नहीं कि AI काफी smart नहीं है। बल्कि इसलिए कि project एक single conversation के लिए बहुत बड़ा है।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        तुम requirements की wall paste करते हो, AI तुम्हें confident-sounding response देता है, और बीस minute बाद तुम्हें पता चलता है कि उसने आधा भूला दिया जो तुमने माँगा था, architecture के बारे में खुद से contradict किया, और एक library hallucinate की जो exist ही नहीं करती। तुम फिर try करते हो। Same result, different hallucinations।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        यह AI problem नहीं है। यह <strong>orchestration problem</strong> है। और इसे solve करना सीखना ही वो difference है जो एक आदमी के बीच है जो AI को one-off tasks के लिए use करता है और जो इसे real things बनाने के लिए use करता है।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        One-Prompt Trap
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        जब तुम पहली बार AI use करना सीखते हो, तो naturally सब कुछ one shot में करने की कोशिश करते हो। One massive prompt। One conversation। One attempt। और simple tasks के लिए — email लिखना, ideas brainstorm करना, concept explain करना — यह fine work करता है।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        लेकिन complexity one-prompt approach को तीन तरीकों से break करती है:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { num: '1', title: 'Context overflow', text: 'AI एक साथ सिर्फ इतनी information hold कर सकता है। एक पूरा project उस limit को exceed कर देता है, तो AI तुम्हारी earlier requirements "भूलना" start कर देता है।' },
+          { num: '2', title: 'Attention dilution', text: 'Context window के अंदर भी, AI से twelve different concerns को एक साथ juggle करने को कहने का मतलब है कि हर एक को कम focus मिलता है। Quality सब jagah गिर जाती है।' },
+          { num: '3', title: 'Error compounding', text: 'Complex output में एक small mistake cascade हो जाती है। अगर AI database schema गलत कर देता है, तो उस schema पर built सब कुछ wrong हो जाता है — और wall of generated code के अंदर spot करना hard है।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
+            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
+                {item.num}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Solution better prompt नहीं है। Better process है।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DECOMPOSITION: THE MASTER SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Decomposition: The Master Skill
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Professional software engineers पूरी applications एक बैठक में नहीं बनाते। वे उन्हें pieces में break करते हैं — modules, components, functions — हर एक का clear purpose, clear inputs, और clear outputs। फिर उन्हें assemble करते हैं।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Complex projects पर AI के साथ काम करने के लिए वही discipline चाहिए। तुम्हें अपने project को उन tasks में <strong>decompose</strong> करना होगा जो इतने small हैं कि एक single, focused AI conversation अच्छी तरह handle कर सके।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Good decomposition तीन rules follow करता है:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Single responsibility।', desc: 'हर task एक चीज़ करता है। "Database design करना AND API build करना AND frontend लिखना" तीन tasks हैं, एक नहीं।' },
+          { word: 'Clear interfaces।', desc: 'हर task का defined input है (start करने के लिए क्या चाहिए) और defined output (क्या produce करता है)। एक task का output अगले का input बन जाता है।' },
+          { word: 'Minimal dependencies।', desc: 'जो tasks parallel में हो सकते हैं वे होने चाहिए। Dependencies तभी create करो जब एक task को genuinely दूसरे के output की जरूरत हो।' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Decomposition human skill है, AI skill नहीं।</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI तुम्हें task breakdown brainstorm करने में help कर सकता है, लेकिन decide करना कि काम को कैसे split करना है, क्या किस पर depend करता है, और क्या prioritize करना है — यह तुम्हारा job है। यह project management है, और यह सबसे valuable skills में से एक है जो तुम develop कर सकते हो।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        एक real project decompose करके try करो। Tasks को drag करो, dependencies track करो, plan को shape लेते देखो।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectOrchestrator client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE HANDOFF PATTERN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Handoff Pattern
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        एक बार जब तुमने project को tasks में break कर दिया है, तुम्हें उन्हें connect करने का तरीका चाहिए। AI workflows में, यह connection है <strong>handoff</strong> — वह moment जब एक conversation का output अगले का input बन जाता है।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>The Handoff Pattern</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Conversation 1 एक <strong>artifact</strong> produce करता है — document, schema, plan।<br />
+          वह artifact Conversation 2 में <strong>context</strong> के रूप में paste हो जाता है।<br />
+          Conversation 2 उस पर build करता है और अगला artifact produce करता है।<br />
+          Project complete होने तक repeat करो।
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        इसे relay race की तरह समझो। हर runner (conversation) अपना leg cover करता है और baton (artifact) को अगले को pass करता है। Baton ही critical piece है — अगर वह drop हो जाए या garble हो जाए, तो अगला runner stumble करेगा।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        इसका मतलब है कि तुम्हारे handoff artifacts <em>crisp</em> होने चाहिए। Database schema data model की vague description से better handoff है। API endpoints की numbered list "मुझे user stuff handle करने वाला backend चाहिए" से better है। Artifact जितना sharp, उतना better अगला conversation perform करेगा।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        तुम्हारे handoff artifact की quality downstream built होने वाली हर चीज़ की quality determine करती है। Garbage in, garbage out — conversations के across।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CONTEXT PACKING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Context Packing की Art
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        हर बार जब तुम नया AI conversation start करते हो, तो तुम एक decision ले रहे होते हो जिस पर ज्यादातर लोग notice भी नहीं करते: <strong>क्या context include करना है?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        तुम्हारा limited budget है — context window। और तुम्हारे पास potentially relevant information का pile है: code files, documentation, previous conversations, error logs, design specs। सब कुछ fit नहीं होगा। और अगर होता भी, तो सब कुछ dump करना AI के attention को dilute कर देगा।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Context packing trip के लिए suitcase pack करने जैसा है। तुम अपनी पूरी closet नहीं ले जा सकते। तुम्हें सोचना होगा कि तुम कहाँ जा रहे हो (task), तुम्हें क्या चाहिए (relevant information), और क्या छोड़ सकते हो (बाकी सब कुछ)।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
+        {[
+          { label: 'बहुत कम context', color: '#E94560', text: 'AI के पास जो चाहिए वह नहीं है और gaps को hallucinations से fill करता है। Confident sound करता है लेकिन details invent करता है।' },
+          { label: 'बहुत ज्यादा context', color: '#F5A623', text: 'AI overwhelmed हो जाता है। Important details noise में lost हो जाते हैं। Output generic और unfocused हो जाता है।' },
+          { label: 'सही context', color: '#16C79A', text: 'AI के पास exactly वह है जो इस specific task के लिए चाहिए। Output precise, relevant, और actionable होता है।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
+              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
+                {item.label}
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Editor की तरह सोचो, hoarder की तरह नहीं।</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          हर AI interaction से पहले अपने आप से पूछो: इस specific task को करने के लिए AI को <em>क्या जानना चाहिए</em>? वह include करो। बाकी सब कुछ छोड़ दो। यह context engineering है project management के लिए applied।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO CONTEXT PACKING -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Context suitcase pack करो। क्या तुम overflow के बिना जो matter करता है fit कर सकते हो?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ContextPacking client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Track करना कि क्या काम आया
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        यहाँ एक scenario है जो सबके साथ होता है: तुम्हारी great AI conversation होती है जो exactly वही output produce करती है जिसकी तुम्हें जरूरत थी। एक हफ्ते बाद, तुम्हें कुछ similar चाहिए। तुम्हें याद नहीं कि तुमने क्या कहा था। तुम recreate करने की कोशिश करते हो। Results worse हैं।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Complex AI projects बहुत सारे artifacts generate करते हैं — prompts जो work किए, outputs जो good थे, decisions जो made किए गए, approaches जो fail हुए। इन सबको track करने के लिए system के बिना, तुम उन चीज़ों को rediscover करने में hours waste करोगे जिन्हें तुमने पहले ही figure out किया था।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Professional developers version control (जैसे Git) use करते हैं अपने codebase में हर change को track करने के लिए। तुम्हें अपने AI work पर वही mindset apply करना चाहिए:
+      </p>
+    </FadeInBlock>
+
+    <!-- Tracking habits list -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
+        {[
+          { icon: '01', title: 'अपने prompts save करो', desc: 'जब कोई prompt great output produce करे, तो उसे कहीं save करो। Simple notes app, markdown file, prompt library। Exact wording matter करती है।' },
+          { icon: '02', title: 'Outputs save करो', desc: 'AI-generated artifacts को keep करो जिन पर तुम build करते हो। Database schemas, API designs, outlines। ये तुम्हारे handoff documents हैं और तुम्हें फिर चाहिए होंगे।' },
+          { icon: '03', title: 'अपने decisions document करो', desc: 'जब तुम और AI दो approaches explore करते हो और एक pick करते हो, तो लिख दो क्यों। Future-you present-you का thank करेगा जब project pivot हो।' },
+          { icon: '04', title: 'जो fail हुआ उसे track करो', desc: 'Prompt जो garbage produce करे वह valuable information है। यह जानना कि क्या work नहीं करता half the battle है। "Failure log" रखो ताकि mistakes repeat न हों।' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
+                {item.icon}
+              </span>
+              <div>
+                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
+                  {item.title}
+                </p>
+                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.6}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        तुम्हारी prompt library musician की practice notebook की तरह है। जितना collect करोगे, उतना faster होजाओगे, और उतना कम zero से start करोगे।
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        तुम one-prompt thinking से decomposition, handoff patterns, और context packing तक पहुँच गए हो। Complex projects अब scary नहीं हैं &mdash; ये बस focused conversations की series हैं जो crisp artifacts से connected हैं।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        एक और skill है जो इन सब से ज्यादा matter करती है: यह जानना कि AI कब <em>wrong</em> है। Hallucinations, sycophancy, और verification habits जो तुम्हें honest रखती हैं। वह है next।
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

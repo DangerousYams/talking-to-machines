@@ -1,0 +1,318 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
+import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
+import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+
+const chapter = chapters[5];
+---
+
+<ChapterLayout chapter={chapter} locale="de">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Kapitel sechs
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Agenten<br />bauen
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Einen KI-Agenten von Grund auf<br />entwerfen, verdrahten und einsetzen.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Ein Chatbot wartet darauf, dass du sprichst. Ein Agent nicht. Gib ihm ein Ziel — „Recherchiere die Marskolonisierung und schreib einen Bericht" — und er zerlegt die Arbeit in Schritte, wählt die richtigen Tools, führt sie nacheinander aus, prüft seine eigenen Ergebnisse und macht weiter, bis der Job erledigt ist. Kein Händchenhalten nötig.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Diese Unterscheidung — zwischen <em>auf Anweisungen reagieren</em> und <em>ein Ziel verfolgen</em> — ist der Unterschied zwischen einem Taschenrechner und einem Kollegen. Chatbots beantworten Fragen. Agenten lösen Probleme.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        In diesem Kapitel geht es darum, wie Agenten unter der Haube tatsächlich funktionieren — die Schleife, die sie antreibt, die Architektur, die sie zuverlässig macht, und die Fehlermodi, die sie gefährlich machen, wenn sie nachlässig gebaut werden.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Die Agentenschleife
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        In Kapitel 5 hast du die grundlegende Tool-Use-Schleife gesehen: beobachten, denken, handeln. Agenten erweitern das zu etwas Ambitionierterem — einem Fünf-Schritte-Zyklus, jeder von einer anderen internen Komponente angetrieben:
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'Z', word: 'Ziel', color: '#E94560', desc: 'Ein übergeordnetes Ziel vom Menschen entgegennehmen. Ohne klares Ziel kann der Agent nicht entscheiden, ob er fertig ist. „Recherchiere Mars" ist kein Ziel. „Schreib eine 500-Wörter-Zusammenfassung der Herausforderungen der Marskolonisierung mit Quellen" ist eins.' },
+        { letter: 'P', word: 'Planen', color: '#7B61FF', desc: 'Das Ziel in konkrete Schritte zerlegen. Die besten Planer erstellen flexible Pläne, die sich anpassen, wenn ein Schritt fehlschlägt. Schlechte Planer erstellen starre Skripte, die bei der ersten Überraschung zerbrechen.' },
+        { letter: 'A', word: 'Ausführen', color: '#0EA5E9', desc: 'Jeden Schritt mit dem richtigen Tool ausführen — Suchmaschinen, Code-Interpreter, Dateileser, APIs, Rechner. Agenten denken nicht nur. Sie handeln.' },
+        { letter: 'B', word: 'Beobachten', color: '#16C79A', desc: 'Festhalten, was passiert ist, und die Ergebnisse prüfen. Ohne Erinnerung an das, was er getan und gefunden hat, könnte ein Agent in einer Schleife dieselbe fehlschlagende Aktion endlos wiederholen.' },
+        { letter: 'E', word: 'Evaluieren', color: '#F5A623', desc: 'Hat das funktioniert? Sind diese Daten zuverlässig? Bin ich dem Ziel näher? Der Evaluierer trennt einen Agenten von einem Skript, das einfach loslegt und auf das Beste hofft. Wenn etwas nicht stimmt, den Plan anpassen und nochmal los.' },
+      ].map((step, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Das Schlüsselwort ist <em>Schleife</em>. Ein Agent plant nicht einmal und führt dann blind aus. Er plant, handelt, beobachtet, evaluiert und passt an. Die besten Agenten sind die, die sich elegant erholen, wenn Schritt drei schiefgeht.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Ein Chatbot ist ein einzelner Turn. Ein Agent ist ein ganzes Gespräch — mit sich selbst, seinen Tools und der Welt.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Zeit, einen zu bauen. Entwirf deinen eigenen Agenten von Grund auf.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <AgentBlueprint client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN AGENTS FAIL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Wenn Agenten scheitern
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Agenten scheitern anders als Chatbots. Ein Chatbot gibt dir eine schlechte Antwort und wartet. Ein Agent gibt sich selbst eine schlechte Antwort, <em>handelt danach</em>, und nutzt dann das kaputte Ergebnis für die nächste Entscheidung. Fehler potenzieren sich.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Es gibt drei klassische Arten, wie Agenten schiefgehen:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Fehlermodus 1: Die Endlosschleife</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Der Agent bleibt stecken und wiederholt dieselbe Aktion. Ein Recherche-Agent sucht immer weiter nach „noch einer Quelle" und fängt nie an zu schreiben. Ohne Abbruchbedingung läuft er, bis du den Stecker ziehst — oder dir das API-Guthaben ausgeht.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
+        <span class="prompt-block-label" style="color: #7B61FF;">Fehlermodus 2: Falsches Tool</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Der Agent wählt ein Tool, das die Aufgabe nicht erfüllen kann. Er versucht, per Websuche eine Datei auf deiner Festplatte zu finden, oder ruft einen Taschenrechner auf, um einen Aufsatz zusammenzufassen. Der Agent ist nicht dumm — er hat nur aus seinem Werkzeugkasten gegriffen, ohne zu prüfen, ob das Tool zur Aufgabe passt.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
+        <span class="prompt-block-label" style="color: #F5A623;">Fehlermodus 3: Halluzinierte Aktionen</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Der Agent erfindet Tools oder APIs, die nicht existieren, und „ruft" sie dann mit erfundenen Ergebnissen auf. Wenn der erfundene Aufruf fehlschlägt, fabriziert er manchmal die Daten, die er hätte bekommen sollen. Doppelte Halluzination: erfundenes Tool, erfundene Ausgabe.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Die Lösung ist immer dasselbe Prinzip: <strong>Für den Fehlerfall designen.</strong> Maximale Iterationen, Tool-Validierung, Output-Verifizierung und menschliche Checkpoints. Das Ziel ist nicht, jeden Fehler zu verhindern — es ist, Fehler behebbar zu machen.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Kannst du einen kaputten Agenten diagnostizieren? Finde den Bug und füge die Leitplanke hinzu.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FailureModesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF MANY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Die Macht der Vielen
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ein Agent ist nützlich. Mehrere Agenten, die zusammenarbeiten, können Probleme lösen, die jedes einzelne System überfordern würden. Der Trick ist Spezialisierung.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Denk daran wie an eine Redaktion. Du bittest nicht dieselbe Person, die Story zu recherchieren, den Artikel zu schreiben und ihn fürs Drucken zu redigieren. Jede Rolle erfordert eine andere Denkweise, andere Tools und andere Standards.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Multi-Agenten-Systeme funktionieren genauso. Ein <strong>Recherche-Agent</strong> sammelt Informationen. Ein <strong>Schreib-Agent</strong> verwandelt Rohnotizen in polierten Text. Ein <strong>Lektorats-Agent</strong> prüft, fakten-checkt und schlägt Verbesserungen vor. Jeder Agent hat seinen eigenen System-Prompt, seine eigenen Tools und seine eigenen Erfolgskriterien.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Die kritische Frage im Multi-Agenten-Design ist nicht „wie schlau ist jeder Agent?" Sondern <strong>„wie gut ist die Übergabe?"</strong> Wenn der Recherche-Agent Notizen an den Schreib-Agent weitergibt, sind diese Notizen klar strukturiert? Wenn der Schreib-Agent einen Entwurf an den Lektorats-Agent weitergibt, hat der Lektor genug Kontext für nützliches Feedback?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Das Übergabedokument ist das wichtigste Artefakt in einem Multi-Agenten-System. Ein brillanter Schreiber kann schlampige Recherche-Notizen nicht retten. Die Schnittstelle zwischen Agenten ist, wo Qualität gewonnen oder verloren wird.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Sieh drei Agenten bei der Zusammenarbeit zu. Achte auf die Übergabedokumente &mdash; da passiert die Magie.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HandoffChain client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN IN THE LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Der Mensch in der Schleife
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        In Kapitel 5 hast du das Vertrauens-Framework kennengelernt: Tragweite, Umkehrbarkeit und Vertrauen bestimmen, wie viel Autonomie du gibst. Bei Agenten wird das noch kritischer — denn Agenten beantworten nicht nur Fragen. Sie <em>ergreifen Maßnahmen</em>, verketten sie und potenzieren Fehler, wenn sie unkontrolliert bleiben.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85]">
+        Die besten Agenten-Bauer sind nicht die, die Autonomie maximieren. Sie designen <strong>durchdachte Checkpoints</strong> — Momente, in denen der Agent pausiert, seine Arbeit zeigt und einen Menschen entscheiden lässt, ob es weitergeht. Ein großartiger Agent weiß, wann er fragen muss.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Du hast Agenten von innen gesehen: die Schleife, die sie antreibt, die Architektur, die sie funktionieren lässt, und die Fehlermodi, die sie bei nachlässigem Bau gefährlich machen.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Theorie ist eine Sache. Als Nächstes benutzt du einen echten Agenten &mdash; einen, der deinen Code liest, Änderungen schreibt, Tests ausführt und seine eigenen Fehler behebt. Lern Claude Code kennen.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

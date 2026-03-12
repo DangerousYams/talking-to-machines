@@ -1,0 +1,332 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="es">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Capítulo diez
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          La ventaja<br />humana
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Lo que la IA no puede reemplazar &mdash;<br />y lo que hace 10 veces más fácil.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Cada vez que sale una nueva capacidad de IA, aparece el mismo titular: <em>"¿Reemplazará la IA a [inserta profesión]?"</em> Es la pregunta equivocada. Siempre ha sido la pregunta equivocada. La correcta es: <em>"¿Qué hace posible esto que no era posible antes?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        La IA no reemplaza a los humanos. Reemplaza <strong>tareas</strong>. Y cuando examinas cualquier trabajo de cerca — cualquier carrera, cualquier actividad creativa, cualquier profesión — encuentras una mezcla: algunas tareas que la IA maneja brillantemente, algunas en las que asiste, y algunas que siguen siendo obstinadamente, bellamente humanas.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Este capítulo trata de encontrar esa línea. No para que le tengas miedo, sino para que <strong>te pares del lado correcto</strong> — el lado donde tus habilidades únicamente humanas se vuelven más valiosas, no menos.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        El espectro, no el abismo
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        La mayoría de las conversaciones sobre la IA y el trabajo la tratan como algo binario: o la IA puede hacer tu trabajo o no puede. Apocalipsis robot o todo como siempre. Pero la realidad es un espectro.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Algunas tareas son casi completamente automatizables. Algunas se mejoran con IA. Algunas no se tocan. Y las más interesantes — las que vale la pena observar — caen en algún punto intermedio, donde humanos e IA trabajan juntos.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        ¿Entrada de datos? La IA se encarga de eso. ¿Programar reuniones? Básicamente resuelto. ¿Escribir un primer borrador? La IA es sorprendentemente buena. Pero <em>elegir qué construir</em>, <em>leer el ambiente en una crisis</em>, <em>decidir qué significan los datos</em> — eso requiere algo que la IA no tiene.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        ¿Dónde cae realmente cada habilidad? Pon a prueba tu intuición.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Los trabajos no desaparecen — se transforman
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Cuando llegaron los cajeros automáticos en los años 70, todos predijeron que los cajeros bancarios desaparecerían. En cambio, el número de cajeros bancarios <em>aumentó</em>. ¿Por qué? Porque los cajeros automáticos hicieron más barato abrir nuevas sucursales, y el trabajo del cajero cambió de contar efectivo a vender productos financieros y construir relaciones con clientes.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        La IA está haciendo lo mismo, pero más rápido y en todas las industrias a la vez. El título del trabajo se mantiene igual. La <em>descripción</em> del trabajo cambia dramáticamente. Un periodista en 2025 no hace el mismo trabajo que un periodista en 2015, aunque la firma parezca idéntica.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>La nueva ecuación profesional</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          No es "humanos vs. IA". Es <strong>humanos con IA vs. humanos sin IA</strong>. Las personas que aprenden a trabajar <em>con</em> herramientas de IA no pierden sus trabajos — hacen sus trabajos más rápido, mejor, y con capacidades que no tenían antes.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        Elige una carrera abajo y ve exactamente cómo la IA la transforma desde adentro. Ni una sola tarea desaparece completamente. Pero la forma de cada trabajo está cambiando.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        El gusto: la habilidad irreemplazable
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        La IA puede generar cien conceptos de logo en un minuto. Puede escribir diez introducciones de ensayo antes de que termines tu café. Puede producir cinco diseños de app, cuatro eslóganes, tres planes de negocio.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Pero no puede decirte cuál es el <em>correcto</em>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        En un mundo donde generar opciones es casi gratis, la capacidad de <em>elegir la correcta</em> se convierte en la habilidad más valiosa que puedes tener. Esa capacidad tiene un nombre: gusto.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        El gusto no es místico. Se entrena. Lo desarrollas viendo mucho trabajo bueno y mucho trabajo malo, y aprendiendo a articular <em>por qué</em> uno es mejor que el otro. Es el fotógrafo que sabe qué toma conservar. El escritor que sabe qué oración cortar. El diseñador que sabe cuándo menos es más.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        La IA genera. Tú seleccionas. Esa es la nueva división del trabajo. Veamos qué tan afinado tienes el gusto.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Tu conocimiento es tu detector de tonterías
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        En el Capítulo 9 hablamos de las alucinaciones de la IA — cómo la IA puede afirmar falsedades con perfecta confianza. Pero aquí está la incómoda pregunta de seguimiento: <strong>¿cómo la atrapas?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        La respuesta es el pensamiento de primeros principios. Cuando la IA te dice que duplicar el radio de una tubería duplica el flujo de agua, solo puedes atrapar ese error si sabes que el área escala con el <em>cuadrado</em> del radio. Cuando la IA dice que un silogismo es válido, solo puedes detectar la falacia lógica si entiendes las reglas de la deducción.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        La IA remezcla lo que existe. El pensamiento de primeros principios razona desde la verdad fundamental. Así es como te aventuras en territorio genuinamente nuevo — y es como atrapas a una IA que está confiadamente equivocada.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Esto no significa que necesites ser experto en todo. Pero en los dominios donde trabajas y creas, tu comprensión fundamental es lo que te separa de alguien que copia y pega ciegamente el output de la IA.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Ponte a prueba. La IA de abajo da respuestas confiadas a seis problemas de diferentes dominios. Algunas están bien. Algunas están sutilmente mal. ¿Puedes distinguir cuáles son cuáles?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Lo que sigue siendo humano
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Después de todo lo que hemos explorado, emerge un patrón. Las habilidades que permanecen más humanas no son aleatorias — se agrupan alrededor de unas pocas capacidades profundas que fundamentalmente le faltan a la IA.
+      </p>
+    </FadeInBlock>
+
+    <!-- Human edge capabilities -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: 'Criterio', color: '#16C79A', text: 'Elegir lo que importa. Qué construir, qué cortar, qué lanzar, qué matar. La IA puede informar decisiones pero no puede tomarlas — porque las decisiones requieren valores, y los valores son humanos.' },
+        { icon: '🤝', name: 'Empatía', color: '#0EA5E9', text: 'Entender cómo se siente otra persona y responder con genuino cuidado. La IA simula empatía en texto. Los humanos la practican en relaciones, en crisis, en los momentos que más importan.' },
+        { icon: '🧭', name: 'Visión', color: '#7B61FF', text: 'Ver lo que aún no existe y decidir que debería existir. Cada producto, cada empresa, cada obra creativa comenzó como la convicción de alguien de que el mundo necesitaba algo nuevo. La IA no puede desear cosas.' },
+        { icon: '⚡', name: 'Liderazgo', color: '#F5A623', text: 'Inspirar personas, navegar conflictos, construir confianza. Estas son habilidades fundamentalmente sociales que requieren presencia, inteligencia emocional y la capacidad de ser responsable.' },
+        { icon: '🔍', name: 'Hacer preguntas originales', color: '#E94560', text: 'La IA es excelente respondiendo preguntas. Los humanos son excelentes haciendo las que nadie pensó preguntar. Los avances más importantes en ciencia, negocios y arte comenzaron con una pregunta, no una respuesta.' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Estas no son solo habilidades "blandas" que "sería bueno tener". En un mundo aumentado por IA, son las <strong>habilidades duras</strong>. La capacidad de juzgar, de empatizar, de liderar, de visualizar — estas se convierten en tus ventajas más competitivas precisamente <em>porque</em> la IA maneja todo lo demás.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Gusto. Criterio. Empatía. Visión. Razonamiento de primeros principios. Estos no son sobras después de que la IA tome el control &mdash; son las habilidades que <em>definen</em> lo que aportas a la mesa.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Queda un capítulo. No más teoría. Es hora de combinar todo lo que has aprendido y construir algo real &mdash; algo que solo tú pensarías en hacer.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -4,7 +4,7 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
+
 import Divider from '../components/ui/Divider';
 import ToolCatalog from '../components/widgets/ch5/ToolCatalog';
 import TrustThermometer from '../components/widgets/ch5/TrustThermometer';
@@ -52,7 +52,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
-        Up until now, every AI interaction you've had follows the same pattern. You type something. The AI types something back. Text in, text out. A really sophisticated autocomplete. But here's the thing: that's not the ceiling. It's just the floor.
+        Up until now, every AI interaction you've had follows the same pattern. You type something. The AI types something back. Text in, text out. A really sophisticated autocomplete. But that's not the ceiling. It's just the floor.
       </p>
     </FadeInBlock>
 
@@ -277,6 +277,15 @@ const chapter = chapters[4];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Where would you draw the line? Set your own autonomy levels.
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -335,40 +344,17 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        An AI with tools isn't just smarter. It's a different kind of thing entirely — one that can act, not just advise.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        You've given AI hands. It can search, calculate, browse, and write files. And you've learned the hardest part: deciding how much freedom to hand over.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        In the next chapter, we take this further. Tools are the building blocks. Now it's time to wire them together into something that can pursue goals on its own. It's time to build agents.
+        Tools are building blocks. Next, we wire them into something that can pursue a goal on its own &mdash; planning, executing, recovering from mistakes. Time to build agents.
       </p>
     </FadeInBlock>
   </section>

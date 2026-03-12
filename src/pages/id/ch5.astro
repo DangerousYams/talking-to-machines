@@ -1,0 +1,362 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
+import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+
+const chapter = chapters[4];
+---
+
+<ChapterLayout chapter={chapter} locale="id">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Bab Lima
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Beri Dia<br />Tool
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Dari "menjawab pertanyaan"<br />ke "mengambil tindakan."
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
+        Hingga sekarang, setiap interaksi AI yang kamu lakukan mengikuti pola yang sama. Kamu mengetik sesuatu. AI mengetik balasan. Teks masuk, teks keluar. Autocomplete yang sangat canggih. Tapi itu bukan batasnya. Itu cuma titik awal.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Bagaimana kalau AI bisa <em>melakukan sesuatu</em>? Bukan hanya memberitahu cuaca, tapi benar-benar mengecek prakiraan. Bukan hanya menulis kode, tapi menjalankannya dan memberitahu apa yang terjadi. Bukan hanya menyarankan apa yang perlu di-Google, tapi mencari di web sendiri dan membawa kembali yang ditemukannya.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Itulah yang dimaksud dengan tool use. Dan itu mengubah segala hal tentang apa yang bisa AI lakukan.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Lebih dari Teks Masuk, Teks Keluar
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Pikirkan apa yang terjadi ketika kamu bertanya pada chatbot: <em>"Jam berapa sekarang di Tokyo?"</em> AI tidak benar-benar tahu. Dia dilatih dengan data yang sudah berbulan-bulan atau bertahun-tahun lalu. Dia tidak punya jam. Jadi dia hanya bisa melakukan satu hal — menebak, berdasarkan pola dalam data pelatihannya. Kadang mendekati. Kadang salah besar.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Tanpa tool</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">User:</span> Jam berapa di Tokyo sekarang?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> Seharusnya sekitar 14:30 JST. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Cuma nebak)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sekarang beri AI yang sama sebuah <strong>tool</strong> — fungsi sederhana yang mengembalikan waktu saat ini di timezone mana pun. Tiba-tiba:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Dengan tool</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">User:</span> Jam berapa di Tokyo sekarang?<br />
+          <span style="font-style: italic; opacity: 0.6;">AI berpikir:</span> <span style="color: var(--color-purple); font-size: 0.9em;">Saya punya tool timezone. Mari saya pakai.</span><br />
+          <span style="font-style: italic; opacity: 0.6;">AI memanggil:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
+          <span style="font-style: italic; opacity: 0.6;">Tool mengembalikan:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
+          <span style="font-style: italic; opacity: 0.6;">AI:</span> Sekarang jam 14:47 (2:47 sore) di Tokyo (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Terverifikasi)</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Pertanyaan yang sama. Reliabilitas yang beda total. AI tidak jadi lebih pintar — dia jadi <strong>terhubung</strong>. Sekarang dia bisa menjangkau keluar dari otaknya sendiri dan berinteraksi dengan dunia nyata.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Cara Kerja Tool Use Sesungguhnya
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Begini model mentalnya. Ketika kamu memberi AI akses ke tool, kamu memberikan <strong>kotak perkakas</strong> dan bilang: <em>"Ini hal-hal yang bisa kamu lakukan. Untuk setiap tool, ini namanya, ini yang diterimanya, dan ini yang dikembalikan. Kamu yang putuskan kapan memakainya."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-14">
+        AI tidak asal pakai semua tool di setiap permintaan. Dia mempertimbangkan tool mana yang relevan, memutuskan apakah akan menggunakan satu, merumuskan input yang tepat, memanggil tool, membaca hasilnya, lalu memasukkan hasil itu ke dalam responsnya. Proses ini disebut <strong>function calling</strong> — dan mengikuti loop yang sangat konsisten.
+      </p>
+    </FadeInBlock>
+
+    <!-- The Agent Loop — editorial layout -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Amati.', desc: 'Baca permintaan user dan konteks yang tersedia.' },
+          { word: 'Pikir.', desc: 'Putuskan: "Apakah saya perlu tool untuk ini, atau bisa jawab langsung?"' },
+          { word: 'Bertindak.', desc: 'Panggil tool yang tepat dengan argumen yang benar.' },
+          { word: 'Amati.', desc: 'Baca hasil dari tool.' },
+          { word: 'Respon.', desc: 'Sintesis semuanya menjadi jawaban yang berguna.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI tidak menjalankan skrip. Dia membuat keputusan setiap kali: "Apakah ini situasi di mana saya harus pakai tool, atau bisa saya tangani sendiri?"
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Ini adalah <strong>agent loop</strong> — amati, pikir, bertindak, amati, respon. Dan loop yang sama berlaku apakah AI punya satu tool atau seratus. Semakin banyak tool yang kamu berikan, semakin mampu dia. Tapi juga, semakin besar kepercayaan yang harus kamu berikan pada penilaiannya tentang tool <em>mana</em> yang dipakai dan <em>kapan</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SEVEN TOOLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tujuh Tool yang Mengubah Segalanya
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ada ratusan tool spesifik yang bisa AI gunakan, tapi kebanyakan masuk ke tujuh kategori. Masing-masing memperluas apa yang bisa AI lakukan dengan cara yang berbeda secara fundamental. Ada yang memberinya <em>pengetahuan</em> (web search, database). Ada yang memberinya <em>kemampuan</em> (eksekusi kode, generasi gambar). Ada yang memberinya <em>tangan</em> (edit file, panggilan API).
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Klik tool mana pun di bawah untuk melihat proses berpikir lengkap AI — dari mengenali bahwa dia butuh tool, memanggil tool, sampai menggunakan hasilnya.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolCatalog client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TRUST QUESTION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Pertanyaan Kepercayaan
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Begitu AI bisa <em>melakukan</em> sesuatu — bukan hanya membicarakannya — muncul pertanyaan baru. Pertanyaan yang tidak ada hubungannya dengan teknologi dan segalanya tentang kamu:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Seberapa banyak yang harus AI lakukan sendiri sebelum mengecek denganmu?
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ini bukan pertanyaan teknis — ini pertanyaan manusiawi. Dan jawabannya tergantung pada tiga hal:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { name: 'Risiko', color: '#E94560', text: 'Apa yang terburuk bisa terjadi? Meringkas artikel dengan salah itu menyebalkan. Menghapus file yang salah adalah bencana. Risiko yang lebih tinggi memerlukan pengawasan manusia yang lebih ketat.' },
+          { name: 'Reversibilitas', color: '#F5A623', text: 'Bisakah kamu batalkan? Mengedit file dalam git repo mudah dibalik. Mengirim email ke bosmu tidak bisa. Tindakan yang tidak bisa dibatalkan hampir selalu harus meminta persetujuanmu.' },
+          { name: 'Kepercayaan', color: '#16C79A', text: 'Seberapa baik kamu mengenal tool ini? Kalkulator yang sudah kamu pakai ratusan kali pantas lebih otonom daripada plugin baru yang belum pernah kamu test. Kepercayaan diperoleh, bukan diasumsikan.' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
+                {i + 1}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {item.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Spektrum otonomi</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Bukan semua-atau-tidak-sama-sekali. Workflow AI terbaik memberi AI kebebasan pada tugas berisiko rendah dan reversibel sambil menjaga manusia tetap dalam loop untuk tugas berisiko tinggi dan ireversibel. Tugasmu adalah mendesain batasnya.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Di mana kamu akan menarik garis? Atur tingkat otonomi milikmu.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TrustThermometer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Mindset Pengguna Tool
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ada perubahan halus yang terjadi ketika kamu mulai memikirkan AI sebagai pengguna tool alih-alih sekadar generator teks. Kamu berhenti bertanya <em>"Apa yang bisa AI katakan tentang ini?"</em> dan mulai bertanya <em>"Apa yang bisa AI lakukan tentang ini?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Alih-alih meminta AI <em>menjelaskan</em> cara menganalisis data, kamu beri dia tool eksekusi kode dan lihat dia menulis dan menjalankan analisisnya. Alih-alih meminta <em>link</em> penelitian, kamu beri dia web search dan biarkan dia mencari dan mensintesis informasi sendiri. Output berubah dari "ini yang bisa kamu lakukan" menjadi "ini yang baru saja aku lakukan."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Mindset lama</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          "Jelaskan bagaimana cara menghitung bunga majemuk untuk $5,000 pada 6,5% selama 10 tahun."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mindset pengguna tool</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Hitung bunga majemuk untuk $5,000 pada 6,5% APR yang dimajemukkan bulanan selama 10 tahun. Tunjukkan angka pastinya."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Prompt pertama memberimu tutorial. Yang kedua memberimu jawaban. Dengan tool, AI berubah dari <strong>penasihat</strong> menjadi <strong>asisten</strong> — dari seseorang yang memberitahu apa yang harus dilakukan, menjadi seseorang yang benar-benar melakukannya.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Kamu sudah memberi AI tangan. Dia bisa mencari, menghitung, browsing, dan menulis file. Dan kamu sudah belajar bagian tersulit: memutuskan seberapa banyak kebebasan yang akan diberikan.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Tool adalah building block. Selanjutnya, kita akan menghubungkannya menjadi sesuatu yang bisa mengejar tujuan sendiri — merencanakan, mengeksekusi, pulih dari kesalahan. Saatnya membangun agent.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

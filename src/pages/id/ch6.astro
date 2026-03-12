@@ -1,0 +1,324 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
+import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
+import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+
+const chapter = chapters[5];
+---
+
+<ChapterLayout chapter={chapter} locale="id">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Bab Enam
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Membangun<br />Agen AI
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Rancang, sambungkan, dan pasang agen AI<br />dari nol.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Chatbot menunggu kamu berbicara. Agen AI tidak. Beri dia tujuan — "teliti kolonisasi Mars dan buat laporan" — dan dia akan memecah pekerjaan menjadi langkah-langkah, memilih alat yang tepat, menjalankannya satu per satu, memeriksa hasilnya sendiri, dan terus bekerja sampai selesai. Tanpa perlu dipegang tangan.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Perbedaan itu — antara <em>merespons instruksi</em> dan <em>mengejar tujuan</em> — adalah perbedaan antara kalkulator dan rekan kerja. Chatbot menjawab pertanyaan. Agen memecahkan masalah.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Bab ini membahas cara kerja agen yang sesungguhnya — siklus yang menggerakkannya, arsitektur yang membuatnya andal, dan mode kegagalan yang membuatnya berbahaya jika dibuat sembarangan.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Siklus Agen
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Di Bab 5, kamu melihat siklus penggunaan alat dasar: amati, pikir, bertindak. Agen memperluas itu menjadi sesuatu yang lebih ambisius — siklus lima langkah, masing-masing ditenagai oleh komponen internal yang berbeda:
+      </p>
+    </FadeInBlock>
+
+    <!-- Loop Steps with architecture component for each -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'T', word: 'Tujuan', color: '#E94560', desc: 'Terima tujuan tingkat tinggi dari manusia. Tanpa tujuan yang jelas, agen tidak punya cara untuk memutuskan apakah dia sudah selesai. "Teliti Mars" bukan tujuan. "Tulis ringkasan 500 kata tentang tantangan kolonisasi Mars, dengan sumber" adalah tujuan.' },
+        { letter: 'R', word: 'Rencana', color: '#7B61FF', desc: 'Pecah tujuan menjadi langkah-langkah konkret. Perencana terbaik membuat rencana fleksibel yang beradaptasi saat langkah gagal. Perencana buruk membuat skrip kaku yang rusak pada kejutan pertama.' },
+        { letter: 'E', word: 'Eksekusi', color: '#0EA5E9', desc: 'Jalankan setiap langkah menggunakan alat yang tepat — mesin pencari, interpreter kode, pembaca file, API, kalkulator. Agen tidak hanya berpikir. Mereka bertindak.' },
+        { letter: 'A', word: 'Amati', color: '#16C79A', desc: 'Catat apa yang terjadi dan periksa hasilnya. Tanpa memori tentang apa yang sudah dilakukan dan ditemukan, agen dalam loop mungkin mengulangi tindakan yang sama dan gagal selamanya.' },
+        { letter: 'E', word: 'Evaluasi', color: '#F5A623', desc: 'Apakah ini berhasil? Apakah data ini bisa diandalkan? Apakah aku lebih dekat dengan tujuan? Evaluator memisahkan agen dari skrip yang hanya berjalan dan berharap terbaik. Jika ada yang salah, sesuaikan rencana dan ulangi lagi.' },
+      ].map((step, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kata kunci adalah <em>siklus</em>. Agen tidak merencanakan sekali lalu menjalankan secara membabi buta. Dia merencanakan, bertindak, mengamati, mengevaluasi, dan menyesuaikan. Agen terbaik adalah yang pulih dengan anggun ketika langkah ketiga kacau.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Chatbot adalah satu giliran. Agen adalah percakapan utuh — dengan dirinya sendiri, alatnya, dan dunia.
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Saatnya membangun satu. Rancang agen-mu sendiri dari nol.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <AgentBlueprint client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN AGENTS FAIL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Ketika Agen Gagal
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Agen tidak gagal seperti chatbot. Chatbot memberimu jawaban buruk dan menunggu. Agen memberi dirinya jawaban buruk, <em>bertindak atasnya</em>, lalu menggunakan hasil yang rusak untuk membuat keputusan berikutnya. Kegagalan terakumulasi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ada tiga cara klasik agen melakukan kesalahan:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mode Gagal 1: Loop Tak Terbatas</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agen terjebak mengulangi tindakan yang sama. Agen riset terus mencari "satu sumber lagi" dan tidak pernah mulai menulis. Tanpa kondisi berhenti, dia berjalan sampai kamu cabut steker — atau kehabisan kredit API.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
+        <span class="prompt-block-label" style="color: #7B61FF;">Mode Gagal 2: Alat Salah</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agen memilih alat yang tidak bisa mengerjakan tugasnya. Dia mencoba web-search untuk file di hard drive-mu, atau memanggil kalkulator untuk meringkas esai. Bukan karena agen bodoh — dia hanya memilih dari kotak alatnya tanpa mengecek apakah alat itu cocok untuk tugasnya.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
+        <span class="prompt-block-label" style="color: #F5A623;">Mode Gagal 3: Tindakan Halusinasi</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          Agen menciptakan alat atau API yang tidak ada, lalu "memanggilnya" dengan hasil palsu. Ketika panggilan palsu gagal, kadang dia memalsukan data yang seharusnya didapat. Halusinasi ganda: alat palsu, output palsu.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Perbaikannya selalu prinsip yang sama: <strong>rancang untuk jalur tidak bahagia.</strong> Iterasi maksimum, validasi alat, verifikasi output, dan pos pemeriksaan manusia. Tujuannya bukan mencegah semua kegagalan — tapi membuat kegagalan bisa dipulihkan.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO FAILURE MODES LAB -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Bisakah kamu mendiagnosis agen yang rusak? Temukan bug-nya dan tambahkan pengamannya.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FailureModesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF MANY: MULTI-AGENT SYSTEMS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Kekuatan Kebersamaan
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Satu agen berguna. Beberapa agen, bekerja bersama, bisa menangani masalah yang akan membuat sistem tunggal kewalahan. Triknya adalah spesialisasi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Bayangkan seperti ruang redaksi. Kamu tidak meminta orang yang sama untuk menyelidiki cerita, menulis artikel, dan mengeditnya untuk publikasi. Setiap peran membutuhkan pola pikir berbeda, alat berbeda, dan standar berbeda.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sistem multi-agen bekerja dengan cara yang sama. Agen <strong>Riset</strong> mengumpulkan informasi. Agen <strong>Penulis</strong> mengubah catatan mentah menjadi prosa yang dipoles. Agen <strong>Editor</strong> meninjau, memeriksa fakta, dan menyarankan perbaikan. Setiap agen punya prompt sistem sendiri, alatnya sendiri, dan kriteria suksesnya sendiri.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Pertanyaan kritis dalam desain multi-agen bukan "seberapa pintar setiap agen?" Tapi <strong>"seberapa baik penyerahannya?"</strong> Ketika Riset memberikan catatan ke Penulis, apakah catatan itu terstruktur dengan jelas? Ketika Penulis memberikan draft ke Editor, apakah Editor punya konteks cukup untuk memberi feedback berguna?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wawasan kunci</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Dokumen penyerahan adalah artefak paling penting dalam sistem multi-agen. Penulis brilian tidak bisa menyelamatkan catatan riset yang berantakan. Interface antara agen adalah tempat kualitas dimenangkan atau dikalahkan.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Saksikan tiga agen berkolaborasi. Perhatikan dokumen penyerahannya &mdash; di situlah keajaibannya terjadi.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HandoffChain client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN IN THE LOOP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Manusia dalam Loop
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Di Bab 5, kamu belajar kerangka kepercayaan: stakes, reversibilitas, dan kepercayaan menentukan seberapa banyak otonomi yang diberikan. Dengan agen, ini menjadi lebih kritis — karena agen tidak hanya menjawab pertanyaan. Mereka <em>mengambil tindakan</em>, merangkai mereka, dan menggandakan kesalahan jika dibiarkan tanpa pengawasan.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85]">
+        Pembuat agen terbaik bukan yang memaksimalkan otonomi. Mereka merancang <strong>pos pemeriksaan yang bijaksana</strong> — momen di mana agen berhenti, menunjukkan pekerjaannya, dan membiarkan manusia memutuskan apakah harus melanjutkan. Agen hebat tahu kapan harus bertanya.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Kamu sudah melihat agen dari dalam: siklus yang menggerakkannya, arsitektur yang membuatnya bekerja, dan mode kegagalan yang membuatnya berbahaya jika dibuat sembarangan.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Teori adalah satu hal. Selanjutnya, kamu akan menggunakan agen nyata &mdash; yang membaca kodemu, menulis perubahan, menjalankan tes, dan memperbaiki kesalahannya sendiri. Kenalan dengan Claude Code.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

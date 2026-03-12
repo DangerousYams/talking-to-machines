@@ -4,7 +4,7 @@ import ChapterLayout from '../layouts/ChapterLayout.astro';
 import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
-import ConceptCard from '../components/ui/ConceptCard';
+
 import Divider from '../components/ui/Divider';
 import AgentBlueprint from '../components/widgets/ch6/AgentBlueprint';
 import FailureModesLab from '../components/widgets/ch6/FailureModesLab';
@@ -83,82 +83,30 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10">
-        Every AI agent — from a simple research bot to a complex coding assistant — runs on the same fundamental loop:
+        In Chapter 5, you saw the basic tool-use loop: observe, think, act. Agents extend that into something more ambitious — a five-step cycle, each powered by a different internal component:
       </p>
     </FadeInBlock>
 
-    <!-- Loop Steps — vertical timeline -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Goal.', desc: 'Receive a high-level objective from the human.' },
-          { word: 'Plan.', desc: 'Break the goal into a sequence of concrete steps.' },
-          { word: 'Execute.', desc: 'Run each step, using the right tool for each task.' },
-          { word: 'Observe.', desc: 'Check the result. Did it work? Is the data good?' },
-          { word: 'Iterate.', desc: 'If something\'s off, adjust the plan and try again.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        The key word is <em>loop</em>. An agent doesn't just plan once and execute blindly. It plans, acts, observes the result, and adjusts. The best agents are the ones that recover gracefully when step three goes sideways.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        A chatbot is a single turn. An agent is a whole conversation — with itself, its tools, and the world.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ ANATOMY OF AN AGENT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Anatomy of an Agent
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Under the hood, every agent has five components. You can think of them as the organs of an artificial coworker:
-      </p>
-    </FadeInBlock>
-
-    <!-- Architecture components -->
+    <!-- Loop Steps with architecture component for each -->
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal', color: '#E94560', text: 'What is this agent trying to accomplish? Without a clear goal, the agent has no way to decide if it\'s done. "Research Mars" isn\'t a goal. "Write a 500-word summary of Mars colonization challenges, cited with sources" is.' },
-        { letter: 'P', name: 'Planner', color: '#7B61FF', text: 'The brain. It takes a goal and decomposes it into a sequence of steps. The best planners create flexible plans that can adapt when a step fails. Bad planners create rigid scripts that break at the first surprise.' },
-        { letter: 'T', name: 'Tools', color: '#0EA5E9', text: 'The hands. Search engines, code interpreters, file readers, APIs, calculators — agents don\'t just think, they act. Each tool has specific inputs and outputs the agent must learn to use correctly.' },
-        { letter: 'M', name: 'Memory', color: '#16C79A', text: 'The notebook. Agents need to remember what they\'ve done, what they\'ve found, and what went wrong. Without memory, an agent in a loop might repeat the same failing action forever.' },
-        { letter: 'E', name: 'Evaluator', color: '#F5A623', text: 'The inner critic. After each step, the agent checks: did this work? Is this data reliable? Am I closer to the goal? The evaluator is what separates an agent from a script that just runs and hopes for the best.' },
-      ].map((block, i) => (
+        { letter: 'G', word: 'Goal', color: '#E94560', desc: 'Receive a high-level objective from the human. Without a clear goal, the agent has no way to decide if it\'s done. "Research Mars" isn\'t a goal. "Write a 500-word summary of Mars colonization challenges, with sources" is.' },
+        { letter: 'P', word: 'Plan', color: '#7B61FF', desc: 'Break the goal into concrete steps. The best planners create flexible plans that adapt when a step fails. Bad planners create rigid scripts that break at the first surprise.' },
+        { letter: 'T', word: 'Execute', color: '#0EA5E9', desc: 'Run each step using the right tool — search engines, code interpreters, file readers, APIs, calculators. Agents don\'t just think. They act.' },
+        { letter: 'M', word: 'Observe', color: '#16C79A', desc: 'Record what happened and check the results. Without memory of what it\'s done and found, an agent in a loop might repeat the same failing action forever.' },
+        { letter: 'E', word: 'Evaluate', color: '#F5A623', desc: 'Did this work? Is this data reliable? Am I closer to the goal? The evaluator separates an agent from a script that just runs and hopes for the best. If something\'s off, adjust the plan and loop again.' },
+      ].map((step, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
+          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
+              {step.letter}
             </div>
             <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
+              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
+                {step.word}
               </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
+              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {step.desc}
               </p>
             </div>
           </div>
@@ -167,12 +115,24 @@ const chapter = chapters[5];
     </div>
 
     <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Most agent failures aren't intelligence failures — they're architecture failures. An agent with great language skills but no evaluator is like a brilliant person who never checks their work.
-        </p>
+      <p class="text-lg leading-[1.85] mb-10">
+        The key word is <em>loop</em>. An agent doesn't plan once and execute blindly. It plans, acts, observes, evaluates, and adjusts. The best agents are the ones that recover gracefully when step three goes sideways.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.55}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        A chatbot is a single turn. An agent is a whole conversation — with itself, its tools, and the world.
       </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Time to build one. Design your own agent from scratch.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -243,6 +203,15 @@ const chapter = chapters[5];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO FAILURE MODES LAB -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Can you diagnose a broken agent? Find the bug and add the guardrail.
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -295,6 +264,15 @@ const chapter = chapters[5];
     </FadeInBlock>
   </section>
 
+  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Watch three agents collaborate. Pay attention to the handoff documents &mdash; that's where the magic happens.
+      </p>
+    </FadeInBlock>
+  </section>
+
   <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <FadeInBlock client:visible>
@@ -315,68 +293,15 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10">
-        The most powerful agent architecture isn't fully autonomous. It's the one that knows when to stop and ask a human.
+        In Chapter 5, you learned the trust framework: stakes, reversibility, and trust determine how much autonomy to give. With agents, this becomes even more critical — because agents don't just answer questions. They <em>take actions</em>, chain them together, and compound mistakes if left unchecked.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Think about it in terms of stakes. Summarizing an article? Let the agent run. Sending an email to your boss? Maybe ask first. Deleting files or making a purchase? Definitely ask first. The level of autonomy should match the level of consequences.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem;`}>
-        {[
-          { stakes: 'Low stakes', example: 'Searching the web, summarizing text, generating ideas', level: 'Let it run', color: '#16C79A' },
-          { stakes: 'Medium stakes', example: 'Sending messages, editing shared documents, making API calls', level: 'Confirm before acting', color: '#F5A623' },
-          { stakes: 'High stakes', example: 'Deleting data, spending money, publishing content, contacting people', level: 'Human decides', color: '#E94560' },
-        ].map((tier, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.25rem; border-radius: 10px; border: 1px solid ${tier.color}20; background: ${tier.color}06;`}>
-              <div style={`flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: ${tier.color}; margin-top: 6px;`}></div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${tier.color}; margin: 0 0 0.2rem;`}>
-                  {tier.stakes}: {tier.level}
-                </p>
-                <p style="font-size: 0.88rem; line-height: 1.6; color: var(--color-deep); opacity: 0.7; margin: 0;">
-                  {tier.example}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
       <p class="text-lg leading-[1.85]">
-        The best agent builders aren't the ones who make their agents do everything autonomously. They're the ones who design <strong>thoughtful checkpoints</strong> — moments where the agent pauses, shows its work, and lets a human decide whether to continue.
+        The best agent builders aren't the ones who maximize autonomy. They design <strong>thoughtful checkpoints</strong> — moments where the agent pauses, shows its work, and lets a human decide whether to continue. A great agent knows when to ask.
       </p>
     </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ KEY CONCEPTS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <h2 class="mb-12" style="font-family: var(--font-heading);">Key Concepts</h2>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {chapter.concepts.map((concept, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <ConceptCard
-            name={concept.name}
-            description={concept.description}
-            accent={chapter.accent}
-            index={i}
-            client:load
-          />
-        </FadeInBlock>
-      ))}
-    </div>
   </section>
 
   <Divider accent={chapter.accent} client:load />
@@ -384,14 +309,14 @@ const chapter = chapters[5];
   <!-- ═══ CLOSING ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        An agent is only as good as its architecture. The smartest AI in the world, deployed without guardrails, is just a fast way to make expensive mistakes.
-      </div>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        You've seen agents from the inside: the loop that drives them, the architecture that makes them work, and the failure modes that make them dangerous when built carelessly.
+      </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Now you know how agents think, act, fail, and collaborate. In the next chapter, we put all of this into practice with the most powerful coding agent available — Claude Code.
+        Theory is one thing. Next, you'll use a real agent &mdash; one that reads your code, writes changes, runs tests, and fixes its own mistakes. Meet Claude Code.
       </p>
     </FadeInBlock>
   </section>

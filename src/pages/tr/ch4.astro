@@ -1,0 +1,394 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="tr">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Dördüncü Bölüm
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Yapay zeka<br />manzarası
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Şu anda gerçekten kullanabileceğin<br />her yapay zeka aracının rehberi.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Çoğu insan "yapay zeka" dediğinde ChatGPT'yi kasteder. Belki Google'ın Gemini'sini kastediyordur ya da birinin Claude'dan bahsettiğini duymuştur. Bu, "internet" deyip Google'ı kastetmek gibi. Yanlış değil. Sadece devasa bir şeyin çok küçük bir dilimi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Şu anda bugün kullanabileceğin yüzlerce yapay zeka aracı var — teorik bir gelecekte değil, tam olarak şu anda, tarayıcından. Bir cümleden fotogerçekçi görseller üreten araçlar. Tam şarkılar besteleyen araçlar. Araştırma konun hakkında yazılmış her akademik makaleyi okuyup konsensüsü üç paragrafta özetleyen araçlar.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Bu bölüm senin saha rehberin. Kapsamlı bir katalog değil — o gelecek Salıya kadar güncelliğini yitirir — ama <strong>arazinin haritası</strong>. Önemli olan kategoriler, bilmeye değer araçlar ve doğru olanı seçmene yardımcı olacak düşünce çerçevesi.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Sohbet robotunun ötesinde
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Sohbet robotu buzdağının görünen kısmı. Yüzeyin altında, yapay zeka düzinelerce uzmanlaşmış yeteneğe ayrılmış durumda, her biri farklı türde bir iş için farklı türde bir araç.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bunu müzik aletleri gibi düşün. Piyano ve davul seti ikisi de "müzik aleti" ama bir piyanistten ritim tutmasını, bir davulcudan konçerto çalmasını istemezsin. Yapay zeka araçları da aynı. Görsel üretimi için yapılan bir araç, kod için yapılandan temelden farklıdır — farklı mimari, farklı eğitim verisi, farklı güçlü yanlar.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        10 yapay zeka aracını yüzeysel düzeyde bilen biri, tek bir aracı derinlemesine bilenden sürekli daha iyi sonuç alır. Farkındalık genişliği, uzmanlık derinliğini yener — en azından başlangıçta.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Bu araçların gerçekte ne <em>yaptığına</em> göre düzenlenmiş güncel manzara burada.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Sekiz aile
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Karşılaşacağın her yapay zeka aracı bu kategorilerden birine girer. Bazı araçlar sınırları aşar, ama bu aileleri anlamak kaosu anlamlandırmak için sana zihinsel bir harita verir.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '1', name: 'Görsel oluşturucular', color: '#E94560', text: 'Metin girer, görseller çıkar. Fotogerçekçi sahnelerden anime\'ye, yağlı boya tablolara. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. En demokratikleştirici kategori — herkes kelimelerden görsel sanat yaratabilir.' },
+        { icon: '2', name: 'Görsel düzenleyiciler', color: '#F5A623', text: 'Gerçek bir görselle başla ve dönüştür. Arka planları kaldır, çözünürlüğü artır, nesneleri değiştir, sahneleri yeniden aydınlat. Photoshop AI, Magnific, Clipdrop. Bunlar insan fotoğrafçı ve tasarımcıları değiştirmek yerine güçlendirir.' },
+        { icon: '3', name: 'Video oluşturucular', color: '#7B61FF', text: 'En yeni sınır. Metinden veya durağan görsellerden video klip üret. Sora, Runway, Kling, Pika. Hâlâ erken — çoğu klip 30 saniyenin altında — ama inanılmaz bir hızla gelişiyor. Film yapımı asla eskisi gibi olmayacak.' },
+        { icon: '4', name: 'Müzik ve ses', color: '#16C79A', text: 'Metin açıklamasından tam şarkılar, 30 saniyelik örnekten ses klonlama, istek üzerine ses efektleri. Suno, Udio, ElevenLabs. Bu araçlar eskiden bir stüdyo ve ekip gerektiren şeyi tek bir prompta sıkıştırıyor.' },
+        { icon: '5', name: 'Araştırma ajanları', color: '#0EA5E9', text: 'Senin için interneti (veya akademik veritabanlarını) okuyan yapay zeka. Perplexity arar ve kaynak gösterir. Elicit makaleleri okur. Consensus bilimsel uzlaşıyı bulur. NotebookLM belgelerini bir uzmana dönüştürür.' },
+        { icon: '6', name: 'Yapay zeka tarayıcıları', color: '#6B7280', text: 'Bir insan gibi web\'de gezinebilen ajanlar. Düğmelere tıkla, formları doldur, sayfalar arasında gezin. Arc, Operator, Claude Computer Use. "Soruları cevapla" ile "görevleri yap" arasındaki köprü.' },
+        { icon: '7', name: 'Kodlama araçları', color: '#E94560', text: 'Kod yazan, düzenleyen, çalıştıran ve hata ayıklayan yapay zeka. Claude Code terminalinden çalışır. Cursor ve Windsurf tam editördür. Copilot satır içi önerir. Replit Agent sıfırdan tam uygulamalar yapar.' },
+        { icon: '8', name: 'Sohbet robotları ve asistanlar', color: '#0F3460', text: 'Zaten bildiğin genel amaçlı sohbet yapay zekaları: ChatGPT, Claude, Gemini. İsviçre çakıları gibidirler — birçok şeyde iyiler, nasıl prompt vereceğini bildiğinde en iyiler (ki biliyorsun, Bölüm 1-3 sayesinde).' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Bu kategoriler yakınsamaya başlıyor. Görsel oluşturucular video ekleniyor. Sohbet robotları araç kullanımı kazanıyor. Kodlama araçları ajana dönüşüyor. İki yıl içinde sınırlar bulanıklaşacak. Ama şu an uzmanlar hâlâ kendi uzmanlık alanlarında genelcileri yeniyor.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Tam kataloğu keşfet. Ne yaptığını öğrenmek için herhangi bir araca tıkla.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Doğru aracı seçmek
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bu kadar seçenekle, zor olan yapay zeka aracı bulmak değil. <em>Doğru</em> yapay zeka aracını bulmak. İşte işe yarayan çerçeve:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Çıktı ne?', desc: 'Metin? Görsel? Kod? Video? Ses? Bu seni hemen 1-2 aileye daraltır.' },
+          { word: 'Kalite çıtası ne?', desc: 'Kendin için hızlı bir taslak mı, yoksa izleyici için cilalı bir çıktı mı? Farklı standartlar için farklı araçlar.' },
+          { word: 'Bütçe ne?', desc: 'Birçok araç şaşırtıcı derecede yetenekli ücretsiz katmanlar sunuyor. Ödeme yapmadan önce gerçekten neye ihtiyacın olduğunu bil.' },
+          { word: 'İş akışı ne?', desc: 'Bağımsız bir görev mi, yoksa daha uzun bir zincirdeki bir adım mı? Entegrasyon ham güçten daha önemlidir.' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Çoğu acemi aynı hatayı yapar: her şey için tek bir genel amaçlı yapay zeka kullanır. Teknik olarak işe yarar, ama doğru uzman araçlarla daha hızlı daha iyi sonuçlar alırsın.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        Bununla birlikte, ters tuzağa da düşme. 47 tane yapay zeka aboneliğine ihtiyacın yok. <strong>Farklı kategorilerden 3-4 araç seç, onları iyi öğren ve oradan genişle.</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        İş hatlarının gücü
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Asıl kilit açma noktası şu: <strong>araçlar birbirine zincirlendiğinde üstel olarak daha güçlü hale gelir.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Tek bir yapay zeka aracı sana bir yetenek verir. Yapay zeka araçları zinciri sana bir <em>iş akışı</em> verir. Perplexity araştırmayı bulur. Claude makaleyi yazar. Midjourney illüstrasyonları yaratır. Her araç en iyi olduğu şeyi yapar ve birinin çıktısı diğerinin girdisi olur.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        İnternette gördüğün en etkileyici yapay zeka eserleri tek bir araçla yapılmadı. Her birinin en iyi ne yaptığını anlayan bir insan tarafından birbirine zincirlenen beş araçla yapıldı.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Manzarayı anlamanın neden önemli olduğu işte bu. Sadece tek bir araç biliyorsan iş hattı kuramazsın. Hangi uzmanların var olduğunu bilmiyorsan doğru uzmanı seçemezsin.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Kendin bir tane kurmayı dene:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        "En iyi" araç diye bir şey yok
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Her hafta biri yapay zeka araçlarının kesin sıralamasını yayınlıyor. Her hafta yanlış oluyor. Sıralama kötü olduğu için değil, "en iyi" tamamen ne yaptığına, nasıl yaptığına ve neye değer verdiğine bağlı olduğu için.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney, DALL-E 3'ten daha sanatsal görseller yapar. Ama DALL-E 3 talimatları daha hassas takip eder. Ideogram ikisinden de daha iyi metin render eder. Hangisi "en iyi"? Film afişi mi, ürün fotoğrafı mı, logo mu yapıyorsun ona bağlı.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude daha nüanslı yazar. GPT daha hızlıdır. Gemini daha fazla bağlam alır. Hangisi senin için önemli? Görevine bağlı.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Asıl beceri tek bir aracı ustalaşmak değil. Hangi aracın hangi işe uyduğuna dair zevk geliştirmek.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Profesyonel bir marangozun favori bir aleti yoktur. Her görev <em>için</em> favori bir aleti vardır. Geliştirilmesi gereken zihniyet budur.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Kendin gör. Aynı prompt, farklı araçlar &mdash; hangi çıktıyı tercih edersin?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Manzara değişiyor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Rahatsız edici gerçek şu: yukarıdaki katalogdaki bazı araçlar bir yıl içinde var olmayacak. Henüz var olmayan diğerleri vazgeçilmez olacak. Yapay zeka manzarası tarihteki her teknoloji manzarasından daha hızlı hareket ediyor.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        O zaman neden belirli araçları öğrenmekle uğraşalım? Çünkü <strong>araçlar değişse bile kategoriler sabittir</strong>. Her zaman görsel oluşturucular, kod asistanları ve araştırma ajanları olacak. İsimler değişecek. Altta yatan yetenekler ve zihinsel modeller değişmeyecek.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Aktarılabilir beceriler</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1. Hangi yapay zeka araç kategorilerinin var olduğunu bilmek<br />
+          2. Yeni bir aracı 15 dakikada değerlendirmeyi bilmek<br />
+          3. Araçları iş akışlarına zincirlemeyi bilmek<br />
+          4. Ne zaman araç değiştirip ne zaman promptları iyileştirmen gerektiğini bilmek
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Bu dört beceri, gelecek yıl veya sonraki yıl hangi araçlar hakim olursa olsun sana hizmet edecek. Manzara değişir ama navigator etkili kalır.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Artık yapay zeka manzarasının haritasına sahipsin &mdash; sekiz araç ailesi, aralarından seçim yapmak için bir çerçeve ve onları birbirine bağlayan iş hattı zihniyeti.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Ama şimdiye kadar bu araçlar sadece sana yanıt veriyordu. Ya <em>kendi başlarına harekete geçebilseler</em>? Bu, araçtan ajana geçiş &mdash; ve her şeyi değiştiriyor.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

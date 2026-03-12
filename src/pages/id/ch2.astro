@@ -1,0 +1,425 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
+import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
+import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+
+const chapter = chapters[1];
+---
+
+<ChapterLayout chapter={chapter} locale="id">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Bab Dua
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Seni<br />Bertanya
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Prompt terbaik adalah pertanyaan yang<br />membuat AI balik bertanya padamu.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Di bab sebelumnya, kamu sudah belajar lima blok bangunan prompt yang bagus — Peran, Tugas, Format, Batasan, Contoh. Itu fondasinya. Tapi tahu bahan-bahannya saja tidak membuatmu jadi koki.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Bab ini tentang <em>teknik</em>. Beda antara orang yang ngetik prompt dan orang yang <em>merancang</em> prompt. Bedanya antara mengajukan pertanyaan dengan mengajukan pertanyaan yang <strong>tepat</strong> — yang membuka sesuatu yang benar-benar berguna.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Pengguna AI terbaik bukan ahli di bidang topiknya — <strong>mereka ahli dalam bertanya.</strong> Dan bertanya adalah skill yang bisa dipelajari.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SOCRATIC FLIP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Metode Sokratik Terbalik
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kebanyakan orang pakai AI seperti mesin penjual. Masukin prompt, terima jawaban. Tapi hasil terbaik datang dari <em>percakapan</em>, bukan perintah. Dan teknik percakapan paling powerful udah berusia 2.400 tahun.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Socrates tidak pernah jawab pertanyaan langsung. Dia malah bertanya <em>lebih banyak</em> lagi — menggali, mengklarifikasi, menantang — sampai muridnya sampai pada pemahaman yang lebih dalam sendiri. Kamu bisa pakai pendekatan yang sama dengan AI, tapi dibalik.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Daripada meminta AI memberikan jawaban, minta AI untuk mewawancarai kamu. Biarkan AI yang bertanya hal-hal klarifikasi yang lupa kamu pikirkan.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Pikirkan deh: ketika kamu ngetik "rencanakan pesta ulang tahun," kamu ninggalin puluhan detail yang drastis mengubah jawabannya. Berapa orang? Budgetnya berapa? Indoor atau outdoor? AI-nya nggak tahu — tapi dia bisa bertanya.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Prompt Sokratik</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Saya ingin merencanakan pesta ulang tahun. Sebelum kamu mulai merencanakan, tanyakan 5 pertanyaan spesifik yang akan membantu kamu membuat rencana yang sesuai dengan situasi saya. Tanyakan satu per satu dan tunggu respons saya."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Teknik tunggal ini — membalik siapa yang bertanya — adalah salah satu upgrade paling powerful yang bisa kamu lakukan. Ini mengubah AI dari mesin jawaban jadi <strong>partner berpikir</strong>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FlipTheScript client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tunjukkan, Jangan Ceritakan
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bayangin kamu lagi coba jelasin gaya penulisan ke temen. Kamu bisa habis lima menit mendeskripsikan pakai kata-kata — "Gue mau yang playful tapi nggak kekanak-kanakan, santai tapi nggak berantakan, kalimatnya pendek dan ada perbandingan yang nggak terduga." Atau kamu tinggal kasih contoh: <em>"Tulis kayak gini."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Itulah <strong>few-shot prompting</strong>. Daripada coba mendeskripsikan yang kamu mau secara abstrak, kamu kasih AI contoh konkret. Satu contoh namanya "one-shot" prompt. Dua atau tiga contoh namanya "few-shot." Nol contoh — cuma deskripsi — namanya "zero-shot."
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (mendeskripsikan)</span>
+        <p class="m-0" style="color: var(--color-deep);">"Buatkan saya deskripsi produk untuk sepatu lari. Buat yang punchy dan conversational, kalimat pendek. Hindari klise marketing."</p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (menunjukkan)</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "Buatkan deskripsi produk untuk sepatu lari CloudRunner X1. Ini gaya yang saya mau:<br /><br />
+          <em>Contoh: 'The Weekender Tote — Muat laptop kamu, bekal makan siang, dan pilihan hidup yang questionable. Canvas tahan air karena kita tahu kamu pasti numpah sesuatu. Lima kantong, yang nggak akan kamu ingat lokasinya nanti.'</em><br /><br />
+          Samakan tone ini: kalimat pendek, humor yang self-aware, spesifik daripada buzzwords."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Versi few-shot akan menghasilkan hasil yang jauh lebih bagus. Bukan karena AI-nya "lebih pintar" — tapi karena kamu kasih <strong>target konkret</strong> daripada arahan yang samar. Satu contoh bagus setara seratus kata deskripsi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Ketika AI nggak matching gaya yang kamu mau, jangan tambahin adjektif. Tambahin contoh. "Kayak gini" lebih manjur daripada "buat lebih punchy tapi juga hangat tapi jangan terlalu santai" setiap saat.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
+        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
+          Eksperimen singkat
+        </p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
+          Pikirin sesuatu yang baru-baru ini kamu minta AI tulis — email, cerita, postingan media sosial. Sekarang bayangin kalau kamu udah nyertakan satu contoh konkret dari tone yang kamu mau. Gimana outputnya akan berubah?
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
+          Simpen itu di pikiran. Prompt Laboratory di bawah bakal ngasih kamu kesempatan buat nyoba beneran.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHAIN OF THOUGHT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Berpikir Langkah demi Langkah
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Ini gila: kalau kamu minta AI selesaikan soal matematika, bisa aja salah. Tapi kalau kamu minta <em>selesaikan soal langkah demi langkah</em>, jawabannya lebih sering benar. Jawabannya sama. Pertanyaannya beda.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Teknik ini namanya <strong>chain-of-thought prompting</strong>. Daripada langsung minta jawaban, kamu minta AI tunjukkan alur pikirnya. "Pikirin ini langkah demi langkah." "Uraikan dulu sebelum jawab." "Jelasin alasan kamu sambil jalan."
+      </p>
+    </FadeInBlock>
+
+    <!-- Before/After comparison -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        <div>
+          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
+            <span class="prompt-block-label" style="color: #E94560;">Tanpa chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "Tongkat baseball dan bola harganya $1,10 total. Tongkatnya $1,00 lebih mahal dari bolanya. Berapa harga bolanya?"
+            </p>
+            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
+              AI jawab: $0,10 (salah)
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
+            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Dengan chain-of-thought</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "Tongkat baseball dan bola harganya $1,10 total. Tongkatnya $1,00 lebih mahal dari bolanya. Berapa harga bolanya? Pikirin langkah demi langkah."
+            </p>
+            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
+              AI jawab: $0,05 (benar)
+            </p>
+          </div>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kenapa ini berhasil? Ketika kamu minta AI tunjukkan alur pikirnya langkah demi langkah, setiap langkah jadi input untuk langkah berikutnya. Kayak ngasih AI kertas coret-coret — semakin banyak dia tulis pemikirannya, semakin bagus jawaban akhirnya.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Chain-of-thought nggak bikin AI lebih pintar. Tapi bikin lebih lambat — dan berpikir lambat sering lebih baik.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Ini nggak cuma untuk matematika. Pakai kapan aja jawabannya perlu penalaran: menganalisis argumen, membandingkan opsi, merencanakan proyek, debugging kode. Kapan aja kamu mau manusia "tunjukkan cara kerjanya," minta AI lakukan hal yang sama.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Menggabungkan Teknik
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Kekuatan sebenarnya datang dari menggabungkan teknik. Contoh few-shot <em>plus</em> chain-of-thought. Peran sistem <em>plus</em> batasan <em>plus</em> spesifikasi format. Setiap teknik adalah tuas, dan menarik beberapa tuas sekaligus menghasilkan sesuatu yang nggak bisa dicapai salah satu sendiri.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Tapi ini nuansa yang memisahkan pemula dari ahli: <strong>lebih banyak nggak selalu lebih baik.</strong> Brainstorming santai butuh satu atau dua teknik. Essay penting butuh lima. Pertanyaan informal nggak butuh apa-apa. Skillnya adalah tahu berapa tuas yang harus ditarik — dan yang mana.
+      </p>
+    </FadeInBlock>
+
+    <!-- Technique stack visual -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="margin-bottom: 2.5rem;">
+        {[
+          { label: 'Brainstorming santai', techniques: ['Tugas'], color: '#6B7280', width: '25%' },
+          { label: 'Tugas sekolah', techniques: ['Peran', 'Tugas', 'Format'], color: '#F5A623', width: '50%' },
+          { label: 'Proyek penting', techniques: ['Peran', 'Konteks', 'Tugas', 'Format', 'Contoh'], color: '#0EA5E9', width: '75%' },
+          { label: 'Output krusial', techniques: ['Peran', 'Konteks', 'Contoh', 'Tugas', 'Format', 'Batasan', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
+        ].map((level, i) => (
+          <FadeInBlock client:visible delay={i * 0.06} key={i}>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
+                {level.label}
+              </span>
+              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
+                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
+                  {level.techniques.map((t, j) => (
+                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
+                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Over-prompting itu beneran ada. Prompt 500 kata untuk pertanyaan simple nggak bikin jawabannya lebih baik — malah bisa bikin AI bingung. Sesuaikan kompleksitas prompt dengan kompleksitas tugasnya.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptLaboratory client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Ketika Prompt Bermasalah
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Output AI yang buruk <strong>hampir nggak pernah salah AI-nya.</strong> Ketika outputnya generik, samar, atau salah total, bug-nya biasanya di promptnya. Dan seperti debugging kode, debugging prompt adalah skill yang bisa dipelajari.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Bug prompt paling umum masuk ke lima kategori. Begitu kamu belajar mengenalinya, kamu bakal lihat di mana-mana — di prompt kamu sendiri dan di keluhan orang lain tentang AI yang "nggak guna."
+      </p>
+    </FadeInBlock>
+
+    <!-- Bug types -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+      {[
+        { name: 'Ambigu', desc: 'Promptnya bisa berarti banyak hal. "Tulis sesuatu tentang anjing" — tulisan apa? Untuk siapa? Berapa panjang?', color: '#E94560' },
+        { name: 'Kontradiktif', desc: 'Promptnya minta hal yang berlawanan. "Buat singkat tapi komprehensif." "Pakai tone fun tapi tetap formal." Pilih satu.', color: '#F5A623' },
+        { name: 'Kurang konteks', desc: 'Promptnya kurang info krusial. "Benerin kode saya" tanpa share kodenya. "Improve essay saya" tanpa essay-nya.', color: '#0EA5E9' },
+        { name: 'Terlalu banyak tugas', desc: 'Promptnya minta lima hal sekaligus. AI jadi terbagi-bagi dan nggak ada yang dikerjain dengan baik.', color: '#7B61FF' },
+        { name: 'Leading question', desc: 'Promptnya udah bilang ke AI harus mikir apa. "Nggak setuju kalau X itu yang terbaik?" AI pasti setuju. Nggak berguna.', color: '#16C79A' },
+      ].map((bug, i) => (
+        <FadeInBlock client:visible delay={i * 0.07}>
+          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
+            <div>
+              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
+                {bug.name}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {bug.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        Bug paling berbahaya adalah <em>leading question</em>. Paling susah dideteksi karena <em>rasanya</em> kamu dapet output bagus — AI setuju sama kamu! Tapi setuju bukan berarti akurat. Ketika kamu frame pertanyaan untuk konfirmasi keyakinan yang udah ada, kamu udah bikin AI jadi yes-man, bukan partner berpikir.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <DebugThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Kamu mulai bab ini ngetik perintah sekali jadi. Sekarang kamu tahu cara membalik pertanyaan, tunjukkan daripada ceritakan, dan debug prompt yang melenceng.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Tapi setiap teknik yang udah kamu pelajari nabrak tembok yang sama yang nggak keliatan: <em>context window</em>. Selanjutnya, kita bongkar itu dan belajar cara merekayasa apa yang sebenarnya dilihat AI.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

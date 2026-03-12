@@ -1,0 +1,394 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import ToolWall from '../../components/widgets/ch4/ToolWall';
+import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
+import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+
+const chapter = chapters[3];
+---
+
+<ChapterLayout chapter={chapter} locale="vi">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chương Bốn
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Bản đồ<br />thế giới AI
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Hướng dẫn thực địa về mọi công cụ AI<br />bạn có thể dùng ngay bây giờ.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Khi đa số mọi người nói "AI," họ nghĩ tới ChatGPT. Có thể nhắc đến Gemini của Google, hoặc nghe ai đó đề cập Claude. Giống như nói "internet" mà ý là Google vậy. Không sai. Chỉ là một lát cắt nhỏ xíu của thứ gì đó khổng lồ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Ngay lúc này, có hàng trăm công cụ AI bạn có thể dùng hôm nay -- không phải trong tương lai xa vời, mà là ngay bây giờ, từ trình duyệt. Công cụ tạo ảnh siêu thực từ một câu. Công cụ sáng tác cả bài hát. Công cụ đọc mọi bài nghiên cứu từng viết về chủ đề của bạn và tóm tắt đồng thuận khoa học trong ba đoạn.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        Chương này là hướng dẫn thực địa. Không phải danh mục đầy đủ -- danh mục đó sẽ lỗi thời vào thứ Ba tuần sau -- mà là <strong>bản đồ địa hình</strong>. Các danh mục quan trọng, công cụ đáng biết, và khung tư duy giúp bạn chọn đúng.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND THE CHATBOT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Xa hơn chatbot
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Chatbot chỉ là phần nổi của tảng băng. Bên dưới, AI đã phân nhánh thành hàng chục khả năng chuyên biệt, mỗi loại là một công cụ khác nhau cho một loại công việc khác nhau.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nghĩ về nó như nhạc cụ. Piano và trống đều là "nhạc cụ," nhưng bạn không bảo nghệ sĩ piano chơi nhịp, và không bảo tay trống chơi concerto. Công cụ AI cũng vậy. Công cụ tạo ảnh khác cơ bản so với công cụ viết code -- kiến trúc khác, dữ liệu huấn luyện khác, thế mạnh khác.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Người biết 10 công cụ AI ở mức cơ bản sẽ liên tục vượt trội hơn người biết một công cụ sâu. Biết rộng thắng biết sâu -- ít nhất là ban đầu.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Đây là bản đồ hiện tại, tổ chức theo <em>chức năng</em> thực tế.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE EIGHT FAMILIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tám họ công cụ
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Mọi công cụ AI bạn gặp đều thuộc một trong các danh mục này. Một số công cụ bắc cầu giữa các danh mục, nhưng hiểu các họ này cho bạn bản đồ tư duy để hiểu hỗn loạn.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '1', name: 'Tạo ảnh', color: '#E94560', text: 'Văn bản vào, ảnh ra. Từ cảnh siêu thực đến anime đến tranh sơn dầu. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. Danh mục dân chủ nhất -- ai cũng có thể tạo nghệ thuật từ lời.' },
+        { icon: '2', name: 'Chỉnh sửa ảnh', color: '#F5A623', text: 'Bắt đầu với ảnh thật và biến đổi nó. Xóa nền, nâng độ phân giải, thay đổi vật thể, chiếu sáng lại. Photoshop AI, Magnific, Clipdrop. Những công cụ này hỗ trợ nhiếp ảnh gia và designer thay vì thay thế họ.' },
+        { icon: '3', name: 'Tạo video', color: '#7B61FF', text: 'Biên giới mới nhất. Tạo clip video từ văn bản hoặc ảnh tĩnh. Sora, Runway, Kling, Pika. Vẫn sơ khai -- đa số clip dưới 30 giây -- nhưng cải thiện với tốc độ chóng mặt. Làm phim sẽ không bao giờ như cũ nữa.' },
+        { icon: '4', name: 'Nhạc & âm thanh', color: '#16C79A', text: 'Cả bài hát từ mô tả văn bản, nhân bản giọng nói từ mẫu 30 giây, hiệu ứng âm thanh theo yêu cầu. Suno, Udio, ElevenLabs. Những công cụ này nén studio và cả đội ngũ vào một prompt.' },
+        { icon: '5', name: 'Agent nghiên cứu', color: '#0EA5E9', text: 'AI đọc internet (hoặc cơ sở dữ liệu học thuật) cho bạn. Perplexity tìm kiếm và trích dẫn. Elicit đọc paper. Consensus tìm đồng thuận khoa học. NotebookLM biến tài liệu của bạn thành chuyên gia.' },
+        { icon: '6', name: 'Trình duyệt AI', color: '#6B7280', text: 'Agent có thể duyệt web như người thật. Nhấn nút, điền form, chuyển trang. Arc, Operator, Claude Computer Use. Cầu nối giữa "trả lời câu hỏi" và "thực hiện nhiệm vụ."' },
+        { icon: '7', name: 'Công cụ lập trình', color: '#E94560', text: 'AI viết, sửa, chạy, và debug code. Claude Code chạy từ terminal. Cursor và Windsurf là editor đầy đủ. Copilot gợi ý inline. Replit Agent xây cả app từ đầu.' },
+        { icon: '8', name: 'Chatbot & trợ lý', color: '#0F3460', text: 'AI hội thoại đa năng mà bạn đã biết: ChatGPT, Claude, Gemini. Chúng là dao Thụy Sĩ -- giỏi nhiều thứ, tốt nhất khi bạn biết cách viết prompt (mà bạn đã biết, nhờ Chương 1-3).' },
+      ].map((family, i) => (
+        <FadeInBlock client:visible delay={i * 0.06}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${family.color};`}>
+              {family.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${family.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {family.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {family.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Các danh mục đang hội tụ. Công cụ tạo ảnh đang thêm video. Chatbot đang có công cụ. Công cụ lập trình đang thành agent. Trong hai năm nữa, ranh giới sẽ mờ đi. Nhưng hiện tại, chuyên gia vẫn đánh bại đa năng ở lĩnh vực chuyên biệt.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TOOL WALL -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Khám phá danh mục đầy đủ. Nhấn vào công cụ bất kỳ để xem nó làm gì.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolWall client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Chọn đúng công cụ
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Với nhiều lựa chọn thế này, phần khó không phải tìm công cụ AI. Mà là tìm <em>đúng</em> công cụ AI. Đây là khung tư duy hiệu quả:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Đầu ra là gì?', desc: 'Văn bản? Ảnh? Code? Video? Âm thanh? Câu này ngay lập tức thu hẹp xuống 1-2 họ.' },
+          { word: 'Tiêu chuẩn chất lượng?', desc: 'Bản nháp nhanh cho bản thân, hay sản phẩm hoàn thiện cho khán giả? Công cụ khác cho tiêu chuẩn khác.' },
+          { word: 'Ngân sách ra sao?', desc: 'Nhiều công cụ có gói miễn phí khá mạnh. Biết mình thực sự cần gì trước khi trả tiền.' },
+          { word: 'Quy trình như thế nào?', desc: 'Nhiệm vụ đơn lẻ, hay một bước trong chuỗi dài hơn? Khả năng tích hợp quan trọng hơn sức mạnh thuần túy.' },
+        ].map((step, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đa số người mới mắc cùng một lỗi: dùng một AI đa năng cho tất cả. Về kỹ thuật thì được, nhưng bạn sẽ có kết quả tốt hơn nhanh hơn với công cụ chuyên biệt phù hợp.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        Nhưng cũng đừng rơi vào bẫy ngược. Bạn không cần 47 gói đăng ký AI. <strong>Chọn 3-4 công cụ thuộc các danh mục khác nhau, học chúng kỹ, rồi mở rộng từ đó.</strong>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE POWER OF PIPELINES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Sức mạnh của pipeline
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đây là bước đột phá thực sự: <strong>công cụ trở nên mạnh mẽ theo cấp số nhân khi bạn nối chúng lại.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Một công cụ AI cho bạn một khả năng. Một chuỗi công cụ AI cho bạn một <em>quy trình</em>. Perplexity tìm nghiên cứu. Claude viết bài. Midjourney tạo minh họa. Mỗi công cụ làm điều nó giỏi nhất, và đầu ra của công cụ này thành đầu vào của công cụ tiếp.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Những tác phẩm AI ấn tượng nhất bạn thấy trên mạng không được tạo bằng một công cụ. Mà bằng năm công cụ, nối lại bởi một người hiểu mỗi công cụ giỏi nhất cái gì.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đây là lý do hiểu bản đồ quan trọng. Bạn không thể xây pipeline nếu chỉ biết một công cụ. Bạn không thể chọn đúng chuyên gia nếu không biết chuyên gia nào tồn tại.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        Thử tự xây một cái xem:
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <WorkflowBuilder client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ NO BEST TOOL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Không có công cụ "tốt nhất"
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Mỗi tuần, ai đó đăng bảng xếp hạng chung cuộc công cụ AI. Mỗi tuần, nó sai. Không phải vì xếp hạng tệ, mà vì "tốt nhất" phụ thuộc hoàn toàn vào bạn đang làm gì, làm thế nào, và bạn coi trọng điều gì.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Midjourney tạo ảnh nghệ thuật hơn DALL-E 3. Nhưng DALL-E 3 theo chỉ dẫn chính xác hơn. Ideogram render chữ tốt hơn cả hai. Cái nào "tốt nhất"? Phụ thuộc vào bạn đang làm poster phim, ảnh sản phẩm, hay logo.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Claude viết tinh tế hơn GPT. GPT nhanh hơn. Gemini có ngữ cảnh nhiều hơn. Cái nào quan trọng với bạn? Tùy nhiệm vụ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Kỹ năng thực sự không phải thành thạo một công cụ. Mà là phát triển gu thẩm mỹ để chọn đúng công cụ cho đúng việc.</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Thợ mộc chuyên nghiệp không có công cụ yêu thích. Họ có công cụ yêu thích <em>cho mỗi nhiệm vụ</em>. Đó là tư duy cần phát triển.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO HEAD TO HEAD -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Tự xem nhé. Cùng prompt, khác công cụ &mdash; bạn thích kết quả nào hơn?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <HeadToHead client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Bản đồ đang thay đổi
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Đây là sự thật khó chịu: một số công cụ trong danh mục trên sẽ không tồn tại trong một năm nữa. Những công cụ chưa tồn tại sẽ trở nên thiết yếu. Bản đồ AI đang di chuyển nhanh hơn bất kỳ bản đồ công nghệ nào trong lịch sử.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Vậy tại sao bận tâm học công cụ cụ thể? Vì <strong>các danh mục ổn định dù công cụ thay đổi</strong>. Luôn sẽ có công cụ tạo ảnh, trợ lý code, và agent nghiên cứu. Tên sẽ đổi. Khả năng và mô hình tư duy cơ bản thì không.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Kỹ năng chuyển giao được</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          1. Biết các danh mục công cụ AI tồn tại<br />
+          2. Biết cách đánh giá công cụ mới trong 15 phút<br />
+          3. Biết cách nối công cụ thành quy trình<br />
+          4. Biết khi nào đổi công cụ so với chỉnh prompt
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Bốn kỹ năng này sẽ phục vụ bạn bất kể công cụ cụ thể nào thống trị năm sau hay năm sau nữa. Bản đồ thay đổi, nhưng người dẫn đường vẫn hiệu quả.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Giờ bạn có bản đồ thế giới AI &mdash; tám họ công cụ, khung tư duy để chọn lựa, và tư duy pipeline nối chúng lại.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Nhưng đến giờ, các công cụ chỉ phản hồi bạn. Nếu chúng có thể <em>tự hành động</em> thì sao? Đó là bước nhảy từ công cụ sang agent &mdash; và nó thay đổi tất cả.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -2,27 +2,34 @@
 import '../styles/global.css';
 import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterNav from '../components/ui/ChapterNav';
+import ChapterDrawer from '../components/ui/ChapterDrawer';
+import LanguageSelector from '../components/ui/LanguageSelector.astro';
 import PaywallGate from '../components/ui/PaywallGate';
 import QuotaCounter from '../components/ui/QuotaCounter';
 import PageViewTracker from '../components/analytics/PageViewTracker';
 import ScrollDepthTracker from '../components/analytics/ScrollDepthTracker';
 import { ListenController } from '../components/chapter/ChapterBeats';
 import ListenButton from '../components/chapter/ListenButton';
+import BeatProgress from '../components/chapter/BeatProgress';
 import { chapters, type Chapter } from '../data/chapters';
+import { getDir } from '../data/languages';
 
 interface Props {
   chapter: Chapter;
+  locale?: string;
 }
 
-const { chapter } = Astro.props;
+const { chapter, locale = 'en' } = Astro.props;
 const prev = chapters.find((c) => c.number === chapter.number - 1);
 const next = chapters.find((c) => c.number === chapter.number + 1);
-const needsPaywall = chapter.number > 1;
+const needsPaywall = chapter.number > 1 && locale === 'en';
 const hasBeats = chapter.beats && chapter.beats.length > 0;
+const textDir = getDir(locale);
+const isTranslated = locale !== 'en';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale} dir={textDir}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -31,16 +38,19 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
     <meta property="og:title" content={`${chapter.title} — Talking to Machines`} />
     <meta property="og:description" content={chapter.hook} />
     <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
-    <script define:vars={{ slug: chapter.slug }}>
+    <script define:vars={{ slug: chapter.slug, locale }}>
       // Redirect to cards on mobile UA OR narrow viewport (DevTools responsive mode)
-      const params = new URLSearchParams(window.location.search);
-      const forceScroll = params.get('force') === 'scroll' || params.has('desktop');
-      const forceMobile = params.has('mobile');
-      const isMobileUA = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
-      const isNarrowViewport = window.innerWidth <= 768;
+      // Skip redirect for translated pages — card decks are English-only for now
+      if (locale === 'en') {
+        const params = new URLSearchParams(window.location.search);
+        const forceScroll = params.get('force') === 'scroll' || params.has('desktop');
+        const forceMobile = params.has('mobile');
+        const isMobileUA = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
+        const isNarrowViewport = window.innerWidth <= 768;
 
-      if (!forceScroll && (forceMobile || isMobileUA || isNarrowViewport)) {
-        window.location.replace('/' + slug + '-cards' + window.location.search);
+        if (!forceScroll && (forceMobile || isMobileUA || isNarrowViewport)) {
+          window.location.replace('/' + slug + '-cards' + window.location.search);
+        }
       }
     </script>
   </head>
@@ -58,16 +68,28 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
     <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
       <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
         <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
-          <a
-            href="/"
-            class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
-            style="font-family: var(--font-heading); font-weight: 500;"
-          >
-            Talking to Machines
-          </a>
+          <div class="flex items-center gap-2">
+            <ChapterDrawer currentSlug={chapter.slug} accentColor={chapter.accent} locale={locale} client:load />
+            <a
+              href="/"
+              class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+              style="font-family: var(--font-heading); font-weight: 500;"
+            >
+              Talking to Machines
+            </a>
+          </div>
           <div class="flex items-center gap-3">
-            <ListenButton accentColor={chapter.accent} client:load />
-            <QuotaCounter client:load />
+            <LanguageSelector currentLocale={locale} chapterSlug={chapter.slug} />
+            {!isTranslated && <ListenButton accentColor={chapter.accent} client:load />}
+            {!isTranslated && <QuotaCounter client:load />}
+            {hasBeats && !isTranslated && (
+              <BeatProgress
+                beats={chapter.beats!}
+                accentColor={chapter.accent}
+                chapterSlug={chapter.slug}
+                client:load
+              />
+            )}
             <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
               {chapter.number} / {chapters.length}
             </span>
@@ -84,9 +106,9 @@ const hasBeats = chapter.beats && chapter.beats.length > 0;
       <slot />
     </main>
 
-    <ListenController accentColor={chapter.accent} chapterSlug={chapter.slug} client:load />
+    {!isTranslated && <ListenController accentColor={chapter.accent} chapterSlug={chapter.slug} client:load />}
 
-    <ChapterNav prev={prev} next={next} client:load />
+    <ChapterNav prev={prev} next={next} locale={locale} client:load />
 
     <!-- Footer -->
     <footer class="py-20 px-6">

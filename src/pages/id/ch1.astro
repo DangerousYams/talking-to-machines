@@ -1,0 +1,406 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import BeatSection from '../../components/chapter/BeatSection';
+import PromptMakeover from '../../components/widgets/ch1/PromptMakeover';
+import GuessThePrompt from '../../components/widgets/ch1/GuessThePrompt';
+import IterationLoop from '../../components/widgets/ch1/IterationLoop';
+import PromptRoast from '../../components/widgets/ch1/PromptRoast';
+import PromptComparison from '../../components/widgets/ch1/PromptComparison';
+import BeatCompletionCard from '../../components/chapter/BeatCompletionCard';
+
+const chapter = chapters[0];
+const beats = chapter.beats!;
+---
+
+<ChapterLayout chapter={chapter} locale="id">
+
+  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
+  <BeatSection
+    beatId={beats[0].id}
+    beatNumber={1}
+    totalBeats={beats.length}
+    title="Gap Komunikasi"
+    tldr="Prompt yang kabur menghasilkan jawaban yang kabur. Gap antara kemampuan AI dengan hasil yang diperoleh kebanyakan orang adalah masalah komunikasi."
+    estimatedMinutes={beats[0].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="Lima Blok Bangunan"
+    isFirst={true}
+    client:load
+  >
+    <!-- HERO -->
+    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+
+      <div class="max-w-[680px] mx-auto text-center relative z-10">
+        <FadeInBlock client:visible>
+          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+            Bab Satu
+          </p>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.15}>
+          <h1
+            class="mb-8 leading-[1.08]"
+            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+          >
+            Kamu Sudah<br />Bisa Bahasa AI
+          </h1>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.3}>
+          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+            Draft pertama tidak akan ajaib.<br />Tapi yang ketiga mungkin bisa.
+          </p>
+        </FadeInBlock>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+        <div class="w-px h-10 bg-deep/40"></div>
+      </div>
+    </section>
+
+    <!-- STORY OPENER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+      <FadeInBlock client:visible>
+        <p class="drop-cap text-lg leading-[1.85] mb-8">
+          Kamu sudah berbicara dengan AI sepanjang hidup. Setiap kali mengetik di kolom pencarian, bertanya pada Siri, atau mendapat rekomendasi Netflix, ada algoritma yang mendengarkan. Tapi ada perbedaan antara berbicara <em>kepada</em> mesin dan berbicara <em>dengan</em> mesin.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-8">
+          Sekarang, jutaan orang mengetik prompt ke ChatGPT, mendapat respons yang biasa-biasa saja, dan berpikir: <em>"Kayaknya AI memang tidak sepintar itu."</em> Mereka salah. AI sangat mampu. Mereka hanya belum tahu cara bertanya yang benar.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85]">
+          Gap antara <strong>apa yang bisa dilakukan AI</strong> dan <strong>apa yang kebanyakan orang berhasil dapatkan</strong> sangat besar. Dan ini bukan masalah teknologi — ini masalah komunikasi. Yang sudah kamu tahu cara memperbaikinya.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE VAGUE PROMPT PROBLEM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+          Masalah Prompt yang Kabur
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          Dua orang meminta bantuan AI yang sama untuk essay. Yang satu mendapat jawaban tidak berguna. Yang lain mendapat sesuatu yang benar-benar cemerlang. AI yang sama. Satu-satunya perbedaan adalah cara mereka bertanya.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
+      <FadeInBlock client:visible delay={0.2}>
+        <PromptComparison accentColor={chapter.accent} client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[0].id} beatTitle="Gap Komunikasi" nextBeatTitle="Lima Blok Bangunan" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
+  <BeatSection
+    beatId={beats[1].id}
+    beatNumber={2}
+    totalBeats={beats.length}
+    title="Lima Blok Bangunan"
+    tldr="Setiap prompt yang baik menggunakan kombinasi dari Role (Peran), Task (Tugas), Format, Constraints (Batasan), dan Examples (Contoh)."
+    estimatedMinutes={beats[1].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="Mindset Iterasi"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Lima Blok Bangunan
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-6">
+          Inilah yang membedakan orang yang mendapat hasil luar biasa dari AI dengan orang yang mendapat bubur generik. Bukan bakat. Bukan alat rahasia. Ini formula — lima blok bangunan yang berhasil setiap saat.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-14">
+          Kamu tidak selalu butuh kelimanya. Tapi mengetahui keberadaan mereka seperti belajar melihat Matrix. Sekali kamu melihat polanya, kamu tidak bisa melupakannya.
+        </p>
+      </FadeInBlock>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { letter: 'R', name: 'Role (Peran)', color: '#E94560', text: 'AI harus jadi siapa? "Kamu adalah tutor bahasa Inggris SMA" mengubah segalanya. Tutor menjelaskan. Profesor berceramah. Teman ngobrol santai. Peran menentukan nada, kosakata, dan kedalaman.' },
+          { letter: 'T', name: 'Task (Tugas)', color: '#0F3460', text: 'Apa tepatnya yang harus dilakukan? Bukan "bantu essay saya" tapi "perkuat thesis statement saya." Spesifik tanpa kompromi. Satu tugas per prompt hampir selalu lebih baik dari tiga.' },
+          { letter: 'F', name: 'Format', color: '#7B61FF', text: 'Bagaimana bentuk responnya? "Beri saya 3 alternatif" adalah format. Begitu juga "dalam bentuk poin," "di bawah 100 kata," atau "sebagai tabel perbandingan pro-kontra." Format mencegah ocehan.' },
+          { letter: 'C', name: 'Constraints (Batasan)', color: '#16C79A', text: 'Apa yang tidak boleh dilakukan? "Jangan pakai klise." "Jaga di bawah 200 kata." Batasan adalah pagar pengaman. Mereka mencegah AI pergi ke tempat yang tidak berguna.' },
+          { letter: 'E', name: 'Examples (Contoh)', color: '#F5A623', text: 'Tunjukkan, jangan jelaskan. Kalau kamu mau gaya tertentu, beri contoh seperti apa yang "bagus" itu. Satu contoh bernilai seratus kata penjelasan.' },
+        ].map((block, i) => (
+          <FadeInBlock client:visible delay={i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+                {block.letter}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {block.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {block.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+
+      <FadeInBlock client:visible delay={0.5}>
+        <div class="insight-box">
+          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Insight kunci</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            Kamu tidak butuh kelimanya setiap waktu. Pertanyaan santai tidak butuh batasan dan contoh. Tapi ketika AI memberi kamu sampah, lihat apa yang hilang. Hampir selalu salah satu dari lima ini.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- BRIDGE TO PROMPT MAKEOVER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Cukup teori. Saatnya lihat blok bangunan beraksi.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT MAKEOVER -->
+    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptMakeover client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[1].id} beatTitle="Lima Blok Bangunan" nextBeatTitle="Mindset Iterasi" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
+  <BeatSection
+    beatId={beats[2].id}
+    beatNumber={3}
+    totalBeats={beats.length}
+    title="Mindset Iterasi"
+    tldr="Tidak ada yang berhasil dari percobaan pertama. Prompt, evaluasi, perbaiki, ulangi — loop itu adalah skill yang sesungguhnya."
+    estimatedMinutes={beats[2].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="Tes Kemampuan"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Iterasi, Bukan Perfeksi
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Prompt pertama hampir tidak pernah berhasil. Dan itu tidak apa-apa. <strong>Itu justru intinya.</strong>
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+          Ketika kamu melihat demo AI menghasilkan sesuatu yang menakjubkan, kamu melihat prompt final — yang didapat seseorang setelah lima, sepuluh, mungkin dua puluh putaran penyempurnaan. Kamu melihat highlight reel, bukan sesi latihan.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Alur kerja sesungguhnya seperti ini:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+          {[
+            { word: 'Prompt.', desc: 'Tulis percobaan terbaik pertama kamu.' },
+            { word: 'Evaluasi.', desc: 'Baca responnya. Apa yang bagus? Apa yang meleset?' },
+            { word: 'Perbaiki.', desc: 'Sesuaikan promptnya. Lebih spesifik di mana gagal.' },
+            { word: 'Ulangi.', desc: 'Sampai outputnya jadi sesuatu yang benar-benar kamu pakai.' },
+          ].map((step, i) => (
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Loop ini — prompt, evaluasi, perbaiki, ulangi — adalah <em>skill sesungguhnya</em> bekerja dengan AI. Bukan membuat prompt sempurna ajaib di percobaan pertama. Itu mitos.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.35}>
+        <div class="insight-box">
+          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Hasil bagus rata-rata butuh 3-5 iterasi, bukan 1.</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            Kalau kamu berhasil di percobaan pertama, kemungkinan kamu belum cukup menantang. Output terbaik datang dari dialog bolak-balik di mana kamu dan AI menyempurnakan bersama.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: ITERATION LOOP -->
+    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <IterationLoop client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE PROMPT SPECTRUM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          Spektrum Prompt
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          Bayangkan setiap prompt dalam spektrum dari kabur ke tepat:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div style="margin-bottom: 3rem;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">KABUR</span>
+            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">TEPAT</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"bantuin dong"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">respons generik</p>
+            </div>
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"tulis tentang X"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">oke tapi tidak fokus</p>
+            </div>
+            <div>
+              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"kelima blok"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">tertarget, berguna</p>
+            </div>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          Tujuanmu bukan selalu di ujung "tepat". Brainstorming santai boleh sengaja kabur. Tapi <strong>kamu harus memilih posisi di spektrum secara sengaja</strong>, bukan mendarat di sana secara kebetulan.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <p class="text-lg leading-[1.85]">
+          Orang yang paling memanfaatkan AI tidak menghafal prompt ajaib. Mereka mengembangkan intuisi tentang <em>seberapa spesifik harus</em> — dan ketika jawaban pertama tidak cukup bagus, mereka tahu persis tombol mana yang harus diputar.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[2].id} beatTitle="Mindset Iterasi" nextBeatTitle="Tes Kemampuan" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 4: Test Yourself ═══ -->
+  <BeatSection
+    beatId={beats[3].id}
+    beatNumber={4}
+    totalBeats={beats.length}
+    title="Tes Kemampuan"
+    tldr="Uji skill barumu — tebak prompt di balik output AI dan dapatkan roasting untuk promptmu sendiri."
+    estimatedMinutes={beats[3].estimatedMinutes}
+    accentColor={chapter.accent}
+    client:load
+  >
+    <!-- WIDGET: GUESS THE PROMPT -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Udah paham semua? Ayo tes kemampuanmu.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <GuessThePrompt client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- PROMPT ROAST BRIDGE -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          Merasa sudah bisa bikin prompt bagus sekarang? Cuma ada satu cara untuk membuktikannya.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT ROAST -->
+    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptRoast client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- CLOSING -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+      <FadeInBlock client:visible>
+        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+          Kamu sudah bisa bahasa AI. Kamu cuma perlu berbicara dengan niat.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+          Selanjutnya: teknik-teknik yang mengubah dialog sederhana jadi percakapan sesungguhnya — di mana AI tidak cuma jawab, tapi <em>berpikir bersamamu</em>.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[3].id} beatTitle="Tes Kemampuan" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+</ChapterLayout>

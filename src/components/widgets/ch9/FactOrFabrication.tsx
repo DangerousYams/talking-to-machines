@@ -162,6 +162,7 @@ export default function FactOrFabrication() {
                 fontFamily: 'var(--font-mono)', fontWeight: 600,
                 background: item.isTrue ? 'rgba(22,199,154,0.12)' : 'rgba(233,69,96,0.12)',
                 color: item.isTrue ? teal : accent,
+                animation: 'fof-popIn 0.35s ease both',
               }}>
                 {item.isTrue ? 'TRUE' : 'FABRICATION'}
               </div>
@@ -270,6 +271,7 @@ export default function FactOrFabrication() {
               fontFamily: 'var(--font-heading)', fontSize: '2.5rem',
               fontWeight: 800, color: pct >= 70 ? teal : accent,
               marginBottom: '0.25rem', lineHeight: 1,
+              animation: 'fof-scoreUp 0.5s ease both',
             }}>
               {score}/{totalRounds}
             </div>
@@ -319,12 +321,14 @@ export default function FactOrFabrication() {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
           }
+          @keyframes fof-popIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+          @keyframes fof-scoreUp { from { opacity: 0; transform: scale(0.8) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         `}</style>
       </div>
     );
   }
 
-  /* ─── DESKTOP LAYOUT (unchanged) ─── */
+  /* ─── DESKTOP LAYOUT ─── */
 
   // Final score screen
   if (gameOver) {
@@ -340,6 +344,9 @@ export default function FactOrFabrication() {
 
     return (
       <div className="widget-container">
+        <style>{`
+          @keyframes fof-scoreUp { from { opacity: 0; transform: scale(0.8) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        `}</style>
         <div style={{ padding: '3rem 2rem', textAlign: 'center' as const }}>
           {/* Score */}
           <div
@@ -350,6 +357,7 @@ export default function FactOrFabrication() {
               color: pct >= 70 ? teal : accent,
               marginBottom: '0.25rem',
               lineHeight: 1,
+              animation: 'fof-scoreUp 0.5s ease both',
             }}
           >
             {score}/{totalRounds}
@@ -645,6 +653,7 @@ export default function FactOrFabrication() {
                   ? 'rgba(22,199,154,0.12)'
                   : 'rgba(233,69,96,0.12)',
                 color: item.isTrue ? teal : accent,
+                animation: 'fof-popIn 0.35s ease both',
               }}
             >
               {item.isTrue ? 'TRUE' : 'FABRICATION'}
@@ -741,6 +750,7 @@ export default function FactOrFabrication() {
                 borderRadius: 10,
                 padding: '1.25rem 1.5rem',
                 marginBottom: '1.25rem',
+                animation: 'fof-slideUp 0.4s ease both 0.15s',
               }}
             >
               <p
@@ -750,6 +760,7 @@ export default function FactOrFabrication() {
                   fontWeight: 700,
                   color: isCorrect ? teal : accent,
                   marginBottom: 6,
+                  animation: 'fof-popIn 0.3s ease both 0.25s',
                 }}
               >
                 {isCorrect ? 'Correct!' : 'Not quite.'}
@@ -811,12 +822,15 @@ export default function FactOrFabrication() {
         )}
       </div>
 
-      {/* Inline pulse animation */}
+      {/* Animations */}
       <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.4; }
         }
+        @keyframes fof-slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fof-popIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fof-scoreUp { from { opacity: 0; transform: scale(0.8) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
       `}</style>
     </div>
   );

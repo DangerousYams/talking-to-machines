@@ -1,0 +1,359 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
+import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+
+const chapter = chapters[4];
+---
+
+<ChapterLayout chapter={chapter} locale="zh">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第五章
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          给它<br />工具
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          从"回答问题"到<br />"采取行动"的飞跃。
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
+        到目前为止，你和 AI 的每次互动都遵循同一个模式。你打字，AI 回复。文字进去，文字出来。一个超级复杂的自动补全。但这不是天花板，只是地板。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        如果 AI 能<em>做事</em>呢？不只是告诉你天气怎样，而是真的去查天气预报。不只是写代码，而是运行代码并告诉你结果。不只是建议你搜什么，而是自己去搜索然后把结果带回来。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        这就是工具使用。它会彻底改变 AI 能成为什么。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        超越"文字进，文字出"
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        想想当你问聊天机器人：<em>"东京现在几点？"</em>AI 其实不知道。它的训练数据已经是几个月或几年前的了。它没有时钟。所以它只能做一件事——根据训练数据中的模式猜一个。有时候挺接近。有时候差得离谱。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">没有工具</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">用户：</span>东京现在几点？<br />
+          <span style="font-style: italic; opacity: 0.6;">AI：</span>应该是下午2:30左右（日本标准时间）。<span style="color: var(--color-accent-red); font-size: 0.85em;">（纯猜的）</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        现在给这个 AI 一个<strong>工具</strong>——一个能返回任意时区当前时间的简单函数。突然间：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>有工具</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          <span style="font-style: italic; opacity: 0.6;">用户：</span>东京现在几点？<br />
+          <span style="font-style: italic; opacity: 0.6;">AI 思考：</span><span style="color: var(--color-purple); font-size: 0.9em;">我有一个时区工具，让我用一下。</span><br />
+          <span style="font-style: italic; opacity: 0.6;">AI 调用：</span><code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
+          <span style="font-style: italic; opacity: 0.6;">工具返回：</span><code style="font-size: 0.85em;">14:47 JST</code><br />
+          <span style="font-style: italic; opacity: 0.6;">AI：</span>东京现在是下午2:47（日本标准时间）。<span style="color: var(--color-teal); font-size: 0.85em;">（已验证）</span>
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        同一个问题。完全不同的可靠性。AI 没有变聪明——它变得<strong>有连接了</strong>。它现在可以伸出手到自己的大脑之外，与真实世界互动。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        工具使用的实际运作方式
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        心智模型是这样的。当你给 AI 工具的访问权限时，你是在递给它一个<strong>工具箱</strong>，说：<em>"这些是你能做的事。每个工具叫什么名字、接受什么输入、返回什么结果，你自己决定什么时候用。"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-14">
+        AI 不会每次请求都盲目使用每个工具。它会推理哪些工具相关，决定是否使用，构造正确的输入，调用工具，读取结果，然后把结果整合到回答中。这个过程叫做<strong>函数调用</strong>——它遵循一个非常一致的循环。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: '观察。', desc: '阅读用户的请求和可用的上下文。' },
+          { word: '思考。', desc: '判断："我需要用工具吗，还是可以直接回答？"' },
+          { word: '行动。', desc: '用正确的参数调用合适的工具。' },
+          { word: '观察。', desc: '读取工具的返回结果。' },
+          { word: '回应。', desc: '把所有信息综合成一个有用的答案。' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI 不是在执行脚本。它每次都在做判断："这种情况我该用工具，还是自己处理？"
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        这就是<strong>代理循环</strong>——观察、思考、行动、观察、回应。不管 AI 有一个工具还是一百个，这个循环都一样。你给它的工具越多，它越能干。但同时，你也需要更多地信任它在<em>什么时候</em>用<em>哪个</em>工具的判断。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SEVEN TOOLS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        改变一切的七种工具
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI 能使用的具体工具有上百种，但大多数归入七个类别。每个类别以根本不同的方式扩展了 AI 的能力。有的给它<em>知识</em>（网络搜索、数据库）。有的给它<em>能力</em>（代码执行、图像生成）。有的给它<em>双手</em>（文件编辑、API 调用）。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        点击下面的任何工具，查看 AI 完整的推理过程——从识别需要工具，到调用它，到使用结果。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ToolCatalog client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TRUST QUESTION ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        信任的问题
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        一旦 AI 能<em>做</em>事——而不只是谈论它们——一个新问题就出现了。一个与技术无关、完全关乎你自己的问题：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI 应该在征求你意见之前，自己做多少事？
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        这不是技术问题——是一个关乎人的问题。答案取决于三件事：
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { name: '风险', color: '#E94560', text: '最坏的情况是什么？总结一篇文章出错只是烦人。删错文件是灾难。风险越高，需要的人类监督越多。' },
+          { name: '可逆性', color: '#F5A623', text: '能撤销吗？在 git 仓库里编辑文件很容易恢复。给老板发邮件就不行了。不可逆的操作几乎总是应该需要你的批准。' },
+          { name: '信任', color: '#16C79A', text: '你对这个工具有多了解？一个你用过一百次的计算器值得给更多自主权。一个从没测试过的全新插件就不值得。信任是赢得的，不是默认给的。' },
+        ].map((item, i) => (
+          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
+                {i + 1}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {item.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {item.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>自主权的光谱</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          不是全有或全无。最好的 AI 工作流在低风险、可逆的任务上给 AI 自由，同时在高风险、不可逆的任务上让人类参与决策。你的工作是设计这条边界。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        你会把线画在哪里？设置你自己的自主权级别。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TrustThermometer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        工具使用思维
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        当你开始把 AI 看作工具使用者，而不只是文本生成器时，会发生一种微妙的转变。你不再问<em>"AI 能就这个说什么？"</em>而是开始问<em>"AI 能就这个做什么？"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        不再让 AI <em>描述</em>如何分析数据，而是给它代码执行工具，看着它自己编写并运行分析。不再让它提供研究<em>链接</em>，而是给它网络搜索能力，让它自己查找并综合信息。输出从"你可以这样做"变成了"我刚做完了"。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">旧思维</span>
+        <p class="m-0" style="color: var(--color-deep);">
+          "解释一下怎么计算5000美元在6.5%利率下10年的复利。"
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>工具使用思维</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "计算5000美元在年利率6.5%、按月复利的条件下10年后的复利。给我精确数字。"
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        第一个提示词给你一个教程。第二个给你一个答案。有了工具，AI 从<strong>顾问</strong>变成了<strong>助手</strong>——从告诉你该做什么的人，变成真正去做的人。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        你已经给了 AI 双手。它能搜索、计算、浏览和写文件了。而你学到了最难的部分：决定给它多少自由。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        工具是构建模块。接下来，我们把它们连成一个能自主追求目标的东西——规划、执行、从错误中恢复。是时候构建代理了。
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -1,0 +1,425 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
+import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
+import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+
+const chapter = chapters[1];
+---
+
+<ChapterLayout chapter={chapter} locale="ar">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          الفصل الثاني
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          فن<br />السؤال
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          أفضل توجيه هو سؤال يجعل<br />الذكاء الاصطناعي يسألك أسئلة.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        في الفصل الماضي، تعلمت الكتل الخمس الأساسية للتوجيه الجيد — الدور، المهمة، التنسيق، القيود، الأمثلة. هذا هو الأساس. لكن معرفة المكونات لا تجعلك طبّاخًا ماهرًا.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        هذا الفصل يدور حول <em>الأسلوب</em>. الفرق بين شخص يكتب توجيهًا وشخص <em>يصنع</em> توجيهًا. إنه الفرق بين طرح سؤال وطرح السؤال <strong>الصحيح</strong> — الذي يفتح شيئًا مفيدًا حقًا.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        أفضل مستخدمي الذكاء الاصطناعي ليسوا خبراء في الموضوع — <strong>إنهم خبراء في السؤال.</strong> والسؤال مهارة يمكنك تعلمها.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SOCRATIC FLIP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        الانقلاب السقراطي
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        معظم الناس يستخدمون الذكاء الاصطناعي كآلة بيع. تضع التوجيه، تحصل على الإجابة. لكن أفضل النتائج تأتي من <em>المحادثات</em>، وليس الأوامر. وأقوى تقنية محادثة عمرها 2400 سنة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        سقراط لم يجب على أي سؤال مباشرة. كان يطرح أسئلة <em>أكثر</em> — يستقصي، يوضح، يتحدى — حتى يصل طلابه إلى فهم أعمق بأنفسهم. يمكنك استخدام نفس الطريقة مع الذكاء الاصطناعي، لكن معكوسة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        بدلاً من أن تطلب من الذكاء الاصطناعي إجابة، اطلب من الذكاء الاصطناعي أن يقابلك. دعه يطرح الأسئلة التوضيحية التي نسيت أن تفكر فيها.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        فكر في الأمر: عندما تكتب "خطط حفلة عيد ميلاد"، أنت تحذف عشرات التفاصيل التي تغير الإجابة بشكل جذري. كم عدد الأشخاص؟ ما الميزانية؟ داخلي أم خارجي؟ الذكاء الاصطناعي لا يعرف — لكنه يستطيع السؤال.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>التوجيه السقراطي</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "أريد تخطيط حفلة عيد ميلاد. قبل أن تبدأ في التخطيط، اسألني 5 أسئلة محددة ستساعدك في وضع خطة تناسب وضعي بالضبط. اسألها واحدة تلو الأخرى وانتظر إجابتي."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        هذه التقنية الواحدة — عكس من يطرح الأسئلة — هي واحدة من أقوى الترقيات التي يمكنك إجراؤها. تحول الذكاء الاصطناعي من آلة إجابات إلى <strong>شريك في التفكير</strong>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FlipTheScript client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        أظهر، لا تخبر
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        تخيل أنك تحاول شرح أسلوب لصديق. يمكنك قضاء خمس دقائق تصفه بالكلمات — "أريد شيئًا مرحًا لكن ليس طفوليًا، عاديًا لكن ليس مهملاً، بجمل قصيرة ومقارنات غير متوقعة." أو يمكنك ببساطة أن تريه مثالاً: <em>"اكتبه مثل هذا."</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        هذا هو <strong>التوجيه بالأمثلة القليلة</strong>. بدلاً من محاولة وصف ما تريد نظريًا، تعطي الذكاء الاصطناعي أمثلة ملموسة. مثال واحد هو توجيه "بمثال واحد". مثالان أو ثلاثة هو "بأمثلة قليلة". صفر أمثلة — حيث تصف فقط ما تريد — هو "بدون أمثلة".
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">بدون أمثلة (وصف)</span>
+        <p class="m-0" style="color: var(--color-deep);">"اكتب لي وصف منتج لأحذية الجري. اجعله مؤثرًا ومحادثيًا، بجمل قصيرة. تجنب الكليشيهات التسويقية."</p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>بأمثلة قليلة (عرض)</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "اكتب وصف منتج لحذاء الجري CloudRunner X1. إليك الأسلوب الذي أريده:<br /><br />
+          <em>مثال: 'حقيبة الويك إند — تتسع للابتوب وغداءك وخياراتك الحياتية المشكوك فيها. قماش مقاوم للماء لأننا نعرف أنك ستسكب شيئًا. خمسة جيوب، لن تتذكر أي منها لاحقًا.'</em><br /><br />
+          اطابق هذه النبرة: جمل قصيرة، فكاهة واعية، خصوصية فوق الكلمات الطنانة."
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        النسخة بالأمثلة القليلة ستنتج نتائج أفضل بشكل كبير. ليس لأن الذكاء الاصطناعي "أذكى" — لكن لأنك أعطيته <strong>هدفًا ملموسًا</strong> بدلاً من اتجاه غامض. مثال جيد واحد يساوي مئة كلمة وصف.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>نظرة ثاقبة مهمة</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          عندما لا يطابق الذكاء الاصطناعي الأسلوب الذي تريده، لا تضف صفات أكثر. أضف مثالاً. "مثل هذا" تفوز على "اجعله أكثر تأثيرًا لكن أيضًا دافئًا لكن ليس عاديًا جدًا" في كل مرة.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
+        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
+          تجربة سريعة
+        </p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
+          فكر في شيء طلبت من الذكاء الاصطناعي كتابته مؤخرًا — إيميل، قصة، منشور على وسائل التواصل. الآن تخيل لو كنت قد ضمنت مثالاً ملموسًا واحدًا للنبرة التي تريدها. كيف ستتغير النتيجة؟
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
+          احتفظ بذلك في جيبك الخلفي. مختبر التوجيه أدناه سيتيح لك اختبار ذلك حقًا.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHAIN OF THOUGHT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        فكر خطوة بخطوة
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        إليك شيء مذهل: إذا طلبت من الذكاء الاصطناعي حل مسألة رياضية، قد يخطئ. لكن إذا طلبت منه <em>حل المسألة خطوة بخطوة</em>، يحصل على الإجابة الصحيحة أكثر بكثير. الإجابة نفسها. السؤال مختلف.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        تسمى هذه التقنية <strong>توجيه سلسلة الأفكار</strong>. بدلاً من طلب الإجابة مباشرة، تطلب من الذكاء الاصطناعي أن يظهر تفكيره. "فكر في هذا خطوة بخطوة." "قسم هذا قبل الإجابة." "اشرح تفكيرك أثناء المتابعة."
+      </p>
+    </FadeInBlock>
+
+    <!-- Before/After comparison -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        <div>
+          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
+            <span class="prompt-block-label" style="color: #E94560;">بدون سلسلة الأفكار</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "مضرب وكرة يكلفان $1.10 معًا. المضرب يكلف $1.00 أكثر من الكرة. كم تكلف الكرة؟"
+            </p>
+            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
+              إجابة الذكاء الاصطناعي: $0.10 (خاطئة)
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
+            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>مع سلسلة الأفكار</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "مضرب وكرة يكلفان $1.10 معًا. المضرب يكلف $1.00 أكثر من الكرة. كم تكلف الكرة؟ فكر خطوة بخطوة."
+            </p>
+            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
+              إجابة الذكاء الاصطناعي: $0.05 (صحيحة)
+            </p>
+          </div>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        لماذا يعمل هذا؟ عندما تطلب من الذكاء الاصطناعي أن يظهر تفكيره خطوة بخطوة، كل خطوة تغذي التي تليها. إنه مثل إعطاء الذكاء الاصطناعي ورقة خربشة — كلما كتب أكثر عن تفكيره، تحسنت الإجابة النهائية.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        سلسلة الأفكار لا تجعل الذكاء الاصطناعي أذكى. تجعله أبطأ — والتفكير الأبطأ غالبًا ما يكون تفكيرًا أفضل.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        هذا ليس فقط للرياضيات. استخدمه كلما احتجت الإجابة للاستنتاج: تحليل حجة، مقارنة خيارات، تخطيط مشروع، تصحيح كود. أي وقت تريد فيه من إنسان أن "يظهر عمله"، اطلب من الذكاء الاصطناعي فعل نفس الشيء.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        تجميع التقنيات
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        القوة الحقيقية تأتي من دمج التقنيات. أمثلة قليلة <em>بالإضافة إلى</em> سلسلة الأفكار. دور نظام <em>بالإضافة إلى</em> قيود <em>بالإضافة إلى</em> تحديد التنسيق. كل تقنية هي رافعة، وسحب رافعات متعددة في نفس الوقت ينتج شيئًا لا تستطيع أي منها تحقيقه لوحدها.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        لكن إليك الفارق الدقيق الذي يفصل المبتدئين عن الخبراء: <strong>الأكثر ليس دائمًا الأفضل.</strong> العصف الذهني العادي يحتاج تقنية أو اثنتين. المقال عالي المخاطر يحتاج خمسة. السؤال غير الرسمي يحتاج صفر. المهارة هي معرفة كم رافعة تسحب — وأيها.
+      </p>
+    </FadeInBlock>
+
+    <!-- Technique stack visual -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="margin-bottom: 2.5rem;">
+        {[
+          { label: 'عصف ذهني عادي', techniques: ['المهمة'], color: '#6B7280', width: '25%' },
+          { label: 'واجب مدرسي', techniques: ['الدور', 'المهمة', 'التنسيق'], color: '#F5A623', width: '50%' },
+          { label: 'مشروع مهم', techniques: ['الدور', 'السياق', 'المهمة', 'التنسيق', 'الأمثلة'], color: '#0EA5E9', width: '75%' },
+          { label: 'نتاج عالي المخاطر', techniques: ['الدور', 'السياق', 'الأمثلة', 'المهمة', 'التنسيق', 'القيود', 'سلسلة الأفكار'], color: '#0F3460', width: '100%' },
+        ].map((level, i) => (
+          <FadeInBlock client:visible delay={i * 0.06} key={i}>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
+                {level.label}
+              </span>
+              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
+                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
+                  {level.techniques.map((t, j) => (
+                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
+                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>نظرة ثاقبة مهمة</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          الإفراط في التوجيه شيء حقيقي. توجيه من 500 كلمة لسؤال بسيط لا يجعل الإجابة أفضل — يمكن أن يربك الذكاء الاصطناعي فعلاً. طابق تعقيد توجيهك مع تعقيد المهمة.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptLaboratory client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        عندما تفشل التوجيهات
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        نتاج الذكاء الاصطناعي السيء هو <strong>تقريبًا ليس أبدًا خطأ الذكاء الاصطناعي.</strong> عندما يكون النتاج عامًا، غامضًا، أو خاطئًا ببساطة، الخلل عادة في التوجيه. ومثل تصحيح الكود تمامًا، تصحيح التوجيهات مهارة قابلة للتعلم.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        أخطاء التوجيه الأكثر شيوعًا تنقسم إلى خمس فئات. بمجرد تعلم كيفية اكتشافها، ستراها في كل مكان — في توجيهاتك الخاصة وفي شكاوى الآخرين من أن الذكاء الاصطناعي "عديم الفائدة".
+      </p>
+    </FadeInBlock>
+
+    <!-- Bug types -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+      {[
+        { name: 'غامض', desc: 'التوجيه يمكن أن يعني أشياء متعددة. "اكتب شيئًا عن الكلاب" — أي نوع كتابة؟ لمن؟ كم المدة؟', color: '#E94560' },
+        { name: 'متناقض', desc: 'التوجيه يطلب أشياء متضادة. "اجعله قصيرًا لكن شاملاً." "استخدم نبرة مرحة لكن حافظ على الرسمية." اختر واحدة.', color: '#F5A623' },
+        { name: 'ينقصه السياق', desc: 'التوجيه يفتقر معلومات حاسمة. "صحح كودي" بدون مشاركة الكود. "حسن مقالي" بدون المقال.', color: '#0EA5E9' },
+        { name: 'مهام كثيرة جدًا', desc: 'التوجيه يطلب خمسة أشياء مرة واحدة. الذكاء الاصطناعي ينشر نفسه ولا يؤدي أي منها جيدًا.', color: '#7B61FF' },
+        { name: 'سؤال موجه', desc: 'التوجيه يخبر الذكاء الاصطناعي بما يفكر. "ألا توافق أن X هو الأفضل؟" الذكاء الاصطناعي سيوافق. هذا ليس مفيدًا.', color: '#16C79A' },
+      ].map((bug, i) => (
+        <FadeInBlock client:visible delay={i * 0.07}>
+          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
+            <div>
+              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
+                {bug.name}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {bug.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        الخلل الأكثر خبثًا هو <em>السؤال الموجه</em>. إنه الأصعب اكتشافًا لأنه <em>يشعر</em> وكأنك تحصل على نتاج رائع — الذكاء الاصطناعي يوافقك! لكن الموافقة ليست دقة. عندما تصوغ سؤالاً لتأكيد معتقدك الموجود، تحول الذكاء الاصطناعي إلى رجل يقول نعم، وليس شريك في التفكير.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <DebugThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        بدأت هذا الفصل بكتابة أوامر بمحاولة واحدة. الآن تعرف كيف تعكس الاستجواب، وتظهر بدلاً من أن تخبر، وتصحح التوجيهات التي تنحرف.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        لكن كل تقنية تعلمتها تصطدم بنفس الحاجز الخفي: <em>نافذة السياق</em>. التالي، سنفتحها ونتعلم كيف نهندس ما يراه الذكاء الاصطناعي فعلاً.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

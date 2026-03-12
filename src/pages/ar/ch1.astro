@@ -1,0 +1,406 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import BeatSection from '../../components/chapter/BeatSection';
+import PromptMakeover from '../../components/widgets/ch1/PromptMakeover';
+import GuessThePrompt from '../../components/widgets/ch1/GuessThePrompt';
+import IterationLoop from '../../components/widgets/ch1/IterationLoop';
+import PromptRoast from '../../components/widgets/ch1/PromptRoast';
+import PromptComparison from '../../components/widgets/ch1/PromptComparison';
+import BeatCompletionCard from '../../components/chapter/BeatCompletionCard';
+
+const chapter = chapters[0];
+const beats = chapter.beats!;
+---
+
+<ChapterLayout chapter={chapter} locale="ar">
+
+  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
+  <BeatSection
+    beatId={beats[0].id}
+    beatNumber={1}
+    totalBeats={beats.length}
+    title="فجوة التواصل"
+    tldr="التوجيهات الغامضة تعطي إجابات غامضة. الفجوة بين ما يستطيع الذكاء الاصطناعي فعله وما يحصل عليه معظم الناس هي مشكلة تواصل."
+    estimatedMinutes={beats[0].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="الكتل الخمس الأساسية"
+    isFirst={true}
+    client:load
+  >
+    <!-- HERO -->
+    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+
+      <div class="max-w-[680px] mx-auto text-center relative z-10">
+        <FadeInBlock client:visible>
+          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+            الفصل الأول
+          </p>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.15}>
+          <h1
+            class="mb-8 leading-[1.08]"
+            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+          >
+            أنت تتحدث<br />الذكاء الاصطناعي بالفعل
+          </h1>
+        </FadeInBlock>
+
+        <FadeInBlock client:visible delay={0.3}>
+          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+            محاولتك الأولى لن تكون سحرية.<br />لكن الثالثة قد تكون كذلك.
+          </p>
+        </FadeInBlock>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+        <div class="w-px h-10 bg-deep/40"></div>
+      </div>
+    </section>
+
+    <!-- STORY OPENER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+      <FadeInBlock client:visible>
+        <p class="drop-cap text-lg leading-[1.85] mb-8">
+          أنت تتحدث مع الذكاء الاصطناعي طوال حياتك. كل مرة كتبت شيئًا في شريط البحث، أو سألت Siri سؤالاً، أو حصلت على توصية من Netflix، كانت خوارزمية تستمع. لكن هناك فرق بين أن تتحدث <em>إلى</em> آلة وأن تتحدث <em>مع</em> واحدة.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-8">
+          الآن، ملايين الناس يكتبون توجيهًا في ChatGPT، يحصلون على رد عادي، ويفكرون: <em>"يبدو أن الذكاء الاصطناعي ليس ذكيًا لهذه الدرجة."</em> هم مخطئون. الذكاء الاصطناعي قادر بشكل استثنائي. هم فقط لا يسألون بالطريقة الصحيحة.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85]">
+          الفجوة بين <strong>ما يستطيع الذكاء الاصطناعي فعله</strong> و<strong>ما يحصل عليه معظم الناس منه</strong> هائلة. وهي ليست مشكلة تقنية — إنها مشكلة تواصل. واحدة تعرف بالفعل كيف تحلها.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE VAGUE PROMPT PROBLEM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+          مشكلة التوجيه الغامض
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          شخصان يسألان نفس الذكاء الاصطناعي عن مساعدة في مقال. واحد يحصل على رد عديم الفائدة. الآخر يحصل على شيء رائع فعلاً. نفس الذكاء الاصطناعي. الفرق الوحيد هو كيف سألوا.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
+      <FadeInBlock client:visible delay={0.2}>
+        <PromptComparison accentColor={chapter.accent} client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[0].id} beatTitle="فجوة التواصل" nextBeatTitle="الكتل الخمس الأساسية" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
+  <BeatSection
+    beatId={beats[1].id}
+    beatNumber={2}
+    totalBeats={beats.length}
+    title="الكتل الخمس الأساسية"
+    tldr="كل توجيه جيد يستخدم مزيجًا من الدور، المهمة، التنسيق، القيود، والأمثلة."
+    estimatedMinutes={beats[1].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="عقلية التكرار"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          الكتل الخمس الأساسية
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-6">
+          إليك ما يفصل الناس الذين يحصلون على نتائج مذهلة من الذكاء الاصطناعي عن الذين يحصلون على كلام عام. ليست الموهبة. وليست أداة سرية. إنها معادلة — خمس كتل أساسية تنجح في كل مرة.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-14">
+          لا تحتاج دائمًا للخمسة. لكن معرفة وجودها مثل أن تتعلم رؤية الماتركس. بمجرد أن ترى النمط، لا يمكنك أن تتجاهله.
+        </p>
+      </FadeInBlock>
+
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {[
+          { letter: 'R', name: 'الدور', color: '#E94560', text: 'من يجب أن يكون الذكاء الاصطناعي؟ "أنت مدرس لغة إنجليزية متقدم" يغير كل شيء. المدرس يشرح. الأستاذ يحاضر. الصديق يتبادل الأفكار. الدور يشكل النبرة والمفردات والعمق.' },
+          { letter: 'T', name: 'المهمة', color: '#0F3460', text: 'ماذا يجب أن يفعل بالضبط؟ ليس "ساعدني في مقالي" بل "قوِّ أطروحتي." كن محددًا بلا رحمة. مهمة واحدة لكل توجيه أفضل تقريبًا دائمًا من ثلاث.' },
+          { letter: 'F', name: 'التنسيق', color: '#7B61FF', text: 'كيف يجب أن يبدو الرد؟ "أعطني 3 بدائل" هو تنسيق. وكذلك "كقائمة نقاط" أو "في أقل من 100 كلمة" أو "كجدول يقارن الإيجابيات والسلبيات." التنسيق يمنع الثرثرة.' },
+          { letter: 'C', name: 'القيود', color: '#16C79A', text: 'ماذا يجب ألا يفعل؟ "لا تستخدم الكليشيهات." "اجعلها أقل من 200 كلمة." القيود هي حواجز الحماية. تمنع الذكاء الاصطناعي من الذهاب لمكان غير مفيد.' },
+          { letter: 'E', name: 'الأمثلة', color: '#F5A623', text: 'أظهر، لا تخبر. إذا أردت أسلوبًا معينًا، أعط مثالاً لما يبدو عليه "الجيد". مثال واحد يساوي مئة كلمة وصف.' },
+        ].map((block, i) => (
+          <FadeInBlock client:visible delay={i * 0.08}>
+            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+                {block.letter}
+              </div>
+              <div style="flex: 1;">
+                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                  {block.name}
+                </p>
+                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                  {block.text}
+                </p>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+
+      <FadeInBlock client:visible delay={0.5}>
+        <div class="insight-box">
+          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">نظرة ثاقبة مهمة</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            لا تحتاج الخمسة في كل مرة. سؤال عادي لا يحتاج قيودًا وأمثلة. لكن عندما يعطيك الذكاء الاصطناعي نتائج سيئة، انظر ما ينقص. الجواب تقريبًا دائمًا واحد من هذه الخمسة.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- BRIDGE TO PROMPT MAKEOVER -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          كفى نظريات. حان وقت رؤية الكتل الأساسية وهي تعمل.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT MAKEOVER -->
+    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptMakeover client:visible />
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[1].id} beatTitle="الكتل الخمس الأساسية" nextBeatTitle="عقلية التكرار" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
+  <BeatSection
+    beatId={beats[2].id}
+    beatNumber={3}
+    totalBeats={beats.length}
+    title="عقلية التكرار"
+    tldr="لا أحد يصيب الهدف من أول مرة. وجّه، قيّم، حسّن، كرر — هذه الحلقة هي المهارة الحقيقية."
+    estimatedMinutes={beats[2].estimatedMinutes}
+    accentColor={chapter.accent}
+    nextBeatTitle="اختبر نفسك"
+    client:load
+  >
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          التكرار، لا الكمال
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-10">
+          التوجيه الأول تقريبًا لا ينجح أبدًا. وهذا لا بأس به. <strong>هذا هو المقصود بالضبط.</strong>
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+          عندما ترى عرضًا للذكاء الاصطناعي وهو ينتج شيئًا مذهلاً، أنت ترى التوجيه النهائي — الذي وصل إليه شخص بعد خمس، عشر، ربما عشرين جولة من التحسين. أنت ترى اللقطات المميزة، وليس جلسات التدريب.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          سير العمل الحقيقي يبدو هكذا:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+          {[
+            { word: 'وجّه.', desc: 'اكتب أفضل محاولة أولى لديك.' },
+            { word: 'قيّم.', desc: 'اقرأ الرد. ما الجيد؟ ما الخطأ؟' },
+            { word: 'حسّن.', desc: 'عدّل التوجيه. كن أكثر تحديدًا حيث فشل.' },
+            { word: 'كرر.', desc: 'حتى يصبح النتاج شيئًا تستخدمه فعلاً.' },
+          ].map((step, i) => (
+            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
+              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+                <span style="opacity: 0.7;"> {step.desc}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg leading-[1.85] mb-10">
+          هذه الحلقة — وجّه، قيّم، حسّن، كرر — هي <em>المهارة الحقيقية</em> للعمل مع الذكاء الاصطناعي. وليس صياغة توجيه سحري مثالي من أول مرة. تلك أسطورة.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.35}>
+        <div class="insight-box">
+          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>النتيجة الجيدة في المتوسط تحتاج 3-5 تكرارات، وليس واحدة.</p>
+          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+            إذا كنت تصيب الهدف من أول مرة، فأنت على الأرجح لا تضغط بما فيه الكفاية. أفضل النتائج تأتي من حوار تتبادل فيه أنت والذكاء الاصطناعي التحسينات معًا.
+          </p>
+        </div>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: ITERATION LOOP -->
+    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <IterationLoop client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- THE PROMPT SPECTRUM -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+      <FadeInBlock client:visible>
+        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+        <h2 class="mb-8" style="font-family: var(--font-heading);">
+          طيف التوجيه
+        </h2>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] mb-12">
+          فكر في كل توجيه على طيف من الغموض إلى الدقة:
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <div style="margin-bottom: 3rem;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">غامض</span>
+            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">دقيق</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"ساعدني"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">رد عام</p>
+            </div>
+            <div>
+              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"اكتب عن X"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">لا بأس لكن مشتت</p>
+            </div>
+            <div>
+              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"الكتل الخمس"</p>
+              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">مستهدف ومفيد</p>
+            </div>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <p class="text-lg leading-[1.85] mb-10">
+          هدفك ليس أن تكون دائمًا في طرف "الدقة". العصف الذهني العادي يمكن أن يكون غامضًا عن قصد. لكن <strong>يجب أن تختار موقعك على الطيف بوعي</strong>، وليس أن تصل إليه بالصدفة.
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.25}>
+        <p class="text-lg leading-[1.85]">
+          الناس الذين يحصلون على أقصى استفادة من الذكاء الاصطناعي لا يحفظون توجيهات سحرية. يطورون حسًا بـ <em>مقدار التحديد المطلوب</em> — وعندما لا تكون الإجابة الأولى جيدة بما فيه الكفاية، يعرفون بالضبط أي مفتاح يضبطونه.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[2].id} beatTitle="عقلية التكرار" nextBeatTitle="اختبر نفسك" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ BEAT 4: Test Yourself ═══ -->
+  <BeatSection
+    beatId={beats[3].id}
+    beatNumber={4}
+    totalBeats={beats.length}
+    title="اختبر نفسك"
+    tldr="اختبر مهاراتك الجديدة — خمّن التوجيه وراء مخرجات الذكاء الاصطناعي واحصل على تقييم لتوجيهاتك."
+    estimatedMinutes={beats[3].estimatedMinutes}
+    accentColor={chapter.accent}
+    client:load
+  >
+    <!-- WIDGET: GUESS THE PROMPT -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          فهمت كل ذلك؟ هيا نختبرك.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <GuessThePrompt client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- PROMPT ROAST BRIDGE -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+      <FadeInBlock client:visible>
+        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+          تعتقد أنك تستطيع كتابة توجيه جيد الآن؟ هناك طريقة واحدة فقط لمعرفة ذلك.
+        </p>
+      </FadeInBlock>
+    </section>
+
+    <!-- WIDGET: PROMPT ROAST -->
+    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+      <FadeInBlock client:visible>
+        <PromptRoast client:visible />
+      </FadeInBlock>
+    </section>
+
+    <Divider accent={chapter.accent} client:load />
+
+    <!-- CLOSING -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+      <FadeInBlock client:visible>
+        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+          أنت تتحدث الذكاء الاصطناعي بالفعل. فقط تحتاج أن تتحدثه بنية واضحة.
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.1}>
+        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+          التالي: التقنيات التي تحول الحوار البسيط إلى محادثة حقيقية — حيث لا يكتفي الذكاء الاصطناعي بالإجابة، بل <em>يفكر معك</em>.
+        </p>
+      </FadeInBlock>
+    </section>
+    <BeatCompletionCard beatId={beats[3].id} beatTitle="اختبر نفسك" accentColor={chapter.accent} client:visible />
+  </BeatSection>
+
+</ChapterLayout>

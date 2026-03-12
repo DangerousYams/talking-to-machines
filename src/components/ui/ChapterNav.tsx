@@ -4,9 +4,11 @@ import type { Chapter } from '../../data/chapters';
 interface Props {
   prev?: Chapter;
   next?: Chapter;
+  locale?: string;
 }
 
-export default function ChapterNav({ prev, next }: Props) {
+export default function ChapterNav({ prev, next, locale = 'en' }: Props) {
+  const prefix = locale === 'en' ? '' : `/${locale}`;
   const isMobile = useIsMobile();
 
   return (
@@ -17,7 +19,7 @@ export default function ChapterNav({ prev, next }: Props) {
     }}>
       {prev ? (
         <a
-          href={`/${prev.slug}`}
+          href={`${prefix}/${prev.slug}`}
           style={{
             flex: 1, display: 'flex', flexDirection: 'column' as const, alignItems: 'flex-start',
             padding: isMobile ? '1rem' : '1.5rem', borderRadius: 12, textDecoration: 'none', transition: 'all 0.3s',
@@ -37,7 +39,7 @@ export default function ChapterNav({ prev, next }: Props) {
 
       {next ? (
         <a
-          href={`/${next.slug}`}
+          href={`${prefix}/${next.slug}`}
           style={{
             flex: 1, display: 'flex', flexDirection: 'column' as const,
             alignItems: isMobile ? 'flex-start' : 'flex-end',

@@ -1,0 +1,332 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
+import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
+import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+
+const chapter = chapters[9];
+---
+
+<ChapterLayout chapter={chapter} locale="ta">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          பத்தாவது அத்தியாயம்
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          மனித<br />முன்னணி
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          AI replace செய்ய முடியாதது &mdash;<br />10x easy ஆக்குவது.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        ஒவ்வொரு முறை புதிய AI capability வரும்போது, அதே headline வரும்: <em>"AI [insert job]-ஐ replace செய்துவிடுமா?"</em> தவறான கேள்வி. எப்போதும் தவறான கேள்வி. சரியான கேள்வி: <em>"முன்பு சாத்தியமில்லாததை இது என்ன சாத்தியமாக்குகிறது?"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        AI மனிதர்களை replace செய்வதில்லை. <strong>Tasks-ஐ</strong> replace செய்கிறது. எந்த job-ஐயும் — career, creative pursuit, profession — zoom in செய்து பார்த்தால், ஒரு mix காண்பாய்: சில tasks-ஐ AI brilliantly handle செய்கிறது, சிலவற்றில் assist செய்கிறது, சில பிடிவாதமாக, அழகாக மனிதனாகவே இருக்கின்றன.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        இந்த அத்தியாயம் அந்த line-ஐ கண்டுபிடிப்பது பற்றியது. பயப்படுவதற்காக அல்ல, <strong>அதன் சரியான பக்கத்தில் நிற்பதற்காக</strong> — உன் uniquely human skills மதிப்பு அதிகரிக்கும் பக்கம், குறையாத பக்கம்.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Spectrum, Cliff அல்ல
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI மற்றும் jobs பற்றிய பெரும்பாலான உரையாடல்கள் binary போல் treat செய்கின்றன: AI உன் வேலையை செய்ய முடியும் அல்லது முடியாது. Robot apocalypse அல்லது business as usual. ஆனால் reality ஒரு spectrum.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        சில tasks கிட்டத்தட்ட fully automate செய்யலாம். சில AI-ஆல் enhance ஆகின்றன. சில தொடப்படாமல் இருக்கின்றன. மிகவும் interesting-ஆன tasks — கவனிக்க வேண்டிய tasks — நடுவில் இருக்கின்றன, மனிதர்களும் AI யும் சேர்ந்து வேலை செய்யும் இடத்தில்.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Data entry? AI handle செய்கிறது. Meetings schedule செய்வது? கிட்டத்தட்ட solved. First draft எழுதுவது? AI shockingly good. ஆனால் <em>என்ன build செய்ய வேண்டும் என்று choose செய்வது</em>, <em>crisis-ல் room-ஐ read செய்வது</em>, <em>data என்ன mean ஆகிறது என்று decide செய்வது</em> — இவற்றுக்கு AI கிட்ட இல்லாத ஒன்று தேவை.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        ஒவ்வொரு skill உண்மையில் எங்கே fall ஆகிறது? உன் intuition-ஐ test செய்துபார்.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <SkillsSpectrum client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        வேலைகள் மறையாது — உருமாறும்
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        1970 களில் ATMs வந்தபோது, bank tellers மறைந்துவிடுவார்கள் என்று எல்லாரும் predict செய்தார்கள். அதற்கு பதிலாக, bank tellers எண்ணிக்கை <em>அதிகரித்தது</em>. ஏன்? ATMs புதிய branches திறப்பதை cheaper ஆக்கியது, teller-ன் வேலை cash எண்ணுவதிலிருந்து financial products sell செய்வதற்கும் customer relationships build செய்வதற்கும் shift ஆனது.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI அதே விஷயம் செய்கிறது, ஆனால் வேகமாக, ஒவ்வொரு industry-லும் ஒரே நேரத்தில். Job title அப்படியே இருக்கும். Job <em>description</em> dramatically மாறும். 2025-ல் ஒரு journalist 2015-ல் ஒரு journalist செய்த அதே வேலை செய்வதில்லை, byline ஒரே மாதிரி தெரிந்தாலும்.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>புதிய career கணிதம்</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          இது "மனிதர்கள் vs. AI" அல்ல. <strong>AI உடன் மனிதர்கள் vs. AI இல்லாத மனிதர்கள்</strong>. AI tools-உடன் வேலை செய்ய கற்றுக்கொள்பவர்கள் வேலை இழக்க மாட்டார்கள் — வேகமாகவும், சிறப்பாகவும், முன்பு இல்லாத capabilities-உடனும் வேலை செய்வார்கள்.
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mt-10">
+        கீழே ஒரு career select செய்து AI அதை உள்ளிருந்து எப்படி transform செய்கிறது என்று பார். ஒரு single task கூட முழுமையாக மறையாது. ஆனால் ஒவ்வொரு job-ன் shape மாறிக்கொண்டிருக்கிறது.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <JobTransformer client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Taste: Replace செய்ய முடியாத திறமை
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        AI ஒரு நிமிடத்தில் நூறு logo concepts generate செய்யலாம். உன் coffee முடிவதற்குள் பத்து essay introductions எழுதலாம். ஐந்து app designs, நான்கு taglines, மூன்று business plans produce செய்யலாம்.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        ஆனால் எது <em>சரியானது</em> என்று சொல்ல முடியாது.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Options generate செய்வது கிட்டத்தட்ட free-ஆன உலகில், <em>சரியானதை choose செய்யும்</em> ability உன்கிட்ட இருக்கக்கூடிய மிக மதிப்புள்ள skill ஆகிறது. அந்த ability-க்கு ஒரு பெயர் இருக்கு: taste.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Taste mystical அல்ல. Trained. நிறைய நல்ல work-உம் நிறைய மோசமான work-உம் பார்த்து, ஒன்று <em>ஏன்</em> மற்றதை விட better என்று articulate செய்ய கற்றுக்கொள்வதால் develop ஆகிறது. எந்த shot-ஐ keep செய்ய வேண்டும் என்று தெரிந்த photographer. எந்த sentence-ஐ cut செய்ய வேண்டும் என்று தெரிந்த writer. Less is more என்று எப்போது தெரிந்த designer.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        AI generate செய்கிறது. நீ curate செய்கிறாய். இதுதான் புதிய division of labor. உன் taste எவ்வளவு sharp என்று பார்ப்போம்.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: TASTE TEST ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <TasteTest client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        உன் Knowledge தான் உன் BS Detector
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Chapter 9 ல் AI hallucinations பற்றி பேசினோம் — AI perfect confidence-உடன் தவறான விஷயங்கள் சொல்வது. ஆனால் ஒரு uncomfortable follow-up கேள்வி இருக்கு: <strong>நீ அதை எப்படி catch செய்வாய்?</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        பதில் first principles thinking. AI pipe-ன் radius-ஐ double செய்தால் water flow double ஆகும் என்று சொன்னால், area radius-ன் <em>square</em>-க்கு scale ஆகும் என்று தெரிந்தால் மட்டுமே அந்த தவறை catch செய்ய முடியும். AI ஒரு syllogism valid என்று சொன்னால், deduction-ன் rules புரிந்தால் மட்டுமே logical fallacy spot செய்ய முடியும்.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        AI இருப்பதை remix செய்கிறது. First principles thinking ground truth-இலிருந்து reason செய்கிறது. அப்படித்தான் genuinely புதிய territory-க்கு push செய்ய முடியும் — confidently தவறாக இருக்கும் AI-ஐ catch செய்யவும் முடியும்.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        எல்லாவற்றிலும் expert ஆக இருக்க வேண்டும் என்று இல்லை. ஆனால் நீ வேலை செய்யும், create செய்யும் domains-ல், உன் foundational understanding தான் AI output-ஐ blindly copy-paste செய்பவனிடமிருந்து உன்னை பிரிக்கிறது.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85]">
+        உன்னையே test செய்துபார். கீழே உள்ள AI ஆறு problems-க்கு confident-ஆக பதில் சொல்கிறது, different domains-ல். சில சரி. சில subtle-ஆக தவறு. எது எது என்று சொல்ல முடியுமா?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FirstPrinciplesLab client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHAT STAYS HUMAN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        மனிதனாகவே இருப்பவை
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        நாம் ஆராய்ந்த எல்லாவற்றிலும், ஒரு pattern தெரிகிறது. மிகவும் human-ஆக இருக்கும் skills random அல்ல — AI-கிட்ட fundamentally இல்லாத சில deep capabilities-ஐ சுற்றி cluster ஆகின்றன.
+      </p>
+    </FadeInBlock>
+
+    <!-- Human edge capabilities -->
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { icon: '🎯', name: 'Judgment', color: '#16C79A', text: 'என்ன முக்கியம் என்று தேர்ந்தெடுப்பது. என்ன உருவாக்குவது, என்ன நீக்குவது, என்ன வெளியிடுவது, என்ன கைவிடுவது. AI முடிவுகளுக்கு தகவல் தரலாம் ஆனால் எடுக்க முடியாது — முடிவுகளுக்கு மதிப்பீடுகள் தேவை, மதிப்பீடுகள் மனிதனுடையது.' },
+        { icon: '🤝', name: 'Empathy', color: '#0EA5E9', text: 'மற்றொருவர் எப்படி உணர்கிறார் என்று புரிந்து உண்மையான அக்கறையுடன் பதிலளிப்பது. AI text-ல் empathy போல் நடிக்கிறது. மனிதர்கள் உறவுகளில், நெருக்கடியில், மிகவும் முக்கியமான தருணங்களில் நடைமுறைப்படுத்துகிறார்கள்.' },
+        { icon: '🧭', name: 'Vision', color: '#7B61FF', text: 'இன்னும் இல்லாததை பார்ப்பது, அது இருக்க வேண்டும் என்று தீர்மானிப்பது. ஒவ்வொரு product, company, creative work-உம் யாரோ ஒருவரின் உறுதியான நம்பிக்கையாக ஆரம்பித்தது — உலகிற்கு புதிய ஒன்று தேவை என்று. AI-க்கு ஒன்றை விரும்ப முடியாது.' },
+        { icon: '⚡', name: 'Leadership', color: '#F5A623', text: 'மக்களை ஊக்கப்படுத்துவது, மோதலை வழிநடத்துவது, நம்பிக்கை கட்டுவது. இவை அடிப்படையில் சமூக திறமைகள் — இருப்பு, உணர்வுசார் நுண்ணறிவு, பொறுப்பேற்கும் திறன் தேவைப்படுகின்றன.' },
+        { icon: '🔍', name: 'புதிய கேள்விகள் கேட்பது', color: '#E94560', text: 'AI கேள்விகளுக்கு பதிலளிப்பதில் சிறந்தது. மனிதர்கள் யாரும் கேட்க நினைக்காத கேள்விகளை கேட்பதில் சிறந்தவர்கள். Science, business, art-ல் மிக முக்கியமான திருப்புமுனைகள் ஒரு கேள்வியில் ஆரம்பித்தன, பதிலில் அல்ல.' },
+      ].map((item, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
+              {item.icon}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {item.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {item.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய நுண்ணறிவு</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          இவை வெறும் "nice to have" soft skills அல்ல. AI-augmented உலகில், இவைதான் <strong>hard skills</strong>. Judge செய்யும், empathize செய்யும், lead செய்யும், envision செய்யும் ability — AI மற்ற எல்லாவற்றையும் handle செய்வதால் <em>exactly</em> இவை உன் most competitive advantages ஆகின்றன.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Taste. Judgment. Empathy. Vision. First principles reasoning. AI take over செய்த பிறகு மிஞ்சியவை அல்ல &mdash; நீ table-க்கு கொண்டுவருவதை <em>define</em> செய்யும் skills.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        ஒரே ஒரு chapter மிச்சம். இனி theory இல்லை. நீ கற்றுக்கொண்ட எல்லாவற்றையும் combine செய்து உண்மையான ஒன்று build செய்யும் நேரம் &mdash; நீ மட்டுமே நினைக்கும் ஒன்று.
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

@@ -1,0 +1,349 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+
+import Divider from '../../components/ui/Divider';
+import ProjectPlanner from '../../components/widgets/ch11/ProjectPlanner';
+import ShowcaseGallery from '../../components/widgets/ch11/ShowcaseGallery';
+
+const chapter = chapters[10];
+---
+
+<ChapterLayout chapter={chapter} locale="de">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>11</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Kapitel elf
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          Bau etwas<br />Echtes
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Wissen ohne Schaffen ist Trivia.<br />Es ist Zeit zu liefern.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        Du hast es bis zum letzten Kapitel geschafft. In den letzten zehn Kapiteln bist du von „hilf mir mit meinem Aufsatz" zu Agenten bauen, Halluzinationen debuggen und über die Zukunft der Arbeit nachdenken gekommen. Du hast mehr über KI gelernt als die meisten Erwachsenen wissen. Aber hier ist die unbequeme Wahrheit: <strong>Nichts davon zählt, bis du etwas baust.</strong>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        Über KI zu lesen ist wie über Schwimmen zu lesen. Du kannst die Physik des Auftriebs studieren, olympische Rennen anschauen, jede Schwimmtechnik auswendig lernen. Aber solange du nicht ins Wasser springst, <em>weißt</em> du nichts davon. Du weißt nur <em>darüber</em>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        In diesem Kapitel geht es ums Reinspringen. Nicht mit einer Spielübung oder einem Tutorial zum Nachmachen. Ein echtes Projekt. Etwas, das du dir aussuchst. Etwas, das dir wichtig ist. Etwas, das du jemandem zeigen und sagen kannst: <em>„Das habe ich gebaut."</em>
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DEIN WERKZEUGKASTEN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        Dein Werkzeugkasten
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Zehn Kapitel voller Fähigkeiten, einsatzbereit:
+      </p>
+    </FadeInBlock>
+
+    <!-- Compact 2-column grid of chapter skills -->
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;">
+        {[
+          { ch: '1', label: 'Prompt-Architektur', color: '#E94560' },
+          { ch: '2', label: 'Fortgeschrittene Techniken', color: '#0F3460' },
+          { ch: '3', label: 'Context Engineering', color: '#7B61FF' },
+          { ch: '4', label: 'Die KI-Landschaft', color: '#0EA5E9' },
+          { ch: '5', label: 'Tool-Nutzung & Agenten', color: '#F5A623' },
+          { ch: '6', label: 'Agenten-Architektur', color: '#E94560' },
+          { ch: '7', label: 'KI-Pair-Programming', color: '#7B61FF' },
+          { ch: '8', label: 'Orchestrierung', color: '#0F3460' },
+          { ch: '9', label: 'Kritisches Denken', color: '#E94560' },
+          { ch: '10', label: 'Der menschliche Vorsprung', color: '#16C79A' },
+        ].map((item) => (
+          <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0;">
+            <span style={`font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: ${item.color}; opacity: 0.7; width: 1.25rem; text-align: right; flex-shrink: 0;`}>{item.ch}</span>
+            <span style={`font-family: var(--font-body); font-size: 0.9rem; color: var(--color-deep); opacity: 0.8;`}>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85]">
+        Die Frage ist jetzt: Was machst du damit?
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ PLANE BEVOR DU BAUST ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Plane bevor du baust
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Der größte Fehler von Erstbauern? Sie gehen direkt zu den Tools. Sie öffnen Claude, tippen einen riesigen Prompt und versuchen, alles auf einmal zu bauen. Es scheitert. Sie sind frustriert. Sie geben auf.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        Die besten Projekte beginnen nicht mit einem Prompt. Sie beginnen mit einem Plan auf Papier. Was baust du? Für wen ist es? Wie sieht „fertig" aus? Beantworte das, bevor du eine Tastatur anfasst.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Erinnere dich an Kapitel 8 — Komplexität orchestrieren? Dein Abschlussprojekt ist eine Miniaturversion davon. Zerlege die Arbeit in Teile. Wisse, was du baust, bevor du baust. Nutze KI als Partner für jedes Teilstück, nicht als Zauberstab für das Ganze.
+      </p>
+    </FadeInBlock>
+
+    <!-- Planning Steps -->
+    <FadeInBlock client:visible delay={0.25}>
+      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
+        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
+        {[
+          { word: 'Wähle.', desc: 'Such dir etwas aus, das dich wirklich interessiert. Leidenschaft gibt Durchhaltevermögen für die schwierigen Stellen.' },
+          { word: 'Begrenze.', desc: 'Halbiere den Umfang. Dann halbiere nochmal. Ein fertiges kleines Projekt schlägt ein abgebrochenes großes.' },
+          { word: 'Zerlege.', desc: 'Teile es in 5–8 Aufgaben auf. Jede Aufgabe sollte in einer Sitzung machbar sein.' },
+          { word: 'Baue.', desc: 'Eine Aufgabe nach der anderen. Nutze KI für jedes Teilstück. Überprüfe jede Ausgabe, bevor du weitergehst.' },
+          { word: 'Liefer ab.', desc: 'Fertig ist besser als perfekt. Teile es. Hole Feedback. Iteriere.' },
+        ].map((step, i) => (
+          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
+            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
+            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
+              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
+              <span style="opacity: 0.7;"> {step.desc}</span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        Noch etwas: Dokumentiere unterwegs. Das Projekt selbst ist die halbe Geschichte. Wie du es gebaut hast — die Entscheidungen, die Iterationen, die Sackgassen — ist die andere Hälfte. Ein fertiges Projekt, das du erklären kannst, ist mehr wert als jede Testnote.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROJECT PLANNER ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ProjectPlanner client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ DER 3-WOCHEN-SPRINT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Der 3-Wochen-Sprint
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Egal ob dein Projekt ein Wochenende oder ein Semester dauert — der Rhythmus ist der gleiche. Hier ist ein bewährtes Framework, um etwas Echtes zu liefern:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+        {[
+          {
+            week: 'Woche 1',
+            title: 'Ideen finden & Umfang festlegen',
+            color: '#F5A623',
+            tasks: [
+              'Wähle dein Projekt. Nutze den Projektplaner oben.',
+              'Schreibe einen Absatz, der beschreibt, wie „fertig" aussieht.',
+              'Zerlege das Projekt in 5–8 Aufgaben mit klaren Ergebnissen.',
+              'Identifiziere, welche KI-Tools du für jede Aufgabe nutzen wirst.',
+              'Baue einen winzigen Prototyp des schwierigsten Teils zuerst. Wenn das funktioniert, folgt der Rest.',
+            ],
+          },
+          {
+            week: 'Woche 2',
+            title: 'Bauen',
+            color: chapter.accent,
+            tasks: [
+              'Arbeite Aufgaben einzeln ab. Überspringe keine.',
+              'Nutze für jede Aufgabe den Prompt-Evaluieren-Verfeinern-Zyklus aus Kapitel 1.',
+              'Führe ein „Prompts die funktioniert haben"-Protokoll. Du wirst dir später dankbar sein.',
+              'Wenn du feststeckst, lies das relevante Kapitel nochmal. Die Antwort liegt meist in einer Technik, die du noch nicht ausprobiert hast.',
+              'Hole dir Mitte der Woche Feedback von einem Freund oder Familienmitglied. Frische Augen sehen, was deine übersehen.',
+            ],
+          },
+          {
+            week: 'Woche 3',
+            title: 'Polieren & Präsentieren',
+            color: '#7B61FF',
+            tasks: [
+              'Behebe die drei offensichtlichsten Schwachstellen. Ignoriere alles andere.',
+              'Schreibe eine Projektbeschreibung: was es tut, wie du es gebaut hast, was du gelernt hast.',
+              'Dokumentiere 3 zentrale Prompts, die entscheidend für deinen Prozess waren.',
+              'Erstelle einen 2-Minuten-Rundgang (Video, Folien oder Live-Demo).',
+              'Teile es. Mit einem Lehrer, einem Freund, online, in der Schüler-Galerie.',
+            ],
+          },
+        ].map((week, i) => (
+          <FadeInBlock client:visible delay={0.15 + i * 0.1}>
+            <div style={`background: ${week.color}06; border: 1px solid ${week.color}15; border-radius: 12px; padding: 1.5rem 1.75rem;`}>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${week.color}; background: ${week.color}15; padding: 3px 10px; border-radius: 100;`}>
+                  {week.week}
+                </span>
+                <span style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-deep);`}>
+                  {week.title}
+                </span>
+              </div>
+              <ul style="margin: 0; padding-left: 1.25rem;">
+                {week.tasks.map((task) => (
+                  <li style="font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.8; margin-bottom: 0.35rem;">
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- BRIDGE TO SHOWCASE GALLERY -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Sieh dir an, was andere Schüler gebaut haben. Dann füge deins zur Galerie hinzu.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: SHOWCASE GALLERY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <ShowcaseGallery client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING — THE SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Vor elf Kapiteln hast du „hilf mir mit meinem Aufsatz" getippt und auf das Beste gehofft. Jetzt entwickelst du Context Engineering, entwirfst Agenten, verifizierst Ausgaben und bringst bei jedem Schritt dein Urteilsvermögen ein.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        Werkzeuge bauen keine Dinge. <strong>Menschen mit Werkzeugen bauen Dinge.</strong> Und du hast den besten Werkzeugkasten, den deine Generation je zur Verfügung hatte.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Geh und mach etwas, das nur du dir ausgedacht hättest.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-center mt-8" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
+        Liefer ab.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ KURS ABGESCHLOSSEN ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-24">
+    <FadeInBlock client:visible>
+      <div style={`text-align: center; padding: 3rem 2rem; border-radius: 16px; background: ${chapter.accent}06; border: 1px solid ${chapter.accent}15; position: relative; overflow: hidden;`}>
+        <!-- Decorative corner accents -->
+        <div style={`position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid ${chapter.accent}40; border-left: 2px solid ${chapter.accent}40; border-radius: 16px 0 0 0;`}></div>
+        <div style={`position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid ${chapter.accent}40; border-right: 2px solid ${chapter.accent}40; border-radius: 0 0 16px 0;`}></div>
+
+        <p style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-subtle); margin: 0 0 0.75rem;">
+          Kurs abgeschlossen
+        </p>
+        <p style={`font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: ${chapter.accent}; margin: 0 0 0.75rem; letter-spacing: -0.02em;`}>
+          Du hast alle 11 Kapitel abgeschlossen.
+        </p>
+        <p style="font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.6; max-width: 40ch; margin: 0 auto 2rem;">
+          Jetzt beginnt das echte Lernen — geh etwas bauen und komm jederzeit zu jedem Kapitel zurück, wenn du es brauchst.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+          <a
+            href="/de"
+            style={`display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; background: ${chapter.accent}; color: white; transition: all 0.3s;`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            Zurück zur Startseite
+          </a>
+          <a
+            href="/de/ch1"
+            style="display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); color: var(--color-deep); transition: all 0.3s;"
+          >
+            Kapitel 1 nochmal lesen
+          </a>
+        </div>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>

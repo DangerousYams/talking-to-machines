@@ -1,0 +1,425 @@
+---
+export const prerender = true;
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { chapters } from '../../data/chapters';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import AccentBar from '../../components/ui/AccentBar';
+import Divider from '../../components/ui/Divider';
+import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
+import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
+import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+
+const chapter = chapters[1];
+---
+
+<ChapterLayout chapter={chapter} locale="zh">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <!-- Giant background number -->
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
+
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第二章
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          提问的<br />艺术
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          最好的提示词，是一个能让<br />AI 反过来问你问题的问题。
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="drop-cap text-lg leading-[1.85] mb-8">
+        上一章，你学会了好提示词的五个构建模块——角色、任务、格式、约束、示例。那是基础。但知道食材不等于会做菜。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-8">
+        这一章讲的是<em>技巧</em>。是随便打一段提示词和精心<em>设计</em>一段提示词之间的区别。是随便问个问题和问出<strong>正确的</strong>问题的区别——那种能解锁真正有用回答的问题。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85]">
+        最厉害的 AI 用户不一定是某个话题的专家——<strong>他们是提问的专家。</strong>而提问是一种可以学会的技能。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE SOCRATIC FLIP ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+        苏格拉底翻转
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        大多数人把 AI 当自动售货机用。投入提示词，收到答案。但最好的结果来自<em>对话</em>，而不是命令。而最强大的对话技巧，已经有 2400 年的历史了。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        苏格拉底从不直接回答问题。他会反问<em>更多</em>问题——探索、澄清、挑战——直到学生自己得出更深层的理解。你可以用同样的方法对待 AI，只是反过来。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        不要向 AI 要答案，而是让 AI 来采访你。让它问出那些你忘了想的澄清性问题。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        想想看：当你输入"帮我策划一个生日派对"，你省略了几十个会极大影响答案的细节。多少人？预算多少？室内还是室外？AI 不知道——但它可以问。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>苏格拉底式提示词</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "我想策划一个生日派对。在你开始策划之前，先问我5个具体的问题，帮助你制定一个完全贴合我实际情况的方案。一次问一个，等我回答后再问下一个。"
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        就这一个技巧——翻转提问的角色——就是你能做的最强大的升级之一。它让 AI 从答案机器变成了<strong>思考伙伴</strong>。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <FlipTheScript client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        展示，而非描述
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        想象你要跟朋友解释一种风格。你可以花五分钟用语言描述——"我想要有趣但不幼稚的，随意但不邋遢的，用短句子和出人意料的比喻。"或者你可以直接给一个例子：<em>"就写成这样。"</em>
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        这就是<strong>少样本提示（few-shot prompting）</strong>。与其用抽象的语言描述你想要什么，不如给 AI 具体的示例。给一个例子叫 "one-shot"。给两三个叫 "few-shot"。不给例子只描述需求的，叫 "zero-shot"。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="prompt-block mb-10" style="--accent: #6B7280;">
+        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot（描述型）</span>
+        <p class="m-0" style="color: var(--color-deep);">"帮我写一段跑鞋的产品描述。要简洁有力、口语化，用短句子。避免营销陈词滥调。"</p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
+        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot（展示型）</span>
+        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
+          "帮我写一段 CloudRunner X1 跑鞋的产品描述。我想要的风格是这样的：<br /><br />
+          <em>示例：'周末托特包——装得下你的笔记本电脑、午餐、和你那些不靠谱的人生选择。防水帆布材质，因为我们知道你肯定会洒东西。五个口袋，你以后一个都记不住在哪。'</em><br /><br />
+          请匹配这个语气：短句子，自嘲式幽默，用具体细节代替空洞的口号。"
+        </p>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-10">
+        用示例的版本会产生好得多的结果。不是因为 AI "变聪明了"——而是因为你给了它一个<strong>具体的目标</strong>，而不是一个模糊的方向。一个好示例胜过一百个字的描述。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心要点</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          当 AI 的风格不对时，不要加更多形容词。加一个示例。"像这样"永远比"更有力但又温暖但又别太随意"管用。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
+    <FadeInBlock client:visible>
+      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
+        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
+          小实验
+        </p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
+          想想你最近让 AI 写过的东西——一封邮件、一个故事、一条社交媒体帖子。现在想象一下，如果你当时附上了一个你想要的语气的具体示例，输出会有什么不同？
+        </p>
+        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
+          记住这招。下面的提示词实验室让你亲自试试。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CHAIN OF THOUGHT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        一步一步思考
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        有一个很神奇的现象：如果你让 AI 解一道数学题，它可能算错。但如果你让它<em>一步一步解题</em>，正确率会大幅提高。答案是一样的。问题的方式不同。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        这个技巧叫<strong>思维链提示（chain-of-thought prompting）</strong>。不直接要答案，而是让 AI 展示推理过程。"一步一步想。""先分析再回答。""边推理边解释。"
+      </p>
+    </FadeInBlock>
+
+    <!-- Before/After comparison -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+        <div>
+          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
+            <span class="prompt-block-label" style="color: #E94560;">没有思维链</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "一根球棒和一个球一共花了1.10美元。球棒比球贵1美元。球多少钱？"
+            </p>
+            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
+              AI 回答：$0.10（错误）
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
+            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
+            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>有思维链</span>
+            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
+              "一根球棒和一个球一共花了1.10美元。球棒比球贵1美元。球多少钱？请一步一步思考。"
+            </p>
+            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
+              AI 回答：$0.05（正确）
+            </p>
+          </div>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="text-lg leading-[1.85] mb-10">
+        为什么有效？当你让 AI 一步一步展示推理过程时，每一步都为下一步提供基础。就像给 AI 一张草稿纸——它写出的思考过程越多，最终答案就越好。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
+        思维链不是让 AI 变聪明了。而是让它慢下来了——而慢思考往往意味着好思考。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.35}>
+      <p class="text-lg leading-[1.85]">
+        这不仅适用于数学。任何需要推理的场景都适用：分析论点、比较选项、规划项目、调试代码。任何你希望人类"展示工作过程"的时候，都可以让 AI 也这么做。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        组合技巧
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        真正的威力来自组合使用。少样本示例<em>加上</em>思维链。系统角色<em>加上</em>约束<em>加上</em>格式要求。每个技巧都是一个操纵杆，同时拉动多个操纵杆能产生任何单一技巧无法实现的效果。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        但这里有个区分新手和高手的微妙之处：<strong>多不一定好。</strong>随便做个头脑风暴用一两个技巧就够了。高风险的论文需要五个。随口一问不需要任何技巧。关键在于知道该拉几个操纵杆——以及拉哪些。
+      </p>
+    </FadeInBlock>
+
+    <!-- Technique stack visual -->
+    <FadeInBlock client:visible delay={0.2}>
+      <div style="margin-bottom: 2.5rem;">
+        {[
+          { label: '随意的头脑风暴', techniques: ['Task'], color: '#6B7280', width: '25%' },
+          { label: '学校作业', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
+          { label: '重要项目', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
+          { label: '高风险输出', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
+        ].map((level, i) => (
+          <FadeInBlock client:visible delay={i * 0.06} key={i}>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
+                {level.label}
+              </span>
+              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
+                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
+                  {level.techniques.map((t, j) => (
+                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
+                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeInBlock>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.4}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心要点</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          过度提示是真实存在的问题。一个简单问题配500字的提示词不会让答案更好——反而可能搞混 AI。提示词的复杂度应该匹配任务的复杂度。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <PromptLaboratory client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        当提示词出了问题
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10">
+        糟糕的 AI 输出<strong>几乎从来不是 AI 的错</strong>。当输出空洞、模糊或者完全错误时，bug 通常在提示词里。就像调试代码一样，调试提示词也是一种可以学会的技能。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p class="text-lg leading-[1.85] mb-10">
+        最常见的提示词 bug 分为五类。一旦学会识别，你到处都会看到它们——在你自己的提示词里，也在别人抱怨 AI "没用"的时候。
+      </p>
+    </FadeInBlock>
+
+    <!-- Bug types -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+      {[
+        { name: '歧义', desc: '提示词可以有多种理解。"写一些关于狗的东西"——什么类型的写作？给谁看？多长？', color: '#E94560' },
+        { name: '矛盾', desc: '提示词要求了相反的东西。"写简短但要全面。""用有趣的语气但保持正式。"选一个吧。', color: '#F5A623' },
+        { name: '缺少上下文', desc: '提示词缺少关键信息。"修复我的代码"但没给代码。"改进我的论文"但没给论文。', color: '#0EA5E9' },
+        { name: '任务太多', desc: '提示词一次要求做五件事。AI 分散精力，哪个都做不好。', color: '#7B61FF' },
+        { name: '诱导性问题', desc: '提示词告诉了 AI 该怎么想。"你不觉得 X 是最好的吗？"AI 会同意。但那不有用。', color: '#16C79A' },
+      ].map((bug, i) => (
+        <FadeInBlock client:visible delay={i * 0.07}>
+          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
+            <div>
+              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
+                {bug.name}
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {bug.desc}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.45}>
+      <p class="text-lg leading-[1.85]">
+        最隐蔽的 bug 是<em>诱导性问题</em>。它最难发现，因为你<em>感觉</em>输出很棒——AI 在同意你！但同意不等于准确。当你把问题框定为确认你已有的信念时，你把 AI 变成了应声虫，而不是思考伙伴。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <FadeInBlock client:visible>
+      <DebugThePrompt client:visible />
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ CLOSING ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        这一章开始时你还在输入单句命令。现在你知道了如何翻转提问、用示例代替描述、以及调试出了问题的提示词。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        但你学到的每个技巧都会撞上同一面隐形的墙：<em>上下文窗口</em>。接下来，我们把它打开，学习如何管理 AI 真正看到的东西。
+      </p>
+    </FadeInBlock>
+  </section>
+
+</ChapterLayout>
