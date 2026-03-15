@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          第9章
+          第九章
         </p>
       </FadeInBlock>
 
@@ -42,119 +42,54 @@ const chapter = chapters[8];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        居心地の悪い事実を一つ。完璧なエッセイを書く手助けをしてくれたAIが、同じ自信満々の口調で「ナポレオンはワーテルローの戦いに勝った」と言い切ることもある。ためらわない。口ごもらない。完全にでっち上げた「事実」を、本当のことと全く同じ権威ある調子で述べてしまう。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        これがAIと付き合う上での核心的パラドックスだ。<strong>AIを便利にしている流暢さが、そのまま危険性にもなる。</strong>AIは何が真実かを知らない。何が「真実っぽく聞こえるか」を知っているだけだ。そしてその二つは、まったくの別物だ。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        この章は、君のBS検出器を鍛えることがテーマだ。AIが悪いからじゃない。<em>盲目的に信じること</em>が悪いからだ。AIから最大の価値を引き出している人たちは、いつ信じていいか、いつ検証すべきかを正確に見極めている。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        完璧なエッセイを書く手助けをしてくれたAIが、同じ自信満々の口調で「ナポレオンはワーテルローの戦いに勝った」と言い切ることもある。ためらわない。口ごもらない。完全にでっち上げた「事実」を、本当のことと全く同じ権威ある調子で述べる。これがAIと付き合う上でのパラドックスの核心だ：<strong>AIを便利にしている流暢さが、そのまま危険性にもなる。</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        ハルシネーション問題
+        もっともらしさは真実ではない
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AIにおける<strong>ハルシネーション</strong>とは、モデルがもっともらしく聞こえるが、事実として間違っている——あるいは完全にでっち上げの——情報を生成することだ。そしてこれは、君が思っているよりずっと頻繁に起きる。
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        AIモデルはデータベースから事実を検索しているんじゃない。次に来る確率が最も高い単語を予測している。実在するものについて聞けば、訓練データのパターンが正しい情報へ導いてくれる。存在しないものについて聞いたとき、モデルは「わかりません」とは言わない。正しい答えが<em>あるとしたらどう見えるか</em>を生成する &mdash; 名前も日付も引用も全部でっち上げて。
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">例</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>あなた：</strong>「1987年の小説『The Sands of Memory』の著者は誰ですか？」<br /><br />
-          <strong>AI：</strong>「『The Sands of Memory』（1987年）はイギリスの作家マーガレット・ソーントンによって書かれました。戦後の東アフリカにおける植民地主義とアイデンティティのテーマを探求しています。ソーントンはこの作品でブッカー賞にノミネートされました。」
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        説得力があるだろう？ 名前があり、年号があり、テーマがあり、受賞歴まである。<strong>でも全部ウソだ。</strong>その本は存在しない。マーガレット・ソーントン（この文脈では）は存在しない。AIがすべてをでっち上げて、本物の回答と見分けがつかないように仕上げたのだ。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        なぜこうなるのか？ AIモデルはデータベースから事実を検索しているのではないからだ。AIは<em>次に来る確率が最も高いトークンを予測</em>している。実在する本について聞けば、訓練データのパターンが正しい情報へと導いてくれる。でも存在しないものについて聞いたとき、モデルは「わかりません」とは言わない。正しい答えが<em>あるとしたらどう見えるか</em>を生成するのだ。
+      <p class="text-lg leading-[1.85] mb-14">
+        AIがどれだけ自信ありげに聞こえるかと、実際にどれだけ正確かは無関係だ。間違った答えと正しい答えは外から見ると同じに見える。口調で、詳細さで、具体的な数字の量で正確さは判断できない。「それっぽく聞こえる」テストは無意味だ。唯一の防御は検証だ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心的な気づき</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AIには「真実」という概念がない。あるのは「もっともらしさ」という概念だ。パターンに合ったテキストを生成する——そのテキストが現実に対応しているかどうかに関係なく。
+          AIには「真実」という概念がない。あるのは「もっともらしさ」だ。パターンに合ったテキストを生成する &mdash; そのテキストが現実に対応しているかどうかに関係なく。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        能力なき自信
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AIハルシネーションの一番厄介なところは、起きること自体ではない。<strong>AIが不確かさを一切示さない</strong>ことだ。自信がない人間は、ためらったり、ぼかしたり、「たぶん...」や「確かではないけど...」と言ったりする。AIはでっち上げた事実を、確立された事実と全く同じ絶対的な自信で発信する。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AIがどれだけ自信ありげに聞こえるかと、実際にどれだけ正確かは無関係だ。間違った答えと正しい答えは、外から見ると同じに見える。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        だから「それっぽく聞こえる」テストは無意味だ。口調や、詳細さや、具体的な数字や名前がどれだけ含まれているかで正確さは判断できない。これらすべてが——実際に頻繁に——完全にでっち上げられている可能性がある。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        こう考えるとわかりやすい。AIは何千もの台本を読んだ、非常に説得力のある俳優のようなものだ。どんなセリフでも完璧な確信を持って言える——でも確信は知識ではない。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -163,137 +98,37 @@ const chapter = chapters[8];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        イエスマン問題
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="すべてのAIユーザーにこの章が必要だ。AIがどうハルシネーションするか、なぜ間違った答えに同意するか、どう見抜くかを教えてくれる。超実践的。" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ハルシネーションよりもっと巧妙な失敗モードがある。<strong>おべっか（シコファンシー）</strong>だ。AIには、君が間違っているときでも同意してしまう傾向がある。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        「アインシュタインが電球を発明したんだよね？」と言ったら、ほとんどのAIモデルはきっぱり訂正してくれない。代わりに、部分的に同意する方法を見つける——物理学の業績を通じてアインシュタインと光を結びつけ、君の間違った主張をぼかし、教育するよりも気分よくさせてくれる。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        なぜか？ AIモデルは人間のフィードバックで訓練されていて、人間は同意的で肯定的な応答に高い評価をつけるからだ。何百万もの訓練サンプルを通じて、モデルは学習する：<em>同意することが報酬につながる</em>。だから同意する——たとえそうすべきでないときでも。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>これは危険だ</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          もし自分がすでに信じていることを確認するためだけにAIを使うなら、AIは喜んでそうしてくれる。賢くなった気分になりながら、実際にはバカになっていく。AIの最強の使い方は、自分の思い込みに反論させること——補強させることではない。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        実際に見てみよう。AIに間違った主張をぶつけて、反論するか折れるか観察しよう。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        検証の習慣を身につける
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        目標はAIの言うことをすべて疑うことではない。AIが生成した情報に基づいて行動する前に自動的に発動する、一連のチェック——検証の反射——を身につけることだ。
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: 'これは検証できるか？', color: '#E94560', text: '事実の主張に対しては、こう問いかけよう：独立した情報源で確認できるか？ AIが研究を引用したら、その研究を見つけよう。日付を挙げたら、確認しよう。誰かの発言を引用したら、その引用を調べよう。引用を額面通り受け取ってはいけない——AIは日常的にソースを捏造する。' },
-        { letter: '2', name: 'ソースを要求したか？', color: '#0F3460', text: '明示的にAIにソースの提示を求めよう。そしてそのソースを確認しよう。本物のこともあれば、惜しいけど間違っていること（正しい著者、間違った論文）もあれば、完全にでっち上げのこともある。確認する行為そのものが、君の直感を鍛えてくれる。' },
-        { letter: '3', name: '常識テストに合格するか？', color: '#7B61FF', text: '一歩引いて考えよう：この主張は実際に筋が通っているか？ AIは5秒の批判的思考で崩壊するようなもっともらしいナンセンスを生成できる。直感を信じよう——そしてそれでも検証しよう。' },
-        { letter: '4', name: 'ハイステークスな領域か？', color: '#F5A623', text: '医療アドバイス、法的助言、財務判断、安全に関わるあらゆること——これらには追加の検証が必要だ。AIはブレインストーミングや初稿には便利だが、重要な判断は必ず資格のある人間が検証すべきだ。' },
-        { letter: '5', name: '中立的に質問したか？', color: '#16C79A', text: '質問に自分の意見を埋め込むと、AIはそれをオウム返しにする。オープンな質問をしよう。「Xが最善のアプローチである理由は？」ではなく「Xの賛否両論は？」と聞こう。より正直で有用な回答が得られるはずだ。' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>AIを疑うことではない。うまく使うことだ。</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          プロのジャーナリストは引用を確認する。科学者は実験を再現する。エンジニアは開通前に橋をテストする。AIの出力を検証することはパラノイアではない——プロフェッショナリズムだ。検証する人こそが、実際に機能するものを作る人だ。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        これで君はBS検出器を手に入れた。ハルシネーションを見抜き、おべっかに抵抗し、信じる前に検証できる。この習慣は、どんな高度なプロンプトテクニックよりも君を救ってくれるだろう。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AIから最大の価値を引き出す人は、いつ信じていいか、いつ検証すべきかを正確に見極めている。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AIが間違えるときを知ることは、もっと大きな問いにつながる。AIに<em>絶対にできない</em>ことは何か？ 次の章では、頑固なまでに、美しく人間的であり続けるスキルを探る——そしてなぜそれがかつてないほど重要なのかを。
+        AIが間違えるときを知ることは、もっと大きな問いにつながる：AIに<em>絶対にできない</em>ことは何か？次は、頑固なまでに美しく人間的であり続けるスキルを探る &mdash; そしてなぜそれがかつてないほど重要なのかを。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -36,7 +37,10 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Ein Feldführer zu jedem KI-Tool,<br />das du jetzt schon nutzen kannst.
+          Ein Feldführer zu jedem KI-Tool,<br />das du gerade jetzt nutzen kannst.
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          ZULETZT AKTUALISIERT MÄRZ 2026
         </p>
       </FadeInBlock>
     </div>
@@ -46,59 +50,11 @@ const chapter = chapters[3];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Wenn die meisten Leute „KI" sagen, meinen sie ChatGPT. Vielleicht meinen sie Googles Gemini, oder sie haben jemanden von Claude reden hören. Das ist, als würdest du „das Internet" sagen und Google meinen. Nicht falsch. Nur ein winziger Ausschnitt von etwas Riesigem.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Gerade jetzt gibt es Hunderte von KI-Tools, die du heute nutzen kannst — nicht in irgendeiner theoretischen Zukunft, sondern buchstäblich jetzt, direkt aus deinem Browser. Tools, die fotorealistische Bilder aus einem Satz generieren. Tools, die ganze Songs komponieren. Tools, die jeden wissenschaftlichen Artikel zu deinem Forschungsthema lesen und den Konsens in drei Absätzen zusammenfassen.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Dieses Kapitel ist dein Feldführer. Kein vollständiger Katalog — der wäre nächsten Dienstag schon veraltet — sondern eine <strong>Karte des Geländes</strong>. Die Kategorien, die zählen, die Tools, die man kennen sollte, und das Denkmodell, das dir hilft, das richtige auszuwählen.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Jenseits des Chatbots
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Der Chatbot ist die Spitze des Eisbergs. Unter der Oberfläche hat sich KI in Dutzende spezialisierter Fähigkeiten aufgespalten, jede ein anderes Werkzeug für eine andere Art von Arbeit.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Denk daran wie an Musikinstrumente. Ein Klavier und ein Schlagzeug sind beides „Musikinstrumente", aber du würdest einen Pianisten nicht bitten, einen Beat zu legen, und einen Schlagzeuger nicht, ein Konzert zu spielen. KI-Tools sind genauso. Ein Tool für Bildgenerierung ist grundlegend anders als eins für Code — andere Architektur, andere Trainingsdaten, andere Stärken.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Wer 10 KI-Tools oberflächlich kennt, wird konsistent besser abschneiden als jemand, der ein Tool in der Tiefe beherrscht. Breites Wissen schlägt tiefe Expertise — zumindest am Anfang.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Hier ist die Landschaft, wie sie heute aussieht, sortiert danach, was diese Tools tatsächlich <em>tun</em>.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Wenn die meisten Leute "KI" sagen, meinen sie ChatGPT. Das ist, als würde man "das Internet" sagen und Google meinen. Gerade jetzt gibt es hunderte KI-Tools, die du heute nutzen kannst -- Tools, die fotorealistische Bilder aus einem Satz generieren, ganze Songs komponieren oder jedes akademische Paper zu deinem Forschungsthema lesen und den Konsens in drei Absätzen zusammenfassen. Dieses Kapitel ist deine Landkarte des Terrains.
       </p>
     </FadeInBlock>
   </section>
@@ -115,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Jedes KI-Tool, dem du begegnest, fällt in eine dieser Kategorien. Manche Tools überschreiten Grenzen, aber diese Familien zu verstehen gibt dir eine mentale Landkarte, um im Chaos den Überblick zu behalten.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Stell es dir wie Musikinstrumente vor. Ein Klavier und ein Schlagzeug sind beide "Instrumente", aber du würdest keinen Pianisten bitten, einen Beat zu legen. KI-Tools sind genauso -- ein Tool für Bildgenerierung ist grundlegend anders als eins für Code. Jedes Tool, dem du begegnest, gehört zu einer dieser acht Familien.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Bildgeneratoren', color: '#E94560', text: 'Text rein, Bilder raus. Von fotorealistischen Szenen über Anime bis Ölgemälde. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. Die demokratischste Kategorie — jeder kann visuelle Kunst aus Wörtern erschaffen.' },
-        { icon: '2', name: 'Bildbearbeitung', color: '#F5A623', text: 'Starte mit einem echten Bild und transformiere es. Hintergründe entfernen, Auflösung hochskalieren, Objekte ersetzen, Szenen neu beleuchten. Photoshop AI, Magnific, Clipdrop. Diese ergänzen menschliche Fotografen und Designer, statt sie zu ersetzen.' },
-        { icon: '3', name: 'Videoerstellung', color: '#7B61FF', text: 'Die neueste Grenze. Videoclips aus Text oder Standbildern generieren. Sora, Runway, Kling, Pika. Noch am Anfang — die meisten Clips sind unter 30 Sekunden — aber die Verbesserungsrate ist atemberaubend. Filmemachen wird nie mehr dasselbe sein.' },
-        { icon: '4', name: 'Musik & Audio', color: '#16C79A', text: 'Ganze Songs aus einer Textbeschreibung, Stimmklonen aus einem 30-Sekunden-Sample, Soundeffekte auf Knopfdruck. Suno, Udio, ElevenLabs. Diese Tools komprimieren, was früher ein Studio und ein Team brauchte, in einen einzigen Prompt.' },
-        { icon: '5', name: 'Recherche-Agenten', color: '#0EA5E9', text: 'KI, die das Internet (oder wissenschaftliche Datenbanken) für dich liest. Perplexity sucht und zitiert. Elicit liest Paper. Consensus findet wissenschaftlichen Konsens. NotebookLM verwandelt deine Dokumente in einen Experten.' },
-        { icon: '6', name: 'KI-Browser', color: '#6B7280', text: 'Agenten, die das Web wie ein Mensch navigieren können. Buttons klicken, Formulare ausfüllen, zwischen Seiten navigieren. Arc, Operator, Claude Computer Use. Die Brücke zwischen „Fragen beantworten" und „Aufgaben erledigen".' },
-        { icon: '7', name: 'Coding-Tools', color: '#E94560', text: 'KI, die Code schreibt, bearbeitet, ausführt und debuggt. Claude Code arbeitet aus deinem Terminal. Cursor und Windsurf sind volle Editoren. Copilot macht Inline-Vorschläge. Replit Agent baut ganze Apps von Grund auf.' },
-        { icon: '8', name: 'Chatbots & Assistenten', color: '#0F3460', text: 'Die Allzweck-Konversations-KI, die du schon kennst: ChatGPT, Claude, Gemini. Sie sind die Schweizer Taschenmesser — gut in vielen Dingen, am besten wenn du weißt, wie du sie promptest (was du dank Kapitel 1-3 kannst).' },
+        { icon: '1', name: 'Bildgeneratoren', color: '#E94560', text: 'Text rein, Bilder raus. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Bildbearbeitung', color: '#F5A623', text: 'Mit einem echten Bild starten und es transformieren. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video-Erstellung', color: '#7B61FF', text: 'Videoclips aus Text oder Standbildern generieren. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Musik & Audio', color: '#16C79A', text: 'Ganze Songs per Prompt, Stimmklone, Soundeffekte. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Recherche-Agenten', color: '#0EA5E9', text: 'KI, die das Internet für dich liest. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'KI-Browser', color: '#6B7280', text: 'Agenten, die das Web wie ein Mensch navigieren. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding-Tools', color: '#E94560', text: 'KI, die Code schreibt, bearbeitet und debuggt. Claude Code, Cursor, Windsurf, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistenten', color: '#0F3460', text: 'Die universellen KI-Gesprächspartner, die du schon kennst: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -153,242 +109,52 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Diese Kategorien verschmelzen zunehmend. Bildgeneratoren fügen Video hinzu. Chatbots bekommen Tool-Nutzung. Coding-Tools werden zu Agenten. In zwei Jahren werden die Grenzen verschwimmen. Aber gerade jetzt schlagen Spezialisten die Generalisten noch in ihrem Fachgebiet.
+          Wer 10 KI-Tools oberflächlich kennt, wird dauerhaft besser abschneiden als jemand, der ein einziges Tool in der Tiefe kennt. Ein professioneller Handwerker hat kein Lieblingswerkzeug -- er hat ein Lieblingswerkzeug <em>für jede Aufgabe</em>.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Erkunde den vollständigen Katalog. Klick auf ein Tool, um zu erfahren, was es kann.
+        Entdecke den vollständigen Katalog. Klick auf ein Tool, um zu erfahren, was es kann.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Das richtige Tool wählen
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Es gibt viel mehr KI-Tools als mir bewusst war. Dieser interaktive Guide zeigt 8 Familien von Tools -- Bildgenerierung, Video, Musik, Recherche, Coding -- mit Beispielen für jede." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bei so vielen Optionen ist das Schwierige nicht, ein KI-Tool zu finden. Es ist, das <em>richtige</em> KI-Tool zu finden. Hier ist das Framework, das funktioniert:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Was ist die Ausgabe?', desc: 'Text? Bild? Code? Video? Audio? Das grenzt dich sofort auf 1-2 Familien ein.' },
-          { word: 'Wie hoch ist der Qualitätsanspruch?', desc: 'Schneller Entwurf für dich selbst, oder poliertes Ergebnis für ein Publikum? Verschiedene Tools für verschiedene Standards.' },
-          { word: 'Was ist das Budget?', desc: 'Viele Tools bieten kostenlose Stufen, die überraschend leistungsfähig sind. Wisse, was du wirklich brauchst, bevor du zahlst.' },
-          { word: 'Wie sieht der Workflow aus?', desc: 'Eine einzelne Aufgabe oder ein Schritt in einer längeren Kette? Integration zählt mehr als rohe Leistung.' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die meisten Anfänger machen denselben Fehler: Sie nutzen eine einzige Allzweck-KI für alles. Es funktioniert technisch, aber du bekommst bessere Ergebnisse schneller mit den richtigen spezialisierten Tools.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        Aber tapp nicht in die entgegengesetzte Falle. Du brauchst keine 47 KI-Abos. <strong>Wähle 3-4 Tools aus verschiedenen Kategorien, lerne sie gut, und erweitere von dort.</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Die Macht der Pipelines
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hier kommt der echte Durchbruch: <strong>Tools werden exponentiell mächtiger, wenn du sie miteinander verketttest.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ein einzelnes KI-Tool gibt dir eine Fähigkeit. Eine Kette von KI-Tools gibt dir einen <em>Workflow</em>. Perplexity findet die Recherche. Claude schreibt den Artikel. Midjourney erstellt die Illustrationen. Jedes Tool macht, was es am besten kann, und die Ausgabe des einen wird zur Eingabe des nächsten.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Die beeindruckendsten KI-generierten Werke, die du online gesehen hast, wurden nicht mit einem Tool gemacht. Sie wurden mit fünf gemacht, verkettet von einem Menschen, der verstanden hat, was jedes am besten kann.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Deshalb ist es wichtig, die Landschaft zu kennen. Du kannst keine Pipeline bauen, wenn du nur ein Tool kennst. Du kannst den richtigen Spezialisten nicht wählen, wenn du nicht weißt, welche Spezialisten es gibt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Probier selbst eine zu bauen:
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Es gibt kein „bestes" Tool
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Jede Woche postet jemand eine definitive Rangliste der KI-Tools. Jede Woche ist sie falsch. Nicht weil die Rangliste schlecht ist, sondern weil „das Beste" komplett davon abhängt, was du tust, wie du es tust, und was dir wichtig ist.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney macht künstlerischere Bilder als DALL-E 3. Aber DALL-E 3 folgt Anweisungen präziser. Ideogram rendert Text besser als beide. Was ist „das Beste"? Kommt drauf an, ob du ein Filmplakat, ein Produktfoto oder ein Logo machst.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude schreibt nuancierter als GPT. GPT ist schneller. Gemini hat mehr Kontext. Was dir wichtiger ist, hängt von deiner Aufgabe ab.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Die wahre Fähigkeit ist nicht, ein Tool zu meistern. Es ist, ein Gespür dafür zu entwickeln, welches Tool zu welcher Aufgabe passt.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ein professioneller Schreiner hat kein Lieblingswerkzeug. Er hat ein Lieblingswerkzeug <em>für jede Aufgabe</em>. Das ist die Denkweise, die du entwickeln solltest.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Sieh selbst. Gleicher Prompt, verschiedene Tools &mdash; welche Ausgabe gefällt dir besser?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Die Landschaft bewegt sich
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hier ist die unbequeme Wahrheit: Einige der Tools im Katalog oben werden in einem Jahr nicht mehr existieren. Andere, die noch nicht existieren, werden unverzichtbar werden. Die KI-Landschaft bewegt sich schneller als jede Technologielandschaft in der Geschichte.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Warum also überhaupt spezifische Tools lernen? Weil <strong>die Kategorien stabil sind, auch wenn die Tools es nicht sind</strong>. Es wird immer Bildgeneratoren, Code-Assistenten und Recherche-Agenten geben. Die Namen werden sich ändern. Die grundlegenden Fähigkeiten und Denkmodelle nicht.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Die übertragbaren Fähigkeiten</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. Wissen, welche Kategorien von KI-Tools es gibt<br />
-          2. Wissen, wie man ein neues Tool in 15 Minuten bewertet<br />
-          3. Wissen, wie man Tools zu Workflows verkettet<br />
-          4. Wissen, wann man Tools wechselt statt Prompts zu verfeinern
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Diese vier Fähigkeiten werden dir dienen, egal welche spezifischen Tools nächstes Jahr oder danach dominieren. Die Landschaft verschiebt sich, aber der Navigator bleibt effektiv.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Du hast jetzt eine Karte der KI-Landschaft &mdash; acht Tool-Familien, ein Framework zur Auswahl, und die Pipeline-Denkweise, die sie miteinander verkettet.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Die Landschaft verändert sich jeden Monat. Aber die Kategorien sind stabil, auch wenn die Tools es nicht sind -- und <em>das</em> ist die Karte, die es sich zu merken lohnt.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Aber bisher reagieren diese Tools nur auf dich. Was wäre, wenn sie <em>selbstständig handeln</em> könnten? Das ist der Sprung vom Tool zum Agenten &mdash; und er verändert alles.
+        Bisher reagieren diese Tools nur auf dich. Was wäre, wenn sie <em>selbstständig handeln</em> könnten? Das ist der Sprung vom Tool zum Agenten -- und er verändert alles.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

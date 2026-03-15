@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[3];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          நான்காம் அத்தியாயம்
+          அத்தியாயம் நான்கு
         </p>
       </FadeInBlock>
 
@@ -37,70 +37,24 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          நீ இப்பவே பயன்படுத்தக்கூடிய<br />ஒவ்வொரு AI டூலுக்கும் வழிகாட்டி.
+          நீ இப்பவே பயன்படுத்தக்கூடிய<br />ஒவ்வொரு AI tool-க்கும் வழிகாட்டி.
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          கடைசியாக புதுப்பிக்கப்பட்டது மார்ச் 2026
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        பெரும்பாலான மக்கள் "AI" என்று சொல்லும்போது, அவர்களுக்கு ChatGPT தான் நினைவுக்கு வரும். ஒருவேளை Google Gemini-ஐ, அல்லது Claude-ன் பேரைக் கேட்டிருக்கலாம். இது "இணையம்" என்று சொல்லி Google-ஐ மட்டும் குறிப்பிடுவது மாதிரி. தவறு இல்லை. ஆனால் மகத்தான ஒன்றின் சிறிய துண்டு மட்டும்தான்.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        இப்போவே நீ இன்றைக்கே பயன்படுத்தக்கூடிய நூறு கணக்கான AI டூல்கள் இருக்கின்றன -- ஏதோ கற்பனையான எதிர்காலத்தில் அல்ல, உன் browser-இல் இருந்தே இப்பவே. ஒரு வாக்கியத்தில் இருந்து அசலான படங்களை உருவாக்கும் டூல்கள். முழு பாடல்களையே இயற்றும் டூல்கள். உன் ஆராய்ச்சி தலைப்பில் எழுதப்பட்ட ஒவ்வொரு கல்விக் கட்டுரையையும் படித்து, கருத்து ஒருமைப்பாட்டை மூன்று பத்திகளில் சுருக்கும் டூல்கள்.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        இந்த அத்தியாயம் உன் வழிகாட்டி. முழுமையான பட்டியல் அல்ல -- அது அடுத்த செவ்வாய்கிழமையே காலாவதியாகிவிடும் -- ஆனால் <strong>நிலப்பரப்பின் வரைபடம்</strong>தான். முக்கியமான பிரிவுகள், தெரிந்துகொள்ள வேண்டிய டூல்கள், மற்றும் சரியான ஒன்றைத் தேர்ந்தெடுக்க உதவும் சிந்தனைக் கட்டமைப்பு.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Chatbot-ஐ தாண்டி
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Chatbot என்பது பனிப்பாறையின் நுனி மட்டும். அதன் கீழே, AI பல்வேறு சிறப்பு திறன்களாக பிரிந்து, ஒவ்வொன்றும் வெவ்வேறு வேலைக்கு வெவ்வேறு மாதிரியான கருவியாக மாறியிருக்கிறது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        இசைக்கருவிகளைப் பத்தி யோசித்துப் பார். பியானோ மற்றும் மேளத் தட்டு இரண்டுமே "இசைக்கருவிகள்" தான், ஆனால் நீ பியானோ வாசிப்பவரிடம் beat போடச் சொல்ல மாட்டாய், மேளக்காரரிடம் concerto வாசிக்கச் சொல்ல மாட்டாய். AI டூல்களும் அதே மாதிரி. படத் தயாரிப்புக்காக உருவாக்கப்பட்ட டூல் கோடிங் டூலிலிருந்து அடிப்படையிலேயே வேறுபட்டது -- வேறு கட்டமைப்பு, வேறு பயிற்சித் தரவு, வேறு வலிமைகள்.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        10 AI டூல்களை மேலோட்டமாக தெரிந்த ஒருவன் ஒரே டூலை ஆழமாக தெரிந்த ஒருவனை தொடர்ந்து விஞ்சுவான். விரிவான விழிப்புணர்வு ஆழமான நிபுணத்துவத்தை வெல்லும் -- ஆரம்பத்தில்.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        இன்றைய நிலையில் இருக்கும் நிலப்பரப்பு இதுதான், இந்த டூல்கள் உண்மையில் <em>என்ன செய்கின்றன</em> என்பதின் அடிப்படையில் ஒழுங்கமைக்கப்பட்டது.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        பெரும்பாலான மக்கள் "AI" என்று சொல்லும்போது ChatGPT தான் நினைவுக்கு வரும். "இணையம்" என்று சொல்லி Google மட்டும் குறிப்பிடுவது போன்றது. இப்போது நீ இன்றே பயன்படுத்தக்கூடிய நூற்றுக்கணக்கான AI tools இருக்கின்றன &mdash; ஒரு வாக்கியத்திலிருந்து photorealistic படங்கள் உருவாக்கும் tools, முழு பாடல்கள் இயற்றும் tools, உன் research topic பற்றிய ஒவ்வொரு academic paper-ஐயும் படித்து consensus-ஐ மூன்று paragraphs-ல் summarize செய்யும் tools. இந்த chapter உன் நிலப்பரப்பின் வரைபடம்.
       </p>
     </FadeInBlock>
   </section>
@@ -117,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        நீ எந்த AI டூலை சந்தித்தாலும் அது இந்த பிரிவுகளில் ஏதேனும் ஒன்றில் பொருந்தும். சில டூல்கள் எல்லைகளைத் தாண்டுகின்றன, ஆனால் இந்த குடும்பங்களைப் புரிந்துகொள்வது குழப்பத்தைப் புரிந்துகொள்ள மனரீதியான வரைபடத்தை அளிக்கிறது.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        இசைக்கருவிகளைப் பற்றி யோசி. Piano-வும் drum kit-உம் இரண்டும் "instruments" தான், ஆனால் pianist-கிட்ட beat போடச் சொல்ல மாட்டாய். AI tools-உம் அதே மாதிரி &mdash; image generation-க்காக build ஆன tool, code-க்காக build ஆனதிலிருந்து அடிப்படையில் வேறு. நீ சந்திக்கும் ஒவ்வொரு tool-உம் இந்த எட்டு குடும்பங்களில் ஒன்றில் fit ஆகும்.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'படம் உருவாக்கும் கருவிகள்', color: '#E94560', text: 'எழுத்து உள்ளே செல்கிறது, படங்கள் வெளியே வருகின்றன. ஃபோட்டோ ரியலிஸ்டிக் காட்சிகளில் இருந்து anime வரை oil paintings வரை. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. மிகவும் ஜனநாயகப்படுத்தும் பிரிவு -- யார் வேண்டுமானாலும் வார்த்தைகளில் இருந்து காட்சிக் கலையை உருவாக்கலாம்.' },
-        { icon: '2', name: 'படம் திருத்தும் கருவிகள்', color: '#F5A623', text: 'உண்மையான படத்தை வைத்து அதை மாற்றுக. பின்புலத்தை நீக்கு, resolution-ஐ அதிகரி, பொருள்களை மாற்று, காட்சிகளை மறு-வெளிச்சமிடு. Photoshop AI, Magnific, Clipdrop. இவை மனித photographers மற்றும் designers-ஐ மாற்றுவதை விட அவர்களை ஊக்குவிக்கின்றன.' },
-        { icon: '3', name: 'வீடியோ உருவாக்கும் கருவிகள்', color: '#7B61FF', text: 'புதிய எல்லை. எழுத்து அல்லது ஸ்டில் படங்களில் இருந்து வீடியோ கிளிப்புகளை உருவாக்கு. Sora, Runway, Kling, Pika. இன்னும் ஆரம்ப நிலையில் -- பெரும்பாலான கிளிப்புகள் 30 வினாடிக்குக் கீழே -- ஆனால் அதிர்ச்சிகரமான வேகத்தில் மேம்படுகின்றன. திரைப்படத் தயாரிப்பு இனி ஒருபோதும் அதே மாதிரி இருக்காது.' },
-        { icon: '4', name: 'இசை & ஆடியோ', color: '#16C79A', text: 'எழுத்து விளக்கத்தில் இருந்து முழு பாடல்கள், 30-வினாடி மாதிரியில் இருந்து குரல் நகல், தேவைக்கேற்ப ஒலி விளைவுகள். Suno, Udio, ElevenLabs. இந்த கருவிகள் ஒரு ஸ்டுடியோவும் குழுவும் செய்யக்கூடியதை ஒரு prompt-ஆக சுருக்கின்றன.' },
-        { icon: '5', name: 'ஆராய்ச்சி முகவர்கள்', color: '#0EA5E9', text: 'உனக்காக இணையம் (அல்லது கல்வித் தரவுத்தளங்களை) படிக்கும் AI. Perplexity தேடி மேற்கோள் காட்டுகிறது. Elicit கட்டுரைகளை படிக்கிறது. Consensus அறிவியல் ஒருமைப்பாட்டைக் கண்டறிகிறது. NotebookLM உன் ஆவணங்களை நிபுணனாக மாற்றுகிறது.' },
-        { icon: '6', name: 'AI Browser-கள்', color: '#6B7280', text: 'மனிதனைப் போல வலையில் navigate செய்யக்கூடிய agents. பொத்தான்களை அழுத்து, படிவங்களை நிரப்பு, பக்கங்களுக்கு இடையில் navigate செய். Arc, Operator, Claude Computer Use. "கேள்விகளுக்கு பதிலளி" மற்றும் "பணிகளைச் செய்" என்பதற்கு இடையிலான பாலம்.' },
-        { icon: '7', name: 'கோடிங் கருவிகள்', color: '#E94560', text: 'கோடை எழுதி, திருத்தி, இயக்கி, debug செய்யும் AI. Claude Code உன் terminal-இல் இருந்து வேலை செய்கிறது. Cursor மற்றும் Windsurf முழு எடிட்டர்கள். Copilot inline-ஆக பரிந்துரைக்கிறது. Replit Agent முற்றிலும் புதிய app-களை scratch-இல் இருந்து உருவாக்குகிறது.' },
-        { icon: '8', name: 'Chatbot-கள் & உதவியாளர்கள்', color: '#0F3460', text: 'நீ ஏற்கனவே அறிந்த பொது-நோக்க உரையாடல் AI: ChatGPT, Claude, Gemini. அவை Swiss army knives -- பல விஷயங்களில் நல்லவை, எப்படி prompt செய்வது தெரிந்தால் சிறந்தவை (அது உனக்குத் தெரியும், அத்தியாயம் 1-3 நன்றி).' },
+        { icon: '1', name: 'படம் உருவாக்குபவை', color: '#E94560', text: 'Text உள்ளே, images வெளியே. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'படம் திருத்துபவை', color: '#F5A623', text: 'உண்மையான படத்தை வைத்து transform செய்யும். Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'வீடியோ உருவாக்குபவை', color: '#7B61FF', text: 'Text அல்லது stills-இலிருந்து video clips generate செய்யும். Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'இசை & ஆடியோ', color: '#16C79A', text: 'Prompt-இலிருந்து முழு பாடல்கள், voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'ஆராய்ச்சி முகவர்கள்', color: '#0EA5E9', text: 'உனக்காக internet படிக்கும் AI. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'மனிதனைப் போல web-ல் navigate செய்யும் agents. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code எழுதி, edit செய்து, debug செய்யும் AI. Claude Code, Cursor, Windsurf, Copilot.' },
+        { icon: '8', name: 'Chatbots & உதவியாளர்கள்', color: '#0F3460', text: 'நீ ஏற்கனவே அறிந்த general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -153,244 +107,54 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய நுண்ணறிவு</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          இந்த பிரிவுகள் ஒன்றுசேர்ந்து வருகின்றன. படம் உருவாக்கும் கருவிகள் வீடியோவை சேர்க்கின்றன. Chatbot-கள் கருவி பயன்பாட்டைப் பெறுகின்றன. கோடிங் கருவிகள் agents-ஆக மாறுகின்றன. இரண்டு ஆண்டுகளில், எல்லைகள் மங்கிவிடும். ஆனால் இப்போது, சிறப்பாளர்கள் இன்னும் தங்கள் சிறப்பில் பொதுவாளர்களை வெல்கிறார்கள்.
+          10 AI tools-ஐ மேலோட்டமாக தெரிந்த ஒருவன், ஒரே tool-ஐ ஆழமாக தெரிந்த ஒருவனை தொடர்ந்து விஞ்சுவான். ஒரு professional carpenter-க்கு பிடித்த tool இல்லை &mdash; <em>ஒவ்வொரு வேலைக்கும்</em> பிடித்த tool இருக்கும்.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        முழு பட்டியலை ஆராய்ந்து பார். என்ன செய்கிறது என்று தெரிந்துகொள்ள எந்த கருவியையும் கிளிக் செய்.
+        முழு catalog-ஐ explore செய். என்ன செய்கிறது என்று தெரிய எந்த tool-ஐயும் click செய்.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        சரியான கருவியைத் தேர்ந்தெடுத்தல்
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="There are way more AI tools than I realized. This interactive guide maps out 8 families of tools — image gen, video, music, research, coding — with examples of each." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        இத்தனை விருப்பங்களுடன், கடினமான பகுதி AI கருவியைக் கண்டறிவது அல்ல. <em>சரியான</em> AI கருவியைக் கண்டறிவதுதான். வேலைக்கு வரும் கட்டமைப்பு:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Output என்னன்னு?', desc: 'எழுத்து? படம்? கோட்? வீடியோ? ஆடியோ? இது உன்னை உடனே 1-2 குடும்பங்களுக்கு குறுக்குகிறது.' },
-          { word: 'Quality bar என்னன்னு?', desc: 'உனக்கு விரைவான draft-அ, இல்ல audience-க்கு polished output-அ? வெவ்வேறு standards-க்கு வெவ்வேறு கருவிகள்.' },
-          { word: 'Budget என்னன்னு?', desc: 'பல கருவிகள் ஆச்சர்யகரமான திறனுள்ள free tiers வழங்குகின்றன. கட்டணம் செலுத்தும் முன் உண்மையில் என்ன தேவை என்று தெரிந்துகொள்.' },
-          { word: 'Workflow என்னன்னு?', desc: 'தனிப்பட்ட பணியா, இல்ல நீண்ட chain-ன் ஒரு பகுதியா? Integration முழு சக்தியை விட முக்கியம்.' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        பெரும்பாலான ஆரம்பக்காரர்கள் அதே தவறை செய்கிறார்கள்: எல்லாவற்றுக்கும் ஒரே பொது-நோக்க AI-ஐ பயன்படுத்துகிறார்கள். தொழில்நுட்ப ரீதியாக வேலை செய்யும், ஆனால் சரியான சிறப்பு கருவிகளுடன் நீ வேகமாக சிறந்த முடிவுகளைப் பெறுவாய்.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        என்றாலும், எதிர் பக்க பொறியிலும் விழுந்துவிடாதே. உனக்கு 47 AI subscription-கள் தேவையில்லை. <strong>வெவ்வேறு பிரிவுகளில் 3-4 கருவிகளை தேர்ந்தெடு, அவற்றை நன்றாகக் கற்று, அங்கிருந்து விரிவுபடுத்து.</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Pipeline-களின் சக்தி
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        உண்மையான அன்லாக் இது: <strong>கருவிகள் ஒன்றோடு ஒன்று சங்கிலியாக இணைக்கப்படும்போது அவை exponentially மிகவும் சக்திவாய்ந்தவை ஆகின்றன.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ஒரு AI கருவி உனக்கு திறனைத் தருகிறது. AI கருவிகளின் சங்கிலி உனக்கு <em>workflow</em>-ஐ தருகிறது. Perplexity ஆராய்ச்சியைக் கண்டறிகிறது. Claude கட்டுரை எழுதுகிறது. Midjourney illustrations உருவாக்குகிறது. ஒவ்வொரு கருவியும் தான் சிறந்த விஷயத்தைச் செய்கிறது, மற்றும் ஒன்றின் output மற்றொன்றின் input ஆகிறது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        நீ online-ல் பார்த்த மிகவும் impressive-ஆன AI-தயாரிக்கப்பட்ட வேலை ஒரு கருவியால் செய்யப்படவில்லை. ஐந்து கருவிகளால், ஒவ்வொன்றும் எதில் சிறந்தது என்று புரிந்த மனிதனால் சங்கிலியாக இணைக்கப்பட்டு செய்யப்பட்டது.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        இதனால்தான் நிலப்பரப்பை புரிந்துகொள்வது முக்கியம். ஒரு கருவி மட்டுமே தெரிந்தால் pipeline உருவாக்க முடியாது. என்ன சிறப்பாளர்கள் இருக்கிறார்கள் என்று தெரியாவிட்டால் சரியான சிறப்பாளரைத் தேர்ந்தெடுக்க முடியாது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        நீயே ஒன்றை உருவாக்கிப் பார்:
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        "சிறந்த" கருவி என்று எதுவுமில்லை
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ஒவ்வொரு வாரமும், யாரோ AI கருவிகளின் நிச்சயமான தரவரிசையை போஸ்ট் செய்கிறார்கள். ஒவ்வொரு வாரமும், அது தவறாகிறது. தரவரிசை மோசம் என்பதால் அல்ல, ஆனால் "சிறந்த" என்பது நீ என்ன செய்கிறாய், எப்படி செய்கிறாய், மற்றும் நீ எதை மதிக்கிறாய் என்பதைப் பொறுத்தே அமைகிறது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney DALL-E 3-ஐ விட கலைத்திறன் மிக்க படங்களை உருவாக்குகிறது. ஆனால் DALL-E 3 வழிமுறைகளை மிகவும் துல்லியமாக பின்பற்றுகிறது. Ideogram இரண்டையும் விட எழுத்தை சிறப்பாக render செய்கிறது. எது "சிறந்தது"? நீ movie poster செய்கிறாயா, product photo வா, logo வா என்பதைப் பொறுத்து.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude GPT-ஐ விட நுணுக்கத்துடன் எழுதுகிறது. GPT வேகமானது. Gemini-ல் அதிக context இருக்கிறது. உனக்கு எது முக்கியம்? அது உன் பணியைப் பொறுத்து.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>உண்மையான திறன் ஒரு கருவியை தேர்ச்சிபெறுவது அல்ல. எந்த வேலைக்கு எந்த கருவி பொருந்தும் என்ற ரசனையை வளர்ப்பதுதான்.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ஒரு தொழில்முறை தச்சனுக்கு பிடித்த கருவி இருக்காது. ஒவ்வொரு பணிக்கும் பிடித்த கருவி <em>இருக்கும்</em>. அதுதான் வளர்க்க வேண்டிய மனநிலை.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        நீயே பார்த்துக்கொள். அதே prompt, வெவ்வேறு கருவிகள் &mdash; எந்த output உனக்குப் பிடிக்கிறது?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        நிலப்பரப்பு நகர்ந்துகொண்டே இருக்கிறது
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        சங்கடமான உண்மை: மேல் பட்டியலில் உள்ள சில கருவிகள் ஒரு வருடத்தில் இருக்காது. இன்னும் இல்லாத மற்றவை அவசியமானதாக மாறும். AI நிலப்பரப்பு வரலாற்றில் எந்த தொழில்நுட்ப நிலப்பரப்பையும் விட வேகமாக நகர்கிறது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        அப்படியென்றால் ஏன் குறிப்பிட்ட கருவிகளை கற்க வேண்டும்? ஏனென்றால் <strong>கருவிகள் மாறினாலும் பிரிவுகள் நிலையானவை</strong>. எப்போதும் படம் உருவாக்கும் கருவிகள், கோட் உதவியாளர்கள், மற்றும் ஆராய்ச்சி agents இருக்கும். பெயர்கள் மாறும். அடிப்படை திறன்கள் மற்றும் மன மாதிரிகள் மாறாது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>மாற்றக்கூடிய திறன்கள்</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. என்னென்ன பிரிவுகளின் AI கருவிகள் இருக்கின்றன என்று அறிவது<br />
-          2. 15 நிமிடத்தில் புதிய கருவியை எப்படி மதிப்பிடுவது என்று அறிவது<br />
-          3. கருவிகளை workflow-களாக எப்படி சங்கிலி செய்வது என்று அறிவது<br />
-          4. prompt-களை refined செய்வது vs கருவிகளை மாற்றுவது எப்போது என்று அறिவது
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        அடுத்த வருடம் அல்லது அதற்கு அடுத்த வருடம் எந்த குறிப்பிட்ட கருவிகள் ஆதிக்கம் செலுத்தினாலும் இந்த நான்கு திறன்கள் உனக்கு பயன்படும். நிலப்பரப்பு மாறுகிறது, ஆனால் navigator திறமையாக இருந்துகொண்டே போகிறான்.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        இப்போது உன்னிடம் AI நிலப்பரப்பின் வரைபடம் இருக்கிறது &mdash; எட்டு கருவிக் குடும்பங்கள், அவற்றுக்கு இடையில் தேர்வு செய்வதற்கான கட்டமைப்பு, மற்றும் அவற்றை இணைக்கும் pipeline மனநிலை.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Landscape ஒவ்வொரு மாதமும் மாறுகிறது. ஆனால் tools மாறினாலும் categories நிலையானவை &mdash; <em>அது</em> தான் மனப்பாடம் செய்ய வேண்டிய வரைபடம்.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ஆனால் இதுவரை, இந்த கருவிகள் உனக்கு பதிலளிக்கின்றன மட்டுமே. அவற்றால் <em>தாங்களாகவே நடவடிக்கைகள் எடுக்க</em> முடிந்தால் என்ன? அதுதான் கருவியிலிருந்து agent-க்கு மாறும் பாய்ச்சல் &mdash; அது எல்லாவற்றையும் மாற்றுகிறது.
+        இதுவரை இந்த tools உனக்கு பதிலளிக்கின்றன மட்டுமே. அவை <em>தாங்களாகவே action எடுக்க</em> முடிந்தால் என்ன? Tool-இலிருந்து agent-க்கு மாறும் பாய்ச்சல் அதுதான் &mdash; அது எல்லாவற்றையும் மாற்றுகிறது.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

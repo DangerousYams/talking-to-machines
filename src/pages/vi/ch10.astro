@@ -4,12 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
 import JobTransformer from '../../components/widgets/ch10/JobTransformer';
-import TasteTest from '../../components/widgets/ch10/TasteTest';
-import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[9];
 ---
@@ -18,13 +17,12 @@ const chapter = chapters[9];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chương Mười
+          Chương mười
         </p>
       </FadeInBlock>
 
@@ -44,289 +42,93 @@ const chapter = chapters[9];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Mỗi khi một khả năng AI mới xuất hiện, cùng một tiêu đề lại hiện ra: <em>"Liệu AI có thay thế [điền tên nghề]?"</em> Đó là câu hỏi sai. Nó luôn là câu hỏi sai. Câu hỏi đúng là: <em>"Điều này làm cho những gì có thể mà trước đây không thể?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI không thay thế con người. Nó thay thế <strong>tác vụ</strong>. Và khi bạn phóng to bất kỳ công việc nào — bất kỳ nghề nghiệp, bất kỳ đam mê sáng tạo, bất kỳ chuyên môn nào — bạn sẽ thấy một hỗn hợp: một số tác vụ AI xử lý xuất sắc, một số nó hỗ trợ, và một số vẫn cố chấp, tuyệt đẹp thuộc về con người.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Chương này là về việc tìm ra ranh giới đó. Không phải để bạn sợ hãi, mà để bạn có thể <strong>đứng đúng phía</strong> — phía mà các kỹ năng con người độc đáo của bạn trở nên giá trị hơn, không phải kém đi.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Mỗi khi một khả năng AI mới xuất hiện, cùng một tiêu đề lại hiện ra: <em>"Liệu AI có thay thế [điền tên nghề]?"</em> Đó là câu hỏi sai. AI không thay thế con người. Nó thay thế <strong>tác vụ</strong>. Và khi bạn phóng to bất kỳ công việc nào — bất kỳ nghề nghiệp, bất kỳ đam mê sáng tạo nào — bạn sẽ thấy một hỗn hợp: một số tác vụ AI xử lý xuất sắc, một số nó hỗ trợ, và một số vẫn cố chấp, tuyệt đẹp thuộc về con người.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Phổ rộng, không phải vách đá
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hầu hết các cuộc hội thoại về AI và công việc đối xử với nó như nhị phân: hoặc AI có thể làm công việc của bạn hoặc không. Ngày tận thế robot hoặc mọi thứ bình thường. Nhưng thực tế là một phổ rộng.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Một số tác vụ gần như hoàn toàn có thể tự động hóa. Một số được AI nâng cao. Một số không bị ảnh hưởng. Và những tác vụ thú vị nhất — những tác vụ đáng chú ý — nằm ở đâu đó giữa, nơi con người và AI làm việc cùng nhau.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Nhập liệu dữ liệu? AI xử lý được. Lên lịch họp? Về cơ bản đã giải quyết. Viết bản nháp đầu tiên? AI giỏi đáng kinh ngạc. Nhưng <em>chọn xây cái gì</em>, <em>đọc tình huống trong khủng hoảng</em>, <em>quyết định dữ liệu có nghĩa gì</em> — những thứ đó đòi hỏi thứ mà AI không có.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Mỗi kỹ năng thực sự rơi vào đâu? Thử trực giác của bạn.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillsSpectrum client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         Nghề không biến mất — chúng biến hình
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi ATM xuất hiện vào những năm 1970, ai cũng dự đoán nhân viên ngân hàng sẽ biến mất. Thay vào đó, số lượng nhân viên ngân hàng <em>tăng lên</em>. Tại sao? Vì ATM làm cho việc mở chi nhánh mới rẻ hơn, và công việc của nhân viên chuyển từ đếm tiền sang bán sản phẩm tài chính và xây dựng quan hệ khách hàng.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI đang làm điều tương tự, nhưng nhanh hơn và trên mọi ngành cùng lúc. Tên công việc vẫn giữ nguyên. Mô tả công việc thay đổi <em>đáng kể</em>. Một nhà báo năm 2025 không làm cùng công việc như nhà báo năm 2015, dù dòng tên tác giả trông giống hệt.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Khi ATM xuất hiện, ai cũng dự đoán nhân viên ngân hàng sẽ biến mất. Thay vào đó, số lượng <em>tăng lên</em> — vì ATM làm cho việc mở chi nhánh rẻ hơn, và công việc của nhân viên chuyển từ đếm tiền sang xây dựng quan hệ khách hàng. AI đang làm điều tương tự, nhưng nhanh hơn và trên mọi ngành cùng lúc. Tên công việc giữ nguyên. Mô tả công việc thay đổi <em>đáng kể</em>.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Nhập liệu dữ liệu? AI xử lý được. Bản nháp đầu tiên? Giỏi đáng kinh ngạc. Nhưng <em>chọn xây cái gì</em>, <em>đọc tình huống trong khủng hoảng</em>, <em>quyết định dữ liệu có nghĩa gì</em> — những thứ đó đòi hỏi phán đoán, đồng cảm, và tầm nhìn mà AI về cơ bản không có.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Phép toán nghề nghiệp mới</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
           Không phải "con người vs. AI." Mà là <strong>con người có AI vs. con người không có AI</strong>. Những người học làm việc <em>cùng</em> AI không mất việc — họ làm việc nhanh hơn, tốt hơn, và với năng lực mà trước đó họ không có.
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mt-10">
-        Chọn một nghề bên dưới và xem chính xác AI biến đổi nó từ bên trong như thế nào. Không một tác vụ nào biến mất hoàn toàn. Nhưng hình dạng của mọi công việc đang thay đổi.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Chọn một nghề bên dưới và xem chính xác AI biến đổi nó từ bên trong như thế nào. Không một tác vụ nào biến mất hoàn toàn.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <JobTransformer client:visible />
-    </FadeInBlock>
+    <JobTransformer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Thẩm mỹ: kỹ năng không thể thay thế
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Khóa học này không hype AI hay gieo nỗi sợ về nghề nghiệp. Nó chỉ ra chính xác kỹ năng nào vẫn thuộc về con người và kỹ năng nào được nâng cao. Thật sự trung thực." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI có thể tạo ra một trăm concept logo trong một phút. Nó có thể viết mười đoạn mở đầu bài luận trước khi bạn uống xong cà phê. Nó có thể tạo ra năm thiết kế app, bốn tagline, ba kế hoạch kinh doanh.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Nhưng nó không thể nói cho bạn cái nào là <em>đúng</em>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Trong thế giới nơi việc tạo ra lựa chọn gần như miễn phí, khả năng <em>chọn đúng</em> trở thành kỹ năng giá trị nhất bạn có thể có. Khả năng đó có một cái tên: thẩm mỹ.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Thẩm mỹ không phải thần bí. Nó được rèn luyện. Bạn phát triển nó bằng cách xem nhiều tác phẩm tốt và nhiều tác phẩm tồi, và học cách diễn đạt <em>tại sao</em> cái này tốt hơn cái kia. Đó là nhiếp ảnh gia biết giữ bức ảnh nào. Nhà văn biết cắt câu nào. Nhà thiết kế biết khi nào ít là nhiều.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        AI tạo ra. Bạn chọn lọc. Đó là sự phân công lao động mới. Hãy xem thẩm mỹ của bạn sắc bén đến đâu.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TASTE TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TasteTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Kiến thức là bộ phát hiện bịa đặt
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Trong Chương 9 chúng ta đã nói về hallucination AI — cách AI có thể phát biểu sai sự thật với sự tự tin hoàn hảo. Nhưng đây là câu hỏi tiếp theo khó chịu: <strong>làm sao bạn bắt được nó?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Câu trả lời là tư duy nguyên lý cơ bản (first principles). Khi AI nói rằng gấp đôi bán kính ống dẫn nước sẽ gấp đôi lượng nước chảy qua, bạn chỉ có thể bắt lỗi đó nếu bạn biết diện tích tỷ lệ với <em>bình phương</em> bán kính. Khi AI nói một tam đoạn luận là hợp lệ, bạn chỉ có thể phát hiện ngụy biện logic nếu bạn hiểu quy tắc suy luận.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI remix những gì đã tồn tại. Tư duy nguyên lý cơ bản suy luận từ sự thật nền tảng. Đó là cách bạn tiến vào lãnh thổ thực sự mới — và đó là cách bạn bắt được AI khi nó tự tin sai.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Điều này không có nghĩa bạn cần là chuyên gia về mọi thứ. Nhưng trong các lĩnh vực bạn làm việc và sáng tạo, hiểu biết nền tảng là thứ phân biệt bạn với người copy-paste output AI một cách mù quáng.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Thử sức mình. AI bên dưới đưa ra câu trả lời tự tin cho sáu bài toán ở các lĩnh vực khác nhau. Một số đúng. Một số sai một cách tinh vi. Bạn có thể phân biệt được không?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FirstPrinciplesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHAT STAYS HUMAN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Những gì vẫn thuộc về con người
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Sau tất cả những gì chúng ta đã khám phá, một mẫu hình nổi lên. Các kỹ năng vẫn thuộc về con người nhất không phải ngẫu nhiên — chúng tập trung quanh một vài năng lực sâu mà AI về cơ bản thiếu.
-      </p>
-    </FadeInBlock>
-
-    <!-- Human edge capabilities -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { icon: '🎯', name: 'Phán đoán', color: '#16C79A', text: 'Chọn cái gì quan trọng. Xây cái gì, cắt cái gì, ship cái gì, khai tử cái gì. AI có thể cung cấp thông tin cho quyết định nhưng không thể đưa ra quyết định — vì quyết định đòi hỏi giá trị, và giá trị là của con người.' },
-        { icon: '🤝', name: 'Đồng cảm', color: '#0EA5E9', text: 'Hiểu người khác cảm thấy thế nào và phản hồi với sự quan tâm chân thành. AI mô phỏng sự đồng cảm trong văn bản. Con người thực hành nó trong các mối quan hệ, trong khủng hoảng, trong những khoảnh khắc quan trọng nhất.' },
-        { icon: '🧭', name: 'Tầm nhìn', color: '#7B61FF', text: 'Nhìn thấy thứ chưa tồn tại và quyết định rằng nó nên tồn tại. Mọi sản phẩm, mọi công ty, mọi tác phẩm sáng tạo đều bắt đầu từ niềm tin của ai đó rằng thế giới cần thứ gì đó mới. AI không thể muốn thứ gì.' },
-        { icon: '⚡', name: 'Lãnh đạo', color: '#F5A623', text: 'Truyền cảm hứng cho người khác, giải quyết xung đột, xây dựng lòng tin. Đây là những kỹ năng xã hội cơ bản đòi hỏi sự hiện diện, trí tuệ cảm xúc, và khả năng chịu trách nhiệm.' },
-        { icon: '🔍', name: 'Đặt câu hỏi gốc', color: '#E94560', text: 'AI giỏi trả lời câu hỏi. Con người giỏi đặt những câu mà chưa ai nghĩ ra. Những đột phá quan trọng nhất trong khoa học, kinh doanh, và nghệ thuật bắt đầu bằng một câu hỏi, không phải một câu trả lời.' },
-      ].map((item, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
-              {item.icon}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {item.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Đây không chỉ là kỹ năng mềm "có thì tốt". Trong thế giới được AI hỗ trợ, chúng là <strong>kỹ năng cứng</strong>. Khả năng phán đoán, đồng cảm, lãnh đạo, hình dung — chúng trở thành lợi thế cạnh tranh lớn nhất của bạn chính xác <em>vì</em> AI xử lý mọi thứ khác.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Thẩm mỹ. Phán đoán. Đồng cảm. Tầm nhìn. Tư duy nguyên lý cơ bản. Đây không phải phần thừa sau khi AI chiếm quyền &mdash; chúng là kỹ năng <em>định nghĩa</em> bạn mang gì đến bàn.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI tạo ra lựa chọn. Bạn chọn đúng. Phán đoán đó — thẩm mỹ, đồng cảm, tầm nhìn, tư duy nguyên lý cơ bản — chính là lợi thế của bạn.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Còn một chương cuối cùng. Không còn lý thuyết nữa. Đã đến lúc kết hợp tất cả những gì bạn đã học và xây dựng thứ gì đó thật &mdash; thứ mà chỉ bạn mới nghĩ ra.
+        Còn một chương cuối cùng. Không còn lý thuyết nữa. Đã đến lúc kết hợp tất cả những gì bạn đã học và xây thứ gì đó thật &mdash; thứ mà chỉ bạn mới nghĩ ra.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Irreplaceable You" client:visible>
+        <IrreplaceableYou client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

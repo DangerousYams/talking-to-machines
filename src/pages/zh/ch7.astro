@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -47,314 +47,41 @@ const chapter = chapters[6];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        每个程序员都会记住那个时刻。你打开终端，用自然语言输入一个请求，然后看着 AI 阅读你的文件，理解你的架构，跨多个文件写代码，运行它，遇到错误，修复错误，再次运行——全程你没碰一行代码。这就是 Claude Code。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        每个程序员都记得那个时刻。你打开终端，用自然语言输入一个请求，然后看着 AI 读你的文件、理解你的架构、跨多个文件写代码、运行它、遇到报错、修复报错、再次运行——全程你一行代码都没碰。Claude Code 不是自动补全。它是一个<em>智能体式</em>编程工具，能看到你的整个项目、跨文件做修改、执行终端命令、并自己迭代修复错误。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        它不是自动补全。不是写代码片段的聊天机器人。Claude Code 是一个<em>代理式</em>编程工具——一个命令行伙伴，能看到你的整个项目，跨文件做修改，执行 shell 命令，并自主迭代修复错误。它不只是建议代码。它<strong>交付</strong>代码。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        不过，工具只有掌舵者才能决定好坏。Claude Code 能在几秒钟内写出一千行完美代码——或者一千行看起来合理但实际上是垃圾的代码。区别在于你。
+      <p class="text-lg leading-[1.85] mt-8">
+        但这个工具的好坏取决于操控它的人。Claude Code 可以在几秒内写出一千行完美的代码——也可以写出一千行看起来很像回事的垃圾。区别在于你。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Claude Code 如何思考
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        当你给 Claude Code 一个任务时，它不会直接开始打字。它运行第六章中的代理循环，专门为代码定制：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: '阅读。', desc: '扫描代码库——文件、导入、测试、配置。了解已有的内容。' },
-          { word: '规划。', desc: '决定改什么，在哪些文件中，什么顺序。' },
-          { word: '编写。', desc: '进行修改。创建文件。修改代码。' },
-          { word: '运行。', desc: '执行命令——构建、测试、lint。看看会发生什么。' },
-          { word: '修复。', desc: '如果出了问题，读错误信息，调整，再试一次。' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这个阅读-规划-编写-运行-修复的循环，就是 Claude Code 与简单代码生成器不同的地方。它不是给你一段代码然后走人。它<em>留在循环里</em>——反复迭代直到代码真正能用。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        把它想成结对编程。你描述你想要什么。Claude Code 写出来。测试失败了。Claude Code 读错误信息，调整，重新运行。这个循环可能发生三次、五次、十次——全在几秒钟内。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        看看循环的实际运作。输入一个请求，观看 Claude Code 工作。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        CLAUDE.md 文件
+        定义、生成、验证
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        大多数新手都忽略了这一点：<strong>你可以给 Claude Code 永久性的指令。</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        在你的项目根目录放一个叫 <code>CLAUDE.md</code> 的文件，Claude Code 会在每次会话开始时阅读它。就像系统提示词，但针对的是你的整个代码库。
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        当你给 Claude Code 一个任务，它会运行一个智能体循环：读代码库、规划要改什么、写编辑、运行代码、修复出错的地方。它可能在几秒内循环三次、五次、十次。你的工作不再是写每一行代码了。而是<strong>定义</strong>要构建什么，让 AI <strong>生成</strong>它，然后<strong>验证</strong>它确实是对的。大多数新手跳过了最后一步。他们看到代码出现了，看起来还不错，就继续了。别做那种人。生成的代码是初稿。你的验证才是让它可以发布的编辑。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # 我的项目<br /><br />
-          技术栈：Astro + React + Tailwind<br />
-          始终使用严格模式的 TypeScript。<br />
-          组件放在 src/components/ 下。<br />
-          为每个新函数编写测试。<br />
-          使用 Prettier 格式化——永远不要修改配置。<br /><br />
-          ## 风格规则<br />
-          - 优先使用命名导出而非默认导出<br />
-          - 使用 CSS modules，不使用内联样式<br />
-          - 组件保持在150行以内
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        没有 CLAUDE.md，你每次会话开头都要花几分钟重新解释你的偏好。有了它，Claude Code 已经知道你的技术栈、你的规范和你的边界。这是上下文工程（第三章）应用到编程上。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>把 CLAUDE.md 想成你项目的宪法。</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          它编码了你已经做出的决定——这样 AI 就能专注于那些真正新的决定。你的 CLAUDE.md 越具体，你需要重复自己的次数就越少。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        构建 Skills
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md 给了 Claude Code 关于你项目的通用知识。但具体的、可重复的任务呢？那就是 <strong>Skills</strong> 的用武之地。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        一个 skill 是你 CLAUDE.md 中的一组指令，教 Claude Code 如何处理某种特定类型的任务。把它想成一个配方："当有人让你创建一个新的 React 组件时，按这个步骤来。"
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        没有 skills，你每次都要解释同样的步骤。有了 skills，你解释一次，AI 就永远记住。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        一个好的 skill 有三个部分：
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: '触发条件', color: '#7B61FF', text: '什么时候激活这个 skill？"当被要求创建组件时……"或"当修复测试失败时……" 清晰的触发条件防止 AI 用错配方。' },
-        { letter: 'S', name: '步骤', color: '#16C79A', text: '具体按什么顺序做什么？编号步骤效果最好。要明确文件位置、命名规范和必需的模式。' },
-        { letter: 'E', name: '示例', color: '#F5A623', text: '展示成功的结果是什么样子。前后对比、示例文件结构或样本输出。有了示例，歧义就消失了。' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        试着写一个。从触发条件到步骤到示例，构建一个 skill。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        指定、生成、验证
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        使用 Claude Code 时，你的角色变了。你不再是写每一行代码的人。你是<strong>指定</strong>要构建什么、让 AI <strong>生成</strong>它、然后<strong>验证</strong>它确实正确的人。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这个循环——指定、生成、验证——是基本工作流：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: '指定', desc: '精确说明你想要什么。请求越清晰，你花在修复输出上的时间就越少。包括边界情况、文件位置和预期行为。', color: '#7B61FF' },
-          { step: '02', title: '生成', desc: '让 Claude Code 去发挥。观察代理循环——阅读、规划、编写、运行、修复。别在循环中途打断。', color: '#0EA5E9' },
-          { step: '03', title: '验证', desc: '这是你最重要的工作。读代码。运行测试。检查边界情况。它真的做了你要求的事吗？这是你愿意署名的代码吗？', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        大多数新手跳过了第三步。他们看到代码出现了，看起来合理，就继续了。别做那样的人。<strong>生成的代码是初稿。</strong>你的验证才是让它可以发布的编辑。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        讽刺的是：AI 生成代码越快，你的验证就<em>越重要</em>。没有判断力的速度只是更快地犯错。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        技能悖论
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        关于 AI 辅助编程，有一个令人不安的事实：<strong>你需要足够的知识来判断输出，即使你没有亲手写它。</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        如果你读不懂 Claude 生成的代码，你就无法验证它。如果你无法验证它，你就是在把别人的猜测发布到生产环境。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这造成了一个悖论：帮助新手写代码的工具，也需要足够的知识来评估那些代码。解决方法？用 Claude Code <em>来学习</em>，而不只是用来生产。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        当 Claude Code 写了你不理解的东西时，别直接接受。问它："解释一下这段代码做了什么，为什么选择了这种方法。"把 AI 当导师用，而不只是打字员。
+      <p class="text-lg leading-[1.85] mb-14">
+        秘密武器是 <code>CLAUDE.md</code> 文件——把它放在你的项目根目录，Claude Code 在每次会话开始时都会读取它。你的技术栈、命名规范、样式规则、测试要求——全部写一次，再也不用重复。这就是第三章学的上下文工程，应用在编程上。
       </p>
     </FadeInBlock>
 
@@ -362,43 +89,52 @@ const chapter = chapters[6];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>目标不是写每一行代码——而是理解每一行代码。</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          最好的 Claude Code 用户不是生成最多代码的人。而是提出最好问题、发现最微妙 bug 的人。你的知识就是你的质量过滤器。
+          如果你读不懂 Claude 生成的代码，你就没法验证它。最厉害的 Claude Code 用户不是生成代码最多的人——而是问出最好的问题、抓住最微妙的 bug 的人。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        你 vs. Claude Code。同样的烂代码，同样的目标。谁重构得更好？
+        看循环实战。输入一个请求，看 Claude Code 工作。
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="这章关于 Claude Code 的内容太震撼了——看着一个 AI 结对编程伙伴思考问题、写代码、自己调试。编程的未来已经到来。" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        你有了 CLAUDE.md、自定义 skills 和指定-生成-验证的节奏。Claude Code 不是在<em>替</em>你写代码——而是在<em>和</em>你写代码。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code 不是在替你写代码——而是在跟你一起写代码。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        一次对话能搞定一个任务。但真正的项目有几十个。接下来：如何把大野心拆解成 AI 能实际执行的小块。
+        一次对话能处理一个任务。但真正的项目有几十个任务。接下来：如何把大目标拆成 AI 真正能执行的小块。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

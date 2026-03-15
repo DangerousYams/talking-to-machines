@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
 import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import ComplexityScore from '../../components/breaks/ComplexityScore';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[7];
 ---
@@ -30,7 +31,7 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Karmaşıklığı<br />orkestra etmek
+          Karmaşıklığı<br />Orkestra Etmek
         </h1>
       </FadeInBlock>
 
@@ -46,203 +47,18 @@ const chapter = chapters[7];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Her iddialı aceminin karşılaştığı an şu: yapay zekadan gerçek bir şey inşa etmesini istiyorsun — tam bir oyun, arka uçlu bir web sitesi, kaynaklı bir araştırma makalesi — ve her şey çöküyor. Yapay zeka yeterince akıllı olmadığı için değil. Proje tek bir sohbet için çok büyük olduğu için.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Her hırslı yeni başlayanın çarptığı an şu: yapay zekadan gerçek bir şey inşa etmesini istiyorsun — tam bir oyun, backend'li bir web sitesi, kaynaklı bir araştırma makalesi — ve her şey dağılıyor. Yapay zeka yeterince akıllı olmadığı için değil. Proje tek bir sohbete sığamayacak kadar büyük olduğu için. Bir duvar dolusu gereksinim yapıştırıyorsun ve yirmi dakika sonra istediğinin yarısını unuttuğunu fark ediyorsun.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Bir sürü gereksinimi yapıştırıyorsun, yapay zeka güvenle dolu bir yanıt veriyor ve yirmi dakika sonra istediğinin yarısını unuttuğunu, mimaride kendisiyle çeliştiğini ve var olmayan bir kütüphane uydurduğunu fark ediyorsun. Tekrar deniyorsun. Aynı sonuç, farklı halüsinasyonlar.
+      <p class="text-lg leading-[1.85] mt-8">
+        Bu bir yapay zeka sorunu değil. Bu bir <strong>orkestrasyon sorunu</strong>. Ve bunu çözmeyi öğrenmek, yapay zekayı tek seferlik görevler için kullanan biriyle gerçek şeyler inşa etmek için kullanan biri arasındaki farktır.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Bu bir yapay zeka sorunu değil. Bir <strong>orkestrasyon</strong> sorunudur. Ve bunu çözmeyi öğrenmek, yapay zekayı tek seferlik görevler için kullanan biriyle gerçek şeyler inşa etmek için kullanan biri arasındaki farktır.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Tek prompt tuzağı
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Yapay zekayı ilk öğrendiğinde, doğal olarak her şeyi tek seferde yapmaya çalışırsın. Tek devasa prompt. Tek sohbet. Tek deneme. Ve basit görevler için — e-posta yazmak, beyin fırtınası yapmak, bir kavramı açıklamak — bu iyi çalışır.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ama karmaşıklık, tek prompt yaklaşımını üç şekilde kırar:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { num: '1', title: 'Bağlam taşması', text: 'Yapay zeka aynı anda yalnızca belirli miktarda bilgiyi tutabilir. Tam bir proje bu sınırı aşar, bu yüzden yapay zeka önceki gereksinimlerini "unutmaya" başlar.' },
-          { num: '2', title: 'Dikkat dağılması', text: 'Bağlam penceresi içinde bile, yapay zekadan aynı anda on iki farklı konuyu idare etmesini istemek her birine daha az odaklanması anlamına gelir. Kalite her alanda düşer.' },
-          { num: '3', title: 'Hata birikmesi', text: 'Karmaşık bir çıktıdaki tek bir küçük hata zincirlenir. Yapay zeka veritabanı şemasını yanlış yaparsa, o şema üzerine inşa edilen her şey yanlıştır — ve üretilmiş kod duvarında fark etmek zordur.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
-            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
-              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
-                {item.num}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Çözüm daha iyi bir prompt değil. Daha iyi bir süreçtir.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DECOMPOSITION ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Ayrıştırma: usta beceri
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Profesyonel yazılım mühendisleri tüm uygulamaları tek oturumda inşa etmez. Onları parçalara ayırırlar — modüller, bileşenler, fonksiyonlar — her birinin net bir amacı, net girdileri ve net çıktıları vardır. Sonra birleştirirler.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Karmaşık projelerde yapay zeka ile çalışmak aynı disiplini gerektirir. Projeni, tek bir odaklanmış yapay zeka sohbetinin iyi yönetebileceği kadar küçük görevlere <strong>ayrıştırman</strong> gerekir.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        İyi ayrıştırma üç kurala uyar:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Tek sorumluluk.', desc: 'Her görev tek bir şey yapar. "Veritabanını tasarla VE API\'yi oluştur VE ön yüzü yaz" üç görevdir, bir değil.' },
-          { word: 'Net arayüzler.', desc: 'Her görevin tanımlı bir girdisi (başlamak için neye ihtiyacı var) ve tanımlı bir çıktısı (ne üretir) vardır. Bir görevin çıktısı sonrakinin girdisi olur.' },
-          { word: 'Minimum bağımlılıklar.', desc: 'Paralel yapılabilecek görevler paralel yapılmalı. Sadece bir görev gerçekten diğerinin çıktısına ihtiyaç duyduğunda bağımlılık oluştur.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Ayrıştırma insani bir beceridir, yapay zeka becerisi değil.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Yapay zeka görev dağılımı konusunda beyin fırtınası yapmanı yardımcı olabilir, ama işi nasıl böleceğine, neyin neye bağlı olduğuna ve neyi önceliklendireceğine karar vermek — bu senin işin. Proje yönetimidir ve geliştirebileceğin en değerli becerilerden biridir.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Gerçek bir projeyi ayrıştırmayı dene. Görevleri sürükle, bağımlılıkları izle, planın şekillenişini gör.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectOrchestrator client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE HANDOFF PATTERN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Devir teslim kalıbı
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Projeyi görevlere ayırdıktan sonra, onları birbirine bağlamanın bir yoluna ihtiyacın var. Yapay zeka iş akışlarında bu bağlantı <strong>devir teslim</strong>dir — bir sohbetin çıktısının bir sonrakinin girdisi olduğu an.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Devir teslim kalıbı</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Sohbet 1 bir <strong>ürün</strong> üretir — bir belge, bir şema, bir plan.<br />
-          O ürün Sohbet 2'ye <strong>bağlam</strong> olarak yapıştırılır.<br />
-          Sohbet 2 onun üzerine inşa eder ve sonraki ürünü üretir.<br />
-          Proje tamamlanana kadar tekrarla.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bunu bir bayrak yarışı gibi düşün. Her koşucu (sohbet) kendi etabını koşar ve bayrağı (ürünü) sonrakine verir. Bayrak kritik parçadır — düşürülürse veya bozulursa, sonraki koşucu sendelenir.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bu, devir teslim ürünlerinin <em>keskin</em> olması gerektiği anlamına gelir. Bir veritabanı şeması, veri modelinin belirsiz açıklamasından daha iyi bir devir teslimdir. Numaralı API endpoint listesi, "kullanıcı işlerini yöneten bir arka uç lazım"dan daha iyidir. Ürün ne kadar keskinse, sonraki sohbet o kadar iyi performans gösterir.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Devir teslim ürününün kalitesi, sonrasında inşa edilen her şeyin kalitesini belirler. Çöp girer, çöp çıkar — sohbetler arasında.
-      </div>
     </FadeInBlock>
   </section>
 
@@ -253,153 +69,72 @@ const chapter = chapters[7];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Bağlam paketleme sanatı
+        Bağlam Paketleme Sanatı
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Her yeni yapay zeka sohbeti başlattığında, çoğu insanın fark etmediği bir karar veriyorsun: <strong>hangi bağlamı dahil edeceksin?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Sınırlı bir bütçen var — bağlam penceresi. Ve potansiyel olarak ilgili bir bilgi yığının: kod dosyaları, belgeler, önceki sohbetler, hata günlükleri, tasarım özellikleri. Hepsi sığmaz. Ve sığsa bile, her şeyi içine doldurmak yapay zekanın dikkatini dağıtır.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Karmaşık projeler tek prompt yaklaşımını kırar. Bağlam taşar, dikkat dağılır, hatalar birikir. Çözüm daha iyi bir prompt değil — <strong>ayrıştırma</strong>dır. Projeyi odaklı görevlere böl, sonra her görev için yapay zekanın gerçekten ihtiyaç duyduğu bağlamı dikkatle seç. Çok az verirsen halüsinasyon yapar. Çok fazla verirsen odağını kaybeder. Tatlı nokta cerrahi hassasiyettir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bağlam paketleme, bir seyahat için bavul hazırlamak gibidir. Tüm dolabını getiremezsin. Nereye gittiğini (görev), neye ihtiyacın olacağını (ilgili bilgi) ve neyi arkada bırakabileceğini (geri kalan her şey) düşünmen gerekir.
+      <p class="text-lg leading-[1.85] mb-14">
+        Bunu bavul hazırlamak gibi düşün. Tüm gardırobunu götüremezsin. Nereye gittiğini (görev), neye ihtiyacın olacağını (ilgili bilgi) ve neyi geride bırakabileceğini (geri kalan her şey) düşünmen gerekiyor. Her sohbet tam olarak ihtiyaç duyduğu bağlamı alır — ne fazla, ne eksik.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
-        {[
-          { label: 'Çok az bağlam', color: '#E94560', text: 'Yapay zekanın ihtiyacı olan şey yok ve boşlukları halüsinasyonlarla doldurur. Güvenli konuşur ama detayları uydurur.' },
-          { label: 'Çok fazla bağlam', color: '#F5A623', text: 'Yapay zeka bunalır. Önemli detaylar gürültüde kaybolur. Çıktı sıradan ve odaksız olur.' },
-          { label: 'Doğru bağlam', color: '#16C79A', text: 'Yapay zekanın bu spesifik görev için tam olarak ihtiyacı olan şey var. Çıktı kesin, ilgili ve uygulanabilir.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
-              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
-                {item.label}
-              </p>
-              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Editör gibi düşün, istifçi gibi değil.</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Önemli nokta</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Her yapay zeka etkileşiminden önce kendine sor: yapay zekanın bu spesifik görevi yapmak için ne <em>bilmesi gerekiyor</em>? Onu dahil et. Geri kalan her şeyi dışarıda bırak. Bu, proje yönetimine uygulanmış bağlam mühendisliğidir.
+          Teslim belgenin kalitesi, sonrasında inşa edilen her şeyin kalitesini belirler. Net bir şema her zaman belirsiz bir açıklamayı yener. Çöp girerse, çöp çıkar — sohbetler arası da dahil.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO CONTEXT PACKING -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Bir bağlam bavulu hazırla. Taşırmadan önemli olanı sığdırabilir misin?
+        Bir bağlam bavulu hazırla. Önemli olanları taşırmadan sığdırabilecek misin?
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextPacking client:visible />
-    </FadeInBlock>
+    <ContextPacking client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ VERSION CONTROL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Neyin işe yaradığını takip etmek
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Yapay zekanın en zor kısmı prompt yazmak değil — karmaşık projeleri birden fazla sohbet arasında orkestra etmek. Bu kurs sonunda nasıl yapılacağını açıklıyor." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Herkesin başına gelen bir senaryo: tam ihtiyacın olan çıktıyı üreten harika bir yapay zeka sohbetin oluyor. Bir hafta sonra benzer bir şeye ihtiyacın var. Ne söylediğini hatırlamıyorsun. Yeniden oluşturmaya çalışıyorsun. Sonuçlar daha kötü.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Karmaşık yapay zeka projeleri çok sayıda ürün üretir — işe yarayan promptlar, iyi çıktılar, verilen kararlar, başarısız olan yaklaşımlar. Bunları takip etmek için bir sistemin olmadan, zaten çözdüğün şeyleri yeniden keşfetmekle saatler harcarsın.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Profesyonel geliştiriciler kod tabanlarındaki her değişikliği takip etmek için sürüm kontrolü (Git gibi) kullanır. Aynı zihniyeti yapay zeka çalışmana uygulamalısın:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
-        {[
-          { icon: '01', title: 'Promptlarını kaydet', desc: 'Bir prompt harika çıktı ürettiğinde, bir yere kaydet. Basit bir not uygulaması, bir markdown dosyası, bir prompt kütüphanesi. Tam ifade önemlidir.' },
-          { icon: '02', title: 'Çıktıları kaydet', desc: 'Üzerine inşa ettiğin yapay zeka tarafından üretilmiş ürünleri sakla. Veritabanı şemaları, API tasarımları, taslaklar. Bunlar devir teslim belgelerindir ve tekrar ihtiyacın olacak.' },
-          { icon: '03', title: 'Kararlarını belgele', desc: 'Sen ve yapay zeka iki yaklaşımı keşfedip birini seçtiğinizde, nedenini yaz. Proje yön değiştirdiğinde gelecekteki sen şimdiki sana teşekkür edecek.' },
-          { icon: '04', title: 'Neyin başarısız olduğunu takip et', desc: 'Çöp üreten bir prompt değerli bilgidir. Neyin işe yaramadığını bilmek savaşın yarısıdır. Hataları tekrarlamamak için bir "başarısızlık günlüğü" tut.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
-                {item.icon}
-              </span>
-              <div>
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.6}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Prompt kütüphanen bir müzisyenin çalışma defteri gibidir. Ne kadar çok biriktirirsen, o kadar hızlanırsın ve sıfırdan o kadar az başlarsın.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Tek prompt düşüncesinden ayrıştırma, devir teslim kalıpları ve bağlam paketlemeye geçtin. Karmaşık projeler artık korkutucu değil &mdash; keskin ürünlerle birbirine bağlanan bir dizi odaklanmış sohbet.
-      </p>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        Karmaşık projeler korkutucu değil. Sadece net belgelerle birbirine bağlanan bir dizi odaklı sohbet.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Bunların hepsinden daha önemli bir beceri daha var: yapay zekanın ne zaman <em>yanlış</em> olduğunu bilmek. Halüsinasyonlar, dalkavukluk ve seni dürüst tutan doğrulama alışkanlıkları. Sıradaki bu.
+        Sırada: yapay zekanın ne zaman <em>yanlış</em> olduğunu bilmek. Halüsinasyonlar, dalkavukluk ve seni dürüst tutan doğrulama alışkanlıkları.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(15,52,96,0.06) 15%, rgba(15,52,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0F3460" toolName="Complexity Score" client:visible>
+        <ComplexityScore client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

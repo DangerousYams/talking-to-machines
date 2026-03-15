@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
-import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
-import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+import VibeCheck from '../../components/breaks/VibeCheck';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[2];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[2];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chapter Three
+          अध्याय तीन
         </p>
       </FadeInBlock>
 
@@ -37,292 +37,104 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI भूलता नहीं &mdash; वो पहले से<br />याद ही नहीं रखता था।
+          AI भूलता नहीं &mdash; वो पहले से<br />याद ही नहीं रख रहा था।
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        मान लो तुम किसी दोस्त से बात कर रहे हो, लेकिन हर कुछ मिनट में कोई तुम्हारा whiteboard मिटा देता है। तुम फिर से शुरू करते हो। तुम्हारा दोस्त बचे हुए text को देखकर ऐसे continue करने की कोशिश करता है जैसे कुछ हुआ ही न हो। AI के "brain" के अंदर long conversation के दौरान कुछ ऐसा ही होता है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        <strong>AI की कोई memory नहीं होती।</strong> वैसी नहीं जैसी तुम memory के बारे में सोचते हो। उसे कल की conversation याद नहीं रहती। अगर conversation बहुत long हो गई है तो उसे <em>इसी</em> conversation की शुरुआत भी याद नहीं रहती। हर response वो सिर्फ उसी base पर देता है जो currently उसे visible है &mdash; text का एक window जिसे <strong>context window</strong> कहते हैं।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        इस window को समझना &mdash; इसमें क्या जाता है, कितना बड़ा है, और भर जाने पर क्या होता है &mdash; यही AI के साथ काम करने की सबसे important skills में से एक है।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        हर बार जब तुम AI को message भेजते हो, वो तुम्हारी <em>पूरी conversation</em> scratch से पढ़ता है &mdash; हर message जो तुमने भेजी, हर response जो इसने दिया &mdash; reply generate करता है, और फिर सब कुछ भूल जाता है। अगली बार, same thing। पूरा transcript फिर से feed होता है। ये world का सबसे diligent लेकिन amnesiac reader है: हर बार completely thorough, हर turn पर zero से start।
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <!-- ═══ CONCEPT SETUP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        वो Whiteboard जो मिट जाता है
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Window के Edges हैं
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        जब तुम AI को कोई message भेजते हो, असल में यह होता है: system तुम्हारी <em>पूरी conversation</em> &mdash; हर message जो तुमने भेजी है, हर response जो AI ने दी है &mdash; सब कुछ वापस model को एक single block of text की तरह feed करता है। AI सब कुछ पढ़ता है, next response generate करता है, और फिर... सब भूल जाता है।
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        वो transcript जो AI हर turn पर re-read करता है? वो <strong>context window</strong> नाम की चीज़ के अंदर रहता है &mdash; जो <strong>tokens</strong> में measure होती है (roughly एक token per three-quarters of a word)। Claude की window लगभग 200,000 tokens hold करती है &mdash; एक 500-page book। Huge लगता है, लेकिन तुम्हारी हर message, हर response, और हर hidden system instruction सब same budget से खाते हैं। तुम्हारे सोचे से fast भरती है।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        अगली बार जब तुम message भेजते हो, पूरा process repeat होता है। System फिर से पूरी conversation paste करता है, तुम्हारा नया message add करता है, और AI सब कुछ fresh पढ़ता है। यह world का सबसे diligent लेकिन amnesiac reader है &mdash; हर बार completely thorough, लेकिन हर turn पर scratch से शुरुआत।
+        जब budget खत्म हो जाता है, सबसे पुरानी messages edge से fall off हो जाती हैं। तुमने अपनी dietary restrictions message three में mention की थीं? Message fifteen तक AI शायद उन्हें देख ही न पाए। वो careless नहीं हो रहा &mdash; literally नहीं देख सकता जो अब उसके सामने नहीं है। AI सिर्फ उतना ही अच्छा है जितनी information currently उसकी window में है।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI का हर response पूरी तरह उसी पर based होता है जो उस moment context window में है। उससे ज्यादा कुछ नहीं। Context window memory नहीं है। यह एक whiteboard है &mdash; और इसके edges हैं।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        इसके बहुत बड़े implications हैं। मतलब AI सिर्फ उतना ही अच्छा है जितनी information currently उसके सामने है। कोई critical detail छूट गई? AI magically recall नहीं करेगा। Window को noise से भर दिया? AI confused हो जाएगा। <strong>Context window तुम्हारा सबसे important resource है।</strong> इसे manage करना सीखना ही casual users और genuinely powerful results पाने वालों के बीच का difference है।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Tokens: AI की Alphabet
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI words वैसे नहीं पढ़ता जैसे तुम पढ़ते हो। वो <strong>tokens</strong> पढ़ता है &mdash; text के chunks जो usually किसी word के three-quarters के बराबर होते हैं। "Incredible" word दो tokens है। "AI" एक token है। Word से पहले का space अक्सर same token में bundle हो जाता है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Quick math</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1 token &asymp; 4 characters &asymp; 0.75 words<br />
-          100 tokens &asymp; 75 words<br />
-          Typical page of text &asymp; 300 tokens<br />
-          Full novel &asymp; 100,000 tokens
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        यह क्यों matter करता है? क्योंकि हर AI model का <strong>context window size</strong> tokens में measured होता है। Claude का context window 200,000 tokens hold कर सकता है &mdash; यह roughly 500-page की book के बराबर है। GPT-4o 128,000 hold करता है। यह enormous लगता है, लेकिन तुम्हारे सोचने से भी fast भर जाता है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        हर message जो तुम भेजते हो, हर response जो AI लिखता है, हर system instruction जो behind the scenes काम कर रही है &mdash; सब same shared budget से tokens consume करते हैं। और जब यह budget खत्म हो जाता है, चीजें edge से fall off होने लगती हैं।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextWindowViz client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        जब Window Overflow हो जाती है
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        तुम conversation के ten messages में हो। तुमने अपने dietary restrictions message three में mention किए थे। Message fifteen तक तुम restaurant recommendations में deep हो। तुम पूछते हो: <em>"Wait, मैंने कौन से dietary restrictions mention किए थे?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        और AI कहता है: <em>"I don't think तुमने कोई specific dietary restrictions mention किए थे।"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        तुम frustrated feel करते हो। <em>यह right there है, मैंने कहा था!</em> लेकिन बात यह है: वो <strong>right there नहीं</strong> है। अब नहीं। वो early message visible window से slip out हो गया होगा, या model ने more recent context के favor में इसे deprioritize कर दिया होगा। AI careless नहीं हो रहा। वो literally नहीं देख सकता जो अब उसके सामने नहीं है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>यह bug नहीं है। यह architecture है।</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI context window को एक human की तरह process करता है जो document को single sitting में पढ़ रहा हो। अगर document 100 pages का है, तो page 3 की details page 95 पर fuzzy हो सकती हैं। Solution bigger window नहीं है &mdash; smarter packing है जो अंदर जाता है।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ForgettingExperiment client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SYSTEM PROMPT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        System Prompt: Hidden Instructions
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        हर AI conversation का एक part है जो तुम कभी नहीं देखते। तुम्हारी first message से पहले, AI के hello कहने से पहले, context window के बिल्कुल top पर text का एक block sitting रहता है। इसे <strong>system prompt</strong> कहते हैं, और यह everything को shape करता है जो follow होता है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        System prompt वह जगह है जहाँ AI को अपनी personality, rules, boundaries मिलती हैं। जब ChatGPT weapon बनाने में help करने से refuse करता है, वो system prompt है। जब Claude "I'd be happy to help" कहता है, वो trained behavior है जो system prompt से reinforce होता है। जब customer service chatbot on topic रहता है, वो &mdash; तुमने guess किया &mdash; system prompt है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Example system prompt</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "You are a helpful cooking assistant. Only answer questions about cooking and food preparation. If asked about anything else, politely redirect the conversation back to cooking topics. Keep responses under 150 words. Use a warm, encouraging tone."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        System prompt special है क्योंकि यह <strong>context window के top पर pinned रहता है</strong>। कितनी भी long conversation हो जाए, system prompt scroll away नहीं होता। हमेशा वहाँ रहता है, हमेशा AI के behavior को influence करता रहता है। यही कारण है कि यह entire context window की most valuable real estate है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        System prompt को AI की job description की तरह सोचो। यह AI को नहीं बताता कि क्या कहना है &mdash; यह बताता है कि कौन <em>बनना</em> है।
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SystemPromptSandbox client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Context Manage करने की Strategies
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14">
-        अब जब तुम window को समझ गए हो, यहाँ हैं pro की तरह इसे manage करने के तरीके। यही techniques उन लोगों को अलग करती हैं जो "AI use करते हैं" उनसे जो extraordinary results पाते हैं।
+        इसीलिए सबसे अच्छे AI users सिर्फ good prompts नहीं लिखते &mdash; वो manage करते हैं कि window में क्या <em>जाता है</em>। Periodically summarize करो ताकि key details visible रहें। जो matter करता है उसे front-load करो। Topic shift हो तो fresh start करो। Structured formats use करो ताकि AI context efficiently parse कर सके। <strong>Context engineering ही नई prompt engineering है।</strong>
       </p>
     </FadeInBlock>
 
-    <!-- Strategies — editorial layout matching ch1's building blocks -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { num: '1', name: 'चलते चलते summarize करो', color: '#7B61FF', text: 'हर 5-10 messages पर AI से key decisions और details का brief recap लिखने को कहो। फिर उस summary को अपनी अगली message में paste करो। यह context को most important information के साथ front और center पर "reset" कर देता है।' },
-        { num: '2', name: 'जो matter करता है उसे आगे रखो', color: '#16C79A', text: 'Most critical information अपनी message की शुरुआत में रखो, end में bury मत करो। AI first और last में आने वाली चीज़ों पर ज्यादा attention देता है — middle lost हो सकता है, specially long prompts में।' },
-        { num: '3', name: 'Strategically fresh start लो', color: '#0EA5E9', text: 'जब topic significantly shift हो जाए तो नई conversation start करने से मत डरो। जो decide किया है उसका summary carry over करो, full history नहीं। Clean context अक्सर cluttered वाले से better होता है।' },
-        { num: '4', name: 'Explicit रहो कि क्या remember करना है', color: '#F5A623', text: '"Important: the user is vegetarian. Do not forget this." Silly लगता है, लेकिन काम करता है। Explicit reminders anchors की तरह काम करते हैं जिन्हें AI ज्यादा heavily weigh करता है।' },
-        { num: '5', name: 'Structured formats use करो', color: '#E94560', text: 'Bulleted lists, headers, और clear labels AI को तुम्हारे context को efficiently parse करने में help करते हैं। Well-organized prompt prose के wall के comparison में twice token count के worth का होता है।' },
-      ].map((strategy, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
-              {strategy.num}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {strategy.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {strategy.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Context engineering ही नई prompt engineering है।</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          अच्छा prompt लिखना first step है। लेकिन decide करना कि AI के सामने कौन सी information रखनी है &mdash; और कैसे structure करनी है &mdash; वहीं असली leverage है। World का best prompt भी fail हो जाता है अगर context wrong है।
+          Great prompt लिखना step one है। Decide करना कि AI के सामने कौन सी information रखनी है &mdash; और कैसे structure करनी है &mdash; यही असली leverage है। World का best prompt भी fail हो जाता है अगर context wrong है।
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Context window को भरते, overflow होते, और भूलते देखो &mdash; real time में।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ContextWindowViz client:visible />
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Finally समझ आया कि AI conversation के बीच में चीज़ें क्यों 'भूल' जाता है। यह memory नहीं है — यह context window है। इस course ने live demos के साथ बहुत clearly explain किया।" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        अब AI के साथ तुम्हारी हर conversation different है। तुम whiteboard देख सकते हो। Window के edges feel कर सकते हो। तुम्हें पता है कब summarize करना है, कब fresh start लेना है, और system prompt कहाँ hide होता है।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        अब तुम whiteboard देख सकते हो। Window के edges feel कर सकते हो। यह AI के साथ तुम्हारी हर conversation बदल देता है।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        अब तक हम chatbots के साथ काम कर रहे थे। अगले chapter में हम zoom out करते हैं &mdash; chat window के beyond सैकड़ों AI tools exist करते हैं, और landscape जानना change कर देता है कि तुम क्या possible समझते हो।
+        अब तक हम chatbots के साथ काम कर रहे थे। आगे, हम zoom out करते हैं &mdash; chat window के beyond सैकड़ों AI tools exist करते हैं, और landscape जानना बदल देता है कि तुम क्या possible समझते हो।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Vibe Check" client:visible>
+        <VibeCheck client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -4,12 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
 import JobTransformer from '../../components/widgets/ch10/JobTransformer';
-import TasteTest from '../../components/widgets/ch10/TasteTest';
-import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[9];
 ---
@@ -18,7 +17,6 @@ const chapter = chapters[9];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -44,289 +42,93 @@ const chapter = chapters[9];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        كل مرة تظهر قدرة جديدة للذكاء الاصطناعي، يظهر نفس العنوان: <em>"هل سيستبدل الذكاء الاصطناعي [أدخل الوظيفة]؟"</em> إنه السؤال الخاطئ. كان دائمًا السؤال الخاطئ. السؤال الصحيح هو: <em>"ما الذي يجعله ممكنًا ولم يكن ممكنًا من قبل؟"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        الذكاء الاصطناعي لا يستبدل البشر. يستبدل <strong>المهام</strong>. وعندما تدقق في أي وظيفة — أي مهنة، أي سعي إبداعي، أي تخصص — تجد مزيجًا: بعض المهام يتعامل معها الذكاء الاصطناعي ببراعة، وبعضها يساعد فيها، وبعضها يبقى بعناد وجمال بشريًا.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        هذا الفصل عن إيجاد ذلك الخط. ليس لتخاف منه، بل لتقف <strong>على الجانب الصحيح منه</strong> — الجانب حيث تصبح مهاراتك البشرية الفريدة أكثر قيمة، وليس أقل.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        كل مرة تظهر قدرة جديدة للذكاء الاصطناعي، يظهر نفس العنوان: <em>"هل سيستبدل الذكاء الاصطناعي [أدخل الوظيفة]؟"</em> إنه السؤال الخاطئ. الذكاء الاصطناعي لا يستبدل البشر. يستبدل <strong>المهام</strong>. وعندما تدقق في أي وظيفة — أي مهنة، أي سعي إبداعي — تجد مزيجًا: بعض المهام يتعامل معها الذكاء الاصطناعي ببراعة، وبعضها يساعد فيها، وبعضها يبقى بعناد وجمال بشريًا.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        الطيف، وليس الهاوية
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        معظم النقاشات عن الذكاء الاصطناعي والوظائف تعاملها كثنائية: إما الذكاء الاصطناعي يستطيع فعل وظيفتك أو لا يستطيع. نهاية العالم الآلية أو الوضع الطبيعي. لكن الواقع طيف.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        بعض المهام قابلة للأتمتة بالكامل تقريبًا. بعضها يعززها الذكاء الاصطناعي. وبعضها لم يُمس. والأكثر إثارة — التي تستحق الانتباه — تقع في المنتصف، حيث يعمل البشر والذكاء الاصطناعي معًا.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        إدخال البيانات؟ الذكاء الاصطناعي يتعامل معها. جدولة الاجتماعات؟ محلولة تقريبًا. كتابة مسودة أولى؟ الذكاء الاصطناعي جيد بشكل صادم. لكن <em>اختيار ما تبنيه</em>، و<em>قراءة الموقف في أزمة</em>، و<em>تحديد ما تعنيه البيانات</em> — هذه تتطلب شيئًا لا يملكه الذكاء الاصطناعي.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        أين تقع كل مهارة فعلاً؟ اختبر حدسك.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillsSpectrum client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         الوظائف لا تختفي — بل تتحول
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        عندما ظهرت أجهزة الصراف الآلي في السبعينيات، توقع الجميع أن صرافي البنوك سيختفون. بدلاً من ذلك، عدد صرافي البنوك <em>زاد</em>. لماذا؟ لأن أجهزة الصراف جعلت فتح فروع جديدة أرخص، ووظيفة الصراف تحولت من عد النقود إلى بيع المنتجات المالية وبناء علاقات العملاء.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        الذكاء الاصطناعي يفعل الشيء نفسه، لكن أسرع وعبر كل صناعة في وقت واحد. المسمى الوظيفي يبقى نفسه. <em>الوصف الوظيفي</em> يتغير بشكل جذري. صحفي في 2025 لا يقوم بنفس العمل كصحفي في 2015، حتى لو كان التوقيع يبدو متطابقًا.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        عندما ظهرت أجهزة الصراف الآلي، توقع الجميع أن صرافي البنوك سيختفون. بدلاً من ذلك، أعدادهم <em>زادت</em> — لأن أجهزة الصراف جعلت فتح فروع جديدة أرخص، ووظيفة الصراف تحولت من عد النقود إلى بناء العلاقات. الذكاء الاصطناعي يفعل الشيء نفسه، لكن أسرع وعبر كل صناعة في وقت واحد. المسمى الوظيفي يبقى نفسه. <em>الوصف الوظيفي</em> يتغير بشكل جذري.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        إدخال البيانات؟ الذكاء الاصطناعي يتعامل معها. المسودات الأولى؟ جيدة بشكل مذهل. لكن <em>اختيار ما تبنيه</em>، و<em>قراءة الموقف في أزمة</em>، و<em>تحديد ما تعنيه البيانات</em> — هذه تتطلب حكمًا وتعاطفًا ورؤية يفتقر إليها الذكاء الاصطناعي جذريًا.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>المعادلة المهنية الجديدة</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
           ليست "البشر ضد الذكاء الاصطناعي." بل <strong>البشر مع الذكاء الاصطناعي ضد البشر بدون الذكاء الاصطناعي</strong>. الناس الذين يتعلمون العمل <em>مع</em> أدوات الذكاء الاصطناعي لا يفقدون وظائفهم — يؤدون وظائفهم أسرع وأفضل ومع قدرات لم تكن لديهم من قبل.
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mt-10">
-        اختر مهنة أدناه وشاهد بالضبط كيف يحولها الذكاء الاصطناعي من الداخل. لا تختفي مهمة واحدة بالكامل. لكن شكل كل وظيفة يتغير.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        اختر مهنة أدناه وشاهد بالضبط كيف يحولها الذكاء الاصطناعي من الداخل. لا تختفي مهمة واحدة بالكامل.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <JobTransformer client:visible />
-    </FadeInBlock>
+    <JobTransformer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        الذوق: المهارة التي لا تُستبدل
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="This course doesn't hype AI or fear-monger about jobs. It maps exactly which skills stay human and which get augmented. Refreshingly honest." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        الذكاء الاصطناعي يستطيع توليد مئة مفهوم لشعار في دقيقة. يستطيع كتابة عشر مقدمات لمقال قبل أن تنتهي من قهوتك. يستطيع إنتاج خمسة تصاميم لتطبيق، وأربعة شعارات، وثلاث خطط عمل.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        لكنه لا يستطيع إخبارك أيها هو <em>الصحيح</em>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        في عالم حيث توليد الخيارات شبه مجاني، القدرة على <em>اختيار الصحيح</em> تصبح أقيم مهارة يمكنك امتلاكها. هذه القدرة لها اسم: الذوق.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        الذوق ليس شيئًا غامضًا. إنه مُدرَّب. تطوره بمشاهدة الكثير من العمل الجيد والكثير من العمل السيئ، وتعلم التعبير عن <em>لماذا</em> أحدهما أفضل من الآخر. إنه المصور الذي يعرف أي لقطة يحتفظ بها. الكاتب الذي يعرف أي جملة يحذفها. المصمم الذي يعرف متى يكون الأقل أكثر.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        الذكاء الاصطناعي يولّد. أنت تنتقي. هذا هو تقسيم العمل الجديد. دعنا نرى مدى حدة ذوقك.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TASTE TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TasteTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        معرفتك هي كاشف الهراء
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        في الفصل التاسع تحدثنا عن هلوسات الذكاء الاصطناعي — كيف يمكنه ذكر أكاذيب بثقة تامة. لكن إليك السؤال المزعج: <strong>كيف تكتشفها؟</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        الإجابة هي التفكير من المبادئ الأولى. عندما يخبرك الذكاء الاصطناعي أن مضاعفة قطر الأنبوب تضاعف تدفق الماء، لا تستطيع اكتشاف الخطأ إلا إذا كنت تعرف أن المساحة تتناسب مع <em>مربع</em> نصف القطر. عندما يقول الذكاء الاصطناعي أن قياسًا منطقيًا صحيح، لا تستطيع اكتشاف المغالطة إلا إذا كنت تفهم قواعد الاستنتاج.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        الذكاء الاصطناعي يعيد خلط ما هو موجود. التفكير من المبادئ الأولى يستنتج من الحقائق الأساسية. هكذا تدفع نحو أرض جديدة فعلاً — وهكذا تكتشف ذكاءً اصطناعيًا مخطئًا بثقة.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        هذا لا يعني أنك تحتاج أن تكون خبيرًا في كل شيء. لكن في المجالات التي تعمل وتبدع فيها، فهمك الأساسي هو ما يفصلك عن شخص ينسخ ويلصق مخرجات الذكاء الاصطناعي بشكل أعمى.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        اختبر نفسك. الذكاء الاصطناعي أدناه يعطي إجابات واثقة لست مسائل عبر مجالات مختلفة. بعضها صحيح. وبعضها خاطئ بشكل دقيق. هل تستطيع تمييز أيها أيها؟
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FirstPrinciplesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHAT STAYS HUMAN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        ما يبقى بشريًا
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        بعد كل ما استكشفناه، يظهر نمط. المهارات التي تبقى أكثر بشرية ليست عشوائية — بل تتجمع حول قدرات عميقة يفتقر إليها الذكاء الاصطناعي جذريًا.
-      </p>
-    </FadeInBlock>
-
-    <!-- Human edge capabilities -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { icon: '\u{1F3AF}', name: 'الحكم', color: '#16C79A', text: 'اختيار ما يهم. ما تبنيه، ما تحذفه، ما تشحنه، ما تلغيه. الذكاء الاصطناعي يمكنه إعلام القرارات لكن لا يستطيع اتخاذها — لأن القرارات تتطلب قيمًا، والقيم بشرية.' },
-        { icon: '\u{1F91D}', name: 'التعاطف', color: '#0EA5E9', text: 'فهم كيف يشعر شخص آخر والاستجابة باهتمام حقيقي. الذكاء الاصطناعي يحاكي التعاطف في النص. البشر يمارسونه في العلاقات، في الأزمات، في اللحظات التي تهم أكثر.' },
-        { icon: '\u{1F9ED}', name: 'الرؤية', color: '#7B61FF', text: 'رؤية ما لا وجود له بعد وتقرير أنه يجب أن يوجد. كل منتج، كل شركة، كل عمل إبداعي بدأ كقناعة شخص بأن العالم يحتاج شيئًا جديدًا. الذكاء الاصطناعي لا يستطيع أن يريد أشياء.' },
-        { icon: '\u{26A1}', name: 'القيادة', color: '#F5A623', text: 'إلهام الناس، وإدارة الخلافات، وبناء الثقة. هذه مهارات اجتماعية جوهرية تتطلب الحضور، والذكاء العاطفي، والقدرة على تحمل المسؤولية.' },
-        { icon: '\u{1F50D}', name: 'طرح الأسئلة الأصلية', color: '#E94560', text: 'الذكاء الاصطناعي ممتاز في الإجابة على الأسئلة. البشر ممتازون في طرح الأسئلة التي لم يفكر أحد في طرحها. أهم الاختراقات في العلم والأعمال والفن بدأت بسؤال، وليس بإجابة.' },
-      ].map((item, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
-              {item.icon}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {item.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>نظرة ثاقبة مهمة</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          هذه ليست مجرد مهارات "لطيفة". في عالم معزز بالذكاء الاصطناعي، إنها <strong>المهارات الصلبة</strong>. القدرة على الحكم، والتعاطف، والقيادة، والتصور — هذه تصبح مزاياك التنافسية الأقوى تحديدًا <em>لأن</em> الذكاء الاصطناعي يتعامل مع كل شيء آخر.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        الذوق. الحكم. التعاطف. الرؤية. التفكير من المبادئ الأولى. هذه ليست بقايا بعد سيطرة الذكاء الاصطناعي &mdash; إنها المهارات التي <em>تحدد</em> ما تقدمه للطاولة.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        الذكاء الاصطناعي يولّد الخيارات. أنت تختار الصحيح. ذلك الحكم — الذوق، التعاطف، الرؤية، التفكير من المبادئ الأولى — هو ميزتك.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        بقي فصل واحد. لا مزيد من النظريات. حان وقت دمج كل ما تعلمته وبناء شيء حقيقي &mdash; شيء لن يفكر في صنعه أحد غيرك.
+        بقي فصل واحد. لا مزيد من النظريات. حان وقت دمج كل ما تعلمته وبناء شيء حقيقي &mdash; شيء لن يفكر في صنعه إلا أنت.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Irreplaceable You" client:visible>
+        <IrreplaceableYou client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

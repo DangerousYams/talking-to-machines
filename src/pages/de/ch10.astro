@@ -4,12 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
 import JobTransformer from '../../components/widgets/ch10/JobTransformer';
-import TasteTest from '../../components/widgets/ch10/TasteTest';
-import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[9];
 ---
@@ -18,7 +17,6 @@ const chapter = chapters[9];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -39,294 +37,98 @@ const chapter = chapters[9];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Was KI nicht ersetzen kann &mdash;<br />und was sie 10x leichter macht.
+          Was KI nicht ersetzen kann &mdash;<br />und was sie 10x einfacher macht.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Jedes Mal, wenn eine neue KI-Fähigkeit erscheint, taucht dieselbe Schlagzeile auf: <em>„Wird KI [Beruf einsetzen] ersetzen?"</em> Es ist die falsche Frage. Es war schon immer die falsche Frage. Die richtige ist: <em>„Was wird dadurch möglich, das vorher nicht möglich war?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        KI ersetzt keine Menschen. Sie ersetzt <strong>Aufgaben</strong>. Und wenn du in jeden Beruf hineinzoomst — jede Karriere, jedes kreative Feld, jede Profession — findest du eine Mischung: manche Aufgaben erledigt KI hervorragend, bei manchen hilft sie, und manche bleiben hartnäckig, wunderbar menschlich.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        In diesem Kapitel geht es darum, diese Grenzlinie zu finden. Nicht damit du Angst davor hast, sondern damit du <strong>auf der richtigen Seite stehst</strong> — der Seite, auf der deine einzigartig menschlichen Fähigkeiten wertvoller werden, nicht weniger.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Jedes Mal, wenn eine neue KI-Fähigkeit erscheint, taucht dieselbe Schlagzeile auf: <em>"Wird KI [Job einsetzen] ersetzen?"</em> Es ist die falsche Frage. KI ersetzt keine Menschen. Sie ersetzt <strong>Aufgaben</strong>. Und wenn du in irgendeinen Job hineinzoomst -- jede Karriere, jedes kreative Unterfangen -- findest du eine Mischung: manche Aufgaben erledigt KI brillant, bei manchen assistiert sie, und manche bleiben hartnäckig, wunderschön menschlich.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ DAS SPEKTRUM, NICHT DIE KLIPPE ═══ -->
+  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Das Spektrum, nicht die Klippe
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Jobs verschwinden nicht -- sie wandeln sich
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die meisten Gespräche über KI und Jobs behandeln es wie ein Entweder-oder: Entweder kann KI deinen Job oder eben nicht. Roboter-Apokalypse oder alles beim Alten. Aber die Realität ist ein Spektrum.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Manche Aufgaben sind fast vollständig automatisierbar. Manche werden durch KI verbessert. Manche bleiben unberührt. Und die interessantesten — die, auf die es sich lohnt zu achten — liegen irgendwo in der Mitte, wo Menschen und KI zusammenarbeiten.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Dateneingabe? Erledigt die KI. Termine planen? Im Grunde gelöst. Einen ersten Entwurf schreiben? KI ist erschreckend gut. Aber <em>entscheiden, was gebaut werden soll</em>, <em>die Stimmung in einer Krise lesen</em>, <em>entscheiden, was die Daten bedeuten</em> — das erfordert etwas, das KI nicht hat.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Wo fällt jede Fähigkeit tatsächlich hin? Teste dein Bauchgefühl.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillsSpectrum client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ JOBS VERSCHWINDEN NICHT — SIE WANDELN SICH ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Jobs verschwinden nicht — sie wandeln sich
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Als die Geldautomaten in den 1970ern kamen, sagten alle voraus, Bankangestellte würden verschwinden. Stattdessen <em>stieg</em> die Zahl der Bankangestellten. Warum? Weil Geldautomaten es billiger machten, neue Filialen zu eröffnen, und der Job der Angestellten sich vom Bargeldzählen zum Verkauf von Finanzprodukten und Aufbau von Kundenbeziehungen verschob.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        KI macht dasselbe, aber schneller und quer durch alle Branchen gleichzeitig. Die Berufsbezeichnung bleibt gleich. Die Berufsbeschreibung verändert sich dramatisch. Eine Journalistin im Jahr 2025 macht nicht dieselbe Arbeit wie eine Journalistin im Jahr 2015, auch wenn die Autorenzeile identisch aussieht.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Als Geldautomaten kamen, sagten alle voraus, dass Bankangestellte verschwinden würden. Stattdessen <em>stieg</em> ihre Zahl -- weil Geldautomaten es billiger machten, Filialen zu eröffnen, und sich die Arbeit der Angestellten vom Geldauszählen zum Aufbau von Kundenbeziehungen verlagerte. KI macht dasselbe, nur schneller und in jeder Branche gleichzeitig. Die Berufsbezeichnung bleibt gleich. Die <em>Stellenbeschreibung</em> ändert sich dramatisch.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Die neue Karriere-Mathematik</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Es heißt nicht „Mensch gegen KI." Es heißt <strong>Menschen mit KI gegen Menschen ohne KI</strong>. Die Leute, die lernen, <em>mit</em> KI-Tools zu arbeiten, verlieren nicht ihre Jobs — sie erledigen ihre Jobs schneller, besser und mit Fähigkeiten, die sie vorher nicht hatten.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mt-10">
-        Wähle unten einen Beruf und sieh genau, wie KI ihn von innen verändert. Keine einzige Aufgabe verschwindet komplett. Aber die Form jedes Jobs wandelt sich.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <JobTransformer client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ GESCHMACK: DIE UNERSETZBARE FÄHIGKEIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Geschmack: die unersetzbare Fähigkeit
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10">
-        KI kann hundert Logo-Konzepte in einer Minute generieren. Sie kann zehn Essay-Einleitungen schreiben, bevor du deinen Kaffee ausgetrunken hast. Sie kann fünf App-Designs, vier Slogans, drei Businesspläne produzieren.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aber sie kann dir nicht sagen, welches das <em>richtige</em> ist.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        In einer Welt, in der das Generieren von Optionen nahezu kostenlos ist, wird die Fähigkeit, <em>die richtige auszuwählen</em>, zur wertvollsten Fähigkeit überhaupt. Diese Fähigkeit hat einen Namen: Geschmack.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Geschmack ist nichts Mystisches. Man trainiert ihn. Du entwickelst ihn, indem du viel gute Arbeit und viel schlechte Arbeit siehst und lernst zu formulieren, <em>warum</em> das eine besser ist als das andere. Es ist der Fotograf, der weiß, welches Bild er behält. Die Autorin, die weiß, welchen Satz sie streicht. Der Designer, der weiß, wann weniger mehr ist.
+        Dateneingabe? Macht die KI. Erste Entwürfe? Erstaunlich gut. Aber <em>entscheiden, was man bauen soll</em>, <em>in einer Krise die Stimmung lesen</em>, <em>entscheiden, was die Daten bedeuten</em> -- das erfordert Urteilsvermögen, Empathie und Vision, die KI grundlegend fehlen.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        KI generiert. Du kuratierst. Das ist die neue Arbeitsteilung. Schauen wir, wie scharf dein Geschmack ist.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TASTE TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TasteTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DEIN WISSEN IST DEIN BLÖDSINN-DETEKTOR ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Dein Wissen ist dein Blödsinn-Detektor
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        In Kapitel 9 haben wir über KI-Halluzinationen gesprochen — wie KI Unwahrheiten mit perfekter Überzeugung behaupten kann. Aber hier kommt die unbequeme Anschlussfrage: <strong>Wie ertappst du sie dabei?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die Antwort heißt Denken von Grundprinzipien aus. Wenn KI dir sagt, dass die Verdopplung des Rohrradius den Wasserfluss verdoppelt, kannst du diesen Fehler nur erkennen, wenn du weißt, dass die Fläche mit dem <em>Quadrat</em> des Radius skaliert. Wenn KI sagt, ein Syllogismus sei gültig, kannst du den logischen Fehlschluss nur entdecken, wenn du die Regeln der Deduktion verstehst.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        KI remixt, was existiert. Denken von Grundprinzipien aus leitet Schlüsse aus Grundwahrheiten ab. So stößt man in genuines Neuland vor — und so ertappt man eine KI, die selbstbewusst falsch liegt.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Das bedeutet nicht, dass du in allem Experte sein musst. Aber in den Bereichen, in denen du arbeitest und kreativ bist, ist dein fundamentales Verständnis das, was dich von jemandem unterscheidet, der blind KI-Ausgaben kopiert.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Teste dich selbst. Die KI unten gibt selbstbewusste Antworten auf sechs Probleme aus verschiedenen Fachgebieten. Manche sind richtig. Manche sind subtil falsch. Erkennst du den Unterschied?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FirstPrinciplesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WAS MENSCHLICH BLEIBT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Was menschlich bleibt
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Nach allem, was wir erkundet haben, zeigt sich ein Muster. Die Fähigkeiten, die am meisten menschlich bleiben, sind nicht zufällig — sie bündeln sich um einige tiefe Kompetenzen, die KI grundlegend fehlen.
-      </p>
-    </FadeInBlock>
-
-    <!-- Human edge capabilities -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { icon: '\u{1F3AF}', name: 'Urteilsvermögen', color: '#16C79A', text: 'Entscheiden, was wichtig ist. Was bauen, was streichen, was ausliefern, was einstellen. KI kann Entscheidungen informieren, aber nicht treffen — denn Entscheidungen erfordern Werte, und Werte sind menschlich.' },
-        { icon: '\u{1F91D}', name: 'Empathie', color: '#0EA5E9', text: 'Verstehen, wie ein anderer Mensch sich fühlt, und mit echter Fürsorge reagieren. KI simuliert Empathie in Text. Menschen praktizieren sie in Beziehungen, in Krisen, in den Momenten, auf die es ankommt.' },
-        { icon: '\u{1F9ED}', name: 'Vision', color: '#7B61FF', text: 'Sehen, was noch nicht existiert, und entscheiden, dass es existieren soll. Jedes Produkt, jede Firma, jedes kreative Werk begann als die Überzeugung einer Person, dass die Welt etwas Neues braucht. KI kann nichts wollen.' },
-        { icon: '\u{26A1}', name: 'Führung', color: '#F5A623', text: 'Menschen inspirieren, Konflikte navigieren, Vertrauen aufbauen. Das sind grundlegend soziale Fähigkeiten, die Präsenz, emotionale Intelligenz und die Fähigkeit erfordern, Verantwortung zu übernehmen.' },
-        { icon: '\u{1F50D}', name: 'Originelle Fragen stellen', color: '#E94560', text: 'KI ist großartig darin, Fragen zu beantworten. Menschen sind großartig darin, die Fragen zu stellen, an die niemand gedacht hat. Die wichtigsten Durchbrüche in Wissenschaft, Wirtschaft und Kunst begannen mit einer Frage, nicht einer Antwort.' },
-      ].map((item, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
-              {item.icon}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {item.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Zentrale Erkenntnis</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Das sind nicht nur nette Soft Skills. In einer KI-unterstützten Welt sind sie die <strong>Hard Skills</strong>. Die Fähigkeit zu urteilen, mitzufühlen, zu führen, Visionen zu haben — das werden deine größten Wettbewerbsvorteile, genau <em>weil</em> KI alles andere erledigt.
+          Es geht nicht um "Menschen gegen KI." Es geht um <strong>Menschen mit KI gegen Menschen ohne KI</strong>. Die Leute, die lernen, <em>mit</em> KI-Tools zu arbeiten, verlieren nicht ihre Jobs -- sie machen ihre Jobs schneller, besser und mit Fähigkeiten, die sie vorher nicht hatten.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Wähle unten einen Beruf und sieh genau, wie KI ihn von innen heraus transformiert. Keine einzige Aufgabe verschwindet ganz.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <JobTransformer client:visible />
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Dieser Kurs hypt KI nicht und macht keine Angst um Jobs. Er zeigt genau, welche Fähigkeiten menschlich bleiben und welche erweitert werden. Erfrischend ehrlich." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Geschmack. Urteilsvermögen. Empathie. Vision. Denken von Grundprinzipien aus. Das sind keine Reste, nachdem KI übernommen hat &mdash; es sind die Fähigkeiten, die <em>definieren</em>, was du beiträgst.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        KI generiert Optionen. Du wählst die richtige. Dieses Urteilsvermögen -- Geschmack, Empathie, Vision, Grundlagenwissen -- ist dein Vorsprung.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Es gibt noch ein letztes Kapitel. Keine Theorie mehr. Es ist Zeit, alles Gelernte zu kombinieren und etwas Echtes zu bauen &mdash; etwas, das nur du dir ausgedacht hättest.
+        Es gibt noch ein Kapitel. Keine Theorie mehr. Es ist Zeit, alles Gelernte zu kombinieren und etwas Echtes zu bauen &mdash; etwas, auf das nur du kommen würdest.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Irreplaceable You" client:visible>
+        <IrreplaceableYou client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

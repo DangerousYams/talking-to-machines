@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
-import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+import AgentTakeover from '../../components/breaks/AgentTakeover';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[5];
 ---
@@ -22,7 +22,7 @@ const chapter = chapters[5];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chương Sáu
+          Chương sáu
         </p>
       </FadeInBlock>
 
@@ -37,7 +37,7 @@ const chapter = chapters[5];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Thiết kế, kết nối, và triển khai<br />agent AI từ đầu.
+          Sự khác biệt giữa máy tính bỏ túi<br />và đồng nghiệp.
         </p>
       </FadeInBlock>
     </div>
@@ -47,23 +47,17 @@ const chapter = chapters[5];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Chatbot đợi bạn nói. Agent thì không. Đưa cho nó mục tiêu — "nghiên cứu về định cư sao Hỏa và viết báo cáo" — và nó chia công việc thành các bước, chọn đúng tool, thực hiện từng bước, kiểm tra kết quả, rồi tiếp tục cho đến khi xong. Không cần cầm tay chỉ việc.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Chatbot đợi bạn nói. Agent thì không. Đưa cho nó mục tiêu — "nghiên cứu về định cư sao Hỏa và viết báo cáo" — và nó chia công việc thành các bước, chọn đúng công cụ, thực hiện từng bước, kiểm tra kết quả, rồi tiếp tục cho đến khi xong. Sự khác biệt đó — giữa <em>phản hồi chỉ thị</em> và <em>theo đuổi mục tiêu</em> — là sự khác biệt giữa máy tính bỏ túi và đồng nghiệp.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Sự khác biệt đó — giữa <em>phản hồi chỉ thị</em> và <em>theo đuổi mục tiêu</em> — là sự khác biệt giữa máy tính bỏ túi và đồng nghiệp. Chatbot trả lời câu hỏi. Agent giải quyết vấn đề.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Chương này về cách agent thực sự hoạt động bên trong — vòng lặp điều khiển chúng, kiến trúc làm chúng đáng tin cậy, và các lỗi khiến chúng nguy hiểm khi xây dựng cẩu thả.
+      <p class="text-lg leading-[1.85] mt-8">
+        Agent chạy trên một vòng lặp: nhận mục tiêu, lên kế hoạch, thực hiện bằng công cụ, quan sát kết quả, đánh giá tiến độ, điều chỉnh. Chúng không lên kế hoạch một lần rồi chạy mù — agent tốt nhất phục hồi một cách mượt mà khi bước ba gặp sự cố. Nhưng sức mạnh đó có mặt trái: agent không chỉ đưa ra câu trả lời tệ, chúng <em>hành động</em> dựa trên đó, rồi dùng kết quả hỏng để ra quyết định tiếp. Lỗi chồng lỗi.
       </p>
     </FadeInBlock>
   </section>
@@ -74,36 +68,36 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         Vòng lặp agent
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ở Chương 5, bạn thấy vòng lặp tool-use cơ bản: quan sát, suy nghĩ, hành động. Agent mở rộng thành thứ tham vọng hơn — chu kỳ năm bước, mỗi bước do một thành phần nội bộ khác nhau vận hành:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Mọi agent đều chạy trên cùng một chu kỳ năm bước. Hiểu các bước này là sự khác biệt giữa xây thứ hữu ích và xây thứ đốt hết credit API trong vòng lặp vô hạn.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', word: 'Mục tiêu', color: '#E94560', desc: 'Nhận mục tiêu cấp cao từ con người. Không có mục tiêu rõ ràng, agent không biết khi nào đã xong. "Nghiên cứu sao Hỏa" không phải mục tiêu. "Viết tóm tắt 500 từ về thách thức định cư sao Hỏa, có nguồn" mới là.' },
-        { letter: 'P', word: 'Lập kế hoạch', color: '#7B61FF', desc: 'Chia mục tiêu thành các bước cụ thể. Planner giỏi tạo kế hoạch linh hoạt, thích ứng khi bước nào đó thất bại. Planner tệ tạo script cứng nhắc, vỡ ngay khi gặp bất ngờ.' },
-        { letter: 'T', word: 'Thực hiện', color: '#0EA5E9', desc: 'Chạy mỗi bước bằng tool phù hợp — công cụ tìm kiếm, trình thông dịch code, trình đọc file, API, máy tính. Agent không chỉ nghĩ. Chúng hành động.' },
-        { letter: 'M', word: 'Quan sát', color: '#16C79A', desc: 'Ghi nhận kết quả và kiểm tra. Không có bộ nhớ về những gì đã làm và tìm được, agent trong vòng lặp có thể lặp đi lặp lại cùng hành động thất bại mãi.' },
-        { letter: 'E', word: 'Đánh giá', color: '#F5A623', desc: 'Cái này có hoạt động không? Dữ liệu này đáng tin không? Mình đã gần mục tiêu hơn chưa? Bộ đánh giá phân biệt agent với script chỉ chạy và cầu may. Nếu có vấn đề, điều chỉnh kế hoạch và lặp lại.' },
-      ].map((step, i) => (
+        { letter: 'G', name: 'Mục tiêu (Goal)', color: '#E94560', text: 'Nhận mục tiêu rõ ràng. "Nghiên cứu sao Hỏa" không phải mục tiêu. "Viết tóm tắt 500 từ về thách thức định cư sao Hỏa, có nguồn" mới là.' },
+        { letter: 'P', name: 'Lập kế hoạch (Plan)', color: '#7B61FF', text: 'Chia mục tiêu thành các bước cụ thể. Planner giỏi tạo kế hoạch linh hoạt. Planner tệ tạo script cứng nhắc, vỡ ngay khi gặp bất ngờ.' },
+        { letter: 'T', name: 'Thực hiện (Execute)', color: '#0EA5E9', text: 'Chạy mỗi bước bằng công cụ phù hợp — công cụ tìm kiếm, trình thông dịch code, trình đọc file, API. Agent không chỉ nghĩ. Chúng hành động.' },
+        { letter: 'M', name: 'Quan sát (Observe)', color: '#16C79A', text: 'Ghi nhận kết quả và kiểm tra. Không có bộ nhớ, agent có thể lặp đi lặp lại cùng hành động thất bại mãi.' },
+        { letter: 'E', name: 'Đánh giá (Evaluate)', color: '#F5A623', text: 'Cái này có hoạt động không? Mình đã gần mục tiêu hơn chưa? Nếu có vấn đề, điều chỉnh kế hoạch và lặp lại. Đây là thứ phân biệt agent với script.' },
+      ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
-              {step.letter}
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
             </div>
             <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                {step.word}
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
               </p>
-              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {step.desc}
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
               </p>
             </div>
           </div>
@@ -112,19 +106,16 @@ const chapter = chapters[5];
     </div>
 
     <FadeInBlock client:visible delay={0.5}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Từ khóa là <em>vòng lặp</em>. Agent không lên kế hoạch một lần rồi chạy mù. Nó lên kế hoạch, hành động, quan sát, đánh giá, và điều chỉnh. Agent tốt nhất là agent phục hồi tốt khi bước ba gặp sự cố.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.55}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chatbot là một lượt. Agent là cả cuộc trò chuyện — với chính nó, tool của nó, và thế giới.
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Chatbot là một lượt. Agent là cả cuộc trò chuyện — với chính nó, công cụ của nó, và thế giới. Người xây agent giỏi nhất không tối đa hóa tự chủ. Họ thiết kế những điểm dừng có suy nghĩ, nơi agent tạm dừng và để con người quyết định có tiếp tục không.
+        </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO AGENT BLUEPRINT -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -133,189 +124,37 @@ const chapter = chapters[5];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <AgentBlueprint client:visible />
-    </FadeInBlock>
+    <AgentBlueprint client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ WHEN AGENTS FAIL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Khi agent thất bại
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Vừa thiết kế agent AI đầu tiên từ đầu. Khóa học này hướng dẫn kiến trúc từng bước với demo trực tiếp. Không hype, chỉ xây thôi." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Agent không thất bại giống chatbot. Chatbot cho bạn câu trả lời tệ rồi đợi. Agent tự cho mình câu trả lời tệ, <em>hành động dựa trên nó</em>, rồi dùng kết quả hỏng để ra quyết định tiếp. Lỗi chồng lỗi.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Có ba cách kinh điển agent gặp sự cố:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Lỗi 1: Vòng lặp vô hạn</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Agent kẹt lặp đi lặp lại cùng hành động. Agent nghiên cứu cứ tìm "thêm một nguồn nữa" mà không bao giờ bắt đầu viết. Không có điều kiện dừng, nó chạy cho đến khi bạn rút phích — hoặc hết credit API.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
-        <span class="prompt-block-label" style="color: #7B61FF;">Lỗi 2: Sai tool</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Agent chọn tool không phù hợp. Nó cố tìm kiếm web cho file trên ổ cứng, hoặc gọi máy tính để tóm tắt bài luận. Không phải agent ngu — chỉ là nó chọn từ hộp đồ nghề mà không kiểm tra tool có phù hợp nhiệm vụ không.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
-        <span class="prompt-block-label" style="color: #F5A623;">Lỗi 3: Hành động ảo</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Agent bịa ra tool hoặc API không tồn tại, rồi "gọi" chúng với kết quả giả. Khi lời gọi giả thất bại, đôi khi nó bịa luôn dữ liệu đáng ra phải nhận được. Ảo giác kép: tool giả, đầu ra giả.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Cách sửa luôn cùng nguyên tắc: <strong>thiết kế cho tình huống xấu.</strong> Giới hạn số lần lặp, xác thực tool, kiểm tra đầu ra, và điểm dừng cho người kiểm tra. Mục tiêu không phải ngăn mọi thất bại — mà là khiến thất bại có thể phục hồi.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FAILURE MODES LAB -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Bạn có thể chẩn đoán agent bị hỏng không? Tìm lỗi và thêm lan can bảo vệ.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FailureModesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF MANY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Sức mạnh của nhiều agent
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Một agent thì hữu ích. Nhiều agent phối hợp có thể xử lý những vấn đề mà bất kỳ hệ thống đơn lẻ nào cũng bị quá tải. Bí quyết là chuyên môn hóa.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Nghĩ như tòa soạn báo. Bạn không nhờ cùng một người điều tra câu chuyện, viết bài, rồi biên tập để xuất bản. Mỗi vai trò cần tư duy khác, công cụ khác, tiêu chuẩn khác.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hệ thống đa agent hoạt động tương tự. Agent <strong>Nghiên cứu</strong> thu thập thông tin. Agent <strong>Viết</strong> biến ghi chú thô thành văn xuôi trau chuốt. Agent <strong>Biên tập</strong> đánh giá, kiểm tra sự thật, và gợi ý cải thiện. Mỗi agent có system prompt riêng, tool riêng, và tiêu chí thành công riêng.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Câu hỏi then chốt trong thiết kế đa agent không phải "mỗi agent thông minh cỡ nào?" Mà là <strong>"bàn giao tốt cỡ nào?"</strong> Khi Agent Nghiên cứu chuyển ghi chú cho Agent Viết, ghi chú có cấu trúc rõ ràng không? Khi Agent Viết chuyển bản nháp cho Agent Biên tập, Biên tập có đủ ngữ cảnh để góp ý hữu ích không?
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Tài liệu bàn giao là sản phẩm quan trọng nhất trong hệ thống đa agent. Người viết giỏi mấy cũng không cứu được ghi chú nghiên cứu cẩu thả. Giao diện giữa các agent là nơi quyết định chất lượng.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HANDOFF CHAIN -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Xem ba agent phối hợp. Chú ý tài liệu bàn giao &mdash; đó là nơi điều kỳ diệu xảy ra.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HandoffChain client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HUMAN IN THE LOOP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Con người trong vòng lặp
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ở Chương 5, bạn học khung niềm tin: mức độ nghiêm trọng, khả năng hoàn tác, và niềm tin quyết định trao bao nhiêu tự chủ. Với agent, điều này càng quan trọng — vì agent không chỉ trả lời câu hỏi. Chúng <em>thực hiện hành động</em>, nối chuỗi chúng lại, và nhân lỗi nếu không được kiểm tra.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85]">
-        Người xây agent giỏi nhất không phải người tối đa hóa tự chủ. Họ thiết kế <strong>điểm dừng có suy nghĩ</strong> — khoảnh khắc agent tạm dừng, trình bày công việc, và để con người quyết định có tiếp tục không. Agent xuất sắc biết khi nào cần hỏi.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Bạn đã nhìn agent từ bên trong: vòng lặp điều khiển chúng, kiến trúc khiến chúng hoạt động, và các lỗi khiến chúng nguy hiểm khi xây dựng cẩu thả.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Mục tiêu không phải ngăn mọi thất bại — mà là khiến thất bại có thể phục hồi.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Lý thuyết là một chuyện. Tiếp theo, bạn sẽ dùng agent thực &mdash; agent đọc code, viết thay đổi, chạy test, và tự sửa lỗi. Xin giới thiệu Claude Code.
+        Tiếp theo: bạn sẽ dùng agent thực — agent đọc code, viết thay đổi, chạy test, và tự sửa lỗi. Xin giới thiệu Claude Code.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
+        <AgentTakeover client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

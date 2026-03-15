@@ -4,10 +4,8 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectPlanner from '../../components/widgets/ch11/ProjectPlanner';
-import ShowcaseGallery from '../../components/widgets/ch11/ShowcaseGallery';
+import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
 ---
@@ -16,7 +14,6 @@ const chapter = chapters[10];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>11</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -31,318 +28,98 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          ನಿಜವಾದದ್ದನ್ನ<br />Build ಮಾಡು
+          ನಿಜವಾದ ಏನೋ<br />Build ಮಾಡು
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Creation ಇಲ್ಲದ knowledge trivia ಅಷ್ಟೇ.<br />Ship ಮಾಡೋ time ಬಂತು.
+          Creation ಇಲ್ಲದ knowledge trivia.<br />Ship ಮಾಡೋ ಸಮಯ ಬಂತು.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Final chapter ಗೆ ಬಂದೆ. ಕಳೆದ ಹತ್ತು chapters ಅಲ್ಲಿ "help me with my essay" ಇಂದ agents build ಮಾಡೋದು, hallucinations debug ಮಾಡೋದು, future of work ಬಗ್ಗೆ ಯೋಚಿಸೋದು ವರೆಗೆ ಬಂದೆ. ಹೆಚ್ಚಿನ adults ಗಿಂತ ಹೆಚ್ಚು AI ಬಗ್ಗೆ ಕಲ್ತೆ. ಆದ್ರೆ uncomfortable truth ಇಲ್ಲಿದೆ: <strong>ನೀನು ಏನಾದ್ರೂ build ಮಾಡೋ ವರೆಗೂ ಇದ್ಯಾವುದೂ matter ಮಾಡಲ್ಲ.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI ಬಗ್ಗೆ ಓದೋದು swimming ಬಗ್ಗೆ ಓದೋ ಹಾಗೆ. Buoyancy ನ physics study ಮಾಡಬಹುದು, Olympic races ನೋಡಬಹುದು, ಪ್ರತಿ stroke technique memorize ಮಾಡಬಹುದು. ಆದ್ರೆ ನೀರಿಗೆ ಇಳಿಯೋ ವರೆಗೂ, ಇದ್ಯಾವುದೂ ನಿನಗೆ <em>ಗೊತ್ತಿಲ್ಲ</em>. ನಿನಗೆ ಅದರ <em>ಬಗ್ಗೆ</em> ಮಾತ್ರ ಗೊತ್ತು.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        ಈ chapter ನೀರಿಗೆ ಜಿಗಿಯೋ ಬಗ್ಗೆ. Toy exercise ಅಥವಾ follow-along tutorial ಜೊತೆ ಅಲ್ಲ. Real project. ನೀನು choose ಮಾಡಿದ್ದು. ನಿನಗೆ care ಇರೋದು. ಯಾರಿಗಾದ್ರೂ ತೋರಿಸಿ ಹೇಳಬಹುದಾದ್ದು: <em>"ಇದನ್ನ ನಾನು build ಮಾಡಿದೆ."</em>
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        ನೀನು ಇಲ್ಲಿಗೆ ಬಂದೆ. ಹತ್ತು chapters ಒಳಗೆ ನೀನು "ನನ್ನ essay ಗೆ help ಮಾಡು" ನಿಂದ context engineering, agents building, ಮತ್ತು hallucinations debugging ವರೆಗೆ ಹೋದೆ. ಹೆಚ್ಚಿನ adults ಗೊತ್ತಿರೋದಕ್ಕಿಂತ ಹೆಚ್ಚು AI ಬಗ್ಗೆ ಕಲಿತೆ. ಆದ್ರೆ ಇಲ್ಲಿ uncomfortable truth ಇದೆ: <strong>ನೀನು ಏನಾದ್ರೂ build ಮಾಡೋ ತನಕ ಇದ್ಯಾವುದೂ matter ಆಗಲ್ಲ.</strong> AI ಬಗ್ಗೆ ಓದೋದು swimming ಬಗ್ಗೆ ಓದೋ ಥರ — ಪ್ರತಿ stroke technique study ಮಾಡಬಹುದು, ಆದ್ರೆ ನೀರಿಗೆ ಇಳಿಯೋ ತನಕ ನಿನಗೆ ಅದು <em>ಗೊತ್ತಿಲ್ಲ</em>. ಅದರ <em>ಬಗ್ಗೆ</em> ಗೊತ್ತಿರುತ್ತೆ ಅಷ್ಟೇ.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ YOUR TOOLKIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        ನಿನ್ನ Toolkit
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ಹತ್ತು chapters ನ skills, use ಮಾಡಕ್ಕೆ ready:
-      </p>
-    </FadeInBlock>
-
-    <!-- Compact 2-column grid of chapter skills -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { ch: '1', label: 'Prompt architecture', color: '#E94560' },
-          { ch: '2', label: 'Advanced techniques', color: '#0F3460' },
-          { ch: '3', label: 'Context engineering', color: '#7B61FF' },
-          { ch: '4', label: 'AI landscape', color: '#0EA5E9' },
-          { ch: '5', label: 'Tool use & agents', color: '#F5A623' },
-          { ch: '6', label: 'Agent architecture', color: '#E94560' },
-          { ch: '7', label: 'AI pair programming', color: '#7B61FF' },
-          { ch: '8', label: 'Orchestration', color: '#0F3460' },
-          { ch: '9', label: 'Critical thinking', color: '#E94560' },
-          { ch: '10', label: 'Human edge', color: '#16C79A' },
-        ].map((item) => (
-          <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0;">
-            <span style={`font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: ${item.color}; opacity: 0.7; width: 1.25rem; text-align: right; flex-shrink: 0;`}>{item.ch}</span>
-            <span style={`font-family: var(--font-body); font-size: 0.9rem; color: var(--color-deep); opacity: 0.8;`}>{item.label}</span>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        ಈಗ question ಏನಂದ್ರೆ: ಇದರ ಜೊತೆ ಏನು ಮಾಡ್ತೀಯ?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ PLAN BEFORE YOU BUILD ═══ -->
+  <!-- ═══ SET UP YOUR AI ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Build ಮಾಡೋ ಮೊದಲು Plan ಮಾಡು
+        ನಿನ್ನ AI Setup ಮಾಡು
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        First-time builders ಮಾಡೋ ಅತಿ ದೊಡ್ಡ mistake? ಅವರು ನೇರವಾಗಿ tools ಗೆ ಹೋಗ್ತಾರೆ. Claude open ಮಾಡಿ, huge prompt type ಮಾಡಿ, ಎಲ್ಲವನ್ನೂ ಒಂದೇ shot ಅಲ್ಲಿ build ಮಾಡಕ್ಕೆ try ಮಾಡ್ತಾರೆ. Fail ಆಗುತ್ತೆ. Frustrated ಆಗ್ತಾರೆ. Quit ಮಾಡ್ತಾರೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        ಅತ್ಯುತ್ತಮ projects prompt ನಿಂದ start ಆಗಲ್ಲ. Paper ಮೇಲೆ plan ನಿಂದ start ಆಗ್ತವೆ. ಏನು build ಮಾಡ್ತಿದ್ದೀಯ? ಯಾರಿಗಾಗಿ? "Done" ಹೇಗೆ ಕಾಣಿಸುತ್ತೆ? Keyboard ಮುಟ್ಟೋ ಮೊದಲು ಇವಕ್ಕೆ answer ಕೊಡು.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Chapter 8 ನೆನಪಿಸ್ಕೋ — orchestrating complexity? ನಿನ್ನ capstone project ಅದರ miniature version. Work ಅನ್ನ ತುಂಡುಗಳಾಗಿ ಒಡಿ. ಏನು build ಮಾಡ್ತಿದ್ದೀಯ ಅಂತ ಗೊತ್ತಿರಲಿ build ಮಾಡೋ ಮೊದಲು. ಪ್ರತಿ piece ಗೆ AI ಅನ್ನ collaborator ಆಗಿ use ಮಾಡು, whole thing ಗೆ magic wand ಆಗಿ ಅಲ್ಲ.
-      </p>
-    </FadeInBlock>
-
-    <!-- Planning Steps -->
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Choose.', desc: 'ನಿಜವಾಗಿಯೂ care ಇರೋ ಏನಾದ್ರೂ pick ಮಾಡು. Passion ಕಷ್ಟದ ಭಾಗಗಳಲ್ಲಿ persistence ಗೆ fuel ಕೊಡುತ್ತೆ.' },
-          { word: 'Scope.', desc: 'ಅರ್ಧಕ್ಕೆ ಕಡಿ. ಆಮೇಲೆ ಮತ್ತೆ ಅರ್ಧಕ್ಕೆ ಕಡಿ. Finished ಆದ ಸಣ್ಣ project abandoned ಆದ ದೊಡ್ಡ project ಅನ್ನ ಯಾವಾಗ್ಲೂ beat ಮಾಡುತ್ತೆ.' },
-          { word: 'Decompose.', desc: '5-8 tasks ಗೆ ಒಡಿ. ಪ್ರತಿ task ಒಂದೇ sitting ಅಲ್ಲಿ complete ಮಾಡಬಹುದಾಗಿರಲಿ.' },
-          { word: 'Build.', desc: 'ಒಂದೊಂದೇ task. ಪ್ರತಿ piece ಗೆ AI use ಮಾಡು. ಮುಂದೆ ಹೋಗೋ ಮೊದಲು ಪ್ರತಿ output verify ಮಾಡು.' },
-          { word: 'Ship.', desc: 'Done is better than perfect. Share ಮಾಡು. Feedback ಪಡ್ಕೋ. Iterate ಮಾಡು.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        ಇನ್ನೊಂದು ವಿಷಯ: ಮಾಡ್ತಾ ಹೋಗುವಾಗ document ಮಾಡು. Project ಅರ್ಧ story. ಅದನ್ನ ಹೇಗೆ build ಮಾಡಿದೆ — decisions, iterations, dead ends — ಇನ್ನರ್ಧ story. ನೀನು explain ಮಾಡಬಹುದಾದ finished project ಯಾವ test score ಗಿಂತಲೂ ಹೆಚ್ಚು value ಇರುತ್ತೆ.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT PLANNER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectPlanner client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE 3-WEEK SPRINT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        3-Week Sprint
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ನಿನ್ನ project weekend ಒಂದು ತಗೋಳ್ಳಲಿ ಅಥವಾ semester ಒಂದು, rhythm ಅದೇ. Real ಆಗಿ ಏನಾದ್ರೂ ship ಮಾಡಕ್ಕೆ battle-tested framework ಇಲ್ಲಿದೆ:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
-        {[
-          {
-            week: 'Week 1',
-            title: 'Ideate & Scope',
-            color: '#F5A623',
-            tasks: [
-              'ನಿನ್ನ project pick ಮಾಡು. ಮೇಲಿನ Project Planner use ಮಾಡು.',
-              '"Done" ಹೇಗೆ ಕಾಣಿಸುತ್ತೆ ಅಂತ ಒಂದು paragraph description ಬರಿ.',
-              'Project ಅನ್ನ 5-8 tasks ಗೆ ಒಡಿ, clear deliverables ಜೊತೆ.',
-              'ಪ್ರತಿ task ಗೆ ಯಾವ AI tools use ಮಾಡ್ತೀಯ ಅಂತ identify ಮಾಡು.',
-              'ಅತಿ ಕಷ್ಟ ಭಾಗದ tiny prototype ಮೊದಲು build ಮಾಡು. ಅದು work ಆದ್ರೆ, ಉಳಿದದ್ದೂ ಆಗುತ್ತೆ.',
-            ],
-          },
-          {
-            week: 'Week 2',
-            title: 'Build',
-            color: chapter.accent,
-            tasks: [
-              'ಒಂದೊಂದೇ task work ಮಾಡು. ಮುಂದೆ skip ಮಾಡಬೇಡ.',
-              'ಪ್ರತಿ task ಗೆ Chapter 1 ನ prompt-evaluate-refine loop use ಮಾಡು.',
-              '"Prompts that worked" log ಇಟ್ಕೋ. ನಂತರ ನಿನಗೇ thanks ಹೇಳ್ಕೋತೀಯ.',
-              'Stuck ಆದಾಗ, relevant chapter ಮತ್ತೆ ಓದು. Answer ಸಾಮಾನ್ಯವಾಗಿ ನೀನು try ಮಾಡಿರದ technique ಅಲ್ಲಿ ಇರುತ್ತೆ.',
-              'Mid-week ಅಲ್ಲಿ friend ಅಥವಾ family member ಕಡೆಯಿಂದ feedback ಪಡ್ಕೋ. Fresh eyes ನಿನ್ನ eyes ಗೆ ಕಾಣಿಸದ್ದನ್ನ catch ಮಾಡ್ತವೆ.',
-            ],
-          },
-          {
-            week: 'Week 3',
-            title: 'Polish & Present',
-            color: '#7B61FF',
-            tasks: [
-              'ಅತಿ obvious ಮೂರು rough edges fix ಮಾಡು. ಉಳಿದದ್ದೆಲ್ಲ ignore ಮಾಡು.',
-              'Project description ಬರಿ: ಏನು ಮಾಡುತ್ತೆ, ಹೇಗೆ build ಮಾಡಿದೆ, ಏನು ಕಲ್ತೆ.',
-              'ನಿನ್ನ process ಗೆ critical ಆಗಿದ್ದ 3 key prompts document ಮಾಡು.',
-              '2-minute walkthrough create ಮಾಡು (video, slides, ಅಥವಾ live demo).',
-              'Share ಮಾಡು. Teacher ಗೆ, friend ಗೆ, online, student showcase ಅಲ್ಲಿ.',
-            ],
-          },
-        ].map((week, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.1}>
-            <div style={`background: ${week.color}06; border: 1px solid ${week.color}15; border-radius: 12px; padding: 1.5rem 1.75rem;`}>
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${week.color}; background: ${week.color}15; padding: 3px 10px; border-radius: 100;`}>
-                  {week.week}
-                </span>
-                <span style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-deep);`}>
-                  {week.title}
-                </span>
-              </div>
-              <ul style="margin: 0; padding-left: 1.25rem;">
-                {week.tasks.map((task) => (
-                  <li style="font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.8; margin-bottom: 0.35rem;">
-                    {task}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- BRIDGE TO SHOWCASE GALLERY -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        ಬೇರೆ students ಏನು build ಮಾಡಿದ್ದಾರೆ ಅಂತ ನೋಡು. ಆಮೇಲೆ ನಿನ್ನದನ್ನ gallery ಗೆ add ಮಾಡು.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SHOWCASE GALLERY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ShowcaseGallery client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING — THE SEND-OFF ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        ಹನ್ನೊಂದು chapters ಹಿಂದೆ, "help me with my essay" ಅಂತ type ಮಾಡಿ best ಆಗಲಿ ಅಂತ hope ಮಾಡಿದ್ದೆ. ಈಗ context engineer ಮಾಡ್ತೀಯ, agents design ಮಾಡ್ತೀಯ, outputs verify ಮಾಡ್ತೀಯ, ಪ್ರತಿ step ಗೆ judgment ತರ್ತೀಯ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Tools ಏನೂ build ಮಾಡಲ್ಲ. <strong>Tools ಇರೋ ಜನ build ಮಾಡ್ತಾರೆ.</strong> ಮತ್ತೆ ನಿನ್ನ generation ಗೆ ಎಂದೂ ಸಿಗದ ಅತ್ಯುತ್ತಮ toolkit ನಿನ್ನ ಹತ್ರ ಇದೆ.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        ಮೊದಲ prompt ಬರೆಯೋ ಮುಂಚೆ, ಹೆಚ್ಚಿನ beginners skip ಮಾಡೋ power move ಇದೆ: <strong>ನಿನ್ನ AI tool ಗೆ permanent instruction file ಕೊಡು.</strong> ಪ್ರತಿ session ನಲ್ಲಿ ನಿನ್ನ project ಬಗ್ಗೆ ಮತ್ತೆ explain ಮಾಡೋ ಬದ್ಲು, ಒಮ್ಮೆ ಬರಿ, ನಿನ್ನ AI automatically ಓದುತ್ತೆ. Claude Code <code>CLAUDE.md</code> ಓದುತ್ತೆ. Cursor <code>.cursorrules</code> ಓದುತ್ತೆ. GitHub Copilot <code>.github/copilot-instructions.md</code> ಓದುತ್ತೆ. ಅದೇ concept, ಬೇರೆ filenames. ಇದು Chapter 3 ನ context engineering — project level ನಲ್ಲಿ apply ಮಾಡಿದ್ದು.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ನೀನೇ ಯೋಚಿಸಬಹುದಾದ ಏನನ್ನಾದ್ರೂ ಮಾಡು.
+      <p class="text-lg leading-[1.85] mb-14">
+        ಒಳ್ಳೆ instruction file ಮೂರು questions ಗೆ answer ಮಾಡುತ್ತೆ: ನೀನು ಏನು build ಮಾಡ್ತಿದ್ದೀಯ, rules ಏನು, ಮತ್ತು "good" ಹೇಗೆ ಕಾಣುತ್ತೆ? ಅವನ್ನ right ಮಾಡಿದ್ರೆ ನಿನ್ನ AI ಜೊತೆ ಪ್ರತಿ conversation ಹತ್ತು steps ಮುಂದೆ start ಆಗುತ್ತೆ. ನಿನ್ನ project ಮುಗಿಸೋಷ್ಟು small ಆಗಿ scope ಮಾಡು — completed weekend hack abandoned masterpiece ನ ಯಾವಾಗ್ಲೂ beat ಮಾಡುತ್ತೆ.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <p class="text-center mt-8" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
-        Ship ಮಾಡು.
+      <div class="insight-box">
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">ಪ್ರಮುಖ ಒಳನೋಟ</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          ಒಳ್ಳೆ project instruction file ನಿನಗೆ help ಮಾಡೋ AI ಮತ್ತು ನಿನ್ನ <em>ಅರ್ಥ ಮಾಡ್ಕೊಳ್ಳೋ</em> AI ನಡುವಿನ ವ್ಯತ್ಯಾಸ. ಒಮ್ಮೆ ಬರಿ, ಪ್ರತಿ session benefit ಆಗು.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        ನಿನ್ನ project instruction file ಇಲ್ಲೇ build ಮಾಡು. Sections fill ಮಾಡು ಮತ್ತು ನಿನ್ನ AI tool ಗೆ export ಮಾಡು.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ COURSE COMPLETE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-24">
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="project-instructions-builder" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ProjectInstructionsBuilder client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div style={`text-align: center; padding: 3rem 2rem; border-radius: 16px; background: ${chapter.accent}06; border: 1px solid ${chapter.accent}15; position: relative; overflow: hidden;`}>
-        <!-- Decorative corner accents -->
-        <div style={`position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid ${chapter.accent}40; border-left: 2px solid ${chapter.accent}40; border-radius: 16px 0 0 0;`}></div>
-        <div style={`position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid ${chapter.accent}40; border-right: 2px solid ${chapter.accent}40; border-radius: 0 0 16px 0;`}></div>
-
-        <p style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-subtle); margin: 0 0 0.75rem;">
-          Course complete
-        </p>
-        <p style={`font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: ${chapter.accent}; margin: 0 0 0.75rem; letter-spacing: -0.02em;`}>
-          ಎಲ್ಲ 11 chapters ಮುಗಿಸಿದೆ.
-        </p>
-        <p style="font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.6; max-width: 40ch; margin: 0 auto 2rem;">
-          ಈಗ ನಿಜವಾದ ಕಲಿಕೆ start ಆಗುತ್ತೆ — ಏನಾದ್ರೂ build ಮಾಡು ಮತ್ತೆ ಬೇಕಾದಾಗ ಯಾವ chapter ಗಾದ್ರೂ ವಾಪಸ್ ಬಾ.
-        </p>
-
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
-          <a
-            href="/kn"
-            style={`display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; background: ${chapter.accent}; color: white; transition: all 0.3s;`}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            ಮುಖಪುಟಕ್ಕೆ ಹೋಗು
-          </a>
-          <a
-            href="/kn/ch1"
-            style="display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); color: var(--color-deep); transition: all 0.3s;"
-          >
-            Chapter 1 ಮತ್ತೆ ಓದು
-          </a>
-        </div>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Tools ಏನೂ build ಮಾಡಲ್ಲ. Tools ಜೊತೆ ಇರೋ ಜನ build ಮಾಡ್ತಾರೆ. ನಿನ್ನ generation ಗೆ ಎಂದೂ ಸಿಕ್ಕಿರದ ಅತ್ಯುತ್ತಮ toolkit ನಿನ್ನ ಹತ್ರ ಇದೆ.
       </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        ಹನ್ನೊಂದು chapters ಹಿಂದೆ, ನೀನು "ನನ್ನ essay ಗೆ help ಮಾಡು" ಅಂತ type ಮಾಡಿ best hope ಮಾಡ್ತಿದ್ದೆ. ಈಗ ನೀನು context engineer ಮಾಡ್ತೀಯ, agents design ಮಾಡ್ತೀಯ, outputs verify ಮಾಡ್ತೀಯ, ಮತ್ತು ಪ್ರತಿ step ಗೆ judgment ತರ್ತೀಯ. Course ಮುಗಿಯಿತು. ನಿಜವಾದ learning ಈಗ start ಆಗುತ್ತೆ — ನೀನು ಮಾತ್ರ ಯೋಚಿಸೋ ಥರದ್ದು ಏನೋ ಮಾಡು.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-center mt-4" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
+        Ship ಮಾಡು.
+      </p>
     </FadeInBlock>
   </section>
 

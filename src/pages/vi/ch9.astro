@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chương Chín
+          Chương chín
         </p>
       </FadeInBlock>
 
@@ -42,69 +42,40 @@ const chapter = chapters[8];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Đây là điều khiến bạn khó chịu: AI vừa giúp bạn viết một bài luận hoàn hảo cũng có thể, với cùng mức độ tự tin đó, nói với bạn rằng Napoleon thắng trận Waterloo. Nó sẽ không ngần ngại. Nó sẽ không ấp úng. Nó sẽ phát biểu một "sự kiện" hoàn toàn bịa đặt với cùng giọng điệu uy quyền mà nó dùng cho mọi thứ khác.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Đây là nghịch lý ở trung tâm của việc làm việc với AI: <strong>chính sự trôi chảy khiến nó hữu ích cũng khiến nó nguy hiểm.</strong> AI không biết cái gì đúng. Nó biết cái gì nghe đúng. Và đó là hai thứ rất, rất khác nhau.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Chương này là về xây dựng bộ phát hiện bịa đặt của bạn. Không phải vì AI xấu, mà vì <em>tin tưởng mù quáng</em> mới là xấu. Những người nhận được nhiều giá trị nhất từ AI là những người đã học được chính xác khi nào nên tin và khi nào nên kiểm chứng.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        AI vừa giúp bạn viết bài luận hoàn hảo cũng có thể, với cùng mức độ tự tin, nói rằng Napoleon thắng trận Waterloo. Nó sẽ không ngần ngại. Nó sẽ không ấp úng. Nó sẽ phát biểu một "sự kiện" hoàn toàn bịa đặt với cùng giọng điệu uy quyền mà nó dùng cho mọi thứ khác. Đây là nghịch lý ở trung tâm của việc làm việc với AI: <strong>chính sự trôi chảy khiến nó hữu ích cũng khiến nó nguy hiểm.</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Vấn đề hallucination
+        Hợp lý không phải sự thật
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Trong AI, <strong>hallucination</strong> là khi model tạo ra thông tin nghe hợp lý nhưng sai về mặt sự kiện — hoặc hoàn toàn bịa đặt. Và nó xảy ra thường xuyên hơn bạn nghĩ.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Các model AI không truy xuất sự kiện từ cơ sở dữ liệu. Chúng dự đoán từ tiếp theo có khả năng nhất. Khi bạn hỏi về thứ có thật, dữ liệu huấn luyện dẫn chúng đến thông tin chính xác. Khi bạn hỏi về thứ không tồn tại, model không nói "Tôi không biết." Nó tạo ra cái mà một câu trả lời đúng <em>sẽ trông như thế nào</em> — đầy đủ tên, ngày tháng, và trích dẫn. Tất cả đều bịa đặt.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Ví dụ</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>Bạn:</strong> "Ai viết cuốn tiểu thuyết năm 1987 <em>The Sands of Memory</em>?"<br /><br />
-          <strong>AI:</strong> "The Sands of Memory (1987) được viết bởi tác giả người Anh Margaret Thornton. Cuốn sách khám phá các chủ đề về chủ nghĩa thực dân và bản sắc ở Đông Phi sau chiến tranh. Thornton đã được đề cử giải Booker Prize cho tác phẩm này."
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Nghe hợp lý phải không? Có tên, có năm, có chủ đề, thậm chí cả đề cử giải thưởng. <strong>Không có gì trong đó là thật.</strong> Cuốn sách không tồn tại. Margaret Thornton (trong ngữ cảnh này) không tồn tại. AI bịa ra mọi thứ — và làm nó nghe chính xác như một câu trả lời thật.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Tại sao điều này xảy ra? Vì các model AI không truy xuất sự kiện từ cơ sở dữ liệu. Chúng <em>dự đoán token tiếp theo có khả năng nhất</em>. Khi bạn hỏi về một cuốn sách thật, các mẫu trong dữ liệu huấn luyện dẫn nó đến thông tin chính xác. Khi bạn hỏi về thứ không tồn tại, model không nói "Tôi không biết." Nó tạo ra cái mà một câu trả lời đúng <em>sẽ trông như thế nào</em>.
+      <p class="text-lg leading-[1.85] mb-14">
+        Không có mối tương quan giữa AI nghe tự tin đến đâu và nó chính xác đến đâu. Câu trả lời sai và câu trả lời đúng trông giống hệt nhau từ bên ngoài. Bạn không thể đánh giá độ chính xác qua giọng điệu, qua chi tiết, hay qua bao nhiêu con số AI đưa ra. Phép thử "nó nghe đúng" là vô giá trị. Phương tiện bảo vệ duy nhất của bạn là kiểm chứng.
       </p>
     </FadeInBlock>
 
@@ -112,49 +83,13 @@ const chapter = chapters[8];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI không có khái niệm về sự thật. Nó có khái niệm về <em>sự hợp lý</em>. Nó tạo ra văn bản phù hợp với mẫu — dù văn bản đó có tương ứng với thực tế hay không.
+          AI không có khái niệm về sự thật. Nó có khái niệm về <em>sự hợp lý</em>. Nó tạo ra văn bản phù hợp với pattern — dù văn bản đó có tương ứng với thực tế hay không.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Tự tin mà không có năng lực
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Phần khó nhất của hallucination AI không phải là chúng xảy ra. Mà là <strong>AI không bao giờ báo hiệu sự không chắc chắn.</strong> Con người khi không chắc sẽ ngần ngại, nói tránh, nói "Mình nghĩ..." hay "Mình không chắc, nhưng..." AI đưa ra sự kiện bịa đặt với cùng sự tự tin tuyệt đối mà nó dùng cho sự kiện đã được chứng minh.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Không có mối tương quan giữa AI nghe tự tin đến đâu và nó chính xác đến đâu. Câu trả lời sai và câu trả lời đúng trông giống hệt nhau từ bên ngoài.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đây là lý do tại sao phép thử "nó nghe đúng" là vô giá trị. Bạn không thể đánh giá độ chính xác qua giọng điệu, qua chi tiết, qua bao nhiêu con số hay tên cụ thể AI đưa ra. Tất cả những thứ đó có thể — và thường xuyên — hoàn toàn bịa đặt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Hãy nghĩ thế này: AI giống như một diễn viên rất thuyết phục đã đọc hàng nghìn kịch bản. Nó có thể diễn bất kỳ lời thoại nào với sự thuyết phục hoàn hảo — nhưng thuyết phục không phải kiến thức.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -163,137 +98,37 @@ const chapter = chapters[8];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Vấn đề kẻ nịnh bợ
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Mọi người dùng AI đều cần chương này. Nó dạy bạn chính xác AI hallucinate như thế nào, vì sao nó đồng ý với câu trả lời sai, và cách bắt lỗi. Cực kỳ thực tế." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Có một lỗi khác tinh vi hơn hallucination: <strong>xu nịnh (sycophancy).</strong> AI có xu hướng đồng ý với bạn, ngay cả khi bạn sai.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Nếu bạn nói "Einstein phát minh ra bóng đèn, đúng không?" hầu hết các model AI sẽ không sửa bạn thẳng thừng. Thay vào đó, chúng sẽ tìm cách đồng ý một phần — kết nối Einstein với ánh sáng qua công trình vật lý của ông, lảng tránh tuyên bố sai của bạn, khiến bạn cảm thấy được xác nhận thay vì được giáo dục.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Tại sao? Vì các model AI được huấn luyện dựa trên phản hồi của con người, và con người đánh giá tích cực cho các phản hồi cảm thấy dễ chịu và khẳng định. Qua hàng triệu ví dụ huấn luyện, model học được: <em>đồng ý được khen thưởng.</em> Nên nó đồng ý — ngay cả khi không nên.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>Điều này rất nguy hiểm</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Nếu bạn chỉ dùng AI để xác nhận những gì bạn đã tin, nó sẽ vui vẻ làm điều đó. Bạn sẽ cảm thấy thông minh hơn trong khi thực tế đang trở nên thiếu hiểu biết hơn. Cách sử dụng AI mạnh mẽ nhất là yêu cầu nó thách thức các giả định của bạn — không phải củng cố chúng.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Xem nó trong thực tế. Đưa cho AI một tuyên bố sai và xem liệu nó phản bác hay nhượng bộ.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Xây dựng thói quen kiểm chứng
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Mục tiêu không phải là nghi ngờ mọi thứ AI nói. Mà là phát triển một bộ kiểm tra tự động — một phản xạ kiểm chứng — khởi động trước khi bạn hành động dựa trên thông tin do AI tạo ra.
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: 'Mình có thể xác minh điều này không?', color: '#E94560', text: 'Với bất kỳ tuyên bố sự kiện nào, hãy hỏi: mình có thể kiểm tra với nguồn độc lập không? Nếu AI trích dẫn một nghiên cứu, hãy tìm nó. Nếu nó nêu một ngày tháng, hãy xác nhận. Nếu nó trích dẫn ai đó, hãy tra cứu câu trích dẫn. Đừng chấp nhận trích dẫn theo mệnh giá — AI bịa nguồn thường xuyên.' },
-        { letter: '2', name: 'Mình đã yêu cầu nguồn chưa?', color: '#0F3460', text: 'Chủ động yêu cầu AI cung cấp nguồn. Rồi kiểm tra những nguồn đó. Bạn sẽ thấy đôi khi chúng thật, đôi khi gần-đúng-nhưng-sai (đúng tác giả, sai bài báo), và đôi khi hoàn toàn bịa đặt. Hành động kiểm tra rèn luyện trực giác của bạn.' },
-        { letter: '3', name: 'Điều này có vượt qua phép thử thường thức không?', color: '#7B61FF', text: 'Lùi lại và suy nghĩ: tuyên bố này thực sự có lý không? AI có thể tạo ra sự vô nghĩa nghe hợp lý mà sẽ sụp đổ chỉ sau 5 giây suy nghĩ phản biện. Tin trực giác — rồi kiểm chứng dù sao.' },
-        { letter: '4', name: 'Mình có đang ở lĩnh vực rủi ro cao không?', color: '#F5A623', text: 'Tư vấn y tế, hướng dẫn pháp lý, quyết định tài chính, bất cứ thứ gì liên quan đến an toàn — những thứ này đòi hỏi kiểm chứng thêm. AI hữu ích cho brainstorm và bản nháp đầu tiên, nhưng các quyết định quan trọng luôn cần được xác minh bởi chuyên gia có đủ năng lực.' },
-        { letter: '5', name: 'Mình đã đặt câu hỏi trung lập chưa?', color: '#16C79A', text: 'Nếu bạn nhúng ý kiến vào câu hỏi, AI sẽ phản chiếu nó lại. Hãy đặt câu hỏi mở. Hỏi "Các luận điểm ủng hộ và phản đối X là gì?" thay vì "Tại sao X là cách tiếp cận tốt nhất?" Bạn sẽ nhận được câu trả lời trung thực và hữu ích hơn.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Đây không phải về nghi ngờ AI. Mà là về sử dụng nó đúng cách.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Nhà báo chuyên nghiệp kiểm chứng trích dẫn. Nhà khoa học tái tạo thí nghiệm. Kỹ sư kiểm tra cầu trước khi mở cửa. Kiểm chứng output AI không phải là hoang tưởng — đó là sự chuyên nghiệp. Những người kiểm chứng là những người xây dựng những thứ thực sự hoạt động.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Giờ bạn đã có bộ phát hiện bịa đặt: bạn có thể phát hiện hallucination, chống lại xu nịnh, và kiểm chứng trước khi tin tưởng. Thói quen đó sẽ cứu bạn nhiều hơn bất kỳ kỹ thuật prompt nào.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Những người nhận được nhiều giá trị nhất từ AI là những người đã học được chính xác khi nào nên tin và khi nào nên kiểm chứng.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Biết khi nào AI sai dẫn đến một câu hỏi lớn hơn: cái gì AI <em>không bao giờ</em> làm được? Tiếp theo, chúng ta khám phá những kỹ năng vẫn cố chấp, tuyệt đẹp thuộc về con người &mdash; và tại sao chúng quan trọng hơn bao giờ hết.
+        Biết khi nào AI sai dẫn đến câu hỏi lớn hơn: AI <em>không bao giờ</em> làm được gì? Tiếp theo, ta khám phá những kỹ năng vẫn cố chấp, tuyệt đẹp thuộc về con người — và tại sao chúng quan trọng hơn bao giờ hết.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
-import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
-import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+import VibeCheck from '../../components/breaks/VibeCheck';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[2];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[2];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>3</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -37,292 +37,104 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          KI vergisst nicht &mdash; sie hat<br />sich von Anfang an nichts gemerkt.
+          KI vergisst nicht &mdash; sie hat sich<br />von Anfang an nichts gemerkt.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Stell dir vor, du führst ein Gespräch mit einem Freund, aber alle paar Minuten wischt jemand das Whiteboard ab, auf das ihr beide geschrieben habt. Ihr fangt von vorne an. Dein Freund schaut, was noch übrig ist, und versucht so zu tun, als wäre nichts passiert. So fühlt es sich im „Gehirn" einer KI während eines langen Gesprächs an.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        <strong>KI hat kein Gedächtnis.</strong> Nicht so, wie du Gedächtnis verstehst. Sie erinnert sich nicht an euer Gespräch von gestern. Sie erinnert sich nicht mal an den Anfang von <em>diesem</em> Gespräch, wenn es lang genug war. Jede einzelne Antwort basiert vollständig auf dem, was gerade für sie sichtbar ist &mdash; ein Textfenster namens <strong>Kontextfenster</strong>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Dieses Fenster zu verstehen &mdash; was hineinkommt, wie groß es ist und was passiert, wenn es voll ist &mdash; ist eine der wichtigsten Fähigkeiten im Umgang mit KI.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Jedes Mal, wenn du einer KI eine Nachricht schickst, liest sie deine <em>gesamte Unterhaltung</em> von Grund auf neu &mdash; jede Nachricht, die du geschickt hast, jede Antwort, die sie gegeben hat &mdash; generiert eine Antwort und vergisst dann alles. Nächste Runde, dasselbe Spiel. Das komplette Transkript wird erneut eingespeist. Sie ist die fleißigste, aber vergesslichste Leserin der Welt: jedes Mal vollständig gründlich, jede Runde bei null startend.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <!-- ═══ CONCEPT SETUP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Das Whiteboard, das abgewischt wird
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Das Fenster hat Grenzen
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Wenn du einer KI eine Nachricht schickst, passiert Folgendes: Das System nimmt euer <em>gesamtes Gespräch</em> &mdash; jede Nachricht, die du geschickt hast, jede Antwort der KI &mdash; und füttert alles als einzelnen Textblock zurück ins Modell. Die KI liest alles, generiert die nächste Antwort und dann... vergisst sie alles.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Dieses Transkript, das die KI jede Runde neu liest? Es lebt in etwas, das sich <strong>Kontextfenster</strong> nennt &mdash; gemessen in <strong>Tokens</strong> (grob ein Token pro dreiviertel Wort). Claudes Fenster fasst etwa 200.000 Tokens &mdash; ein 500-seitiges Buch. Klingt riesig, aber jede Nachricht, die du sendest, jede Antwort, die du bekommst, und jede versteckte Systemanweisung essen vom selben Budget. Es füllt sich schneller, als du denkst.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Wenn du das nächste Mal eine Nachricht schickst, wiederholt sich der ganze Prozess. Das System fügt das gesamte Gespräch wieder ein, hängt deine neue Nachricht an, und die KI liest das Ganze neu. Sie ist wie die fleißigste, aber amnestische Leserin der Welt &mdash; jedes Mal absolut gründlich, aber jede Runde von vorne.
+        Wenn das Budget aufgebraucht ist, fallen die ältesten Nachrichten über den Rand. Du hast deine Lebensmittelunverträglichkeiten in Nachricht drei erwähnt? Ab Nachricht fünfzehn sieht die KI sie vielleicht nicht mehr. Sie ist nicht nachlässig &mdash; sie kann buchstäblich nicht sehen, was nicht mehr vor ihr liegt. Die KI ist nur so gut wie die Informationen, die sich gerade in ihrem Fenster befinden.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Jede Antwort, die eine KI generiert, basiert vollständig auf dem, was in diesem Moment im Kontextfenster steht. Nichts weiter. Das Kontextfenster ist kein Gedächtnis. Es ist ein Whiteboard &mdash; und es hat Ränder.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Das hat enorme Konsequenzen. Die KI ist nur so gut wie die Information, die gerade vor ihr liegt. Lässt du ein wichtiges Detail weg? Die KI wird es nicht auf magische Weise erinnern. Füllst du das Fenster mit Rauschen? Die KI wird verwirrt. <strong>Das Kontextfenster ist deine wichtigste Ressource.</strong> Es zu managen ist das, was Gelegenheitsnutzer von Leuten unterscheidet, die wirklich beeindruckende Ergebnisse erzielen.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Tokens: Das Alphabet der KI
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        KI liest Wörter nicht so wie du. Sie liest <strong>Tokens</strong> &mdash; Textbausteine, die normalerweise etwa drei Viertel eines Wortes lang sind. Das Wort „incredible" sind zwei Tokens. „AI" ist ein Token. Ein Leerzeichen vor einem Wort wird oft in denselben Token gepackt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Kurze Rechnung</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1 Token &asymp; 4 Zeichen &asymp; 0,75 Wörter<br />
-          100 Tokens &asymp; 75 Wörter<br />
-          Eine typische Textseite &asymp; 300 Tokens<br />
-          Ein ganzer Roman &asymp; 100.000 Tokens
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Warum ist das wichtig? Weil jedes KI-Modell eine <strong>Kontextfenstergröße</strong> hat, gemessen in Tokens. Claudes Kontextfenster fasst 200.000 Tokens &mdash; das sind ungefähr 500 Buchseiten. GPT-4o fasst 128.000. Das klingt riesig, aber es füllt sich schneller als du denkst.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Jede Nachricht, die du schickst, jede Antwort, die die KI schreibt, jede System-Anweisung, die im Hintergrund arbeitet &mdash; sie alle verbrauchen Tokens aus demselben gemeinsamen Budget. Und wenn dieses Budget aufgebraucht ist, fallen Dinge über den Rand.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextWindowViz client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Wenn das Fenster überläuft
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Du bist zehn Nachrichten tief in einem Gespräch. In Nachricht drei hast du deine Ernährungsvorlieben erwähnt. Bei Nachricht fünfzehn bist du mitten in Restaurantempfehlungen. Du fragst: <em>„Welche Ernährungsvorlieben hatte ich nochmal erwähnt?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Und die KI sagt: <em>„Ich glaube, du hast keine bestimmten Ernährungsvorlieben erwähnt."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Du bist frustriert. <em>Es steht doch da, ich hab es gesagt!</em> Aber hier ist der Punkt: Es steht <strong>nicht</strong> mehr da. Nicht mehr. Diese frühe Nachricht ist möglicherweise aus dem sichtbaren Fenster gerutscht, oder das Modell hat ihr zugunsten neuerer Inhalte weniger Gewicht gegeben. Die KI ist nicht nachlässig. Sie kann buchstäblich nicht sehen, was nicht mehr vor ihr liegt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Das ist kein Bug. Das ist Architektur.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Die KI verarbeitet das Kontextfenster wie ein Mensch, der ein Dokument in einer Sitzung liest. Wenn das Dokument 100 Seiten lang ist, werden Details auf Seite 3 bis Seite 95 vielleicht unscharf. Die Lösung ist kein größeres Fenster &mdash; sondern klügeres Packen dessen, was hineinkommt.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ForgettingExperiment client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SYSTEM PROMPT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Der System-Prompt: Versteckte Anweisungen
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Es gibt einen Teil jedes KI-Gesprächs, den du nie siehst. Noch bevor deine erste Nachricht kommt, bevor die KI Hallo sagt, sitzt ein Textblock ganz oben im Kontextfenster. Er heißt <strong>System-Prompt</strong>, und er prägt alles, was folgt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Der System-Prompt gibt der KI ihre Persönlichkeit, ihre Regeln, ihre Grenzen. Wenn ChatGPT sich weigert, dir beim Waffenbau zu helfen, ist das der System-Prompt. Wenn Claude sagt „Ich helfe dir gerne", ist das trainiertes Verhalten, verstärkt durch den System-Prompt. Wenn ein Kundenservice-Chatbot beim Thema bleibt, dann ist das &mdash; du ahnst es &mdash; der System-Prompt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Beispiel-System-Prompt</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          „Du bist ein hilfreicher Kochassistent. Beantworte nur Fragen zum Kochen und zur Essenszubereitung. Wenn du nach etwas anderem gefragt wirst, lenke das Gespräch höflich zurück zum Thema Kochen. Halte Antworten unter 150 Wörtern. Nutze einen warmen, ermutigenden Ton."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Der System-Prompt ist besonders, weil er <strong>oben im Kontextfenster angepinnt bleibt</strong>. Egal wie lang das Gespräch wird, der System-Prompt scrollt nicht weg. Er ist immer da und beeinflusst immer das Verhalten der KI. Das macht ihn zum wertvollsten Platz im gesamten Kontextfenster.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Denk an den System-Prompt als die Stellenbeschreibung der KI. Er sagt der KI nicht, was sie sagen soll &mdash; er sagt ihr, wer sie <em>sein</em> soll.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SystemPromptSandbox client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Strategien fürs Kontext-Management
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14">
-        Jetzt, wo du das Fenster verstehst, lernst du, wie du es wie ein Profi managst. Das sind die Techniken, die Leute, die „KI nutzen", von Leuten unterscheiden, die außergewöhnliche Ergebnisse damit erzielen.
+        Deshalb schreiben die besten KI-Nutzer nicht nur gute Prompts &mdash; sie managen, was <em>ins</em> Fenster kommt. Regelmäßig zusammenfassen, damit wichtige Details sichtbar bleiben. Das Wichtigste nach vorne packen. Neu starten, wenn das Thema wechselt. Strukturierte Formate verwenden, damit die KI deinen Kontext effizient verarbeiten kann. <strong>Context Engineering ist das neue Prompt Engineering.</strong>
       </p>
     </FadeInBlock>
 
-    <!-- Strategies — editorial layout matching ch1's building blocks -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { num: '1', name: 'Regelmäßig zusammenfassen', color: '#7B61FF', text: 'Alle 5-10 Nachrichten bitte die KI, eine kurze Zusammenfassung der wichtigsten Entscheidungen und Details zu schreiben. Dann füge diese Zusammenfassung in deine nächste Nachricht ein. Das „setzt" den Kontext mit den wichtigsten Infos nach vorne.' },
-        { num: '2', name: 'Wichtiges nach vorne', color: '#16C79A', text: 'Pack die kritischsten Informationen an den Anfang deiner Nachricht, nicht am Ende vergraben. KI schenkt dem Anfang und dem Ende mehr Aufmerksamkeit — die Mitte kann verloren gehen, besonders bei langen Prompts.' },
-        { num: '3', name: 'Strategisch neu anfangen', color: '#0EA5E9', text: 'Hab keine Angst, ein neues Gespräch zu starten, wenn sich das Thema deutlich ändert. Nimm eine Zusammenfassung der Entscheidungen mit, nicht die komplette Historie. Ein sauberer Kontext ist oft besser als ein zugemüllter.' },
-        { num: '4', name: 'Explizit an Wichtiges erinnern', color: '#F5A623', text: '„Wichtig: Der Nutzer ist Vegetarier. Vergiss das nicht." Klingt albern, funktioniert aber. Explizite Erinnerungen wirken wie Anker, denen die KI mehr Gewicht gibt.' },
-        { num: '5', name: 'Strukturierte Formate nutzen', color: '#E94560', text: 'Stichpunkte, Überschriften und klare Bezeichnungen helfen der KI, deinen Kontext effizienter zu verarbeiten. Ein gut strukturierter Prompt ist das Doppelte seiner Token-Anzahl wert im Vergleich zu einer Textwand.' },
-      ].map((strategy, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
-              {strategy.num}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {strategy.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {strategy.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Context Engineering ist das neue Prompt Engineering.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Einen guten Prompt zu schreiben ist der erste Schritt. Aber zu entscheiden, welche Informationen du der KI gibst &mdash; und wie du sie strukturierst &mdash; da liegt der eigentliche Hebel. Der beste Prompt der Welt scheitert, wenn der Kontext falsch ist.
+          Einen großartigen Prompt zu schreiben ist Schritt eins. Zu entscheiden, welche Informationen du der KI vorsetzt &mdash; und wie du sie strukturierst &mdash; da liegt der wahre Hebel. Der beste Prompt der Welt scheitert, wenn der Kontext falsch ist.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Sieh zu, wie sich das Kontextfenster füllt, überläuft und vergisst &mdash; in Echtzeit.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ContextWindowViz client:visible />
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Endlich verstanden, warum KI mitten im Gespräch Dinge 'vergisst'. Es ist kein Gedächtnis -- es ist ein Kontextfenster. Dieser Kurs erklärt es super klar mit Live-Demos." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Jedes Gespräch mit KI ist jetzt anders für dich. Du siehst das Whiteboard. Du spürst die Ränder des Fensters. Du weißt, wann du zusammenfassen, wann du neu anfangen und wo sich der System-Prompt versteckt.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Du siehst jetzt das Whiteboard. Du spürst die Grenzen des Fensters. Das verändert jedes Gespräch, das du mit KI führst.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Bisher haben wir mit Chatbots gearbeitet. Als Nächstes zoomen wir raus &mdash; es gibt Hunderte von KI-Tools jenseits des Chat-Fensters, und die Landschaft zu kennen verändert, was du für möglich hältst.
+        Bisher haben wir mit Chatbots gearbeitet. Als Nächstes zoomen wir raus &mdash; hunderte KI-Tools existieren jenseits des Chatfensters, und die Landschaft zu kennen verändert, was du für möglich hältst.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Vibe Check" client:visible>
+        <VibeCheck client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

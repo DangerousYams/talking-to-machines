@@ -5,9 +5,10 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
 import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
-import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[1];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[1];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>২</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          অধ্যায় দুই
+          দ্বিতীয় অধ্যায়
         </p>
       </FadeInBlock>
 
@@ -42,29 +42,16 @@ const chapter = chapters[1];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        গত অধ্যায়ে তুমি শিখেছ একটা ভালো প্রম্পটের পাঁচটা বিল্ডিং ব্লক — Role, Task, Format, Constraints, Examples। সেটা ভিত্তি। কিন্তু উপকরণ চেনা মানেই শেফ হওয়া না।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        এই অধ্যায়টা <em>টেকনিক</em> নিয়ে। যে পার্থক্য একজন প্রম্পট টাইপ করা মানুষ আর একজন প্রম্পট <em>ক্র্যাফট</em> করা মানুষের মধ্যে। এটা একটা প্রশ্ন জিজ্ঞেস করা আর <strong>সঠিক</strong> প্রশ্ন জিজ্ঞেস করার মধ্যকার পার্থক্য — সেই প্রশ্ন যা সত্যিই কাজের কিছু unlock করে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        সেরা AI ব্যবহারকারীরা বিষয়ের এক্সপার্ট না — <strong>তারা জিজ্ঞেস করার এক্সপার্ট।</strong> আর জিজ্ঞেস করা একটা স্কিল যা শেখা যায়।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        বেশিরভাগ মানুষ AI-কে ভেন্ডিং মেশিনের মতো ব্যবহার করে। প্রম্পট ঢোকাও, উত্তর বেরোয়। কিন্তু সেরা ফলাফল আসে <em>কথোপকথন</em> থেকে, কমান্ড থেকে না। যে পার্থক্য একজন প্রম্পট টাইপ করা মানুষ আর একজন প্রম্পট ক্র্যাফট করা মানুষের মধ্যে — সেটা সেই একই পার্থক্য যা ২,৪০০ বছর ধরে মহান চিন্তাবিদদের শক্তি জুগিয়ে আসছে: সঠিক প্রশ্ন জিজ্ঞেস করা।
       </p>
     </FadeInBlock>
   </section>
@@ -75,344 +62,57 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         সক্রেটিক ফ্লিপ
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        বেশিরভাগ মানুষ AI-কে ভেন্ডিং মেশিনের মতো ব্যবহার করে। প্রম্পট ঢোকাও, উত্তর বেরোয়। কিন্তু সেরা ফলাফল আসে <em>কথোপকথন</em> থেকে, কমান্ড থেকে না। আর সবচেয়ে শক্তিশালী কথোপকথনের টেকনিকটা ২,৪০০ বছর পুরোনো।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        সক্রেটিস কখনো সরাসরি উত্তর দিতেন না। তিনি <em>আরো</em> প্রশ্ন করতেন — খোঁচা দিতেন, স্পষ্ট করতেন, চ্যালেঞ্জ করতেন — যতক্ষণ না তাঁর ছাত্ররা নিজেরাই গভীর উপলব্ধিতে পৌঁছাত। তুমি AI-এর সাথে একই পদ্ধতি ব্যবহার করতে পারো, কিন্তু উল্টো করে।
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        সক্রেটিস কখনো সরাসরি উত্তর দিতেন না। তিনি <em>আরো</em> প্রশ্ন করতেন যতক্ষণ না তাঁর ছাত্ররা নিজেরাই গভীর উপলব্ধিতে পৌঁছাত। তুমি AI-এর সাথে একই কৌশল ব্যবহার করতে পারো, কিন্তু উল্টো করে: উত্তর চাওয়ার বদলে, AI-কে বলো তোমাকে <em>ইন্টারভিউ</em> করতে। তুমি যখন টাইপ করো "একটা জন্মদিনের পার্টি প্ল্যান করো," তুমি এমন ডজনখানেক ডিটেইল বাদ দিচ্ছ যা উত্তরটাকে আমূল বদলে দেয়। AI জানে না — কিন্তু সে জিজ্ঞেস করতে পারে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI-কে উত্তর জিজ্ঞেস করার বদলে, AI-কে বলো তোমাকে ইন্টারভিউ করতে। সেই স্পষ্টকারী প্রশ্নগুলো করতে দাও যা তুমি ভাবতে ভুলে গেছ।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ভেবে দেখো: যখন তুমি টাইপ করো "একটা জন্মদিনের পার্টি প্ল্যান করো," তুমি এমন ডজনখানেক ডিটেইল বাদ দিচ্ছ যা উত্তরটাকে আমূল বদলে দেয়। কতজন আসবে? বাজেট কত? ইনডোর না আউটডোর? AI জানে না — কিন্তু সে জিজ্ঞেস করতে পারে।
+      <p class="text-lg leading-[1.85] mb-14">
+        এই একটা টেকনিক — কে প্রশ্ন করবে সেটা উল্টে দেওয়া — AI-কে উত্তর দেওয়ার মেশিন থেকে একজন <strong>চিন্তার সঙ্গী</strong>-তে রূপান্তরিত করে। তাকে খোঁচা দেওয়ার, স্পষ্ট করার, আর চ্যালেঞ্জ করার অনুমতি দাও। পাঁচটা আদান-প্রদানের পর আউটপুট, একটা সিঙ্গেল-শট কমান্ডের তুলনায় চেনাই যাবে না।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>সক্রেটিক প্রম্পট</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "আমি একটা জন্মদিনের পার্টি প্ল্যান করতে চাই। প্ল্যানিং শুরু করার আগে, আমাকে ৫টা নির্দিষ্ট প্রশ্ন করো যা তোমাকে আমার ঠিক পরিস্থিতি অনুযায়ী প্ল্যান বানাতে সাহায্য করবে। একটা একটা করে জিজ্ঞেস করো আর আমার উত্তরের জন্য অপেক্ষা করো।"
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          সেরা AI ব্যবহারকারীরা বিষয়ের এক্সপার্ট না — তারা জিজ্ঞেস করার এক্সপার্ট। আর সবচেয়ে শক্তিশালী প্রশ্ন যা তুমি করতে পারো সেটা হলো: "উত্তর দেওয়ার আগে, তোমার কি জানা দরকার?"
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        এই একটা টেকনিক — কে প্রশ্ন করবে সেটা উল্টে দেওয়া — তোমার সবচেয়ে শক্তিশালী আপগ্রেডগুলোর একটা। এটা AI-কে উত্তর দেওয়ার মেশিন থেকে একজন <strong>চিন্তার সঙ্গী</strong>-তে রূপান্তরিত করে।
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        নিজে চেষ্টা করো। একটা লক্ষ্য বলো — আর দেখো AI কিভাবে স্ক্রিপ্ট উল্টে দেয়।
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FlipTheScript client:visible />
-    </FadeInBlock>
+    <FlipTheScript client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        বলো না, দেখাও
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="এই AI কোর্সটা আমার প্রম্পটিং নিয়ে চিন্তার ধরনই বদলে দিল। AI-কে কি করতে হবে বলার বদলে, তুমি তাকে বলো আগে তোমাকে ইন্টারভিউ করতে। ফলাফল রাত-দিন।" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ভাবো তুমি একটা স্টাইল একজন বন্ধুকে বোঝাতে চাইছ। তুমি পাঁচ মিনিট ধরে শব্দে বর্ণনা করতে পারো — "আমি এমন কিছু চাই যা প্লেফুল কিন্তু বাচ্চাদের মতো না, ক্যাজুয়াল কিন্তু অগোছালো না, ছোট ছোট বাক্য আর অপ্রত্যাশিত তুলনা দিয়ে।" অথবা তুমি শুধু একটা উদাহরণ দেখাতে পারো: <em>"এরকম করে লেখো।"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এটাই <strong>few-shot prompting</strong>। তুমি কি চাও সেটা বিমূর্তভাবে বর্ণনা করার বদলে, AI-কে কংক্রিট উদাহরণ দাও। একটা উদাহরণ হলো "one-shot" প্রম্পট। দুই বা তিনটা হলো "few-shot"। শূন্য উদাহরণ — যেখানে তুমি শুধু বর্ণনা করো কি চাও — সেটা "zero-shot"।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (বর্ণনা করা)</span>
-        <p class="m-0" style="color: var(--color-deep);">"রানিং শুজের জন্য একটা product description লেখো। পাঞ্চি আর conversational করো, ছোট বাক্যে। মার্কেটিং ক্লিশে এড়িয়ে যাও।"</p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (দেখানো)</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "CloudRunner X1 রানিং শুজের জন্য একটা product description লেখো। এই স্টাইলে চাই:<br /><br />
-          <em>উদাহরণ: 'The Weekender Tote — তোমার ল্যাপটপ, তোমার লাঞ্চ, আর তোমার সন্দেহজনক লাইফ চয়েস সব ধরে। ওয়াটার-রেসিস্ট্যান্ট ক্যানভাস কারণ আমরা জানি তুমি কিছু ফেলবেই। পাঁচটা পকেট, কোনোটাই তুমি পরে মনে রাখবে না।'</em><br /><br />
-          এই টোন ম্যাচ করো: ছোট বাক্য, সেলফ-অ্যাওয়ার হিউমার, বাজওয়ার্ডের চেয়ে নির্দিষ্টতা।"
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Few-shot ভার্সন নাটকীয়ভাবে ভালো ফলাফল দেবে। AI "স্মার্ট" হয়ে গেছে বলে না — বরং তুমি একটা অস্পষ্ট দিকনির্দেশনার বদলে একটা <strong>কংক্রিট টার্গেট</strong> দিয়েছ। একটা ভালো উদাহরণ শত শব্দের বর্ণনার চেয়ে বেশি কাজের।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI তোমার চাওয়া স্টাইলে লিখছে না? আরো বিশেষণ যোগ করো না। একটা উদাহরণ দাও। "এরকম করে" সবসময় হারায় "আরো পাঞ্চি কিন্তু উষ্ণও কিন্তু খুব ক্যাজুয়াল না"-কে।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-    <FadeInBlock client:visible>
-      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
-        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
-          ছোট্ট পরীক্ষা
-        </p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
-          সম্প্রতি তুমি AI-কে কি লিখতে বলেছিলে ভেবে দেখো — একটা ইমেইল, একটা গল্প, একটা সোশ্যাল মিডিয়া পোস্ট। এবার কল্পনা করো তুমি যদি চাওয়া টোনের একটা কংক্রিট উদাহরণ দিতে। আউটপুটটা কিভাবে বদলে যেত?
-        </p>
-        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
-          এটা মাথায় রাখো। নিচের Prompt Laboratory-তে সত্যিই টেস্ট করতে পারবে।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CHAIN OF THOUGHT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ধাপে ধাপে ভাবো
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        একটা অবাক করা ব্যাপার: তুমি যদি AI-কে একটা গণিতের সমস্যা সমাধান করতে বলো, সে ভুল করতে পারে। কিন্তু তুমি যদি বলো <em>ধাপে ধাপে সমাধান করো</em>, সে অনেক বেশিবার সঠিক উত্তর দেয়। উত্তর একই। প্রশ্ন আলাদা।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এই টেকনিকের নাম <strong>chain-of-thought prompting</strong>। সরাসরি উত্তর চাওয়ার বদলে, তুমি AI-কে বলো তার যুক্তি দেখাতে। "ধাপে ধাপে ভেবে দেখো।" "উত্তর দেওয়ার আগে ভেঙে দেখো।" "যুক্তি ব্যাখ্যা করো যেতে যেতে।"
-      </p>
-    </FadeInBlock>
-
-    <!-- Before/After comparison -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <div>
-          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
-            <span class="prompt-block-label" style="color: #E94560;">Chain-of-thought ছাড়া</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "একটা ব্যাট আর বল মিলে $1.10। ব্যাটের দাম বলের চেয়ে $1.00 বেশি। বলের দাম কত?"
-            </p>
-            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
-              AI-এর উত্তর: $0.10 (ভুল)
-            </p>
-          </div>
-        </div>
-        <div>
-          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
-            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Chain-of-thought সহ</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "একটা ব্যাট আর বল মিলে $1.10। ব্যাটের দাম বলের চেয়ে $1.00 বেশি। বলের দাম কত? ধাপে ধাপে ভেবে দেখো।"
-            </p>
-            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
-              AI-এর উত্তর: $0.05 (সঠিক)
-            </p>
-          </div>
-        </div>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এটা কেন কাজ করে? তুমি যখন AI-কে বলো ধাপে ধাপে যুক্তি দেখাতে, প্রতিটা ধাপ পরেরটায় ফিড করে। এটা AI-কে খসড়া কাগজ দেওয়ার মতো — যত বেশি চিন্তা লিখে দেখায়, ফাইনাল উত্তর তত ভালো হয়।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chain-of-thought AI-কে স্মার্ট বানায় না। এটা তাকে ধীর বানায় — আর ধীরে ভাবা প্রায়ই ভালো ভাবা।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        এটা শুধু গণিতের জন্য না। যখনই উত্তরে যুক্তি দরকার তখন ব্যবহার করো: একটা আর্গুমেন্ট বিশ্লেষণ, অপশন তুলনা, প্রজেক্ট প্ল্যানিং, কোড ডিবাগিং। যেকোনো সময় তুমি যখন কোনো মানুষকে "কাজ দেখাতে" বলবে, AI-কেও একই কথা বলো।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        টেকনিক জোড়া লাগানো
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        আসল ক্ষমতা আসে টেকনিকগুলো একত্রিত করলে। Few-shot উদাহরণ <em>আর সাথে</em> chain-of-thought। একটা system role <em>আর সাথে</em> constraints <em>আর সাথে</em> format specification। প্রতিটা টেকনিক একটা লিভার, আর একসাথে একাধিক লিভার টানলে এমন কিছু হয় যা আলাদা আলাদা করে কোনোটাই পারত না।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        কিন্তু এখানে যে সূক্ষ্মতা নতুনদের থেকে এক্সপার্টদের আলাদা করে: <strong>বেশি সবসময় ভালো না।</strong> একটা ক্যাজুয়াল ব্রেইনস্টর্মে এক-দুটো টেকনিক লাগে। একটা গুরুত্বপূর্ণ রচনায় পাঁচটা। একটা সাধারণ প্রশ্নে শূন্য। স্কিলটা হলো কতগুলো লিভার টানতে হবে — আর কোনগুলো — সেটা জানা।
-      </p>
-    </FadeInBlock>
-
-    <!-- Technique stack visual -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="margin-bottom: 2.5rem;">
-        {[
-          { label: 'ক্যাজুয়াল আইডিয়া', techniques: ['Task'], color: '#6B7280', width: '25%' },
-          { label: 'স্কুলের অ্যাসাইনমেন্ট', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
-          { label: 'গুরুত্বপূর্ণ প্রজেক্ট', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
-          { label: 'হাই-স্টেক আউটপুট', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
-        ].map((level, i) => (
-          <FadeInBlock client:visible delay={i * 0.06} key={i}>
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
-                {level.label}
-              </span>
-              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
-                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
-                  {level.techniques.map((t, j) => (
-                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
-                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Over-prompting সত্যিকারের সমস্যা। একটা সাধারণ প্রশ্নের জন্য ৫০০ শব্দের প্রম্পট উত্তরটা ভালো করে না — বরং AI-কে কনফিউজড করতে পারে। তোমার প্রম্পটের জটিলতা কাজের জটিলতার সাথে মেলাও।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <PromptLaboratory client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        প্রম্পট গোলমাল হলে
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        খারাপ AI আউটপুট <strong>প্রায় কখনোই AI-এর দোষ না।</strong> যখন আউটপুট জেনেরিক, অস্পষ্ট, বা একদম ভুল, বাগটা সাধারণত প্রম্পটেই থাকে। আর কোড ডিবাগিংয়ের মতোই, প্রম্পট ডিবাগিংও একটা শেখার মতো স্কিল।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        সবচেয়ে কমন প্রম্পট বাগগুলো পাঁচ ক্যাটাগরিতে পড়ে। একবার এগুলো চিনতে শিখলে, তুমি সর্বত্র দেখবে — তোমার নিজের প্রম্পটে আর অন্যদের "AI কোনো কাজের না" বলে অভিযোগে।
-      </p>
-    </FadeInBlock>
-
-    <!-- Bug types -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-      {[
-        { name: 'দ্ব্যর্থক', desc: 'প্রম্পটটা একাধিক অর্থে নেওয়া যায়। "কুকুর নিয়ে কিছু লেখো" — কি ধরনের লেখা? কার জন্য? কত লম্বা?', color: '#E94560' },
-        { name: 'স্ববিরোধী', desc: 'প্রম্পটটা বিপরীত জিনিস চাইছে। "ছোট করো কিন্তু বিস্তারিত।" "মজার টোনে কিন্তু ফরমাল রাখো।" একটা বেছে নাও।', color: '#F5A623' },
-        { name: 'কনটেক্সট অনুপস্থিত', desc: 'প্রম্পটে গুরুত্বপূর্ণ তথ্য নেই। "আমার কোড ঠিক করো" কোড না দিয়ে। "আমার রচনা ভালো করো" রচনা না দিয়ে।', color: '#0EA5E9' },
-        { name: 'অতিরিক্ত কাজ', desc: 'প্রম্পটটা একসাথে পাঁচটা জিনিস চাইছে। AI নিজেকে ছড়িয়ে দেয় আর কোনোটাই ভালো করে না।', color: '#7B61FF' },
-        { name: 'নেতৃত্বমূলক প্রশ্ন', desc: 'প্রম্পটটা AI-কে কি ভাবতে হবে বলে দিচ্ছে। "তুমিও কি মনে করো X সবচেয়ে ভালো?" AI রাজি হবে। সেটা কাজের না।', color: '#16C79A' },
-      ].map((bug, i) => (
-        <FadeInBlock client:visible delay={i * 0.07}>
-          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
-            <div>
-              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
-                {bug.name}
-              </p>
-              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {bug.desc}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        সবচেয়ে ছলনাময় বাগ হলো <em>নেতৃত্বমূলক প্রশ্ন</em>। এটা ধরা সবচেয়ে কঠিন কারণ <em>মনে হয়</em> দারুণ আউটপুট পাচ্ছ — AI তোমার সাথে একমত! কিন্তু একমত হওয়া মানে সঠিক হওয়া না। তুমি যখন তোমার বিশ্বাস নিশ্চিত করতে প্রশ্ন সাজাও, তুমি AI-কে চিন্তার সঙ্গী না, হ্যাঁ-ম্যান বানিয়ে ফেলো।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <DebugThePrompt client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        এই অধ্যায় শুরু করেছিলে সিঙ্গেল-শট কমান্ড দিয়ে। এখন তুমি জানো কিভাবে প্রশ্নকর্তা বদলাতে হয়, বর্ণনার বদলে দেখাতে হয়, আর যেসব প্রম্পট পথ হারায় সেগুলো ডিবাগ করতে হয়।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI-কে কি ভাবতে হবে বলা বন্ধ করো। তাকে তোমার সাথে ভাবার জায়গা দাও।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
@@ -420,6 +120,15 @@ const chapter = chapters[1];
         কিন্তু তুমি যতগুলো টেকনিক শিখেছ সবগুলো একই অদৃশ্য দেয়ালে গিয়ে ঠেকে: <em>কনটেক্সট উইন্ডো</em>। পরের পর্বে, আমরা সেটা ভেঙে খুলব আর শিখব AI আসলে কি দেখে সেটা কিভাবে ইঞ্জিনিয়ার করতে হয়।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Socratic Smackdown" client:visible>
+        <SocraticSmackdown client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

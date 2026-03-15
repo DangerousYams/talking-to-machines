@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -17,13 +17,12 @@ const chapter = chapters[6];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>৭</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          অধ্যায় সাত
+          সপ্তম অধ্যায়
         </p>
       </FadeInBlock>
 
@@ -43,232 +42,23 @@ const chapter = chapters[6];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        এমন একটা মুহূর্ত আসে যা প্রতিটা কোডার মনে রাখে। তুমি একটা টার্মিনাল খুলেছ, সাধারণ ভাষায় একটা রিকোয়েস্ট টাইপ করেছ, আর দেখছ একটা AI তোমার ফাইল পড়ছে, তোমার আর্কিটেকচার বুঝছে, একাধিক ফাইলে কোড লিখছে, রান করছে, এরর পাচ্ছে, এরর ঠিক করছে, আর আবার রান করছে — তুমি একটা লাইনও ছুঁচ্ছ না। এটাই Claude Code।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        এমন একটা মুহূর্ত আসে যা প্রতিটা কোডার মনে রাখে। তুমি একটা টার্মিনাল খুলেছ, সাধারণ ভাষায় একটা রিকোয়েস্ট টাইপ করেছ, আর দেখছ একটা AI তোমার ফাইল পড়ছে, তোমার আর্কিটেকচার বুঝছে, একাধিক ফাইলে কোড লিখছে, রান করছে, এরর পাচ্ছে, এরর ঠিক করছে, আর আবার রান করছে &mdash; তুমি একটা লাইনও ছুঁচ্ছ না। Claude Code অটোকমপ্লিট না। এটা একটা <em>এজেন্টিক</em> কোডিং টুল যে তোমার পুরো প্রজেক্ট দেখতে পায়, ফাইল জুড়ে পরিবর্তন করে, শেল কমান্ড চালায়, আর নিজের ভুল থেকে শেখে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        এটা অটোকমপ্লিট না। স্নিপেট লেখা চ্যাটবটও না। Claude Code হলো একটা <em>এজেন্টিক</em> কোডিং টুল — একটা কমান্ড-লাইন সঙ্গী যে তোমার পুরো প্রজেক্ট দেখতে পায়, ফাইল জুড়ে পরিবর্তন করতে পারে, শেল কমান্ড চালাতে পারে, আর নিজের ভুল থেকে নিজেই শিখতে পারে। সে শুধু কোড সাজেস্ট করে না। সে কোড <strong>শিপ</strong> করে।
+      <p class="text-lg leading-[1.85] mt-8">
+        তবে টুলটা ততটাই ভালো যতটা ভালো মানুষটা যে স্টিয়ারিং করছে। Claude Code সেকেন্ডে হাজার লাইনের পারফেক্ট কোড লিখতে পারে &mdash; অথবা হাজার লাইনের বিশ্বাসযোগ্য দেখতে আবর্জনা। পার্থক্যটা তুমি।
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        তবে টুলটা ততটাই ভালো যতটা ভালো মানুষটা যে স্টিয়ারিং করছে। Claude Code সেকেন্ডে হাজার লাইনের পারফেক্ট কোড লিখতে পারে — অথবা হাজার লাইনের বিশ্বাসযোগ্য দেখতে আবর্জনা। পার্থক্যটা তুমি।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Claude Code কিভাবে ভাবে
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তুমি যখন Claude Code-কে একটা কাজ দাও, সে সাথে সাথে টাইপ শুরু করে না। সে ষষ্ঠ অধ্যায়ের সেই এজেন্ট লুপটা চালায়, কোডিংয়ের জন্য বিশেষায়িত করে:
-      </p>
-    </FadeInBlock>
-
-    <!-- Agent loop visualization -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'পড়ো।', desc: 'কোডবেস স্ক্যান করো — ফাইল, ইমপোর্ট, টেস্ট, কনফিগ। বোঝো কি আছে।' },
-          { word: 'প্ল্যান করো।', desc: 'ঠিক করো কোথায় কি বদলাতে হবে, কোন ফাইলে, কোন ক্রমে।' },
-          { word: 'লেখো।', desc: 'এডিট করো। ফাইল তৈরি করো। কোড বদলাও।' },
-          { word: 'চালাও।', desc: 'কমান্ড এক্সিকিউট করো — build, test, lint। দেখো কি হয়।' },
-          { word: 'ঠিক করো।', desc: 'কিছু ভাঙলে, এরর পড়ো, অ্যাডজাস্ট করো, আবার চেষ্টা করো।' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এই পড়ো-প্ল্যান-লেখো-চালাও-ঠিক করো লুপই Claude Code-কে সাধারণ কোড জেনারেটর থেকে আলাদা করে। সে তোমাকে একটা স্নিপেট ধরিয়ে দিয়ে চলে যায় না। সে <em>লুপে থাকে</em> — কোড সত্যিই কাজ না করা পর্যন্ত ঘষামাজা করতে থাকে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        এটাকে পেয়ার প্রোগ্রামিংয়ের মতো ভাবো। তুমি বর্ণনা করো কি চাও। Claude Code লেখে। টেস্ট ফেইল করে। Claude Code এরর পড়ে, অ্যাডজাস্ট করে, আবার রান করে। এই সাইকেলটা তিন, পাঁচ, দশবার ঘটতে পারে — সব কয়েক সেকেন্ডে।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        লুপটা কাজ করতে দেখো। একটা রিকোয়েস্ট টাইপ করো আর Claude Code-কে কাজ করতে দেখো।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        CLAUDE.md ফাইল
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        বেশিরভাগ নতুন ব্যবহারকারী এটা মিস করে: <strong>তুমি Claude Code-কে স্থায়ী নির্দেশনা দিতে পারো।</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তোমার প্রজেক্টের রুটে <code>CLAUDE.md</code> নামে একটা ফাইল রাখো, আর Claude Code প্রতিটা সেশনের শুরুতে সেটা পড়বে। এটা সিস্টেম প্রম্পটের মতো, কিন্তু তোমার পুরো কোডবেসের জন্য।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # My Project<br /><br />
-          Tech stack: Astro + React + Tailwind<br />
-          Always use TypeScript with strict mode.<br />
-          Put components in src/components/.<br />
-          Write tests for every new function.<br />
-          Use Prettier formatting — never change the config.<br /><br />
-          ## Style Rules<br />
-          - Prefer named exports over default exports<br />
-          - Use CSS modules, not inline styles<br />
-          - Keep components under 150 lines
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md ছাড়া, তুমি প্রতিটা সেশনের শুরুতে কয়েক মিনিট ব্যয় করো তোমার পছন্দগুলো আবার বোঝাতে। CLAUDE.md থাকলে, Claude Code ইতিমধ্যেই তোমার স্ট্যাক, তোমার কনভেনশন, আর তোমার সীমানা জানে। এটা হলো কনটেক্সট ইঞ্জিনিয়ারিং (অধ্যায় ৩) কোডিংয়ে প্রয়োগ করা।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>CLAUDE.md-কে তোমার প্রজেক্টের সংবিধান মনে করো।</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          এটা তুমি ইতিমধ্যে যেসব সিদ্ধান্ত নিয়েছ সেগুলো এনকোড করে — যাতে AI সত্যিই নতুন যেসব সিদ্ধান্ত সেগুলোতে ফোকাস করতে পারে। তোমার CLAUDE.md যত নির্দিষ্ট, তত কম নিজেকে রিপিট করতে হবে।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Skills তৈরি করা
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md Claude Code-কে তোমার প্রজেক্ট সম্পর্কে সাধারণ জ্ঞান দেয়। কিন্তু নির্দিষ্ট, বারবার করা কাজগুলোর জন্য? সেখানে <strong>Skills</strong> আসে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        একটা skill হলো তোমার CLAUDE.md-এর ভেতরে থাকা একগুচ্ছ নির্দেশনা যা Claude Code-কে শেখায় কিভাবে একটা নির্দিষ্ট ধরনের কাজ হ্যান্ডেল করতে হয়। এটাকে একটা রেসিপি ভাবো: "কেউ যখন নতুন React component বানাতে বলবে, এভাবে করো।"
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Skills ছাড়া, তুমি প্রতিবার একই ধাপগুলো বোঝাও। Skills থাকলে, তুমি একবার বোঝাও আর AI চিরকাল মনে রাখে।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        একটা ভালো skill-এ তিনটা অংশ থাকে:
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: 'Trigger (ট্রিগার)', color: '#7B61FF', text: 'এই skill কখন সক্রিয় হবে? "কেউ যখন component বানাতে বলবে..." বা "টেস্ট ফেইলার ঠিক করতে বলবে..." স্পষ্ট ট্রিগার AI-কে ভুল রেসিপি ব্যবহার থেকে আটকায়।' },
-        { letter: 'S', name: 'Steps (ধাপ)', color: '#16C79A', text: 'ঠিক কি করতে হবে, কোন ক্রমে? নম্বরযুক্ত ধাপ সবচেয়ে ভালো কাজ করে। ফাইলের অবস্থান, নামকরণের কনভেনশন, আর প্রয়োজনীয় প্যাটার্ন সম্পর্কে নির্দিষ্ট হও।' },
-        { letter: 'E', name: 'Examples (উদাহরণ)', color: '#F5A623', text: 'সফল ফলাফল দেখতে কেমন দেখাও। একটা before-and-after, একটা ফাইল স্ট্রাকচারের উদাহরণ, বা একটা স্যাম্পল আউটপুট। উদাহরণের সামনে দ্ব্যর্থতা টিকে থাকতে পারে না।' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        একটা লিখে দেখো। ট্রিগার থেকে ধাপ থেকে উদাহরণ পর্যন্ত একটা skill তৈরি করো।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
     </FadeInBlock>
   </section>
 
@@ -284,118 +74,51 @@ const chapter = chapters[6];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code-এর সাথে কাজ করলে তোমার ভূমিকা বদলে যায়। তুমি আর সেই মানুষ না যে প্রতিটা লাইন লেখে। তুমি সেই মানুষ যে <strong>স্পেসিফাই</strong> করো কি বানাতে হবে, AI-কে সেটা <strong>জেনারেট</strong> করতে দাও, আর তারপর <strong>ভেরিফাই</strong> করো সেটা আসলেই ঠিক কিনা।
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        তুমি যখন Claude Code-কে একটা কাজ দাও, সে একটা এজেন্ট লুপ চালায়: কোডবেস পড়ে, কি বদলাতে হবে প্ল্যান করে, এডিট লেখে, কোড রান করে, যা ভাঙে ঠিক করে। এই সাইকেলটা তিন, পাঁচ, দশবার ঘটতে পারে &mdash; সব কয়েক সেকেন্ডে। তোমার কাজ আর প্রতিটা লাইন লেখা না। তোমার কাজ হলো কি বানাতে হবে <strong>স্পেসিফাই</strong> করা, AI-কে সেটা <strong>জেনারেট</strong> করতে দেওয়া, আর তারপর <strong>ভেরিফাই</strong> করা সেটা আসলেই ঠিক কিনা। বেশিরভাগ নতুনরা শেষ ধাপটা বাদ দেয়। কোড দেখা যাচ্ছে, যুক্তিসঙ্গত লাগছে, আর তারা এগিয়ে যায়। সেই মানুষ হয়ো না। জেনারেটেড কোড হলো ফার্স্ট ড্রাফট। তোমার ভেরিফিকেশনই সেই এডিট যা এটাকে পাবলিশযোগ্য করে।
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এই লুপ — স্পেসিফাই, জেনারেট, ভেরিফাই — এটাই মূল ওয়ার্কফ্লো:
-      </p>
-    </FadeInBlock>
-
-    <!-- SGV Loop -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '০১', title: 'স্পেসিফাই', desc: 'তুমি কি চাও সে ব্যাপারে সুনির্দিষ্ট হও। তোমার রিকোয়েস্ট যত স্পষ্ট, আউটপুট ঠিক করতে তত কম সময় লাগবে। এজ কেস, ফাইলের অবস্থান, আর প্রত্যাশিত আচরণ অন্তর্ভুক্ত করো।', color: '#7B61FF' },
-          { step: '০২', title: 'জেনারেট', desc: 'Claude Code-কে তার কাজ করতে দাও। এজেন্ট লুপ দেখো — পড়া, প্ল্যান করা, লেখা, চালানো, ঠিক করা। মাঝপথে বিরক্ত করার তাড়না চেপে রাখো।', color: '#0EA5E9' },
-          { step: '০৩', title: 'ভেরিফাই', desc: 'এটাই তোমার সবচেয়ে গুরুত্বপূর্ণ কাজ। কোড পড়ো। টেস্ট চালাও। এজ কেস চেক করো। এটা আসলেই তুমি যা চেয়েছিলে তা করছে? এটা এমন কোড যেখানে তুমি তোমার নাম লেখাবে?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        বেশিরভাগ নতুনরা তিন নম্বর ধাপ বাদ দেয়। কোড দেখা যাচ্ছে, যুক্তিসঙ্গত লাগছে, আর তারা এগিয়ে যায়। সেই মানুষ হয়ো না। <strong>জেনারেটেড কোড হলো ফার্স্ট ড্রাফট।</strong> তোমার ভেরিফিকেশনই সেই এডিট যা এটাকে পাবলিশযোগ্য করে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        মজার বিষয়? AI যত দ্রুত কোড জেনারেট করে, তোমার ভেরিফিকেশন <em>তত বেশি জরুরি</em> হয়ে ওঠে। বিচার ছাড়া গতি মানে শুধু দ্রুততর ভুল।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        স্কিল প্যারাডক্স
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI-সহায়তায় কোডিং নিয়ে একটা অস্বস্তিকর সত্যি: <strong>আউটপুট যাচাই করার মতো যথেষ্ট জানতে হবে, এমনকি তুমি নিজে না লিখলেও।</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Claude যে কোড জেনারেট করে সেটা তুমি পড়তে না পারলে, ভেরিফাই করতে পারবে না। ভেরিফাই করতে না পারলে, তুমি অন্যের অনুমান প্রোডাকশনে শিপ করছ।
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এটা একটা প্যারাডক্স তৈরি করে: যে টুল নতুনদের কোড লিখতে সাহায্য করে, সেই টুলেরই সেই কোড মূল্যায়নের যথেষ্ট জ্ঞান দরকার। এই প্যারাডক্সের সমাধান? Claude Code-কে শুধু তৈরি করতে না, <em>শিখতে</em> ব্যবহার করো।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code যখন এমন কিছু লেখে যা তুমি বুঝতে পারছ না, শুধু মেনে নিয়ো না। জিজ্ঞেস করো: "এই কোডটা কি করে আর তুমি কেন এই পদ্ধতি বেছে নিলে সেটা ব্যাখ্যা করো।" AI-কে শুধু টাইপিস্ট হিসেবে না, টিউটর হিসেবে ব্যবহার করো।
+      <p class="text-lg leading-[1.85] mb-14">
+        গোপন অস্ত্র হলো <code>CLAUDE.md</code> ফাইল &mdash; তোমার প্রজেক্টের রুটে রেখে দাও আর Claude Code প্রতিটা সেশনের শুরুতে সেটা পড়বে। তোমার টেক স্ট্যাক, নামকরণের কনভেনশন, স্টাইল রুল, টেস্টিং প্রত্যাশা &mdash; সব একবার এনকোড করো যাতে আর কখনো নিজেকে রিপিট করতে না হয়। এটা কনটেক্সট ইঞ্জিনিয়ারিং কোডিংয়ে প্রয়োগ করা।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>লক্ষ্য প্রতিটা লাইন লেখা না — প্রতিটা লাইন বোঝা।</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>লক্ষ্য প্রতিটা লাইন লেখা না &mdash; প্রতিটা লাইন বোঝা।</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          সেরা Claude Code ব্যবহারকারীরা তারা না যারা সবচেয়ে বেশি কোড জেনারেট করে। তারা সেই মানুষ যারা সবচেয়ে ভালো প্রশ্ন করে আর সবচেয়ে সূক্ষ্ম বাগগুলো ধরে। তোমার জ্ঞানই তোমার কোয়ালিটি ফিল্টার।
+          Claude যে কোড জেনারেট করে সেটা তুমি পড়তে না পারলে, ভেরিফাই করতে পারবে না। সেরা Claude Code ব্যবহারকারীরা তারা না যারা সবচেয়ে বেশি কোড জেনারেট করে &mdash; তারা সেই মানুষ যারা সবচেয়ে ভালো প্রশ্ন করে আর সবচেয়ে সূক্ষ্ম বাগগুলো ধরে।
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        তুমি vs. Claude Code। একই এলোমেলো কোড, একই লক্ষ্য। কে ভালো refactor করে?
+        লুপটা কাজ করতে দেখো। একটা রিকোয়েস্ট টাইপ করো আর Claude Code-কে কাজ করতে দেখো।
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Claude Code নিয়ে এই অধ্যায়টা অসাধারণ — একটা AI পেয়ার প্রোগ্রামারকে সমস্যা নিয়ে ভাবতে, কোড লিখতে, আর নিজেই ডিবাগ করতে দেখলাম। কোডিংয়ের ভবিষ্যৎ এসে গেছে।" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        তোমার কাছে এখন CLAUDE.md আছে, কাস্টম skills আছে, আর specify-generate-verify-এর ছন্দ আছে। Claude Code তোমার <em>জন্য</em> কোড লিখছে না &mdash; তোমার <em>সাথে</em> লিখছে।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code তোমার জন্য কোড লিখছে না &mdash; তোমার সাথে লিখছে।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
@@ -403,6 +126,15 @@ const chapter = chapters[6];
         একটা কথোপকথন একটা কাজ সামলাতে পারে। কিন্তু আসল প্রজেক্টে ডজনখানেক কাজ থাকে। পরের পর্বে: বড় স্বপ্নকে কিভাবে টুকরোয় ভাঙবে যেগুলো AI আসলেই করতে পারে।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

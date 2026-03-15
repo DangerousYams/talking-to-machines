@@ -4,12 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
 import JobTransformer from '../../components/widgets/ch10/JobTransformer';
-import TasteTest from '../../components/widgets/ch10/TasteTest';
-import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[9];
 ---
@@ -18,7 +17,6 @@ const chapter = chapters[9];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -39,294 +37,98 @@ const chapter = chapters[9];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI 无法替代的——<br />以及它让什么变得容易 10 倍。
+          AI 无法替代的&mdash;&mdash;<br />以及它让什么变快10倍的。
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        每次有新的 AI 能力发布时，同样的标题就会出现：<em>"AI 会取代 [某某职业] 吗？"</em> 这是个错误的问题。一直都是错误的问题。正确的问题是：<em>"这让哪些以前不可能的事情变成了可能？"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI 不会替代人类。它替代的是<strong>任务</strong>。当你细看任何工作——任何职业、任何创造性追求、任何专业——你会发现一种混合：有些任务 AI 处理得非常出色，有些它可以辅助，还有些仍然是顽固地、美妙地属于人类的。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        这一章是关于找到那条线的。不是为了让你害怕，而是为了让你<strong>站到正确的一边</strong>——那一边是你独特的人类技能变得更有价值，而不是更没价值。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        每次有新的 AI 能力发布，同一个标题就会出现：<em>"AI 会取代[某个职业]吗？"</em>这是个错误的问题。AI 不会取代人类。它取代的是<strong>任务</strong>。当你放大任何一份工作——任何职业、任何创造性追求——你会发现一种混合：有些任务 AI 处理得很出色，有些它可以辅助，还有一些顽固地、美丽地属于人类。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        是光谱，不是悬崖
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        工作不会消失——它们会变形
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        大多数关于 AI 和工作的讨论把它当成二元对立：要么 AI 能做你的工作，要么不能。机器人末日，或者一切照旧。但现实是一个光谱。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        有些任务几乎可以完全自动化。有些被 AI 增强了。有些完全不受影响。而最有趣的那些——最值得关注的——落在中间地带，人类和 AI 协同工作。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        数据录入？AI 搞定了。安排会议？基本解决了。写初稿？AI 好得惊人。但<em>选择要做什么产品</em>、<em>在危机中读懂氛围</em>、<em>判断数据意味着什么</em>——这些需要 AI 所没有的东西。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        每项技能实际落在哪里？来测试一下你的直觉。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillsSpectrum client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        职业不会消失——它们会变形
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        上世纪 70 年代 ATM 出现时，所有人都预测银行柜员会消失。结果银行柜员的数量反而<em>增加了</em>。为什么？因为 ATM 让开设新网点变得更便宜了，而柜员的工作从点钞变成了销售金融产品和维护客户关系。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI 正在做同样的事，但速度更快，而且同时席卷每个行业。职位名称不变，职位<em>描述</em>却发生了巨大变化。2025 年的记者和 2015 年的记者做的不是同一份工作，哪怕署名看起来一模一样。
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        当 ATM 出现时，所有人都预测银行柜员会消失。结果柜员的数量反而<em>增加</em>了——因为 ATM 让开分行更便宜，而柜员的工作从数钱变成了建立客户关系。AI 在做同样的事，只是更快，而且同时覆盖所有行业。职位名称不变。工作<em>内容</em>天翻地覆。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>新的职业算术</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          这不是"人类 vs. AI"，而是<strong>会用 AI 的人 vs. 不会用 AI 的人</strong>。学会与 AI 工具协作的人不会失去工作——他们做得更快、更好，拥有了以前没有的能力。
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mt-10">
-        选择下面的一个职业，看看 AI 是如何从内部改变它的。没有任何一项任务完全消失。但每份工作的形态都在改变。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <JobTransformer client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        品味：不可替代的技能
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10">
-        AI 能在一分钟内生成一百个 logo 方案。能在你咖啡没喝完之前写出十个论文开头。能产出五个 App 设计、四个标语、三个商业计划。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        但它无法告诉你哪个是<em>对的</em>。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        在一个生成选项几乎零成本的世界里，<em>选对那一个</em>的能力成了你能拥有的最值钱的技能。这种能力有个名字：品味。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        品味不是什么玄乎的东西。它是可以训练的。你通过大量接触好作品和差作品，并学会表达<em>为什么</em>其中一个比另一个好来培养它。它是摄影师知道保留哪张照片。是作家知道删掉哪句话。是设计师知道什么时候少即是多。
+        数据录入？AI 搞定了。初稿？出奇地好。但<em>选择做什么产品</em>、<em>在危机中读懂人心</em>、<em>判断数据意味着什么</em>——这些需要判断力、共情和远见，而 AI 从根本上不具备这些。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        AI 负责生成。你负责甄选。这就是新的分工。来看看你的品味有多敏锐。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TASTE TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TasteTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        你的知识就是你的扯淡探测器
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        在第九章我们讨论了 AI 幻觉——AI 如何能以完美的自信说出假话。但这里有个让人不太舒服的后续问题：<strong>你怎么抓住它？</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        答案是第一性原理思维。当 AI 告诉你把管道半径加倍会让水流量翻倍时，你只有知道面积按半径的<em>平方</em>缩放，才能发现这个错误。当 AI 说一个三段论是有效的，你只有了解演绎推理的规则，才能识别出逻辑谬误。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI 重新组合已有的东西。第一性原理思维从基本事实出发推理。这就是你如何进入真正的新领域——也是你如何抓住自信满满却犯了错的 AI。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这不意味着你需要成为所有领域的专家。但在你工作和创造的领域里，你的基础性理解，正是将你与盲目复制粘贴 AI 输出的人区分开的关键。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        来测试一下自己。下面的 AI 对六个不同领域的问题给出了自信的回答。有些是对的，有些有微妙的错误。你能分辨出来吗？
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FirstPrinciplesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHAT STAYS HUMAN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        什么仍然属于人类
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        在我们探索了这一切之后，一个规律浮现出来。那些最具人类特质的技能并非随机分布——它们集中在 AI 从根本上缺失的几种深层能力上。
-      </p>
-    </FadeInBlock>
-
-    <!-- Human edge capabilities -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { icon: '\uD83C\uDFAF', name: '判断力', color: '#16C79A', text: '选择什么重要。做什么、砍掉什么、上线什么、放弃什么。AI 可以为决策提供信息，但无法做出决策——因为决策需要价值观，而价值观是人类的。' },
-        { icon: '\uD83E\uDD1D', name: '共情', color: '#0EA5E9', text: '理解另一个人的感受并以真诚的关怀回应。AI 在文字中模拟共情。人类在关系中、在危机中、在最重要的时刻践行共情。' },
-        { icon: '\uD83E\uDDED', name: '远见', color: '#7B61FF', text: '看到尚不存在的事物并决定它应该存在。每个产品、每家公司、每部创作都始于某个人的信念——世界需要一些新东西。AI 不会"想要"任何东西。' },
-        { icon: '\u26A1', name: '领导力', color: '#F5A623', text: '激励他人、化解冲突、建立信任。这些从根本上是社交技能，需要在场感、情商和承担责任的能力。' },
-        { icon: '\uD83D\uDD0D', name: '提出原创问题', color: '#E94560', text: 'AI 擅长回答问题。人类擅长提出没人想过要问的问题。科学、商业和艺术中最重要的突破，都始于一个问题，而不是一个答案。' },
-      ].map((item, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
-              {item.icon}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {item.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          这些不只是锦上添花的"软技能"。在 AI 增强的世界里，它们是<strong>硬技能</strong>。判断、共情、领导和远见的能力，恰恰因为 AI 把其他事情都处理了，才成为你最强的竞争优势。
+          这不是"人类对抗 AI"。而是<strong>有 AI 的人类对没有 AI 的人类</strong>。学会<em>与</em> AI 工具合作的人不会丢掉工作——他们做得更快、更好，而且拥有了以前没有的能力。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        选一个职业，看看 AI 究竟如何从内部改变它。没有任何一项任务完全消失。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <JobTransformer client:visible />
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="这门课既不炒作 AI 也不制造就业恐慌。它精确标出了哪些技能属于人类、哪些被增强了。令人耳目一新的诚实。" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        品味。判断力。共情。远见。第一性原理思维。这些不是 AI 接管后剩下的残羹——它们才是<em>定义</em>你能带到桌上的技能。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI 生成选项。你选择正确的那个。那种判断力——品味、共情、远见、第一性原理——就是你的优势。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        还有最后一章。不再是理论了。是时候把你学到的一切结合起来，去做出一些真正的东西——一些只有你才会想到去做的东西。
+        还剩最后一章。不再有理论了。是时候把你学到的一切结合起来，做出真正的东西&mdash;&mdash;一个只有你才会想到要做的东西。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Irreplaceable You" client:visible>
+        <IrreplaceableYou client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

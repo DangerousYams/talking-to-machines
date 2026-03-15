@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -17,7 +17,6 @@ const chapter = chapters[6];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>7</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -38,243 +37,34 @@ const chapter = chapters[6];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Programmer AI partner kamu, dari<br />perintah pertama sampai Skills khusus.
+          AI pair programmer-mu, dari perintah<br />pertama sampai custom Skills.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Ada momen yang selalu diingat setiap coder. Kamu buka terminal, ketik permintaan dalam bahasa sehari-hari, dan lihat AI baca file-file kamu, pahami arsitektur project, tulis kode di beberapa file sekaligus, jalankan, ketemu error, perbaiki error, dan jalankan lagi — semuanya tanpa kamu sentuh satu baris pun. Itulah Claude Code.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Ada momen yang selalu diingat setiap coder. Kamu buka terminal, ketik permintaan dalam bahasa sehari-hari, dan lihat AI membaca file-mu, memahami arsitektur project, menulis kode di beberapa file sekaligus, menjalankannya, menemukan error, memperbaiki error, dan menjalankan lagi — semuanya tanpa kamu menyentuh satu baris pun. Claude Code bukan autocomplete. Dia adalah coding tool <em>agentic</em> yang melihat seluruh project-mu, membuat perubahan di banyak file, menjalankan shell command, dan mengiterasi kesalahannya sendiri.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Ini bukan autocomplete. Bukan chatbot yang nulis potongan kode. Claude Code adalah coding tool yang <em>agentic</em> — partner command-line yang bisa lihat seluruh project kamu, buat perubahan di banyak file, jalankan shell command, dan iterasi dari kesalahannya sendiri. Dia nggak cuma suggest kode. Dia <strong>ship</strong> kode.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Tool-nya cuma sebaik manusia yang steer, sih. Claude Code bisa tulis ribuan baris kode sempurna dalam hitungan detik — atau ribuan baris sampah yang kedengarannya masuk akal. Bedanya adalah kamu.
+      <p class="text-lg leading-[1.85] mt-8">
+        Tapi tool ini hanya sebaik manusia yang mengarahkannya. Claude Code bisa menulis ribuan baris kode sempurna dalam hitungan detik — atau ribuan baris sampah yang keliatan masuk akal. Bedanya adalah kamu.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Cara Claude Code Berpikir
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ketika kamu kasih Claude Code tugas, dia nggak langsung mulai ngetik. Dia jalankan agent loop dari Bab 6, yang dikhususkan untuk kode:
-      </p>
-    </FadeInBlock>
-
-    <!-- Agent loop visualization -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Baca.', desc: 'Scan codebase — file, import, test, config. Pahami apa yang udah ada.' },
-          { word: 'Rencanakan.', desc: 'Putuskan apa yang mau diubah, di file mana, dengan urutan apa.' },
-          { word: 'Tulis.', desc: 'Buat edit. Bikin file. Modifikasi kode.' },
-          { word: 'Jalankan.', desc: 'Execute command — build, test, lint. Lihat apa yang terjadi.' },
-          { word: 'Perbaiki.', desc: 'Kalau ada yang rusak, baca error, sesuaikan, dan coba lagi.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Loop baca-rencanakan-tulis-jalankan-perbaiki ini yang bikin Claude Code beda dari generator kode biasa. Dia nggak kasih kamu snippet terus pergi. Dia <em>tetap di loop</em> — iterasi sampai kodenya bener-bener jalan.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Bayangin kayak pair programming. Kamu jelaskan yang kamu mau. Claude Code tuliskan. Test-nya gagal. Claude Code baca error, sesuaikan, jalankan lagi. Cycle ini bisa terjadi tiga, lima, sepuluh kali — semua dalam hitungan detik.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Lihat loop-nya beraksi. Ketik permintaan dan saksikan Claude Code bekerja.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        File CLAUDE.md
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Kebanyakan pemula melewatkan ini: <strong>kamu bisa kasih Claude Code instruksi permanen.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Taro file bernama <code>CLAUDE.md</code> di root project kamu, dan Claude Code akan baca di awal setiap sesi. Kayak system prompt, tapi untuk seluruh codebase kamu.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # Project Saya<br /><br />
-          Tech stack: Astro + React + Tailwind<br />
-          Selalu gunakan TypeScript dengan strict mode.<br />
-          Taruh komponen di src/components/.<br />
-          Tulis test untuk setiap fungsi baru.<br />
-          Pakai Prettier formatting — jangan ubah config.<br /><br />
-          ## Aturan Style<br />
-          - Lebih suka named export daripada default export<br />
-          - Pakai CSS modules, bukan inline styles<br />
-          - Komponen maksimal 150 baris
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Tanpa CLAUDE.md, kamu habiskan beberapa menit pertama setiap sesi untuk jelasin preferensi kamu lagi. Dengan CLAUDE.md, Claude Code sudah tahu stack kamu, konvensi kamu, dan batasan kamu. Ini context engineering (Bab 3) yang diterapin untuk coding.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Anggap CLAUDE.md sebagai konstitusi project kamu.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Dia encode keputusan yang udah kamu buat — jadi AI bisa fokus ke keputusan yang beneran baru. Semakin spesifik CLAUDE.md kamu, semakin sedikit kamu perlu ulang lagi.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Membangun Skills
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md kasih Claude Code pengetahuan umum tentang project kamu. Tapi gimana dengan tugas spesifik yang bisa diulang? Di situlah <strong>Skills</strong> masuk.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Skill adalah set instruksi di dalam CLAUDE.md yang ngajarin Claude Code cara handle tipe tugas tertentu. Bayangin kayak resep: "Kalau ada yang minta bikin komponen React baru, ini caranya."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Tanpa skills, kamu jelasin langkah yang sama setiap kali. Dengan skills, kamu jelasin sekali dan AI inget selamanya.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Skill yang baik punya tiga bagian:
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: 'Trigger', color: '#7B61FF', text: 'Kapan skill ini aktif? "Ketika diminta buat komponen..." atau "Ketika perbaiki test failure..." Trigger yang jelas cegah AI pakai resep yang salah.' },
-        { letter: 'L', name: 'Langkah', color: '#16C79A', text: 'Apa yang harus dilakukan, berurutan? Langkah bernomor paling baik. Spesifik tentang lokasi file, naming convention, dan pattern yang dibutuhkan.' },
-        { letter: 'C', name: 'Contoh', color: '#F5A623', text: 'Tunjukkan seperti apa hasil yang berhasil. Before-after, contoh struktur file, atau sample output. Ambiguitas mati di hadapan contoh.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Coba tulis satu. Bangun skill dari trigger ke langkah ke contoh.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
@@ -284,125 +74,67 @@ const chapter = chapters[6];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ketika kamu kerja dengan Claude Code, job kamu berubah. Kamu bukan lagi orang yang nulis setiap baris. Kamu orang yang <strong>spesifikasi</strong> apa yang mau dibangun, biarkan AI <strong>generate</strong>, terus <strong>verifikasi</strong> kalau itu bener.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Ketika kamu memberi Claude Code tugas, dia menjalankan agent loop: baca codebase, rencanakan perubahan, tulis editnya, jalankan kode, perbaiki yang rusak. Siklus ini bisa terjadi tiga, lima, sepuluh kali — semuanya dalam hitungan detik. Tugasmu bukan lagi menulis setiap baris. Tugasmu adalah <strong>menspesifikasikan</strong> apa yang mau dibangun, biarkan AI <strong>meng-generate</strong>, lalu <strong>memverifikasi</strong> bahwa hasilnya benar. Kebanyakan pemula melewati langkah terakhir itu. Mereka lihat kode muncul, keliatan wajar, lalu lanjut. Jangan jadi orang itu. Kode yang di-generate adalah draft pertama. Verifikasimu adalah edit yang membuatnya layak dipublikasikan.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Loop ini — spesifikasi, generate, verifikasi — adalah workflow fundamental:
-      </p>
-    </FadeInBlock>
-
-    <!-- SGV Loop -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: 'Spesifikasi', desc: 'Jelas tentang yang kamu mau. Semakin jelas request kamu, semakin sedikit waktu untuk benerin output. Include edge case, lokasi file, dan expected behavior.', color: '#7B61FF' },
-          { step: '02', title: 'Generate', desc: 'Biarkan Claude Code kerja. Lihat agent loop — baca, rencanakan, tulis, jalankan, perbaiki. Tahan diri untuk nggak interrupt di tengah cycle.', color: '#0EA5E9' },
-          { step: '03', title: 'Verifikasi', desc: 'Ini job paling penting kamu. Baca kodenya. Jalankan test. Cek edge case. Apa bener-bener sesuai yang kamu minta? Apa ini kode yang bakal kamu sign?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Kebanyakan pemula skip langkah ketiga. Mereka lihat kode muncul, keliatan wajar, terus lanjut. Jangan jadi orang itu. <strong>Generated code adalah draft pertama.</strong> Verifikasi kamu adalah edit yang bikin publishable.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Ironisnya? Semakin cepat AI generate kode, semakin <em>penting</em> verifikasi kamu. Kecepatan tanpa judgment cuma mistake yang lebih cepat.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Paradoks Skill
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ini truth yang nggak nyaman tentang AI-assisted coding: <strong>kamu perlu tahu cukup untuk judge output, meskipun kamu nggak nulis sendiri.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Kalau kamu nggak bisa baca kode yang Claude generate, kamu nggak bisa verifikasi. Kalau nggak bisa verifikasi, kamu ship tebakan orang lain ke production.
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ini bikin paradoks: tool yang bantu pemula nulis kode juga butuh pengetahuan cukup untuk evaluasi kode itu. Solusinya? Pakai Claude Code <em>untuk belajar</em>, bukan cuma untuk produksi.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ketika Claude Code nulis sesuatu yang kamu nggak ngerti, jangan terima aja. Tanya: "Jelasin apa yang kode ini lakukan dan kenapa pilih approach ini." Pakai AI sebagai tutor, bukan cuma typist.
+      <p class="text-lg leading-[1.85] mb-14">
+        Senjata rahasianya adalah file <code>CLAUDE.md</code> — taruh di root project-mu dan Claude Code akan membacanya di awal setiap sesi. Tech stack, konvensi penamaan, aturan style, ekspektasi testing — semuanya ditulis sekali supaya kamu tidak perlu mengulang. Ini context engineering yang diterapkan untuk coding.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tujuannya bukan nulis setiap baris — tapi ngerti setiap baris.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tujuannya bukan menulis setiap baris — tapi memahami setiap baris.</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          User Claude Code terbaik bukan yang generate kode paling banyak. Mereka yang tanya pertanyaan terbaik dan catch bug paling halus. Pengetahuan kamu adalah quality filter kamu.
+          Kalau kamu tidak bisa membaca kode yang Claude generate, kamu tidak bisa memverifikasinya. User Claude Code terbaik bukan yang generate kode paling banyak — mereka yang mengajukan pertanyaan terbaik dan menangkap bug paling halus.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Kamu vs. Claude Code. Kode berantakan yang sama, tujuan yang sama. Siapa yang refactor lebih baik?
+        Lihat loop-nya beraksi. Ketik permintaan dan saksikan Claude Code bekerja.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Bab tentang Claude Code ini gila — lihat AI pair programmer berpikir tentang masalah, menulis kode, dan men-debug dirinya sendiri. Masa depan coding sudah di sini." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Kamu udah punya CLAUDE.md, custom skills, dan ritme spesifikasi-generate-verifikasi. Claude Code nggak nulis kode <em>untuk</em> kamu &mdash; dia nulis kode <em>bareng</em> kamu.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code tidak menulis kode untukmu — dia menulis kode bersamamu.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Satu percakapan bisa handle satu tugas. Tapi project nyata punya puluhan. Selanjutnya: cara pecah ambisi besar jadi pieces yang bisa AI eksekusi.
+        Satu percakapan bisa menangani satu tugas. Tapi project nyata punya puluhan. Selanjutnya: cara memecah ambisi besar jadi potongan yang bisa AI eksekusi.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

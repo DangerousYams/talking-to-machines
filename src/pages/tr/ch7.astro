@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -31,7 +31,7 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code'da<br />ustalaşmak
+          Claude Code'da<br />Ustalaşmak
         </h1>
       </FadeInBlock>
 
@@ -47,314 +47,41 @@ const chapter = chapters[6];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Her kodcunun hatırladığı bir an vardır. Terminali açarsın, doğal dilde bir istek yazarsın ve bir yapay zekanın dosyalarını okuyup, mimarisini anlayıp, birden fazla dosyada kod yazıp, çalıştırıp, hataya rastlayıp, hatayı düzeltip ve tekrar çalıştırmasını izlersin — tek bir satıra dokunmadan. İşte Claude Code budur.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Her kodcunun hatırladığı bir an vardır. Terminali açıyorsun, doğal dilde bir istek yazıyorsun ve bir yapay zekanın dosyalarını okuyup, mimarisini anlayıp, birden fazla dosyaya kod yazıp, çalıştırıp, hata alıp, hatayı düzeltip ve yeniden çalıştırmasını izliyorsun — tek bir satıra dokunmadan. Claude Code otomatik tamamlama değil. Tüm projeni gören, dosyalar arası değişiklik yapan, shell komutları çalıştıran ve kendi hatalarını düzeltip yineleyen <em>ajantik</em> bir kodlama aracı.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Otomatik tamamlama değil. Kod parçacıkları yazan bir sohbet robotu değil. Claude Code <em>ajantik</em> bir kodlama aracıdır — tüm projenizi görebilen, dosyalar arasında değişiklik yapabilen, kabuk komutları çalıştırabilen ve kendi hatalarını düzeltebilen bir komut satırı ortağı. Sadece kod önermez. Kodu <strong>yollar</strong>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Ancak araç, onu yönlendiren insan kadar iyidir. Claude Code saniyeler içinde bin satır mükemmel kod yazabilir — ya da bin satır makul görünen çöp. Fark sensin.
+      <p class="text-lg leading-[1.85] mt-8">
+        Ama araç ancak onu yönlendiren insan kadar iyi. Claude Code saniyeler içinde bin satır kusursuz kod yazabilir — ya da bin satır inandırıcı görünen çöp. Aradaki fark sensin.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Claude Code nasıl düşünür
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code'a bir görev verdiğinde, hemen yazmaya başlamaz. Bölüm 6'daki ajan döngüsünü çalıştırır, koda özelleştirilmiş olarak:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Oku.', desc: 'Kod tabanını tara — dosyalar, importlar, testler, yapılandırmalar. Ne var olduğunu anla.' },
-          { word: 'Planla.', desc: 'Neyi değiştireceğine, hangi dosyalarda, hangi sırayla karar ver.' },
-          { word: 'Yaz.', desc: 'Düzenlemeleri yap. Dosyalar oluştur. Kodu değiştir.' },
-          { word: 'Çalıştır.', desc: 'Komutları çalıştır — build, test, lint. Ne olduğunu gör.' },
-          { word: 'Düzelt.', desc: 'Bir şey bozulduysa, hatayı oku, ayarla ve tekrar dene.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bu oku-planla-yaz-çalıştır-düzelt döngüsü Claude Code'u basit bir kod oluşturucudan farklı kılan şeydir. Sana bir parçacık verip gitmez. <em>Döngüde kalır</em> — kod gerçekten çalışana kadar tekrarlar.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Bunu eş programlama gibi düşün. Ne istediğini anlatırsın. Claude Code yazar. Testler başarısız olur. Claude Code hatayı okur, ayarlar, tekrar çalıştırır. Bu döngü üç, beş, on kez olabilir — hepsi saniyeler içinde.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Döngüyü çalışırken gör. Bir istek yaz ve Claude Code'un çalışmasını izle.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        CLAUDE.md dosyası
+        Belirle, Üret, Doğrula
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Çoğu acemi bunu kaçırır: <strong>Claude Code'a kalıcı talimatlar verebilirsin.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Projenin kök dizinine <code>CLAUDE.md</code> adlı bir dosya bırak, Claude Code her oturumun başında onu okur. Sistem promptu gibi, ama tüm kod tabanın için.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Claude Code'a bir görev verdiğinde, bir ajan döngüsü çalıştırır: kod tabanını oku, neyi değiştireceğini planla, düzenlemeleri yaz, kodu çalıştır, bozulanı düzelt. Bu döngüyü üç, beş, on kez tekrarlayabilir — hepsi saniyeler içinde. Senin işin artık her satırı yazmak değil. Ne inşa edileceğini <strong>belirlemek</strong>, yapay zekanın <strong>üretmesine</strong> izin vermek ve sonra gerçekten doğru olduğunu <strong>doğrulamak</strong>. Çoğu yeni başlayan bu son adımı atlar. Kod belirir, makul görünür ve devam ederler. O kişi olma. Üretilmiş kod bir ilk taslaktır. Senin doğrulaman onu yayınlanabilir yapan düzenlemedir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # Projem<br /><br />
-          Tech stack: Astro + React + Tailwind<br />
-          Her zaman strict modda TypeScript kullan.<br />
-          Bileşenleri src/components/ altına koy.<br />
-          Her yeni fonksiyon için test yaz.<br />
-          Prettier formatlaması kullan — yapılandırmayı asla değiştirme.<br /><br />
-          ## Stil Kuralları<br />
-          - Default export yerine named export tercih et<br />
-          - Inline style değil, CSS modules kullan<br />
-          - Bileşenleri 150 satırın altında tut
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md olmadan, her oturumun ilk birkaç dakikasını tercihlerini yeniden açıklayarak geçirirsin. Biriyle, Claude Code zaten stack'ini, kurallarını ve sınırlarını bilir. Bu, Bölüm 3'teki bağlam mühendisliğinin kodlamaya uygulanmış halidir.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>CLAUDE.md'yi projenin anayasası olarak düşün.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Zaten verdiğin kararları kodlar — böylece yapay zeka gerçekten yeni olan kararlara odaklanabilir. CLAUDE.md'n ne kadar spesifik olursa, kendini o kadar az tekrarlarsın.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Skill'ler oluşturmak
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md, Claude Code'a projen hakkında genel bilgi verir. Peki ya spesifik, tekrarlanabilir görevler? İşte <strong>Skill'ler</strong> devreye burada girer.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Skill, CLAUDE.md'nin içindeki bir talimat setidir; Claude Code'a belirli bir tür görevi nasıl yapacağını öğretir. Bir tarif gibi düşün: "Birisi yeni bir React bileşeni oluşturmanı istediğinde, tam olarak böyle yap."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Skill'ler olmadan, her seferinde aynı adımları anlatırsın. Skill'lerle, bir kez anlatırsın ve yapay zeka sonsuza dek hatırlar.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        İyi bir skill'in üç parçası vardır:
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: 'Tetikleyici', color: '#7B61FF', text: 'Bu skill ne zaman aktif olur? "Bileşen oluşturması istendiğinde..." veya "Test hatası düzeltirken..." Net tetikleyiciler yapay zekanın yanlış tarifi kullanmasını engeller.' },
-        { letter: 'A', name: 'Adımlar', color: '#16C79A', text: 'Tam olarak ne yapmalı, hangi sırayla? Numaralı adımlar en iyi çalışır. Dosya konumları, adlandırma kuralları ve gerekli kalıplar hakkında spesifik ol.' },
-        { letter: 'Ö', name: 'Örnekler', color: '#F5A623', text: 'Başarılı bir sonucun neye benzediğini göster. Bir önce-sonra, bir örnek dosya yapısı veya bir örnek çıktı. Belirsizlik, örneklerin varlığında ölür.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Bir tane yazmayı dene. Tetikleyiciden adımlara ve örneklere kadar bir skill oluştur.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Belirt, oluştur, doğrula
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code ile çalıştığında, rolün değişir. Artık her satırı yazan kişi değilsin. Ne inşa edileceğini <strong>belirten</strong>, yapay zekanın <strong>oluşturmasına</strong> izin veren ve ardından gerçekten doğru olduğunu <strong>doğrulayan</strong> kişisin.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bu döngü — belirt, oluştur, doğrula — temel iş akışıdır:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: 'Belirt', desc: 'Ne istediğin konusunda kesin ol. İsteğin ne kadar net olursa, çıktıyı düzeltmekle o kadar az zaman harcarsın. Uç durumları, dosya konumlarını ve beklenen davranışı dahil et.', color: '#7B61FF' },
-          { step: '02', title: 'Oluştur', desc: 'Claude Code işini yapsın. Ajan döngüsünü izle — okuma, planlama, yazma, çalıştırma, düzeltme. Döngü ortasında müdahale etme dürtüsüne diren.', color: '#0EA5E9' },
-          { step: '03', title: 'Doğrula', desc: 'Bu en önemli işin. Kodu oku. Testleri çalıştır. Uç durumları kontrol et. İstediğini gerçekten yapıyor mu? Adını koyacağın bir kod mu?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Çoğu acemi üçüncü adımı atlar. Kod göründüğünde, makul görünür ve devam ederler. O kişi olma. <strong>Oluşturulan kod bir ilk taslaktır.</strong> Doğrulaman, onu yayınlanabilir yapan düzenlemedir.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        İroni? Yapay zeka ne kadar hızlı kod üretirse, doğrulaman o kadar <em>önemli</em> olur. Yargılama olmadan hız, sadece daha hızlı hatalardır.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Beceri paradoksu
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Yapay zeka destekli kodlama hakkında rahatsız edici bir gerçek var: <strong>çıktıyı yargılayacak kadar bilmen gerekir, kendin yazmasan bile.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Claude'un ürettiği kodu okuyamıyorsan, doğrulayamazsın. Doğrulayamıyorsan, başka birinin tahminlerini üretime gönderiyorsun.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bu bir paradoks yaratır: acemilerin kod yazmasına yardımcı olan araç, aynı zamanda o kodu değerlendirecek kadar bilgi gerektirir. Çözüm? Claude Code'u sadece üretmek için değil, <em>öğrenmek</em> için kullan.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code anlamadığın bir şey yazdığında, kabul etme. Sor: "Bu kodun ne yaptığını ve neden bu yaklaşımı seçtiğini açıkla." Yapay zekayı sadece daktilo değil, öğretmen olarak kullan.
+      <p class="text-lg leading-[1.85] mb-14">
+        Gizli silah <code>CLAUDE.md</code> dosyasıdır — projenin köküne bırak ve Claude Code her oturumun başında okur. Teknoloji yığınını, adlandırma kurallarını, stil kurallarını, test beklentilerini — hepsini bir kere kodlarsın ve kendini asla tekrarlaman gerekmez. Bu, kodlamaya uygulanmış bağlam mühendisliğidir.
       </p>
     </FadeInBlock>
 
@@ -362,43 +89,52 @@ const chapter = chapters[6];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Amaç her satırı yazmak değil — her satırı anlamak.</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          En iyi Claude Code kullanıcıları en çok kod üretenler değil. En iyi soruları soranlar ve en ince hataları yakalayanlardır. Bilgin, kalite filtrendir.
+          Claude'un ürettiği kodu okuyamıyorsan, doğrulayamazsın. En iyi Claude Code kullanıcıları en çok kodu üretenler değil — en iyi soruları sorup en ince hataları yakalayanlardır.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Sen vs. Claude Code. Aynı karmaşık kod, aynı hedef. Kim daha iyi refactor eder?
+        Döngüyü çalışırken gör. Bir istek yaz ve Claude Code'un nasıl çalıştığını izle.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Bu Claude Code bölümü çok etkileyici — bir yapay zeka eş programcının bir problemi düşünüp, kod yazıp ve kendi hatasını ayıkladığını izledim. Kodlamanın geleceği burada." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Artık bir CLAUDE.md'n, özel skill'lerin ve belirt-oluştur-doğrula ritmin var. Claude Code senin <em>için</em> kod yazmıyor &mdash; seninle <em>birlikte</em> yazıyor.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code senin için kod yazmıyor — seninle birlikte yazıyor.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tek bir sohbet tek bir görevi halledebilir. Ama gerçek projelerin düzinelerce görevi var. Sırada: büyük hedefleri yapay zekanın gerçekten yürütebileceği parçalara nasıl ayırılır.
+        Tek bir sohbet tek bir görevi halledebilir. Ama gerçek projelerin düzinelercesi var. Sırada: büyük hedefleri yapay zekanın gerçekten uygulayabileceği parçalara nasıl bölünür.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

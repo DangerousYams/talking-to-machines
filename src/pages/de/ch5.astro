@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
 import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[4];
 ---
@@ -36,7 +37,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Der Sprung von „Fragen beantworten"<br />zu „Aktionen ausführen".
+          Der Sprung von "Fragen beantworten"<br />zu "Aktionen ausführen."
         </p>
       </FadeInBlock>
     </div>
@@ -46,166 +47,12 @@ const chapter = chapters[4];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
-        Bis jetzt folgte jede KI-Interaktion, die du hattest, demselben Muster. Du tippst etwas. Die KI tippt etwas zurück. Text rein, Text raus. Eine wirklich ausgefeilte Autovervollständigung. Aber das ist nicht die Obergrenze. Es ist nur der Boden.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
+        Bis jetzt folgt jede KI-Interaktion, die du hattest, demselben Muster. Du tippst etwas. Die KI tippt etwas zurück. Eine wirklich ausgefeilte Autovervollständigung. Aber was wäre, wenn die KI <em>Dinge tun</em> könnte? Nicht nur über das Wetter reden, sondern die Wettervorhersage abrufen. Nicht nur Code schreiben, sondern ihn ausführen. Nicht nur vorschlagen, was du googeln sollst, sondern selbst das Web durchsuchen und dir die Ergebnisse mitbringen.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Was wäre, wenn die KI <em>Dinge tun</em> könnte? Nicht nur über das Wetter erzählen, sondern tatsächlich die Vorhersage checken. Nicht nur Code schreiben, sondern ihn ausführen und dir sagen, was passiert ist. Nicht nur vorschlagen, was du googeln könntest, sondern selbst das Web durchsuchen und mitbringen, was sie gefunden hat.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Das ist Tool-Nutzung. Und sie verändert alles daran, was KI sein kann.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Jenseits von Text-rein, Text-raus
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Überleg dir, was passiert, wenn du einen Chatbot fragst: <em>„Wie spät ist es gerade in Tokio?"</em> Die KI weiß es tatsächlich nicht. Sie wurde mit Daten trainiert, die Monate oder Jahre alt sind. Sie hat keine Uhr. Also tut sie das Einzige, was sie kann — sie rät, basierend auf Mustern in ihren Trainingsdaten. Manchmal liegt sie nah dran. Manchmal liegt sie komisch daneben.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Ohne Tools</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">Du:</span> Wie spät ist es in Tokio?<br />
-          <span style="font-style: italic; opacity: 0.6;">KI:</span> Es dürfte ungefähr 14:30 JST sein. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Nur geraten)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Jetzt gib derselben KI ein <strong>Tool</strong> — eine simple Funktion, die die aktuelle Uhrzeit in jeder Zeitzone zurückgibt. Plötzlich:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mit Tools</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">Du:</span> Wie spät ist es in Tokio?<br />
-          <span style="font-style: italic; opacity: 0.6;">KI denkt:</span> <span style="color: var(--color-purple); font-size: 0.9em;">Ich habe ein Zeitzonen-Tool. Lass es mich nutzen.</span><br />
-          <span style="font-style: italic; opacity: 0.6;">KI ruft auf:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
-          <span style="font-style: italic; opacity: 0.6;">Tool gibt zurück:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
-          <span style="font-style: italic; opacity: 0.6;">KI:</span> Es ist gerade 14:47 in Tokio (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Verifiziert)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Dieselbe Frage. Komplett andere Zuverlässigkeit. Die KI wurde nicht schlauer — sie wurde <strong>vernetzt</strong>. Sie kann jetzt aus ihrem eigenen Gehirn hinausgreifen und mit der echten Welt interagieren.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Wie Tool-Nutzung tatsächlich funktioniert
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hier ist das Denkmodell. Wenn du einer KI Zugang zu Tools gibst, überreichst du ihr einen <strong>Werkzeugkasten</strong> und sagst: <em>„Hier sind Dinge, die du tun kannst. Für jedes Tool steht hier, wie es heißt, was es annimmt und was es zurückgibt. Du entscheidest, wann du es benutzt."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Die KI nutzt nicht blind jedes Tool bei jeder Anfrage. Sie überlegt, welche Tools relevant sind, entscheidet, ob sie eins benutzen soll, formuliert die richtige Eingabe, ruft das Tool auf, liest das Ergebnis und baut es dann in ihre Antwort ein. Dieser Prozess heißt <strong>Function Calling</strong> — und er folgt einer bemerkenswert konsistenten Schleife.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Beobachten.', desc: 'Die Anfrage des Nutzers und verfügbaren Kontext lesen.' },
-          { word: 'Denken.', desc: 'Entscheiden: „Brauche ich ein Tool dafür, oder kann ich direkt antworten?"' },
-          { word: 'Handeln.', desc: 'Das passende Tool mit den richtigen Argumenten aufrufen.' },
-          { word: 'Beobachten.', desc: 'Das Ergebnis des Tools lesen.' },
-          { word: 'Antworten.', desc: 'Alles zu einer nützlichen Antwort zusammenfügen.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Die KI führt kein Skript aus. Sie trifft jedes Mal eine Einschätzung: „Ist das eine Situation, in der ich ein Tool nutzen sollte, oder kann ich es selbst?"
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Das ist die <strong>Agentenschleife</strong> — beobachten, denken, handeln, beobachten, antworten. Und es ist dieselbe Schleife, ob die KI ein Tool hat oder hundert. Je mehr Tools du ihr gibst, desto fähiger wird sie. Aber auch desto mehr Vertrauen musst du in ihre Einschätzung setzen, <em>welches</em> Tool <em>wann</em> zum Einsatz kommt.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SEVEN TOOLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Sieben Tools, die alles verändern
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Es gibt Hunderte spezifischer Tools, die KI nutzen kann, aber sie fallen hauptsächlich in sieben Kategorien. Jede erweitert die Fähigkeiten der KI auf grundlegend andere Weise. Manche geben ihr <em>Wissen</em> (Websuche, Datenbanken). Manche geben ihr <em>Fähigkeiten</em> (Code-Ausführung, Bildgenerierung). Manche geben ihr <em>Hände</em> (Dateibearbeitung, API-Aufrufe).
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Klick auf ein Tool unten, um den vollständigen Denkprozess der KI zu sehen — vom Erkennen, dass sie ein Tool braucht, über den Aufruf bis zur Nutzung des Ergebnisses.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolCatalog client:visible />
     </FadeInBlock>
   </section>
 
@@ -221,139 +68,67 @@ const chapter = chapters[4];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Sobald KI <em>Dinge tun</em> kann — nicht nur darüber reden — taucht eine neue Frage auf. Eine Frage, die nichts mit Technologie zu tun hat und alles mit dir:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Wenn du KI Werkzeuge gibst, überreichst du ihr einen Werkzeugkasten und sagst: <em>"Hier sind Dinge, die du tun kannst. Du entscheidest, wann du sie einsetzt."</em> Sie kann das Web durchsuchen, Code ausführen, Dateien lesen, APIs aufrufen. Die KI ist nicht schlauer geworden -- sie ist <strong>vernetzt</strong> worden. Und das wirft eine Frage auf, die nichts mit Technologie zu tun hat und alles mit dir: Wie viel soll die KI alleine machen, bevor sie bei dir nachfragt?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Wie viel soll die KI alleine machen, bevor sie bei dir nachfragt?
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Das ist keine technische Frage — es ist eine menschliche. Und die Antwort hängt von drei Dingen ab:
+      <p class="text-lg leading-[1.85] mb-14">
+        Die Antwort hängt von drei Dingen ab. <strong>Risiko</strong> -- was ist das Schlimmste, was passieren könnte? <strong>Umkehrbarkeit</strong> -- kann man es rückgängig machen? Und <strong>Vertrauen</strong> -- wie gut kennst du dieses Tool? Ein Taschenrechner, den du hundertmal benutzt hast, verdient mehr Freiheit als ein brandneues Plugin, das du noch nie getestet hast.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { name: 'Tragweite', color: '#E94560', text: 'Was ist das Schlimmste, das passieren könnte? Einen Artikel falsch zusammenzufassen ist ärgerlich. Die falschen Dateien zu löschen ist eine Katastrophe. Höhere Tragweite erfordert mehr menschliche Aufsicht.' },
-          { name: 'Umkehrbarkeit', color: '#F5A623', text: 'Kannst du es rückgängig machen? Eine Datei in einem Git-Repo zu bearbeiten ist leicht umkehrbar. Eine E-Mail an deinen Chef zu senden nicht. Unumkehrbare Aktionen sollten fast immer deine Zustimmung erfordern.' },
-          { name: 'Vertrauen', color: '#16C79A', text: 'Wie gut kennst du dieses Tool? Ein Taschenrechner, den du hundertmal benutzt hast, verdient mehr Autonomie als ein brandneues Plugin, das du nie getestet hast. Vertrauen wird verdient, nicht angenommen.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
-                {i + 1}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {item.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Das Autonomie-Spektrum</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Es ist nicht alles oder nichts. Die besten KI-Workflows geben der KI Freiheit bei risikoarmen, umkehrbaren Aufgaben und halten den Menschen bei risikoreichen, unumkehrbaren im Loop. Dein Job ist es, die Grenze zu gestalten.
+          Es ist kein Alles-oder-nichts. Die besten KI-Workflows geben Freiheit bei risikoarmen, umkehrbaren Aufgaben und halten Menschen bei risikoreichen, unwiderruflichen Aufgaben in der Schleife. Dein Job ist es, die Grenze zu gestalten.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Wo würdest du die Grenze ziehen? Leg deine eigenen Autonomie-Stufen fest.
+        Wo würdest du die Grenze ziehen? Lege deine eigenen Autonomiestufen fest.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TrustThermometer client:visible />
-    </FadeInBlock>
+    <TrustThermometer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Die Tool-Use-Denkweise
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Lerne über KI-Tool-Nutzung und Function Calling auf die praxisnaheste Art und Weise. Dieser Kurs lässt dich tatsächlich Dinge bauen und testen, statt nur darüber zu lesen." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Es gibt einen subtilen Shift, der passiert, wenn du anfängst, KI als Tool-Nutzerin zu betrachten statt nur als Textgeneratorin. Du hörst auf zu fragen: <em>„Was kann die KI dazu sagen?"</em> und fängst an zu fragen: <em>„Was kann die KI daran tun?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Statt die KI zu bitten, zu <em>beschreiben</em>, wie man Daten analysiert, gibst du ihr ein Code-Ausführungs-Tool und schaust zu, wie sie die Analyse schreibt und ausführt. Statt nach <em>Links</em> zu Recherche zu fragen, gibst du ihr Websuche und lässt sie die Informationen selbst finden und zusammenfassen. Die Ausgabe geht von „hier ist, was du tun könntest" zu „hier ist, was ich gerade getan habe."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Alte Denkweise</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          „Erkläre mir, wie ich den Zinseszins auf 5.000 € bei 6,5 % über 10 Jahre berechnen würde."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Tool-Use-Denkweise</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          „Berechne den Zinseszins auf 5.000 € bei 6,5 % p.a., monatlich verzinst, über 10 Jahre. Zeig mir die genaue Zahl."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Der erste Prompt gibt dir ein Tutorial. Der zweite gibt dir eine Antwort. Mit Tools wird die KI vom <strong>Berater</strong> zum <strong>Assistenten</strong> — von jemandem, der dir sagt, was zu tun ist, zu jemandem, der es tatsächlich tut.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Du hast der KI Hände gegeben. Sie kann suchen, rechnen, browsen und Dateien schreiben. Und du hast den schwersten Teil gelernt: zu entscheiden, wie viel Freiheit du abgibst.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Werkzeuge verwandeln KI von einem Berater in einen Assistenten -- von jemandem, der dir sagt, was zu tun ist, zu jemandem, der es tatsächlich tut.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tools sind Bausteine. Als Nächstes verdrahten wir sie zu etwas, das ein Ziel eigenständig verfolgen kann &mdash; planen, ausführen, Fehler beheben. Zeit, Agenten zu bauen.
+        Du hast der KI Hände gegeben. Als Nächstes verdrahten wir diese Werkzeuge zu etwas, das eigenständig ein Ziel verfolgen kann -- planen, ausführen, Fehler beheben. Zeit, Agenten zu bauen.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(245,166,35,0.06) 15%, rgba(245,166,35,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#F5A623" toolName="Would You Let It?" client:visible>
+        <WouldYouLetIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

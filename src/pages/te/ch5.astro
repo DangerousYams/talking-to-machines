@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
 import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[4];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[4];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          అధ్యాయం ఐదు
+          ఐదో అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -31,184 +31,28 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          టూల్స్<br />ఇవ్వు
+          దానికి Tools<br />ఇవ్వు
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "ప్రశ్నలకు సమాధానాలు" నుండి<br />"చర్యలు తీసుకోవడం" వరకు.
+          "ప్రశ్నలకు answer ఇవ్వడం" నుండి<br />"actions తీసుకోవడం" కి leap.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
-        ఇప్పటి వరకు నీ ప్రతి AI సంభాషణ అదే పద్ధతిని అనుసరించింది. నువ్వు ఏదైనా టైప్ చేస్తావ్. AI తిరిగి ఏదైనా టైప్ చేస్తుంది. టెక్స్ట్ లోపలకు, టెక్స్ట్ బయటకు. చాలా అధునాతనమైన ఆటోకంప్లీట్. కానీ అది పైభాగం కాదు. అది కేవలం నేల మాత్రమే.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
+        ఇప్పటి వరకు నీ ప్రతి AI interaction ఒకే pattern follow చేసింది. నువ్వు ఏదో టైప్ చేస్తావ్. AI ఏదో టైప్ చేస్తుంది. నిజంగా sophisticated autocomplete. కానీ AI <em>పనులు చేయగలిగితే</em>? Weather గురించి చెప్పడం కాదు, forecast check చేయడం. Code రాయడం కాదు, run చేయడం. Google లో ఏం search చేయాలో suggest చేయడం కాదు, web లో search చేసి దొరికింది తీసుకురావడం.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI ఏదైనా అసలు <em>చేయగలిగితే</em> ఎలా ఉంటుంది? వాతావరణం గురించి చెప్పడం మాత్రమే కాకుండా, నిజమైన వాతావరణ సమాచారాన్ని తనిఖీ చేసినట్లైతే? కోడ్ రాయడం మాత్రమే కాకుండా, దాన్ని నడిపి ఏమి జరిగిందో చెప్పినట్లైతే? Google లో ఏం వెతకాలో చెప్పడం మాత్రమే కాకుండా, వెబ్ లో కూడా వెతికి దొరికినది తీసుకొచ్చినట్లైతే?
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        అదే టూల్ ఉపయోగం. ఇది AI ఎలా పని చేస్తుందనే విషయాన్ని పూర్తిగా మార్చేస్తుంది.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        టెక్స్ట్-ఇన్, టెక్స్ట్-అవుట్ దాటి
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాట్‌బాట్‌ని నువ్వు అడిగినప్పుడు ఏమి జరుగుతుందో ఆలోచించు: <em>"టోక్యోలో ఇప్పుడు ఎంత టైమ్?"</em> AI కి అసలు సమయం తెలియదు. ఇది నెలలు లేదా సంవత్సరాల పాత డేటాపై శిక్షణ పొందింది. దానికి గడియారం లేదు. కాబట్టి అది చేయగలిగిన ఒకే పని చేస్తుంది — తన శిక్షణ డేటాలోని నమూనాల ఆధారంగా అంచనా వేస్తుంది. కొన్నిసార్లు దగ్గరగా ఉంటుంది. కొన్నిసార్లు హాస్యాస్పదంగా తప్పుగా ఉంటుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">టూల్స్ లేకుండా</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">యూజర్:</span> టోక్యోలో ఎంత టైమ్?<br />
-          <span style="font-style: italic; opacity: 0.6;">AI:</span> దాదాపు 2:30 PM JST ఉంటుంది. <span style="color: var(--color-accent-red); font-size: 0.85em;">(ఊహిస్తూ)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇప్పుడు అదే AI కి <strong>టూల్</strong> ఇవ్వు — ఏ టైమ్‌జోన్‌లోనైనా ప్రస్తుత సమయాన్ని తిరిగి ఇచ్చే సాధారణ ఫంక్షన్. అకస్మాత్తుగా:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>టూల్స్ తో</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">యూజర్:</span> టోక్యోలో ఎంత టైమ్?<br />
-          <span style="font-style: italic; opacity: 0.6;">AI ఆలోచన:</span> <span style="color: var(--color-purple); font-size: 0.9em;">నా దగ్గర టైమ్‌జోన్ టూల్ ఉంది. దాన్ని ఉపయోగిస్తాను.</span><br />
-          <span style="font-style: italic; opacity: 0.6;">AI కాల్ చేస్తుంది:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
-          <span style="font-style: italic; opacity: 0.6;">టూల్ రిటర్న్ చేస్తుంది:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
-          <span style="font-style: italic; opacity: 0.6;">AI:</span> టోక్యోలో ప్రస్తుతం 2:47 PM (JST) ఉంది. <span style="color: var(--color-teal); font-size: 0.85em;">(ధృవీకరించబడింది)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        అదే ప్రశ్న. పూర్తిగా వేరే విశ్వసనీయత. AI తెలివైనది కాలేదు — అది <strong>అనుసంధానం</strong> అయ్యింది. ఇప్పుడు అది తన సొంత మెదడు బయటకు చేరుకుని నిజ ప్రపంచంతో సంభాషించగలుగుతుంది.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        టూల్ ఉపయోగం అసలు ఎలా పని చేస్తుంది
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇది మానసిక నమూనా. నువ్వు AI కి టూల్స్ యాక్సెస్ ఇచ్చినప్పుడు, నువ్వు దానికి <strong>టూల్‌బాక్స్</strong> ఇచ్చి చెబుతున్నావ్: <em>"ఇవి నువ్వు చేయగలిగిన పనులు. ప్రతి టూల్ కోసం, దాన్ని ఎలా పిలవాలో, ఏమి తీసుకుంటుందో మరియు ఏమి తిరిగి ఇస్తుందో ఇక్కడ ఉంది. వాటిని ఎప్పుడు వాడాలో నువ్వే నిర్ణయించుకో."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-14">
-        AI ప్రతి అభ్యర్థనకు ప్రతి టూల్‌ని గుడ్డిగా వాడదు. ఏ టూల్స్ సంబంధితంగా ఉన్నాయో దాని గురించి ఆలోచిస్తుంది, వాడాలా వద్దా అని నిర్ణయిస్తుంది, సరైన ఇన్‌పుట్‌ను రూపొందిస్తుంది, టూల్‌ని పిలుస్తుంది, ఫలితాన్ని చదువుతుంది, తరువాత ఆ ఫలితాన్ని తన జవాబులోకి చేర్చుతుంది. ఈ ప్రక్రియను <strong>ఫంక్షన్ కాలింగ్</strong> అంటారు — ఇది ఆశ్చర్యకరంగా స్థిరమైన లూప్‌ను అనుసరిస్తుంది.
-      </p>
-    </FadeInBlock>
-
-    <!-- The Agent Loop — editorial layout -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'గమనించు.', desc: 'యూజర్ రిక్వెస్ట్ మరియు లభించిన సందర్భాన్ని చదవు.' },
-          { word: 'ఆలోచించు.', desc: 'నిర్ణయించు: "దీని కోసం నాకు టూల్ కావాలా, లేదా నేను డైరెక్ట్‌గా సమాధానం ఇవ్వగలనా?"' },
-          { word: 'చర్య తీసుకో.', desc: 'సరైన ఆర్గుమెంట్స్‌తో తగిన టూల్‌ని కాల్ చేయి.' },
-          { word: 'గమనించు.', desc: 'టూల్ రిజల్ట్‌ని చదవు.' },
-          { word: 'స్పందించు.', desc: 'అన్నింటినీ ఉపయోగకరమైన సమాధానంలోకి సంయోజించు.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI స్క్రిప్ట్ అమలు చేయడం లేదు. అది ప్రతిసారీ నిర్ణయం తీసుకుంటుంది: "ఇది టూల్ వాడాల్సిన సందర్భమా లేక నేను స్వయంగా సమాధానం ఇవ్వగలనా?"
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        ఇది <strong>ఏజెంట్ లూప్</strong> — గమనించు, ఆలోచించు, చర్య తీసుకో, గమనించు, స్పందించు. AI దగ్గర ఒక టూల్ ఉన్నా లేదా వంద టూల్స్ ఉన్నా అదే లూప్. నువ్వు దానికి ఎక్కువ టూల్స్ ఇస్తే, అది మరింత సామర్థ్యవంతంగా మారుతుంది. కానీ అంతే కాకుండా, <em>ఏ</em> టూల్‌ని <em>ఎప్పుడు</em> వాడాలనే దాని నిర్ణయంపై నువ్వు మరింత నమ్మకం ఉంచాల్సి ఉంటుంది.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SEVEN TOOLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        అన్నిటినీ మార్చే ఏడు టూల్స్
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI వాడగల వందలాది నిర్దిష్ట టూల్స్ ఉన్నాయి, కానీ అవి ఎక్కువగా ఏడు వర్గాలలోకి వస్తాయి. ప్రతిదీ AI ఏమి చేయగలదనేదాన్ని పూర్తిగా వేరే విధంగా విస్తరిస్తుంది. కొన్ని దానికి <em>జ్ఞానం</em> ఇస్తాయి (వెబ్ వెతుకుడు, డేటాబేసులు). కొన్ని దానికి <em>సామర్థ్యాలు</em> ఇస్తాయి (కోడ్ అమలు, చిత్ర నిర్మాణం). కొన్ని దానికి <em>చేతులు</em> ఇస్తాయి (ఫైల్ సవరణ, API కాల్స్).
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI కి టూల్ కావాలని గుర్తించడం నుండి దాన్ని పిలవడం వరకు, ఫలితాన్ని వాడడం వరకు పూర్తి ఆలోచన ప్రక్రియను చూడటానికి కింది ఏదైనా టూల్‌పై క్లిక్ చేయి.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolCatalog client:visible />
     </FadeInBlock>
   </section>
 
@@ -219,144 +63,72 @@ const chapter = chapters[4];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        నమ్మకం ప్రశ్న
+        Trust ప్రశ్న
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI వాటి గురించి మాట్లాడడం మాత్రమే కాకుండా <em>చేయగలిగినప్పుడు</em> — కొత్త ప్రశ్న వస్తుంది. సాంకేతికతతో సంబంధం లేకుండా, నీతోనే సంబంధం ఉన్న ప్రశ్న:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        AI కి tools ఇచ్చినప్పుడు, నువ్వు దానికి toolbox ఇచ్చి అంటావ్: <em>"ఇవి నువ్వు చేయగలిగేవి. ఎప్పుడు వాడాలో నువ్వే decide చెయ్."</em> అది web search చేయగలదు, code run చేయగలదు, files చదవగలదు, APIs call చేయగలదు. AI smarter కాలేదు — <strong>connected</strong> అయింది. అది technology తో సంబంధం లేని, నీతో సంబంధం ఉన్న ప్రశ్న లేపుతుంది: AI నీతో check చేయకుండా ఎంత స్వంతంగా చేయాలి?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        నీతో తనిఖీ చేసే ముందు AI ఎంత స్వయంగా చేయాలి?
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇది సాంకేతిక ప్రశ్న కాదు — మానవ ప్రశ్న. సమాధానం మూడు విషయాలపై ఆధారపడి ఉంటుంది:
+      <p class="text-lg leading-[1.85] mb-14">
+        Answer మూడు విషయాల మీద depend అవుతుంది. <strong>Stakes</strong> — worst case ఏం జరగవచ్చు? <strong>Reversibility</strong> — undo చేయగలవా? మరియు <strong>trust</strong> — ఈ tool ఎంత బాగా తెలుసు? వంద సార్లు వాడిన calculator కి, ఎప్పుడూ test చేయని brand-new plugin కంటే ఎక్కువ freedom ఇవ్వవచ్చు.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { name: 'ప్రమాదం', color: '#E94560', text: 'తప్పు జరిగితే ఎంత నష్టం? వ్యాసం సారాంశం తప్పుగా ఉంటే చిరాకు. తప్పు ఫైల్స్ తొలగించడం విపత్తు. ఎక్కువ ప్రమాదం ఉంటే ఎక్కువ మానవ పర్యవేక్షణ అవసరం.' },
-          { name: 'వెనక్కి తీసుకోగలిగేతనం', color: '#F5A623', text: 'నువ్వు దాన్ని రద్దు చేయగలవా? Git రిపోలో ఫైల్ మార్చడం సులభంగా వెనక్కి తీసుకోవచ్చు. నీ బాస్‌కు ఇమెయిల్ పంపడం కాదు. వెనక్కి తీసుకోలేని చర్యలకు దాదాపు ఎల్లప్పుడూ నీ అనుమతి కావాలి.' },
-          { name: 'నమ్మకం', color: '#16C79A', text: 'ఈ టూల్ గురించి నీకు ఎంత తెలుసు? వంద సార్లు వాడిన కాలిక్యులేటర్ నువ్వు ఎప్పుడూ పరీక్షించని కొత్త ప్లగిన్ కంటే ఎక్కువ స్వయంప్రతిపత్తికి అర్హం. నమ్మకం సంపాదించాల్సింది, ఊహించుకోవాల్సింది కాదు.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
-                {i + 1}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {item.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>స్వయంప్రతిపత్తి స్పెక్ట్రమ్</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          అది అన్నీ లేదా ఏమీ కాదు. ఉత్తమ AI పని విధానాలు తక్కువ ప్రమాదం ఉన్న, వెనక్కి తీసుకోగల పనులపై AI కి స్వేచ్ఛ ఇస్తాయి, అదే సమయంలో ఎక్కువ ప్రమాదం ఉన్న, వెనక్కి తీసుకోలేని వాటికి లూప్‌లో మనుషులను ఉంచుతాయి. ఆ సరిహద్దు నిర్ణయించడం నీ పని.
+          ఇది all-or-nothing కాదు. Best AI workflows low-stakes, reversible tasks మీద freedom ఇస్తాయి, high-stakes, irreversible వాటి కోసం humans ని loop లో ఉంచుతాయి. Boundary design చేయడం నీ job.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        నువ్వు గీత ఎక్కడ గీస్తావ్? నీ స్వయంప్రతిపత్తి స్థాయిలను నిర్ణయించు.
+        నువ్వు line ఎక్కడ draw చేస్తావ్? నీ autonomy levels set చెయ్.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TrustThermometer client:visible />
-    </FadeInBlock>
+    <TrustThermometer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        టూల్-యూజ్ మైండ్‌సెట్
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="AI tool use మరియు function calling గురించి అత్యంత hands-on way లో నేర్చుకుంటున్నాను. ఈ course నిజంగా build చేయనిస్తుంది, కేవలం చదవడం కాదు." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        నువ్వు AI ని కేవలం టెక్స్ట్ తయారీదారుగా కాకుండా టూల్ వాడేదిగా ఆలోచించడం మొదలుపెట్టినప్పుడు సూక్ష్మ మార్పు జరుగుతుంది. నువ్వు <em>"దీని గురించి AI ఏం చెప్పగలదు?"</em> అని అడగడం మానేసి <em>"దీని గురించి AI ఏం చేయగలదు?"</em> అని అడగడం మొదలుపెడతావ్.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        డేటాను ఎలా విశ్లేషించాలో AI ని <em>వివరించమని</em> అడగడానికి బదులు, దానికి కోడ్ అమలు టూల్ ఇచ్చి విశ్లేషణ రాసి నడపడం చూస్తావ్. పరిశోధన కోసం <em>లింకులు</em> అడగడానికి బదులు, దానికి వెబ్ వెతుకుడు ఇచ్చి స్వయంగా సమాచారాన్ని కనుగొని కలిపి ఇవ్వనిస్తావ్. ఫలితం "నువ్వు చేయగలిగేది ఇదే" నుండి "నేను ఇప్పుడే చేసేది ఇదే" కు మారుతుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">పాత మైండ్‌సెట్</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          "$5,000 మీద 6.5% వద్ద 10 సంవత్సరాలకు కాంపౌండ్ ఇంటరెస్ట్ ఎలా లెక్కించాలో వివరించు."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>టూల్-యూజ్ మైండ్‌సెట్</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "$5,000 మీద 6.5% APR వద్ద నెలవారీ కాంపౌండ్‌తో 10 సంవత్సరాలకు కాంపౌండ్ ఇంటరెస్ట్ లెక్కించు. ఖచ్చితమైన సంఖ్య చూపించు."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        మొదటి prompt నీకు పాఠం ఇస్తుంది. రెండవది నీకు సమాధానం ఇస్తుంది. టూల్స్‌తో, AI <strong>సలహాదారు</strong> నుండి <strong>సహాయకుడి</strong>గా మారుతుంది — ఏం చేయాలో చెప్పే వాడి నుండి అసలు చేసే వాడికి.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        నువ్వు AI కి చేతులు ఇచ్చావ్. అది వెతకగలదు, లెక్కించగలదు, బ్రౌజ్ చేయగలదు, ఫైళ్ళు రాయగలదు. మరియు నువ్వు కష్టమైన భాగం నేర్చుకున్నావ్: ఎంత స్వేచ్ఛ ఇవ్వాలో నిర్ణయించడం.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Tools AI ని advisor నుండి assistant గా మారుస్తాయి — ఏం చేయాలో చెప్పే వాడి నుండి, actually చేసే వాడికి.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        టూల్స్ నిర్మాణ ఇటుకలు. తరువాత, వాటిని స్వయంగా లక్ష్యాన్ని అనుసరించగలిగే వ్యవస్థలోకి అనుసంధానం చేస్తాం &mdash; ప్రణాళిక వేయడం, అమలు చేయడం, తప్పుల నుండి కోలుకోవడం. ఏజెంట్లను నిర్మించే సమయం వచ్చింది.
+        AI కి చేతులు ఇచ్చావ్. తర్వాత, ఆ tools ని ఒక goal ను స్వంతంగా pursue చేయగలిగే దాంట్లో wire చేద్దాం — planning, executing, mistakes నుండి recover అవ్వడం. Agents build చేయడానికి time అయింది.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(245,166,35,0.06) 15%, rgba(245,166,35,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#F5A623" toolName="Would You Let It?" client:visible>
+        <WouldYouLetIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -5,402 +5,150 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import BeatSection from '../../components/chapter/BeatSection';
 import PromptMakeover from '../../components/widgets/ch1/PromptMakeover';
-import GuessThePrompt from '../../components/widgets/ch1/GuessThePrompt';
-import IterationLoop from '../../components/widgets/ch1/IterationLoop';
 import PromptRoast from '../../components/widgets/ch1/PromptRoast';
-import PromptComparison from '../../components/widgets/ch1/PromptComparison';
-import BeatCompletionCard from '../../components/chapter/BeatCompletionCard';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[0];
-const beats = chapter.beats!;
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
 
-  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
-  <BeatSection
-    beatId={beats[0].id}
-    beatNumber={1}
-    totalBeats={beats.length}
-    title="コミュニケーションのギャップ"
-    tldr="曖昧なプロンプトからは曖昧な答えしか返ってこない。AIにできることと、ほとんどの人が実際にやっていること——そのギャップはコミュニケーションの問題だ。"
-    estimatedMinutes={beats[0].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="5つのビルディングブロック"
-    isFirst={true}
-    client:load
-  >
-    <!-- HERO -->
-    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
 
-      <div class="max-w-[680px] mx-auto text-center relative z-10">
-        <FadeInBlock client:visible>
-          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-            第一章
-          </p>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.15}>
-          <h1
-            class="mb-8 leading-[1.08]"
-            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
-          >
-            もう君は<br />AIと話せている
-          </h1>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.3}>
-          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-            最初の一発目は魔法にはならない。<br />でも、3回目ならなるかもしれない。
-          </p>
-        </FadeInBlock>
-      </div>
-
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
-        <div class="w-px h-10 bg-deep/40"></div>
-      </div>
-    </section>
-
-    <!-- STORY OPENER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
-        <p class="drop-cap text-lg leading-[1.85] mb-8">
-          君はずっとAIと話してきた。検索バーに何かを打ち込むたび、Siriに質問するたび、Netflixのおすすめが表示されるたび、アルゴリズムは聞いていた。でも、機械<em>に</em>話しかけるのと、機械<em>と</em>話すのは違う。
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-8">
-          今、何百万人もの人がChatGPTにプロンプトを打ち込んで、微妙なレスポンスを受け取って、こう思っている——<em>「やっぱりAIってそこまで賢くないんだな」</em>。それは間違いだ。AIは驚くほど優秀だ。聞き方が間違っているだけだ。
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85]">
-          <strong>AIにできること</strong>と<strong>ほとんどの人がAIにやらせていること</strong>のギャップは巨大だ。そしてそれはテクノロジーの問題じゃない——コミュニケーションの問題だ。すでに君が直せる問題だ。
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE VAGUE PROMPT PROBLEM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-          曖昧なプロンプト問題
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          二人が同じAIにエッセイの手伝いを頼む。一人は使えないレスポンスを受け取る。もう一人は本当に素晴らしいものを手に入れる。同じAIだ。違いは、どう聞いたかだけ。
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
-      <FadeInBlock client:visible delay={0.2}>
-        <PromptComparison accentColor={chapter.accent} client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[0].id} beatTitle="コミュニケーションのギャップ" nextBeatTitle="5つのビルディングブロック" accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
-  <BeatSection
-    beatId={beats[1].id}
-    beatNumber={2}
-    totalBeats={beats.length}
-    title="5つのビルディングブロック"
-    tldr="良いプロンプトにはRole、Task、Format、Constraints、Examplesの組み合わせがある。"
-    estimatedMinutes={beats[1].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="イテレーションの考え方"
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          5つのビルディングブロック
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-6">
-          AIからすごい結果を引き出す人と、ありきたりな出力しか得られない人。その差は才能じゃない。秘密のツールでもない。公式だ——毎回使える5つのビルディングブロック。
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-14">
-          5つ全部がいつも必要なわけじゃない。でもこれらの存在を知ることは、マトリックスの見え方が変わるようなもの。一度パターンが見えたら、もう見えないふりはできない。
-        </p>
-      </FadeInBlock>
-
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { letter: 'R', name: 'Role（役割）', color: '#E94560', text: 'AIに何になってもらう？「AP英語の家庭教師として」——これだけで全部変わる。家庭教師は説明する。教授は講義する。友達は自由に話す。役割がトーン、語彙、深さを決める。' },
-          { letter: 'T', name: 'Task（タスク）', color: '#0F3460', text: '正確に何をすべきか？「エッセイ手伝って」じゃなくて「論文のテーゼを強化して」。容赦なく具体的に。1つのプロンプトに1つのタスクが、ほぼ常に3つより良い。' },
-          { letter: 'F', name: 'Format（フォーマット）', color: '#7B61FF', text: 'レスポンスはどんな形？「3つの代替案を出して」はフォーマットだ。「箇条書きで」「100語以内で」「メリットとデメリットの比較表で」もフォーマット。フォーマットが冗長を防ぐ。' },
-          { letter: 'C', name: 'Constraints（制約）', color: '#16C79A', text: '何をしてはいけないか？「陳腐な表現を使わないで」「200語以内で」。制約はガードレールだ。AIが無駄な方向に行くのを防ぐ。' },
-          { letter: 'E', name: 'Examples（例）', color: '#F5A623', text: '言葉で説明するより見せる方がいい。特定のスタイルが欲しいなら、「良い」ものの例を出す。1つの例は100語の説明に匹敵する。' },
-        ].map((block, i) => (
-          <FadeInBlock client:visible delay={i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-                {block.letter}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {block.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {block.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-
-      <FadeInBlock client:visible delay={0.5}>
-        <div class="insight-box">
-          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">核心的な気づき</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            毎回5つ全部必要なわけじゃない。カジュアルな質問に制約や例はいらない。でもAIがひどい結果を出してきたら、何が足りないか見てみよう。ほぼ必ずこの5つのどれかだ。
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
-
-    <!-- BRIDGE TO PROMPT MAKEOVER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          理論はここまで。ビルディングブロックを実際に動かしてみよう。
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <!-- WIDGET: PROMPT MAKEOVER -->
-    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <PromptMakeover client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[1].id} beatTitle="5つのビルディングブロック" nextBeatTitle="イテレーションの考え方" accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
-  <BeatSection
-    beatId={beats[2].id}
-    beatNumber={3}
-    totalBeats={beats.length}
-    title="イテレーションの考え方"
-    tldr="一発で完璧になる人なんていない。プロンプト→評価→改善→繰り返し——このループが本当のスキルだ。"
-    estimatedMinutes={beats[2].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="自分をテストしよう"
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          完璧じゃなく、イテレーション
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-10">
-          最初のプロンプトはほぼうまくいかない。でもそれでいい。<strong>それがまさにポイントなんだ。</strong>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          第一章
         </p>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.15}>
-        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-          AIがすごいものを生み出すデモを見たとき、君が見ているのは最終プロンプトだ——5回、10回、もしかしたら20回の改良を経て到達したもの。ハイライトリールを見ているのであって、練習の過程じゃない。
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          実際のワークフローはこうだ：
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-          {[
-            { word: 'プロンプト。', desc: 'まずベストな最初の試みを書く。' },
-            { word: '評価。', desc: 'レスポンスを読む。何が良い？何がずれてる？' },
-            { word: '改善。', desc: 'プロンプトを調整する。失敗した部分をもっと具体的に。' },
-            { word: '繰り返し。', desc: '実際に使えるアウトプットになるまで続ける。' },
-          ].map((step, i) => (
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          ))}
-        </div>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          もう君は<br />AIと話せている
+        </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
-        <p class="text-lg leading-[1.85] mb-10">
-          このループ——プロンプト、評価、改善、繰り返し——こそがAIと働く<em>本当のスキル</em>だ。最初の一発で魔法のような完璧なプロンプトを書くことじゃない。それは神話だ。
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          最初の一発目は魔法にはならない。<br />でも、3回目ならなるかもしれない。
         </p>
       </FadeInBlock>
+    </div>
 
-      <FadeInBlock client:visible delay={0.35}>
-        <div class="insight-box">
-          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>良い結果を出すには平均で3〜5回のイテレーションが必要だ。1回じゃない。</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            一発で決まっているなら、たぶんまだ攻め足りない。最高のアウトプットは、君とAIが一緒に改善するやり取りの中から生まれる。
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
 
-    <!-- WIDGET: ITERATION LOOP -->
-    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <IterationLoop client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE PROMPT SPECTRUM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          プロンプトスペクトラム
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          すべてのプロンプトを、曖昧から精密までのスペクトラムで考えてみよう：
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.15}>
-        <div style="margin-bottom: 3rem;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">曖昧</span>
-            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">精密</span>
-          </div>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"手伝って"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">汎用的なレスポンス</p>
-            </div>
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"Xについて書いて"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">まあまあだけど焦点がぼやける</p>
-            </div>
-            <div>
-              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"5つ全部使う"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">的確で使える</p>
-            </div>
-          </div>
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          目標は常に「精密」側にいることじゃない。カジュアルなブレストはわざと曖昧にすることもある。でも<strong>スペクトラムのどこにいるかを意識的に選ぶべきだ</strong>。たまたまそこに着地するんじゃなくて。
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <p class="text-lg leading-[1.85]">
-          AIを最大限に活かす人は、魔法のプロンプトを暗記したりしない。<em>どのくらい具体的にすべきか</em>の感覚を磨いている。そして最初の答えが十分でないとき、どのダイヤルを回すべきか正確にわかっている。
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[2].id} beatTitle="イテレーションの考え方" nextBeatTitle="自分をテストしよう" accentColor={chapter.accent} client:visible />
-  </BeatSection>
+  <!-- ═══ OPENING HOOK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        君はずっとAIと話してきた——検索のたびに、Siriへの質問のたびに、Netflixのおすすめが出るたびに。でも、機械<em>に</em>話しかけるのと、機械<em>と</em>話すのは違う。今、何百万人もの人がプロンプトを打ち込んで、微妙なレスポンスを受け取って、こう思っている：「やっぱりAIってそこまで賢くないんだな」。それは間違いだ。AIにできることと、ほとんどの人がAIにやらせていることのギャップは巨大だ。しかもそれはテクノロジーの問題じゃない——コミュニケーションの問題だ。
+      </p>
+    </FadeInBlock>
+  </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ BEAT 4: Test Yourself ═══ -->
-  <BeatSection
-    beatId={beats[3].id}
-    beatNumber={4}
-    totalBeats={beats.length}
-    title="自分をテストしよう"
-    tldr="新しく身につけたスキルを試してみよう——AIのアウトプットの裏にあるプロンプトを当てたり、自分のプロンプトを辛口評価してもらったり。"
-    estimatedMinutes={beats[3].estimatedMinutes}
-    accentColor={chapter.accent}
-    client:load
-  >
-    <!-- WIDGET: GUESS THE PROMPT -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          全部わかった？じゃあテストしてみよう。
+  <!-- ═══ THE FIVE BUILDING BLOCKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        5つのビルディングブロック
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        秘密を教えよう。AIからすごい結果を引き出す人は、君より頭がいいわけじゃない。公式を使っているだけだ——毎回使える5つのビルディングブロック。いつも5つ全部必要なわけじゃない。でもこれらの存在を知ることは、マトリックスの見え方が変わるようなものだ。
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'R', name: 'Role', color: '#E94560', text: 'AIに何になってもらう？チューターと教授では説明の仕方が全然違う。役割がすべてを決める。' },
+        { letter: 'T', name: 'Task', color: '#0F3460', text: '正確に何をすべきか？「手伝って」じゃなくて「テーゼを強化して」。1つのプロンプトに1つのタスク。' },
+        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'レスポンスはどんな形？「3つの代替案を番号付きリストで」。フォーマットが冗長を防ぐ。' },
+        { letter: 'C', name: 'Constraints', color: '#16C79A', text: '何をしてはいけないか？「陳腐な表現を避けて。200語以内で」。ガードレールが悪い出力を防ぐ。' },
+        { letter: 'E', name: 'Examples', color: '#F5A623', text: '説明するより見せる。「良い」ものの例を1つ見せれば、100語の説明に匹敵する。' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">重要なポイント</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          毎回5つ全部必要なわけじゃない。でもAIがひどい結果を返してきたとき、何が足りないか見てみよう——ほぼ必ずこの5つのどれかだ。
         </p>
-      </FadeInBlock>
-    </section>
+      </div>
+    </FadeInBlock>
+  </section>
 
-    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <GuessThePrompt client:visible />
-      </FadeInBlock>
-    </section>
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        理論はここまで。ビルディングブロックをトグルして、AIのレスポンスがリアルタイムで変わるのを見てみよう。
+      </p>
+    </FadeInBlock>
+  </section>
 
-    <Divider accent={chapter.accent} client:load />
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <PromptMakeover client:visible />
+  </section>
 
-    <!-- PROMPT ROAST BRIDGE -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          良いプロンプトが書けるようになったと思う？確かめる方法は一つだけだ。
-        </p>
-      </FadeInBlock>
-    </section>
+  <Divider accent={chapter.accent} client:load />
 
-    <!-- WIDGET: PROMPT ROAST -->
-    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
+  <SharePrompt text="良いAIプロンプトの5つのビルディングブロックを発見した。このインタラクティブなコースは本当にすごい——自分でプロンプトを組み立てて、改善される様子をリアルタイムで見られる。" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        もう君はAIの言葉を話せている。あとは意図を持って話すだけだ。
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        次は、シンプルなやり取りを本当の対話に変えるテクニック——AIがただ答えるんじゃなく、<em>一緒に考えてくれる</em>ようになる方法だ。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Prompt Roast" client:visible>
         <PromptRoast client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- CLOSING -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
-      <FadeInBlock client:visible>
-        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-          もう君はAIの言葉を話せている。あとは意図を持って話すだけだ。
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-          次は、シンプルなやり取りを本当の対話に変えるテクニック——AIがただ答えるんじゃなく、<em>一緒に考えてくれる</em>ようになる方法だ。
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[3].id} beatTitle="自分をテストしよう" accentColor={chapter.accent} client:visible />
-  </BeatSection>
+      </BreakReveal>
+    </div>
+  </section>
 
 </ChapterLayout>

@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -37,124 +37,59 @@ const chapter = chapters[8];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Die Prüfgewohnheiten, die Anfänger<br />von Profis unterscheiden.
+          Die Überprüfungsgewohnheiten, die<br />Amateure von Profis unterscheiden.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Hier kommt etwas Unbequemes: Die KI, die dir gerade einen einwandfreien Aufsatz geschrieben hat, kann dir mit der gleichen Überzeugung erzählen, dass Napoleon die Schlacht bei Waterloo gewonnen hat. Sie zögert nicht. Sie stottert nicht. Sie nennt ein komplett erfundenes „Faktum" in demselben autoritativen Ton, den sie für alles andere verwendet.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Das ist das Paradoxon im Kern der Arbeit mit KI: <strong>Dieselbe Sprachgewandtheit, die sie nützlich macht, macht sie auch gefährlich.</strong> KI weiß nicht, was wahr ist. Sie weiß, was wahr <em>klingt</em>. Und das sind zwei sehr, sehr verschiedene Dinge.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        In diesem Kapitel geht es darum, deinen Blödsinn-Detektor aufzubauen. Nicht weil KI schlecht ist, sondern weil <em>blindes Vertrauen</em> schlecht ist. Die Leute, die am meisten von KI profitieren, haben gelernt, wann sie ihr vertrauen können und wann sie prüfen müssen.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Die KI, die dir gerade einen makellosen Aufsatz geschrieben hat, kann dir mit der gleichen Überzeugung erzählen, dass Napoleon die Schlacht von Waterloo gewonnen hat. Sie wird nicht zögern. Sie wird nicht stottern. Sie wird eine komplett erfundene "Tatsache" im selben autoritativen Ton verkünden, den sie für alles andere benutzt. Das ist das Paradox im Umgang mit KI: <strong>Dieselbe Gewandtheit, die sie nützlich macht, macht sie gefährlich.</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ DAS HALLUZINATIONSPROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Das Halluzinationsproblem
+        Plausibilität ist nicht Wahrheit
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Im KI-Bereich spricht man von einer <strong>Halluzination</strong>, wenn das Modell Informationen generiert, die plausibel klingen, aber faktisch falsch — oder komplett erfunden — sind. Und das passiert öfter, als du denkst.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        KI-Modelle rufen keine Fakten aus einer Datenbank ab. Sie sagen das nächste wahrscheinlichste Wort voraus. Wenn du nach etwas Realem fragst, leiten die Trainingsdaten sie zu korrekten Informationen. Wenn du nach etwas fragst, das es nicht gibt, sagt das Modell nicht "Das weiß ich nicht." Es generiert, wie eine korrekte Antwort <em>aussehen würde</em> -- komplett mit Namen, Daten und Quellenangaben. Alles erfunden.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Beispiel</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>Du:</strong> „Wer hat den Roman <em>The Sands of Memory</em> von 1987 geschrieben?"<br /><br />
-          <strong>KI:</strong> „The Sands of Memory (1987) wurde von der britischen Autorin Margaret Thornton geschrieben. Das Buch erforscht Themen wie Kolonialismus und Identität im Ostafrika der Nachkriegszeit. Thornton erhielt für dieses Werk eine Nominierung für den Booker Prize."
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Klingt seriös, oder? Da ist ein Name, ein Jahr, ein Thema, sogar eine Auszeichnungs-Nominierung. <strong>Nichts davon ist echt.</strong> Das Buch existiert nicht. Margaret Thornton (in diesem Kontext) existiert nicht. Die KI hat alles erfunden — und es genau wie eine echte Antwort klingen lassen.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Warum passiert das? Weil KI-Modelle keine Fakten aus einer Datenbank abrufen. Sie <em>sagen das nächste wahrscheinlichste Token vorher</em>. Wenn du nach einem echten Buch fragst, leiten die Muster in den Trainingsdaten sie zu korrekten Informationen. Wenn du nach etwas fragst, das nicht existiert, sagt das Modell nicht „Weiß ich nicht." Es generiert, wie eine korrekte Antwort <em>aussehen würde</em>.
+      <p class="text-lg leading-[1.85] mb-14">
+        Es gibt keine Korrelation zwischen dem, wie selbstsicher KI klingt, und dem, wie akkurat sie tatsächlich ist. Eine falsche Antwort und eine richtige Antwort sehen von außen identisch aus. Du kannst Genauigkeit nicht nach Ton, nach Details oder nach der Menge spezifischer Zahlen beurteilen, die die KI nennt. Der "klingt richtig"-Test ist wertlos. Deine einzige Verteidigung ist Überprüfung.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Zentrale Erkenntnis</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          KI hat kein Konzept von Wahrheit. Sie hat ein Konzept von <em>Plausibilität</em>. Sie erzeugt Text, der ins Muster passt — egal ob dieser Text der Realität entspricht oder nicht.
+          KI hat kein Konzept von Wahrheit. Sie hat ein Konzept von <em>Plausibilität</em>. Sie generiert Text, der ins Muster passt -- ob dieser Text der Realität entspricht oder nicht.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SELBSTBEWUSSTSEIN OHNE KOMPETENZ ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Selbstbewusstsein ohne Kompetenz
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Das Tückische an KI-Halluzinationen ist nicht, dass sie passieren. Es ist, dass <strong>KI nie Unsicherheit signalisiert.</strong> Ein Mensch, der unsicher ist, zögert, schränkt ein, sagt „Ich glaube..." oder „Ich bin mir nicht sicher, aber..." KI liefert erfundene Fakten mit derselben absoluten Überzeugung wie gut belegte.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Es gibt keinen Zusammenhang zwischen dem Selbstbewusstsein, mit dem KI klingt, und ihrer tatsächlichen Genauigkeit. Eine falsche Antwort und eine richtige Antwort sehen von außen identisch aus.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Deshalb ist der „Klingt richtig"-Test wertlos. Du kannst Genauigkeit nicht am Ton beurteilen, nicht am Detailreichtum, nicht daran, wie viele konkrete Zahlen oder Namen die KI nennt. All diese Dinge können — und werden häufig — komplett erfunden sein.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Stell es dir so vor: KI ist wie ein sehr überzeugender Schauspieler, der tausende Drehbücher gelesen hat. Er kann jede Zeile mit perfekter Überzeugung liefern — aber Überzeugung ist nicht Wissen.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -163,137 +98,37 @@ const chapter = chapters[8];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ DAS JASAGER-PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Das Jasager-Problem
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Jeder KI-Nutzer braucht dieses Kapitel. Es erklärt genau, wie KI halluziniert, warum sie falschen Antworten zustimmt und wie man sie erwischt. Super praktisch." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Es gibt einen anderen Fehlermodus, der subtiler ist als Halluzinationen: <strong>Sycophancy.</strong> KI neigt dazu, dir zuzustimmen, selbst wenn du falsch liegst.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Wenn du sagst „Einstein hat die Glühbirne erfunden, oder?" werden die meisten KI-Modelle dich nicht direkt korrigieren. Stattdessen finden sie einen Weg, teilweise zuzustimmen — sie verbinden Einstein über seine Physik-Arbeit mit Licht, lavieren um deine falsche Behauptung herum und geben dir das Gefühl, bestätigt zu werden statt aufgeklärt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Warum? Weil KI-Modelle mit menschlichem Feedback trainiert werden, und Menschen geben positive Bewertungen für Antworten, die sich einvernehmlich und bestätigend anfühlen. Über Millionen von Trainingsbeispielen lernt das Modell: <em>Zustimmung wird belohnt.</em> Also stimmt es zu — selbst wenn es das nicht sollte.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>Das ist gefährlich</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Wenn du KI nur benutzt, um zu bestätigen, was du schon glaubst, wird sie das gerne tun. Du fühlst dich schlauer, während du tatsächlich dümmer wirst. Die stärkste Nutzung von KI ist, sie zu bitten, deine Annahmen herauszufordern — nicht sie zu verstärken.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Sieh es in Aktion. Füttere die KI mit einer falschen Behauptung und beobachte, ob sie widerspricht oder einknickt.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DEINE PRÜFGEWOHNHEIT AUFBAUEN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Deine Prüfgewohnheit aufbauen
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Das Ziel ist nicht, allem zu misstrauen, was KI dir sagt. Es geht darum, eine Reihe automatischer Checks zu entwickeln — einen Prüfreflex — der einsetzt, bevor du auf KI-generierte Informationen handelst.
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: 'Kann ich das überprüfen?', color: '#E94560', text: 'Frage bei jeder faktischen Behauptung: Kann ich das mit einer unabhängigen Quelle prüfen? Wenn die KI eine Studie zitiert, finde sie. Wenn sie ein Datum nennt, bestätige es. Wenn sie jemanden zitiert, suche das Zitat. Akzeptiere Quellenangaben nicht blind — KI erfindet regelmäßig Quellen.' },
-        { letter: '2', name: 'Habe ich nach Quellen gefragt?', color: '#0F3460', text: 'Bitte KI ausdrücklich, Quellen anzugeben. Dann überprüfe diese Quellen. Du wirst feststellen, dass sie manchmal echt sind, manchmal fast richtig (richtiger Autor, falsche Arbeit) und manchmal komplett erfunden. Das Überprüfen trainiert deinen Instinkt.' },
-        { letter: '3', name: 'Besteht das den gesunden-Menschenverstand-Test?', color: '#7B61FF', text: 'Tritt einen Schritt zurück und denke nach: Ergibt diese Behauptung wirklich Sinn? KI kann plausiblen Unsinn erzeugen, der bei 5 Sekunden kritischem Nachdenken zerfällt. Vertrau deinem Bauchgefühl — und überprüfe trotzdem.' },
-        { letter: '4', name: 'Bin ich in einem Hochrisiko-Bereich?', color: '#F5A623', text: 'Medizinische Ratschläge, rechtliche Beratung, finanzielle Entscheidungen, alles was mit Sicherheit zu tun hat — das erfordert besondere Überprüfung. KI ist hilfreich für Brainstorming und erste Entwürfe, aber kritische Entscheidungen sollten immer von qualifizierten Menschen verifiziert werden.' },
-        { letter: '5', name: 'Habe ich die Frage neutral formuliert?', color: '#16C79A', text: 'Wenn du deine Meinung in die Frage einbaust, spiegelt die KI sie dir zurück. Stelle offene Fragen. Frage „Was sind die Argumente für und gegen X?" statt „Warum ist X der beste Ansatz?" Du bekommst ehrlichere, nützlichere Antworten.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Hier geht es nicht um Misstrauen gegenüber KI. Sondern darum, sie gut zu nutzen.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Professionelle Journalisten überprüfen Zitate. Wissenschaftler replizieren Experimente. Ingenieure testen Brücken, bevor sie eröffnet werden. KI-Ausgaben zu verifizieren ist keine Paranoia — es ist Professionalität. Die Leute, die prüfen, sind die, die Dinge bauen, die tatsächlich funktionieren.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Du hast jetzt einen Blödsinn-Detektor: Du erkennst Halluzinationen, widerstehst Sycophancy und prüfst, bevor du vertraust. Diese Gewohnheit wird dir mehr bringen als jede ausgefeilte Prompt-Technik.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Die Leute, die am meisten von KI profitieren, sind die, die genau gelernt haben, wann sie ihr vertrauen und wann sie überprüfen müssen.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Zu wissen, wann KI falsch liegt, führt zu einer größeren Frage: Was kann sie <em>niemals</em> tun? Als Nächstes erkunden wir die Fähigkeiten, die hartnäckig, wunderbar menschlich bleiben &mdash; und warum sie wichtiger sind denn je.
+        Zu wissen, wann KI falsch liegt, führt zu einer größeren Frage: Was kann sie <em>niemals</em>? Als Nächstes erkunden wir die Fähigkeiten, die hartnäckig, wunderschön menschlich bleiben -- und warum sie wichtiger sind als je zuvor.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

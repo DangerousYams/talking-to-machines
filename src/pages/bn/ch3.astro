@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
-import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
-import SystemPromptSandbox from '../../components/widgets/ch3/SystemPromptSandbox';
+import VibeCheck from '../../components/breaks/VibeCheck';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[2];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[2];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>৩</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          অধ্যায় তিন
+          তৃতীয় অধ্যায়
         </p>
       </FadeInBlock>
 
@@ -42,287 +42,99 @@ const chapter = chapters[2];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        ভাবো তুমি একটা বন্ধুর সাথে কথা বলছ, কিন্তু প্রতি কয়েক মিনিট পর পর কেউ সেই হোয়াইটবোর্ড মুছে দিচ্ছে যেখানে তোমরা দুজন লিখছিলে। তোমাকে আবার শুরু করতে হচ্ছে। তোমার বন্ধু যা অবশিষ্ট আছে তা দেখে ভাবছে কিছুই হয়নি। এরকমই হয় একটা AI-এর "মস্তিষ্কের" ভেতর দীর্ঘ কোনো কথোপকথনের সময়।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        <strong>AI-এর কোনো মেমরি নেই।</strong> তুমি যেভাবে মেমরি বুঝো, সেভাবে না। সে গতকালকের তোমার কথোপকথন মনে রাখে না। এমনকি <em>এই</em> কথোপকথনের শুরুর অংশও মনে রাখে না যদি সেটা অনেক লম্বা হয়ে যায়। প্রতিটা উত্তর সে দেয় একদম ভিত্তি করে যা ঠিক সেই মুহূর্তে তার সামনে দেখতে পাচ্ছে &mdash; এটাকে বলা হয় <strong>কনটেক্সট উইন্ডো</strong>।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        এই উইন্ডোটা বোঝা &mdash; এর ভেতর কি যায়, এটা কত বড়, আর এটা ভর্তি হয়ে গেলে কি হয় &mdash; এসবই AI-এর সাথে কাজ করার সবচেয়ে গুরুত্বপূর্ণ স্কিলগুলোর একটা।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        প্রতিবার তুমি AI-কে একটা মেসেজ পাঠাও, সে তোমার <em>পুরো কথোপকথনটা</em> নতুন করে পড়ে &mdash; তুমি যতগুলো মেসেজ পাঠিয়েছ, সে যতগুলো উত্তর দিয়েছে &mdash; একটা রিপ্লাই তৈরি করে, তারপর সব ভুলে যায়। পরের পালায়, একই ব্যাপার। পুরো ট্রান্সক্রিপ্ট আবার ফিড হয়। সে পৃথিবীর সবচেয়ে পরিশ্রমী কিন্তু স্মৃতিভ্রষ্ট পাঠকের মতো: প্রতিবার সম্পূর্ণ মনোযোগী, প্রতিটা পালার শুরুতে একদম শূন্য থেকে।
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE WHITEBOARD METAPHOR ═══ -->
+  <!-- ═══ CONCEPT SETUP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        যে হোয়াইটবোর্ড মুছে দেওয়া হয়
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        উইন্ডোর সীমানা আছে
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তুমি যখন একটা AI-কে মেসেজ পাঠাও, সেটা আসলে কি করে: সিস্টেমটা তোমার <em>পুরো কথোপকথনটা</em> নেয় &mdash; তুমি যতগুলো মেসেজ পাঠিয়েছ, AI যতগুলো উত্তর দিয়েছে &mdash; সব কিছু একসাথে এক খণ্ড টেক্সট হিসেবে মডেলের কাছে পাঠায়। AI সেটা সব পড়ে, পরবর্তী উত্তর তৈরি করে, তারপর... সব ভুলে যায়।
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        সেই ট্রান্সক্রিপ্ট যা AI প্রতি পালায় নতুন করে পড়ে? সেটা থাকে <strong>কনটেক্সট উইন্ডো</strong> নামে কিছুর মধ্যে &mdash; যা মাপা হয় <strong>টোকেনে</strong> (মোটামুটি একটা টোকেন মানে একটা শব্দের তিন-চতুর্থাংশ)। Claude-এর উইন্ডো প্রায় ২,০০,০০০ টোকেন ধরে &mdash; মোটামুটি ৫০০ পাতার একটা বই। শুনতে বিশাল মনে হলেও, তুমি যে প্রতিটা মেসেজ পাঠাও, প্রতিটা উত্তর পাও, আর প্রতিটা লুকানো সিস্টেম নির্দেশনা — সবকিছু একই বাজেট থেকে খরচ হয়। তোমার ভাবনার চেয়ে অনেক দ্রুত ভর্তি হয়ে যায়।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        পরের বার তুমি মেসেজ পাঠালে, পুরো প্রক্রিয়াটা আবার শুরু হয়। সিস্টেম আবার পুরো কথোপকথনটা পেস্ট করে, তোমার নতুন মেসেজ যোগ করে, আর AI সব কিছু নতুন করে পড়ে। এটা পৃথিবীর সবচেয়ে পরিশ্রমী কিন্তু স্মৃতিভ্রষ্ট পাঠকের মতো &mdash; প্রতি বার সম্পূর্ণ মনোযোগী, কিন্তু প্রতিটা পালার শুরুতে একদম নতুন।
+        বাজেট শেষ হয়ে গেলে, সবচেয়ে পুরোনো মেসেজগুলো পাড় থেকে পড়ে যায়। তুমি তোমার খাদ্যাভ্যাসের বিধিনিষেধ তিন নম্বর মেসেজে বলেছিলে? পনের নম্বর মেসেজে AI সেগুলো হয়তো আর দেখতেই পাচ্ছে না। সে অসাবধান হচ্ছে না &mdash; তার সামনে যা নেই সে আক্ষরিক অর্থেই দেখতে পায় না। AI ততটাই ভালো যতটা তথ্য বর্তমানে তার উইন্ডোতে আছে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        একটা AI যে উত্তর দেয়, সেটা সম্পূর্ণ নির্ভর করে ঠিক সেই মুহূর্তে কনটেক্সট উইন্ডোতে যা আছে তার উপর। এর চেয়ে বেশি কিছু না। কনটেক্সট উইন্ডো মেমরি নয়। এটা একটা হোয়াইটবোর্ড &mdash; আর এর সীমানা আছে।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        এর ব্যাপক প্রভাব আছে। মানে AI ততটাই ভালো যতটা তথ্য বর্তমানে তার সামনে আছে। একটা জরুরি বিষয় বাদ দিয়েছ? AI সেটা জাদুমন্ত্রে মনে করতে পারবে না। উইন্ডো ভর্তি করে দিয়েছ অপ্রয়োজনীয় তথ্য দিয়ে? AI কনফিউজড হয়ে যাবে। <strong>কনটেক্সট উইন্ডো তোমার সবচেয়ে গুরুত্বপূর্ণ রিসোর্স।</strong> এটা ম্যানেজ করতে শেখাই আলাদা করে দেয় সাধারণ ইউজারদের থেকে যারা সত্যিই শক্তিশালী ফলাফল পান।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ TOKENS — THE AI'S ALPHABET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        টোকেন: AI-এর বর্ণমালা
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI তোমার মতো করে শব্দ পড়ে না। সে পড়ে <strong>টোকেন</strong> &mdash; টেক্সটের ছোট অংশ যা সাধারণত একটা শব্দের প্রায় তিন চতুর্থাংশ। "incredible" শব্দটা দুইটা টোকেন। "AI" একটা টোকেন। একটা শব্দের আগের স্পেসও প্রায়ই একই টোকেনের মধ্যে থাকে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>সহজ হিসাব</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          ১ টোকেন &asymp; ৪টি অক্ষর &asymp; ০.৭৫ শব্দ<br />
-          ১০০ টোকেন &asymp; ৭৫ শব্দ<br />
-          সাধারণ এক পাতা টেক্সট &asymp; ৩০০ টোকেন<br />
-          একটা পূর্ণ উপন্যাস &asymp; ১,০০,০০০ টোকেন
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এটা কেন গুরুত্বপূর্ণ? কারণ প্রতিটা AI মডেলের একটা <strong>কনটেক্সট উইন্ডো সাইজ</strong> আছে টোকেন দিয়ে মাপা। Claude-এর কনটেক্সট উইন্ডো ২,০০,০০০ টোকেন ধরতে পারে &mdash; এটা মোটামুটি ৫০০ পাতার একটা বই। GPT-4o ধরে ১,২৮,০০০ টোকেন। এগুলো অনেক বড় মনে হলেও, তোমার ভাবনার চেয়ে অনেক দ্রুত ভর্তি হয়ে যায়।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        তুমি যতগুলো মেসেজ পাঠাও, AI যতগুলো উত্তর লেখে, পর্দার আড়ালে যেসব সিস্টেম ইন্সট্রাকশন কাজ করে &mdash; সব কিছুই একই শেয়ারড বাজেট থেকে টোকেন খরচ করে। আর সেই বাজেট শেষ হয়ে গেলে, জিনিসপত্র পাড় থেকে পড়ে যেতে শুরু করে।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: CONTEXT WINDOW VIZ ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextWindowViz client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN THE WINDOW OVERFLOWS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        উইন্ডো উপচে পড়লে
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তুমি দশটা মেসেজ কথোপকথন করেছ। তিন নাম্বার মেসেজে তুমি তোমার খাদ্যাভ্যাস সংক্রান্ত নিষেধাজ্ঞার কথা বলেছিলে। পনের নাম্বার মেসেজে এখন রেস্তোরাঁর সুপারিশ নিয়ে গভীর আলোচনায় ডুবে আছ। তুমি জিজ্ঞেস করলে: <em>"আচ্ছা, আমি কি খাদ্যাভ্যাস সংক্রান্ত নিষেধাজ্ঞার কথা বলেছিলাম?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        আর AI বলে: <em>"আমার মনে হয় না আপনি কোনো নির্দিষ্ট খাদ্যাভ্যাস সংক্রান্ত নিষেধাজ্ঞার কথা বলেছিলেন।"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তুমি হতাশ হয়ে পড়ো। <em>এটা তো এখানেই আছে, আমি বলেছিলাম!</em> কিন্তু ব্যাপারটা হলো: এটা আর <strong>এখানে নেই</strong>। আর নেই। সেই আগের মেসেজটা হয়তো দৃশ্যমান উইন্ডো থেকে পিছলে গেছে, অথবা মডেল সাম্প্রতিক কনটেক্সটের তুলনায় সেটাকে কম প্রাধান্য দিয়েছে। AI অসাবধান হচ্ছে না। এটা আক্ষরিক অর্থেই দেখতে পাচ্ছে না যা আর তার সামনে নেই।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>এটা বাগ নয়। এটাই আর্কিটেকচার।</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI কনটেক্সট উইন্ডো প্রসেস করে ঠিক যেমন একজন মানুষ একটা ডকুমেন্ট এক বসায় পড়ে। ডকুমেন্ট যদি ১০০ পাতার হয়, তাহলে ৯৫ পাতায় পৌঁছানোর সময় ৩ পাতার ডিটেইলস অস্পষ্ট হয়ে যেতে পারে। সমাধান বড় উইন্ডো নয় &mdash; বরং আরো স্মার্টভাবে প্যাক করা যা যায় ভেতরে।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FORGETTING EXPERIMENT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ForgettingExperiment client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SYSTEM PROMPT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        সিস্টেম প্রম্পট: লুকানো নির্দেশনা
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        প্রতিটা AI কথোপকথনে একটা অংশ আছে যা তুমি কখনো দেখো না। তোমার প্রথম মেসেজের আগে, AI হ্যালো বলার আগে, কনটেক্সট উইন্ডোর একদম উপরে একটা টেক্সট ব্লক বসে থাকে। এটাকে বলা হয় <strong>সিস্টেম প্রম্পট</strong>, আর এটা পরবর্তী সব কিছুকে আকার দেয়।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        সিস্টেম প্রম্পট থেকেই AI পায় তার ব্যক্তিত্ব, তার নিয়মকানুন, তার সীমানা। ChatGPT যখন অস্ত্র বানাতে সাহায্য করতে অস্বীকার করে, সেটা সিস্টেম প্রম্পট। Claude যখন বলে "আমি সাহায্য করতে পেরে খুশি হবো," সেটা প্রশিক্ষণপ্রাপ্ত আচরণ যা সিস্টেম প্রম্পট দিয়ে শক্তিশালী করা। কাস্টমার সার্ভিস চ্যাটবট যখন বিষয়ে থাকে, সেটা &mdash; তুমি ঠিকই আন্দাজ করেছ &mdash; সিস্টেম প্রম্পট।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #7B61FF;">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>সিস্টেম প্রম্পটের উদাহরণ</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "তুমি একজন সহায়ক রান্নার সহকারী। শুধুমাত্র রান্না এবং খাদ্য প্রস্তুতি নিয়ে প্রশ্নের উত্তর দাও। অন্য যেকোনো বিষয় নিয়ে জিজ্ঞেস করলে, ভদ্রভাবে কথোপকথনকে আবার রান্নার বিষয়ে ফিরিয়ে আনো। উত্তরগুলো ১৫০ শব্দের নিচে রাখো। উষ্ণ, উৎসাহব্যঞ্জক টোন ব্যবহার করো।"
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        সিস্টেম প্রম্পট বিশেষ কারণ এটা <strong>কনটেক্সট উইন্ডোর উপরে আটকে থাকে</strong>। কথোপকথন যতই লম্বা হোক না কেন, সিস্টেম প্রম্পট স্ক্রল করে চলে যায় না। সেটা সবসময় থাকে, সবসময় AI-এর আচরণকে প্রভাবিত করে। এজন্যই এটা পুরো কনটেক্সট উইন্ডোর সবচেয়ে মূল্যবান জায়গা।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        সিস্টেম প্রম্পটকে AI-এর জব ডিসক্রিপশন মনে করো। এটা AI-কে বলে না কি বলতে হবে &mdash; এটা বলে AI-কে <em>কে</em> হতে হবে।
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYSTEM PROMPT SANDBOX ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SystemPromptSandbox client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        কনটেক্সট ম্যানেজ করার কৌশল
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14">
-        এখন যেহেতু তুমি উইন্ডোটা বুঝতে পারছ, এখানে কিভাবে প্রোদের মতো এটা ম্যানেজ করবে। এই কৌশলগুলোই আলাদা করে দেয় যারা "AI ব্যবহার করে" তাদের থেকে যারা এটা দিয়ে অসাধারণ ফলাফল পায়।
+        এজন্যই সেরা AI ব্যবহারকারীরা শুধু ভালো প্রম্পট লেখে না &mdash; তারা উইন্ডোতে কি <em>ঢোকে</em> সেটা ম্যানেজ করে। চলার পথে সারাংশ করো যাতে গুরুত্বপূর্ণ বিষয়গুলো দৃশ্যমান থাকে। যা গুরুত্বপূর্ণ সেটা আগে রাখো। বিষয় বদলালে নতুন করে শুরু করো। কাঠামোবদ্ধ ফরম্যাট ব্যবহার করো যাতে AI তোমার কনটেক্সট দক্ষভাবে বুঝতে পারে। <strong>কনটেক্সট ইঞ্জিনিয়ারিংই নতুন প্রম্পট ইঞ্জিনিয়ারিং।</strong>
       </p>
     </FadeInBlock>
 
-    <!-- Strategies — editorial layout matching ch1's building blocks -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { num: '১', name: 'চলার পথে সারাংশ করো', color: '#7B61FF', text: 'প্রতি ৫-১০ মেসেজে, AI-কে গুরুত্বপূর্ণ সিদ্ধান্ত এবং বিস্তারিত বিষয়ের একটা সংক্ষিপ্ত রিক্যাপ লিখতে বলো। তারপর সেই সারাংশটা তোমার পরবর্তী মেসেজে পেস্ট করো। এটা সবচেয়ে গুরুত্বপূর্ণ তথ্যসহ কনটেক্সট "রিসেট" করে।' },
-        { num: '২', name: 'গুরুত্বপূর্ণ বিষয় আগে রাখো', color: '#16C79A', text: 'সবচেয়ে জরুরি তথ্য মেসেজের শুরুতে রাখো, শেষে গুঁজে দিয়ো না। AI প্রথম এবং শেষে যা আসে তার প্রতি বেশি মনোযোগ দেয় — মধ্যের অংশ হারিয়ে যেতে পারে, বিশেষ করে লম্বা প্রম্পটে।' },
-        { num: '৩', name: 'কৌশলগতভাবে নতুন শুরু করো', color: '#0EA5E9', text: 'বিষয় উল্লেখযোগ্যভাবে পরিবর্তিত হলে নতুন কথোপকথন শুরু করতে ভয় পেয়ো না। যা সিদ্ধান্ত নিয়েছ তার সারাংশ নিয়ে যাও, পুরো ইতিহাস না। একটা পরিচ্ছন্ন কনটেক্সট প্রায়ই এলোমেলো একটার চেয়ে ভালো।' },
-        { num: '৪', name: 'কি মনে রাখতে হবে তা স্পষ্ট করো', color: '#F5A623', text: '"গুরুত্বপূর্ণ: ব্যবহারকারী নিরামিষাশী। এটা ভুলে যেয়ো না।" শুনতে বোকার মতো লাগলেও, কাজ করে। স্পষ্ট রিমাইন্ডার অ্যাঙ্কর হিসেবে কাজ করে যা AI বেশি গুরুত্ব দেয়।' },
-        { num: '৫', name: 'কাঠামোবদ্ধ ফরম্যাট ব্যবহার করো', color: '#E94560', text: 'বুলেট তালিকা, হেডার, আর পরিষ্কার লেবেল AI-কে তোমার কনটেক্সট আরো দক্ষতার সাথে বুঝতে সাহায্য করে। একটা সুসংগঠিত প্রম্পট গদ্যের দেয়ালের তুলনায় তার টোকেন কাউন্টের দ্বিগুণ মূল্যবান।' },
-      ].map((strategy, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${strategy.color};`}>
-              {strategy.num}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${strategy.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {strategy.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {strategy.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>কনটেক্সট ইঞ্জিনিয়ারিংই নতুন প্রম্পট ইঞ্জিনিয়ারিং।</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          একটা ভালো প্রম্পট লেখা প্রথম ধাপ। কিন্তু কোন তথ্য AI-এর সামনে রাখতে হবে &mdash; আর কিভাবে সেটা কাঠামোবদ্ধ করতে হবে &mdash; এখানেই আসল লেভারেজ। পৃথিবীর সেরা প্রম্পটও ব্যর্থ হয় যদি কনটেক্সট ভুল হয়।
+          ভালো প্রম্পট লেখা প্রথম ধাপ। AI-এর সামনে কোন তথ্য রাখবে &mdash; আর কিভাবে সেটা কাঠামোবদ্ধ করবে &mdash; এখানেই আসল লেভারেজ। পৃথিবীর সেরা প্রম্পটও ব্যর্থ হয় যদি কনটেক্সট ভুল হয়।
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        কনটেক্সট উইন্ডো ভর্তি হতে, উপচে পড়তে, আর ভুলে যেতে দেখো &mdash; রিয়েল টাইমে।
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ContextWindowViz client:visible />
+  </section>
+
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="অবশেষে বুঝলাম AI কেন কথোপকথনের মাঝে জিনিস 'ভুলে যায়'। এটা মেমরি না — এটা কনটেক্সট উইন্ডো। এই কোর্সটা লাইভ ডেমো দিয়ে এত পরিষ্কারভাবে বোঝায়।" client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        AI-এর সাথে তোমার প্রতিটা কথোপকথন এখন ভিন্ন। তুমি হোয়াইটবোর্ড দেখতে পাচ্ছো। উইন্ডোর সীমানা অনুভব করতে পারছো। জানো কখন সারাংশ করতে হবে, কখন নতুন করে শুরু করতে হবে, আর কোথায় সিস্টেম প্রম্পট লুকিয়ে থাকে।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        তুমি এখন হোয়াইটবোর্ড দেখতে পাচ্ছো। উইন্ডোর সীমানা অনুভব করতে পারছো। এটা AI-এর সাথে তোমার প্রতিটা কথোপকথন বদলে দেবে।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        এখন পর্যন্ত আমরা চ্যাটবট নিয়ে কাজ করেছি। এবার আমরা জুম আউট করি &mdash; চ্যাট উইন্ডোর বাইরে শতশত AI টুল আছে, আর এই ল্যান্ডস্কেপ জানা পাল্টে দেয় তুমি কি সম্ভব মনে করো।
+        এ পর্যন্ত আমরা চ্যাটবট নিয়ে কাজ করেছি। এবার জুম আউট করি &mdash; চ্যাট উইন্ডোর বাইরে শতশত AI টুল আছে, আর এই ল্যান্ডস্কেপ জানা পাল্টে দেয় তুমি কি সম্ভব মনে করো।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Vibe Check" client:visible>
+        <VibeCheck client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

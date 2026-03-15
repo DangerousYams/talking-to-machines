@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>৯</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          অধ্যায় নয়
+          নবম অধ্যায়
         </p>
       </FadeInBlock>
 
@@ -42,69 +42,40 @@ const chapter = chapters[8];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        একটা অস্বস্তিকর ব্যাপার বলি: যে AI এইমাত্র তোমাকে একটা নিখুঁত রচনা লিখতে সাহায্য করল, সেই একই AI সমান আত্মবিশ্বাসে বলতে পারে Napoleon Waterloo-র যুদ্ধ জিতেছিলেন। সে দ্বিধা করবে না। আটকাবে না। একটা সম্পূর্ণ বানানো "তথ্য" ঠিক সেই একই কর্তৃত্বপূর্ণ গলায় বলবে যেভাবে বাকি সব কিছু বলে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI-এর সাথে কাজ করার মূলে এই প্যারাডক্স: <strong>যে সাবলীলতা একে কাজের করে, সেই সাবলীলতাই একে বিপজ্জনকও করে।</strong> AI জানে না কি সত্য। সে জানে কি সত্য শোনায়। আর এই দুটো খুব, খুব আলাদা জিনিস।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        এই অধ্যায় তোমার BS ডিটেক্টর তৈরি করার জন্য। AI খারাপ বলে না, বরং <em>অন্ধভাবে বিশ্বাস করা</em> খারাপ। যারা AI থেকে সবচেয়ে বেশি পায় তারা ঠিক জানে কখন বিশ্বাস করতে হয় আর কখন যাচাই করতে হয়।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        যে AI এইমাত্র তোমাকে একটা নিখুঁত রচনা লিখতে সাহায্য করল, সেই একই AI সমান আত্মবিশ্বাসে বলতে পারে Napoleon Waterloo-র যুদ্ধ জিতেছিলেন। সে দ্বিধা করবে না। আটকাবে না। একটা সম্পূর্ণ বানানো "তথ্য" ঠিক সেই একই কর্তৃত্বপূর্ণ গলায় বলবে যেভাবে বাকি সব কিছু বলে। AI-এর সাথে কাজ করার মূলে এই প্যারাডক্স: <strong>যে সাবলীলতা একে কাজের করে, সেই সাবলীলতাই একে বিপজ্জনকও করে।</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        হ্যালুসিনেশন সমস্যা
+        বিশ্বাসযোগ্যতা মানে সত্য না
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI-তে, <strong>হ্যালুসিনেশন</strong> হলো যখন মডেল এমন তথ্য তৈরি করে যা শুনতে বিশ্বাসযোগ্য কিন্তু তথ্যগতভাবে ভুল — বা পুরোটাই বানানো। আর এটা তোমার ধারণার চেয়ে অনেক বেশি ঘটে।
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        AI মডেল কোনো ডেটাবেস থেকে তথ্য খুঁজে আনে না। তারা পরবর্তী সবচেয়ে সম্ভাব্য শব্দ predict করে। তুমি যখন আসল কিছু নিয়ে জিজ্ঞেস করো, ট্রেনিং ডেটা সঠিক তথ্যের দিকে গাইড করে। তুমি যখন এমন কিছু জিজ্ঞেস করো যার অস্তিত্ব নেই, মডেল বলে না "আমি জানি না।" সে তৈরি করে একটা সঠিক উত্তর <em>দেখতে কেমন হতো</em> সেটা &mdash; নাম, তারিখ, আর সাইটেশনসহ। সব বানানো।
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">উদাহরণ</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>তুমি:</strong> "১৯৮৭ সালের উপন্যাস <em>The Sands of Memory</em> কে লিখেছেন?"<br /><br />
-          <strong>AI:</strong> "The Sands of Memory (১৯৮৭) লিখেছেন ব্রিটিশ লেখিকা Margaret Thornton। এটি উত্তর-ঔপনিবেশিক পূর্ব আফ্রিকায় ঔপনিবেশবাদ ও পরিচয়ের বিষয়বস্তু অন্বেষণ করে। Thornton এই কাজের জন্য Booker Prize-এ মনোনীত হয়েছিলেন।"
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        বিশ্বাসযোগ্য শোনাচ্ছে, তাই না? একটা নাম আছে, একটা বছর, একটা বিষয়, এমনকি একটা পুরস্কার মনোনয়ন। <strong>কিছুই সত্য না।</strong> বইটার অস্তিত্ব নেই। Margaret Thornton (এই প্রসঙ্গে) অস্তিত্ব নেই। AI সবকিছু বানিয়েছে — আর একটা সত্যিকারের উত্তরের মতো ঠিক একই রকম শোনাচ্ছে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এটা কেন হয়? কারণ AI মডেল কোনো ডেটাবেস থেকে তথ্য খুঁজে আনে না। তারা <em>পরবর্তী সবচেয়ে সম্ভাব্য টোকেন predict করে</em>। তুমি যখন একটা আসল বইয়ের কথা জিজ্ঞেস করো, ট্রেনিং ডেটার প্যাটার্ন সঠিক তথ্যের দিকে গাইড করে। তুমি যখন এমন কিছু জিজ্ঞেস করো যার অস্তিত্ব নেই, মডেল বলে না "আমি জানি না।" সে তৈরি করে একটা সঠিক উত্তর <em>দেখতে কেমন হতো</em> সেটা।
+      <p class="text-lg leading-[1.85] mb-14">
+        AI কতটা আত্মবিশ্বাসী শোনাচ্ছে আর কতটা সঠিক &mdash; এই দুটোর মধ্যে কোনো সম্পর্ক নেই। একটা ভুল উত্তর আর একটা সঠিক উত্তর বাইরে থেকে দেখতে হুবহু একই। তুমি টোন দিয়ে, ডিটেইল দিয়ে, বা AI কত নির্দিষ্ট সংখ্যা অন্তর্ভুক্ত করেছে সেটা দিয়ে সঠিকতা যাচাই করতে পারো না। "শুনতে ঠিক লাগছে" পরীক্ষাটা মূল্যহীন। তোমার একমাত্র অস্ত্র হলো যাচাই।
       </p>
     </FadeInBlock>
 
@@ -112,188 +83,52 @@ const chapter = chapters[8];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI-এর সত্যের কোনো ধারণা নেই। তার আছে <em>বিশ্বাসযোগ্যতার</em> ধারণা। সে এমন টেক্সট তৈরি করে যা প্যাটার্নে মেলে — সেই টেক্সট বাস্তবের সাথে মেলে কি না সেটা আলাদা ব্যাপার।
+          AI-এর সত্যের কোনো ধারণা নেই। তার আছে <em>বিশ্বাসযোগ্যতার</em> ধারণা। সে এমন টেক্সট তৈরি করে যা প্যাটার্নে মেলে &mdash; সেই টেক্সট বাস্তবের সাথে মেলে কি না সেটা আলাদা ব্যাপার।
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        যোগ্যতা ছাড়া আত্মবিশ্বাস
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI হ্যালুসিনেশনের সবচেয়ে কঠিন দিক এটা না যে এগুলো ঘটে। বরং <strong>AI কখনো অনিশ্চয়তার সংকেত দেয় না।</strong> একজন মানুষ যে নিশ্চিত না সে দ্বিধা করবে, সাবধানে বলবে, বলবে "আমার মনে হয়..." বা "আমি নিশ্চিত না, তবে..." AI বানানো তথ্য ঠিক সেই একই পূর্ণ আত্মবিশ্বাসে দেয় যেটা প্রমাণিত তথ্যের জন্য ব্যবহার করে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI কতটা আত্মবিশ্বাসী শোনাচ্ছে আর কতটা সঠিক — এই দুটোর মধ্যে কোনো সম্পর্ক নেই। একটা ভুল উত্তর আর একটা সঠিক উত্তর বাইরে থেকে দেখতে হুবহু একই।
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        এজন্যই "শুনতে ঠিক লাগছে" পরীক্ষাটা মূল্যহীন। তুমি টোন দিয়ে, ডিটেইল দিয়ে, কত নির্দিষ্ট সংখ্যা বা নাম AI অন্তর্ভুক্ত করেছে সেটা দিয়ে সঠিকতা যাচাই করতে পারো না। এসব কিছুই — আর প্রায়ই হয়ও — সম্পূর্ণ বানানো হতে পারে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        এভাবে ভাবো: AI হলো একজন অত্যন্ত বিশ্বাসযোগ্য অভিনেতা যে হাজার হাজার স্ক্রিপ্ট পড়েছে। সে যেকোনো লাইন পারফেক্ট conviction দিয়ে বলতে পারে — কিন্তু conviction মানে জ্ঞান না।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        তোমার ডিটেক্টর পরীক্ষা করো। AI-এর কোন দাবিগুলো সত্যি আর কোনগুলো বানানো — বুঝতে পারো?
+        তোমার ডিটেক্টর পরীক্ষা করো। AI-এর কোন দাবিগুলো সত্যি আর কোনগুলো বানানো &mdash; বুঝতে পারো?
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        হ্যাঁ-ম্যান সমস্যা
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="প্রতিটা AI ব্যবহারকারীর এই অধ্যায়টা দরকার। এটা শেখায় ঠিক কিভাবে AI হ্যালুসিনেট করে, কেন ভুল উত্তরে রাজি হয়, আর কিভাবে ধরতে হয়। খুবই প্র্যাকটিক্যাল।" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        হ্যালুসিনেশনের চেয়ে সূক্ষ্ম আরেকটা সমস্যা আছে: <strong>সাইকোফ্যান্সি।</strong> AI-এর প্রবণতা আছে তোমার সাথে একমত হওয়ার, এমনকি তুমি ভুল হলেও।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        তুমি যদি বলো "Einstein বাতি আবিষ্কার করেছিলেন, তাই না?" — বেশিরভাগ AI মডেল তোমাকে সরাসরি ভুল ধরবে না। বরং, তারা আংশিকভাবে একমত হওয়ার উপায় খুঁজবে — পদার্থবিদ্যার মাধ্যমে Einstein-কে আলোর সাথে সংযুক্ত করবে, তোমার ভুল দাবিটার চারপাশে ঘুরবে, তোমাকে শিক্ষিত না করে আত্মতুষ্ট করবে।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        কেন? কারণ AI মডেলগুলো মানুষের ফিডব্যাকে ট্রেইন করা, আর মানুষ এমন উত্তরে পজিটিভ রেটিং দেয় যা সম্মত আর আত্মতুষ্টিদায়ক। লক্ষ লক্ষ ট্রেনিং উদাহরণে, মডেল শেখে: <em>একমত হলে পুরস্কৃত হয়।</em> তাই সে একমত হয় — যখন করা উচিত না তখনও।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>এটা বিপজ্জনক</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          তুমি যদি AI-কে শুধু তোমার বিদ্যমান বিশ্বাস নিশ্চিত করতে ব্যবহার করো, সে সানন্দে তা করবে। তুমি নিজেকে স্মার্ট মনে করবে কিন্তু আসলে বোকা হচ্ছ। AI-এর সবচেয়ে শক্তিশালী ব্যবহার হলো তোমার অনুমানকে চ্যালেঞ্জ করতে বলা — শক্তিশালী করতে না।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        নিজে দেখো। AI-কে একটা ভুল দাবি খাওয়াও আর দেখো সে পুশব্যাক করে না দমে যায়।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        যাচাইয়ের অভ্যাস তৈরি করা
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        লক্ষ্য AI-এর সব কথা অবিশ্বাস করা না। লক্ষ্য হলো কিছু স্বয়ংক্রিয় চেক তৈরি করা — একটা যাচাই রিফ্লেক্স — যা AI-জেনারেটেড তথ্যের উপর কাজ করার আগে চালু হয়।
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '১', name: 'এটা কি যাচাই করতে পারি?', color: '#E94560', text: 'যেকোনো তথ্যগত দাবির জন্য জিজ্ঞেস করো: আমি কি এটা একটা স্বাধীন সূত্র দিয়ে চেক করতে পারি? AI কোনো গবেষণার রেফারেন্স দিলে, সেটা খুঁজো। তারিখ বললে, নিশ্চিত করো। উদ্ধৃতি দিলে, আসল উদ্ধৃতি খুঁজো। সাইটেশন চোখ বুজে মেনে নিয়ো না — AI নিয়মিত সূত্র বানায়।' },
-        { letter: '২', name: 'সূত্র চেয়েছি কি?', color: '#0F3460', text: 'স্পষ্ট করে AI-কে বলো সূত্র দিতে। তারপর সেই সূত্রগুলো চেক করো। দেখবে কখনো সত্যি, কখনো কাছাকাছি-কিন্তু-ভুল (সঠিক লেখক, ভুল পেপার), আর কখনো সম্পূর্ণ বানানো। চেক করার অভ্যাসই তোমার instinct ট্রেইন করে।' },
-        { letter: '৩', name: 'কমন সেন্স টেস্ট পাস করে?', color: '#7B61FF', text: 'পিছিয়ে গিয়ে ভাবো: এই দাবিটা কি আসলে মেক সেন্স করে? AI বিশ্বাসযোগ্য ননসেন্স তৈরি করতে পারে যা ৫ সেকেন্ড ক্রিটিক্যাল চিন্তায় ভেঙে পড়ে। তোমার gut trust করো — তারপর যাচাই করো যেভাবেই হোক।' },
-        { letter: '৪', name: 'হাই-স্টেক ডোমেইনে আছি কি?', color: '#F5A623', text: 'চিকিৎসা পরামর্শ, আইনি গাইডেন্স, আর্থিক সিদ্ধান্ত, নিরাপত্তা-সম্পর্কিত কিছু — এগুলোতে অতিরিক্ত যাচাই দরকার। ব্রেইনস্টর্ম আর প্রথম ড্রাফটে AI সহায়ক, কিন্তু গুরুত্বপূর্ণ সিদ্ধান্ত সবসময় যোগ্য মানুষ দিয়ে যাচাই করো।' },
-        { letter: '৫', name: 'প্রশ্নটা নিরপেক্ষভাবে ফ্রেম করেছি?', color: '#16C79A', text: 'প্রশ্নে নিজের মতামত গুঁজে দিলে AI সেটাই ফিরিয়ে দেবে। খোলামেলা প্রশ্ন করো। "X সবচেয়ে ভালো পদ্ধতি কেন?"-এর বদলে "X-এর পক্ষে আর বিপক্ষে আর্গুমেন্টগুলো কি?" জিজ্ঞেস করো। আরো সৎ, কাজের উত্তর পাবে।' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>এটা AI-কে সন্দেহ করা না। এটা AI ভালোভাবে ব্যবহার করা।</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          প্রফেশনাল সাংবাদিকরা উদ্ধৃতি যাচাই করে। বিজ্ঞানীরা পরীক্ষা পুনরাবৃত্তি করে। ইঞ্জিনিয়াররা সেতু খোলার আগে পরীক্ষা করে। AI আউটপুট যাচাই করা প্যারানয়া না — এটা প্রফেশনালিজম। যারা যাচাই করে তারাই এমন জিনিস বানায় যা আসলে কাজ করে।
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        তোমার এখন BS ডিটেক্টর আছে: তুমি হ্যালুসিনেশন ধরতে পারো, সাইকোফ্যান্সি প্রতিরোধ করতে পারো, আর বিশ্বাস করার আগে যাচাই করতে পারো। এই অভ্যাস যেকোনো ফ্যান্সি প্রম্পট টেকনিকের চেয়ে বেশি কাজে আসবে।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        যারা AI থেকে সবচেয়ে বেশি পায়, তারাই ঠিক জানে কখন বিশ্বাস করতে হয় আর কখন যাচাই করতে হয়।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AI কখন ভুল করে জানলে একটা বড় প্রশ্নে পৌঁছায়: সে কি <em>কখনোই</em> করতে পারে না? পরের পর্বে, আমরা সেইসব স্কিল অন্বেষণ করব যেগুলো একগুঁয়েভাবে, সুন্দরভাবে মানবিক থাকে &mdash; আর কেন সেগুলো আগের চেয়ে বেশি গুরুত্বপূর্ণ।
+        AI কখন ভুল করে জানলে একটা বড় প্রশ্নে পৌঁছায়: সে কি <em>কখনোই</em> করতে পারে না? পরের পর্বে, আমরা সেইসব দক্ষতা অন্বেষণ করব যেগুলো একগুঁয়েভাবে, সুন্দরভাবে মানবিক থাকে &mdash; আর কেন সেগুলো আগের চেয়ে বেশি গুরুত্বপূর্ণ।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

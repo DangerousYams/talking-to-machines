@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -36,7 +37,10 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          一份你现在就能用的<br />所有 AI 工具的实地指南。
+          一份你现在就能用的<br />AI 工具实地指南。
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          LAST UPDATED MARCH 2026
         </p>
       </FadeInBlock>
     </div>
@@ -46,59 +50,11 @@ const chapter = chapters[3];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        大多数人说"AI"时，意思就是 ChatGPT。可能还知道 Google 的 Gemini，或者听过有人提到 Claude。这就像说"互联网"其实只是在说搜索引擎。没有错，但只是冰山一角。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        此时此刻，有数百种 AI 工具可以使用——不是什么遥远的未来，而是现在、从你的浏览器就能用。有的能根据一句话生成逼真的图片。有的能创作完整的歌曲。有的能读遍你研究课题的所有学术论文，然后用三段话总结共识。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        这一章是你的实地指南。不是一个面面俱到的目录——那到下周二就过时了——而是一张<strong>地形图</strong>。重要的类别、值得了解的工具，以及帮你选对工具的思维框架。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        聊天机器人之外
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        聊天机器人只是冰山一角。在水面之下，AI 已经分化为几十种专门的能力，每种都是针对不同工作的不同类型的工具。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        就像乐器一样。钢琴和架子鼓都是"乐器"，但你不会让钢琴家打节奏，也不会让鼓手弹协奏曲。AI 工具也是如此。为图像生成而构建的工具，和为代码而构建的，从根本上就不同——不同的架构、不同的训练数据、不同的擅长领域。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        一个浅层了解10种 AI 工具的人，会持续胜过一个深入了解一种工具的人。广度的认知先于深度的专精——至少一开始是这样。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        这是今天的版图，按这些工具实际能<em>做什么</em>来分类。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        大多数人说"AI"的时候，其实指的是 ChatGPT。这就像说"互联网"但只知道 Google。现在，有数百种你今天就能用的 AI 工具——能用一句话生成照片级图像的工具、能作曲完整歌曲的工具、或者能帮你读完所有相关学术论文然后三段话总结结论的工具。这一章是你的地形图。
       </p>
     </FadeInBlock>
   </section>
@@ -115,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        你会遇到的每一种 AI 工具都属于这些类别之一。有些工具跨越了边界，但理解这些家族，能给你一张理清混乱的心智地图。
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        把它想成乐器。钢琴和架子鼓都是"乐器"，但你不会让钢琴手去打鼓。AI 工具也是这样——专门生成图像的工具和专门写代码的工具本质上完全不同。你遇到的每个工具都属于这八大家族之一。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: '图像生成', color: '#E94560', text: '输入文字，输出图片。从逼真的场景到动漫到油画。Midjourney、DALL-E 3、Stable Diffusion、Flux、Ideogram。最有民主化意义的类别——任何人都能用文字创造视觉艺术。' },
-        { icon: '2', name: '图像编辑', color: '#F5A623', text: '从真实图片开始进行变换。去背景、提升分辨率、替换物体、重新打光。Photoshop AI、Magnific、Clipdrop。这些增强了人类摄影师和设计师的能力，而不是取代他们。' },
-        { icon: '3', name: '视频创作', color: '#7B61FF', text: '最新的前沿领域。从文字或静态图生成视频片段。Sora、Runway、Kling、Pika。目前还在早期——大多数片段不超过30秒——但进步速度惊人。电影制作将彻底改变。' },
-        { icon: '4', name: '音乐与音频', color: '#16C79A', text: '用一段文字描述就能生成完整歌曲，30秒音频样本就能克隆声音，随时按需生成音效。Suno、Udio、ElevenLabs。这些工具把曾经需要一个录音棚和一个团队才能做的事，压缩到了一个提示词。' },
-        { icon: '5', name: '研究代理', color: '#0EA5E9', text: '能替你阅读互联网（或学术数据库）的 AI。Perplexity 搜索并注明来源。Elicit 阅读论文。Consensus 找到科学共识。NotebookLM 把你的文档变成专家。' },
-        { icon: '6', name: 'AI 浏览器', color: '#6B7280', text: '能像人一样浏览网页的代理。点击按钮、填写表单、在页面之间导航。Arc、Operator、Claude Computer Use。是从"回答问题"到"执行任务"的桥梁。' },
-        { icon: '7', name: '编程工具', color: '#E94560', text: '能编写、编辑、运行和调试代码的 AI。Claude Code 在终端里工作。Cursor 和 Windsurf 是完整的编辑器。Copilot 提供内联建议。Replit Agent 从零开始构建完整应用。' },
-        { icon: '8', name: '聊天机器人与助手', color: '#0F3460', text: '你已经知道的通用对话 AI：ChatGPT、Claude、Gemini。它们是瑞士军刀——什么都能干一点，在你会提示词的时候（多亏了第1-3章）表现最好。' },
+        { icon: '1', name: '图像生成', color: '#E94560', text: '输入文字，输出图像。Midjourney、DALL-E 3、Stable Diffusion、Flux、Ideogram。' },
+        { icon: '2', name: '图像编辑', color: '#F5A623', text: '从一张真实图片开始做变换。Photoshop AI、Magnific、Clipdrop。' },
+        { icon: '3', name: '视频创作', color: '#7B61FF', text: '从文字或图片生成视频片段。Sora、Runway、Kling、Pika。' },
+        { icon: '4', name: '音乐与音频', color: '#16C79A', text: '用提示词作曲、语音克隆、音效。Suno、Udio、ElevenLabs。' },
+        { icon: '5', name: '研究智能体', color: '#0EA5E9', text: '帮你阅读互联网的 AI。Perplexity、Elicit、Consensus、NotebookLM。' },
+        { icon: '6', name: 'AI 浏览器', color: '#6B7280', text: '像人类一样浏览网页的智能体。Arc、Operator、Claude Computer Use。' },
+        { icon: '7', name: '编程工具', color: '#E94560', text: '帮你写代码、编辑和调试的 AI。Claude Code、Cursor、Windsurf、Copilot。' },
+        { icon: '8', name: '聊天机器人与助手', color: '#0F3460', text: '你已经知道的通用对话 AI：ChatGPT、Claude、Gemini。' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -151,244 +107,54 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心要点</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          这些类别正在融合。图像生成器在加入视频功能。聊天机器人在获得工具使用能力。编程工具在变成代理。两年后界限会模糊。但现在，专家在自己的专长领域仍然胜过全能型选手。
+          一个粗浅了解10种 AI 工具的人，会持续跑赢一个深入钻研一种工具的人。专业木匠不会只有一把最爱的工具——他们<em>每种任务</em>都有一把最爱的工具。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        浏览完整目录。点击任何工具了解它的功能。
+        浏览完整目录。点击任意工具了解它的功能。
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        选对工具
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="原来有这么多 AI 工具。这个互动指南列出了八大家族——图像生成、视频、音乐、研究、编程——每个都有实例。" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        选择这么多，难的不是找到一个 AI 工具。而是找到<em>正确的</em> AI 工具。这是一个管用的框架：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: '输出是什么？', desc: '文字？图片？代码？视频？音频？这立刻就能缩小到1-2个家族。' },
-          { word: '质量标准是什么？', desc: '给自己看的快速草稿，还是给观众看的精品输出？不同标准用不同工具。' },
-          { word: '预算是多少？', desc: '很多工具的免费版已经相当强了。在付费之前先搞清楚你真正需要什么。' },
-          { word: '工作流是什么？', desc: '单独的任务，还是更长链条中的一环？集成度比原始性能更重要。' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        大多数新手都会犯同一个错误：什么都用一个通用 AI。技术上可行，但用对专门的工具会更快更好。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        话虽如此，也别掉入相反的陷阱。你不需要47个 AI 订阅。<strong>选3-4个跨类别的工具，学透它们，然后再扩展。</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        管道的力量
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        真正的突破在这里：<strong>工具串联起来后，威力会指数级增长。</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        单个 AI 工具给你一种能力。一串 AI 工具给你一个<em>工作流</em>。Perplexity 找到研究资料。Claude 写文章。Midjourney 创作插图。每个工具做它最擅长的事，一个的输出成为下一个的输入。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        你在网上看到的最惊艳的 AI 作品，不是用一个工具做出来的。而是用五个工具串联，由一个懂得每个工具最擅长什么的人来编排的。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这就是为什么理解版图很重要。如果你只知道一个工具，你无法构建管道。如果你不知道有哪些专家存在，你无法选对专家。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        试试自己搭一个：
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        没有"最好的"工具
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        每周都有人发布一个 AI 工具的终极排名。每周它都是错的。不是因为排名不好，而是因为"最好"完全取决于你在做什么、怎么做、以及你看重什么。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney 生成的图片比 DALL-E 3 更有艺术感。但 DALL-E 3 更精确地遵循指令。Ideogram 渲染文字比两者都好。哪个"最好"？取决于你是在做电影海报、产品照片还是 logo。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude 写作更有细腻感。GPT 速度更快。Gemini 上下文更大。哪个对你重要？看你的任务。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>真正的技能不是精通一个工具。而是培养出为不同任务选对工具的品味。</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          专业木匠没有"最爱的工具"。他们对<em>每个任务</em>有最适合的工具。这是你要培养的思维方式。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        亲自看看。同样的提示词，不同的工具——你更喜欢哪个输出？
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        版图在移动
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        一个令人不安的事实：上面目录里的一些工具，一年后就不存在了。还有一些目前不存在的工具，会变成不可或缺的。AI 版图的变化速度超过了历史上任何技术领域。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        那为什么还要学具体的工具？因为<strong>类别是稳定的，即使工具不是</strong>。永远会有图像生成器、代码助手和研究代理。名字会变，但底层的能力和心智模型不会。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>可迁移的技能</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. 知道存在哪些类别的 AI 工具<br />
-          2. 知道如何在15分钟内评估一个新工具<br />
-          3. 知道如何将工具串联成工作流<br />
-          4. 知道什么时候该换工具 vs. 优化提示词
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        这四项技能不管明年后年哪些工具称霸都管用。版图在变，但导航者始终有效。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        现在你有了一张 AI 版图——八大工具家族、一个选择框架、以及把它们串联起来的管道思维。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        版图每个月都在变。但类别是稳定的，即使工具不是——<em>这</em>才是值得记住的地图。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        但到目前为止，这些工具只是在回应你。如果它们能<em>自主采取行动</em>呢？那就是从工具到代理的飞跃——一切都会改变。
+        到目前为止，这些工具只是在回应你。如果它们能<em>自己采取行动</em>呢？这是从工具到智能体的跨越——而它会改变一切。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

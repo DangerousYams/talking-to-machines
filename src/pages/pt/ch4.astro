@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[3];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Capítulo Quatro
+          Capítulo quatro
         </p>
       </FadeInBlock>
 
@@ -31,76 +31,30 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          O universo<br />da IA
+          O Panorama<br />da IA
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Um guia de campo de todas<br />as ferramentas de IA que você<br />pode usar agora mesmo.
+          Um guia de campo para cada ferramenta de IA<br />que você pode usar agora mesmo.
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          ATUALIZADO EM MARÇO DE 2026
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Quando a maioria das pessoas fala "IA", elas querem dizer ChatGPT. Talvez o Gemini do Google, ou já ouviram alguém mencionar o Claude. É como dizer "a internet" e estar se referindo ao Google. Não está errado. É só uma pequena fatia de algo enorme.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Neste momento, existem centenas de ferramentas de IA que você pode usar hoje -- não num futuro teórico, mas literalmente agora mesmo, pelo seu navegador. Ferramentas que geram imagens fotorrealistas a partir de uma frase. Ferramentas que compõem músicas completas. Ferramentas que leem todos os artigos acadêmicos já escritos sobre o seu tema de pesquisa e resumem o consenso em três parágrafos.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Este capítulo é o seu guia de campo. Não um catálogo exaustivo -- isso estaria desatualizado na próxima terça-feira -- mas um <strong>mapa do território</strong>. As categorias que importam, as ferramentas que vale a pena conhecer, e o framework mental que te ajuda a escolher a ferramenta certa.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Além do chatbot
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        O chatbot é só a ponta do iceberg. Por baixo da superfície, a IA se dividiu em dezenas de capacidades especializadas, cada uma sendo um tipo diferente de ferramenta para um tipo diferente de trabalho.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Pense nisso como instrumentos musicais. Um piano e uma bateria são ambos "instrumentos musicais", mas você não pediria para um pianista marcar o ritmo, e não pediria para um baterista tocar um concerto. As ferramentas de IA são iguais. Uma ferramenta feita para geração de imagens é fundamentalmente diferente de uma feita para código -- arquitetura diferente, dados de treinamento diferentes, pontos fortes diferentes.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        A pessoa que conhece 10 ferramentas de IA superficialmente vai superar consistentemente alguém que conhece uma ferramenta profundamente. Amplitude de conhecimento supera profundidade de expertise -- no início.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Aqui está o panorama como ele se apresenta hoje, organizado pelo que essas ferramentas realmente <em>fazem</em>.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Quando a maioria das pessoas diz "IA", quer dizer ChatGPT. Isso é como dizer "a internet" querendo dizer Google. Agora mesmo, existem centenas de ferramentas de IA que você pode usar hoje — ferramentas que geram imagens fotorrealistas a partir de uma frase, compõem músicas inteiras ou leem todos os artigos acadêmicos sobre o seu tema de pesquisa e resumem o consenso em três parágrafos. Este capítulo é o seu mapa do terreno.
       </p>
     </FadeInBlock>
   </section>
@@ -117,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Toda ferramenta de IA que você encontrar se encaixa numa dessas categorias. Algumas ferramentas cruzam fronteiras, mas entender essas famílias te dá um mapa mental para dar sentido ao caos.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Pense como instrumentos musicais. Um piano e uma bateria são ambos "instrumentos", mas você não pediria a um pianista para tocar uma batida. Ferramentas de IA funcionam da mesma forma — uma ferramenta feita para gerar imagens é fundamentalmente diferente de uma feita para código. Toda ferramenta que você vai encontrar se encaixa em uma dessas oito famílias.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Geradores de imagem', color: '#E94560', text: 'Texto entra, imagem sai. De cenas fotorrealistas a anime a pinturas a óleo. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. A categoria mais democratizante -- qualquer pessoa pode criar arte visual com palavras.' },
-        { icon: '2', name: 'Editores de imagem', color: '#F5A623', text: 'Comece com uma imagem real e a transforme. Remova fundos, aumente a resolução, substitua objetos, redefina a iluminação. Photoshop AI, Magnific, Clipdrop. Essas aumentam o poder de fotógrafos e designers humanos em vez de os substituir.' },
-        { icon: '3', name: 'Criadores de vídeo', color: '#7B61FF', text: 'A fronteira mais nova. Gere clipes de vídeo a partir de texto ou imagens estáticas. Sora, Runway, Kling, Pika. Ainda cedo -- a maioria dos clipes tem menos de 30 segundos -- mas melhorando num ritmo impressionante. O cinema nunca mais será o mesmo.' },
-        { icon: '4', name: 'Música e áudio', color: '#16C79A', text: 'Músicas completas a partir de uma descrição de texto, clonagem de voz com uma amostra de 30 segundos, efeitos sonoros sob demanda. Suno, Udio, ElevenLabs. Essas ferramentas comprimem o que costumava precisar de um estúdio e uma equipe numa única instrução.' },
-        { icon: '5', name: 'Agentes de pesquisa', color: '#0EA5E9', text: 'IA que lê a internet (ou bancos de dados acadêmicos) para você. Perplexity busca e cita. Elicit lê artigos. Consensus encontra consenso científico. NotebookLM transforma seus documentos num especialista.' },
-        { icon: '6', name: 'Navegadores de IA', color: '#6B7280', text: 'Agentes que podem navegar na web como um humano. Clicam botões, preenchem formulários, navegam entre páginas. Arc, Operator, Claude Computer Use. A ponte entre "responder perguntas" e "fazer tarefas".' },
-        { icon: '7', name: 'Ferramentas de código', color: '#E94560', text: 'IA que escreve, edita, executa e debuga código. Claude Code funciona do seu terminal. Cursor e Windsurf são editores completos. Copilot sugere inline. Replit Agent constrói aplicativos inteiros do zero.' },
-        { icon: '8', name: 'Chatbots e assistentes', color: '#0F3460', text: 'A IA conversacional de uso geral que você já conhece: ChatGPT, Claude, Gemini. São os canivetes suíços -- bons em muitas coisas, melhores quando você sabe como fazer os prompts (o que você sabe, graças aos Capítulos 1-3).' },
+        { icon: '1', name: 'Geradores de Imagem', color: '#E94560', text: 'Texto entra, imagens saem. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Editores de Imagem', color: '#F5A623', text: 'Comece com uma imagem real e transforme-a. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Criadores de Vídeo', color: '#7B61FF', text: 'Gere clipes de vídeo a partir de texto ou imagens. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Música e Áudio', color: '#16C79A', text: 'Músicas completas a partir de um prompt, clonagem de voz, efeitos sonoros. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Agentes de Pesquisa', color: '#0EA5E9', text: 'IA que lê a internet por você. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'Navegadores com IA', color: '#6B7280', text: 'Agentes que navegam a web como um humano. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Ferramentas de Código', color: '#E94560', text: 'IA que escreve, edita e depura código. Claude Code, Cursor, Windsurf, Copilot.' },
+        { icon: '8', name: 'Chatbots e Assistentes', color: '#0F3460', text: 'A IA conversacional de uso geral que você já conhece: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -153,15 +107,15 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight fundamental</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Ideia-chave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Essas categorias estão convergindo. Geradores de imagem estão adicionando vídeo. Chatbots estão ganhando uso de ferramentas. Ferramentas de código estão se tornando agentes. Em dois anos, as fronteiras vão se confundir. Mas agora, especialistas ainda superam generalistas na sua especialidade.
+          A pessoa que conhece 10 ferramentas de IA superficialmente vai consistentemente superar alguém que conhece uma ferramenta profundamente. Um carpinteiro profissional não tem uma ferramenta favorita — tem uma ferramenta favorita <em>para cada tarefa</em>.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -170,227 +124,37 @@ const chapter = chapters[3];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Escolhendo a ferramenta certa
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Existem muito mais ferramentas de IA do que eu imaginava. Esse guia interativo mapeia 8 famílias de ferramentas — geração de imagem, vídeo, música, pesquisa, código — com exemplos de cada." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Com tantas opções, a parte difícil não é encontrar uma ferramenta de IA. É encontrar a ferramenta de IA <em>certa</em>. Aqui está o framework que funciona:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Qual é o resultado?', desc: 'Texto? Imagem? Código? Vídeo? Áudio? Isso imediatamente te reduz a 1-2 famílias.' },
-          { word: 'Qual é o padrão de qualidade?', desc: 'Rascunho rápido para você mesmo, ou resultado polido para uma audiência? Ferramentas diferentes para padrões diferentes.' },
-          { word: 'Qual é o orçamento?', desc: 'Muitas ferramentas oferecem níveis gratuitos surpreendentemente capazes. Saiba o que você realmente precisa antes de pagar.' },
-          { word: 'Qual é o fluxo de trabalho?', desc: 'Uma tarefa isolada, ou um passo numa cadeia maior? Integração importa mais que poder bruto.' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        A maioria dos iniciantes comete o mesmo erro: eles usam uma IA de uso geral para tudo. Tecnicamente funciona, mas você vai conseguir resultados melhores mais rápido com as ferramentas especializadas certas.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        Dito isso, não caia na armadilha oposta também. Você não precisa de 47 assinaturas de IA. <strong>Escolha 3-4 ferramentas de categorias diferentes, aprenda elas bem, e expanda a partir daí.</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        O poder dos pipelines
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aqui está a descoberta real: <strong>as ferramentas se tornam exponencialmente mais poderosas quando você as conecta numa cadeia.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Uma única ferramenta de IA te dá uma capacidade. Uma cadeia de ferramentas de IA te dá um <em>fluxo de trabalho</em>. Perplexity encontra a pesquisa. Claude escreve o artigo. Midjourney cria as ilustrações. Cada ferramenta faz o que ela faz melhor, e o resultado de uma se torna a entrada da próxima.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        O trabalho mais impressionante gerado por IA que você viu online não foi feito com uma ferramenta. Foi feito com cinco, conectadas por um humano que entendia o que cada uma fazia melhor.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        É por isso que entender o panorama importa. Você não pode construir um pipeline se só conhece uma ferramenta. Você não pode escolher o especialista certo se não sabe quais especialistas existem.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Tente construir um você mesmo:
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Não existe a ferramenta "melhor"
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Toda semana, alguém posta um ranking definitivo de ferramentas de IA. Toda semana, está errado. Não porque o ranking seja ruim, mas porque "melhor" depende totalmente do que você está fazendo, como você está fazendo, e o que você valoriza.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney faz imagens mais artísticas que DALL-E 3. Mas DALL-E 3 segue instruções mais precisamente. Ideogram renderiza texto melhor que ambos. Qual é o "melhor"? Depende se você está fazendo um pôster de filme, uma foto de produto, ou um logo.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude escreve com mais nuances que GPT. GPT é mais rápido. Gemini tem mais contexto. Qual importa para você? Depende da sua tarefa.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>A habilidade real não é dominar uma ferramenta. É desenvolver bom gosto para qual ferramenta serve qual trabalho.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Um carpinteiro profissional não tem uma ferramenta favorita. Eles têm uma ferramenta favorita <em>para cada tarefa</em>. Essa é a mentalidade para desenvolver.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Veja por si mesmo. Mesmo prompt, ferramentas diferentes &mdash; qual resultado você prefere?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        O panorama está em movimento
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aqui está a verdade desconfortável: algumas das ferramentas no catálogo acima não vão existir daqui a um ano. Outras que ainda não existem vão se tornar essenciais. O panorama da IA está se movendo mais rápido que qualquer panorama tecnológico na história.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Então por que se preocupar em aprender ferramentas específicas? Porque <strong>as categorias são estáveis mesmo quando as ferramentas não são</strong>. Sempre vão existir geradores de imagem, assistentes de código, e agentes de pesquisa. Os nomes vão mudar. As capacidades subjacentes e os modelos mentais não.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>As habilidades transferíveis</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. Saber que categorias de ferramentas de IA existem<br />
-          2. Saber como avaliar uma ferramenta nova em 15 minutos<br />
-          3. Saber como conectar ferramentas em fluxos de trabalho<br />
-          4. Saber quando trocar de ferramenta vs. refinar prompts
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Essas quatro habilidades vão te servir independentemente de quais ferramentas específicas dominarem no próximo ano ou no seguinte. O panorama muda, mas o navegador continua eficaz.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Você agora tem um mapa do universo da IA &mdash; oito famílias de ferramentas, um framework para escolher entre elas, e a mentalidade de pipeline que as conecta.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        O panorama muda todo mês. Mas as categorias são estáveis mesmo quando as ferramentas não são — e <em>esse</em> é o mapa que vale memorizar.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Mas até agora, essas ferramentas só respondem a você. E se elas pudessem <em>tomar ações por conta própria</em>? Esse é o salto de ferramenta para agente &mdash; e isso muda tudo.
+        Até agora, essas ferramentas apenas respondem a você. E se elas pudessem <em>agir por conta própria</em>? Esse é o salto de ferramenta para agente — e muda tudo.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

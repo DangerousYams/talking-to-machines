@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
-import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+import AgentTakeover from '../../components/breaks/AgentTakeover';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[5];
 ---
@@ -17,7 +17,6 @@ const chapter = chapters[5];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>6</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -32,40 +31,33 @@ const chapter = chapters[5];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          ஏஜென்ட்களை<br />உருவாக்குதல்
+          Agents<br />உருவாக்குதல்
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          ஒரு AI ஏஜென்ட்டை ஆரம்பம் முதல்<br />வடிவமைத்து உருவாக்குதல்.
+          Calculator-க்கும்<br />coworker-க்கும் உள்ள வித்தியாசம்.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        சாட்போட் உங்கள் பேச்சுக்காக காத்திருக்கும். ஆனால் ஏஜென்ட் அப்படி இல்லை. ஒரு இலக்கைக் கொடுங்கள் — "செவ்வாய் கிரக குடியேற்றம் பற்றி ஆராய்ந்து அறிக்கை எழுது" — அது வேலையை படிகளாக பிரித்து, சரியான கருவிகளைத் தேர்ந்தெடுத்து, ஒன்றன்பின் ஒன்றாக நிறைவேற்றி, தனது முடிவுகளைச் சரிபார்த்து, வேலை முடியும் வரை தொடர்ந்து கொண்டே இருக்கும். உங்கள் உதவி தேவையில்லை.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Chatbot நீ பேசும் வரை காத்திருக்கும். Agent அப்படி இல்லை. ஒரு goal கொடு &mdash; "செவ்வாய் colonization பற்றி research செய்து report எழுது" &mdash; அது வேலையை steps-ஆக உடைக்கும், சரியான tools-ஐ pick செய்யும், ஒன்றன்பின் ஒன்றாக execute செய்யும், results-ஐ check செய்யும், வேலை முடியும் வரை தொடரும். <em>Instructions-க்கு respond செய்வது</em> vs <em>goal-ஐ pursue செய்வது</em> &mdash; இந்த வித்தியாசம் calculator-க்கும் coworker-க்கும் உள்ள வித்தியாசம்.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        இந்த வித்தியாசம் — <em>கட்டளைகளுக்கு பதிலளிப்பது</em> மற்றும் <em>இலக்கைத் தேடுவது</em> — கணிப்பான் மற்றும் சக ஊழியர் இடையே உள்ள வித்தியாசம். சாட்போட்கள் கேள்விகளுக்கு பதிலளிக்கின்றன. ஏஜென்ட்கள் பிரச்சினைகளைத் தீர்க்கின்றன.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        இந்த அத்தியாயம் ஏஜென்ட்கள் உண்மையில் எப்படி வேலை செய்கின்றன என்பதை — அவற்றை இயக்கும் சுழற்சி, அவற்றை நம்பகமானதாக மாற்றும் கட்டமைப்பு, அவை கவனமின்றி கட்டப்பட்டால் அபாயகரமானதாக மாற்றும் தோல்வி முறைகள் — பற்றியது.
+      <p class="text-lg leading-[1.85] mt-8">
+        Agents ஒரு loop-ல் run ஆகின்றன: goal receive செய், steps plan செய், tools-உடன் execute செய், results observe செய், progress evaluate செய், adjust செய். ஒரு முறை plan செய்து blindly execute செய்வதில்லை &mdash; சிறந்தவை மூன்றாம் step தவறாகும்போது gracefully recover செய்யும். ஆனால் இந்த power-க்கு ஒரு dark side இருக்கு: agents தவறான answers கொடுப்பது மட்டுமல்ல, அவற்றின் மேல் <em>act</em> செய்து, broken result-ஐ அடுத்த decision-க்கு பயன்படுத்தும். தோல்விகள் compound ஆகின்றன.
       </p>
     </FadeInBlock>
   </section>
@@ -76,37 +68,36 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        ஏஜென்ட் சுழற்சி
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Agent Loop
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        அத்தியாயம் 5-ல், நீங்கள் அடிப்படை கருவி-பயன்பாட்டு சுழற்சியைக் கண்டீர்கள்: கவனி, சிந்தி, செயல்படு. ஏஜென்ட்கள் அதை மிகவும் அபிலாஷையுடன் நீட்டிக்கின்றன — ஐந்து-படி சுழற்சியாக, ஒவ்வொன்றும் வெவ்வேறு உள் கூறுகளால் இயக்கப்படுகிறது:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        ஒவ்வொரு agent-உம் அதே ஐந்து-படி cycle-ல் run ஆகிறது. இந்த steps புரிந்துகொள்வது &mdash; பயனுள்ள ஒன்று build செய்வதற்கும், infinite loop-ல் உன் API credits எரிக்கும் ஒன்று build செய்வதற்கும் உள்ள வித்தியாசம்.
       </p>
     </FadeInBlock>
 
-    <!-- Loop Steps with architecture component for each -->
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', word: 'இலக்கு', color: '#E94560', desc: 'மனிதனிடமிருந்து உயர்மட்ட நோக்கத்தைப் பெறுதல். தெளிவான இலக்கு இல்லாமல், அது முடிந்ததா என்பதை தீர்மானிக்க ஏஜென்ட்டுக்கு வழியில்லை. "செவ்வாயைப் பற்றி ஆராயுங்கள்" இலக்கல்ல. "ஆதாரங்களுடன் செவ்வாய் கிரக குடியேற்ற சவால்களின் 500-சொல் சுருக்கம் எழுதுங்கள்" இலக்கு.' },
-        { letter: 'P', word: 'திட்டம்', color: '#7B61FF', desc: 'இலக்கை உறுதியான படிகளாகப் பிரித்தல். சிறந்த திட்டமிடுபவர்கள் ஒரு படி தோல்வியடையும்போது தகவமைக்கும் நெகிழ்வான திட்டங்களை உருவாக்குகின்றன. மோசமான திட்டமிடுபவர்கள் முதல் ஆச்சரியத்தில் உடைந்துவிடும் கடினமான ஸ்கிரிப்ட்களை உருவாக்குகின்றன.' },
-        { letter: 'T', word: 'செயல்படு', color: '#0EA5E9', desc: 'சரியான கருவியைப் பயன்படுத்தி ஒவ்வொரு படியையும் இயக்குதல் — தேடுபொறிகள், கோட் இன்டர்பிரீட்டர்கள், கோப்பு ரீடர்கள், API கள், கணிப்பான்கள். ஏஜென்ட்கள் வெறுமனே சிந்திக்கவில்லை. அவை செயல்படுகின்றன.' },
-        { letter: 'M', word: 'நினைவு', color: '#16C79A', desc: 'என்ன நடந்தது என்பதைப் பதிவுசெய்து முடிவுகளைச் சரிபார்த்தல். அது என்ன செய்தது, என்ன கண்டுபிடித்தது என்ற நினைவு இல்லாமல், சுழற்சியில் சிக்கிய ஏஜென்ட் அதே தோல்வியுற்ற செயலை எப்போதும் திரும்பத் திரும்பச் செய்யலாம்.' },
-        { letter: 'E', word: 'மதிப்பீடு', color: '#F5A623', desc: 'இது வேலை செய்ததா? இந்த தரவு நம்பகமானதா? இலக்கிற்கு நெருக்கமாகிவிட்டேனா? மதிப்பீட்டாளர் ஏஜென்ட்டை வெறும் இயங்கும் மற்றும் நல்லதைக் கருதும் ஸ்கிரிப்ட்டிலிருந்து பிரிக்கிறது. ஏதேனும் தவறு இருந்தால், திட்டத்தைச் சரிசெய்து மீண்டும் சுழற்சி செய்யுங்கள்.' },
-      ].map((step, i) => (
+        { letter: 'G', name: 'Goal', color: '#E94560', text: 'தெளிவான objective receive செய். "செவ்வாய் பற்றி research செய்" என்பது goal அல்ல. "செவ்வாய் colonization challenges பற்றி sources-உடன் 500-வார்த்தை summary எழுது" என்பது goal.' },
+        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Goal-ஐ concrete steps-ஆக உடை. நல்ல planners flexible plans உருவாக்குவார்கள். மோசமானவை முதல் surprise-ல் உடையும் rigid scripts உருவாக்கும்.' },
+        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: 'சரியான tool பயன்படுத்தி ஒவ்வொரு step-ஐயும் run செய் &mdash; search engines, code interpreters, file readers, APIs. Agents வெறுமனே சிந்திப்பதில்லை. செயல்படுகின்றன.' },
+        { letter: 'M', name: 'Observe', color: '#16C79A', text: 'என்ன நடந்தது என்று record செய்து results check செய். Memory இல்லாமல், agent அதே failing action-ஐ forever repeat செய்யலாம்.' },
+        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: 'இது வேலை செய்ததா? Goal-க்கு closer ஆனேனா? ஏதாவது தவறு இருந்தால், plan-ஐ adjust செய்து மறுபடி loop செய். இதுதான் agent-ஐ script-இலிருந்து பிரிக்கிறது.' },
+      ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
-              {step.letter}
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
             </div>
             <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                {step.word}
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
               </p>
-              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {step.desc}
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
               </p>
             </div>
           </div>
@@ -115,210 +106,55 @@ const chapter = chapters[5];
     </div>
 
     <FadeInBlock client:visible delay={0.5}>
-      <p class="text-lg leading-[1.85] mb-10">
-        முக்கிய சொல் <em>சுழற்சி</em>. ஏஜென்ட் ஒரு முறை திட்டமிட்டு அதைக் குருட்டுத்தனமாக நிறைவேற்றுவதில்லை. அது திட்டமிட்டு, செயல்பட்டு, கவனித்து, மதிப்பிட்டு, சரிசெய்கிறது. சிறந்த ஏஜென்ட்கள் மூன்றாவது படி தவறாகப் போனால் கருணையுடன் மீள்பவை.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.55}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        சாட்போட் ஒரு திருப்பம். ஏஜென்ட் முழு உரையாடல் — தன்னுடன், அதன் கருவிகளுடன், உலகத்துடன்.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO AGENT BLUEPRINT -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        ஒன்றை உருவாக்க நேரம் வந்தது. உங்கள் சொந்த ஏஜென்ட்டை ஆரம்பம் முதல் வடிவமையுங்கள்.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <AgentBlueprint client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN AGENTS FAIL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ஏஜென்ட்கள் தோல்வியடையும்போது
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ஏஜென்ட்கள் சாட்போட்களைப் போல் தோல்வியடைவதில்லை. சாட்போட் உங்களுக்கு தவறான பதிலை தந்துவிட்டு காத்திருக்கும். ஏஜென்ட் தனக்குத்தானே தவறான பதிலை கொடுத்து, <em>அதன் மீது செயல்பட்டு</em>, பிறகு அந்த உடைந்த முடிவை அடுத்த தீர்மானத்திற்கு பயன்படுத்துகிறது. தோல்விகள் கூட்டி பெருக்கப்படுகின்றன.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ஏஜென்ட்கள் தவறு செய்யும் மூன்று வழக்கமான வழிகள் உள்ளன:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>தோல்வி முறை 1: எல்லையில்லா சுழற்சி</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          ஏஜென்ட் அதே செயலைத் திரும்பத் திரும்பச் செய்வதில் சிக்கிக்கொள்கிறது. ஆராய்ச்சி ஏஜென்ட் "ஒரு மூலம் அதிகம்" தேடிக்கொண்டே இருக்கிறது, ஒருபோதும் எழுத ஆரம்பிக்கவில்லை. நிறுத்தும் நிபந்தனை இல்லாமல், நீங்கள் பிளக்கை இழுக்கும் வரை — அல்லது API கிரெடிட் முடியும் வரை — அது இயங்கிக்கொண்டே இருக்கும்.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
-        <span class="prompt-block-label" style="color: #7B61FF;">தோல்வி முறை 2: தவறான கருவி</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          ஏஜென்ட் அந்த வேலையைச் செய்ய முடியாத கருவியைத் தேர்ந்தெடுக்கிறது. அது உங்கள் ஹார்ட் டிரைவில் உள்ள கோப்பிற்காக வெப் தேடல் செய்ய முயற்சிக்கிறது, அல்லது கட்டுரையை சுருக்குவதற்கு கணிப்பானை அழைக்கிறது. ஏஜென்ட் முட்டாள் என்பதல்ல — அது வேலைக்குப் பொருந்துமா என்பதைச் சரிபார்க்காமல் தன் கருவிப் பெட்டியிலிருந்து எடுத்தது.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
-        <span class="prompt-block-label" style="color: #F5A623;">தோல்வி முறை 3: கற்பனையான செயல்கள்</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          ஏஜென்ட் இல்லாத கருவிகள் அல்லது API களை கற்பனை செய்து, பிறகு அவற்றை போலி முடிவுகளுடன் "அழைக்கிறது". போலி அழைப்பு தோல்வியடையும்போது, அது சில நேரங்களில் பெற வேண்டிய தரவை கட்டமைக்கிறது. இரட்டை மாயத்தோற்றம்: போலி கருவி, போலி வெளியீடு.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        தீர்வு எப்போதும் அதே கொள்கையாகும்: <strong>மகிழ்ச்சியற்ற பாதைக்கு வடிவமையுங்கள்.</strong> அதிகபட்ச மறுமுறைகள், கருவி சரிபார்ப்பு, வெளியீட்டு சரிபார்ப்பு, மற்றும் மனித சரிபார்ப்பு புள்ளிகள். இலக்கு எல்லா தோல்வியையும் தடுப்பதல்ல — தோல்வியை மீள முடியுமாக மாற்றுவதுதான்.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FAILURE MODES LAB -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        உடைந்த ஏஜென்ட்டை கண்டறிய முடியுமா? பிழையைக் கண்டுபிடித்து பாதுகாப்புத் தடையைச் சேர்க்கவும்.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FailureModesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF MANY: MULTI-AGENT SYSTEMS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        பலரின் சக்தி
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ஒரு ஏஜென்ட் பயனுள்ளது. பல ஏஜென்ட்கள் ஒன்றாக வேலை செய்வது, எந்த ஒற்றை அமைப்பையும் மூழ்கடிக்கும் பிரச்சினைகளைத் தீர்க்க முடியும். தந்திரம் நிபுணத்துவம்.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        அதை செய்தித்தாள் அலுவலகம் போல் நினைத்துப் பாருங்கள். கதையை விசாரிக்கவும், கட்டுரை எழுதவும், வெளியீட்டிற்காக திருத்தவும் அதே நபரைக் கேட்கவில்லை. ஒவ்வொரு பங்கும் வெவ்வேறு மனநிலை, வெவ்வேறு கருவிகள், வெவ்வேறு தரங்கள் தேவை.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        பல-ஏஜென்ட் அமைப்புகள் அதே வழியில் வேலை செய்கின்றன. <strong>ஆராய்ச்சியாளர்</strong> ஏஜென்ட் தகவல் சேகரிக்கிறது. <strong>எழுத்தாளர்</strong> ஏஜென்ட் மூல குறிப்புகளை மெருகேற்றப்பட்ட உரைநடையாக மாற்றுகிறது. <strong>ஆசிரியர்</strong> ஏஜென்ட் மதிப்பாய்வு செய்கிறது, உண்மைகளைச் சரிபார்க்கிறது, முன்னேற்றங்களை பரிந்துரைக்கிறது. ஒவ்வொரு ஏஜென்ட்டும் அதன் சொந்த அமைப்பு கட்டளை, சொந்த கருவிகள், சொந்த வெற்றி அளவுகோல்களைக் கொண்டுள்ளது.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        பல-ஏஜென்ட் வடிவமைப்பில் முக்கியமான கேள்வி "ஒவ்வொரு ஏஜென்ட் எவ்வளவு புத்திசாலி?" அல்ல. அது <strong>"கைமாற்றம் எவ்வளவு நல்லது?"</strong> ஆராய்ச்சியாளர் எழுத்தாளருக்கு குறிப்புகளை அனுப்பும்போது, அந்த குறிப்புகள் தெளிவாக அமைக்கப்பட்டிருக்கின்றனவா? எழுத்தாளர் ஆசிரியருக்கு வரைவை அனுப்பும்போது, பயனுள்ள கருத்து வழங்க ஆசிரியருக்கு போதுமான சூழல் உள்ளதா?
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய நுண்ணறிவு</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          கைமாற்று ஆவணம் பல-ஏஜென்ட் அமைப்பில் மிக முக்கியமான கலைப்பொருள். திறமையான எழுத்தாளர் கூட மோசமான ஆராய்ச்சி குறிப்புகளை காப்பாற்ற முடியாது. ஏஜென்ட்களுக்கு இடையே உள்ள இடைமுகமே தரம் வெல்லப்படும் அல்லது இழக்கப்படும் இடம்.
+          Chatbot ஒரு single turn. Agent ஒரு முழு உரையாடல் &mdash; தன்னுடன், அதன் tools-உடன், உலகத்துடன். சிறந்த agent builders autonomy-ஐ maximize செய்வதில்லை. Agent pause செய்து மனிதன் continue செய்யலாமா என்று decide செய்ய அனுமதிக்கும் thoughtful checkpoints design செய்கிறார்கள்.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        மூன்று ஏஜென்ட்கள் ஒத்துழைப்பதைப் பார்க்கவும். கைமாற்று ஆவணங்களில் கவனம் செலுத்துங்கள் &mdash; அங்குதான் மாயம் நிகழ்கிறது.
+        ஒன்று build செய்யும் நேரம். உன் சொந்த agent-ஐ scratch-இலிருந்து design செய்.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HandoffChain client:visible />
-    </FadeInBlock>
+    <AgentBlueprint client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HUMAN IN THE LOOP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        சுழற்சியில் மனிதன்
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Just designed my first AI agent from scratch. This course walks you through the architecture step by step with live demos. No hype, just building." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        அத்தியாயம் 5-ல், நீங்கள் நம்பிக்கை கட்டமைப்பைக் கற்றீர்கள்: பங்கு, மீள்தன்மை, மற்றும் நம்பிக்கை எவ்வளவு சுயாட்சி வழங்க வேண்டும் என்பதைத் தீர்மானிக்கின்றன. ஏஜென்ட்களுடன், இது இன்னும் முக்கியமானதாகிறது — ஏனென்றால் ஏஜென்ட்கள் வெறுமனே கேள்விகளுக்கு பதிலளிப்பதில்லை. அவை <em>செயல்களை எடுக்கின்றன</em>, அவற்றை சங்கிலியாகக் கட்டுகின்றன, சரிபார்க்கப்படாமல் விடப்பட்டால் தவறுகளைக் கூட்டுகின்றன.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85]">
-        சிறந்த ஏஜென்ட் கட்டுபவர்கள் சுயாட்சியை அதிகபட்சமாக்குபவர்கள் அல்ல. அவர்கள் <strong>சிந்தனைமிகு சரிபார்ப்புப் புள்ளிகளை</strong> வடிவமைக்கின்றனர் — ஏஜென்ட் இடைநிறுத்தி, தன் வேலையைக் காட்டி, தொடர்வதா என்பதை மனிதன் தீர்மானிக்க அனுமதிக்கும் தருணங்கள். ஒரு சிறந்த ஏஜென்ட் எப்போது கேட்க வேண்டும் என்று தெரியும்.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        நீங்கள் ஏஜென்ட்களை உள்ளிருந்து பார்த்தீர்கள்: அவற்றை இயக்கும் சுழற்சி, அவற்றை வேலை செய்ய வைக்கும் கட்டமைப்பு, கவனமின்றி கட்டப்பட்டால் அபாயகரமானதாக மாற்றும் தோல்வி முறைகள்.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        இலக்கு எல்லா failure-ஐயும் தடுப்பது அல்ல &mdash; failure-ஐ recoverable ஆக மாற்றுவது.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        கோட்பாடு ஒன்று. அடுத்து, நீங்கள் உண்மையான ஏஜென்ட்டைப் பயன்படுத்துவீர்கள் &mdash; உங்கள் கோட்டைப் படித்து, மாற்றங்களை எழுதி, சோதனைகள் நடத்தி, தனது சொந்த தவறுகளைச் சரிசெய்யும் ஒன்று. Claude Code ஐச் சந்திக்கவும்.
+        அடுத்தது: ஒரு real agent பயன்படுத்துவாய் &mdash; உன் code படிக்கும், changes எழுதும், tests run செய்யும், தன் தவறுகளை fix செய்யும் ஒன்று. Claude Code-ஐ சந்தி.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
+        <AgentTakeover client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

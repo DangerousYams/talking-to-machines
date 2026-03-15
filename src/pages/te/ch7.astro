@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -17,13 +17,12 @@ const chapter = chapters[6];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>7</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          అధ్యాయం ఏడు
+          ఏడో అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -43,238 +42,29 @@ const chapter = chapters[6];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        ప్రతి coder కి గుర్తుండే ఒక moment ఉంటుంది. Terminal open చేసి, natural-language request type చేసి, AI నీ files read చేయడం, architecture అర్థం చేసుకోవడం, multiple files లో code write చేయడం, run చేయడం, error hit అవ్వడం, error fix చేయడం, మళ్ళీ run చేయడం చూస్తావ్ — నువ్వు ఒక్క line కూడా touch చేయకుండా. అదే Claude Code.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        ప్రతి coder కి గుర్తుండే ఒక moment ఉంటుంది. Terminal open చేసి, natural-language request టైప్ చేసి, AI నీ files చదవడం, architecture అర్థం చేసుకోవడం, multiple files లో code రాయడం, run చేయడం, error వచ్చినప్పుడు fix చేయడం, మళ్ళీ run చేయడం చూస్తావ్ — నువ్వు ఒక్క line కూడా touch చేయకుండా. Claude Code autocomplete కాదు. ఇది <em>agentic</em> coding tool — నీ entire project చూస్తుంది, files అంతటా changes చేస్తుంది, shell commands execute చేస్తుంది, తన mistakes మీద iterate చేస్తుంది.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        ఇది autocomplete కాదు. Snippets రాసే chatbot కాదు. Claude Code ఒక <em>agentic</em> coding tool — నీ entire project చూడగల, files అంతటా changes చేయగల, shell commands execute చేయగల, మరియు తన mistakes మీద iterate చేయగల command-line partner. ఇది code suggest చేయడం మాత్రమే కాదు. ఇది code <strong>ship</strong> చేస్తుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        కానీ tool నిన్ను steer చేసే human ఎంత good గా ఉంటే అంతే good. Claude Code seconds లో వేయి lines perfect code రాయగలదు — లేదా వేయి lines plausible-looking garbage. తేడా నువ్వు.
+      <p class="text-lg leading-[1.85] mt-8">
+        Tool అయితే దాన్ని steer చేసే human అంత మాత్రమే మంచిది. Claude Code seconds లో వెయ్యి lines perfect code రాయగలదు — లేదా వెయ్యి lines plausible-looking garbage. తేడా నువ్వే.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Claude Code ఎలా ఆలోచిస్తుంది
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code కి task ఇచ్చినప్పుడు, అది తక్షణమే type చేయడం start చేయదు. Chapter 6 నుండి agent loop run చేస్తుంది, code కోసం specialized గా:
-      </p>
-    </FadeInBlock>
-
-    <!-- Agent loop visualization -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Read.', desc: 'Codebase scan చేయి — files, imports, tests, configs. ఏమి exist అవుతుందో అర్థం చేసుకో.' },
-          { word: 'Plan.', desc: 'ఏమి change చేయాలో, ఏ files లో, ఏ order లో decide చేయి.' },
-          { word: 'Write.', desc: 'Edits చేయి. Files create చేయి. Code modify చేయి.' },
-          { word: 'Run.', desc: 'Commands execute చేయి — build, test, lint. ఏమి జరుగుతుందో చూడు.' },
-          { word: 'Fix.', desc: 'ఏదైనా break అయితే, error read చేసి, adjust చేసి, మళ్ళీ try చేయి.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఈ read-plan-write-run-fix loop Claude Code ని simple code generator నుండి different చేస్తుంది. ఇది snippet ఇచ్చి walk away అవ్వదు. <em>Loop లో stay అవుతుంది</em> — code actually work అయ్యే వరకు iterate చేస్తుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Pair programming లాగా ఆలోచించు. నువ్వు ఏమి కావాలో describe చేస్తావ్. Claude Code write చేస్తుంది. Tests fail అవుతాయి. Claude Code error read చేసి, adjust చేసి, re-run చేస్తుంది. ఈ cycle మూడు, ఐదు, పది సార్లు జరగవచ్చు — అన్నీ seconds లో.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Loop ని action లో చూడు. Request type చేసి Claude Code పని చేయడం watch చేయి.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        CLAUDE.md File
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాలా beginners ఇది miss చేస్తారు: <strong>Claude Code కి permanent instructions ఇవ్వవచ్చు.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        నీ project root లో <code>CLAUDE.md</code> అనే file drop చేయి, మరియు Claude Code ప్రతి session start లో దాన్ని read చేస్తుంది. ఇది system prompt లాంటిది, కానీ నీ entire codebase కోసం.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # My Project<br /><br />
-          Tech stack: Astro + React + Tailwind<br />
-          Always use TypeScript with strict mode.<br />
-          Put components in src/components/.<br />
-          Write tests for every new function.<br />
-          Use Prettier formatting — never change the config.<br /><br />
-          ## Style Rules<br />
-          - Prefer named exports over default exports<br />
-          - Use CSS modules, not inline styles<br />
-          - Keep components under 150 lines
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md లేకుండా, ప్రతి session మొదటి కొన్ని నిమిషాలు నీ preferences re-explain చేయడంలో waste అవుతాయి. దానితో, Claude Code నీ stack, నీ conventions, మరియు నీ boundaries ఇప్పటికే తెలుసు. ఇది context engineering (Chapter 3) ని coding కి apply చేయడం.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>CLAUDE.md ని నీ project యొక్క constitution లాగా ఆలోచించు.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          నువ్వు ఇప్పటికే తీసుకున్న decisions ని encode చేస్తుంది — తద్వారా AI actually new decisions మీద focus చేయగలదు. నీ CLAUDE.md ఎంత specific గా ఉంటే, అంత తక్కువ repeat చేయాల్సి వస్తుంది.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Skills Build చేయడం
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md Claude Code కి నీ project గురించి general knowledge ఇస్తుంది. కానీ specific, repeatable tasks గురించి? అక్కడే <strong>Skills</strong> వస్తాయి.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Skill అంటే నీ CLAUDE.md లోని instructions set, Claude Code కి particular kind of task ఎలా handle చేయాలో teach చేస్తుంది. Recipe లాగా ఆలోచించు: "ఎవరైనా new React component create చేయమంటే, exactly ఇలా చేయి."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Skills లేకుండా, ప్రతిసారీ same steps explain చేస్తావ్. Skills తో, ఒకసారి explain చేస్తావ్ మరియు AI ఎప్పటికీ గుర్తుంచుకుంటుంది.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Good skill కి మూడు parts ఉంటాయి:
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: 'Trigger', color: '#7B61FF', text: 'ఈ skill ఎప్పుడు activate అవ్వాలి? "Component create చేయమని ask చేసినప్పుడు..." లేదా "Test failure fix చేసినప్పుడు..." Clear triggers AI wrong recipe use చేయకుండా prevent చేస్తాయి.' },
-        { letter: 'S', name: 'Steps', color: '#16C79A', text: 'Exactly ఏమి చేయాలి, ఏ order లో? Numbered steps best గా work అవుతాయి. File locations, naming conventions, మరియు required patterns గురించి specific గా ఉండు.' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: 'Successful result ఎలా ఉంటుందో చూపించు. Before-and-after, example file structure, లేదా sample output. Examples ఉంటే ambiguity చనిపోతుంది.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        ఒకటి రాయడానికి try చేయి. Trigger నుండి steps నుండి examples వరకు skill build చేయి.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
@@ -284,81 +74,14 @@ const chapter = chapters[6];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code తో work చేసినప్పుడు, నీ job change అవుతుంది. ప్రతి line రాసే person ఇక నువ్వు కాదు. ఏమి build చేయాలో <strong>specify</strong> చేసే, AI ని <strong>generate</strong> చేయనిచ్చే, ఆపై actually right గా ఉందో <strong>verify</strong> చేసే person నువ్వు.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Claude Code కి task ఇచ్చినప్పుడు, అది agent loop run చేస్తుంది: codebase చదువు, ఏం change చేయాలో plan చెయ్, edits రాయి, code run చెయ్, break అయినది fix చెయ్. ఆ loop లో మూడు, ఐదు, పది సార్లు cycle అవ్వవచ్చు — అంతా seconds లో. నీ job ఇక ప్రతి line రాయడం కాదు. ఏం build చేయాలో <strong>specify</strong> చెయ్, AI ని <strong>generate</strong> చేయనివ్వు, తర్వాత actually right గా ఉందో <strong>verify</strong> చెయ్. Beginners చాలా మంది ఆ last step skip చేస్తారు. Code appear అవ్వడం చూస్తారు, reasonable గా కనిపిస్తుంది, ముందుకు వెళ్తారు. ఆ వ్యక్తి కావద్దు. Generated code first draft. నీ verification దాన్ని publishable చేసే edit.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఈ loop — specify, generate, verify — fundamental workflow:
-      </p>
-    </FadeInBlock>
-
-    <!-- SGV Loop -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: 'Specify', desc: 'ఏమి కావాలో precise గా చెప్పు. నీ request ఎంత clear గా ఉంటే, output fix చేయడంలో అంత తక్కువ time spend చేస్తావ్. Edge cases, file locations, మరియు expected behavior include చేయి.', color: '#7B61FF' },
-          { step: '02', title: 'Generate', desc: 'Claude Code దాని పని చేయనివ్వు. Agent loop watch చేయి — reading, planning, writing, running, fixing. Mid-cycle interrupt చేయాలనే temptation ని resist చేయి.', color: '#0EA5E9' },
-          { step: '03', title: 'Verify', desc: 'ఇది నీ most important job. Code read చేయి. Tests run చేయి. Edge cases check చేయి. నువ్వు ask చేసింది actually చేస్తుందా? నీ name sign చేయగల code ఇదా?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాలా beginners step three skip చేస్తారు. Code appear అవ్వడం చూస్తారు, reasonable గా ఉంటుంది, move on అవుతారు. ఆ person అవ్వకు. <strong>Generated code ఒక first draft.</strong> నీ verification దాన్ని publishable చేసే edit.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Irony ఏంటంటే? AI code ఎంత fast గా generate చేస్తే, నీ verification అంత <em>important</em> అవుతుంది. Judgment లేని speed అంటే faster mistakes మాత్రమే.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Skill Paradox
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI-assisted coding గురించి uncomfortable truth ఇదే: <strong>output judge చేయగలిగేంత తెలుసుకోవాలి, నువ్వు రాయకపోయినా.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Claude generate చేసిన code read చేయలేకపోతే, verify చేయలేవు. Verify చేయలేకపోతే, ఎవరో guesses ని production లోకి ship చేస్తున్నావ్.
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇది paradox create చేస్తుంది: beginners కి code రాయడంలో help చేసే tool, ఆ code evaluate చేయడానికి enough knowledge కూడా require చేస్తుంది. Way through? Claude Code ని <em>learn చేయడానికి</em> use చేయి, కేవలం produce చేయడానికి కాదు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude Code నీకు అర్థం కాని ఏదైనా write చేసినప్పుడు, just accept చేయకు. Ask చేయి: "ఈ code ఏమి చేస్తుందో మరియు ఈ approach ఎందుకు choose చేసావో explain చేయి." AI ని tutor గా use చేయి, కేవలం typist గా కాదు.
+      <p class="text-lg leading-[1.85] mb-14">
+        Secret weapon <code>CLAUDE.md</code> file — దాన్ని project root లో drop చేస్తే Claude Code ప్రతి session start లో చదువుతుంది. నీ tech stack, naming conventions, style rules, testing expectations — అన్నీ ఒకసారి encode చేస్తే repeat చేయాల్సిన అవసరం లేదు. ఇది coding కి apply చేసిన context engineering.
       </p>
     </FadeInBlock>
 
@@ -366,43 +89,52 @@ const chapter = chapters[6];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Goal ప్రతి line రాయడం కాదు — ప్రతి line అర్థం చేసుకోవడం.</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Best Claude Code users ఎక్కువ code generate చేసే వాళ్ళు కాదు. Best questions ask చేసి subtlest bugs catch చేసే వాళ్ళు. నీ knowledge నీ quality filter.
+          Claude generate చేసిన code చదవలేకపోతే, verify చేయలేవు. Best Claude Code users ఎక్కువ code generate చేసేవాళ్ళు కాదు — best questions అడిగి subtlest bugs catch చేసేవాళ్ళు.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        నువ్వు vs. Claude Code. Same messy code, same goal. ఎవరు better refactor చేస్తారు?
+        Loop action లో చూడు. Request టైప్ చేసి Claude Code work చేయడం watch చెయ్.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Claude Code మీద ఈ chapter wild — AI pair programmer problem think through చేయడం, code రాయడం, తనను తాను debug చేయడం చూశాను. Coding భవిష్యత్తు ఇక్కడే ఉంది." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        నీ దగ్గర CLAUDE.md, custom skills, మరియు specify-generate-verify rhythm ఉన్నాయి. Claude Code నీ <em>కోసం</em> code రాయడం లేదు &mdash; నీ <em>తో</em> code రాస్తుంది.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code నీ కోసం code రాయడం లేదు — నీతో కలిసి code రాస్తోంది.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ఒక conversation ఒక task handle చేయగలదు. కానీ real projects కి dozens ఉంటాయి. తర్వాత: big ambitions ని AI actually execute చేయగల pieces గా ఎలా break చేయాలో.
+        ఒక conversation ఒక task handle చేయగలదు. కానీ real projects లో dozens ఉంటాయి. తర్వాత: పెద్ద ambitions ని AI actually execute చేయగలిగే pieces గా ఎలా break చేయాలో.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

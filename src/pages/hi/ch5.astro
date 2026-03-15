@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
 import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[4];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[4];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -37,178 +37,22 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "सवाल जवाब करना" से<br />"action लेना" तक का jump।
+          "सवालों के जवाब देना" से<br />"action लेना" तक का jump।
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
-        अब तक तुमने जो भी AI interactions किए हैं, वे सब same pattern follow करते हैं। तुम कुछ type करते हो। AI कुछ type करके वापस करता है। Text in, text out। बहुत sophisticated autocomplete। लेकिन यह ceiling नहीं है। यह सिर्फ floor है।
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
+        अब तक तुमने जो भी AI interaction किया है, वो same pattern follow करता है। तुम कुछ type करते हो। AI कुछ type करके वापस करता है। एक बहुत sophisticated autocomplete। लेकिन क्या हो अगर AI actually <em>काम कर सके</em>? सिर्फ weather के बारे में बताना नहीं, बल्कि forecast check करना। सिर्फ code लिखना नहीं, बल्कि run करना। सिर्फ Google करने का suggestion नहीं, बल्कि खुद web search करके जो मिला लेकर आना।
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        क्या होगा अगर AI actually <em>काम कर सके</em>? सिर्फ weather के बारे में बताना नहीं, बल्कि forecast check करना। सिर्फ code लिखना नहीं, बल्कि उसे run करके बताना कि क्या हुआ। सिर्फ Google करने का suggestion नहीं, बल्कि खुद web search करके जो मिला, उसे वापस लाना।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Tool use यही है। और यह AI के बारे में सब कुछ बदल देता है।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Text-In, Text-Out से आगे
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Think करो जब तुम chatbot से पूछते हो: <em>"Tokyo में अभी क्या time है?"</em> AI actually जानता नहीं। यह months या years old data पर train हुआ है। इसके पास कोई clock नहीं। तो यह वही कर सकता है जो कर सकता है — guess करना, अपने training data के patterns के based पर। कभी close होता है। कभी hilariously wrong।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Tools के बिना</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">User:</span> Tokyo में क्या time है?<br />
-          <span style="font-style: italic; opacity: 0.6;">AI:</span> Around 2:30 PM JST होना चाहिए। <span style="color: var(--color-accent-red); font-size: 0.85em;">(Just guessing)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        अब same AI को एक <strong>tool</strong> दे दो — एक simple function जो किसी भी timezone में current time return करता है। Suddenly:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Tools के साथ</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">User:</span> Tokyo में क्या time है?<br />
-          <span style="font-style: italic; opacity: 0.6;">AI thinks:</span> <span style="color: var(--color-purple); font-size: 0.9em;">मेरे पास timezone tool है। Let me use it।</span><br />
-          <span style="font-style: italic; opacity: 0.6;">AI calls:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
-          <span style="font-style: italic; opacity: 0.6;">Tool returns:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
-          <span style="font-style: italic; opacity: 0.6;">AI:</span> Tokyo में currently 2:47 PM है (JST)। <span style="color: var(--color-teal); font-size: 0.85em;">(Verified)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Same question। Completely different reliability। AI smart नहीं हुआ — यह <strong>connected</strong> हुआ। अब यह अपने brain के बाहर reach कर सकता है और real world के साथ interact कर सकता है।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Tool Use Actually कैसे काम करता है
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        यह mental model है। जब तुम AI को tools का access देते हो, तुम उसे एक <strong>toolbox</strong> दे रहे हो और कह रहे हो: <em>"ये चीज़ें हैं जो तुम कर सकते हो। हर tool के लिए, यह इसका नाम है, यह क्या accept करता है, और यह क्या return करता है। तुम decide करो कि कब use करना है।"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-14">
-        AI blindly हर request पर हर tool use नहीं करता। यह reason करता है कि कौन से tools relevant हैं, decide करता है कि use करना है या नहीं, right input formulate करता है, tool call करता है, result read करता है, और फिर उस result को अपने response में incorporate करता है। इस process को <strong>function calling</strong> कहते हैं — और यह remarkably consistent loop follow करता है।
-      </p>
-    </FadeInBlock>
-
-    <!-- The Agent Loop — editorial layout -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Observe.', desc: 'User की request और available context को read करो।' },
-          { word: 'Think.', desc: 'Decide करो: "क्या मुझे इसके लिए tool चाहिए, या मैं directly answer दे सकता हूं?"' },
-          { word: 'Act.', desc: 'Right arguments के साथ appropriate tool call करो।' },
-          { word: 'Observe.', desc: 'Tool के result को read करो।' },
-          { word: 'Respond.', desc: 'सब कुछ को useful answer में synthesize करो।' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI script execute नहीं कर रहा। यह हर बार judgment call कर रहा है: "क्या यह situation है जहां मुझे tool use करना चाहिए, या मैं खुद handle कर सकता हूं?"
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        यही <strong>agent loop</strong> है — observe, think, act, observe, respond। और यह same loop है चाहे AI के पास एक tool हो या hundred। तुम जितने tools देते हो, उतना capable बनता है। लेकिन साथ ही, उतना trust भी रखना पड़ता है इसके judgment पर कि <em>कौन सा</em> tool use करना है और <em>कब</em>।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SEVEN TOOLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        सात Tools जो सब कुछ Change कर देते हैं
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hundreds specific tools हैं जो AI use कर सकता है, लेकिन mostly वे सात categories में fall करते हैं। हर एक fundamentally different way में AI की abilities extend करता है। कुछ उसे <em>knowledge</em> देते हैं (web search, databases)। कुछ उसे <em>abilities</em> देते हैं (code execution, image generation)। कुछ उसे <em>hands</em> देते हैं (file editing, API calls)।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        नीचे किसी भी tool पर click करो AI का full reasoning process देखने के लिए — recognize करने से कि उसे tool चाहिए, उसे call करने तक, result use करने तक।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolCatalog client:visible />
     </FadeInBlock>
   </section>
 
@@ -224,139 +68,67 @@ const chapter = chapters[4];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        एक बार AI <em>काम कर सके</em> — सिर्फ उनके बारे में talk नहीं करना — तो एक नया question emerge होता है। ऐसा question जिसका technology से कोई लेना देना नहीं और सब कुछ तुमसे है:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        जब तुम AI को tools देते हो, तुम उसे toolbox देकर कह रहे हो: <em>"ये चीज़ें हैं जो तुम कर सकते हो। तुम decide करो कब use करना है।"</em> वो web search कर सकता है, code run कर सकता है, files पढ़ सकता है, APIs call कर सकता है। AI smart नहीं हुआ — वो <strong>connected</strong> हुआ। और यह एक ऐसा question raise करता है जिसका technology से कोई लेना-देना नहीं और सब कुछ तुमसे है: तुम्हें check करने से पहले AI को खुद कितना काम करना चाहिए?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI को तुम्हें check करने से पहले खुद कितना काम करना चाहिए?
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        यह technical question नहीं है — यह human question है। और इसका answer तीन चीज़ों पर depend करता है:
+      <p class="text-lg leading-[1.85] mb-14">
+        Answer तीन चीज़ों पर depend करता है। <strong>Stakes</strong> — सबसे बुरा क्या हो सकता है? <strong>Reversibility</strong> — क्या तुम undo कर सकते हो? और <strong>trust</strong> — तुम इस tool को कितनी अच्छी तरह जानते हो? Calculator जो तुमने hundred बार use किया है, वो brand-new plugin से ज़्यादा freedom deserve करता है जो तुमने कभी test नहीं किया।
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { name: 'Stakes', color: '#E94560', text: 'सबसे बुरा क्या हो सकता है? Article गलत summarize करना annoying है। Wrong files delete करना disaster है। Higher stakes demand more human oversight।' },
-          { name: 'Reversibility', color: '#F5A623', text: 'क्या तुम undo कर सकते हो? Git repo में file edit करना easily reverse होता है। Boss को email send करना नहीं। Irreversible actions को almost always तुम्हारी approval चाहिए।' },
-          { name: 'Trust', color: '#16C79A', text: 'तुम इस tool को कितनी अच्छी तरह जानते हो? Calculator जो तुमने hundred बार use किया है, वह brand-new plugin से ज़्यादा autonomy deserve करता है जो तुमने कभी test नहीं किया। Trust earn होता है, assume नहीं।' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
-                {i + 1}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {item.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Autonomy का spectrum</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          यह all-or-nothing नहीं है। Best AI workflows AI को low-stakes, reversible tasks पर freedom देती हैं while high-stakes, irreversible ones पर humans को loop में रखती हैं। तुम्हारा job boundary design करना है।
+          यह all-or-nothing नहीं है। Best AI workflows low-stakes, reversible tasks पर freedom देती हैं और high-stakes, irreversible ones पर humans को loop में रखती हैं। तुम्हारा job boundary design करना है।
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        तुम कहां line draw करोगे? अपने autonomy levels set करो।
+        तुम कहाँ line draw करोगे? अपने autonomy levels set करो।
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TrustThermometer client:visible />
-    </FadeInBlock>
+    <TrustThermometer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Tool-Use Mindset
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="AI tool use और function calling के बारे में सबसे hands-on तरीके से सीख रहा हूँ। यह course actually build और test करने देता है, सिर्फ पढ़ने को नहीं।" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        एक subtle shift होता है जब तुम AI को text-generator के बजाय tool-user के रूप में think करना start करते हो। तुम <em>"AI इसके बारे में क्या कह सकता है?"</em> पूछना stop करते हो और <em>"AI इसके बारे में क्या कर सकता है?"</em> पूछना start करते हो।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI से data analyze करने का <em>description</em> मांगने के बजाय, तुम उसे code execution tool देते हो और watch करते हो कि वह analysis write और run करता है। Research के <em>links</em> मांगने के बजाय, तुम उसे web search देते हो और उसे information find और synthesize करने देते हो। Output "यहां है जो तुम कर सकते हो" से "यहां है जो मैंने अभी किया" बन जाता है।
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Old mindset</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          "Explain करो कि मैं $5,000 पर 6.5% पर 10 years में compound interest कैसे calculate करूं।"
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Tool-use mindset</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "$5,000 पर 6.5% APR compound interest calculate करो monthly compounded for 10 years। Exact number show करो।"
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        पहला prompt तुम्हें tutorial देता है। दूसरा answer देता है। Tools के साथ, AI <strong>advisor</strong> से <strong>assistant</strong> बन जाता है — someone जो तुम्हें बताता है क्या करना है, से someone जो actually करता है।
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        तुमने AI को hands दिए हैं। यह search, calculate, browse, और files write कर सकता है। और तुमने सबसे hard part सीखा है: decide करना कि कितनी freedom hand over करनी है।
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Tools AI को advisor से assistant बना देते हैं — someone जो बताता है क्या करना है, से someone जो actually करता है।
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tools building blocks हैं। Next, हम इन्हें कुछ ऐसे में wire करते हैं जो अपने आप goal pursue कर सके &mdash; planning, executing, mistakes से recovering। Time to build agents।
+        तुमने AI को हाथ दिए हैं। आगे, हम इन tools को किसी ऐसी चीज़ में wire करते हैं जो अपने आप goal pursue कर सके — planning, executing, mistakes से recovering। Time to build agents।
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(245,166,35,0.06) 15%, rgba(245,166,35,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#F5A623" toolName="Would You Let It?" client:visible>
+        <WouldYouLetIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

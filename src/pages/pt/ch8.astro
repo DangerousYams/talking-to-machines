@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
 import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import ComplexityScore from '../../components/breaks/ComplexityScore';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[7];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[7];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>8</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Capítulo Oito
+          Capítulo oito
         </p>
       </FadeInBlock>
 
@@ -31,220 +31,34 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Orquestrando<br />complexidade
+          Orquestrando<br />Complexidade
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Gerindo IA em projetos maiores<br />que qualquer janela de contexto.
+          Gerenciando IA em projetos maiores<br />que qualquer janela de contexto.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Aqui está o momento que todo iniciante ambicioso enfrenta: você pede para a IA construir algo real — um jogo completo, um site com backend, um artigo de pesquisa com citações — e tudo desmorona. Não porque a IA não é inteligente o suficiente. Porque o projeto é grande demais para uma única conversa.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Chega o momento que todo iniciante ambicioso enfrenta: você pede para a IA construir algo real — um jogo completo, um site com backend, um artigo de pesquisa com citações — e tudo desmorona. Não porque a IA não é inteligente o suficiente. Porque o projeto é grande demais para uma única conversa. Você cola uma parede de requisitos e vinte minutos depois percebe que ela esqueceu metade do que você pediu.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Você cola uma parede de requisitos, a IA te dá uma resposta que parece confiante, e vinte minutos depois você percebe que ela esqueceu metade do que você pediu, se contradisse na arquitetura, e alucinou uma biblioteca que não existe. Você tenta de novo. Mesmo resultado, alucinações diferentes.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
+      <p class="text-lg leading-[1.85] mt-8">
         Não é um problema da IA. É um problema de <strong>orquestração</strong>. E aprender a resolver isso é a diferença entre alguém que usa IA para tarefas pontuais e alguém que usa para construir coisas reais.
       </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        A armadilha do prompt único
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Quando você aprende a usar IA pela primeira vez, naturalmente tenta fazer tudo de uma vez. Um prompt gigante. Uma conversa. Uma tentativa. E para tarefas simples — escrever um e-mail, fazer brainstorming, explicar um conceito — isso funciona bem.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Mas a complexidade quebra a abordagem de prompt único de três formas:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { num: '1', title: 'Transbordamento de contexto', text: 'A IA só consegue manter uma quantidade limitada de informação de cada vez. Um projeto completo excede esse limite, então a IA começa a "esquecer" seus requisitos anteriores.' },
-          { num: '2', title: 'Diluição da atenção', text: 'Mesmo dentro da janela de contexto, pedir para a IA fazer malabarismo com doze preocupações diferentes ao mesmo tempo significa que cada uma recebe menos foco. A qualidade cai em todos os aspectos.' },
-          { num: '3', title: 'Acúmulo de erros', text: 'Um pequeno erro numa saída complexa se espalha. Se a IA erra o esquema do banco de dados, tudo construído sobre esse esquema está errado também — e é difícil detectar no meio de uma parede de código gerado.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
-            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
-              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
-                {item.num}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        A solução não é um prompt melhor. É um processo melhor.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DECOMPOSITION: THE MASTER SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Decomposição: a habilidade mestra
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Engenheiros de software profissionais não constroem aplicações inteiras de uma vez. Eles as dividem em pedaços — módulos, componentes, funções — cada um com um propósito claro, entradas claras e saídas claras. Depois eles montam tudo.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Trabalhar com IA em projetos complexos requer a mesma disciplina. Você precisa <strong>decompor</strong> seu projeto em tarefas pequenas o suficiente para uma única conversa de IA focada lidar bem.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Boa decomposição segue três regras:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Responsabilidade única.', desc: 'Cada tarefa faz uma coisa só. "Projetar o banco de dados E construir a API E escrever o frontend" são três tarefas, não uma.' },
-          { word: 'Interfaces claras.', desc: 'Cada tarefa tem uma entrada definida (o que ela precisa para começar) e uma saída definida (o que ela produz). A saída de uma tarefa se torna a entrada da próxima.' },
-          { word: 'Dependências mínimas.', desc: 'Tarefas que podem ser feitas em paralelo devem ser. Só crie dependências quando uma tarefa genuinamente precisar da saída de outra.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Decomposição é uma habilidade humana, não da IA.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          A IA pode te ajudar a fazer brainstorming de uma divisão de tarefas, mas decidir como dividir o trabalho, o que depende do quê, e o que priorizar — isso é seu trabalho. É gestão de projetos, e é uma das habilidades mais valiosas que você pode desenvolver.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Tente decompor um projeto real. Arraste tarefas, rastreie dependências, veja o plano tomar forma.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectOrchestrator client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE HANDOFF PATTERN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        O padrão da transferência
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Uma vez que você dividiu um projeto em tarefas, precisa de uma forma de conectá-las. Em fluxos de trabalho com IA, essa conexão é a <strong>transferência</strong> — o momento onde a saída de uma conversa se torna a entrada da próxima.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>O padrão da transferência</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Conversa 1 produz um <strong>artefato</strong> — um documento, um esquema, um plano.<br />
-          Esse artefato é colado na Conversa 2 como <strong>contexto</strong>.<br />
-          Conversa 2 constrói em cima dele e produz o próximo artefato.<br />
-          Repita até o projeto estar completo.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Pense nisso como uma corrida de revezamento. Cada corredor (conversa) cobre seu trecho e passa o bastão (artefato) para o próximo. O bastão é a peça crítica — se ele cair ou for distorcido, o próximo corredor tropeça.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Isso significa que seus artefatos de transferência precisam ser <em>precisos</em>. Um esquema de banco de dados é uma transferência melhor que uma descrição vaga do modelo de dados. Uma lista numerada de endpoints da API é melhor que "preciso de um backend que lide com coisas de usuário". Quanto mais afiado o artefato, melhor a próxima conversa performa.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        A qualidade do seu artefato de transferência determina a qualidade de tudo construído depois. Lixo entra, lixo sai — entre conversas.
-      </div>
     </FadeInBlock>
   </section>
 
@@ -260,55 +74,28 @@ const chapter = chapters[7];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Toda vez que você inicia uma nova conversa com IA, você está tomando uma decisão que a maioria das pessoas nem percebe: <strong>que contexto incluir?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Você tem um orçamento limitado — a janela de contexto. E tem uma pilha de informações potencialmente relevantes: arquivos de código, documentação, conversas anteriores, logs de erro, especificações de design. Nem tudo vai caber. E mesmo se coubesse, despejar tudo diluiria a atenção da IA.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Projetos complexos quebram a abordagem de prompt único. O contexto transborda, a atenção se dilui, erros se acumulam. A solução não é um prompt melhor — é <strong>decomposição</strong>. Quebre o projeto em tarefas focadas, e para cada tarefa, escolha cuidadosamente que contexto a IA realmente precisa. Pouco demais e ela alucina. Muito e ela perde o foco. O ponto ideal é precisão cirúrgica.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Empacotar contexto é como fazer a mala para uma viagem. Você não pode levar o guarda-roupa inteiro. Precisa pensar onde está indo (a tarefa), o que vai precisar (informações relevantes), e o que pode deixar para trás (todo o resto).
+      <p class="text-lg leading-[1.85] mb-14">
+        Pense como fazer uma mala. Você não pode levar o guarda-roupa inteiro. Precisa pensar onde está indo (a tarefa), o que vai precisar (informações relevantes) e o que pode deixar para trás (todo o resto). Cada conversa recebe exatamente o contexto que precisa — nem mais, nem menos.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
-        {[
-          { label: 'Pouco contexto', color: '#E94560', text: 'A IA não tem o que precisa e preenche as lacunas com alucinações. Soa confiante mas inventa detalhes.' },
-          { label: 'Muito contexto', color: '#F5A623', text: 'A IA fica sobrecarregada. Detalhes importantes se perdem no ruído. A saída se torna genérica e sem foco.' },
-          { label: 'Contexto certo', color: '#16C79A', text: 'A IA tem exatamente o que precisa para essa tarefa específica. A saída é precisa, relevante e útil.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
-              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
-                {item.label}
-              </p>
-              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Pense como um editor, não como um acumulador.</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Ideia-chave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Antes de cada interação com IA, pergunte-se: o que a IA <em>precisa saber</em> para fazer essa tarefa específica? Inclua isso. Deixe de fora todo o resto. Isso é engenharia de contexto aplicada à gestão de projetos.
+          A qualidade do seu artefato de transferência determina a qualidade de tudo construído a partir dele. Um esquema preciso ganha de uma descrição vaga sempre. Lixo entra, lixo sai — entre conversas.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO CONTEXT PACKING -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -317,92 +104,37 @@ const chapter = chapters[7];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextPacking client:visible />
-    </FadeInBlock>
+    <ContextPacking client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Acompanhando o que funcionou
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="A parte mais difícil da IA não é prompting — é orquestrar projetos complexos em múltiplas conversas. Esse curso finalmente explica como." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aqui está um cenário que acontece com todo mundo: você tem uma conversa ótima com IA que produz exatamente a saída que precisava. Uma semana depois, você precisa de algo parecido. Não consegue lembrar o que disse. Tenta recriar. Os resultados são piores.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Projetos complexos com IA geram muitos artefatos — prompts que funcionaram, saídas que foram boas, decisões que foram tomadas, abordagens que falharam. Sem um sistema para acompanhar isso, você vai perder horas redescobrindo coisas que já descobriu.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Desenvolvedores profissionais usam controle de versão (como Git) para acompanhar cada mudança na base de código. Você deveria aplicar a mesma mentalidade ao seu trabalho com IA:
-      </p>
-    </FadeInBlock>
-
-    <!-- Tracking habits list -->
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
-        {[
-          { icon: '01', title: 'Salve seus prompts', desc: 'Quando um prompt produz ótima saída, salve em algum lugar. Um app de notas simples, um arquivo markdown, uma biblioteca de prompts. A redação exata importa.' },
-          { icon: '02', title: 'Salve as saídas', desc: 'Mantenha os artefatos gerados pela IA que você usa como base. Esquemas de banco de dados, designs de API, esboços. Esses são seus documentos de transferência e você vai precisar deles de novo.' },
-          { icon: '03', title: 'Documente suas decisões', desc: 'Quando você e a IA exploram duas abordagens e escolhem uma, anote o porquê. O você-do-futuro vai agradecer ao você-do-presente quando o projeto mudar de direção.' },
-          { icon: '04', title: 'Acompanhe o que falhou', desc: 'Um prompt que produziu lixo é informação valiosa. Saber o que não funciona é metade da batalha. Mantenha um "log de falhas" para não repetir erros.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
-                {item.icon}
-              </span>
-              <div>
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.6}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Sua biblioteca de prompts é como o caderno de estudos de um músico. Quanto mais você coleciona, mais rápido fica, e menos começa do zero.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Você foi do pensamento de prompt único para decomposição, padrões de transferência e empacotamento de contexto. Projetos complexos não assustam mais &mdash; são apenas uma série de conversas focadas conectadas por artefatos precisos.
-      </p>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        Projetos complexos não assustam. São apenas uma série de conversas focadas conectadas por artefatos precisos.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Há mais uma habilidade que importa mais que qualquer uma dessas: saber quando a IA está <em>errada</em>. Alucinações, bajulação e os hábitos de verificação que te mantêm honesto. Isso vem a seguir.
+        A seguir: saber quando a IA está <em>errada</em>. Alucinações, bajulação e os hábitos de verificação que mantêm você honesto.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(15,52,96,0.06) 15%, rgba(15,52,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0F3460" toolName="Complexity Score" client:visible>
+        <ComplexityScore client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

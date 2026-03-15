@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
 import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import ComplexityScore from '../../components/breaks/ComplexityScore';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[7];
 ---
@@ -36,7 +37,7 @@ const chapter = chapters[7];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          KI-Management für Projekte, die größer<br />sind als jedes Kontextfenster.
+          KI-Projekte managen, die größer sind<br />als jedes Kontextfenster.
         </p>
       </FadeInBlock>
     </div>
@@ -46,202 +47,18 @@ const chapter = chapters[7];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Hier ist der Moment, den jeder ambitionierte Anfänger trifft: Du bittest die KI, etwas Echtes zu bauen — ein ganzes Spiel, eine Website mit Backend, eine Forschungsarbeit mit Quellenangaben — und das Ganze fällt auseinander. Nicht weil die KI nicht schlau genug ist. Weil das Projekt zu groß für ein einzelnes Gespräch ist.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Hier ist der Moment, an den jeder ambitionierte Anfänger stößt: Du bittest KI, etwas Echtes zu bauen -- ein ganzes Spiel, eine Website mit Backend, eine Forschungsarbeit mit Quellenangaben -- und das Ganze fällt auseinander. Nicht weil die KI nicht schlau genug ist. Sondern weil das Projekt zu groß für eine einzelne Unterhaltung ist. Du fügst eine Wand von Anforderungen ein und merkst zwanzig Minuten später, dass sie die Hälfte vergessen hat.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Du fügst eine Wand von Anforderungen ein, die KI gibt dir eine selbstsicher klingende Antwort, und zwanzig Minuten später merkst du, dass sie die Hälfte deiner Anforderungen vergessen hat, sich bei der Architektur widersprochen hat und eine Bibliothek halluziniert hat, die nicht existiert. Du versuchst es nochmal. Gleiches Ergebnis, andere Halluzinationen.
+      <p class="text-lg leading-[1.85] mt-8">
+        Das ist kein KI-Problem. Es ist ein <strong>Orchestrierungsproblem</strong>. Und es lösen zu lernen ist der Unterschied zwischen jemandem, der KI für Einzelaufgaben nutzt, und jemandem, der damit echte Dinge baut.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Das ist kein KI-Problem. Das ist ein <strong>Orchestrierungsproblem</strong>. Und es lösen zu lernen, ist der Unterschied zwischen jemandem, der KI für Einzelaufgaben nutzt, und jemandem, der damit echte Dinge baut.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Die Ein-Prompt-Falle
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Wenn du zum ersten Mal KI nutzen lernst, versuchst du natürlich, alles in einem Schuss zu machen. Ein riesiger Prompt. Ein Gespräch. Ein Versuch. Und für einfache Aufgaben — eine E-Mail schreiben, Ideen brainstormen, ein Konzept erklären — funktioniert das prima.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aber Komplexität bricht den Ein-Prompt-Ansatz auf drei Arten:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { num: '1', title: 'Kontext-Überlauf', text: 'Die KI kann nur begrenzt viele Informationen gleichzeitig halten. Ein ganzes Projekt sprengt dieses Limit, also beginnt die KI, deine früheren Anforderungen zu „vergessen".' },
-          { num: '2', title: 'Aufmerksamkeitsverdünnung', text: 'Selbst innerhalb des Kontextfensters bedeutet die KI zu bitten, zwölf verschiedene Anliegen gleichzeitig zu jonglieren, dass jedes einzelne weniger Fokus bekommt. Die Qualität sinkt überall.' },
-          { num: '3', title: 'Fehlerverkettung', text: 'Ein kleiner Fehler in einer komplexen Ausgabe kaskadiert. Wenn die KI das Datenbankschema falsch macht, ist alles, was darauf aufbaut, auch falsch — und es ist schwer zu erkennen, tief in einer Wand von generiertem Code.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
-            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
-              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
-                {item.num}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Die Lösung ist kein besserer Prompt. Es ist ein besserer Prozess.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DECOMPOSITION ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Zerlegung: Die Königsdisziplin
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Professionelle Softwareentwickler bauen nicht ganze Anwendungen in einer Sitzung. Sie zerlegen sie in Teile — Module, Komponenten, Funktionen — jedes mit klarem Zweck, klaren Eingaben und klaren Ausgaben. Dann setzen sie sie zusammen.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Mit KI an komplexen Projekten zu arbeiten, erfordert dieselbe Disziplin. Du musst dein Projekt in Aufgaben <strong>zerlegen</strong>, die klein genug sind, damit ein einzelnes, fokussiertes KI-Gespräch sie gut bewältigen kann.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Gute Zerlegung folgt drei Regeln:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Einzelverantwortung.', desc: 'Jede Aufgabe tut eine Sache. „Designe die Datenbank UND baue die API UND schreibe das Frontend" sind drei Aufgaben, nicht eine.' },
-          { word: 'Klare Schnittstellen.', desc: 'Jede Aufgabe hat eine definierte Eingabe (was sie braucht) und eine definierte Ausgabe (was sie produziert). Die Ausgabe einer Aufgabe wird zur Eingabe der nächsten.' },
-          { word: 'Minimale Abhängigkeiten.', desc: 'Aufgaben, die parallel erledigt werden können, sollten es auch. Erzeuge Abhängigkeiten nur, wenn eine Aufgabe wirklich die Ausgabe einer anderen braucht.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Zerlegung ist eine menschliche Fähigkeit, keine KI-Fähigkeit.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          KI kann dir beim Brainstormen einer Aufgabenaufteilung helfen, aber zu entscheiden, wie die Arbeit aufgeteilt wird, was wovon abhängt und was Priorität hat — das ist dein Job. Es ist Projektmanagement, und es ist eine der wertvollsten Fähigkeiten, die du entwickeln kannst.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Versuch ein echtes Projekt zu zerlegen. Ziehe Aufgaben, verfolge Abhängigkeiten, sieh den Plan Gestalt annehmen.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectOrchestrator client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE HANDOFF PATTERN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Das Übergabe-Muster
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Sobald du ein Projekt in Aufgaben zerlegt hast, brauchst du eine Art, sie zu verbinden. In KI-Workflows ist diese Verbindung die <strong>Übergabe</strong> — der Moment, in dem die Ausgabe eines Gesprächs zur Eingabe des nächsten wird.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Das Übergabe-Muster</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Gespräch 1 produziert ein <strong>Artefakt</strong> — ein Dokument, ein Schema, einen Plan.<br />
-          Dieses Artefakt wird in Gespräch 2 als <strong>Kontext</strong> eingefügt.<br />
-          Gespräch 2 baut darauf auf und produziert das nächste Artefakt.<br />
-          Wiederholen, bis das Projekt fertig ist.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Denk daran wie an ein Staffelrennen. Jeder Läufer (Gespräch) legt seinen Abschnitt zurück und übergibt den Staffelstab (Artefakt) an den nächsten. Der Stab ist das entscheidende Stück — wenn er fallen gelassen oder verstümmelt wird, strauchelt der nächste Läufer.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Das bedeutet, deine Übergabe-Artefakte müssen <em>knackig</em> sein. Ein Datenbankschema ist eine bessere Übergabe als eine vage Beschreibung des Datenmodells. Eine nummerierte Liste von API-Endpunkten ist besser als „Ich brauche ein Backend, das Nutzersachen handhabt." Je schärfer das Artefakt, desto besser das nächste Gespräch.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Die Qualität deines Übergabe-Artefakts bestimmt die Qualität von allem, was darauf aufbaut. Müll rein, Müll raus — über Gespräche hinweg.
-      </div>
     </FadeInBlock>
   </section>
 
@@ -257,147 +74,67 @@ const chapter = chapters[7];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Jedes Mal, wenn du ein neues KI-Gespräch startest, triffst du eine Entscheidung, die den meisten Leuten nicht einmal auffällt: <strong>Welchen Kontext packst du rein?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Du hast ein begrenztes Budget — das Kontextfenster. Und du hast einen Haufen potenziell relevanter Informationen: Code-Dateien, Dokumentation, vorherige Gespräche, Fehlerlogs, Design-Specs. Nicht alles passt rein. Und selbst wenn es passen würde, würde alles reinzuwerfen die Aufmerksamkeit der KI verdünnen.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Komplexe Projekte sprengen den Ein-Prompt-Ansatz. Der Kontext läuft über, die Aufmerksamkeit verwässert, Fehler potenzieren sich. Die Lösung ist kein besserer Prompt -- es ist <strong>Zerlegung</strong>. Zerlege das Projekt in fokussierte Aufgaben und wähle dann für jede Aufgabe sorgfältig aus, welchen Kontext die KI wirklich braucht. Zu wenig und sie halluziniert. Zu viel und sie verliert den Fokus. Der Sweet Spot ist chirurgische Präzision.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Kontextpacken ist wie Kofferpacken für eine Reise. Du kannst nicht deinen ganzen Kleiderschrank mitnehmen. Du musst überlegen, wohin du fährst (die Aufgabe), was du brauchen wirst (relevante Informationen) und was du zu Hause lassen kannst (alles andere).
+      <p class="text-lg leading-[1.85] mb-14">
+        Stell es dir wie Kofferpacken vor. Du kannst nicht deinen ganzen Kleiderschrank mitnehmen. Du musst überlegen, wohin du fährst (die Aufgabe), was du brauchen wirst (relevante Informationen) und was du zurücklassen kannst (alles andere). Jede Unterhaltung bekommt genau den Kontext, den sie braucht -- nicht mehr und nicht weniger.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
-        {[
-          { label: 'Zu wenig Kontext', color: '#E94560', text: 'Die KI hat nicht, was sie braucht, und füllt die Lücken mit Halluzinationen. Sie klingt selbstsicher, erfindet aber Details.' },
-          { label: 'Zu viel Kontext', color: '#F5A623', text: 'Die KI ist überfordert. Wichtige Details gehen im Rauschen unter. Die Ausgabe wird generisch und unfokussiert.' },
-          { label: 'Der richtige Kontext', color: '#16C79A', text: 'Die KI hat genau das, was sie für diese spezifische Aufgabe braucht. Die Ausgabe ist präzise, relevant und umsetzbar.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
-              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
-                {item.label}
-              </p>
-              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Denk wie ein Redakteur, nicht wie ein Sammler.</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Vor jeder KI-Interaktion frag dich: Was <em>muss</em> die KI wissen, um genau diese Aufgabe zu erledigen? Das gehört rein. Lass alles andere weg. Das ist Context Engineering, angewandt auf Projektmanagement.
+          Die Qualität deines Übergabe-Artefakts bestimmt die Qualität von allem, was darauf aufbaut. Ein präzises Schema schlägt jedes Mal eine vage Beschreibung. Müll rein, Müll raus -- über Unterhaltungen hinweg.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Pack einen Kontextkoffer. Bekommst du das Wichtige rein, ohne zu überlaufen?
+        Packe einen Kontext-Koffer. Schaffst du es, das Wichtige unterzubringen, ohne überzulaufen?
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextPacking client:visible />
-    </FadeInBlock>
+    <ContextPacking client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ VERSION CONTROL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Festhalten, was funktioniert hat
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Das Schwierigste an KI ist nicht das Prompting -- es ist das Orchestrieren komplexer Projekte über mehrere Unterhaltungen hinweg. Dieser Kurs erklärt endlich, wie das geht." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ein Szenario, das jedem passiert: Du hast ein tolles KI-Gespräch, das genau die Ausgabe produziert, die du brauchst. Eine Woche später brauchst du etwas Ähnliches. Du erinnerst dich nicht, was du gesagt hast. Du versuchst es nachzubauen. Die Ergebnisse sind schlechter.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Komplexe KI-Projekte erzeugen viele Artefakte — Prompts die funktioniert haben, Ausgaben die gut waren, Entscheidungen die getroffen wurden, Ansätze die gescheitert sind. Ohne ein System, um das zu tracken, wirst du Stunden damit verschwenden, Dinge wiederzuentdecken, die du schon herausgefunden hattest.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Professionelle Entwickler nutzen Versionskontrolle (wie Git), um jede Änderung in ihrer Codebasis zu verfolgen. Du solltest dieselbe Denkweise auf deine KI-Arbeit anwenden:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
-        {[
-          { icon: '01', title: 'Speichere deine Prompts', desc: 'Wenn ein Prompt tolle Ergebnisse liefert, speichere ihn irgendwo. Eine Notiz-App, eine Markdown-Datei, eine Prompt-Bibliothek. Der genaue Wortlaut zählt.' },
-          { icon: '02', title: 'Speichere die Ausgaben', desc: 'Behalte die KI-generierten Artefakte, auf denen du aufbaust. Datenbankschemata, API-Designs, Gliederungen. Das sind deine Übergabedokumente, und du wirst sie wieder brauchen.' },
-          { icon: '03', title: 'Dokumentiere deine Entscheidungen', desc: 'Wenn du und die KI zwei Ansätze erkundet und einen gewählt habt, schreib auf warum. Dein zukünftiges Ich wird deinem jetzigen Ich danken, wenn das Projekt die Richtung wechselt.' },
-          { icon: '04', title: 'Verfolge, was fehlgeschlagen ist', desc: 'Ein Prompt, der Müll produziert hat, ist wertvolle Information. Zu wissen, was nicht funktioniert, ist die halbe Miete. Führe ein „Fehler-Log", damit du Fehler nicht wiederholst.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
-                {item.icon}
-              </span>
-              <div>
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.6}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Deine Prompt-Bibliothek ist wie das Übungsheft eines Musikers. Je mehr du sammelst, desto schneller wirst du, und desto seltener fängst du bei null an.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Du bist vom Ein-Prompt-Denken zu Zerlegung, Übergabe-Mustern und Kontextpacken gegangen. Komplexe Projekte sind nicht mehr beängstigend &mdash; sie sind nur eine Serie fokussierter Gespräche, verbunden durch klare Artefakte.
-      </p>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        Komplexe Projekte sind nicht beängstigend. Sie sind nur eine Reihe fokussierter Unterhaltungen, verbunden durch präzise Artefakte.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Es gibt noch eine Fähigkeit, die wichtiger ist als all das: zu erkennen, wenn KI <em>falsch liegt</em>. Halluzinationen, Schmeichelei und die Verifizierungsgewohnheiten, die dich ehrlich halten. Das kommt als Nächstes.
+        Als Nächstes: erkennen, wann KI <em>falsch liegt</em>. Halluzinationen, Gefälligkeitsantworten und die Überprüfungsgewohnheiten, die dich ehrlich halten.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(15,52,96,0.06) 15%, rgba(15,52,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0F3460" toolName="Complexity Score" client:visible>
+        <ComplexityScore client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

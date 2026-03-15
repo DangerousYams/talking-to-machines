@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -22,7 +22,7 @@ const chapter = chapters[6];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chương Bảy
+          Chương bảy
         </p>
       </FadeInBlock>
 
@@ -37,7 +37,7 @@ const chapter = chapters[6];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Đồng đội lập trình AI của bạn, từ lệnh đầu tiên<br />đến Skill tùy chỉnh.
+          Đồng đội lập trình AI của bạn, từ lệnh<br />đầu tiên đến Skill tùy chỉnh.
         </p>
       </FadeInBlock>
     </div>
@@ -47,22 +47,16 @@ const chapter = chapters[6];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Có một khoảnh khắc mà mọi lập trình viên đều nhớ. Bạn mở terminal, gõ yêu cầu bằng ngôn ngữ tự nhiên, và xem AI đọc file, hiểu kiến trúc, viết code xuyên nhiều file, chạy thử, gặp lỗi, sửa lỗi, và chạy lại — tất cả mà bạn không chạm vào một dòng nào. Đó là Claude Code.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Có một khoảnh khắc mà mọi lập trình viên đều nhớ. Bạn mở terminal, gõ yêu cầu bằng ngôn ngữ tự nhiên, và xem AI đọc file, hiểu kiến trúc, viết code xuyên nhiều file, chạy thử, gặp lỗi, sửa lỗi, và chạy lại — tất cả mà bạn không chạm vào một dòng nào. Claude Code không phải autocomplete. Nó là công cụ lập trình <em>agentic</em> có thể thấy toàn bộ dự án, thay đổi xuyên file, chạy lệnh shell, và tự sửa lỗi.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Nó không phải autocomplete. Không phải chatbot viết đoạn code ngắn. Claude Code là công cụ lập trình <em>agentic</em> — đối tác dòng lệnh có thể thấy toàn bộ dự án, thay đổi xuyên file, chạy lệnh shell, và tự sửa lỗi. Nó không chỉ gợi ý code. Nó <strong>ship</strong> code.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
+      <p class="text-lg leading-[1.85] mt-8">
         Tuy nhiên, công cụ chỉ giỏi bằng người điều khiển. Claude Code có thể viết một nghìn dòng code hoàn hảo trong vài giây — hoặc một nghìn dòng rác trông hợp lý. Sự khác biệt là bạn.
       </p>
     </FadeInBlock>
@@ -70,208 +64,7 @@ const chapter = chapters[6];
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Claude Code suy nghĩ thế nào
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi bạn giao nhiệm vụ cho Claude Code, nó không chỉ bắt đầu gõ. Nó chạy agent loop từ Chương 6, chuyên biệt cho code:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Đọc.', desc: 'Quét codebase — file, import, test, config. Hiểu cái gì đã tồn tại.' },
-          { word: 'Lên kế hoạch.', desc: 'Quyết định thay đổi gì, ở file nào, theo thứ tự nào.' },
-          { word: 'Viết.', desc: 'Thực hiện sửa đổi. Tạo file. Thay đổi code.' },
-          { word: 'Chạy.', desc: 'Thực thi lệnh — build, test, lint. Xem kết quả.' },
-          { word: 'Sửa.', desc: 'Nếu có gì hỏng, đọc lỗi, điều chỉnh, và thử lại.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Vòng lặp đọc-lên kế hoạch-viết-chạy-sửa này là thứ khiến Claude Code khác với trình tạo code đơn giản. Nó không đưa bạn đoạn code rồi bỏ đi. Nó <em>ở lại trong vòng lặp</em> — lặp cho đến khi code thực sự chạy.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Nghĩ như pair programming. Bạn mô tả muốn gì. Claude Code viết. Test fail. Claude Code đọc lỗi, điều chỉnh, chạy lại. Chu kỳ này có thể xảy ra ba, năm, mười lần — tất cả trong vài giây.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Xem vòng lặp hoạt động. Gõ yêu cầu và xem Claude Code làm việc.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        File CLAUDE.md
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đa số người mới bỏ qua điều này: <strong>bạn có thể cho Claude Code chỉ thị vĩnh viễn.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Tạo file tên <code>CLAUDE.md</code> ở thư mục gốc dự án, và Claude Code đọc nó ngay đầu mỗi phiên làm việc. Giống system prompt, nhưng cho cả codebase.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # Dự án của tôi<br /><br />
-          Tech stack: Astro + React + Tailwind<br />
-          Luôn dùng TypeScript với strict mode.<br />
-          Đặt component trong src/components/.<br />
-          Viết test cho mọi hàm mới.<br />
-          Dùng Prettier formatting — không bao giờ thay đổi config.<br /><br />
-          ## Quy tắc phong cách<br />
-          - Ưu tiên named export hơn default export<br />
-          - Dùng CSS modules, không dùng inline styles<br />
-          - Giữ component dưới 150 dòng
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Không có CLAUDE.md, bạn mất vài phút đầu mỗi phiên giải thích lại sở thích. Có nó, Claude Code đã biết stack, quy ước, và ranh giới của bạn. Đó là context engineering (Chương 3) áp dụng cho lập trình.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Nghĩ CLAUDE.md như hiến pháp dự án.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Nó mã hóa những quyết định bạn đã đưa ra — để AI tập trung vào những quyết định thực sự mới. CLAUDE.md càng cụ thể, bạn càng ít phải lặp lại.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Xây dựng Skill
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        CLAUDE.md cho Claude Code kiến thức chung về dự án. Nhưng với nhiệm vụ cụ thể, lặp đi lặp lại? Đó là lúc <strong>Skill</strong> phát huy.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Skill là bộ chỉ dẫn trong CLAUDE.md dạy Claude Code cách xử lý một loại nhiệm vụ cụ thể. Nghĩ như công thức nấu ăn: "Khi ai đó yêu cầu tạo React component mới, đây là cách làm chính xác."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Không có skill, bạn giải thích cùng bước mỗi lần. Có skill, bạn giải thích một lần và AI nhớ mãi.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Một skill tốt có ba phần:
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'T', name: 'Trigger', color: '#7B61FF', text: 'Khi nào skill này kích hoạt? "Khi được yêu cầu tạo component..." hoặc "Khi sửa test thất bại..." Trigger rõ ràng ngăn AI dùng sai công thức.' },
-        { letter: 'S', name: 'Các bước', color: '#16C79A', text: 'Cụ thể cần làm gì, theo thứ tự nào? Bước đánh số hiệu quả nhất. Cụ thể về vị trí file, quy ước đặt tên, và pattern bắt buộc.' },
-        { letter: 'E', name: 'Ví dụ', color: '#F5A623', text: 'Cho xem kết quả thành công trông thế nào. Trước-sau, cấu trúc file mẫu, hoặc đầu ra mẫu. Sự mơ hồ chết trong ánh sáng của ví dụ.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Thử viết một cái. Xây skill từ trigger đến các bước đến ví dụ.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
@@ -281,80 +74,14 @@ const chapter = chapters[6];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi làm việc với Claude Code, vai trò của bạn thay đổi. Bạn không còn là người viết mọi dòng. Bạn là người <strong>chỉ định</strong> cần xây gì, để AI <strong>tạo</strong> ra, rồi <strong>kiểm tra</strong> xem nó có thực sự đúng không.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Vòng lặp này — chỉ định, tạo, kiểm tra — là quy trình cơ bản:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Khi bạn giao nhiệm vụ cho Claude Code, nó chạy agent loop: đọc codebase, lên kế hoạch thay đổi, viết sửa đổi, chạy code, sửa lỗi. Nó có thể lặp qua vòng đó ba, năm, mười lần — tất cả trong vài giây. Vai trò của bạn không còn là viết mọi dòng nữa. Mà là <strong>chỉ định</strong> cần xây gì, để AI <strong>tạo</strong> ra, rồi <strong>kiểm tra</strong> xem nó có thực sự đúng không. Đa số người mới bỏ qua bước cuối. Họ thấy code xuất hiện, trông hợp lý, rồi chuyển sang việc khác. Đừng như vậy. Code được tạo tự động là bản nháp đầu tiên. Việc kiểm tra của bạn mới là lần chỉnh sửa biến nó thành thứ xuất bản được.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: 'Chỉ định', desc: 'Cụ thể về mong muốn. Yêu cầu càng rõ, thời gian sửa đầu ra càng ít. Bao gồm edge case, vị trí file, và hành vi mong đợi.', color: '#7B61FF' },
-          { step: '02', title: 'Tạo', desc: 'Để Claude Code làm việc. Xem agent loop — đọc, lên kế hoạch, viết, chạy, sửa. Đừng ngắt giữa chừng.', color: '#0EA5E9' },
-          { step: '03', title: 'Kiểm tra', desc: 'Đây là việc quan trọng nhất của bạn. Đọc code. Chạy test. Kiểm tra edge case. Nó có thực sự làm đúng yêu cầu không? Code này bạn có dám ký tên không?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đa số người mới bỏ qua bước ba. Họ thấy code xuất hiện, trông hợp lý, và chuyển sang việc khác. Đừng làm vậy. <strong>Code được tạo tự động là bản nháp đầu tiên.</strong> Việc kiểm tra của bạn mới là lần chỉnh sửa biến nó thành thứ xuất bản được.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Trớ trêu thay? AI tạo code càng nhanh, việc kiểm tra của bạn càng <em>quan trọng</em>. Tốc độ không có phán đoán chỉ là mắc lỗi nhanh hơn.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Nghịch lý kỹ năng
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đây là sự thật khó chịu về lập trình với AI: <strong>bạn cần biết đủ để đánh giá đầu ra, dù không phải tự viết.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Nếu bạn không đọc được code Claude tạo ra, bạn không kiểm tra được nó. Nếu không kiểm tra được, bạn đang ship phỏng đoán của người khác lên production.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Điều này tạo ra nghịch lý: công cụ giúp người mới viết code cũng đòi hỏi đủ kiến thức để đánh giá code đó. Cách vượt qua? Dùng Claude Code <em>để học</em>, không chỉ để sản xuất.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi Claude Code viết gì bạn không hiểu, đừng chấp nhận luôn. Hỏi: "Giải thích code này làm gì và tại sao bạn chọn cách tiếp cận này." Dùng AI làm gia sư, không chỉ làm thư ký đánh máy.
+      <p class="text-lg leading-[1.85] mb-14">
+        Vũ khí bí mật là file <code>CLAUDE.md</code> — đặt nó ở thư mục gốc dự án và Claude Code đọc nó ngay đầu mỗi phiên làm việc. Tech stack, quy ước đặt tên, quy tắc phong cách, yêu cầu test — tất cả được mã hóa một lần để bạn không bao giờ phải lặp lại. Đó là context engineering áp dụng cho lập trình.
       </p>
     </FadeInBlock>
 
@@ -362,36 +89,36 @@ const chapter = chapters[6];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Mục tiêu không phải viết mọi dòng — mà là hiểu mọi dòng.</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Người dùng Claude Code giỏi nhất không phải người tạo nhiều code nhất. Họ là người đặt câu hỏi hay nhất và bắt lỗi tinh tế nhất. Kiến thức của bạn là bộ lọc chất lượng.
+          Nếu bạn không đọc được code Claude tạo ra, bạn không kiểm tra được nó. Người dùng Claude Code giỏi nhất không phải người tạo nhiều code nhất — họ là người đặt câu hỏi hay nhất và bắt lỗi tinh tế nhất.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO REFACTOR RACE -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Bạn vs. Claude Code. Cùng code lộn xộn, cùng mục tiêu. Ai refactor tốt hơn?
+        Xem vòng lặp hoạt động. Gõ yêu cầu và xem Claude Code làm việc.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CLOSING ═══ -->
+  <SharePrompt text="Chương về Claude Code này thật kinh ngạc — xem AI pair programmer suy nghĩ qua vấn đề, viết code, và tự debug. Tương lai lập trình đã ở đây." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Bạn đã có CLAUDE.md, Skill tùy chỉnh, và nhịp chỉ định-tạo-kiểm tra. Claude Code không viết code <em>thay</em> bạn &mdash; nó viết code <em>cùng</em> bạn.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code không viết code thay bạn — nó viết code cùng bạn.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
@@ -399,6 +126,15 @@ const chapter = chapters[6];
         Một cuộc trò chuyện xử lý được một nhiệm vụ. Nhưng dự án thực có hàng chục. Tiếp theo: cách chia tham vọng lớn thành mảnh AI có thể thực hiện.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

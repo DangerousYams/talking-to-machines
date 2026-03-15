@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -42,258 +42,93 @@ const chapter = chapters[8];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        有件事挺让人不舒服的：刚刚帮你写了一篇完美论文的 AI，也能用同样自信的语气告诉你拿破仑赢了滑铁卢战役。它不会犹豫，不会结巴，会用和所有其他回答一模一样的权威语气，陈述一个完全编造的"事实"。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        这就是使用 AI 的核心悖论：<strong>让它好用的那种流畅感，同时也让它变得危险。</strong>AI 不知道什么是真的。它只知道什么听起来像真的。这两件事差得非常、非常远。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        这一章是关于培养你的"扯淡探测器"的。不是因为 AI 不好，而是因为<em>盲目信任它</em>才是问题所在。从 AI 中获取最大价值的人，恰恰是那些学会了何时该信、何时该验证的人。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        刚帮你写了一篇完美论文的那个 AI，同样可以用完全一样的自信语气告诉你拿破仑赢得了滑铁卢之战。它不会犹豫。不会结巴。它会用跟其他一切内容同样权威的语气，说出一个完全编造的"事实"。这就是使用 AI 的核心悖论：<strong>让它有用的那种流畅度，也让它变得危险。</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        幻觉问题
+        合理不等于真实
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        在 AI 领域，<strong>幻觉</strong>是指模型生成了听起来合理但实际上是错误的——甚至是完全编造的信息。而且这种情况比你想象的要频繁得多。
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        AI 模型不是从数据库里检索事实。它们预测下一个最可能出现的词。当你问一些真实存在的东西时，训练数据会引导它们给出正确的信息。当你问不存在的东西时，模型不会说"我不知道"。它会生成一个正确答案<em>应该长什么样</em>的内容——包括名字、日期和引用。全是编造的。
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">示例</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>你：</strong>"谁写了 1987 年的小说《记忆之沙》？"<br /><br />
-          <strong>AI：</strong>"《记忆之沙》（1987）由英国作家 Margaret Thornton 所写。这部作品探讨了战后东非的殖民主义和身份认同。Thornton 凭借此作获得了布克奖提名。"
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        听起来很正经，对吧？有作者名，有年份，有主题，甚至有奖项提名。<strong>但这些全是假的。</strong>这本书根本不存在。Margaret Thornton（在这个语境下）也不存在。AI 编造了一切——而且让它听起来跟真实答案一模一样。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        为什么会这样？因为 AI 模型不是从数据库里检索事实，而是<em>预测下一个最可能的 token</em>。当你问一本真实存在的书时，训练数据中的模式会引导它给出正确的信息。但当你问的东西根本不存在时，模型不会说"我不知道"，而是会生成一个正确答案<em>应该长什么样</em>的内容。
+      <p class="text-lg leading-[1.85] mb-14">
+        AI 听起来有多自信和它实际有多准确之间没有任何关联。错误的答案和正确的答案从外表上看完全一样。你不能根据语气、细节程度、或者 AI 列出了多少具体数字来判断准确性。"听起来对"这个测试毫无价值。你唯一的防线是验证。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI 没有"真实"的概念。它只有<em>合理性</em>的概念。它生成的是符合模式的文本——不管这些文本是否对应现实。
+          AI 没有真相的概念。它有的是<em>合理性</em>的概念。它生成符合模式的文本——不管那些文本是否对应现实。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        没有能力的自信
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI 幻觉最棘手的地方不在于它会发生，而在于<strong>AI 从不表现出不确定。</strong>一个不确定的人会犹豫、会留余地，会说"我觉得……"或"我不太确定，但是……"。AI 用编造事实时的语气，和它陈述公认事实时的语气，完全一样自信。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI 听起来多自信和它实际上多准确之间，完全没有关联。从外表来看，一个错误的答案和一个正确的答案长得一模一样。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这就是为什么"听起来对"这个检验标准毫无用处。你无法通过语气、细节、具体的数字或人名来判断准确性。这些东西全都可以是——而且经常是——完全编造的。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        可以这样理解：AI 就像一个非常有说服力的演员，读过几千个剧本。它可以用完美的信念感说出任何台词——但信念感不等于知识。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        测试一下你的探测器。你能分辨出 AI 的哪些说法是真的，哪些是编造的吗？
+        测试你的探测器。你能分辨哪些 AI 的说法是真的、哪些是编造的吗？
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        应声虫问题
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="每个 AI 用户都需要这一章。它教你 AI 到底怎么产生幻觉、为什么会附和错误答案、以及怎么识破它。超级实用。" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        还有一种比幻觉更隐蔽的失败模式：<strong>讨好行为（sycophancy）。</strong>AI 倾向于附和你，即使你是错的。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        如果你说"爱因斯坦发明了灯泡，对吧？"大多数 AI 模型不会直接纠正你。相反，它们会想办法部分同意——通过他在物理学上的工作把爱因斯坦和光联系起来，绕着你的错误说法打转，让你感到被认同而不是被教育。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        为什么？因为 AI 模型是通过人类反馈训练的，而人类对令人感到舒服和被认可的回答会给高分。经过数百万个训练样本后，模型学到了：<em>附和会获得奖励。</em>所以它就附和了——哪怕不应该这样。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>这很危险</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          如果你只用 AI 来确认你已经相信的东西，它会很乐意照做。你会觉得自己更聪明了，实际上却在变笨。使用 AI 最有力的方式，是让它挑战你的假设——而不是强化它们。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        来看看实际效果。给 AI 一个错误的说法，看看它是会反驳还是附和。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        培养你的验证习惯
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        目标不是不信任 AI 告诉你的一切。而是养成一套自动检查机制——一种验证反射——在你根据 AI 生成的信息采取行动之前自动启动。
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: '我能验证这个吗？', color: '#E94560', text: '对于任何事实性声明，问问自己：我能用独立的信息源来核实吗？如果 AI 引用了一项研究，找到它。如果它提到了一个日期，确认它。如果它引用了某人的话，查找原始引述。不要照单全收引用——AI 经常编造来源。' },
-        { letter: '2', name: '我要求提供来源了吗？', color: '#0F3460', text: '明确要求 AI 提供来源，然后核实这些来源。你会发现有时它们是真的，有时是接近但不对的（作者对了，论文不对），有时完全是编造的。核实的过程本身就在训练你的直觉。' },
-        { letter: '3', name: '这通过常识检验了吗？', color: '#7B61FF', text: '退后一步想想：这个说法合理吗？AI 可以生成听起来合理但经不起 5 秒思考的废话。相信你的直觉——然后不管怎样还是去验证。' },
-        { letter: '4', name: '这是高风险领域吗？', color: '#F5A623', text: '医疗建议、法律指导、财务决策、任何涉及安全的事情——这些都需要额外验证。AI 适合用来头脑风暴和写初稿，但关键决策应该始终由合格的专业人士来验证。' },
-        { letter: '5', name: '我的提问方式中立吗？', color: '#16C79A', text: '如果你在问题中嵌入了自己的观点，AI 会把它原样反射回来。提出开放性问题。问"X 的正反两面论点是什么？"而不是"为什么 X 是最好的方法？"你会得到更诚实、更有用的答案。' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>这不是在怀疑 AI。这是在正确地使用它。</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          专业记者会核实引述。科学家会重复实验。工程师会在通车前测试桥梁。验证 AI 的输出不是偏执——是专业素养。那些去验证的人，才是真正能做出有用成果的人。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        现在你有了一个扯淡探测器：你能识别幻觉、抵抗讨好行为、在信任之前先验证。这个习惯比任何花哨的提示词技巧都更能帮到你。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        从 AI 身上获得最大价值的人，是那些学会了什么时候信任它、什么时候验证它的人。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        知道 AI 什么时候会出错，引出了一个更大的问题：有什么是它<em>永远</em>做不到的？接下来，我们来探索那些顽固地、美妙地属于人类的技能——以及为什么它们比以往任何时候都更重要。
+        知道 AI 什么时候会错，引出了一个更大的问题：它<em>永远</em>做不到什么？接下来，我们探索那些顽固地、美丽地属于人类的技能——以及为什么它们比以往任何时候都重要。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

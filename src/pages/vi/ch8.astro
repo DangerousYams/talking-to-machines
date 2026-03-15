@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
 import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import ComplexityScore from '../../components/breaks/ComplexityScore';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[7];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[7];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>8</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chương Tám
+          Chương tám
         </p>
       </FadeInBlock>
 
@@ -42,209 +42,23 @@ const chapter = chapters[7];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Đây là khoảnh khắc mà mọi người mới bắt đầu đầy tham vọng đều gặp phải: bạn yêu cầu AI xây dựng thứ gì đó thật sự — một game hoàn chỉnh, một website có backend, một bài nghiên cứu có trích dẫn — và mọi thứ sụp đổ. Không phải vì AI không đủ thông minh. Mà vì dự án quá lớn cho một cuộc hội thoại đơn lẻ.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Đây là khoảnh khắc mà mọi người mới đầy tham vọng đều gặp phải: bạn yêu cầu AI xây thứ gì đó thật sự — một game hoàn chỉnh, một website có backend, một bài nghiên cứu có trích dẫn — và mọi thứ sụp đổ. Không phải vì AI không đủ thông minh. Mà vì dự án quá lớn cho một cuộc trò chuyện đơn lẻ. Bạn paste một bức tường yêu cầu vào và hai mươi phút sau nhận ra nó quên một nửa những gì bạn yêu cầu.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Bạn paste một bức tường yêu cầu vào, AI đưa ra câu trả lời nghe rất tự tin, và hai mươi phút sau bạn nhận ra nó quên một nửa những gì bạn yêu cầu, tự mâu thuẫn về kiến trúc, và hallucinate một thư viện không tồn tại. Bạn thử lại. Kết quả tương tự, hallucination khác.
+      <p class="text-lg leading-[1.85] mt-8">
+        Đây không phải vấn đề của AI. Đây là vấn đề <strong>điều phối</strong>. Và học cách giải quyết nó là sự khác biệt giữa người dùng AI cho tác vụ lẻ tẻ và người dùng nó để xây thứ thật sự.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Đây không phải vấn đề của AI. Đây là vấn đề <strong>điều phối</strong>. Và học cách giải quyết nó là sự khác biệt giữa người dùng AI cho các tác vụ lẻ tẻ và người dùng nó để xây dựng thứ thật sự.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Cái bẫy một-prompt
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi bạn mới học dùng AI, bạn tự nhiên cố làm mọi thứ trong một lần. Một prompt khổng lồ. Một cuộc hội thoại. Một lần thử. Và cho các tác vụ đơn giản — viết email, brainstorm ý tưởng, giải thích một khái niệm — điều đó hoạt động tốt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Nhưng sự phức tạp phá vỡ cách tiếp cận một-prompt theo ba cách:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { num: '1', title: 'Tràn context', text: 'AI chỉ có thể giữ một lượng thông tin nhất định cùng lúc. Một dự án hoàn chỉnh vượt quá giới hạn đó, nên AI bắt đầu "quên" các yêu cầu trước đó của bạn.' },
-          { num: '2', title: 'Phân tán sự chú ý', text: 'Ngay cả trong context window, yêu cầu AI xử lý cùng lúc mười hai vấn đề khác nhau có nghĩa là mỗi vấn đề nhận được ít sự tập trung hơn. Chất lượng giảm toàn diện.' },
-          { num: '3', title: 'Lỗi chồng lỗi', text: 'Một sai lầm nhỏ trong output phức tạp sẽ lan rộng. Nếu AI thiết kế sai database schema, mọi thứ xây trên schema đó đều sai — và rất khó phát hiện khi chìm trong một bức tường code được tạo ra.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
-            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
-              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
-                {item.num}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Giải pháp không phải là một prompt tốt hơn. Mà là một quy trình tốt hơn.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DECOMPOSITION: THE MASTER SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Phân rã: kỹ năng bậc thầy
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Các lập trình viên chuyên nghiệp không xây dựng toàn bộ ứng dụng trong một lần ngồi. Họ chia chúng thành các phần — module, component, function — mỗi phần có mục đích rõ ràng, đầu vào rõ ràng, và đầu ra rõ ràng. Sau đó họ lắp ráp chúng lại.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Làm việc với AI trong các dự án phức tạp đòi hỏi cùng một kỷ luật. Bạn cần <strong>phân rã</strong> dự án thành các tác vụ đủ nhỏ để một cuộc hội thoại AI tập trung duy nhất có thể xử lý tốt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Phân rã tốt tuân theo ba quy tắc:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Trách nhiệm đơn lẻ.', desc: 'Mỗi tác vụ làm một việc. "Thiết kế database VÀ xây API VÀ viết frontend" là ba tác vụ, không phải một.' },
-          { word: 'Giao diện rõ ràng.', desc: 'Mỗi tác vụ có đầu vào được định nghĩa (cái nó cần để bắt đầu) và đầu ra được định nghĩa (cái nó tạo ra). Đầu ra của tác vụ này trở thành đầu vào của tác vụ kế tiếp.' },
-          { word: 'Phụ thuộc tối thiểu.', desc: 'Các tác vụ có thể làm song song thì nên làm song song. Chỉ tạo phụ thuộc khi một tác vụ thực sự cần đầu ra của tác vụ khác.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Phân rã là kỹ năng của con người, không phải kỹ năng của AI.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI có thể giúp bạn brainstorm cách phân chia công việc, nhưng quyết định chia công việc như thế nào, cái gì phụ thuộc vào cái gì, và ưu tiên cái gì — đó là việc của bạn. Đó là quản lý dự án, và đó là một trong những kỹ năng giá trị nhất bạn có thể phát triển.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Thử phân rã một dự án thực tế. Kéo các tác vụ, theo dõi phụ thuộc, xem kế hoạch hình thành.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectOrchestrator client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE HANDOFF PATTERN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Mô hình chuyển giao
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Khi bạn đã chia dự án thành các tác vụ, bạn cần cách kết nối chúng. Trong quy trình AI, kết nối này là <strong>chuyển giao</strong> — khoảnh khắc đầu ra của một cuộc hội thoại trở thành đầu vào của cuộc hội thoại kế tiếp.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mô hình chuyển giao</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          Cuộc hội thoại 1 tạo ra một <strong>artifact</strong> — một tài liệu, một schema, một kế hoạch.<br />
-          Artifact đó được paste vào Cuộc hội thoại 2 như <strong>context</strong>.<br />
-          Cuộc hội thoại 2 xây dựng trên đó và tạo ra artifact tiếp theo.<br />
-          Lặp lại cho đến khi dự án hoàn thành.
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hãy nghĩ nó như một cuộc chạy tiếp sức. Mỗi vận động viên (cuộc hội thoại) chạy phần của mình và chuyển gậy tiếp sức (artifact) cho người kế tiếp. Cây gậy là phần quan trọng nhất — nếu nó bị rơi hoặc méo mó, người chạy kế tiếp sẽ vấp.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Điều này có nghĩa là các artifact chuyển giao của bạn cần phải <em>sắc nét</em>. Một database schema là bản chuyển giao tốt hơn so với một mô tả mơ hồ về data model. Một danh sách đánh số các API endpoint tốt hơn so với "tôi cần một backend xử lý mấy thứ của user." Artifact càng sắc nét, cuộc hội thoại tiếp theo hoạt động càng tốt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chất lượng artifact chuyển giao quyết định chất lượng mọi thứ được xây dựng phía sau. Rác vào, rác ra — xuyên suốt các cuộc hội thoại.
-      </div>
     </FadeInBlock>
   </section>
 
@@ -260,55 +74,28 @@ const chapter = chapters[7];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Mỗi lần bạn bắt đầu một cuộc hội thoại AI mới, bạn đang đưa ra một quyết định mà hầu hết mọi người thậm chí không nhận ra: <strong>bạn đưa vào context nào?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Bạn có một ngân sách giới hạn — context window. Và bạn có một đống thông tin có thể liên quan: file code, tài liệu, các cuộc hội thoại trước, log lỗi, bản thiết kế. Không phải tất cả đều vừa. Và ngay cả nếu vừa, đổ hết mọi thứ vào sẽ pha loãng sự chú ý của AI.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Dự án phức tạp phá vỡ cách tiếp cận một-prompt. Context tràn, sự chú ý phân tán, lỗi chồng lỗi. Giải pháp không phải prompt tốt hơn — mà là <strong>phân rã</strong>. Chia dự án thành các tác vụ tập trung, rồi cho mỗi tác vụ, chọn kỹ context mà AI thực sự cần. Quá ít thì AI sẽ hallucinate. Quá nhiều thì nó mất tập trung. Điểm ngọt là sự chính xác phẫu thuật.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đóng gói context giống như xếp vali cho chuyến đi. Bạn không thể mang cả tủ quần áo. Bạn cần nghĩ về nơi bạn đến (tác vụ), thứ bạn sẽ cần (thông tin liên quan), và thứ bạn có thể bỏ lại (mọi thứ khác).
+      <p class="text-lg leading-[1.85] mb-14">
+        Hãy nghĩ như xếp vali. Bạn không thể mang cả tủ quần áo. Bạn cần nghĩ về nơi bạn đến (tác vụ), thứ bạn sẽ cần (thông tin liên quan), và thứ bạn có thể bỏ lại (mọi thứ khác). Mỗi cuộc trò chuyện nhận được đúng context nó cần — không hơn, không kém.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
-        {[
-          { label: 'Quá ít context', color: '#E94560', text: 'AI không có cái nó cần và lấp đầy khoảng trống bằng hallucination. Nó nghe tự tin nhưng bịa ra chi tiết.' },
-          { label: 'Quá nhiều context', color: '#F5A623', text: 'AI bị quá tải. Các chi tiết quan trọng bị mất trong đống nhiễu. Output trở nên chung chung và không tập trung.' },
-          { label: 'Context vừa đủ', color: '#16C79A', text: 'AI có chính xác cái nó cần cho tác vụ cụ thể này. Output chính xác, liên quan, và có thể hành động.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
-              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
-                {item.label}
-              </p>
-              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Hãy nghĩ như biên tập viên, không phải người tích trữ.</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Trước mỗi lần tương tác với AI, hãy tự hỏi: AI <em>cần biết gì</em> để làm tác vụ cụ thể này? Đưa cái đó vào. Bỏ hết mọi thứ khác. Đây là context engineering ứng dụng vào quản lý dự án.
+          Chất lượng tài liệu chuyển giao quyết định chất lượng mọi thứ được xây dựng phía sau. Một schema rõ ràng luôn thắng một mô tả mơ hồ. Rác vào, rác ra — xuyên suốt các cuộc trò chuyện.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO CONTEXT PACKING -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -317,92 +104,37 @@ const chapter = chapters[7];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextPacking client:visible />
-    </FadeInBlock>
+    <ContextPacking client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Theo dõi những gì hiệu quả
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Phần khó nhất của AI không phải prompting — mà là điều phối dự án phức tạp xuyên nhiều cuộc trò chuyện. Khóa học này cuối cùng cũng giải thích cách làm." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Đây là tình huống xảy ra với tất cả mọi người: bạn có một cuộc hội thoại AI tuyệt vời tạo ra chính xác output bạn cần. Một tuần sau, bạn cần thứ tương tự. Bạn không nhớ mình đã nói gì. Bạn cố tái tạo lại. Kết quả tệ hơn.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Các dự án AI phức tạp tạo ra rất nhiều artifact — prompt hiệu quả, output tốt, quyết định đã được đưa ra, cách tiếp cận đã thất bại. Không có hệ thống theo dõi, bạn sẽ lãng phí hàng giờ để tái khám phá những thứ bạn đã tìm ra rồi.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Các lập trình viên chuyên nghiệp dùng version control (như Git) để theo dõi mọi thay đổi trong codebase. Bạn nên áp dụng cùng tư duy đó cho công việc AI:
-      </p>
-    </FadeInBlock>
-
-    <!-- Tracking habits list -->
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
-        {[
-          { icon: '01', title: 'Lưu prompt của bạn', desc: 'Khi một prompt tạo ra output tuyệt vời, lưu nó ở đâu đó. Ứng dụng ghi chú đơn giản, file markdown, thư viện prompt. Từ ngữ chính xác rất quan trọng.' },
-          { icon: '02', title: 'Lưu các output', desc: 'Giữ lại các artifact do AI tạo ra mà bạn xây dựng trên đó. Database schema, thiết kế API, dàn bài. Đây là tài liệu chuyển giao và bạn sẽ cần chúng lần nữa.' },
-          { icon: '03', title: 'Ghi lại quyết định', desc: 'Khi bạn và AI khám phá hai cách tiếp cận và chọn một, viết lại lý do tại sao. Bạn-trong-tương-lai sẽ cảm ơn bạn-hiện-tại khi dự án thay đổi hướng.' },
-          { icon: '04', title: 'Theo dõi cái thất bại', desc: 'Một prompt tạo ra rác là thông tin quý giá. Biết cái không hoạt động là một nửa trận chiến. Giữ một "nhật ký thất bại" để bạn không lặp lại sai lầm.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
-                {item.icon}
-              </span>
-              <div>
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.6}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Thư viện prompt của bạn giống như sổ tay luyện tập của nhạc sĩ. Bạn thu thập càng nhiều, bạn càng nhanh, và bạn càng ít bắt đầu từ con số không.
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Bạn đã đi từ tư duy một-prompt đến phân rã, mô hình chuyển giao, và đóng gói context. Các dự án phức tạp không còn đáng sợ nữa &mdash; chúng chỉ là một chuỗi cuộc hội thoại tập trung được kết nối bởi các artifact sắc nét.
-      </p>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        Dự án phức tạp không đáng sợ. Chúng chỉ là một chuỗi cuộc trò chuyện tập trung được kết nối bởi tài liệu chuyển giao rõ ràng.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Còn một kỹ năng nữa quan trọng hơn tất cả những điều này: biết khi nào AI <em>sai</em>. Hallucination, xu nịnh, và thói quen kiểm chứng giữ bạn trung thực. Đó là phần tiếp theo.
+        Tiếp theo: biết khi nào AI <em>sai</em>. Hallucination, xu nịnh, và thói quen kiểm chứng giữ bạn trung thực.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(15,52,96,0.06) 15%, rgba(15,52,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0F3460" toolName="Complexity Score" client:visible>
+        <ComplexityScore client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

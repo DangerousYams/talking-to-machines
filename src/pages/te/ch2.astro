@@ -5,9 +5,10 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
 import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
-import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[1];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[1];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          రెండవ అధ్యాయం
+          రెండో అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -31,40 +31,27 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          అడిగే కళ
+          అడగడం<br />ఒక కళ
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          అత్యుత్తమ prompt అనేది AI<br />నిన్ను ప్రశ్నలు అడిగేలా చేసే ప్రశ్న.
+          అత్యుత్తమ prompt అంటే AI నిన్ను<br />ప్రశ్నలు అడిగేలా చేసే ప్రశ్న.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        గత అధ్యాయంలో, మీరు మంచి prompt యొక్క ఐదు building blocks నేర్చుకున్నారు — Role, Task, Format, Constraints, Examples. అదే foundation. కానీ ingredients తెలిసినంత మాత్రాన మిమ్మల్ని chef చేయదు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        ఈ అధ్యాయం <em>technique</em> గురించి. prompt type చేసే వాళ్ళకు prompt <em>craft</em> చేసే వాళ్ళకు మధ్య తేడా. ప్రశ్న అడగడానికి మరియు <strong>సరైన</strong> ప్రశ్న అడగడానికి మధ్య తేడా — నిజంగా ఉపయోగకరమైనది unlock చేసే ప్రశ్న.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        అత్యుత్తమ AI users అనేది ఆ topic పై experts కాకపోవచ్చు — <strong>వాళ్ళు అడగడంలో experts.</strong> మరియు అడగడం అనేది మీరు నేర్చుకోగలిగే skill.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        చాలా మంది AI ని vending machine లా వాడతారు. Prompt insert చేయి, answer receive చేయి. కానీ best results <em>conversations</em> నుండి వస్తాయి, commands నుండి కాదు. Prompt టైప్ చేసే వాళ్ళకి, prompt craft చేసే వాళ్ళకి మధ్య తేడా — అదే తేడా 2,400 సంవత్సరాలుగా గొప్ప ఆలోచనాపరులను నడిపిస్తోంది: సరైన ప్రశ్నలు అడగడం.
       </p>
     </FadeInBlock>
   </section>
@@ -75,351 +62,73 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Socratic Flip
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Socratic Flip
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాలా మంది AI ని vending machine లాగా use చేస్తారు. prompt insert చెయ్యండి, answer receive చెయ్యండి. కానీ best results <em>conversations</em> నుండి వస్తాయి, commands నుండి కాదు. మరియు అత్యంత powerful conversation technique 2,400 సంవత్సరాల నాటిది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Socrates ఎప్పుడూ ప్రశ్నకు direct గా answer ఇవ్వలేదు. అతను <em>మరిన్ని</em> ప్రశ్నలు అడుగుతూ వచ్చేవాడు — probing, clarifying, challenging — అతని students తమ స్వంత deeper understanding కు చేరుకునే వరకు. మీరు AI తో same approach use చేయవచ్చు, కానీ flipped గా.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Socrates ఎప్పుడూ ప్రశ్నకు directly answer ఇవ్వలేదు. తన students deeper understanding కి చేరుకునే వరకు <em>ఇంకా</em> ప్రశ్నలు అడిగేవాడు. AI తో కూడా అదే trick వాడవచ్చు, కానీ flipped గా: answer కోసం అడగడానికి బదులు, AI ని <em>నిన్ను</em> interview చేయమని అడుగు. నువ్వు "birthday party plan చెయ్" అని టైప్ చేసినప్పుడు, answer ని massively మార్చే డజన్ల details వదిలేస్తున్నావ్. AI కి అవి తెలియవు — కానీ అడగగలదు.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI ని answer అడగడానికి బదులుగా, AI ని మిమ్మల్ని interview చేయమని అడగండి. మీరు ఆలోచించడం మర్చిన clarifying questions ను అది అడుగనిండి.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఆలోచించండి: మీరు "plan a birthday party" అని type చేస్తే, మీరు answer ను massively change చేసే డజన్ల కొద్దీ details ను వదిలేస్తున్నారు. ఎంత మంది people? Budget ఎంత? Indoor లా outdoor లా? AI కి తెలియదు — కానీ అది అడగవచ్చు.
+      <p class="text-lg leading-[1.85] mb-14">
+        ఈ ఒక్క technique — ఎవరు ప్రశ్నలు అడుగుతారో flip చేయడం — AI ని answer machine నుండి <strong>thinking partner</strong> గా మారుస్తుంది. Probe చేయడానికి, clarify చేయడానికి, challenge చేయడానికి permission ఇవ్వు. ఐదు back-and-forth ప్రశ్నల తర్వాత output, single-shot command తో పోలిస్తే గుర్తుపట్టలేనంత మారుతుంది.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Socratic Prompt</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "నాకు birthday party plan చేయాలి. మీరు planning start చేసే ముందు, నా exact situation కు tailored చేసిన plan create చేయడానికి help చేసే 5 specific questions అడగండి. వాటిని ఒక్కొక్కటిగా అడిగి నా response కోసం wait చేయండి."
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Best AI users topic experts కాదు — వాళ్ళు అడగడంలో experts. నువ్వు అడగగలిగే అత్యంత powerful ప్రశ్న ఏంటంటే: "Answer ఇవ్వడానికి ముందు, నీకు ఏం తెలియాలి?"
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        ఈ ఒక్క technique — ఎవరు ప్రశ్నలు అడుగుతున్నారో flip చేయడం — మీరు చేయగలిగే అత్యంత powerful upgrades లో ఒకటి. ఇది AI ని answer machine నుండి <strong>thinking partner</strong> గా మారుస్తుంది.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        నువ్వే try చెయ్. ఒక goal చెప్పు — AI ఎలా script flip చేస్తుందో చూడు.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FlipTheScript client:visible />
-    </FadeInBlock>
+    <FlipTheScript client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        చూపించండి, చెప్పవద్దు
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="ఈ AI course prompting గురించి నా ఆలోచన విధానాన్నే మార్చేసింది. AI కి ఏం చేయాలో చెప్పడం కాదు, ముందు నిన్ను interview చేయమని అడుగు. Results రాత్రికి పగలు తేడా." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఊహించుకోండి మీరు ఒక friend కి ఒక style explain చేయడానికి try చేస్తున్నారు. మీరు దాన్ని words లో describe చేయడానికి ఐదు నిమిషాలు spend చేయవచ్చు — "నాకు playful కానీ childish కాకుండా, casual కానీ sloppy కాకుండా, short sentences మరియు unexpected comparisons తో కావాలి." లేదా మీరు వాళ్ళకు example చూపించవచ్చు: <em>"ఇలా రాయండి."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        అదే <strong>few-shot prompting</strong>. మీరు కోరుకున్నదాన్ని abstract లో describe చేయడానికి try చేయడానికి బదులుగా, మీరు AI కి concrete examples ఇస్తారు. ఒక example అంటే "one-shot" prompt. రెండు లేదా మూడు examples అంటే "few-shot." Zero examples — మీరు కోరుకున్నదాన్ని describe చేసే చోట — అది "zero-shot."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (describing)</span>
-        <p class="m-0" style="color: var(--color-deep);">"రన్నింగ్ షూస్ కోసం product description రాయండి. పంచీ మరియు conversational గా చేయండి, short sentences తో. Marketing clichés avoid చేయండి."</p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (showing)</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "CloudRunner X1 running shoe కోసం product description రాయండి. నాకు కావాలసిన style ఇదీ:<br /><br />
-          <em>Example: 'The Weekender Tote — మీ laptop, మీ lunch, మరియు మీ questionable life choices fit అవుతాయి. Water-resistant canvas ఎందుకంటే మేము తెలుసుకున్నాము మీరు ఏదో spill చేస్తారని. ఐదు pockets, వాటిలో దేనిని మీరు తర్వాత గుర్తుపట్టరు.'</em><br /><br />
-          ఈ tone match చేయండి: short sentences, self-aware humor, buzzwords కంటే specificity."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Few-shot version dramatically better results produce చేస్తుంది. AI "smarter" అయినందుకు కాదు — కానీ మీరు vague direction కంటే <strong>concrete target</strong> ఇచ్చినందుకు. ఒక మంచి example వంద words description కంటే worth.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ముఖ్య అంతర్దృష్టి</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI మీరు కోరుకున్న style match కాకపోతే, మరిన్ని adjectives add చేయవద్దు. Example add చేయండి. "ఇలా" అనేది "మరింత punchy కానీ warm కూడా కానీ చాలా casual కాకుండా" కంటే ప్రతిసారీ beats చేస్తుంది.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-    <FadeInBlock client:visible>
-      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
-        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
-          త్వరిత ప్రయోగం
-        </p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
-          మీరు ఇటీవల AI కి write చేయమని అడిగిన ఏదైనా ఆలోచించండి — email, story, social media post. ఇప్పుడు మీరు కోరుకున్న tone యొక్క ఒక concrete example include చేసి ఉంటే ఊహించండి. Output ఎలా change అయి ఉండేది?
-        </p>
-        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
-          దాన్ని మీ back pocket లో పెట్టుకోండి. కింది Prompt Laboratory దాన్ని నిజంగా test చేయడానికి అనుమతిస్తుంది.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CHAIN OF THOUGHT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        అడుగు అడుగున ఆలోచించు
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇదిగో wild ఏదో: మీరు AI ని math problem solve చేయమని అడిగితే, అది తప్పు చేయవచ్చు. కానీ మీరు దాన్ని <em>problem ను step by step solve చేయమని</em> అడిగితే, అది చాలా ఎక్కువ సార్లు సరిగ్గా చేస్తుంది. Answer అదే. Question వేరు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఈ technique ని <strong>chain-of-thought prompting</strong> అంటారు. Answer ని directly అడగడానికి బదులుగా, మీరు AI ని దాని reasoning చూపించమని అడుగుతారు. "దీన్ని step by step think చేయండి." "ఇది answer చేసే ముందు break down చేయండి." "మీరు వెళ్ళేటప్పుడు మీ reasoning explain చేయండి."
-      </p>
-    </FadeInBlock>
-
-    <!-- Before/After comparison -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <div>
-          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
-            <span class="prompt-block-label" style="color: #E94560;">Chain-of-thought లేకుండా</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "ఒక bat మరియు ball కలిసి $1.10 cost అవుతాయి. Bat, ball కంటే $1.00 ఎక్కువ cost అవుతుంది. Ball ఎంత cost అవుతుంది?"
-            </p>
-            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
-              AI answers: $0.10 (తప్పు)
-            </p>
-          </div>
-        </div>
-        <div>
-          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
-            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Chain-of-thought తో</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "ఒక bat మరియు ball కలిసి $1.10 cost అవుతాయి. Bat, ball కంటే $1.00 ఎక్కువ cost అవుతుంది. Ball ఎంత cost అవుతుంది? Step by step think చేయండి."
-            </p>
-            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
-              AI answers: $0.05 (సరైనది)
-            </p>
-          </div>
-        </div>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇది ఎందుకు work చేస్తుంది? మీరు AI ని దాని reasoning step by step చూపించమని అడిగినప్పుడు, ప్రతి step తర్వాతి దానిలోకి feeds అవుతుంది. ఇది AI కి scratch paper ఇచ్చినట్లు — ఇది దాని thinking ఎక్కువ రాస్తే, final answer అంత better అవుతుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chain-of-thought AI ని smarter చేయదు. దాన్ని slower చేస్తుంది — మరియు slower thinking తరచుగా better thinking అవుతుంది.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        ఇది కేవలం math కోసం మాత్రమే కాదు. Answer reasoning require చేసే ప్రతిసారీ దీన్ని use చేయండి: argument analyze చేయడం, options compare చేయడం, project plan చేయడం, code debug చేయడం. మీరు human ని "వారి work చూపించండి" అని అనిపించినప్పుడల్లా, AI ని అదే చేయమని అడగండి.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Techniques ను కలపడం
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        అసలైన power techniques combine చేయడంలో వస్తుంది. Few-shot examples <em>plus</em> chain-of-thought. ఒక system role <em>plus</em> constraints <em>plus</em> format specification. ప్రతి technique ఒక lever, మరియు ఒకేసారి multiple levers pull చేయడం వాటిలో ఏదీ alone achieve చేయలేనిదాన్ని produce చేస్తుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        కానీ beginners ను experts నుండి separate చేసే nuance ఇదీ: <strong>ఎక్కువ ఎల్లప్పుడూ better కాదు.</strong> Casual brainstorm కి ఒకటి లేదా రెండు techniques కావాలి. High-stakes essay కి ఐదు కావాలి. Informal question కి zero కావాలి. Skill అంటే ఎన్ని levers pull చేయాలో తెలుసుకోవడం — మరియు ఏవి.
-      </p>
-    </FadeInBlock>
-
-    <!-- Technique stack visual -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="margin-bottom: 2.5rem;">
-        {[
-          { label: 'సాధారణ brainstorm', techniques: ['Task'], color: '#6B7280', width: '25%' },
-          { label: 'పాఠశాల assignment', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
-          { label: 'ముఖ్యమైన project', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
-          { label: 'High-stakes output', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
-        ].map((level, i) => (
-          <FadeInBlock client:visible delay={i * 0.06} key={i}>
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
-                {level.label}
-              </span>
-              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
-                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
-                  {level.techniques.map((t, j) => (
-                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
-                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ముఖ్య అంతర్దృష్టి</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Over-prompting అనేది real thing. Simple question కోసం 500-word prompt answer ను better చేయదు — అది AI ని actually confuse చేయవచ్చు. మీ prompt complexity ను task complexity కు match చేయండి.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <PromptLaboratory client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Prompts తప్పుడు దిశలో వెళ్లినప్పుడు
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చెడ్డ AI output <strong>దాదాపు ఎప్పుడూ AI యొక్క తప్పు కాదు.</strong> Output generic, vague, లేదా just plain wrong అయినప్పుడు, bug సాధారణంగా prompt లో ఉంటుంది. మరియు code debug చేయడం లాగానే, prompts debug చేయడం కూడా learnable skill.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        అత్యంత common prompt bugs ఐదు categories లో వస్తాయి. మీరు వాటిని spot చేయడం నేర్చుకుంటే, మీరు వాటిని ప్రతిచోట చూస్తారు — మీ స్వంత prompts లో మరియు AI "useless" అని ఇతరుల complaints లో.
-      </p>
-    </FadeInBlock>
-
-    <!-- Bug types -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-      {[
-        { name: 'అస్పష్టమైనది', desc: 'Prompt multiple things mean అవుతుంది. "కుక్కల గురించి ఏదో రాయండి" — ఏ రకమైన writing? ఎవరికోసం? ఎంత length?', color: '#E94560' },
-        { name: 'విరుద్ధమైనది', desc: 'Prompt opposing things అడుగుతుంది. "దీన్ని short కానీ comprehensive గా చేయండి." "Fun tone use చేయండి కానీ formal గా ఉంచండి." ఒకదాన్ని pick చేయండి.', color: '#F5A623' },
-        { name: 'Context లేకపోవడం', desc: 'Prompt కి crucial information లేదు. Code share చేయకుండా "నా code fix చేయండి." Essay లేకుండా "నా essay improve చేయండి."', color: '#0EA5E9' },
-        { name: 'చాలా tasks', desc: 'Prompt ఒకేసారి ఐదు things అడుగుతుంది. AI తనను thin గా spread చేసుకుని వాటిలో ఏదీ well చేయదు.', color: '#7B61FF' },
-        { name: 'Leading question', desc: 'Prompt AI కి ఏం think చేయాలో చెబుతుంది. "X best అని మీరు agree అవ్వలేదా?" AI agree అవుతుంది. అది useful కాదు.', color: '#16C79A' },
-      ].map((bug, i) => (
-        <FadeInBlock client:visible delay={i * 0.07}>
-          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
-            <div>
-              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
-                {bug.name}
-              </p>
-              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {bug.desc}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        అత్యంత insidious bug అనేది <em>leading question</em>. ఇది spot చేయడానికి చాలా కష్టం ఎందుకంటే ఇది మీరు గొప్ప output పొందుతున్నట్లు <em>అనిపిస్తుంది</em> — AI మీతో agree అవుతుంది! కానీ agreement accuracy కాదు. మీరు మీ existing belief confirm చేయడానికి question frame చేసినప్పుడు, మీరు AI ని thinking partner కాకుండా yes-man గా మార్చారు.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <DebugThePrompt client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        మీరు ఈ అధ్యాయం single-shot commands type చేయడంతో start చేశారు. ఇప్పుడు మీకు questioning flip చేయడం, tell చేయడానికి బదులుగా show చేయడం, మరియు sideways వెళ్లే prompts debug చేయడం తెలుసు.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI కి ఏం ఆలోచించాలో చెప్పడం ఆపు. నీతో కలిసి ఆలోచించడానికి space ఇవ్వు.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        కానీ మీరు నేర్చుకున్న ప్రతి technique అదే invisible wall లోకి వెళుతుంది: <em>context window</em>. ఇప్పుడు, మేము దాన్ని crack open చేసి AI actually ఏం చూస్తుందో engineer చేయడం నేర్చుకుందాం.
+        కానీ నువ్వు నేర్చుకున్న ప్రతి technique అదే invisible wall లోకి వెళ్తుంది: <em>context window</em>. తర్వాత, దాన్ని crack open చేసి AI actually ఏం చూస్తుందో engineer చేయడం నేర్చుకుందాం.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Socratic Smackdown" client:visible>
+        <SocraticSmackdown client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

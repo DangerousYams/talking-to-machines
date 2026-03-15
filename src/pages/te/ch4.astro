@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[3];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          అధ్యాయం నాలుగు
+          నాలుగో అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -31,76 +31,30 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI<br />పరిస్థితి
+          AI<br />Landscape
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          మీరు ఇప్పుడే వాడగల<br />ప్రతి AI టూల్ గైడ్.
+          నువ్వు ఇప్పుడే వాడగలిగే ప్రతి AI tool కి<br />ఒక field guide.
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          LAST UPDATED MARCH 2026
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        చాలా మంది "AI" అంటే ChatGPT అని అనుకుంటారు. లేకపోతే Google Gemini లేదా Claude గురించి విన్నారేమో. అది "ఇంటర్నెట్" అంటే Google అనుకోవడం లాంటిది. తప్పు కాదు. కానీ అది చాలా పెద్దది మధ్య చిన్న ముక్కేనా.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        ప్రస్తుతం మీరు ఈ రోజే వాడగలిగిన వందలాది AI టూల్స్ ఉన్నాయి -- కొంత భవిష్యత్ లో కాదు, మీ బ్రౌజర్ నుండి ఇప్పుడే. ఒక వాక్యం నుండి ఫోటోలాంటి చిత్రాలు తయారు చేసే టూల్స్. పూర్తి పాటలు కంపోజ్ చేసే టూల్స్. మీ రీసెర్చ్ టాపిక్ గురించి ఇప్పటివరకు వ్రాసిన అన్ని పేపర్లను చదివి, మూడు పేరాలలో సారాంశం చెప్పే టూల్స్.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        ఈ అధ్యాయం మీ గైడ్. అన్ని టూల్స్ కాటలాగ్ కాదు -- అది వచ్చే మంగళవారికే పాతబడిపోతుంది -- కానీ <strong>భూభాగపు మ్యాప్</strong>. ముఖ్యమైన కేటగిరీలు, తెలుసుకోవలసిన టూల్స్, మరియు సరైన టూల్ ఎంచుకోవడానికి సహాయపడే ఆలోచన ఫ్రేమ్‌వర్క్.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        చాట్‌బాట్ కంటే ఎక్కువ
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాట్‌బాట్ అనేది హిమగర్భం మధ్య కనిపించే భాగమే. దాని కింద, AI అనేకం ప్రత్యేక సామర్థ్యాలుగా విభజించబడింది, వాటిలో ప్రతిది వేరే రకమైన పనికి వేరే రకమైన టూల్.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        సంగీత వాయిద్యాల గురించి ఆలోచించండి. పియానో మరియు డ్రమ్‌సెట్ రెండూ "సంగీత వాయిద్యాలు," కానీ మీరు పియానిస్ట్‌ని బీట్ వేయమని అడగరు, డ్రమ్మర్‌ని కాంసెర్ట్ వాయించమని అడగరు. AI టూల్స్ కూడా అలాగే. ఇమేజ్ జనరేషన్ కోసం చేసిన టూల్ కోడ్ కోసం చేసిన దానికంటే పూర్తిగా వేరు -- వేరు ఆర్కిటెక్చర్, వేరు ట్రైనింగ్ డేటా, వేరు బలాలు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        10 AI టూల్స్‌ని బేసిక్ లెవెల్‌లో తెలిసిన వ్యక్తి, ఒక టూల్ లోతుగా తెలిసిన వారిని ఎల్లప్పుడూ మించిపోతారు. ఎక్కువ టూల్స్ అవగాహన అంటే తొలుత గెలుపు.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        ఈ రోజు నిలుచుండే పరిస్థితి ఇక్కడ ఉంది, ఈ టూల్స్ అసలు <em>ఏం చేస్తాయి</em> దాని ఆధారంగా వ్యవస్థీకరించబడింది.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        చాలా మంది "AI" అంటే ChatGPT అని అర్థం చేసుకుంటారు. అది "internet" అంటే Google అని అనడం లాంటిది. ఇప్పుడు వందలాది AI tools ఉన్నాయి — ఒక sentence నుండి photorealistic images generate చేసేవి, complete songs compose చేసేవి, లేదా నీ research topic మీద ప్రతి academic paper చదివి మూడు paragraphs లో consensus summarize చేసేవి. ఈ chapter నీ terrain map.
       </p>
     </FadeInBlock>
   </section>
@@ -117,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        మీరు ఎదుర్కొనే ప్రతి AI టూల్ ఈ కేటగిరీలలో ఒకటిలో సరిపోతుంది. కొన్ని టూల్స్ సరిహద్దులు దాటుతాయి, కానీ ఈ కుటుంబాలు అర్థం చేసుకోవడం గందరగోళాన్ని అర్థం చేసుకోవడానికి మానసిక మ్యాప్ ఇస్తుంది.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Musical instruments లాగా ఆలోచించు. Piano మరియు drum kit రెండూ "instruments," కానీ pianist ని beat వేయమని అడగవు. AI tools కూడా అంతే — image generation కోసం build అయిన tool, code కోసం build అయిన tool కి fundamentally different. నువ్వు encounter అయ్యే ప్రతి tool ఈ ఎనిమిది families లో ఒకదాంట్లో fit అవుతుంది.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'చిత్ర జనరేటర్లు', color: '#E94560', text: 'టెక్స్ట్ లోపలికి, చిత్రాలు బయటకు. ఫోటోలాంటి దృశ్యాల నుండి యానిమే నుండి చమురు చిత్రాల వరకు. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. అత్యంత ప్రజాస్వామిక కేటగిరీ -- ఎవరైనా మాటల నుండి దృశ్య కళ తయారు చేయగలరు.' },
-        { icon: '2', name: 'చిత్ర ఎడిటర్లు', color: '#F5A623', text: 'నిజమైన చిత్రంతో ప్రారంభించి దాన్ని మార్చండి. బ్యాక్‌గ్రౌండ్లు తొలగించండి, రెజోల్యూషన్ పెంచండి, వస్తువులు మార్చండి, దృశ్యాలను రీలైట్ చేయండి. Photoshop AI, Magnific, Clipdrop. ఇవి మానవ ఫోటోగ్రాఫర్లను మరియు డిజైనర్లను మార్చకుండా వారికి సహాయం చేస్తాయి.' },
-        { icon: '3', name: 'వీడియో క్రియేటర్లు', color: '#7B61FF', text: 'కొత్త సరిహద్దు. టెక్స్ట్ లేదా స్థిర చిత్రాల నుండి వీడియో క్లిప్‌లు జనరేట్ చేయండి. Sora, Runway, Kling, Pika. ఇంకా ప్రారంభమే -- చాలా క్లిప్‌లు 30 సెకన్లకు మించవు -- కానీ అద్భుతమైన వేగంతో మెరుగుపడుతున్నాయి. చిత్రనిర్మాణం ఎప్పటికీ అలాగే ఉండదు.' },
-        { icon: '4', name: 'సంగీతం & ఆడియో', color: '#16C79A', text: 'టెక్స్ట్ వివరణ నుండి పూర్తి పాటలు, 30-సెకన్ల నమూనా నుండి వాయిస్ క్లోనింగ్, డిమాండ్‌పై సౌండ్ ఎఫెక్ట్‌లు. Suno, Udio, ElevenLabs. ఈ టూల్స్ స్టూడియో మరియు టీమ్ అవసరమైన దాన్ని ఒకే ప్రాంప్ట్‌లోకి కుదించాయి.' },
-        { icon: '5', name: 'రీసెర్చ్ ఏజెంట్లు', color: '#0EA5E9', text: 'మీ కోసం ఇంటర్నెట్ (లేదా అకాడెమిక్ డేటాబేసులు) చదివే AI. Perplexity వెతుకుతుంది మరియు ఉదహరిస్తుంది. Elicit పేపర్లు చదువుతుంది. Consensus శాస్త్రీయ ఒప్పందాన్ని కనుగొంటుంది. NotebookLM మీ డాక్యుమెంట్లను నిపుణులుగా మారుస్తుంది.' },
-        { icon: '6', name: 'AI బ్రౌజర్లు', color: '#6B7280', text: 'మానవుడిలా వెబ్‌ను నావిగేట్ చేయగల ఏజెంట్లు. బటన్లు క్లిక్ చేయండి, ఫార్మలు నింపండి, పేజీల మధ్య నావిగేట్ చేయండి. Arc, Operator, Claude Computer Use. "ప్రశ్నలకు సమాధానం" మరియు "పనులు చేయడం" మధ్య వంతెన.' },
-        { icon: '7', name: 'కోడింగ్ టూల్స్', color: '#E94560', text: 'కోడ్ రాసే, సవరించే, రన్ చేసే, మరియు డీబగ్ చేసే AI. Claude Code మీ టెర్మినల్ నుండి పనిచేస్తుంది. Cursor మరియు Windsurf పూర్తి ఎడిటర్లు. Copilot ఇన్‌లైన్ సూచనలు ఇస్తుంది. Replit Agent మొత్తం యాప్‌లను మొదటి నుండి నిర్మిస్తుంది.' },
-        { icon: '8', name: 'చాట్‌బాట్లు & అసిస్టెంట్లు', color: '#0F3460', text: 'మీరు ఇప్పటికే తెలిసిన సాధారణ-ప్రయోజన సంభాషణ AI: ChatGPT, Claude, Gemini. ఇవి స్విస్ ఆర్మీ నైవ్స్ -- అనేక విషయాలలో మంచివి, మీరు వాటిని ఎలా ప్రాంప్ట్ చేయాలో తెలిసినప్పుడు ఉత్తమమైనవి (అధ్యాయాలు 1-3 వల్ల మీకు తెలుసు).' },
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text వెళ్తుంది, images వస్తాయి. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'Real image తో start చేసి transform చెయ్. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text లేదా stills నుండి video clips generate చెయ్. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt నుండి full songs, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'నీ కోసం internet చదివే AI. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'మనిషి లాగా web navigate చేసే agents. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code రాసే, edit చేసే, debug చేసే AI. Claude Code, Cursor, Windsurf, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'నీకు already తెలిసిన general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -153,244 +107,54 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంతర్దృష్టి</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ఈ కేటగిరీలు కలుస్తున్నాయి. చిత్ర జనరేటర్లు వీడియో జోడిస్తున్నాయి. చాట్‌బాట్లు టూల్ వినియోగాన్ని పొందుతున్నాయి. కోడింగ్ టూల్స్ ఏజెంట్లుగా మారుతున్నాయి. రెండు సంవత్సరాలలో, సరిహద్దులు అస్పష్టంగా ఉంటాయి. కానీ ప్రస్తుతం, నిపుణులు తమ ప్రత్యేకతలో సాధారణ టూల్స్‌ని మించిపోతున్నారు.
+          10 AI tools surface level లో తెలిసిన వ్యక్తి, ఒక tool deeply తెలిసిన వ్యక్తి కంటే consistently better perform చేస్తాడు. Professional carpenter కి favorite tool ఒకటే ఉండదు — <em>ప్రతి task కి</em> favorite tool ఉంటుంది.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        పూర్తి కేటలాగ్ అన్వేషించండి. ఏ టూల్ అయినా క్లిక్ చేసి అది ఏం చేస్తుందో తెలుసుకోండి.
+        Full catalog explore చెయ్. ఏ tool అయినా click చేసి ఏం చేస్తుందో తెలుసుకో.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        సరైన టూల్ ఎంచుకోవడం
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="నేను అనుకున్నదాని కంటే చాలా ఎక్కువ AI tools ఉన్నాయి. ఈ interactive guide 8 families of tools ను map చేస్తుంది — image gen, video, music, research, coding — ప్రతిదానికి examples తో." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇన్ని ఎంపికలతో, కష్టమైన భాగం AI టూల్ కనుగొనడం కాదు. <em>సరైన</em> AI టూల్ కనుగొనడం. ఇక్కడ పని చేసే ఫ్రేమ్‌వర్క్:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'అవుట్‌పుట్ ఏమిటి?', desc: 'టెక్స్ట్? చిత్రం? కోడ్? వీడియో? ఆడియో? ఇది మిమ్మల్ని వెంటనే 1-2 కుటుంబాలకు పరిమితం చేస్తుంది.' },
-          { word: 'నాణ్యత బార్ ఏమిటి?', desc: 'మీ కోసం త్వరిత డ్రాఫ్ట్, లేక ప్రేక్షకుల కోసం పాలిష్ చేసిన అవుట్‌పుట్? వేరు ప్రమాణాలకు వేరు టూల్స్.' },
-          { word: 'బడ్జెట్ ఎంత?', desc: 'చాలా టూల్స్ ఆశ్చర్యకరంగా సామర్థ్యవంతమైన ఉచిత టైర్లను అందిస్తాయి. చెల్లించే ముందు మీకు నిజంగా ఏం కావాలో తెలుసుకోండి.' },
-          { word: 'వర్క్‌ఫ్లో ఎలా ఉంది?', desc: 'స్వతంత్ర పని, లేక పొడవైన గొలుసులో ఒక అడుగు? ఇంటిగ్రేషన్ ముడి శక్తికంటే ముఖ్యం.' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        చాలా మంది తొలిసారి వచ్చేవారు అదే తప్పిదం చేస్తారు: వారు అన్నింటికీ ఒకే సాధారణ-ప్రయోజన AI వాడతారు. అది టెక్నికల్‌గా పని చేస్తుంది, కానీ సరైన ప్రత్యేక టూల్స్‌తో మీరు వేగంగా మెరుగైన ఫలితాలు పొందుతారు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        అలాగే, వ్యతిరేక ఉచ్చులో పడకండి. మీకు 47 AI సబ్స్క్రిప్షన్లు అవసరం లేదు. <strong>వేరు కేటగిరీలలో 3-4 టూల్స్ ఎంచుకోండి, వాటిని బాగా నేర్చుకోండి, అక్కడ నుండి విస్తరించండి.</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        పైప్‌లైన్లకు శక్తి
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇక్కడ అసలు అన్‌లాక్: <strong>టూల్స్‌ని కలిపినప్పుడు అవి ఘాతాంక శక్తివంతంగా మారతాయి.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఒకే AI టూల్ మీకు సామర్థ్యం ఇస్తుంది. AI టూల్స్ గొలుసు మీకు <em>వర్క్‌ఫ్లో</em> ఇస్తుంది. Perplexity రీసెర్చ్ కనుగొంటుంది. Claude వ్యాసం వ్రాస్తుంది. Midjourney ఇలస్ట్రేషన్లు తయారు చేస్తుంది. ప్రతి టూల్ దానికి ఉత్తమమైనది చేస్తుంది, మరియు ఒకటి అవుట్‌పుట్ మరొకటికి ఇన్‌పుట్‌గా మారుతుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        మీరు ఆన్‌లైన్‌లో చూసిన అత్యంత ఆకట్టుకునే AI-జనరేట్ చేసిన పని ఒక టూల్‌తో చేయలేదు. అది ఐదు టూల్స్‌తో, ప్రతిదాని ఉత్తమమైనది అర్థం చేసుకున్న మానవుడిచే కలిపి చేయబడింది.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        అందుకే పరిస్థితి అర్థం చేసుకోవడం ముఖ్యం. మీకు ఒకే టూల్ తెలిస్తే పైప్‌లైన్ నిర్మించలేరు. ఎంత ప్రత్యేక నిపుణులు ఉన్నారో తెలియకపోతే సరైన నిపుణుని ఎంచుకోలేరు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        మీరే ఒకటి నిర్మించడానికి ప్రయత్నించండి:
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        "ఉత్తమమైన" టూల్ అనేది లేదు
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ప్రతి వారం, ఎవరైనా AI టూల్స్‌ల నిశ్చయాత్మక ర్యాంకింగ్ పోస్ట్ చేస్తారు. ప్రతి వారం, అది తప్పు. ర్యాంకింగ్ చెడ్డది అని కాదు, కానీ "ఉత్తమమైనది" అనేది పూర్తిగా మీరు ఏం చేస్తున్నారు, ఎలా చేస్తున్నారు, మరియు మీరు దేనిని విలువైనదిగా భావిస్తారు దానిపై ఆధారపడి ఉంటుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney DALL-E 3 కంటే ఎక్కువ కళాత్మక చిత్రాలు తయారు చేస్తుంది. కానీ DALL-E 3 సూచనలను మరింత ఖచ్చితంగా అనుసరిస్తుంది. Ideogram రెండింటి కంటే టెక్స్ట్‌ని మెరుగుగా రెండర్ చేస్తుంది. "ఉత్తమమైనది" ఏమిటి? మీరు సినిమా పోస్టర్ తయారు చేస్తున్నారా, ప్రోడక్ట్ ఫోటో లేక లోగో తయారు చేస్తున్నారా దానిపై ఆధారపడి ఉంటుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude GPT కంటే ఎక్కువ సూక్ష్మతతో వ్రాస్తుంది. GPT వేగవంతమైనది. Gemini కు ఎక్కువ కాంటెక్స్ట్ ఉంది. మీకు ఏది ముఖ్యం? అది మీ పనిపై ఆధారపడి ఉంటుంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>అసలైన నైపుణ్యం ఒకే టూల్‌లో మాస్టరీ కాదు. ఏ టూల్ ఏ పనికి సరిపోతుందో రుచి అభివృద్ధి చేసుకోవడం.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ప్రొఫెషనల్ వడ్రంగి కు ఇష్టమైన టూల్ ఉండదు. వారికి <em>ప్రతి పనికి</em> ఇష్టమైన టూల్ ఉంటుంది. అది అభివృద్ధి చేసుకోవలసిన మైండ్‌సెట్.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        మీరే చూడండి. అదే ప్రాంప్ట్, వేరు టూల్స్ &mdash; ఏ అవుట్‌పుట్‌ను మీరు ఇష్టపడతారు?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        పరిస్థితి కదులుతున్నది
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ఇక్కడ అసహ్యకరమైన సత్యం: పై కేటలాగ్‌లోని కొన్ని టూల్స్ ఒక సంవత్సరంలో ఉండవు. ఇంకా లేని ఇతరవి అవసరమైనవిగా మారతాయి. AI పరిస్థితి చరిత్రలో ఏ టెక్నాలజీ పరిస్థితి కంటే వేగంగా కదులుతోంది.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        అప్పుడు నిర్దిష్ట టూల్స్‌ని ఎందుకు నేర్చుకోవాలి? ఎందుకంటే <strong>టూల్స్ మారినా కేటగిరీలు స్థిరంగా ఉంటాయి</strong>. ఎల్లప్పుడూ చిత్ర జనరేటర్లు, కోడ్ అసిస్టెంట్లు, మరియు రీసెర్చ్ ఏజెంట్లు ఉంటాయి. పేర్లు మారుతాయి. అంతర్లీన సామర్థ్యాలు మరియు మానసిక నమూనాలు మారవు.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>బదిలీ అవగలిగిన నైపుణ్యాలు</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. ఎంత కేటగిరీలు AI టూల్స్ ఉన్నాయో తెలుసుకోవడం<br />
-          2. 15 నిమిషాల్లో కొత్త టూల్‌ని ఎలా మూల్యాంకనం చేయాలో తెలుసుకోవడం<br />
-          3. టూల్స్‌ని వర్క్‌ఫ్లోలుగా ఎలా గొలుసు చేయాలో తెలుసుకోవడం<br />
-          4. టూల్స్ మార్చాలో లేక ప్రాంప్ట్స్ రిఫైన్ చేయాలో ఎప్పుడు తెలుసుకోవడం
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        ఈ నాలుగు నైపుణ్యాలు వచ్చే సంవత్సరం లేదా దాని తర్వాత ఏ నిర్దిష్ట టూల్స్ ఆధిపత్యం వహించినా మీకు సేవ చేస్తాయి. పరిస్థితి మారుతుంది, కానీ నావిగేటర్ ప్రభావవంతంగా ఉంటారు.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        మీకు ఇప్పుడు AI పరిస్థితి మ్యాప్ ఉంది &mdash; ఎనిమిది టూల్స్ కుటుంబాలు, వాటి మధ్య ఎంచుకోవడానికి ఫ్రేమ్‌వర్క్, మరియు వాటిని కలిపే పైప్‌లైన్ మైండ్‌సెట్.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Landscape ప్రతి నెల మారుతుంది. కానీ tools మారినా categories stable గా ఉంటాయి — <em>అదే</em> గుర్తుంచుకోవాల్సిన map.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        కానీ ఇప్పటివరకు, ఈ టూల్స్ కేవలం మీకు స్పందిస్తాయి. అవి <em>తమ స్వంతంగా చర్యలు తీసుకోగలిగితే</em> ఏమిటి? అది టూల్ నుండి ఏజెంట్‌కి దూకుట &mdash; మరియు అది అన్నింటినీ మారుస్తుంది.
+        ఇప్పటి వరకు ఈ tools నీకు respond చేస్తున్నాయి. వాటికి <em>స్వంతంగా actions తీసుకునే</em> సామర్థ్యం ఉంటే? అదే tool నుండి agent కి leap — అది అంతా మారుస్తుంది.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

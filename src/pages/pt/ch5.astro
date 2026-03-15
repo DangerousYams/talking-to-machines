@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ToolCatalog from '../../components/widgets/ch5/ToolCatalog';
 import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
+import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[4];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[4];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>5</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Capítulo Cinco
+          Capítulo cinco
         </p>
       </FadeInBlock>
 
@@ -31,7 +31,7 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Dê ferramentas<br />para ela
+          Dê Ferramentas<br />para Ela
         </h1>
       </FadeInBlock>
 
@@ -42,173 +42,17 @@ const chapter = chapters[4];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8" style="--drop-cap-color: #F5A623;">
-        Até agora, toda interação com IA que você teve segue o mesmo padrão. Você digita algo. A IA digita algo de volta. Texto entra, texto sai. Um autocorretor muito sofisticado. Mas esse não é o limite. É só o piso.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
+        Até agora, toda interação com IA que você teve segue o mesmo padrão. Você digita algo. A IA digita algo de volta. Um autocomplete muito sofisticado. Mas e se a IA pudesse <em>fazer coisas</em>? Não apenas te falar sobre o tempo, mas verificar a previsão. Não apenas escrever código, mas executá-lo. Não apenas sugerir o que pesquisar no Google, mas buscar na web e trazer o que encontrou.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        E se a IA pudesse <em>fazer coisas</em>? Não só falar sobre o tempo, mas realmente verificar a previsão. Não só escrever código, mas executá-lo e dizer o que aconteceu. Não só sugerir o que procurar no Google, mas pesquisar na web e trazer o que encontrou.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Isso é o que chamamos de uso de ferramentas. E muda tudo sobre o que a IA pode ser.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND TEXT-IN TEXT-OUT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Além de texto-entra, texto-sai
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Pense no que acontece quando você pergunta para um chatbot: <em>"Que horas são em Tóquio agora?"</em> A IA não sabe mesmo. Foi treinada com dados de meses ou anos atrás. Não tem relógio. Então faz a única coisa que pode — chuta, baseando-se nos padrões dos dados de treinamento. Às vezes chega perto. Às vezes erra feio.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Sem ferramentas</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">Usuário:</span> Que horas são em Tóquio?<br />
-          <span style="font-style: italic; opacity: 0.6;">IA:</span> Deve ser umas 14:30 JST. <span style="color: var(--color-accent-red); font-size: 0.85em;">(Só chutando)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Agora dê para essa mesma IA uma <strong>ferramenta</strong> — uma função simples que retorna a hora atual de qualquer fuso horário. De repente:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Com ferramentas</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          <span style="font-style: italic; opacity: 0.6;">Usuário:</span> Que horas são em Tóquio?<br />
-          <span style="font-style: italic; opacity: 0.6;">IA pensa:</span> <span style="color: var(--color-purple); font-size: 0.9em;">Tenho uma ferramenta de fuso horário. Vou usar.</span><br />
-          <span style="font-style: italic; opacity: 0.6;">IA chama:</span> <code style="font-size: 0.85em;">get_time("Asia/Tokyo")</code><br />
-          <span style="font-style: italic; opacity: 0.6;">Ferramenta retorna:</span> <code style="font-size: 0.85em;">14:47 JST</code><br />
-          <span style="font-style: italic; opacity: 0.6;">IA:</span> São 14:47 em Tóquio (JST). <span style="color: var(--color-teal); font-size: 0.85em;">(Verificado)</span>
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Mesma pergunta. Confiabilidade totalmente diferente. A IA não ficou mais inteligente — ficou <strong>conectada</strong>. Agora pode estender além do próprio cérebro e interagir com o mundo real.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ HOW TOOL USE ACTUALLY WORKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Como o uso de ferramentas realmente funciona
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aqui está o modelo mental. Quando você dá acesso a ferramentas para uma IA, você está entregando uma <strong>caixa de ferramentas</strong> e dizendo: <em>"Aqui estão coisas que você pode fazer. Para cada ferramenta, aqui está o nome, o que aceita e o que retorna. Você decide quando usá-las."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-14">
-        A IA não usa toda ferramenta cegamente em toda solicitação. Ela raciocina sobre quais ferramentas são relevantes, decide se deve usar uma, formula a entrada correta, chama a ferramenta, lê o resultado e então incorpora esse resultado na resposta. Esse processo é chamado <strong>chamada de função</strong> — e segue um loop notavelmente consistente.
-      </p>
-    </FadeInBlock>
-
-    <!-- The Agent Loop — editorial layout -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Observar.', desc: 'Ler a solicitação do usuário e qualquer contexto disponível.' },
-          { word: 'Pensar.', desc: 'Decidir: "Preciso de uma ferramenta para isso, ou posso responder diretamente?"' },
-          { word: 'Agir.', desc: 'Chamar a ferramenta apropriada com os argumentos certos.' },
-          { word: 'Observar.', desc: 'Ler o resultado da ferramenta.' },
-          { word: 'Responder.', desc: 'Sintetizar tudo em uma resposta útil.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        A IA não está executando um script. Está tomando uma decisão toda vez: "Esta é uma situação onde devo usar uma ferramenta, ou posso lidar sozinha?"
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Esse é o <strong>loop de agente</strong> — observar, pensar, agir, observar, responder. E é o mesmo loop seja a IA tenha uma ferramenta ou cem. Quanto mais ferramentas você der, mais capaz ela se torna. Mas também, mais confiança você precisa depositar no julgamento dela sobre <em>qual</em> ferramenta usar e <em>quando</em>.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE SEVEN TOOLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Sete ferramentas que mudam tudo
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Existem centenas de ferramentas específicas que a IA pode usar, mas a maioria se encaixa em sete categorias. Cada uma estende o que a IA pode fazer de forma fundamentalmente diferente. Algumas dão <em>conhecimento</em> (busca web, bancos de dados). Algumas dão <em>habilidades</em> (execução de código, geração de imagens). Algumas dão <em>mãos</em> (edição de arquivos, chamadas de API).
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Clique em qualquer ferramenta abaixo para ver todo o processo de raciocínio da IA — desde reconhecer que precisa de uma ferramenta, até chamá-la, até usar o resultado.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TOOL CATALOG ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolCatalog client:visible />
     </FadeInBlock>
   </section>
 
@@ -224,60 +68,28 @@ const chapter = chapters[4];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Uma vez que a IA pode <em>fazer</em> coisas — não apenas falar sobre elas — surge uma nova questão. Uma questão que não tem nada a ver com tecnologia e tudo a ver com você:
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Quando você dá ferramentas para a IA, entrega uma caixa de ferramentas e diz: <em>"Aqui estão coisas que você pode fazer. Você decide quando usá-las."</em> Ela pode buscar na web, executar código, ler arquivos, chamar APIs. A IA não ficou mais inteligente — ficou <strong>conectada</strong>. E isso levanta uma questão que não tem nada a ver com tecnologia e tudo a ver com você: quanto a IA deve fazer por conta própria antes de confirmar com você?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Quanto a IA deveria fazer sozinha antes de confirmar com você?
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Essa não é uma questão técnica — é humana. E a resposta depende de três coisas:
+      <p class="text-lg leading-[1.85] mb-14">
+        A resposta depende de três coisas. <strong>Riscos</strong> — qual é o pior que pode acontecer? <strong>Reversibilidade</strong> — dá para desfazer? E <strong>confiança</strong> — quão bem você conhece essa ferramenta? Uma calculadora que você já usou cem vezes merece mais liberdade do que um plugin novinho que você nunca testou.
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { name: 'Riscos', color: '#E94560', text: 'Qual é o pior que pode acontecer? Resumir um artigo errado é irritante. Deletar os arquivos errados é um desastre. Riscos maiores exigem mais supervisão humana.' },
-          { name: 'Reversibilidade', color: '#F5A623', text: 'Você pode desfazer? Editar um arquivo num repositório git é fácil de reverter. Mandar um email para seu chefe não é. Ações irreversíveis quase sempre deveriam exigir sua aprovação.' },
-          { name: 'Confiança', color: '#16C79A', text: 'Quão bem você conhece essa ferramenta? Uma calculadora que você usou cem vezes merece mais autonomia que um plugin novinho que nunca testou. Confiança se conquista, não se assume.' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; color: white; background: ${item.color};`}>
-                {i + 1}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {item.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>O espectro da autonomia</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Ideia-chave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Não é tudo ou nada. Os melhores fluxos de trabalho com IA dão liberdade para tarefas de baixo risco e reversíveis, enquanto mantêm humanos no loop para as de alto risco e irreversíveis. Seu trabalho é projetar a fronteira.
+          Não é tudo ou nada. Os melhores fluxos de trabalho com IA dão liberdade para tarefas de baixo risco e reversíveis, enquanto mantêm humanos no loop para as de alto risco e irreversíveis. Seu trabalho é definir a fronteira.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TRUST THERMOMETER -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
@@ -286,77 +98,37 @@ const chapter = chapters[4];
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TRUST THERMOMETER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TrustThermometer client:visible />
-    </FadeInBlock>
+    <TrustThermometer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE TOOL-USE MINDSET ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        A mentalidade de uso de ferramentas
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Aprendendo sobre uso de ferramentas e chamadas de função da IA da forma mais prática possível. Esse curso te deixa construir e testar de verdade, não só ler sobre." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Há uma mudança sutil que acontece quando você começa a pensar na IA como usuária de ferramentas em vez de apenas geradora de texto. Você para de perguntar <em>"O que a IA pode dizer sobre isso?"</em> e começa a perguntar <em>"O que a IA pode fazer sobre isso?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Em vez de pedir para a IA <em>descrever</em> como analisar dados, você dá uma ferramenta de execução de código e a vê escrever e executar a análise. Em vez de pedir <em>links</em> para pesquisa, você dá busca web e deixa ela encontrar e sintetizar a informação. O resultado vai de "aqui está o que você poderia fazer" para "aqui está o que acabei de fazer."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Mentalidade antiga</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          "Explique como eu calcularia os juros compostos de R$ 5.000 a 6,5% ao longo de 10 anos."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-amber);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mentalidade de uso de ferramentas</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "Calcule os juros compostos de R$ 5.000 a 6,5% ao ano capitalizados mensalmente por 10 anos. Me mostre o número exato."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        O primeiro prompt te dá um tutorial. O segundo te dá uma resposta. Com ferramentas, a IA vai de <strong>conselheira</strong> para <strong>assistente</strong> — de alguém que te diz o que fazer, para alguém que realmente faz.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Você deu mãos para a IA. Ela pode buscar, calcular, navegar e escrever arquivos. E você aprendeu a parte mais difícil: decidir quanta liberdade entregar.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Ferramentas transformam a IA de conselheira em assistente — de alguém que te diz o que fazer para alguém que realmente faz.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Ferramentas são blocos de construção. Agora, vamos conectá-las em algo que pode perseguir um objetivo sozinho &mdash; planejando, executando, se recuperando de erros. Hora de construir agentes.
+        Você deu mãos para a IA. Agora, vamos conectar essas ferramentas em algo que pode perseguir um objetivo sozinho — planejando, executando, se recuperando de erros. Hora de construir agentes.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(245,166,35,0.06) 15%, rgba(245,166,35,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#F5A623" toolName="Would You Let It?" client:visible>
+        <WouldYouLetIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

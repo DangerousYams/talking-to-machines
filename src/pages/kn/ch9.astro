@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -37,263 +37,98 @@ const chapter = chapters[8];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Amateurs ಮತ್ತೆ pros ಅನ್ನ ಬೇರ್ಪಡಿಸೋ<br />verification habits.
+          Amateurs ನಿಂದ pros ನ ಬೇರ್ಪಡಿಸೋ<br />verification habits.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        ಒಂದು uncomfortable ವಿಷಯ ಹೇಳ್ತೇನೆ: ನಿನಗೆ flawless essay ಬರೆಯಕ್ಕೆ help ಮಾಡಿದ ಅದೇ AI, ಅದೇ confidence ನಲ್ಲಿ, Napoleon Battle of Waterloo ಗೆದ್ದ ಅಂತಲೂ ಹೇಳಬಹುದು. ಅದು hesitate ಮಾಡಲ್ಲ. Stammer ಮಾಡಲ್ಲ. ಪೂರ್ಣ fabricated "fact" ಅನ್ನ ಅದು ಎಲ್ಲದಕ್ಕೂ ಬಳಸೋ ಅದೇ authoritative tone ಅಲ್ಲಿ ಹೇಳಿಬಿಡುತ್ತೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI ಜೊತೆ work ಮಾಡೋದ್ರ ಹೃದಯದಲ್ಲಿರೋ paradox ಇದು: <strong>ಅದನ್ನ useful ಮಾಡೋ ಅದೇ fluency ಅದನ್ನ dangerous ಕೂಡ ಮಾಡುತ್ತೆ.</strong> AI ಗೆ ಏನು true ಅಂತ ಗೊತ್ತಿಲ್ಲ. ಏನು true ಆಗಿ <em>ಕೇಳಿಸುತ್ತೆ</em> ಅಂತ ಮಾತ್ರ ಗೊತ್ತು. ಅವೆರಡೂ ತುಂಬಾ, ತುಂಬಾ different ವಿಷಯಗಳು.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        ಈ chapter ನಿನ್ನ BS detector build ಮಾಡೋ ಬಗ್ಗೆ. AI ಕೆಟ್ಟದು ಅಂತಲ್ಲ, ಆದ್ರೆ <em>blindly trust ಮಾಡೋದು</em> ಕೆಟ್ಟದು ಅಂತ. AI ಯಿಂದ ಅತಿ ಹೆಚ್ಚು value ಪಡೆಯೋರು ಯಾವಾಗ trust ಮಾಡಬೇಕು, ಯಾವಾಗ verify ಮಾಡಬೇಕು ಅಂತ exactly ಕಲ್ತಿರೋರು.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        ಈಗಷ್ಟೇ flawless essay ಬರೆಯೋಕೆ help ಮಾಡಿದ AI, ಅದೇ confidence ನಲ್ಲಿ Napoleon Battle of Waterloo ಗೆದ್ದ ಅಂತ ಹೇಳಬಹುದು. ಅದು hesitate ಮಾಡಲ್ಲ. ತೊದಲಲ್ಲ. ಪೂರ್ತಿ fabricated "fact" ನ ಎಲ್ಲದಕ್ಕೂ use ಮಾಡೋ ಅದೇ authoritative tone ನಲ್ಲಿ ಹೇಳುತ್ತೆ. ಇದೇ AI ಜೊತೆ work ಮಾಡೋದರ ಹೃದಯದಲ್ಲಿರೋ paradox: <strong>ಅದನ್ನ useful ಮಾಡೋ ಅದೇ fluency ಅದನ್ನ dangerous ಮಾಡುತ್ತೆ.</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Hallucination Problem
+        Plausibility Truth ಅಲ್ಲ
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI ಅಲ್ಲಿ <strong>hallucination</strong> ಅಂದ್ರೆ model plausible ಆಗಿ ಕೇಳಿಸೋ ಆದ್ರೆ factually wrong — ಅಥವಾ ಪೂರ್ತಿ made up — information generate ಮಾಡೋದು. ಮತ್ತೆ ನೀನು ಅಂದ್ಕೊಳ್ಳೋದಕ್ಕಿಂತ ಹೆಚ್ಚು ಸಾರಿ ಆಗುತ್ತೆ.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        AI models database ನಿಂದ facts retrieve ಮಾಡಲ್ಲ. ಅವು ಮುಂದಿನ most likely word predict ಮಾಡ್ತಾವೆ. ನೀನು ನಿಜವಾದ ವಿಷಯ ಬಗ್ಗೆ ಕೇಳಿದಾಗ, training data ಅವನ್ನ correct information ಕಡೆ guide ಮಾಡುತ್ತೆ. ಆದ್ರೆ ಇಲ್ಲದ ವಿಷಯ ಬಗ್ಗೆ ಕೇಳಿದಾಗ, model "ನನಗೆ ಗೊತ್ತಿಲ್ಲ" ಅನ್ನಲ್ಲ. ಸರಿಯಾದ answer <em>ಹೇಗೆ ಕಾಣುತ್ತೋ</em> ಅದನ್ನ generate ಮಾಡುತ್ತೆ — names, dates, ಮತ್ತು citations ಸಮೇತ. ಎಲ್ಲಾ fabricated.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">ಉದಾಹರಣೆ</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>ನೀನು:</strong> "1987 ನ novel <em>The Sands of Memory</em> ಯಾರು ಬರೆದರು?"<br /><br />
-          <strong>AI:</strong> "The Sands of Memory (1987) ಅನ್ನ British author Margaret Thornton ಬರೆದರು. ಇದು post-war East Africa ಅಲ್ಲಿ colonialism ಮತ್ತೆ identity themes ಅನ್ನ explore ಮಾಡುತ್ತೆ. Thornton ಗೆ ಈ work ಗಾಗಿ Booker Prize nomination ಸಿಕ್ತು."
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Legitimate ಆಗಿ ಕೇಳಿಸ್ತಿಲ್ವಾ? ಹೆಸರಿದೆ, ವರ್ಷ ಇದೆ, ವಿಷಯ ಇದೆ, award nomination ಸಹ ಇದೆ. <strong>ಇದ್ಯಾವುದೂ ನಿಜ ಅಲ್ಲ.</strong> ಆ book ಇಲ್ಲ. Margaret Thornton (ಈ context ಅಲ್ಲಿ) ಇಲ್ಲ. AI ಎಲ್ಲವನ್ನೂ invent ಮಾಡಿತು — ಮತ್ತೆ real answer ಹೇಗಿರುತ್ತೋ exactly ಹಾಗೇ ಕೇಳಿಸೋ ಹಾಗೆ ಮಾಡಿತು.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ಯಾಕೆ ಆಗುತ್ತೆ ಇದು? AI models facts ಅನ್ನ database ಯಿಂದ retrieve ಮಾಡಲ್ಲ. ಅವು <em>ಮುಂದಿನ most likely token predict ಮಾಡ್ತವೆ</em>. Real book ಬಗ್ಗೆ ಕೇಳಿದ್ರೆ, training data ಅಲ್ಲಿರೋ patterns correct information ಕಡೆ guide ಮಾಡ್ತವೆ. ಇಲ್ಲದ ವಿಷಯ ಬಗ್ಗೆ ಕೇಳಿದ್ರೆ, model "ಗೊತ್ತಿಲ್ಲ" ಅಂತ ಹೇಳಲ್ಲ. Correct answer <em>ಹೇಗಿರುತ್ತಿತ್ತು</em> ಅಂತ generate ಮಾಡ್ತಿತ್ತು.
+      <p class="text-lg leading-[1.85] mb-14">
+        AI ಎಷ್ಟು confident ಆಗಿ ಹೇಳುತ್ತೆ ಅನ್ನೋದಕ್ಕೂ ಎಷ್ಟು accurate ಇದೆ ಅನ್ನೋದಕ್ಕೂ ಯಾವುದೇ correlation ಇಲ್ಲ. ತಪ್ಪು answer ಮತ್ತು ಸರಿಯಾದ answer ಹೊರಗಿನಿಂದ ಒಂದೇ ಥರ ಕಾಣುತ್ತೆ. Tone ನಿಂದ, detail ನಿಂದ, ಅಥ್ವಾ AI ಎಷ್ಟು specific numbers include ಮಾಡಿದೆ ಅನ್ನೋದ್ರಿಂದ accuracy judge ಮಾಡೋಕಾಗಲ್ಲ. "Right ಅನ್ಸುತ್ತೆ" test worthless. ನಿನ್ನ ಏಕಮಾತ್ರ defense verification.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ಪ್ರಮುಖ ಒಳನೋಟ</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI ಗೆ truth ನ concept ಇಲ್ಲ. <em>Plausibility</em> ನ concept ಇದೆ. ಅದು pattern ಗೆ fit ಆಗೋ text generate ಮಾಡುತ್ತೆ — ಆ text reality ಗೆ correspond ಆಗುತ್ತೋ ಇಲ್ವೋ ಅಂತ ಬೇರೆ ವಿಷಯ.
+          AI ಗೆ truth ಅನ್ನೋ concept ಇಲ್ಲ. ಅದಕ್ಕೆ <em>plausibility</em> ಅನ್ನೋ concept ಇದೆ. Pattern ಗೆ fit ಆಗೋ text generate ಮಾಡುತ್ತೆ — ಆ text reality ಗೆ correspond ಆಗುತ್ತೋ ಇಲ್ಲವೋ ಅನ್ನೋದು ಬೇರೆ ವಿಷಯ.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Competence ಇಲ್ಲದ Confidence
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI hallucinations ನ trickiest ಭಾಗ ಅವು ಆಗ್ತವೆ ಅಂತಲ್ಲ. <strong>AI ಯಾವಾಗ್ಲೂ uncertainty signal ಮಾಡಲ್ಲ</strong> ಅಂತ. Unsure ಇರೋ human hesitate ಮಾಡ್ತಾನೆ, hedge ಮಾಡ್ತಾನೆ, "I think..." ಅಥವಾ "I'm not sure, but..." ಅಂತ ಹೇಳ್ತಾನೆ. AI fabricated facts ಅನ್ನ well-established facts ಗೆ ಬಳಸೋ ಅದೇ absolute confidence ನಲ್ಲಿ deliver ಮಾಡುತ್ತೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI ಎಷ್ಟು confidently ಕೇಳಿಸ್ತಿದೆ ಮತ್ತೆ ಎಷ್ಟು accurate ಆಗಿದೆ ಅಂತ ಯಾವ correlation ಇಲ್ಲ. ತಪ್ಪು answer ಮತ್ತೆ ಸರಿ answer ಹೊರಗಿಂದ identical ಆಗಿ ಕಾಣ್ತವೆ.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ಅದಕ್ಕೇ "ಸರಿ ಅನ್ನಿಸ್ತಿದೆ" test worthless. Accuracy ಅನ್ನ tone ನಿಂದ, detail ನಿಂದ, AI ಎಷ್ಟು specific numbers ಅಥವಾ names include ಮಾಡ್ತಿದೆ ಅಂತ judge ಮಾಡಕ್ಕಾಗಲ್ಲ. ಅವೆಲ್ಲ completely fabricated ಆಗಬಹುದು — ಮತ್ತೆ frequently ಆಗಿರ್ತವೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        ಹೀಗೆ ಯೋಚಿಸು: AI ಸಾವಿರಾರು scripts ಓದಿರೋ very convincing actor ತರ. ಯಾವ line ಅನ್ನಾದ್ರೂ perfect conviction ನಲ್ಲಿ deliver ಮಾಡಬಲ್ಲ — ಆದ್ರೆ conviction ಅಂದ್ರೆ knowledge ಅಲ್ಲ.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        ನಿನ್ನ detector test ಮಾಡು. AI claims ಯಾವುದು real, ಯಾವುದು fabricated ಅಂತ ಹೇಳಬಲ್ಲೆಯಾ?
+        ನಿನ್ನ detector test ಮಾಡು. ಯಾವ AI claims real, ಯಾವುವು fabricated ಅಂತ ಹೇಳಬಹುದಾ?
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Yes-Man Problem
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="ಪ್ರತಿ AI user ಗೆ ಈ chapter ಬೇಕು. AI ಹೇಗೆ hallucinate ಮಾಡುತ್ತೆ, ಯಾಕೆ ತಪ್ಪು answers ಗೆ agree ಆಗುತ್ತೆ, ಮತ್ತು ಹೇಗೆ catch ಮಾಡೋದು ಅಂತ ಕಲಿಸುತ್ತೆ. Super practical." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hallucination ಗಿಂತ subtle ಇರೋ ಇನ್ನೊಂದು failure mode ಇದೆ: <strong>sycophancy.</strong> ನೀನು ತಪ್ಪು ಹೇಳಿದ್ರೂ AI ನಿನ್ನ ಜೊತೆ agree ಮಾಡೋ tendency ಇದೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        "Einstein lightbulb invent ಮಾಡಿದ, ಅಲ್ವಾ?" ಅಂತ ಹೇಳಿದ್ರೆ, ಹೆಚ್ಚಿನ AI models ನಿನ್ನ flatly correct ಮಾಡಲ್ಲ. ಬದಲಿಗೆ, partially agree ಮಾಡೋ ದಾರಿ ಹುಡುಕ್ತವೆ — Einstein ಅನ್ನ ಅವನ physics work ಮೂಲಕ light ಗೆ connect ಮಾಡ್ತವೆ, ನಿನ್ನ wrong claim ಸುತ್ತ hedge ಮಾಡ್ತವೆ, ನಿನ್ನ educated ಮಾಡೋ ಬದಲಿಗೆ validated ಅನ್ನಿಸೋ ಹಾಗೆ ಮಾಡ್ತವೆ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        ಯಾಕೆ? AI models human feedback ಮೇಲೆ train ಆಗಿವೆ, ಮತ್ತೆ humans agreeable, affirming responses ಗೆ positive ratings ಕೊಡ್ತಾರೆ. Millions ನ training examples ಅಲ್ಲಿ model ಕಲಿಯುತ್ತೆ: <em>agree ಮಾಡಿದ್ರೆ reward ಸಿಗುತ್ತೆ.</em> ಹಾಗಾಗಿ agree ಮಾಡುತ್ತೆ — ಮಾಡಬಾರದಿದ್ದಾಗಲೂ.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>ಇದು dangerous</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ನೀನು ಈಗಾಗಲೇ believe ಮಾಡೋದನ್ನ confirm ಮಾಡಕ್ಕೆ ಮಾತ್ರ AI use ಮಾಡಿದ್ರೆ, ಅದು ಸಂತೋಷವಾಗಿ ಮಾಡುತ್ತೆ. ನಿನಗೆ smarter ಅನ್ನಿಸ್ತಿರುತ್ತೆ ಆದ್ರೆ actually dumber ಆಗ್ತಿರ್ತೀಯ. AI ನ strongest use ನಿನ್ನ assumptions challenge ಮಾಡು ಅಂತ ಕೇಳೋದು — reinforce ಮಾಡು ಅಂತ ಅಲ್ಲ.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Action ಅಲ್ಲಿ ನೋಡು. AI ಗೆ wrong claim ಕೊಟ್ಟು push back ಮಾಡುತ್ತಾ ಅಥವಾ cave ಆಗುತ್ತಾ ನೋಡು.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ನಿನ್ನ Verification Habit Build ಮಾಡೋದು
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        AI ಹೇಳೋ ಎಲ್ಲವನ್ನೂ distrust ಮಾಡು ಅನ್ನೋದು goal ಅಲ್ಲ. ಒಂದು set automatic checks develop ಮಾಡೋದು — verification reflex — AI-generated information ಮೇಲೆ act ಮಾಡೋ ಮೊದಲು kick in ಆಗೋದು.
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: 'ಇದನ್ನ verify ಮಾಡಬಹುದಾ?', color: '#E94560', text: 'ಯಾವುದೇ factual claim ಗೆ ಕೇಳು: independent source ನಿಂದ check ಮಾಡಬಹುದಾ? AI study cite ಮಾಡಿದ್ರೆ, ಅದನ್ನ ಹುಡುಕು. Date ಹೇಳಿದ್ರೆ, confirm ಮಾಡು. Quote ಹೇಳಿದ್ರೆ, quote ಅನ್ನ look up ಮಾಡು. Citations ಅನ್ನ face value ಅಲ್ಲಿ accept ಮಾಡಬೇಡ — AI regularly sources invent ಮಾಡುತ್ತೆ.' },
-        { letter: '2', name: 'Sources ಕೇಳಿದ್ಯಾ?', color: '#0F3460', text: 'AI ಗೆ explicitly sources provide ಮಾಡು ಅಂತ ಕೇಳು. ಆಮೇಲೆ ಆ sources check ಮಾಡು. ಕೆಲವೊಮ್ಮೆ real ಇರ್ತವೆ, ಕೆಲವೊಮ್ಮೆ close-but-wrong (ಸರಿ author, ತಪ್ಪು paper), ಕೆಲವೊಮ್ಮೆ completely fabricated ಇರ್ತವೆ. Check ಮಾಡೋ act ನಿನ್ನ instinct train ಮಾಡುತ್ತೆ.' },
-        { letter: '3', name: 'Common sense test pass ಆಗುತ್ತಾ?', color: '#7B61FF', text: 'Step back ತಗೋ ಮತ್ತೆ ಯೋಚಿಸು: ಈ claim actually make sense ಆಗುತ್ತಾ? AI plausible nonsense generate ಮಾಡಬಹುದು ಅದು 5 seconds ನ critical thought ಅಲ್ಲಿ ಕುಸಿದುಬೀಳುತ್ತೆ. ನಿನ್ನ gut trust ಮಾಡು — ಆಮೇಲೆ anyway verify ಮಾಡು.' },
-        { letter: '4', name: 'High-stakes domain ಅಲ್ಲಿ ಇದ್ದೀನಾ?', color: '#F5A623', text: 'Medical advice, legal guidance, financial decisions, safety involve ಆಗೋದೆಲ್ಲ — extra verification ಬೇಕು. Brainstorming ಮತ್ತೆ first drafts ಗೆ AI helpful, ಆದ್ರೆ critical decisions ಅನ್ನ ಯಾವಾಗ್ಲೂ qualified humans verify ಮಾಡಬೇಕು.' },
-        { letter: '5', name: 'Question neutrally frame ಮಾಡಿದ್ಯಾ?', color: '#16C79A', text: 'ನಿನ್ನ opinion ಅನ್ನ question ಅಲ್ಲಿ embed ಮಾಡಿದ್ರೆ, AI ಅದನ್ನೇ mirror ಮಾಡಿ ವಾಪಸ್ ಕೊಡುತ್ತೆ. Open questions ಕೇಳು. "X ಯಾಕೆ best approach?" ಬದಲಿಗೆ "X ನ ಪರ ಮತ್ತೆ ವಿರುದ್ಧ arguments ಏನು?" ಅಂತ ಕೇಳು. ಹೆಚ್ಚು honest, useful answers ಸಿಗ್ತವೆ.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ಇದು AI doubt ಮಾಡೋದಲ್ಲ. ಚೆನ್ನಾಗಿ use ಮಾಡೋದು.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Professional journalists quotes verify ಮಾಡ್ತಾರೆ. Scientists experiments replicate ಮಾಡ್ತಾರೆ. Engineers bridges ಅನ್ನ open ಮಾಡೋ ಮೊದಲು test ಮಾಡ್ತಾರೆ. AI output verify ಮಾಡೋದು paranoia ಅಲ್ಲ — professionalism. Verify ಮಾಡೋರೇ actually work ಆಗೋ ಥರದ್ದನ್ನ build ಮಾಡೋರು.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        ಈಗ ನಿನ್ನ ಹತ್ರ BS detector ಇದೆ: hallucinations spot ಮಾಡಬಲ್ಲೆ, sycophancy resist ಮಾಡಬಲ್ಲೆ, trust ಮಾಡೋ ಮೊದಲು verify ಮಾಡಬಲ್ಲೆ. ಈ habit ನಿನ್ನ ಯಾವ fancy prompt technique ಗಿಂತಲೂ ಹೆಚ್ಚು save ಮಾಡುತ್ತೆ.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI ಯಿಂದ ಅತ್ಯಂತ ಹೆಚ್ಚು value ಪಡೆಯೋರು ಯಾವಾಗ trust ಮಾಡಬೇಕು ಮತ್ತು ಯಾವಾಗ verify ಮಾಡಬೇಕು ಅಂತ exactly ಕಲಿತವರು.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AI ಯಾವಾಗ ತಪ್ಪು ಅಂತ ಗೊತ್ತಾಗೋದು ಒಂದು ದೊಡ್ಡ question ಗೆ ಕರೆದೊಯ್ಯುತ್ತೆ: ಅದು <em>ಯಾವಾಗ್ಲೂ</em> ಮಾಡಕ್ಕಾಗದ ವಿಷಯಗಳು ಯಾವವು? ಮುಂದೆ, stubbornly, beautifully human ಆಗಿ ಉಳಿಯೋ skills explore ಮಾಡೋಣ &mdash; ಮತ್ತೆ ಅವು ಯಾಕೆ ಹಿಂದೆಂದಿಗಿಂತ ಹೆಚ್ಚು matter ಮಾಡ್ತವೆ.
+        AI ಯಾವಾಗ wrong ಅಂತ ತಿಳಿಯೋದು ಒಂದು ದೊಡ್ಡ question ಗೆ ತೆಗೆದುಕೊಂಡು ಹೋಗುತ್ತೆ: ಅದು <em>ಯಾವತ್ತೂ</em> ಮಾಡೋಕಾಗದ್ದು ಏನು? ಮುಂದೆ, stubbornly, beautifully human ಆಗಿ ಉಳಿಯೋ skills explore ಮಾಡೋಣ — ಮತ್ತು ಅವು ಯಾಕೆ ಹಿಂದಿಗಿಂತ ಹೆಚ್ಚು matter ಮಾಡ್ತಾವೆ.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

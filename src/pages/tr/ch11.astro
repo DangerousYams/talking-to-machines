@@ -4,10 +4,8 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectPlanner from '../../components/widgets/ch11/ProjectPlanner';
-import ShowcaseGallery from '../../components/widgets/ch11/ShowcaseGallery';
+import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
 ---
@@ -30,318 +28,98 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Gerçek bir şey<br />inşa et
+          Gerçek Bir Şey<br />İnşa Et
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Yaratma olmadan bilgi, ansiklopedi bilgisidir.<br />Yayınlama zamanı.
+          Yaratma olmadan bilgi ansiklopedi bilgisidir.<br />Yayınlama zamanı.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Son bölüme ulaştın. Son on bölümde "denememe yardım et"ten ajan inşa etmeye, halüsinasyonları ayıklamaya ve geleceğin işlerini düşünmeye kadar geldin. Yapay zeka hakkında çoğu yetişkinin bildiğinden fazlasını öğrendin. Ama işte rahatsız edici gerçek: <strong>bir şey inşa edene kadar hiçbiri önemli değil.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Yapay zeka hakkında okumak, yüzme hakkında okumak gibidir. Kaldırma kuvvetinin fiziğini inceleyebilir, Olimpiyat yarışlarını izleyebilir, her kulaç tekniğini ezberleyebilirsin. Ama suya girene kadar hiçbirini <em>bilmiyorsun</em>. Sadece <em>hakkında</em> biliyorsun.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Bu bölüm suya atlamakla ilgili. Oyuncak bir alıştırma ya da adım adım takip edilen bir öğreticiyle değil. Gerçek bir projeyle. Senin seçtiğin bir şey. Önemsediğin bir şey. Birine gösterip <em>"Bunu ben yaptım"</em> diyebileceğin bir şey.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Başardın. On bölüm boyunca "makaleme yardım et"ten bağlam mühendisliğine, ajan inşa etmeye ve halüsinasyonları ayıklamaya kadar geldin. Yapay zeka hakkında çoğu yetişkinden daha fazla şey öğrendin. Ama işte rahatsız edici gerçek: <strong>bir şey inşa edene kadar hiçbiri önemli değil.</strong> Yapay zeka hakkında okumak yüzme hakkında okumak gibidir — her kulaç tekniğini çalışabilirsin ama suya girmeden hiçbirini <em>bilmiyorsun</em>. Sadece onlar <em>hakkında</em> biliyorsun.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ ARAÇ KİTİN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Araç kitin
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        On bölümlük beceri, kullanıma hazır:
-      </p>
-    </FadeInBlock>
-
-    <!-- Kompakt 2 sütunlu bölüm becerileri ızgarası -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { ch: '1', label: 'Prompt mimarisi', color: '#E94560' },
-          { ch: '2', label: 'İleri teknikler', color: '#0F3460' },
-          { ch: '3', label: 'Bağlam mühendisliği', color: '#7B61FF' },
-          { ch: '4', label: 'Yapay zeka manzarası', color: '#0EA5E9' },
-          { ch: '5', label: 'Araç kullanımı ve ajanlar', color: '#F5A623' },
-          { ch: '6', label: 'Ajan mimarisi', color: '#E94560' },
-          { ch: '7', label: 'YZ eşli programlama', color: '#7B61FF' },
-          { ch: '8', label: 'Orkestrasyon', color: '#0F3460' },
-          { ch: '9', label: 'Eleştirel düşünme', color: '#E94560' },
-          { ch: '10', label: 'İnsan avantajı', color: '#16C79A' },
-        ].map((item) => (
-          <div style="display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0;">
-            <span style={`font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: ${item.color}; opacity: 0.7; width: 1.25rem; text-align: right; flex-shrink: 0;`}>{item.ch}</span>
-            <span style={`font-family: var(--font-body); font-size: 0.9rem; color: var(--color-deep); opacity: 0.8;`}>{item.label}</span>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Şimdi soru şu: bunlarla ne yapacaksın?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ İNŞA ETMEDEN ÖNCE PLANLA ═══ -->
+  <!-- ═══ SET UP YOUR AI ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        İnşa etmeden önce planla
+        Yapay Zekanı Kur
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        İlk kez inşa edenlerin yaptığı en büyük hata mı? Doğruca araçlara geçmek. Claude'u açarlar, devasa bir prompt yazarlar ve her şeyi tek seferde inşa etmeye çalışırlar. Olmaz. Hayal kırıklığına uğrarlar. Bırakırlar.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        En iyi projeler bir prompt'la başlamaz. Kağıt üzerinde bir planla başlar. Ne inşa ediyorsun? Kimin için? "Bitti" neye benziyor? Klavyeye dokunmadan önce bunları cevapla.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        8. Bölüm'ü hatırla — karmaşıklığı orkestra etmek? Final projen bunun minyatür bir versiyonu. İşi parçalara ayır. Neyi inşa ettiğini, inşa etmeden önce bil. Yapay zekayı her parça için bir işbirlikçi olarak kullan, tüm iş için sihirli bir değnek olarak değil.
-      </p>
-    </FadeInBlock>
-
-    <!-- Planlama Adımları -->
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Seç.', desc: 'Gerçekten önemsediğin bir şey seç. Tutku, zor kısımlarda sebat etmeni sağlar.' },
-          { word: 'Daralt.', desc: 'Yarıya indir. Sonra tekrar yarıya indir. Bitmiş küçük bir proje, yarıda kalmış büyük bir projeden iyidir.' },
-          { word: 'Parçala.', desc: '5-8 göreve ayır. Her görev bir oturuşta tamamlanabilir olmalı.' },
-          { word: 'İnşa et.', desc: 'Tek seferde bir görev. Her parça için yapay zekayı kullan. İlerlemeden önce her çıktıyı doğrula.' },
-          { word: 'Yayınla.', desc: 'Biten, mükemmelden iyidir. Paylaş. Geri bildirim al. İyileştir.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Bir şey daha: ilerlerken belgele. Projenin kendisi hikayenin yarısı. Onu nasıl inşa ettiğin — kararlar, iterasyonlar, çıkmaz yollar — diğer yarısı. Açıklayabildiğin bitmiş bir proje, herhangi bir sınav notundan daha değerlidir.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT PLANNER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectPlanner client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ 3 HAFTALIK SPRİNT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        3 haftalık sprint
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Projen ister bir hafta sonu, ister bir dönem sürsün, ritim aynıdır. İşte gerçek bir şeyi yayınlamak için savaşta test edilmiş bir çerçeve:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
-        {[
-          {
-            week: '1. Hafta',
-            title: 'Fikir üret ve kapsamı belirle',
-            color: '#F5A623',
-            tasks: [
-              'Projeni seç. Yukarıdaki Proje Planlayıcı\'yı kullan.',
-              '"Bitti" neye benzediğini anlatan bir paragraf yaz.',
-              'Projeyi net çıktıları olan 5-8 göreve ayır.',
-              'Her görev için hangi yapay zeka araçlarını kullanacağını belirle.',
-              'En zor kısmın küçük bir prototipini önce inşa et. O çalışırsa, geri kalanı da çalışır.',
-            ],
-          },
-          {
-            week: '2. Hafta',
-            title: 'İnşa et',
-            color: chapter.accent,
-            tasks: [
-              'Görevleri tek tek hallett. Atlama.',
-              'Her görev için 1. Bölüm\'den prompt-değerlendir-iyileştir döngüsünü kullan.',
-              '"İşe yarayan promptlar" günlüğü tut. Daha sonra kendine teşekkür edersin.',
-              'Takıldığında ilgili bölümü tekrar oku. Cevap genellikle denemediğin bir tekniktedir.',
-              'Hafta ortasında bir arkadaşından veya aile üyesinden geri bildirim al. Taze gözler seninkinin kaçırdığını yakalar.',
-            ],
-          },
-          {
-            week: '3. Hafta',
-            title: 'Cilala ve sun',
-            color: '#7B61FF',
-            tasks: [
-              'En belirgin üç pürüzü düzelt. Geri kalanını yoksay.',
-              'Bir proje açıklaması yaz: ne yapıyor, nasıl inşa ettin, ne öğrendin.',
-              'Sürecinde kritik olan 3 temel prompt\'u belgele.',
-              '2 dakikalık bir tanıtım oluştur (video, slayt veya canlı demo).',
-              'Paylaş. Bir öğretmenle, bir arkadaşla, çevrimiçi, öğrenci vitrininde.',
-            ],
-          },
-        ].map((week, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.1}>
-            <div style={`background: ${week.color}06; border: 1px solid ${week.color}15; border-radius: 12px; padding: 1.5rem 1.75rem;`}>
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${week.color}; background: ${week.color}15; padding: 3px 10px; border-radius: 100;`}>
-                  {week.week}
-                </span>
-                <span style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--color-deep);`}>
-                  {week.title}
-                </span>
-              </div>
-              <ul style="margin: 0; padding-left: 1.25rem;">
-                {week.tasks.map((task) => (
-                  <li style="font-family: var(--font-body); font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.8; margin-bottom: 0.35rem;">
-                    {task}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- SHOWCASE GALLERY'YE KÖPRÜ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Diğer öğrencilerin neler inşa ettiğine bak. Sonra seninkini galeriye ekle.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SHOWCASE GALLERY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ShowcaseGallery client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ KAPANIŞ — UĞURLAMA ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        On bir bölüm önce "denememe yardım et" yazıp en iyisini umuyordun. Şimdi bağlam mühendisliği yapıyor, ajanlar tasarlıyor, çıktıları doğruluyor ve her adıma muhakemeni katıyorsun.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Araçlar bir şey inşa etmez. <strong>Araçlara sahip insanlar inşa eder.</strong> Ve senin neslin, şimdiye kadar erişilmiş en iyi araç kitine sahip.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        İlk prompt'unu yazmadan önce, çoğu yeni başlayanın atladığı güçlü bir hamle var: <strong>yapay zeka aracına kalıcı bir talimat dosyası ver.</strong> Her oturumda projeni yeniden açıklamak yerine, bir kere yazarsın ve yapay zekan otomatik olarak okur. Claude Code <code>CLAUDE.md</code> dosyasını okur. Cursor <code>.cursorrules</code> dosyasını okur. GitHub Copilot <code>.github/copilot-instructions.md</code> dosyasını okur. Aynı konsept, farklı dosya adları. Bu, 3. Bölüm'deki bağlam mühendisliğinin proje seviyesinde uygulanması.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Git, sadece senin yapmayı düşüneceğin bir şey yap.
+      <p class="text-lg leading-[1.85] mb-14">
+        İyi bir talimat dosyası üç soruyu yanıtlar: ne inşa ediyorsun, kurallar ne ve "iyi" neye benziyor? Bunları doğru yap ve yapay zekayla her sohbet on adım önden başlar. Projeni bitirebilecek kadar küçük tut — tamamlanmış bir hafta sonu projesi, yarıda kalmış bir başyapıttan her zaman daha iyidir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <p class="text-center mt-8" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
-        Yayınla.
+      <div class="insight-box">
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Önemli nokta</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          İyi bir proje talimat dosyası, sana yardım eden bir yapay zeka ile seni <em>anlayan</em> bir yapay zeka arasındaki farktır. Bir kere yaz, her oturumda faydasını gör.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Proje talimat dosyanı tam burada oluştur. Bölümleri doldur ve tercih ettiğin yapay zeka aracı için dışarı aktar.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ KURS TAMAMLANDI ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-24">
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="project-instructions-builder" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ProjectInstructionsBuilder client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <div style={`text-align: center; padding: 3rem 2rem; border-radius: 16px; background: ${chapter.accent}06; border: 1px solid ${chapter.accent}15; position: relative; overflow: hidden;`}>
-        <!-- Dekoratif köşe aksentleri -->
-        <div style={`position: absolute; top: -1px; left: -1px; width: 40px; height: 40px; border-top: 2px solid ${chapter.accent}40; border-left: 2px solid ${chapter.accent}40; border-radius: 16px 0 0 0;`}></div>
-        <div style={`position: absolute; bottom: -1px; right: -1px; width: 40px; height: 40px; border-bottom: 2px solid ${chapter.accent}40; border-right: 2px solid ${chapter.accent}40; border-radius: 0 0 16px 0;`}></div>
-
-        <p style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-subtle); margin: 0 0 0.75rem;">
-          Kurs tamamlandı
-        </p>
-        <p style={`font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: ${chapter.accent}; margin: 0 0 0.75rem; letter-spacing: -0.02em;`}>
-          11 bölümün tamamını bitirdin.
-        </p>
-        <p style="font-family: var(--font-body); font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.6; max-width: 40ch; margin: 0 auto 2rem;">
-          Şimdi asıl öğrenme başlıyor — git bir şey inşa et ve ihtiyacın olduğunda herhangi bir bölüme geri dön.
-        </p>
-
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
-          <a
-            href="/tr"
-            style={`display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; background: ${chapter.accent}; color: white; transition: all 0.3s;`}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            Ana Sayfaya Dön
-          </a>
-          <a
-            href="/tr/ch1"
-            style="display: inline-flex; align-items: center; gap: 6px; padding: 0.6rem 1.5rem; border-radius: 100px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); color: var(--color-deep); transition: all 0.3s;"
-          >
-            1. Bölüm'ü Tekrar Oku
-          </a>
-        </div>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Araçlar bir şey inşa etmez. Araçlara sahip insanlar inşa eder. Ve senin neslin şimdiye kadar erişilen en iyi araç setine sahip.
       </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
+        On bir bölüm önce "makaleme yardım et" yazıp en iyisini umuyordun. Şimdi bağlam mühendisliği yapıyor, ajanlar tasarlıyor, çıktıları doğruluyor ve her adıma yargını katıyorsun. Kurs bitti. Gerçek öğrenme şimdi başlıyor — git ve sadece senin aklına gelecek bir şey yap.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-center mt-4" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
+        Yayınla.
+      </p>
     </FadeInBlock>
   </section>
 

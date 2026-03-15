@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import FactOrFabrication from '../../components/widgets/ch9/FactOrFabrication';
-import SycophancyTest from '../../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../../components/breaks/SweetTalker';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[8];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[8];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>9</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chapitre Neuf
+          Chapitre neuf
         </p>
       </FadeInBlock>
 
@@ -37,263 +37,98 @@ const chapter = chapters[8];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Les habitudes de vérification qui séparent<br />les amateurs des pros.
+          Les habitudes de verification qui separent<br />les amateurs des pros.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Voici quelque chose de dérangeant : l'IA qui vient de t'aider à rédiger une dissertation impeccable peut aussi, avec la même assurance, te dire que Napoléon a gagné la bataille de Waterloo. Elle n'hésitera pas. Elle ne bafouillera pas. Elle énoncera un « fait » entièrement inventé avec le même ton autoritaire qu'elle utilise pour tout le reste.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        C'est le paradoxe au coeur du travail avec l'IA : <strong>la même fluidité qui la rend utile la rend dangereuse.</strong> L'IA ne sait pas ce qui est vrai. Elle sait ce qui <em>sonne</em> vrai. Et ce sont deux choses très, très différentes.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Ce chapitre est là pour construire ton détecteur de bêtises. Pas parce que l'IA est mauvaise, mais parce que <em>lui faire confiance aveuglément</em> l'est. Ceux qui tirent le plus de valeur de l'IA sont ceux qui ont appris exactement quand lui faire confiance et quand vérifier.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        L'IA qui vient de t'aider a ecrire une dissertation impeccable peut aussi, avec la meme assurance, te dire que Napoleon a gagne la bataille de Waterloo. Elle n'hesitera pas. Elle ne bafouillera pas. Elle enoncera un « fait » entierement invente avec le meme ton autoritaire qu'elle utilise pour tout le reste. C'est le paradoxe au coeur du travail avec l'IA : <strong>la meme fluidite qui la rend utile la rend dangereuse.</strong>
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE HALLUCINATION PROBLEM ═══ -->
+  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Le problème des hallucinations
+        La plausibilite n'est pas la verite
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        En IA, une <strong>hallucination</strong>, c'est quand le modèle génère une information qui semble plausible mais qui est factuellement fausse — ou complètement inventée. Et ça arrive plus souvent qu'on ne le pense.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Les modeles d'IA ne recuperent pas des faits dans une base de donnees. Ils predisent le prochain mot le plus probable. Quand tu poses une question sur quelque chose de reel, les donnees d'entrainement les guident vers les bonnes informations. Quand tu poses une question sur quelque chose qui n'existe pas, le modele ne dit pas « je ne sais pas ». Il genere ce a quoi une bonne reponse <em>ressemblerait</em> — avec des noms, des dates et des citations. Tout invente.
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Exemple</span>
-        <p class="m-0" style="color: var(--color-deep);">
-          <strong>Toi :</strong> « Qui a écrit le roman de 1987 <em>Les Sables de la Mémoire</em> ? »<br /><br />
-          <strong>IA :</strong> « Les Sables de la Mémoire (1987) a été écrit par l'auteure britannique Margaret Thornton. Le roman explore les thèmes du colonialisme et de l'identité dans l'Afrique de l'Est d'après-guerre. Thornton a reçu une nomination au Booker Prize pour cette oeuvre. »
-        </p>
-      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ça a l'air crédible, non ? Il y a un nom, une date, un sujet, même une nomination à un prix littéraire. <strong>Rien de tout ça n'est réel.</strong> Le livre n'existe pas. Margaret Thornton (dans ce contexte) n'existe pas. L'IA a tout inventé — et a fait en sorte que ça ressemble exactement à une vraie réponse.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Pourquoi ça arrive ? Parce que les modèles d'IA ne récupèrent pas des faits dans une base de données. Ils <em>prédisent le prochain token le plus probable</em>. Quand tu poses une question sur un vrai livre, les patterns des données d'entraînement guident le modèle vers les bonnes informations. Quand tu poses une question sur quelque chose qui n'existe pas, le modèle ne dit pas « je ne sais pas ». Il génère ce à quoi une bonne réponse <em>ressemblerait</em>.
+      <p class="text-lg leading-[1.85] mb-14">
+        Il n'y a aucune correlation entre l'assurance de l'IA et sa precision reelle. Une reponse fausse et une reponse juste sont identiques vues de l'exterieur. Tu ne peux pas juger la precision au ton, au detail, ou au nombre de chiffres que l'IA inclut. Le test du « ca sonne juste » ne vaut rien. Ta seule defense, c'est la verification.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idée clé</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idee cle</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          L'IA n'a pas de concept de vérité. Elle a un concept de <em>plausibilité</em>. Elle génère du texte qui correspond au pattern — que ce texte corresponde à la réalité ou non.
+          L'IA n'a pas de concept de verite. Elle a un concept de <em>plausibilite</em>. Elle genere du texte qui correspond au pattern — que ce texte corresponde a la realite ou non.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CONFIDENCE WITHOUT COMPETENCE ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        De l'assurance sans compétence
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Le plus piégeux avec les hallucinations, ce n'est pas qu'elles arrivent. C'est que <strong>l'IA ne signale jamais son incertitude.</strong> Un humain qui n'est pas sûr va hésiter, nuancer, dire « je pense que... » ou « je ne suis pas certain, mais... ». L'IA livre des faits inventés avec la même assurance absolue que pour des faits bien établis.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Il n'y a aucune corrélation entre le degré d'assurance de l'IA et son degré de précision réelle. Une réponse fausse et une réponse juste sont identiques vues de l'extérieur.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        C'est pourquoi le test du « ça sonne juste » ne vaut rien. Tu ne peux pas juger la précision au ton, au niveau de détail, au nombre de chiffres ou de noms que l'IA inclut. Tout ça peut être — et est fréquemment — complètement inventé.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Vois les choses comme ça : l'IA est un acteur très convaincant qui a lu des milliers de scripts. Il peut livrer n'importe quelle réplique avec une conviction parfaite — mais la conviction n'est pas le savoir.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FACT OR FABRICATION -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Teste ton détecteur. Tu arrives à distinguer les affirmations vraies des inventions de l'IA ?
+        Teste ton detecteur. Tu arrives a distinguer les affirmations reelles de celles inventees par l'IA ?
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FACT OR FABRICATION ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FactOrFabrication client:visible />
-    </FadeInBlock>
+    <FactOrFabrication client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Le problème du béni-oui-oui
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Tout utilisateur d'IA a besoin de ce chapitre. Il t'apprend exactement comment l'IA hallucine, pourquoi elle acquiesce a des reponses fausses, et comment la prendre en flagrant delit. Super pratique." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Il y a un autre mode de défaillance, plus subtil que l'hallucination : la <strong>complaisance</strong>. L'IA a tendance à être d'accord avec toi, même quand tu as tort.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Si tu dis « Einstein a inventé l'ampoule, c'est bien ça ? », la plupart des modèles d'IA ne vont pas te corriger franchement. Ils vont plutôt trouver un moyen d'être partiellement d'accord — en reliant Einstein à la lumière via ses travaux en physique, en contournant ton affirmation erronée, en te faisant te sentir validé plutôt qu'éduqué.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Pourquoi ? Parce que les modèles d'IA sont entraînés sur des retours humains, et les humains donnent des évaluations positives aux réponses qui semblent agréables et encourageantes. Sur des millions d'exemples d'entraînement, le modèle apprend : <em>être d'accord est récompensé.</em> Alors il acquiesce — même quand il ne devrait pas.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;`}>C'est dangereux</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Si tu n'utilises l'IA que pour confirmer ce que tu crois déjà, elle le fera avec plaisir. Tu te sentiras plus intelligent tout en devenant en réalité plus ignorant. La meilleure utilisation de l'IA, c'est de lui demander de remettre en question tes hypothèses — pas de les renforcer.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO SYCOPHANCY TEST -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Observe le phénomène en direct. Soumets une affirmation fausse à l'IA et regarde si elle résiste ou cède.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SYCOPHANCY TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SycophancyTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING YOUR VERIFICATION HABIT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Construire ton réflexe de vérification
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        L'objectif n'est pas de se méfier de tout ce que l'IA te dit. C'est de développer un ensemble de vérifications automatiques — un réflexe de vérification — qui se déclenche avant que tu n'agisses sur une information générée par l'IA.
-      </p>
-    </FadeInBlock>
-
-    <!-- Verification checklist — editorial layout -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: '1', name: 'Est-ce que je peux vérifier ça ?', color: '#E94560', text: 'Pour toute affirmation factuelle, demande-toi : est-ce que je peux recouper avec une source indépendante ? Si l\'IA cite une étude, trouve-la. Si elle donne une date, confirme-la. Si elle cite quelqu\'un, retrouve la citation. N\'accepte pas les références telles quelles — l\'IA invente régulièrement des sources.' },
-        { letter: '2', name: 'Est-ce que j\'ai demandé des sources ?', color: '#0F3460', text: 'Demande explicitement à l\'IA de fournir des sources. Puis vérifie-les. Tu découvriras que parfois elles sont réelles, parfois presque justes (bon auteur, mauvais article), et parfois complètement inventées. L\'acte de vérifier entraîne ton instinct.' },
-        { letter: '3', name: 'Est-ce que ça passe le test du bon sens ?', color: '#7B61FF', text: 'Prends du recul et réfléchis : est-ce que cette affirmation a vraiment du sens ? L\'IA peut générer des absurdités plausibles qui s\'effondrent après 5 secondes de réflexion critique. Fais confiance à ton intuition — puis vérifie quand même.' },
-        { letter: '4', name: 'Est-ce que je suis dans un domaine à hauts enjeux ?', color: '#F5A623', text: 'Conseils médicaux, recommandations juridiques, décisions financières, tout ce qui touche à la sécurité — ça demande une vérification supplémentaire. L\'IA est utile pour le brainstorming et les premiers brouillons, mais les décisions critiques doivent toujours être validées par des humains qualifiés.' },
-        { letter: '5', name: 'Est-ce que j\'ai posé la question de façon neutre ?', color: '#16C79A', text: 'Si tu glisses ton opinion dans la question, l\'IA te la renverra en miroir. Pose des questions ouvertes. Demande « Quels sont les arguments pour et contre X ? » au lieu de « Pourquoi X est-il la meilleure approche ? » Tu obtiendras des réponses plus honnêtes et utiles.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Il ne s'agit pas de douter de l'IA. Il s'agit de bien l'utiliser.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Les journalistes professionnels vérifient les citations. Les scientifiques reproduisent les expériences. Les ingénieurs testent les ponts avant de les ouvrir. Vérifier les résultats de l'IA, ce n'est pas de la paranoïa — c'est du professionnalisme. Ceux qui vérifient sont ceux qui construisent des choses qui marchent vraiment.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Tu as maintenant un détecteur de bêtises : tu sais repérer les hallucinations, résister à la complaisance, et vérifier avant de faire confiance. Cette habitude te sauvera plus que n'importe quelle technique de prompt sophistiquée.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Ceux qui tirent le plus de valeur de l'IA sont ceux qui ont appris exactement quand lui faire confiance et quand verifier.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Savoir quand l'IA se trompe mène à une question plus grande : qu'est-ce qu'elle ne pourra <em>jamais</em> faire ? La suite explore les compétences qui restent obstinément, magnifiquement humaines &mdash; et pourquoi elles comptent plus que jamais.
+        Savoir quand l'IA se trompe mene a une question plus grande : qu'est-ce qu'elle ne pourra <em>jamais</em> faire ? La suite explore les competences qui restent obstinement, magnifiquement humaines — et pourquoi elles comptent plus que jamais.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -4,10 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import ProjectOrchestrator from '../../components/widgets/ch8/ProjectOrchestrator';
 import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import ComplexityScore from '../../components/breaks/ComplexityScore';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[7];
 ---
@@ -36,7 +37,7 @@ const chapter = chapters[7];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          管理超出任何上下文窗口的<br />大型 AI 项目。
+          在超出任何上下文窗口的<br />项目中管理 AI。
         </p>
       </FadeInBlock>
     </div>
@@ -46,203 +47,18 @@ const chapter = chapters[7];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        每个有野心的新手都会撞上这堵墙：你让 AI 构建一些真正的东西——一个完整的游戏、一个带后端的网站、一篇有引用的研究论文——然后整个事情崩了。不是因为 AI 不够聪明，而是因为项目对一次对话来说太大了。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        每个有野心的新手都会撞上这个时刻：你让 AI 构建一个真正的东西——一个完整的游戏、一个带后端的网站、一篇有引用的研究论文——然后整件事崩了。不是因为 AI 不够聪明。而是因为项目对单次对话来说太大了。你贴了一整面墙的需求，二十分钟后发现它忘了你一半的要求。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        你粘贴了一大堆需求，AI 给你一个听起来很自信的回答，二十分钟后你发现它忘了你一半的要求，在架构上自相矛盾，还幻觉出了一个不存在的库。你再试一次。同样的结果，不同的幻觉。
+      <p class="text-lg leading-[1.85] mt-8">
+        这不是 AI 的问题。这是<strong>编排问题</strong>。学会解决它，是把 AI 用于零碎任务的人和用 AI 构建真正东西的人之间的分水岭。
       </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        这不是 AI 的问题。这是<strong>编排问题</strong>。学会解决它，是把 AI 用于一次性任务和用 AI 构建真正东西之间的分水岭。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE ONE-PROMPT TRAP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        一条提示词的陷阱
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        刚学用 AI 时，你自然会想一次搞定所有事。一条超长提示词。一次对话。一次尝试。对于简单任务——写一封邮件、头脑风暴、解释一个概念——这没问题。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        但复杂性会从三个方面打破一条提示词的方法：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-        {[
-          { num: '1', title: '上下文溢出', text: 'AI 一次只能处理那么多信息。一个完整项目超出了这个限制，所以 AI 开始"忘记"你早期的需求。' },
-          { num: '2', title: '注意力稀释', text: '即使在上下文窗口之内，让 AI 同时处理十二个不同的关注点，意味着每一个都得到更少的关注。全面质量下降。' },
-          { num: '3', title: '错误累积', text: '复杂输出中的一个小错误会级联放大。如果 AI 把数据库 schema 搞错了，建在这个 schema 上的所有东西都是错的——而且在一大堆生成的代码中很难发现。' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.2 + i * 0.08}>
-            <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
-              <div style={`flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: white; background: ${chapter.accent};`}>
-                {item.num}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        解决方案不是更好的提示词。而是更好的流程。
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ DECOMPOSITION ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        分解：核心技能
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        专业软件工程师不会一口气构建整个应用。他们把它拆成模块、组件、函数——每一块都有清晰的目的、清晰的输入和清晰的输出。然后组装。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        用 AI 做复杂项目需要同样的纪律。你需要把项目<strong>分解</strong>成足够小的任务，让一次专注的 AI 对话能处理好。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        好的分解遵循三条规则：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: '单一职责。', desc: '每个任务只做一件事。"设计数据库并构建 API 并写前端"是三个任务，不是一个。' },
-          { word: '清晰的接口。', desc: '每个任务都有明确的输入（启动需要什么）和明确的输出（产出什么）。一个任务的输出成为下一个的输入。' },
-          { word: '最小依赖。', desc: '能并行的任务应该并行。只有当一个任务真正需要另一个的输出时才创建依赖关系。' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 2 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>分解是人类技能，不是 AI 技能。</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI 可以帮你头脑风暴任务拆解，但决定怎么切分工作、什么依赖什么、优先做什么——那是你的活。这是项目管理，也是你能培养的最有价值的技能之一。
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO PROJECT ORCHESTRATOR -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        试着分解一个真实项目。拖动任务，追踪依赖关系，看计划成形。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROJECT ORCHESTRATOR ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ProjectOrchestrator client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE HANDOFF PATTERN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        交接模式
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        把项目拆成任务后，你需要一种方式把它们连接起来。在 AI 工作流中，这种连接叫<strong>交接</strong>——一次对话的输出变成下一次对话的输入的那个时刻。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="prompt-block mb-10" style="--accent: var(--color-navy);">
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>交接模式</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          对话1产生一个<strong>产物</strong>——一份文档、一个 schema、一个计划。<br />
-          这个产物作为<strong>上下文</strong>粘贴到对话2中。<br />
-          对话2在此基础上构建并产生下一个产物。<br />
-          重复直到项目完成。
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        把它想成接力赛。每个跑者（对话）跑完自己那一棒，把接力棒（产物）传给下一个。接力棒是最关键的——如果掉了或搞混了，下一个跑者就会踉跄。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        这意味着你的交接产物需要<em>清晰利落</em>。一个数据库 schema 比一段模糊的数据模型描述好得多。一份编号的 API 端点列表比"我需要一个处理用户相关的后端"好得多。产物越清晰，下一次对话的表现就越好。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        你交接产物的质量决定了下游构建的所有东西的质量。垃圾进，垃圾出——跨对话也一样。
-      </div>
     </FadeInBlock>
   </section>
 
@@ -258,148 +74,67 @@ const chapter = chapters[7];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        每次你开始一个新的 AI 对话时，你都在做一个大多数人注意不到的决定：<strong>包含什么上下文？</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        你有一个有限的预算——上下文窗口。你有一堆可能相关的信息：代码文件、文档、之前的对话、错误日志、设计规格。不是全都装得下。而且即使装得下，把所有东西倒进去也会稀释 AI 的注意力。
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        复杂项目打破了一个提示词搞定一切的模式。上下文溢出、注意力稀释、错误层层叠加。解决方案不是更好的提示词——而是<strong>分解</strong>。把项目拆成专注的任务，然后为每个任务精心选择 AI 真正需要的上下文。给太少会产生幻觉。给太多会失去焦点。最佳点在于精准的外科手术式选择。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        上下文打包就像给旅行打包行李箱。你不能把整个衣柜都带上。你需要想想你要去哪里（任务）、需要什么（相关信息）、以及可以留下什么（其他一切）。
+      <p class="text-lg leading-[1.85] mb-14">
+        把它想成收拾行李箱。你不可能把整个衣柜都带上。你需要想想你要去哪里（任务）、你需要什么（相关信息）、以及什么可以留下（其他一切）。每次对话只给它需要的上下文——不多也不少。
       </p>
     </FadeInBlock>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem;">
-        {[
-          { label: '上下文太少', color: '#E94560', text: 'AI 没有所需的信息，用幻觉来填补空白。听起来很自信但会编造细节。' },
-          { label: '上下文太多', color: '#F5A623', text: 'AI 被淹没了。重要细节在噪音中丢失。输出变得泛泛而不聚焦。' },
-          { label: '恰到好处的上下文', color: '#16C79A', text: 'AI 正好有这个特定任务需要的东西。输出精确、相关、可操作。' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style={`padding: 1rem 1.25rem; border-radius: 10px; border-left: 3px solid ${item.color}; background: ${item.color}08;`}>
-              <p style={`font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.25rem;`}>
-                {item.label}
-              </p>
-              <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.5}>
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>像编辑一样思考，而不是囤积者。</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">关键洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          每次 AI 互动前，问自己：AI <em>需要知道什么</em>才能完成这个具体任务？包含那些，其他的都留下。这是上下文工程应用到项目管理上。
+          交接文档的质量决定了下游一切的质量。一份清晰的 schema 永远胜过一段模糊的描述。垃圾进，垃圾出——跨对话也是如此。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO CONTEXT PACKING -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        打包一个上下文行李箱。你能在不溢出的情况下装进关键内容吗？
+        收拾一个上下文行李箱。你能把重要的东西装进去又不溢出吗？
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: CONTEXT PACKING ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ContextPacking client:visible />
-    </FadeInBlock>
+    <ContextPacking client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ VERSION CONTROL FOR AI WORK ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        记录什么管用
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="使用 AI 最难的部分不是提示词——而是在多个对话中编排复杂项目。这门课终于讲清楚了怎么做。" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        每个人都会遇到这种情况：你有一次很棒的 AI 对话，产出了恰好你需要的东西。一周后，你需要类似的东西。你记不得说了什么。你试图重现。结果更差了。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        复杂的 AI 项目会产生大量产物——管用的提示词、好的输出、做出的决定、失败的尝试。没有一个追踪系统，你会浪费大量时间重新发现已经搞清楚的东西。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        专业开发者用版本控制（比如 Git）来追踪代码库的每一个改动。你应该对你的 AI 工作应用同样的思维：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 3rem;">
-        {[
-          { icon: '01', title: '保存你的提示词', desc: '当一个提示词产出了很好的结果时，保存下来。一个简单的笔记应用、一个 markdown 文件、一个提示词库都行。精确的措辞很重要。' },
-          { icon: '02', title: '保存输出', desc: '保留你后续构建依赖的 AI 生成的产物。数据库 schema、API 设计、大纲。这些是你的交接文档，你以后还会需要。' },
-          { icon: '03', title: '记录你的决定', desc: '当你和 AI 探索了两种方案并选择了一种时，写下为什么。未来的你在项目转向时会感谢现在的你。' },
-          { icon: '04', title: '记录什么失败了', desc: '产出垃圾的提示词也是有价值的信息。知道什么不管用是成功的一半。记一个"失败日志"这样就不会重蹈覆辙。' },
-        ].map((item, i) => (
-          <FadeInBlock client:visible delay={0.25 + i * 0.08}>
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-              <span style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: ${chapter.accent}; flex-shrink: 0; padding-top: 3px;`}>
-                {item.icon}
-              </span>
-              <div>
-                <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.2rem;`}>
-                  {item.title}
-                </p>
-                <p style="font-size: 0.9rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.6}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        你的提示词库就像音乐家的练习笔记。收集得越多，你就越快上手，从零开始的次数就越少。
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        你已经从一条提示词思维进化到了分解、交接模式和上下文打包。复杂项目不再可怕了——它们只是一系列专注的对话，由清晰的产物连接起来。
-      </p>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        复杂项目并不可怕。它们只是一系列专注的对话，由清晰的交接文档连接起来。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        还有一项技能比这一切都重要：知道 AI <em>什么时候是错的</em>。幻觉、讨好行为，以及让你保持诚实的验证习惯。这是下一章的内容。
+        接下来：学会判断 AI 什么时候<em>出错了</em>。幻觉、谄媚，以及让你保持诚实的验证习惯。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(15,52,96,0.06) 15%, rgba(15,52,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0F3460" toolName="Complexity Score" client:visible>
+        <ComplexityScore client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

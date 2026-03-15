@@ -5,9 +5,10 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
 import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
-import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[1];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[1];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -31,40 +31,27 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          질문하는<br />기술
+          질문의<br />기술
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          최고의 prompt는<br />AI가 너한테 질문을 하게 만드는 질문이야.
+          최고의 prompt는 AI가 너한테<br />질문하게 만드는 질문이야.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        지난 챕터에서 좋은 prompt의 다섯 가지 building blocks — Role, Task, Format, Constraints, Examples — 를 배웠어. 그게 기초야. 근데 재료를 안다고 요리사가 되는 건 아니잖아.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        이번 챕터는 <em>테크닉</em>에 대한 거야. prompt를 그냥 치는 사람과 prompt를 <em>설계하는</em> 사람의 차이. 질문을 하는 것과 <strong>올바른</strong> 질문을 하는 것의 차이 — 진짜 유용한 걸 끌어내는 그 질문.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        최고의 AI 사용자들은 해당 주제의 전문가가 아냐 — <strong>질문의 전문가야.</strong> 그리고 질문하는 건 배울 수 있는 기술이야.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        대부분의 사람들은 AI를 자판기처럼 써. prompt 넣고, 답 받고. 근데 최고의 결과는 <em>대화</em>에서 나와, 명령이 아니라. prompt를 그냥 치는 사람과 정성 들여 만드는 사람의 차이는 2,400년 동안 위대한 사상가들을 만들어 온 바로 그 차이야: 올바른 질문을 하는 것.
       </p>
     </FadeInBlock>
   </section>
@@ -75,351 +62,73 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        소크라테스 뒤집기
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        소크라테스식 뒤집기
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        대부분의 사람들은 AI를 자판기처럼 써. prompt를 넣고, 답을 받고. 근데 최고의 결과는 명령이 아니라 <em>대화</em>에서 나와. 그리고 가장 강력한 대화 기술은 2,400년 된 거야.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        소크라테스는 질문에 직접 답한 적이 없어. <em>더 많은</em> 질문을 했어 — 파고들고, 명확히 하고, 도전하면서 — 학생들이 스스로 더 깊은 이해에 도달할 때까지. 너도 AI한테 같은 방법을 쓸 수 있어, 대신 뒤집어서.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        소크라테스는 질문에 바로 답한 적이 없어. 제자들이 더 깊은 이해에 도달할 때까지 계속 <em>더 많은</em> 질문을 했지. 너도 AI한테 같은 트릭을 쓸 수 있어, 근데 뒤집어서: 답을 요청하는 대신, AI한테 <em>너를</em> 인터뷰하라고 해. "생일 파티 계획해줘"라고 치면, 답을 완전히 바꿀 수 있는 수십 가지 디테일을 빠뜨리는 거야. AI는 그걸 몰라 — 근데 물어볼 수는 있어.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI한테 답을 구하는 대신, AI한테 너를 인터뷰하라고 해. 네가 미처 생각 못한 명확한 질문들을 AI가 하게 해.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        생각해봐: "생일 파티 계획해줘"라고 치면, 답을 완전히 바꿀 수십 가지 디테일을 빠뜨리는 거야. 몇 명이야? 예산이 얼마야? 실내야 실외야? AI는 모르거든 — 근데 물어볼 수는 있어.
+      <p class="text-lg leading-[1.85] mb-14">
+        이 단 하나의 기술 — 질문하는 쪽을 뒤집는 것 — 이 AI를 답변 기계에서 <strong>사고 파트너</strong>로 바꿔줘. AI한테 탐구하고, 확인하고, 도전할 수 있는 여유를 줘. 다섯 번의 주고받기 후 나오는 결과물은 한 번의 명령으로 나온 것과 비교할 수 없을 거야.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>소크라테스식 Prompt</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "생일 파티를 계획하고 싶어. 계획을 세우기 전에, 내 상황에 딱 맞는 계획을 만들기 위해 구체적인 질문 5개를 해줘. 하나씩, 내 답을 기다리면서."
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 포인트</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          AI를 가장 잘 쓰는 사람들은 주제의 전문가가 아냐 — 질문의 전문가야. 그리고 네가 할 수 있는 가장 강력한 질문은: "답하기 전에, 뭘 알아야 해?"
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        이 하나의 기술 — 누가 질문하느냐를 뒤집는 것 — 은 네가 할 수 있는 가장 강력한 업그레이드 중 하나야. AI를 답변 기계에서 <strong>사고 파트너</strong>로 바꿔주거든.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        직접 해봐. 목표를 말해봐 — 그리고 AI가 판을 뒤집는 걸 지켜봐.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FlipTheScript client:visible />
-    </FadeInBlock>
+    <FlipTheScript client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        말하지 말고, 보여줘
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="이 AI 코스가 prompting에 대한 내 생각을 완전히 뒤집었어. AI한테 뭘 하라고 하는 대신, 먼저 AI가 너를 인터뷰하게 해. 결과가 완전 달라." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        친구한테 어떤 스타일을 설명한다고 상상해봐. 5분 동안 말로 설명할 수도 있어 — "장난기 있지만 유치하지 않고, 캐주얼하지만 지저분하지 않고, 문장은 짧고 예상 못한 비유가 있는." 아니면 그냥 예시를 보여주면 돼: <em>"이런 식으로 써."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        그게 <strong>few-shot prompting</strong>이야. 원하는 걸 추상적으로 설명하는 대신, AI한테 구체적인 예시를 주는 거야. 예시 하나는 "one-shot" prompt. 두세 개면 "few-shot." 예시 없이 원하는 걸 설명만 하는 건 "zero-shot"이야.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Zero-shot (설명하기)</span>
-        <p class="m-0" style="color: var(--color-deep);">"러닝화 제품 설명을 써줘. 펀치감 있고 대화체로, 짧은 문장으로. 마케팅 클리셰는 피해줘."</p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-shot (보여주기)</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          "CloudRunner X1 러닝화의 제품 설명을 써줘. 내가 원하는 스타일은 이거야:<br /><br />
-          <em>예시: '위켄더 토트백 — 노트북, 도시락, 그리고 너의 의심스러운 인생 선택들이 다 들어가. 방수 캔버스, 뭔가 엎을 거 아니까. 주머니 다섯 개, 나중에 어디 있는지 하나도 기억 못할 그 주머니들.'</em><br /><br />
-          이 톤에 맞춰줘: 짧은 문장, 자기 객관적 유머, 미사여구보다 구체성."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Few-shot 버전이 압도적으로 더 좋은 결과를 내. AI가 "더 똑똑"해서가 아냐 — 모호한 방향 대신 <strong>구체적인 목표</strong>를 줬으니까. 좋은 예시 하나가 설명 백 마디의 가치가 있어.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 인사이트</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI가 네가 원하는 스타일에 안 맞을 때, 형용사를 더 넣지 마. 예시를 넣어. "이렇게"가 "좀 더 펀치감 있지만 따뜻하면서 너무 캐주얼하지 않게"보다 항상 이겨.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-    <FadeInBlock client:visible>
-      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
-        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
-          짧은 실험
-        </p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
-          최근에 AI한테 뭔가 쓰라고 한 거 생각해봐 — 이메일, 이야기, SNS 게시글. 원하는 톤의 구체적인 예시를 포함했다면 결과물이 어떻게 달라졌을까?
-        </p>
-        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
-          기억해둬. 아래 Prompt Laboratory에서 직접 테스트해볼 수 있어.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CHAIN OF THOUGHT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        단계별로 생각해
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        이건 좀 미친 얘긴데: AI한테 수학 문제를 풀라고 하면 틀릴 수 있어. 근데 <em>단계별로 풀어보라고</em> 하면, 맞출 확률이 훨씬 높아져. 답은 같아. 질문이 다른 거야.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        이 기술을 <strong>chain-of-thought prompting</strong>이라고 해. 답을 바로 달라고 하는 대신, AI한테 추론 과정을 보여달라고 하는 거야. "이걸 단계별로 생각해봐." "답하기 전에 분석해봐." "추론 과정을 설명하면서 가."
-      </p>
-    </FadeInBlock>
-
-    <!-- Before/After comparison -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <div>
-          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
-            <span class="prompt-block-label" style="color: #E94560;">Chain-of-thought 없이</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "야구 방망이와 공의 가격이 합쳐서 1,100원이야. 방망이가 공보다 1,000원 비싸. 공은 얼마야?"
-            </p>
-            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
-              AI 답변: 100원 (틀림)
-            </p>
-          </div>
-        </div>
-        <div>
-          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
-            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Chain-of-thought 포함</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              "야구 방망이와 공의 가격이 합쳐서 1,100원이야. 방망이가 공보다 1,000원 비싸. 공은 얼마야? 단계별로 생각해봐."
-            </p>
-            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
-              AI 답변: 50원 (정답)
-            </p>
-          </div>
-        </div>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        왜 이게 먹히냐고? AI한테 추론을 단계별로 보여달라고 하면, 각 단계가 다음 단계로 이어져. AI한테 계산 용지를 주는 것 같아 — 생각을 많이 적을수록, 최종 답이 더 좋아지거든.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chain-of-thought는 AI를 더 똑똑하게 만들지 않아. 더 느리게 만들어 — 그리고 느린 사고가 종종 더 나은 사고야.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        이건 수학에만 해당되는 게 아냐. 답에 추론이 필요할 때마다 써: 논증 분석, 옵션 비교, 프로젝트 기획, 코드 디버깅. 사람한테 "풀이 과정을 보여줘"라고 할 때, AI한테도 똑같이 해.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        기술 조합하기
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        진짜 파워는 기술들을 조합할 때 나와. Few-shot 예시 <em>플러스</em> chain-of-thought. System role <em>플러스</em> constraints <em>플러스</em> format 지정. 각 기술은 레버이고, 여러 레버를 동시에 당기면 어느 하나만으론 절대 못 만들 결과물이 나와.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        근데 초보와 전문가를 가르는 뉘앙스가 있어: <strong>많다고 항상 좋은 건 아냐.</strong> 가벼운 브레인스토밍엔 기술 하나 둘이면 돼. 중요한 에세이엔 다섯 개. 가벼운 질문엔 제로. 실력은 레버를 몇 개 당기느냐 — 그리고 어떤 걸 당기느냐를 아는 거야.
-      </p>
-    </FadeInBlock>
-
-    <!-- Technique stack visual -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="margin-bottom: 2.5rem;">
-        {[
-          { label: '가벼운 브레인스토밍', techniques: ['Task'], color: '#6B7280', width: '25%' },
-          { label: '학교 과제', techniques: ['Role', 'Task', 'Format'], color: '#F5A623', width: '50%' },
-          { label: '중요한 프로젝트', techniques: ['Role', 'Context', 'Task', 'Format', 'Examples'], color: '#0EA5E9', width: '75%' },
-          { label: '고위험 산출물', techniques: ['Role', 'Context', 'Examples', 'Task', 'Format', 'Constraints', 'Chain-of-thought'], color: '#0F3460', width: '100%' },
-        ].map((level, i) => (
-          <FadeInBlock client:visible delay={i * 0.06} key={i}>
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
-                {level.label}
-              </span>
-              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
-                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
-                  {level.techniques.map((t, j) => (
-                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
-                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 인사이트</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Over-prompting도 진짜 있는 거야. 간단한 질문에 500단어짜리 prompt를 쓰면 답이 좋아지는 게 아니야 — 오히려 AI를 혼란스럽게 할 수 있어. prompt 복잡도를 작업 복잡도에 맞춰.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <PromptLaboratory client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Prompt가 꼬일 때
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        별로인 AI 결과물은 <strong>거의 AI 잘못이 아냐.</strong> 결과가 일반적이거나, 모호하거나, 그냥 틀리면 버그는 보통 prompt에 있어. 코드 디버깅처럼, prompt 디버깅도 배울 수 있는 기술이야.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        가장 흔한 prompt 버그는 다섯 가지로 나뉘어. 이걸 발견하는 법을 배우면, 어디서나 보여 — 네 prompt에서도, "AI 쓸모없어"라고 불평하는 다른 사람들의 prompt에서도.
-      </p>
-    </FadeInBlock>
-
-    <!-- Bug types -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-      {[
-        { name: '모호함', desc: 'prompt가 여러 의미로 해석될 수 있어. "강아지에 대해 뭔가 써줘" — 어떤 종류의 글? 누구를 위해? 얼마나 길게?', color: '#E94560' },
-        { name: '모순', desc: 'prompt가 상반된 걸 요구해. "짧지만 포괄적으로." "재밌게 하되 격식 있게." 하나를 골라.', color: '#F5A623' },
-        { name: '맥락 부족', desc: 'prompt에 중요한 정보가 빠져 있어. 코드 안 보여주고 "내 코드 고쳐줘." 에세이 없이 "내 에세이 개선해줘."', color: '#0EA5E9' },
-        { name: '작업 과다', desc: 'prompt가 한 번에 다섯 가지를 요구해. AI가 여러 개에 힘을 분산하면 어느 것도 제대로 못해.', color: '#7B61FF' },
-        { name: '유도 질문', desc: 'prompt가 AI한테 뭘 생각하라고 알려줘. "X가 최고인 거 맞지?" AI는 동의할 거야. 그건 도움이 안 돼.', color: '#16C79A' },
-      ].map((bug, i) => (
-        <FadeInBlock client:visible delay={i * 0.07}>
-          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
-            <div>
-              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
-                {bug.name}
-              </p>
-              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {bug.desc}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        가장 교활한 버그는 <em>유도 질문</em>이야. 발견하기 제일 어려운 게, 훌륭한 결과를 받는 <em>것처럼 느껴지거든</em> — AI가 너한테 동의하니까! 근데 동의는 정확성이 아냐. 기존 믿음을 확인하도록 질문을 구성하면, AI를 사고 파트너가 아니라 예스맨으로 만든 거야.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <DebugThePrompt client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        이 챕터 시작할 때는 한 줄 명령을 치고 있었어. 이제 질문을 뒤집고, 말하는 대신 보여주고, 꼬인 prompt를 디버깅하는 법을 알아.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI한테 뭘 생각하라고 지시하지 마. 너와 함께 생각할 공간을 줘.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        근데 네가 배운 모든 기술은 같은 보이지 않는 벽에 부딪혀: <em>context window</em>. 다음에 이걸 뜯어보고, AI가 실제로 뭘 보는지 설계하는 법을 배워보자.
+        근데 네가 배운 모든 기술은 같은 보이지 않는 벽에 부딪혀: <em>context window</em>. 다음에는 그걸 열어보고 AI가 실제로 보는 것을 설계하는 법을 배워.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Socratic Smackdown" client:visible>
+        <SocraticSmackdown client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

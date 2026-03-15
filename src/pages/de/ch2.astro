@@ -5,9 +5,10 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import PromptLaboratory from '../../components/widgets/ch2/PromptLaboratory';
 import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
-import DebugThePrompt from '../../components/widgets/ch2/DebugThePrompt';
+import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[1];
 ---
@@ -16,7 +17,6 @@ const chapter = chapters[1];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>2</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -31,7 +31,7 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Die Kunst des<br />Fragens
+          Die Kunst<br />des Fragens
         </h1>
       </FadeInBlock>
 
@@ -42,29 +42,16 @@ const chapter = chapters[1];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Im letzten Kapitel hast du die fünf Bausteine eines guten Prompts kennengelernt — Rolle, Aufgabe, Format, Einschränkungen, Beispiele. Das ist das Fundament. Aber die Zutaten zu kennen, macht dich noch nicht zum Koch.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        In diesem Kapitel geht es um <em>Technik</em>. Der Unterschied zwischen jemandem, der einen Prompt tippt, und jemandem, der einen <em>baut</em>. Es ist der Unterschied zwischen eine Frage stellen und die <strong>richtige</strong> Frage stellen — die, die etwas wirklich Nützliches freischaltet.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Die besten KI-Nutzer sind keine Experten zum Thema — <strong>sie sind Experten im Fragen.</strong> Und Fragen ist eine Fähigkeit, die du lernen kannst.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Die meisten Leute benutzen KI wie einen Automaten. Prompt rein, Antwort raus. Aber die besten Ergebnisse kommen aus <em>Gesprächen</em>, nicht aus Befehlen. Der Unterschied zwischen jemandem, der einen Prompt eintippt, und jemandem, der einen formuliert, ist derselbe Unterschied, der große Denker seit 2.400 Jahren antreibt: die richtigen Fragen stellen.
       </p>
     </FadeInBlock>
   </section>
@@ -75,351 +62,73 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         Der sokratische Dreh
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die meisten Leute nutzen KI wie einen Automaten. Prompt rein, Antwort raus. Aber die besten Ergebnisse kommen durch <em>Gespräche</em>, nicht durch Befehle. Und die mächtigste Gesprächstechnik ist 2.400 Jahre alt.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Sokrates hat nie eine Frage direkt beantwortet. Er stellte <em>mehr</em> Fragen — hinterfragend, klärend, herausfordernd — bis seine Schüler von selbst zu tieferem Verständnis gelangten. Du kannst denselben Ansatz mit KI nutzen, nur umgekehrt.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Sokrates hat nie eine Frage direkt beantwortet. Er stellte <em>weitere</em> Fragen, bis seine Schüler zu tieferem Verständnis gelangten. Du kannst denselben Trick mit KI nutzen, nur umgedreht: Statt nach einer Antwort zu fragen, bitte die KI, <em>dich</em> zu interviewen. Wenn du "plane eine Geburtstagsfeier" tippst, lässt du dutzende Details weg, die die Antwort massiv verändern. Die KI kennt sie nicht -- aber sie kann danach fragen.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Statt die KI nach einer Antwort zu fragen, bitte die KI, dich zu interviewen. Lass sie die klärenden Fragen stellen, an die du selbst nicht gedacht hast.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Denk mal darüber nach: Wenn du „plane eine Geburtstagsfeier" tippst, lässt du Dutzende Details weg, die die Antwort massiv verändern. Wie viele Leute? Was ist das Budget? Drinnen oder draußen? Die KI weiß es nicht — aber sie kann fragen.
+      <p class="text-lg leading-[1.85] mb-14">
+        Diese eine Technik -- umdrehen, wer die Fragen stellt -- verwandelt die KI von einer Antwortmaschine in einen <strong>Denkpartner</strong>. Gib ihr die Erlaubnis, nachzufragen, zu klären und herauszufordern. Das Ergebnis nach fünf Rückfragen wird im Vergleich zu einem Einzelbefehl nicht wiederzuerkennen sein.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Der sokratische Prompt</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          „Ich möchte eine Geburtstagsfeier planen. Bevor du mit der Planung anfängst, stelle mir 5 konkrete Fragen, die dir helfen, einen Plan zu erstellen, der genau zu meiner Situation passt. Stelle sie einzeln und warte auf meine Antwort."
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Die besten KI-Nutzer sind keine Experten auf dem Gebiet -- sie sind Experten im Fragen stellen. Und die mächtigste Frage, die du stellen kannst, ist: "Bevor du antwortest, was musst du wissen?"
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Diese eine Technik — umzudrehen, wer die Fragen stellt — ist eines der mächtigsten Upgrades, die du machen kannst. Sie verwandelt die KI von einer Antwortmaschine in einen <strong>Denkpartner</strong>.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Probier es selbst. Nenne ein Ziel -- und sieh zu, wie die KI den Spieß umdreht.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: FLIP THE SCRIPT ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section id="flip-the-script" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FlipTheScript client:visible />
-    </FadeInBlock>
+    <FlipTheScript client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ FEW-SHOT PROMPTING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Zeigen, nicht beschreiben
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Dieser KI-Kurs hat mein Denken über Prompts komplett umgekrempelt. Statt der KI zu sagen, was sie tun soll, bittest du sie, erst DICH zu interviewen. Die Ergebnisse sind wie Tag und Nacht." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Stell dir vor, du versuchst, einem Freund einen Stil zu erklären. Du könntest fünf Minuten lang beschreiben — „Ich will etwas Verspieltes, aber nicht Kindisches, Lockeres aber nicht Schlampiges, mit kurzen Sätzen und unerwarteten Vergleichen." Oder du zeigst einfach ein Beispiel: <em>„Schreib es so."</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Das ist <strong>Few-Shot Prompting</strong>. Statt zu beschreiben, was du willst, gibst du der KI konkrete Beispiele. Ein Beispiel ist ein „One-Shot" Prompt. Zwei oder drei Beispiele sind „Few-Shot." Null Beispiele — wo du nur beschreibst, was du willst — ist „Zero-Shot."
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style="--accent: #6B7280;">
-        <span class="prompt-block-label" style="color: #6B7280;">Zero-Shot (beschreiben)</span>
-        <p class="m-0" style="color: var(--color-deep);">„Schreib mir eine Produktbeschreibung für Laufschuhe. Mach es knackig und locker, mit kurzen Sätzen. Vermeide Marketing-Klischees."</p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Few-Shot (zeigen)</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          „Schreib eine Produktbeschreibung für den CloudRunner X1 Laufschuh. Hier ist der Stil, den ich will:<br /><br />
-          <em>Beispiel: ‚Die Weekender-Tasche — Passt dein Laptop, dein Mittagessen und deine fragwürdigen Lebensentscheidungen rein. Wasserabweisendes Canvas, weil wir wissen, dass du was verschütten wirst. Fünf Taschen, keine davon wirst du dir merken.'</em><br /><br />
-          Triff diesen Ton: kurze Sätze, selbstironischer Humor, Konkretheit statt Buzzwords."
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die Few-Shot-Version liefert dramatisch bessere Ergebnisse. Nicht weil die KI „schlauer" ist — sondern weil du ihr ein <strong>konkretes Ziel</strong> statt einer vagen Richtung gegeben hast. Ein gutes Beispiel ist mehr wert als hundert Wörter Beschreibung.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Wenn die KI deinen gewünschten Stil nicht trifft, füg keine weiteren Adjektive hinzu. Füg ein Beispiel hinzu. „So wie das hier" schlägt „mach es knackiger, aber auch warm, aber nicht zu locker" jedes Mal.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ MINI-CHALLENGE: Zero to Few-Shot ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-    <FadeInBlock client:visible>
-      <div style={`background: linear-gradient(135deg, ${chapter.accent}08, ${chapter.accent}04); border: 1px solid ${chapter.accent}20; border-radius: 12px; padding: 2rem 2rem 1.75rem;`}>
-        <p style={`font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: ${chapter.accent}; margin: 0 0 0.75rem;`}>
-          Schnelles Experiment
-        </p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0 0 1rem; color: var(--color-deep);">
-          Denk an etwas, das du die KI kürzlich schreiben lassen wolltest — eine E-Mail, eine Geschichte, einen Social-Media-Post. Stell dir jetzt vor, du hättest ein konkretes Beispiel für den gewünschten Ton beigefügt. Wie hätte sich die Ausgabe verändert?
-        </p>
-        <p style="font-size: 0.9rem; line-height: 1.7; margin: 0; color: var(--color-deep); opacity: 0.6;">
-          Merk dir das. Im Prompt-Labor unten kannst du es wirklich ausprobieren.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CHAIN OF THOUGHT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Schritt für Schritt denken
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Hier kommt etwas Verrücktes: Wenn du KI bittest, eine Matheaufgabe zu lösen, kann sie falsch liegen. Aber wenn du sie bittest, <em>die Aufgabe Schritt für Schritt zu lösen</em>, bekommt sie es viel häufiger richtig hin. Die Antwort ist dieselbe. Die Frage ist anders.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Diese Technik heißt <strong>Chain-of-Thought Prompting</strong>. Statt direkt nach der Antwort zu fragen, bittest du die KI, ihren Denkweg zu zeigen. „Denk Schritt für Schritt." „Zerlege das, bevor du antwortest." „Erkläre deine Überlegungen während du vorgehst."
-      </p>
-    </FadeInBlock>
-
-    <!-- Before/After comparison -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        <div>
-          <div class="prompt-block" style="--accent: #E94560; min-height: 100%;">
-            <span class="prompt-block-label" style="color: #E94560;">Ohne Chain-of-Thought</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              „Ein Schläger und ein Ball kosten zusammen 1,10 €. Der Schläger kostet 1,00 € mehr als der Ball. Wie viel kostet der Ball?"
-            </p>
-            <p style="color: #E94560; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;">
-              KI antwortet: 0,10 € (falsch)
-            </p>
-          </div>
-        </div>
-        <div>
-          <div class="prompt-block" style={`--accent: ${chapter.accent}; min-height: 100%;`}>
-            <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-            <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Mit Chain-of-Thought</span>
-            <p class="m-0" style="color: var(--color-deep); font-size: 0.85rem;">
-              „Ein Schläger und ein Ball kosten zusammen 1,10 €. Der Schläger kostet 1,00 € mehr als der Ball. Wie viel kostet der Ball? Denke Schritt für Schritt."
-            </p>
-            <p style={`color: ${chapter.accent}; font-size: 0.8rem; margin: 1rem 0 0; font-weight: 600;`}>
-              KI antwortet: 0,05 € (richtig)
-            </p>
-          </div>
-        </div>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Warum funktioniert das? Wenn du die KI bittest, ihre Überlegungen Schritt für Schritt zu zeigen, baut jeder Schritt auf dem vorherigen auf. Es ist, als würdest du der KI Schmierzettel geben — je mehr sie ihren Denkprozess aufschreibt, desto besser wird die endgültige Antwort.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Chain-of-Thought macht die KI nicht schlauer. Es macht sie langsamer — und langsameres Denken ist oft besseres Denken.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        Das gilt nicht nur für Mathe. Nutze es immer, wenn die Antwort Denken erfordert: ein Argument analysieren, Optionen vergleichen, ein Projekt planen, Code debuggen. Immer wenn du von einem Menschen erwarten würdest, „seinen Rechenweg zu zeigen", bitte die KI, dasselbe zu tun.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE PROMPT ASSEMBLY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Techniken kombinieren
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die wahre Power kommt durch das Kombinieren von Techniken. Few-Shot-Beispiele <em>plus</em> Chain-of-Thought. Eine Systemrolle <em>plus</em> Einschränkungen <em>plus</em> ein Format. Jede Technik ist ein Hebel, und mehrere Hebel gleichzeitig zu ziehen, erzeugt etwas, das keiner allein erreichen könnte.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Aber hier ist die Nuance, die Anfänger von Profis unterscheidet: <strong>Mehr ist nicht immer besser.</strong> Ein lockeres Brainstorming braucht eine oder zwei Techniken. Ein wichtiger Aufsatz braucht fünf. Eine beiläufige Frage braucht gar keine. Die Fähigkeit ist zu wissen, wie viele Hebel du ziehen solltest — und welche.
-      </p>
-    </FadeInBlock>
-
-    <!-- Technique stack visual -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div style="margin-bottom: 2.5rem;">
-        {[
-          { label: 'Lockeres Brainstorming', techniques: ['Aufgabe'], color: '#6B7280', width: '25%' },
-          { label: 'Schulaufgabe', techniques: ['Rolle', 'Aufgabe', 'Format'], color: '#F5A623', width: '50%' },
-          { label: 'Wichtiges Projekt', techniques: ['Rolle', 'Kontext', 'Aufgabe', 'Format', 'Beispiele'], color: '#0EA5E9', width: '75%' },
-          { label: 'High-Stakes-Ausgabe', techniques: ['Rolle', 'Kontext', 'Beispiele', 'Aufgabe', 'Format', 'Einschränkungen', 'Chain-of-Thought'], color: '#0F3460', width: '100%' },
-        ].map((level, i) => (
-          <FadeInBlock client:visible delay={i * 0.06} key={i}>
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-              <span style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; color: ${level.color}; width: 120px; flex-shrink: 0; text-align: right;`}>
-                {level.label}
-              </span>
-              <div style="flex: 1; height: 24px; background: rgba(26,26,46,0.03); border-radius: 6px; overflow: hidden;">
-                <div style={`height: 100%; width: ${level.width}; background: linear-gradient(90deg, ${level.color}20, ${level.color}40); border-radius: 6px; display: flex; align-items: center; padding: 0 8px; gap: 4px;`}>
-                  {level.techniques.map((t, j) => (
-                    <span key={j} style={`font-family: var(--font-mono); font-size: 0.55rem; font-weight: 600; color: ${level.color}; opacity: 0.8;`}>
-                      {t}{j < level.techniques.length - 1 ? ' +' : ''}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Over-Prompting gibt es wirklich. Ein 500-Wörter-Prompt für eine einfache Frage macht die Antwort nicht besser — er kann die KI sogar verwirren. Passe die Prompt-Komplexität an die Aufgaben-Komplexität an.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: PROMPT LABORATORY ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <PromptLaboratory client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN PROMPTS GO WRONG ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Wenn Prompts schiefgehen
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Schlechte KI-Ausgaben sind <strong>fast nie die Schuld der KI.</strong> Wenn die Ausgabe generisch, vage oder einfach falsch ist, liegt der Bug normalerweise im Prompt. Und genau wie beim Code-Debuggen ist Prompt-Debuggen eine lernbare Fähigkeit.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Die häufigsten Prompt-Bugs fallen in fünf Kategorien. Sobald du lernst, sie zu erkennen, siehst du sie überall — in deinen eigenen Prompts und in den Beschwerden anderer Leute, dass KI „nutzlos" sei.
-      </p>
-    </FadeInBlock>
-
-    <!-- Bug types -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
-      {[
-        { name: 'Mehrdeutig', desc: 'Der Prompt könnte mehrere Dinge bedeuten. „Schreib was über Hunde" — welche Art Text? Für wen? Wie lang?', color: '#E94560' },
-        { name: 'Widersprüchlich', desc: 'Der Prompt verlangt gegensätzliche Dinge. „Mach es kurz, aber umfassend." „Lockerer Ton, aber bitte formell." Entscheide dich.', color: '#F5A623' },
-        { name: 'Fehlender Kontext', desc: 'Dem Prompt fehlen entscheidende Informationen. „Fix meinen Code" ohne den Code zu teilen. „Verbessere meinen Aufsatz" ohne den Aufsatz.', color: '#0EA5E9' },
-        { name: 'Zu viele Aufgaben', desc: 'Der Prompt verlangt fünf Dinge gleichzeitig. Die KI verteilt sich dünn und macht nichts davon gut.', color: '#7B61FF' },
-        { name: 'Suggestivfrage', desc: 'Der Prompt sagt der KI, was sie denken soll. „Findest du nicht auch, dass X das Beste ist?" Die KI wird zustimmen. Das ist nicht hilfreich.', color: '#16C79A' },
-      ].map((bug, i) => (
-        <FadeInBlock client:visible delay={i * 0.07}>
-          <div style={`display: flex; gap: 1rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 10px; background: ${bug.color};`}></div>
-            <div>
-              <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${bug.color}; margin: 0 0 0.2rem;`}>
-                {bug.name}
-              </p>
-              <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {bug.desc}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        Der hinterhältigste Bug ist die <em>Suggestivfrage</em>. Sie ist am schwersten zu erkennen, weil es sich <em>anfühlt</em>, als würdest du tolle Ausgaben bekommen — die KI stimmt dir ja zu! Aber Zustimmung ist keine Genauigkeit. Wenn du eine Frage so formulierst, dass sie deine bestehende Meinung bestätigt, hast du die KI in einen Ja-Sager verwandelt, nicht in einen Denkpartner.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: DEBUG THE PROMPT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <DebugThePrompt client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Am Anfang dieses Kapitels hast du einzelne Befehle getippt. Jetzt weißt du, wie man die Fragerichtung umdreht, zeigt statt beschreibt, und Prompts debuggt, die schiefgehen.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Hör auf, der KI zu sagen, was sie denken soll. Gib ihr Raum, mit dir zu denken.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Aber jede Technik, die du gelernt hast, stößt an dieselbe unsichtbare Wand: das <em>Kontextfenster</em>. Als Nächstes brechen wir es auf und lernen, was die KI tatsächlich sieht.
+        Aber jede Technik, die du gelernt hast, stößt an dieselbe unsichtbare Wand: das <em>Kontextfenster</em>. Als Nächstes knacken wir es auf und lernen, was die KI tatsächlich sieht.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Socratic Smackdown" client:visible>
+        <SocraticSmackdown client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

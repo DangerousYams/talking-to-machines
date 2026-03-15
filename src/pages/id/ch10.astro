@@ -4,12 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
-import SkillsSpectrum from '../../components/widgets/ch10/SkillsSpectrum';
 import JobTransformer from '../../components/widgets/ch10/JobTransformer';
-import TasteTest from '../../components/widgets/ch10/TasteTest';
-import FirstPrinciplesLab from '../../components/widgets/ch10/FirstPrinciplesLab';
+import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[9];
 ---
@@ -18,7 +17,6 @@ const chapter = chapters[9];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>10</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
@@ -44,282 +42,77 @@ const chapter = chapters[9];
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Setiap kali kemampuan AI baru muncul, judul yang sama selalu muncul: <em>"Akankah AI menggantikan [masukkan pekerjaan]?"</em> Itu pertanyaan yang salah. Selalu pertanyaan yang salah. Yang benar adalah: <em>"Apa yang sekarang jadi mungkin yang sebelumnya tidak mungkin?"</em>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        AI tidak menggantikan manusia. AI menggantikan <strong>tugas</strong>. Dan ketika kamu zoom in ke pekerjaan mana pun &mdash; karier apa pun, bidang kreatif apa pun, profesi apa pun &mdash; kamu akan menemukan campuran: beberapa tugas AI tangani dengan cemerlang, beberapa dia bantu, dan beberapa tetap keras kepala, indahnya manusiawi.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Bab ini tentang menemukan garis itu. Bukan supaya kamu takut, tapi supaya kamu bisa <strong>berdiri di sisi yang benar</strong> &mdash; sisi di mana skill manusiamu yang unik jadi lebih berharga, bukan sebaliknya.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Setiap kali kemampuan AI baru muncul, judul yang sama selalu muncul: <em>"Akankah AI menggantikan [masukkan pekerjaan]?"</em> Itu pertanyaan yang salah. AI tidak menggantikan manusia. AI menggantikan <strong>tugas</strong>. Dan ketika kamu zoom in ke pekerjaan mana pun — karier apa pun, bidang kreatif apa pun — kamu akan menemukan campuran: beberapa tugas AI tangani dengan cemerlang, beberapa dia bantu, dan beberapa tetap keras kepala, indahnya manusiawi.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE SPECTRUM, NOT THE CLIFF ═══ -->
+  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Spektrum, Bukan Jurang
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Pekerjaan Tidak Hilang — Mereka Berubah Bentuk
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Kebanyakan pembicaraan tentang AI dan pekerjaan memperlakukannya seperti biner: entah AI bisa mengerjakan pekerjaanmu atau tidak. Kiamat robot atau bisnis seperti biasa. Tapi kenyataannya adalah spektrum.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Beberapa tugas hampir sepenuhnya bisa diotomatisasi. Beberapa ditingkatkan oleh AI. Beberapa tidak tersentuh. Dan yang paling menarik &mdash; yang patut diperhatikan &mdash; ada di tengah-tengah, di mana manusia dan AI bekerja bersama.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Input data? AI yang tangani. Menjadwalkan rapat? Praktis sudah terpecahkan. Menulis draft pertama? AI luar biasa bagus. Tapi <em>memilih apa yang harus dibangun</em>, <em>membaca situasi di tengah krisis</em>, <em>memutuskan apa arti data</em> &mdash; itu butuh sesuatu yang AI tidak punya.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        Setiap skill sebenarnya jatuh di mana? Uji intuisimu.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: SKILLS SPECTRUM ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillsSpectrum client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ JOBS DON'T DISAPPEAR — THEY SHAPE-SHIFT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Pekerjaan Tidak Hilang &mdash; Mereka Berubah Bentuk
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ketika ATM hadir di tahun 1970-an, semua orang memprediksi teller bank akan lenyap. Sebaliknya, jumlah teller bank malah <em>bertambah</em>. Kenapa? Karena ATM membuat biaya membuka cabang baru lebih murah, dan pekerjaan teller bergeser dari menghitung uang ke menjual produk finansial dan membangun hubungan pelanggan.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI melakukan hal yang sama, tapi lebih cepat dan di semua industri sekaligus. Judul pekerjaannya tetap sama. <em>Deskripsi</em> pekerjaannya berubah drastis. Jurnalis di tahun 2025 tidak mengerjakan hal yang sama dengan jurnalis di tahun 2015, meskipun byline-nya terlihat identik.
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Ketika ATM hadir, semua orang memprediksi teller bank akan lenyap. Sebaliknya, jumlah mereka malah <em>bertambah</em> — karena ATM membuat biaya membuka cabang lebih murah, dan pekerjaan teller bergeser dari menghitung uang ke membangun hubungan. AI melakukan hal yang sama, tapi lebih cepat dan di semua industri sekaligus. Judul pekerjaannya tetap sama. <em>Deskripsi</em> pekerjaannya berubah drastis.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-10">
+        Input data? AI yang tangani. Draft pertama? Luar biasa bagus. Tapi <em>memilih apa yang harus dibangun</em>, <em>membaca situasi di tengah krisis</em>, <em>memutuskan apa arti data</em> — itu butuh penilaian, empati, dan visi yang secara fundamental tidak dimiliki AI.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Matematika karier yang baru</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
           Ini bukan "manusia vs. AI." Ini <strong>manusia dengan AI vs. manusia tanpa AI</strong>. Orang yang belajar bekerja <em>dengan</em> tool AI tidak kehilangan pekerjaan — mereka mengerjakan pekerjaan lebih cepat, lebih baik, dan dengan kemampuan yang sebelumnya tidak mereka miliki.
         </p>
       </div>
     </FadeInBlock>
+  </section>
 
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mt-10">
-        Pilih karier di bawah dan lihat persis bagaimana AI mentransformasinya dari dalam. Tidak ada satu pun tugas yang hilang sepenuhnya. Tapi bentuk setiap pekerjaan sedang berubah.
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Pilih karier di bawah dan lihat persis bagaimana AI mentransformasinya dari dalam. Tidak ada satu pun tugas yang hilang sepenuhnya.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: JOB TRANSFORMER ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <JobTransformer client:visible />
-    </FadeInBlock>
+    <JobTransformer client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ TASTE: THE IRREPLACEABLE SKILL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Taste: Skill yang Tidak Tergantikan
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Kursus ini tidak menghype AI atau menakut-nakuti soal pekerjaan. Dia memetakan persis skill mana yang tetap manusiawi dan mana yang di-augment. Jujur dan menyegarkan." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        AI bisa menghasilkan seratus konsep logo dalam satu menit. Bisa menulis sepuluh intro essay sebelum kopimu habis. Bisa memproduksi lima desain aplikasi, empat tagline, tiga business plan.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Tapi tidak bisa bilang mana yang <em>tepat</em>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Di dunia di mana menghasilkan opsi hampir gratis, kemampuan untuk <em>memilih yang tepat</em> jadi skill paling berharga yang bisa kamu miliki. Kemampuan itu punya nama: taste.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Taste bukan sesuatu yang mistis. Itu dilatih. Kamu mengembangkannya dengan melihat banyak karya bagus dan banyak karya jelek, dan belajar mengartikulasikan <em>kenapa</em> yang satu lebih baik dari yang lain. Itu fotografer yang tahu foto mana yang harus disimpan. Penulis yang tahu kalimat mana yang harus dipotong. Desainer yang tahu kapan less is more.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        AI menghasilkan. Kamu menyeleksi. Itulah pembagian kerja yang baru. Ayo lihat setajam apa taste-mu.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TASTE TEST ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TasteTest client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ YOUR KNOWLEDGE IS YOUR BS DETECTOR ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Pengetahuanmu Adalah Detektor Omong Kosong
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Di Bab 9 kita membahas halusinasi AI &mdash; bagaimana AI bisa menyatakan kebohongan dengan keyakinan sempurna. Tapi ini pertanyaan lanjutan yang tidak nyaman: <strong>bagaimana kamu menangkapnya?</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Jawabannya adalah berpikir dari prinsip dasar. Ketika AI bilang bahwa menggandakan radius pipa menggandakan aliran air, kamu hanya bisa menangkap kesalahan itu kalau kamu tahu bahwa luas penampang berubah dengan <em>kuadrat</em> radius. Ketika AI bilang silogisme itu valid, kamu hanya bisa mengenali kekeliruan logika kalau kamu paham aturan deduksi.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        AI meremix apa yang sudah ada. Berpikir dari prinsip dasar bernalar dari kebenaran fundamental. Begitulah kamu mendorong ke wilayah yang benar-benar baru &mdash; dan begitulah kamu menangkap AI yang salah dengan percaya diri.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ini bukan berarti kamu harus jadi ahli di semua bidang. Tapi di domain di mana kamu bekerja dan berkreasi, pemahaman fundamentalmu adalah yang membedakanmu dari seseorang yang asal copy-paste output AI.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Uji dirimu. AI di bawah memberikan jawaban yang yakin untuk enam masalah di berbagai bidang. Beberapa benar. Beberapa salah secara halus. Bisakah kamu membedakan mana yang mana?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FIRST PRINCIPLES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FirstPrinciplesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHAT STAYS HUMAN ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Yang Tetap Manusiawi
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Setelah semua yang kita eksplorasi, sebuah pola muncul. Skill-skill yang paling tetap manusiawi bukan acak &mdash; mereka mengelompok di sekitar beberapa kemampuan mendalam yang secara fundamental tidak dimiliki AI.
-      </p>
-    </FadeInBlock>
-
-    <!-- Human edge capabilities -->
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { icon: '🎯', name: 'Penilaian', color: '#16C79A', text: 'Memilih apa yang penting. Apa yang harus dibangun, apa yang harus dipotong, apa yang harus diluncurkan, apa yang harus dihentikan. AI bisa menginformasikan keputusan tapi tidak bisa mengambilnya — karena keputusan butuh nilai, dan nilai itu manusiawi.' },
-        { icon: '🤝', name: 'Empati', color: '#0EA5E9', text: 'Memahami perasaan orang lain dan merespons dengan kepedulian yang tulus. AI mensimulasikan empati dalam teks. Manusia mempraktikkannya dalam hubungan, dalam krisis, di momen-momen yang paling berarti.' },
-        { icon: '🧭', name: 'Visi', color: '#7B61FF', text: 'Melihat apa yang belum ada dan memutuskan bahwa itu harus ada. Setiap produk, setiap perusahaan, setiap karya kreatif dimulai sebagai keyakinan seseorang bahwa dunia butuh sesuatu yang baru. AI tidak bisa menginginkan sesuatu.' },
-        { icon: '⚡', name: 'Kepemimpinan', color: '#F5A623', text: 'Menginspirasi orang, menavigasi konflik, membangun kepercayaan. Ini adalah skill sosial fundamental yang membutuhkan kehadiran, kecerdasan emosional, dan kemampuan untuk bertanggung jawab.' },
-        { icon: '🔍', name: 'Mengajukan pertanyaan orisinal', color: '#E94560', text: 'AI hebat menjawab pertanyaan. Manusia hebat mengajukan pertanyaan yang tidak terpikirkan siapa pun. Terobosan terpenting di sains, bisnis, dan seni dimulai dengan pertanyaan, bukan jawaban.' },
-      ].map((item, i) => (
-        <FadeInBlock client:visible delay={i * 0.08}>
-          <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: ${item.color}10; border: 1px solid ${item.color}20;`}>
-              {item.icon}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${item.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {item.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {item.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-
-    <FadeInBlock client:visible delay={0.5}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ini bukan sekadar soft skill yang "nice to have." Di dunia yang diperkuat AI, mereka adalah <strong>hard skill</strong>. Kemampuan menilai, berempati, memimpin, membayangkan &mdash; ini jadi keunggulan kompetitif terbesarmu justru <em>karena</em> AI menangani semua yang lain.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Taste. Penilaian. Empati. Visi. Berpikir dari prinsip dasar. Ini bukan sisa setelah AI mengambil alih &mdash; ini adalah skill-skill yang <em>mendefinisikan</em> apa yang kamu bawa ke meja.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        AI menghasilkan opsi. Kamu memilih yang tepat. Penilaian itu — taste, empati, visi, prinsip dasar — adalah keunggulanmu.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
@@ -327,6 +120,15 @@ const chapter = chapters[9];
         Tinggal satu bab lagi. Tidak ada teori lagi. Saatnya menggabungkan semua yang sudah kamu pelajari dan membangun sesuatu yang nyata &mdash; sesuatu yang hanya kamu yang bisa pikirkan untuk dibuat.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(22,199,154,0.06) 15%, rgba(22,199,154,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#16C79A" toolName="Irreplaceable You" client:visible>
+        <IrreplaceableYou client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

@@ -6,8 +6,9 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ToolWall from '../../components/widgets/ch4/ToolWall';
-import WorkflowBuilder from '../../components/widgets/ch4/WorkflowBuilder';
-import HeadToHead from '../../components/widgets/ch4/HeadToHead';
+import DreamProject from '../../components/breaks/DreamProject';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[3];
 ---
@@ -16,13 +17,12 @@ const chapter = chapters[3];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>4</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          धडा चार
+          अध्याय चार
         </p>
       </FadeInBlock>
 
@@ -31,76 +31,30 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI चा<br />नकाशा
+          AI चं<br />Landscape
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          तू आत्ता खरोखर वापरू शकतोस अशा<br />प्रत्येक AI tool चं field guide.
+          आत्ता तू खरोखर वापरू शकतोस अशा<br />प्रत्येक AI tool चा field guide.
+        </p>
+        <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
+          LAST UPDATED MARCH 2026
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        बहुतेक लोक "AI" म्हणतात तेव्हा त्यांना ChatGPT म्हणायचं असतं. कदाचित Google चा Gemini, किंवा कुणी Claude बद्दल ऐकलं असेल. हे "internet" म्हणून Google ला समजण्यासारखं आहे. चुकीचं नाही. फक्त एका प्रचंड गोष्टीचा छोटासा तुकडा आहे.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        आत्ता, शेकडो AI tools आहेत जे तू आज वापरू शकतोस — कुठल्या theoretical future मध्ये नाही, तर literally आत्ता, तुझ्या browser मधून. एका sentence मधून photorealistic images generate करणारी tools. संपूर्ण गाणी compose करणारी tools. तुझ्या research topic वर लिहिलेला प्रत्येक academic paper वाचून consensus तीन paragraphs मध्ये summarize करणारी tools.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        हा धडा तुझं field guide आहे. संपूर्ण catalog नाही — तो पुढच्या मंगळवारपर्यंत outdated होईल — पण <strong>terrain चा नकाशा</strong>. कुठल्या categories महत्त्वाच्या आहेत, कुठली tools माहीत असणं गरजेचं आहे, आणि योग्य tool निवडायला मदत करणारं thinking framework.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEYOND THE CHATBOT ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Chatbot पलीकडे
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Chatbot हे iceberg चं टोक आहे. Surface खाली, AI डझनभर specialized capabilities मध्ये विभागला गेला आहे, प्रत्येक वेगळ्या प्रकारच्या कामासाठी वेगळा tool.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Musical instruments सारखं विचार कर. Piano आणि drum kit दोन्ही "musical instruments" आहेत, पण तू pianist ला beat वाजवायला सांगणार नाहीस, आणि drummer ला concerto वाजवायला सांगणार नाहीस. AI tools तसेच आहेत. Image generation साठी बनवलेलं tool code साठीच्या tool पेक्षा मूलभूतपणे वेगळं आहे — वेगळी architecture, वेगळी training data, वेगळ्या strengths.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        10 AI tools superficially माहीत असणारा माणूस एक tool deeply माहीत असणाऱ्यापेक्षा consistently चांगला perform करेल. Awareness ची breadth expertise च्या depth ला — सुरुवातीला तरी — मागे टाकते.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        आज landscape कसा दिसतो ते हे आहे, या tools खरोखर <em>काय करतात</em> त्याप्रमाणे organized.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        बहुतेक लोक "AI" म्हणतात तेव्हा त्यांना ChatGPT म्हणायचं असतं. ते म्हणजे "internet" म्हणून Google म्हणण्यासारखं. आत्ता, शेकडो AI tools आहेत जे तू आजच वापरू शकतोस — एका वाक्यातून photorealistic images बनवणारे, पूर्ण गाणी compose करणारे, किंवा तुझ्या research topic वरचे सगळे academic papers वाचून consensus तीन paragraphs मध्ये summarize करणारे. हा chapter तुझा terrain चा map आहे.
       </p>
     </FadeInBlock>
   </section>
@@ -117,21 +71,21 @@ const chapter = chapters[3];
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-14">
-        तुला भेटणारं प्रत्येक AI tool या categories पैकी एकात बसतं. काही tools boundaries cross करतात, पण ही families समजून घेतल्यानं या chaos चा अर्थ लावण्यासाठी mental map मिळतो.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Musical instruments सारखं विचार कर. Piano आणि drum kit दोन्ही "instruments" आहेत, पण तू pianist ला beat वाजवायला सांगणार नाहीस. AI tools पण तसेच आहेत — image generation साठी बनवलेलं tool code साठी बनवलेल्या tool पेक्षा मूलभूतपणे वेगळं आहे. तुला भेटणारं प्रत्येक tool या आठ कुटुंबांपैकी एकात बसतं.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text आत जातो, images बाहेर येतात. Photorealistic scenes पासून anime ते oil paintings पर्यंत. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram. सर्वात democratizing category — कुणीही शब्दांतून visual art बनवू शकतो.' },
-        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'खऱ्या image ने सुरू कर आणि transform कर. Backgrounds काढ, resolution वाढव, objects बदल, scenes relight कर. Photoshop AI, Magnific, Clipdrop. हे human photographers आणि designers ना replace करण्याऐवजी augment करतात.' },
-        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'सर्वात नवीन frontier. Text किंवा still images मधून video clips generate कर. Sora, Runway, Kling, Pika. अजून early आहे — बहुतेक clips 30 seconds पेक्षा कमी — पण staggering pace ने improve होतंय. Filmmaking कधीच पूर्वीसारखं नसणार.' },
-        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Text description मधून संपूर्ण गाणी, 30-second sample मधून voice cloning, demand वर sound effects. Suno, Udio, ElevenLabs. या tools studio आणि team लागायचं ते एका prompt मध्ये compress करतात.' },
-        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'तुझ्यासाठी internet (किंवा academic databases) वाचणारा AI. Perplexity search करतो आणि cite करतो. Elicit papers वाचतो. Consensus scientific agreement शोधतो. NotebookLM तुझे documents expert मध्ये बदलतो.' },
-        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'माणसासारखं web navigate करणारे agents. Buttons click करणे, forms भरणे, pages मध्ये navigate करणे. Arc, Operator, Claude Computer Use. "प्रश्नांची उत्तरं" आणि "कामं करणे" यातला bridge.' },
-        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code लिहिणारा, edit करणारा, run करणारा आणि debug करणारा AI. Claude Code तुझ्या terminal मधून काम करतो. Cursor आणि Windsurf पूर्ण editors आहेत. Copilot inline suggest करतो. Replit Agent scratch पासून संपूर्ण apps बनवतो.' },
-        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'तुला माहीत असलेला general-purpose conversational AI: ChatGPT, Claude, Gemini. ते Swiss army knives आहेत — अनेक गोष्टींत चांगले, prompt करायला आलं तर सर्वोत्तम (जे तुला आलं, chapters 1-3 मुळे).' },
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text जातो, images बाहेर येतात. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'खऱ्या image पासून सुरू करून transform कर. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text किंवा stills मधून video clips generate कर. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt मधून पूर्ण गाणी, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'AI जो तुझ्यासाठी internet वाचतो. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'माणसासारखं web navigate करणारे agents. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code लिहिणारा, edit करणारा, आणि debug करणारा AI. Claude Code, Cursor, Windsurf, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'तुला आधीपासून माहीत असलेला general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -153,244 +107,54 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>मुख्य अंतर्दृष्टी</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          या categories converge होतायत. Image generators video add करतायत. Chatbots tool use शिकतायत. Coding tools agents बनतायत. दोन वर्षांत, boundaries blur होतील. पण आत्ता, specialists अजून generalists ला त्यांच्या specialty मध्ये beat करतात.
+          10 AI tools surface level ला जाणणारा माणूस एक tool deeply जाणणाऱ्यापेक्षा consistently चांगलं करेल. एक professional carpenter चं आवडतं tool नसतं — त्याचं <em>प्रत्येक कामासाठी</em> आवडतं tool असतं.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO TOOL WALL -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        पूर्ण catalog explore कर. कुठल्याही tool वर click करून ते काय करतं ते जाणून घे.
+        पूर्ण catalog explore कर. कोणत्याही tool वर click कर आणि ते काय करतं ते शिक.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: TOOL WALL ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <ToolWall client:visible />
-    </FadeInBlock>
+    <ToolWall client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CHOOSING THE RIGHT TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        योग्य Tool निवडणे
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="मला वाटलं त्यापेक्षा खूप जास्त AI tools आहेत. हा interactive guide 8 प्रकारचे tools map करतो — image gen, video, music, research, coding — प्रत्येकाची examples सोबत." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        इतक्या options सह, अवघड भाग AI tool शोधणं नाही. <em>योग्य</em> AI tool शोधणं आहे. हे framework काम करतं:
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Output काय आहे?', desc: 'Text? Image? Code? Video? Audio? यामुळे लगेच 1-2 families पुरतं narrow होतं.' },
-          { word: 'Quality bar काय आहे?', desc: 'स्वतःसाठी quick draft, की audience साठी polished output? वेगवेगळ्या standards साठी वेगवेगळी tools.' },
-          { word: 'Budget काय आहे?', desc: 'अनेक tools free tiers offer करतात जे surprisingly capable असतात. Pay करण्याआधी तुला खरोखर काय लागतं ते जाण.' },
-          { word: 'Workflow काय आहे?', desc: 'Standalone task, की लांब chain मधला एक step? Integration raw power पेक्षा जास्त महत्त्वाचं.' },
-        ].map((step, i) => (
-          <FadeInBlock client:visible delay={0.15 + i * 0.08}>
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.4}>
-      <p class="text-lg leading-[1.85] mb-10">
-        बहुतेक beginners तीच चूक करतात: ते सगळ्यासाठी एकच general-purpose AI वापरतात. Technically काम करतं, पण योग्य specialized tools सह तुला जास्त चांगले results लवकर मिळतील.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.45}>
-      <p class="text-lg leading-[1.85]">
-        तरी, उलट trap मध्ये सुद्धा पडू नकोस. तुला 47 AI subscriptions लागत नाहीत. <strong>वेगवेगळ्या categories मधून 3-4 tools निवड, त्या चांगल्या शिक, आणि तिथून expand कर.</strong>
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF PIPELINES ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Pipelines ची ताकद
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        खरा unlock हा आहे: <strong>tools chain केल्यावर exponentially जास्त powerful होतात.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        एक AI tool तुला capability देतो. AI tools ची chain तुला <em>workflow</em> देते. Perplexity research शोधतो. Claude article लिहितो. Midjourney illustrations बनवतो. प्रत्येक tool जे सर्वात चांगलं करतो ते करतो, आणि एकाचा output पुढच्याचा input होतो.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        तू online बघितलेलं सर्वात impressive AI-generated काम एका tool ने बनलं नव्हतं. ते पाच tools ने बनलं होतं, एका माणसाने chain केलेले ज्याला प्रत्येक tool सर्वात चांगलं काय करतो ते माहीत होतं.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        म्हणूनच landscape समजणं महत्त्वाचं आहे. तुला फक्त एकच tool माहीत असेल तर pipeline बनवता येत नाही. कुठले specialists अस्तित्वात आहेत हे माहीत नसेल तर योग्य specialist निवडता येत नाही.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        स्वतः एक बनवून बघ:
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: WORKFLOW BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <WorkflowBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ NO BEST TOOL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        "सर्वोत्तम" Tool असं काहीच नाही
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        दर आठवड्याला कुणीतरी AI tools ची definitive ranking पोस्ट करतो. दर आठवड्याला, ती चुकीची असते. Ranking वाईट असल्यामुळे नाही, तर "best" पूर्णपणे तू काय करतोयस, कसं करतोयस, आणि तुला काय महत्त्वाचं वाटतं यावर अवलंबून असतं.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Midjourney DALL-E 3 पेक्षा जास्त artistic images बनवतो. पण DALL-E 3 instructions जास्त precisely follow करतो. Ideogram दोघांपेक्षा text चांगलं render करतो. कुठलं "best"? तू movie poster बनवतोयस, product photo, की logo — त्यावर depend करतं.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Claude GPT पेक्षा जास्त nuance ने लिहितो. GPT जलद आहे. Gemini चा context जास्त आहे. तुला कुठलं महत्त्वाचं? तुझ्या task वर depend करतं.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>खरी skill एक tool master करणं नाही. कुठल्या job साठी कुठलं tool fit होतं याची taste develop करणं आहे.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Professional carpenter चं favourite tool नसतं. त्याचं <em>प्रत्येक काम</em> साठी favourite tool असतं. ही मानसिकता develop कर.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO HEAD TO HEAD -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        स्वतः बघ. तोच prompt, वेगवेगळी tools &mdash; कुठला output तुला जास्त आवडतो?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: HEAD TO HEAD ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HeadToHead client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE LANDSCAPE IS MOVING ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        नकाशा बदलतोय
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        एक uncomfortable सत्य आहे: वर catalog मधल्या काही tools एका वर्षात अस्तित्वात नसतील. अजून अस्तित्वात नसलेल्या दुसऱ्या tools essential होतील. AI landscape इतिहासातल्या कुठल्याही technology landscape पेक्षा जलद बदलतोय.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        मग specific tools शिकण्याचा उपयोग काय? कारण <strong>tools बदलले तरी categories stable राहतात</strong>. Image generators, code assistants, आणि research agents नेहमी असतील. नावं बदलतील. Underlying capabilities आणि mental models बदलणार नाहीत.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>Transferable Skills</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          1. AI tools च्या कुठल्या categories अस्तित्वात आहेत हे माहीत असणं<br />
-          2. नवीन tool 15 मिनिटांत evaluate करता येणं<br />
-          3. Tools ला workflows मध्ये chain करता येणं<br />
-          4. Tool बदलायचं की prompts refine करायचे हे कळणं
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85]">
-        या चार skills तुला पुढच्या वर्षी किंवा त्यानंतर कुठली specific tools dominate करतात याची पर्वा न करता काम करतील. Landscape बदलतो, पण navigator effective राहतो.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        तुझ्याकडे आता AI landscape चा नकाशा आहे &mdash; tools चे आठ families, त्यांच्यातून निवडण्याचं framework, आणि pipeline mindset जे त्यांना chain करतो.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Landscape दर महिन्याला बदलतं. पण categories stable आहेत जेव्हा tools नसतात — आणि <em>तोच</em> map पाठ करण्यासारखा आहे.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        पण आतापर्यंत, या tools फक्त तुला respond करतात. ती <em>स्वतःहून actions घेऊ</em> शकली तर? तो tool ते agent हा leap आहे &mdash; आणि तो सगळं बदलतो.
+        आतापर्यंत, ही tools फक्त तुला respond करतात. जर ती <em>स्वतःहून actions घेऊ</em> शकली तर? Tool पासून agent मधला हा leap आहे — आणि तो सगळं बदलतो.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(14,165,233,0.06) 15%, rgba(14,165,233,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#0EA5E9" toolName="Dream Project" client:visible>
+        <DreamProject client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

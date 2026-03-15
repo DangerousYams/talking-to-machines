@@ -5,402 +5,150 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import BeatSection from '../../components/chapter/BeatSection';
 import PromptMakeover from '../../components/widgets/ch1/PromptMakeover';
-import GuessThePrompt from '../../components/widgets/ch1/GuessThePrompt';
-import IterationLoop from '../../components/widgets/ch1/IterationLoop';
 import PromptRoast from '../../components/widgets/ch1/PromptRoast';
-import PromptComparison from '../../components/widgets/ch1/PromptComparison';
-import BeatCompletionCard from '../../components/chapter/BeatCompletionCard';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[0];
-const beats = chapter.beats!;
 ---
 
 <ChapterLayout chapter={chapter} locale="te">
 
-  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
-  <BeatSection
-    beatId={beats[0].id}
-    beatNumber={1}
-    totalBeats={beats.length}
-    title="కమ్యూనికేషన్ గ్యాప్"
-    tldr="అస్పష్టమైన prompts అస్పష్టమైన జవాబులను ఇస్తాయి. AI ఏం చేయగలదో మరియు చాలా మంది వారిని ఏం చేయిస్తున్నారో మధ్య గ్యాప్ అనేది కమ్యూనికేషన్ సమస్య."
-    estimatedMinutes={beats[0].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="ఐదు బిల్డింగ్ బ్లాక్స్"
-    isFirst={true}
-    client:load
-  >
-    <!-- HERO -->
-    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
 
-      <div class="max-w-[680px] mx-auto text-center relative z-10">
-        <FadeInBlock client:visible>
-          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-            చాప్టర్ వన్
-          </p>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.15}>
-          <h1
-            class="mb-8 leading-[1.08]"
-            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
-          >
-            నువ్వు ఇప్పటికే<br />AI మాట్లాడుతావ్
-          </h1>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.3}>
-          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-            మొదటి డ్రాఫ్ట్ మాయాజాలం కాదు.<br />కానీ మూడవది అవ్వచ్చు.
-          </p>
-        </FadeInBlock>
-      </div>
-
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
-        <div class="w-px h-10 bg-deep/40"></div>
-      </div>
-    </section>
-
-    <!-- STORY OPENER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
-        <p class="drop-cap text-lg leading-[1.85] mb-8">
-          నువ్వు జీవితంలో AI తో ఎప్పుడూ మాట్లాడుతూనే ఉన్నావ్. ఎప్పుడైనా search bar లో టైప్ చేసినప్పుడు, Siri ని ఏదైనా అడిగినప్పుడు, లేదా Netflix recommendation వచ్చినప్పుడు, ఒక algorithm వింటూ ఉంది. కానీ మెషిన్ తో మాట్లాడటానికి <em>ఎదురు</em> మాట్లాడటానికి <em>కలిసి</em> మధ్య తేడా ఉంది.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-8">
-          ఇప్పుడు లక్షలాది మంది ChatGPT లో ఒక prompt టైప్ చేస్తారు, సాధారణ response వస్తుంది, మరియు ఆలోచిస్తారు: <em>"AI అంత తెలివైనది కాదేమో."</em> వాళ్ళు తప్పు. AI అసాధారణంగా సమర్థమైనది. వాళ్ళు కేవలం సరైన విధంగా అడగడం లేదు.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85]">
-          <strong>AI ఏం చేయగలదో</strong> మరియు <strong>చాలా మంది దానిని ఏం చేయిస్తున్నారో</strong> మధ్య గ్యాప్ చాలా భారీ. మరియు ఇది టెక్నాలజీ సమస్య కాదు — ఇది కమ్యూనికేషన్ సమస్య. నువ్వు ఇప్పటికే ఎలా fix చేయాలో తెలుసు.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE VAGUE PROMPT PROBLEM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-          అస్పష్టమైన Prompt సమస్య
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          రెండు మంది అదే AI ని essay కోసం సహాయం అడుగుతారు. ఒకడికి పనికిరాని response వస్తుంది. మరొకడికి నిజంగా బ్రిలియంట్ ఏదో వస్తుంది. అదే AI. తేడా ఎలా అడిగారోనే.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
-      <FadeInBlock client:visible delay={0.2}>
-        <PromptComparison accentColor={chapter.accent} client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[0].id} beatTitle="కమ్యూనికేషన్ గ్యాప్" nextBeatTitle="ఐదు బిల్డింగ్ బ్లాక్స్" accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
-  <BeatSection
-    beatId={beats[1].id}
-    beatNumber={2}
-    totalBeats={beats.length}
-    title="ఐదు బిల్డింగ్ బ్లాక్స్"
-    tldr="ప్రతి మంచి prompt Role, Task, Format, Constraints, మరియు Examples లలో కొన్నింటి మిశ్రమం వాడుతుంది."
-    estimatedMinutes={beats[1].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="Iteration మైండ్‌సెట్"
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          ఐదు బిల్డింగ్ బ్లాక్స్
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-6">
-          AI నుండి అద్భుతమైన results పొందే వాళ్ళను generic కిస్మ్ పొందే వాళ్ళ నుండి వేరు చేసేది ఇదే. ఇది talent కాదు. ఏదో రహస్య టూల్ కాదు. ఇది formula — ఐదు building blocks ప్రతిసారీ పని చేస్తాయి.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-14">
-          ఎల్లప్పుడూ అన్ని ఐదూ అవసరం లేదు. కానీ అవి ఉన్నాయని తెలుసుకోవడం Matrix చూడడం లాంటిది. Pattern చూసిన తర్వాత, చూడకుండా ఉండలేవు.
-        </p>
-      </FadeInBlock>
-
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { letter: 'R', name: 'Role (పాత్ర)', color: '#E94560', text: 'AI ఎవరు కావాలి? "నువ్వు AP English tutor" అంటే అంతా మారిపోతుంది. Tutor వివరిస్తుంది. Professor ఉపన్యాసం ఇస్తారు. Friend చర్చిస్తారు. Role tone, vocabulary, మరియు depth ను shape చేస్తుంది.' },
-          { letter: 'T', name: 'Task (పని)', color: '#0F3460', text: 'సరిగ్గా ఏం చేయాలి? "నా essay లో సహాయం చేయ్" కాదు కానీ "నా thesis statement ను బలపరచు." కఠినంగా specific గా ఉండు. ఒక prompt కు ఒక task దాదాపు ఎల్లప్పుడూ మూడు కంటే మెరుగు.' },
-          { letter: 'F', name: 'Format (ఫార్మాట్)', color: '#7B61FF', text: 'Response ఎలా కనిపించాలి? "నాకు 3 alternatives ఇవ్వు" format. "bulleted list గా," "100 words లోపల," లేదా "pros and cons compare చేసే table గా" కూడా. Format rambling ను prevent చేస్తుంది.' },
-          { letter: 'C', name: 'Constraints (పరిమితులు)', color: '#16C79A', text: 'ఏం చేయకూడదు? "Clichés వాడవద్దు." "200 words లోపల ఉంచు." Constraints guardrails లాంటివి. AI పనికిరాని చోట వెళ్లకుండా prevent చేస్తాయి.' },
-          { letter: 'E', name: 'Examples (ఉదాహరణలు)', color: '#F5A623', text: 'చూపించు, చెప్పవద్దు. specific style కావాలంటే, "మంచిది" ఎలా ఉంటుందో example ఇవ్వు. ఒక example వంద పదాల వర్ణనకు సమానం.' },
-        ].map((block, i) => (
-          <FadeInBlock client:visible delay={i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-                {block.letter}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {block.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {block.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-
-      <FadeInBlock client:visible delay={0.5}>
-        <div class="insight-box">
-          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">కీలకమైన అంతర్దృష్టి</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            ప్రతిసారీ అన్ని ఐదు అవసరం లేదు. సాధారణ ప్రశ్నకు constraints మరియు examples అవసరం లేదు. కానీ AI మనకు చెత్త ఇచ్చినప్పుడు, ఏది లేకుండా ఉన్నదో చూడు. దాదాపు ఎల్లప్పుడూ ఈ ఐదిలో ఒకటి.
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
-
-    <!-- BRIDGE TO PROMPT MAKEOVER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          సిద్ధాంతం చాలు. Building blocks అసలు action లో చూడాలి.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <!-- WIDGET: PROMPT MAKEOVER -->
-    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <PromptMakeover client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[1].id} beatTitle="ఐదు బిల్డింగ్ బ్లాక్స్" nextBeatTitle="Iteration మైండ్‌సెట్" accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
-  <BeatSection
-    beatId={beats[2].id}
-    beatNumber={3}
-    totalBeats={beats.length}
-    title="Iteration మైండ్‌సెట్"
-    tldr="ఎవరూ మొదటిసారిలోనే nail చేయలేరు. Prompt, evaluate, refine, repeat — ఆ loop అసలు skill."
-    estimatedMinutes={beats[2].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle="నిన్ను పరీక్షించుకో"
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          Iteration, Perfection కాదు
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-10">
-          మొదటి prompt దాదాపు ఎప్పుడూ పని చేయదు. మరియు అది సరే. <strong>అది అసలు point ఇదే.</strong>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          మొదటి అధ్యాయం
         </p>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.15}>
-        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-          AI ఏదో అద్భుతమైనది produce చేయడం demo చూసినప్పుడు, నువ్వు final prompt చూస్తున్నావ్ — ఎవరైనా ఐదు, పది, బహుశా ఇరవై rounds refinement తర్వాత వచ్చిన prompt. నువ్వు highlight reel చూస్తున్నావ్, practice sessions కాదు.
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          అసలు workflow ఇలా ఉంటుంది:
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-          {[
-            { word: 'Prompt.', desc: 'మొదటి మంచి attempt రాయి.' },
-            { word: 'Evaluate.', desc: 'Response చదువు. ఏమి బాగుంది? ఏమి తప్పు?' },
-            { word: 'Refine.', desc: 'Prompt adjust చేయి. fail అయిన చోట మరింత specific గా ఉండు.' },
-            { word: 'Repeat.', desc: 'Output నువ్వు అసలు వాడే దాకా.' },
-          ].map((step, i) => (
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          ))}
-        </div>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          నువ్వు ఇప్పటికే<br />AI మాట్లాడతావ్
+        </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
-        <p class="text-lg leading-[1.85] mb-10">
-          ఈ loop — prompt, evaluate, refine, repeat — AI తో పని చేయడంలో <em>అసలు skill</em>. మొదటిసారిలోనే ఏదో మాయాజాలం perfect prompt craft చేయడం కాదు. అది myth.
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          నీ మొదటి draft మ్యాజిక్ కాదు.<br />కానీ మూడోది కావచ్చు.
         </p>
       </FadeInBlock>
+    </div>
 
-      <FadeInBlock client:visible delay={0.35}>
-        <div class="insight-box">
-          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>సగటున మంచి result 3-5 iterations తీసుకుంటుంది, 1 కాదు.</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            మొదటిసారిలోనే nail చేస్తున్నట్టుంటే, నువ్వు బహుశా చాలా hard push చేయడం లేదు. మంచి outputs నువ్వు మరియు AI కలిసి refine చేసే back-and-forth నుండి వస్తాయి.
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
 
-    <!-- WIDGET: ITERATION LOOP -->
-    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <IterationLoop client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE PROMPT SPECTRUM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          Prompt Spectrum
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          ప్రతి prompt ని అస్పష్టం నుండి precise వరకు spectrum లో ఆలోచించు:
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.15}>
-        <div style="margin-bottom: 3rem;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">అస్పష్టం</span>
-            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">PRECISE</span>
-          </div>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"సహాయం చేయ్"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">generic response</p>
-            </div>
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"X గురించి రాయి"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">సరే కానీ unfocused</p>
-            </div>
-            <div>
-              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"అన్ని ఐదు blocks"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">targeted, useful</p>
-            </div>
-          </div>
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          నీ లక్ష్యం ఎల్లప్పుడూ "precise" end లో ఉండటం కాదు. Casual brainstorm ఉద్దేశపూర్వకంగా అస్పష్టంగా ఉండవచ్చు. కానీ <strong>నువ్వు spectrum లో ఎక్కడ ఉన్నావో intentionally choose చేయాలి</strong>, accidentally అక్కడ land అవ్వకూడదు.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <p class="text-lg leading-[1.85]">
-          AI నుండి ఎక్కువ పొందే వాళ్ళు magic prompts గుర్తుంచుకోవడం లేదు. వాళ్ళు <em>ఎంత specific గా ఉండాలో</em> feel develop చేస్తారు — మరియు మొదటి answer చాలకపోతే, ఏ dial turn చేయాలో exactly తెలుస్తుంది.
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[2].id} beatTitle="Iteration మైండ్‌సెట్" nextBeatTitle="నిన్ను పరీక్షించుకో" accentColor={chapter.accent} client:visible />
-  </BeatSection>
+  <!-- ═══ OPENING HOOK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        నువ్వు జీవితమంతా AI తో మాట్లాడుతూనే ఉన్నావ్ — ప్రతి search query, ప్రతి Siri ప్రశ్న, ప్రతి Netflix recommendation. కానీ మెషీన్ <em>దగ్గర</em> మాట్లాడటానికి మెషీన్ <em>తో</em> మాట్లాడటానికి తేడా ఉంది. ఇప్పుడు లక్షలాది మంది ఒక prompt టైప్ చేస్తారు, మామూలు response వస్తుంది, అనుకుంటారు: "AI అంత smart కాదేమో." వాళ్ళు తప్పు. AI ఏం చేయగలదో, చాలా మంది దాన్ని ఏం చేయిస్తున్నారో — ఈ రెండింటి మధ్య gap భారీగా ఉంది. ఇది technology problem కాదు — ఇది communication problem.
+      </p>
+    </FadeInBlock>
+  </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ BEAT 4: Test Yourself ═══ -->
-  <BeatSection
-    beatId={beats[3].id}
-    beatNumber={4}
-    totalBeats={beats.length}
-    title="నిన్ను పరీక్షించుకో"
-    tldr="నీ కొత్త skills ని test కు పెట్టు — AI outputs వెనుక prompt ని guess చేయి మరియు నీ own prompts roast అవ్వనివ్వు."
-    estimatedMinutes={beats[3].estimatedMinutes}
-    accentColor={chapter.accent}
-    client:load
-  >
-    <!-- WIDGET: GUESS THE PROMPT -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          అంతా అర్థమైందా? Test కు పెడదాం.
+  <!-- ═══ THE FIVE BUILDING BLOCKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ఐదు Building Blocks
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        ఇదిగో రహస్యం: AI నుండి అద్భుతమైన results పొందే వాళ్ళు నీ కంటే smart కాదు. వాళ్ళు ఒక formula వాడతారు — ఐదు building blocks ప్రతిసారీ పని చేస్తాయి. ఎల్లప్పుడూ అన్ని ఐదూ అవసరం లేదు. కానీ అవి ఉన్నాయని తెలుసుకోవడం Matrix చూడడం లాంటిది.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'R', name: 'Role (పాత్ర)', color: '#E94560', text: 'AI ఎవరు అవ్వాలి? Tutor వేరేగా explain చేస్తాడు, professor వేరేగా. Role అంతా shape చేస్తుంది.' },
+        { letter: 'T', name: 'Task (పని)', color: '#0F3460', text: 'సరిగ్గా ఏం చేయాలి? "నాకు help చెయ్" కాదు — "నా thesis statement ను strengthen చెయ్." ఒక prompt కి ఒక task.' },
+        { letter: 'F', name: 'Format (ఫార్మాట్)', color: '#7B61FF', text: 'Response ఎలా కనిపించాలి? "3 alternatives numbered list గా ఇవ్వు." Format rambling ను ఆపుతుంది.' },
+        { letter: 'C', name: 'Constraints (పరిమితులు)', color: '#16C79A', text: 'ఏం చేయకూడదు? "Clichés avoid చెయ్. 200 words లోపల ఉంచు." Guardrails చెడ్డ outputs ను ఆపుతాయి.' },
+        { letter: 'E', name: 'Examples (ఉదాహరణలు)', color: '#F5A623', text: 'చెప్పకు, చూపించు. "మంచిది" ఎలా ఉంటుందో ఒక example వంద words వర్ణన కంటే విలువైనది.' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">కీలక అంశం</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          ప్రతిసారీ అన్ని ఐదూ అవసరం లేదు. కానీ AI చెత్త ఇచ్చినప్పుడు, ఏది missing అయిందో చూడు — దాదాపు ఎల్లప్పుడూ ఈ ఐదిలో ఒకటి.
         </p>
-      </FadeInBlock>
-    </section>
+      </div>
+    </FadeInBlock>
+  </section>
 
-    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <GuessThePrompt client:visible />
-      </FadeInBlock>
-    </section>
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Theory చాలు. Building blocks toggle చేసి AI response real time లో ఎలా మారుతుందో చూడు.
+      </p>
+    </FadeInBlock>
+  </section>
 
-    <Divider accent={chapter.accent} client:load />
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <PromptMakeover client:visible />
+  </section>
 
-    <!-- PROMPT ROAST BRIDGE -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          ఇప్పుడు మంచి prompt రాయగలవని అనుకుంటున్నావా? కనుక్కోవడానికి ఒకే దారి ఉంది.
-        </p>
-      </FadeInBlock>
-    </section>
+  <Divider accent={chapter.accent} client:load />
 
-    <!-- WIDGET: PROMPT ROAST -->
-    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
+  <SharePrompt text="మంచి AI prompt యొక్క 5 building blocks ఇప్పుడే కనుగొన్నాను. ఈ interactive course నిజంగా బాగా చేసారు — నువ్వే prompts build చేసి వాటిని real time లో improve అవ్వడం చూస్తావ్." client:visible />
+
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        నువ్వు ఇప్పటికే AI మాట్లాడతావ్. కేవలం intention తో మాట్లాడాలి.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        తర్వాత: simple back-and-forth ని నిజమైన conversation గా మార్చే techniques — AI కేవలం answer చేయదు, నీతో <em>ఆలోచిస్తుంది</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Prompt Roast" client:visible>
         <PromptRoast client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- CLOSING -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
-      <FadeInBlock client:visible>
-        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-          నువ్వు ఇప్పటికే AI మాట్లాడుతావ్. కేవలం intention తో మాట్లాడాలి.
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-          తర్వాతి: simple back-and-forth ని real conversation గా మార్చే techniques — AI కేవలం answer చేయదు, నీతో <em>ఆలోచిస్తుంది</em>.
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[3].id} beatTitle="నిన్ను పరీక్షించుకో" accentColor={chapter.accent} client:visible />
-  </BeatSection>
+      </BreakReveal>
+    </div>
+  </section>
 
 </ChapterLayout>

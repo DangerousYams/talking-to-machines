@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
-import SkillBuilder from '../../components/widgets/ch7/SkillBuilder';
-import RefactorRace from '../../components/widgets/ch7/RefactorRace';
+import ShipIt from '../../components/breaks/ShipIt';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[6];
 ---
@@ -17,13 +17,12 @@ const chapter = chapters[6];
 
   <!-- ═══ HERO ═══ -->
   <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-    <!-- Giant background number -->
     <div class="chapter-number" style={`color: ${chapter.accent};`}>7</div>
 
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Chapitre Sept
+          Chapitre sept
         </p>
       </FadeInBlock>
 
@@ -32,377 +31,110 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Maîtriser<br />Claude Code
+          Maitriser<br />Claude Code
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Ton programmeur IA en binôme, de la première<br />commande aux Skills personnalisés.
+          Ton programmeur IA en binome, de la premiere<br />commande aux Skills personnalises.
         </p>
       </FadeInBlock>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
       <div class="w-px h-10 bg-deep/40"></div>
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER — with drop cap ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        Il y a un moment dont chaque développeur se souvient. Tu ouvres un terminal, tu tapes une requête en langage naturel, et tu regardes une IA lire tes fichiers, comprendre ton architecture, écrire du code dans plusieurs fichiers, le lancer, tomber sur une erreur, la corriger, et relancer le tout — sans que tu touches une seule ligne. Ça, c'est Claude Code.
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Il y a un moment dont chaque developpeur se souvient. Tu ouvres un terminal, tu tapes une requete en langage naturel, et tu regardes une IA lire tes fichiers, comprendre ton architecture, ecrire du code dans plusieurs fichiers, le lancer, tomber sur une erreur, la corriger, et relancer le tout — sans que tu touches une seule ligne. Claude Code n'est pas de l'autocompletion. C'est un outil de programmation <em>agentique</em> qui voit l'ensemble de ton projet, fait des modifications dans plusieurs fichiers, execute des commandes shell et itere sur ses propres erreurs.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        Ce n'est pas de l'autocomplétion. Ce n'est pas un chatbot qui écrit des bouts de code. Claude Code est un outil de programmation <em>agentique</em> — un partenaire en ligne de commande qui voit l'ensemble de ton projet, fait des modifications dans plusieurs fichiers, exécute des commandes shell, et itère sur ses propres erreurs. Il ne se contente pas de suggérer du code. Il <strong>livre</strong> du code.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        Mais l'outil est aussi bon que la personne qui le pilote. Claude Code peut écrire mille lignes de code parfait en quelques secondes — ou mille lignes de code qui a l'air correct mais qui est du grand n'importe quoi. La différence, c'est toi.
+      <p class="text-lg leading-[1.85] mt-8">
+        Mais l'outil est aussi bon que la personne qui le pilote. Claude Code peut ecrire mille lignes de code parfait en quelques secondes — ou mille lignes de code qui a l'air correct mais qui est du grand n'importe quoi. La difference, c'est toi.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HOW CLAUDE CODE THINKS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Comment Claude Code réfléchit
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Quand tu donnes une tâche à Claude Code, il ne se met pas juste à taper. Il exécute la boucle agentique du chapitre 6, spécialisée pour le code :
-      </p>
-    </FadeInBlock>
-
-    <!-- Agent loop visualization -->
-    <FadeInBlock client:visible delay={0.15}>
-      <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-        <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-        {[
-          { word: 'Lire.', desc: 'Scanner la codebase — fichiers, imports, tests, configs. Comprendre ce qui existe.' },
-          { word: 'Planifier.', desc: 'Décider quoi modifier, dans quels fichiers, dans quel ordre.' },
-          { word: 'Écrire.', desc: 'Faire les modifications. Créer des fichiers. Modifier le code.' },
-          { word: 'Exécuter.', desc: 'Lancer des commandes — build, test, lint. Voir ce qui se passe.' },
-          { word: 'Corriger.', desc: 'Si quelque chose a cassé, lire l\'erreur, ajuster, et réessayer.' },
-        ].map((step, i) => (
-          <div style={`position: relative; padding-bottom: ${i < 4 ? '1.75rem' : '0'};`}>
-            <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-            <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-              <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-              <span style="opacity: 0.7;"> {step.desc}</span>
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Cette boucle lire-planifier-écrire-exécuter-corriger, c'est ce qui rend Claude Code différent d'un simple générateur de code. Il ne te file pas un bout de code et s'en va. Il <em>reste dans la boucle</em> — il itère jusqu'à ce que le code fonctionne vraiment.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85]">
-        Vois ça comme du pair programming. Tu décris ce que tu veux. Claude Code l'écrit. Les tests échouent. Claude Code lit l'erreur, ajuste, relance. Ce cycle peut se produire trois, cinq, dix fois — le tout en quelques secondes.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO TERMINAL PLAYGROUND -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Observe la boucle en action. Tape une requête et regarde Claude Code travailler.
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: TERMINAL PLAYGROUND ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <TerminalPlayground client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE CLAUDE.MD FILE ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Le fichier CLAUDE.md
+        Specifier, generer, verifier
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        La plupart des débutants passent à côté : <strong>tu peux donner des instructions permanentes à Claude Code.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Place un fichier appelé <code>CLAUDE.md</code> à la racine de ton projet, et Claude Code le lit au début de chaque session. C'est comme un prompt système, mais pour toute ta codebase.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Quand tu donnes une tache a Claude Code, il execute une boucle agentique : lire la codebase, planifier les modifications, ecrire le code, le lancer, corriger ce qui a casse. Il peut parcourir cette boucle trois, cinq, dix fois — le tout en quelques secondes. Ton role n'est plus d'ecrire chaque ligne. C'est de <strong>specifier</strong> ce qu'il faut construire, laisser l'IA le <strong>generer</strong>, puis <strong>verifier</strong> que c'est vraiment correct. La plupart des debutants sautent cette derniere etape. Ils voient du code apparaitre, ca a l'air raisonnable, et ils passent a la suite. Ne sois pas cette personne. Du code genere, c'est un premier brouillon. Ta verification, c'est la relecture qui le rend publiable.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>CLAUDE.md</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep); font-family: var(--font-mono); font-size: 0.85rem;">
-          # Mon Projet<br /><br />
-          Stack technique : Astro + React + Tailwind<br />
-          Toujours utiliser TypeScript en mode strict.<br />
-          Mettre les composants dans src/components/.<br />
-          Écrire des tests pour chaque nouvelle fonction.<br />
-          Utiliser le formatage Prettier — ne jamais modifier la config.<br /><br />
-          ## Règles de style<br />
-          - Préférer les exports nommés aux exports par défaut<br />
-          - Utiliser les CSS modules, pas les styles inline<br />
-          - Garder les composants en dessous de 150 lignes
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Sans CLAUDE.md, tu passes les premières minutes de chaque session à ré-expliquer tes préférences. Avec un CLAUDE.md, Claude Code connaît déjà ton stack, tes conventions et tes limites. C'est l'ingénierie du contexte (chapitre 3) appliquée au code.
+      <p class="text-lg leading-[1.85] mb-14">
+        L'arme secrete, c'est le fichier <code>CLAUDE.md</code> — place-le a la racine de ton projet et Claude Code le lit au debut de chaque session. Ton stack technique, tes conventions de nommage, tes regles de style, tes attentes en matiere de tests — tout encode une seule fois pour ne jamais te repeter. C'est l'ingenierie du contexte appliquee au code.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Pense au CLAUDE.md comme la constitution de ton projet.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>L'objectif n'est pas d'ecrire chaque ligne — c'est de comprendre chaque ligne.</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Il encode les décisions déjà prises — pour que l'IA puisse se concentrer sur celles qui sont vraiment nouvelles. Plus ton CLAUDE.md est précis, moins tu dois te répéter.
+          Si tu ne peux pas lire le code que Claude genere, tu ne peux pas le verifier. Les meilleurs utilisateurs de Claude Code ne sont pas ceux qui generent le plus de code — ce sont ceux qui posent les meilleures questions et reperent les bugs les plus subtils.
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BUILDING SKILLS ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Créer des Skills
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Un CLAUDE.md donne à Claude Code des connaissances générales sur ton projet. Mais qu'en est-il des tâches spécifiques et répétitives ? C'est là qu'interviennent les <strong>Skills</strong>.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Un skill est un ensemble d'instructions dans ton CLAUDE.md qui apprend à Claude Code comment gérer un type de tâche particulier. Vois ça comme une recette : « Quand quelqu'un te demande de créer un nouveau composant React, voici exactement comment faire. »
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Sans skills, tu expliques les mêmes étapes à chaque fois. Avec des skills, tu expliques une fois et l'IA s'en souvient pour toujours.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Un bon skill comporte trois parties :
-      </p>
-    </FadeInBlock>
-
-    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-      {[
-        { letter: 'D', name: 'Déclencheur', color: '#7B61FF', text: 'Quand ce skill s\'active-t-il ? « Quand on te demande de créer un composant… » ou « Quand tu corriges un test qui échoue… » Des déclencheurs clairs empêchent l\'IA d\'utiliser la mauvaise recette.' },
-        { letter: 'É', name: 'Étapes', color: '#16C79A', text: 'Qu\'est-ce qu\'il doit faire exactement, dans l\'ordre ? Les étapes numérotées marchent le mieux. Sois précis sur les emplacements de fichiers, les conventions de nommage et les patterns requis.' },
-        { letter: 'E', name: 'Exemples', color: '#F5A623', text: 'Montre à quoi ressemble un résultat réussi. Un avant-après, un exemple de structure de fichiers ou un exemple de sortie. L\'ambiguïté meurt face aux exemples.' },
-      ].map((block, i) => (
-        <FadeInBlock client:visible delay={0.3 + i * 0.08}>
-          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-              {block.letter}
-            </div>
-            <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                {block.name}
-              </p>
-              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {block.text}
-              </p>
-            </div>
-          </div>
-        </FadeInBlock>
-      ))}
-    </div>
-  </section>
-
-  <!-- BRIDGE TO SKILL BUILDER -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Essaie d'en écrire un. Construis un skill du déclencheur aux étapes puis aux exemples.
+        Observe la boucle en action. Tape une requete et regarde Claude Code travailler.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: SKILL BUILDER ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <SkillBuilder client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Spécifier, Générer, Vérifier
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Quand tu travailles avec Claude Code, ton rôle change. Tu n'es plus la personne qui écrit chaque ligne. Tu es la personne qui <strong>spécifie</strong> ce qu'il faut construire, laisse l'IA <strong>générer</strong> le code, puis <strong>vérifie</strong> que c'est vraiment correct.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Cette boucle — spécifier, générer, vérifier — est le workflow fondamental :
-      </p>
-    </FadeInBlock>
-
-    <!-- SGV Loop -->
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-        {[
-          { step: '01', title: 'Spécifier', desc: 'Sois précis sur ce que tu veux. Plus ta requête est claire, moins tu passes de temps à corriger la sortie. Inclus les cas limites, les emplacements de fichiers et le comportement attendu.', color: '#7B61FF' },
-          { step: '02', title: 'Générer', desc: 'Laisse Claude Code faire son travail. Regarde la boucle agentique — lire, planifier, écrire, exécuter, corriger. Résiste à l\'envie d\'interrompre en plein cycle.', color: '#0EA5E9' },
-          { step: '03', title: 'Vérifier', desc: 'C\'est ton job le plus important. Lis le code. Lance les tests. Vérifie les cas limites. Est-ce que ça fait vraiment ce que tu as demandé ? Est-ce du code que tu signerais de ton nom ?', color: '#16C79A' },
-        ].map((item) => (
-          <div style={`background: ${item.color}06; border: 1px solid ${item.color}18; border-radius: 12px; padding: 1.25rem;`}>
-            <div style={`font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: ${item.color}; letter-spacing: 0.1em; margin-bottom: 0.5rem;`}>{item.step}</div>
-            <div style={`font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: ${item.color}; margin-bottom: 0.5rem;`}>{item.title}</div>
-            <p style="font-size: 0.85rem; line-height: 1.65; color: var(--color-deep); opacity: 0.7; margin: 0;">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <p class="text-lg leading-[1.85] mb-10">
-        La plupart des débutants sautent l'étape trois. Ils voient du code apparaître, ça a l'air raisonnable, et ils passent à la suite. Ne sois pas cette personne. <strong>Du code généré, c'est un premier brouillon.</strong> Ta vérification, c'est la relecture qui le rend publiable.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        L'ironie ? Plus l'IA génère du code vite, <em>plus</em> ta vérification devient importante. La vitesse sans jugement, ce ne sont que des erreurs plus rapides.
-      </p>
-    </FadeInBlock>
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <TerminalPlayground client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE SKILL PARADOX ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Le paradoxe de la compétence
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="Ce chapitre sur Claude Code est dingue — j'ai regarde un programmeur IA reflechir a un probleme, ecrire du code et se debugger tout seul. Le futur du code est la." client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Voici la vérité inconfortable du codage assisté par IA : <strong>tu dois en savoir assez pour juger le résultat, même si tu ne l'as pas écrit toi-même.</strong>
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        Si tu ne peux pas lire le code que Claude génère, tu ne peux pas le vérifier. Si tu ne peux pas le vérifier, tu expédies en production les suppositions de quelqu'un d'autre.
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Ça crée un paradoxe : l'outil qui aide les débutants à écrire du code exige aussi assez de connaissances pour évaluer ce code. La solution ? Utilise Claude Code <em>pour apprendre</em>, pas seulement pour produire.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Quand Claude Code écrit quelque chose que tu ne comprends pas, ne l'accepte pas les yeux fermés. Demande : « Explique ce que fait ce code et pourquoi tu as choisi cette approche. » Utilise l'IA comme un tuteur, pas juste un dactylo.
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>L'objectif n'est pas d'écrire chaque ligne — c'est de comprendre chaque ligne.</p>
-        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Les meilleurs utilisateurs de Claude Code ne sont pas ceux qui génèrent le plus de code. Ce sont ceux qui posent les meilleures questions et repèrent les bugs les plus subtils. Ton savoir, c'est ton filtre qualité.
-        </p>
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO REFACTOR RACE -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Toi contre Claude Code. Même code bancal, même objectif. Qui le refactorise le mieux ?
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: REFACTOR RACE ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <RefactorRace client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Tu as un CLAUDE.md, des skills personnalisés, et le rythme spécifier-générer-vérifier. Claude Code n'écrit pas du code <em>à ta place</em> &mdash; il écrit du code <em>avec toi</em>.
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        Claude Code n'ecrit pas du code a ta place — il ecrit du code avec toi.
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Une conversation peut gérer une seule tâche. Mais les vrais projets en ont des dizaines. La suite : comment découper de grandes ambitions en morceaux que l'IA peut vraiment exécuter.
+        Une conversation peut gerer une seule tache. Mais les vrais projets en ont des dizaines. La suite : comment decouper de grandes ambitions en morceaux que l'IA peut vraiment executer.
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(123,97,255,0.06) 15%, rgba(123,97,255,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#7B61FF" toolName="Ship It" client:visible>
+        <ShipIt client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>

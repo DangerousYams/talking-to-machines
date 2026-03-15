@@ -4,11 +4,11 @@ import ChapterLayout from '../../layouts/ChapterLayout.astro';
 import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
-
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import FailureModesLab from '../../components/widgets/ch6/FailureModesLab';
-import HandoffChain from '../../components/widgets/ch6/HandoffChain';
+import AgentTakeover from '../../components/breaks/AgentTakeover';
+import BreakReveal from '../../components/breaks/BreakReveal';
+import SharePrompt from '../../components/ui/SharePrompt';
 
 const chapter = chapters[5];
 ---
@@ -37,7 +37,7 @@ const chapter = chapters[5];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AIエージェントをゼロから<br />設計し、組み立て、デプロイする。
+          電卓と同僚の違い。
         </p>
       </FadeInBlock>
     </div>
@@ -47,63 +47,57 @@ const chapter = chapters[5];
     </div>
   </section>
 
-  <!-- ═══ STORY OPENER ═══ -->
+  <!-- ═══ OPENING HOOK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
-      <p class="drop-cap text-lg leading-[1.85] mb-8">
-        チャットボットは君が話すのを待つ。エージェントは待たない。ゴールを与える——「火星移住について調べてレポートを書いて」——すると、タスクをステップに分割し、正しいツールを選び、1つずつ実行し、自分の結果を確認し、仕事が終わるまで続ける。手取り足取りは不要だ。
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        チャットボットは君が話すのを待つ。エージェントは待たない。ゴールを与える &mdash; 「火星移住について調べてレポートを書いて」 &mdash; すると、タスクをステップに分割し、正しいツールを選び、1つずつ実行し、自分の結果を確認し、仕事が終わるまで続ける。<em>指示に応答する</em>のと<em>ゴールを追求する</em>のの違い &mdash; それが電卓と同僚の違いだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-8">
-        この区別——<em>指示に応答する</em>のと<em>ゴールを追求する</em>のの違い——は、電卓と同僚の違いだ。チャットボットは質問に答える。エージェントは問題を解決する。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85]">
-        この章は、エージェントが内部でどう動くか——駆動するループ、信頼性を高めるアーキテクチャ、雑に作ると危険になる失敗モード——についてだ。
+      <p class="text-lg leading-[1.85] mt-8">
+        エージェントはループで動く：ゴールを受け取り、ステップを計画し、ツールで実行し、結果を観察し、進捗を評価し、調整する。一度計画して盲目的に実行するんじゃない &mdash; 最高のエージェントは、ステップ3がおかしくなったとき優雅にリカバリする。でもそのパワーにはダークサイドがある：エージェントはダメな答えを出すだけじゃなく、それに基づいて<em>行動し</em>、壊れた結果で次の判断を下す。失敗が連鎖する。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE AGENT LOOP ═══ -->
+  <!-- ═══ THE ANATOMY OF AN AGENT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
         エージェントループ
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        第5章で基本的なツール使用ループ——観察、思考、行動——を見た。エージェントはそれをもっと野心的なものに拡張する——5つのステップのサイクルで、それぞれが異なる内部コンポーネントで駆動される：
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        すべてのエージェントは同じ5ステップのサイクルで動く。これを理解することが、便利なものを作る人と、APIクレジットを無限ループで燃やし尽くす人の違いだ。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', word: 'ゴール', color: '#E94560', desc: '人間から高レベルの目標を受け取る。明確なゴールがなければ、エージェントは完了したかどうか判断できない。「火星を調べて」はゴールじゃない。「火星移住の課題について500語の要約をソース付きで書いて」がゴールだ。' },
-        { letter: 'P', word: '計画', color: '#7B61FF', desc: 'ゴールを具体的なステップに分解する。最高のプランナーは、ステップが失敗したとき適応できる柔軟な計画を作る。ダメなプランナーは最初の想定外で壊れる硬直したスクリプトを作る。' },
-        { letter: 'T', word: '実行', color: '#0EA5E9', desc: '各ステップを適切なツールで実行する——検索エンジン、コードインタプリタ、ファイルリーダー、API、電卓。エージェントは考えるだけじゃない。行動する。' },
-        { letter: 'M', word: '観察', color: '#16C79A', desc: '何が起きたか記録し、結果を確認する。何をして何を見つけたかの記憶なしでは、ループ中のエージェントは同じ失敗するアクションを永遠に繰り返すかもしれない。' },
-        { letter: 'E', word: '評価', color: '#F5A623', desc: 'うまくいった？このデータは信頼できる？ゴールに近づいた？評価者が、エージェントを「実行して祈る」スクリプトから分ける。何かおかしければ、計画を調整してループを回す。' },
-      ].map((step, i) => (
+        { letter: 'G', name: 'Goal', color: '#E94560', text: '明確な目標を受け取る。「火星を調べて」はゴールじゃない。「火星移住の課題について500語の要約をソース付きで書いて」がゴールだ。' },
+        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'ゴールを具体的なステップに分解する。良いプランナーは柔軟な計画を作る。ダメなプランナーは最初の想定外で壊れる硬直したスクリプトを作る。' },
+        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: '適切なツールで各ステップを実行する &mdash; 検索エンジン、コードインタプリタ、ファイルリーダー、API。エージェントは考えるだけじゃない。行動する。' },
+        { letter: 'M', name: 'Observe', color: '#16C79A', text: '何が起きたか記録し、結果を確認する。記憶なしでは、エージェントは同じ失敗するアクションを永遠に繰り返すかもしれない。' },
+        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: 'うまくいった？ゴールに近づいた？何かおかしければ、計画を調整してもう一周。これがエージェントをスクリプトから分けるものだ。' },
+      ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
-          <div style={`display: flex; gap: 1.25rem; align-items: flex-start;`}>
-            <div style={`flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1rem; font-weight: 800; color: white; background: ${step.color};`}>
-              {step.letter}
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
             </div>
             <div style="flex: 1;">
-              <p style={`font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: ${step.color}; margin: 0 0 0.3rem; line-height: 1.3;`}>
-                {step.word}
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
               </p>
-              <p style="font-size: 0.95rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                {step.desc}
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
               </p>
             </div>
           </div>
@@ -112,210 +106,55 @@ const chapter = chapters[5];
     </div>
 
     <FadeInBlock client:visible delay={0.5}>
-      <p class="text-lg leading-[1.85] mb-10">
-        キーワードは<em>ループ</em>だ。エージェントは一度計画して盲目的に実行するんじゃない。計画し、行動し、観察し、評価し、調整する。最高のエージェントは、ステップ3がおかしくなったときに優雅にリカバリするものだ。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.55}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        チャットボットは1ターン。エージェントは丸ごと1つの会話——自分自身、ツール、そして世界との。
-      </div>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO AGENT BLUEPRINT -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        作ってみよう。自分のエージェントをゼロから設計してみよう。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: AGENT BLUEPRINT ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <AgentBlueprint client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ WHEN AGENTS FAIL ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        エージェントが失敗するとき
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        エージェントはチャットボットとは違う壊れ方をする。チャットボットはダメな答えを出して待つ。エージェントは自分にダメな答えを出して、<em>それに基づいて行動し</em>、壊れた結果を使って次の決定を下す。失敗が連鎖する。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85] mb-10">
-        エージェントがおかしくなる典型的な3つのパターン：
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <div class="prompt-block mb-10" style={`--accent: ${chapter.accent};`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:${chapter.accent};`}></div>
-        <span class="prompt-block-label" style={`color: ${chapter.accent};`}>失敗モード1：無限ループ</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          エージェントが同じアクションの繰り返しにハマる。リサーチエージェントが「もう1つソースを」と検索し続けて、決してライティングを始めない。停止条件がないと、プラグを抜くか——APIクレジットがなくなるまで走り続ける。
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <div class="prompt-block mb-10" style={`--accent: #7B61FF;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#7B61FF;`}></div>
-        <span class="prompt-block-label" style="color: #7B61FF;">失敗モード2：間違ったツール</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          エージェントがタスクに合わないツールを選ぶ。ハードドライブのファイルをウェブ検索で探そうとしたり、エッセーの要約に電卓を使おうとしたり。エージェントが馬鹿なんじゃない——ツールがタスクに合うか確認せずに道具箱から選んだだけだ。
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
-      <div class="prompt-block mb-10" style={`--accent: #F5A623;`}>
-        <div style={`position:absolute;top:-1px;left:2rem;right:2rem;height:2px;border-radius:1px;background:#F5A623;`}></div>
-        <span class="prompt-block-label" style="color: #F5A623;">失敗モード3：ハルシネーションされたアクション</span>
-        <p class="m-0 leading-relaxed" style="color: var(--color-deep);">
-          エージェントが存在しないツールやAPIを発明して「呼び出し」、偽の結果を出す。偽の呼び出しが失敗すると、時には取得するはずだったデータをでっち上げる。二重ハルシネーション：偽のツール、偽のアウトプット。
-        </p>
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.35}>
-      <p class="text-lg leading-[1.85]">
-        修正の原則は常に同じ：<strong>失敗パスを設計する。</strong>最大イテレーション数、ツールのバリデーション、出力の検証、人間のチェックポイント。すべての失敗を防ぐことが目標じゃない——失敗からリカバリ可能にすることが目標だ。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- BRIDGE TO FAILURE MODES LAB -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-    <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        壊れたエージェントを診断できる？バグを見つけてガードレールを追加しよう。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <!-- ═══ WIDGET: FAILURE MODES LAB ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <FailureModesLab client:visible />
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ THE POWER OF MANY ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        多数の力
-      </h2>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        1つのエージェントは便利だ。複数のエージェントが協力すれば、単独のシステムでは圧倒されるような問題に取り組める。コツは専門化だ。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-        報道局のようなものだ。取材して、記事を書いて、編集して出版するのを同じ人に頼んだりしない。各役割には異なるマインドセット、異なるツール、異なる基準が必要だ。
-      </div>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        マルチエージェントシステムも同じだ。<strong>リサーチャー</strong>エージェントが情報を集める。<strong>ライター</strong>エージェントが生のメモを洗練された文章に変える。<strong>エディター</strong>エージェントがレビューし、ファクトチェックし、改善を提案する。各エージェントが独自のシステムプロンプト、ツール、成功基準を持つ。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.25}>
-      <p class="text-lg leading-[1.85] mb-10">
-        マルチエージェント設計で重要な問いは「各エージェントはどれだけ賢いか？」じゃない。<strong>「ハンドオフの質はどうか？」</strong>だ。リサーチャーがライターにメモを渡すとき、そのメモはきちんと構造化されているか？ライターがエディターに原稿を渡すとき、エディターには有用なフィードバックを出すのに十分なコンテキストがあるか？
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心的な気づき</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ハンドオフドキュメントはマルチエージェントシステムで最も重要な成果物だ。優秀なライターでもずさんなリサーチメモは救えない。エージェント間のインターフェースこそ、品質が決まる場所だ。
+          チャットボットは1ターン。エージェントは丸ごと1つの会話 &mdash; 自分自身、ツール、そして世界との。最高のエージェント開発者は自律性を最大化する人じゃない。エージェントが一旦停止して人間に判断を委ねる、思慮深いチェックポイントを設計する人だ。
         </p>
       </div>
     </FadeInBlock>
   </section>
 
-  <!-- BRIDGE TO HANDOFF CHAIN -->
+  <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        3つのエージェントの協業を見てみよう。ハンドオフドキュメントに注目 &mdash; そこに魔法がある。
+        作ってみよう。自分のエージェントをゼロから設計しよう。
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ WIDGET: HANDOFF CHAIN ═══ -->
+  <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FadeInBlock client:visible>
-      <HandoffChain client:visible />
-    </FadeInBlock>
+    <AgentBlueprint client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ HUMAN IN THE LOOP ═══ -->
-  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-    <FadeInBlock client:visible>
-      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ループの中の人間
-      </h2>
-    </FadeInBlock>
+  <SharePrompt text="初めてのAIエージェントをゼロから設計した。このコースはアーキテクチャをステップバイステップでライブデモ付きで解説してくれる。煽りなし、ただ作るだけ。" client:visible />
 
-    <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10">
-        第5章で信頼フレームワークを学んだ：リスクの大きさ、取り消し可能性、信頼が自律性の程度を決める。エージェントでは、これがさらに重要になる——エージェントは質問に答えるだけじゃなく、<em>行動を起こし</em>、それらを連鎖させ、放っておくとミスが複合する。
-      </p>
-    </FadeInBlock>
-
-    <FadeInBlock client:visible delay={0.15}>
-      <p class="text-lg leading-[1.85]">
-        最高のエージェント開発者は自律性を最大化する人じゃない。<strong>思慮深いチェックポイント</strong>を設計する人だ——エージェントが一旦停止し、作業を見せ、人間が続行するか判断できる瞬間。優れたエージェントは、いつ聞くべきかを知っている。
-      </p>
-    </FadeInBlock>
-  </section>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ CLOSING ═══ -->
+  <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        エージェントの内側を見た：駆動するループ、動作させるアーキテクチャ、雑に作ると危険になる失敗モード。
-      </p>
+      <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        目標はすべての失敗を防ぐことじゃない &mdash; 失敗からリカバリ可能にすることだ。
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        理論はここまで。次は、本物のエージェントを使う &mdash; コードを読み、変更を書き、テストを実行し、自分のミスを修正するもの。Claude Codeの登場だ。
+        次は、本物のエージェントを使う &mdash; コードを読み、変更を書き、テストを実行し、自分のミスを修正するもの。Claude Codeの登場だ。
       </p>
     </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
+        <AgentTakeover client:visible />
+      </BreakReveal>
+    </div>
   </section>
 
 </ChapterLayout>
