@@ -5,402 +5,147 @@ import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
-import BeatSection from '../components/chapter/BeatSection';
 import PromptMakeover from '../components/widgets/ch1/PromptMakeover';
-import GuessThePrompt from '../components/widgets/ch1/GuessThePrompt';
-import IterationLoop from '../components/widgets/ch1/IterationLoop';
 import PromptRoast from '../components/widgets/ch1/PromptRoast';
-import PromptComparison from '../components/widgets/ch1/PromptComparison';
-import BeatCompletionCard from '../components/chapter/BeatCompletionCard';
+import BreakReveal from '../components/breaks/BreakReveal';
 
 const chapter = chapters[0];
-const beats = chapter.beats!;
 ---
 
 <ChapterLayout chapter={chapter}>
 
-  <!-- ═══ BEAT 1: The Communication Gap ═══ -->
-  <BeatSection
-    beatId={beats[0].id}
-    beatNumber={1}
-    totalBeats={beats.length}
-    title={beats[0].title}
-    tldr={beats[0].tldr}
-    estimatedMinutes={beats[0].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle={beats[1].title}
-    isFirst={true}
-    client:load
-  >
-    <!-- HERO -->
-    <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
-      <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="chapter-number" style={`color: ${chapter.accent};`}>1</div>
 
-      <div class="max-w-[680px] mx-auto text-center relative z-10">
-        <FadeInBlock client:visible>
-          <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-            Chapter One
-          </p>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.15}>
-          <h1
-            class="mb-8 leading-[1.08]"
-            style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
-          >
-            You Already<br />Speak AI
-          </h1>
-        </FadeInBlock>
-
-        <FadeInBlock client:visible delay={0.3}>
-          <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-            Your first draft won't be magic.<br />But your third one might be.
-          </p>
-        </FadeInBlock>
-      </div>
-
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
-        <div class="w-px h-10 bg-deep/40"></div>
-      </div>
-    </section>
-
-    <!-- STORY OPENER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
-        <p class="drop-cap text-lg leading-[1.85] mb-8">
-          You've been talking to AI your whole life. Every time you typed something into a search bar, asked Siri a question, or got a Netflix recommendation, an algorithm was listening. But there's a difference between talking <em>at</em> a machine and talking <em>with</em> one.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-8">
-          Right now, millions of people type a prompt into ChatGPT, get a mediocre response, and think: <em>"I guess AI isn't that smart."</em> They're wrong. AI is extraordinarily capable. They're just not asking the right way.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85]">
-          The gap between <strong>what AI can do</strong> and <strong>what most people get it to do</strong> is enormous. And it's not a technology problem — it's a communication problem. One you already know how to fix.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE VAGUE PROMPT PROBLEM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-          The Vague Prompt Problem
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          Two people ask the same AI for help with an essay. One gets a useless response. The other gets something genuinely brilliant. Same AI. The only difference is how they asked.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <section class="max-w-[960px] mx-auto px-6 md:px-10 pb-16">
-      <FadeInBlock client:visible delay={0.2}>
-        <PromptComparison accentColor={chapter.accent} client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[0].id} beatTitle={beats[0].title} nextBeatTitle={beats[1].title} accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 2: The Five Building Blocks ═══ -->
-  <BeatSection
-    beatId={beats[1].id}
-    beatNumber={2}
-    totalBeats={beats.length}
-    title={beats[1].title}
-    tldr={beats[1].tldr}
-    estimatedMinutes={beats[1].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle={beats[2].title}
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          The Five Building Blocks
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-6">
-          Here's what separates people who get incredible results from AI from people who get generic mush. It's not talent. It's not some secret tool. It's a formula — five building blocks that work every single time.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-14">
-          You don't always need all five. But knowing they exist is like learning to see the Matrix. Once you see the pattern, you can't unsee it.
-        </p>
-      </FadeInBlock>
-
-      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
-        {[
-          { letter: 'R', name: 'Role', color: '#E94560', text: 'Who should the AI be? "You are an AP English tutor" changes everything. A tutor explains. A professor lectures. A friend riffs. The role shapes tone, vocabulary, and depth.' },
-          { letter: 'T', name: 'Task', color: '#0F3460', text: 'What exactly should it do? Not "help me with my essay" but "strengthen my thesis statement." Be ruthlessly specific. One task per prompt is almost always better than three.' },
-          { letter: 'F', name: 'Format', color: '#7B61FF', text: 'How should the response look? "Give me 3 alternatives" is a format. So is "as a bulleted list," "in under 100 words," or "as a table comparing pros and cons." Format prevents rambling.' },
-          { letter: 'C', name: 'Constraints', color: '#16C79A', text: 'What should it not do? "Don\'t use clichés." "Keep it under 200 words." Constraints are guardrails. They prevent the AI from going somewhere unhelpful.' },
-          { letter: 'E', name: 'Examples', color: '#F5A623', text: 'Show, don\'t tell. If you want a specific style, give an example of what "good" looks like. One example is worth a hundred words of description.' },
-        ].map((block, i) => (
-          <FadeInBlock client:visible delay={i * 0.08}>
-            <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
-              <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
-                {block.letter}
-              </div>
-              <div style="flex: 1;">
-                <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
-                  {block.name}
-                </p>
-                <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
-                  {block.text}
-                </p>
-              </div>
-            </div>
-          </FadeInBlock>
-        ))}
-      </div>
-
-      <FadeInBlock client:visible delay={0.5}>
-        <div class="insight-box">
-          <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Key insight</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            You don't need all five every time. A casual question doesn't need constraints and examples. But when the AI gives you garbage, look at what's missing. It's almost always one of these five.
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
-
-    <!-- BRIDGE TO PROMPT MAKEOVER -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          Enough theory. Time to see the building blocks in action.
-        </p>
-      </FadeInBlock>
-    </section>
-
-    <!-- WIDGET: PROMPT MAKEOVER -->
-    <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <PromptMakeover client:visible />
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[1].id} beatTitle={beats[1].title} nextBeatTitle={beats[2].title} accentColor={chapter.accent} client:visible />
-  </BeatSection>
-
-  <Divider accent={chapter.accent} client:load />
-
-  <!-- ═══ BEAT 3: The Iteration Mindset ═══ -->
-  <BeatSection
-    beatId={beats[2].id}
-    beatNumber={3}
-    totalBeats={beats.length}
-    title={beats[2].title}
-    tldr={beats[2].tldr}
-    estimatedMinutes={beats[2].estimatedMinutes}
-    accentColor={chapter.accent}
-    nextBeatTitle={beats[3].title}
-    client:load
-  >
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          Iteration, Not Perfection
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-10">
-          The first prompt almost never works. And that's fine. <strong>That's actually the whole point.</strong>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Chapter One
         </p>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.15}>
-        <div class="pull-quote" style={`border-color: ${chapter.accent};`}>
-          When you see a demo of AI producing something amazing, you're seeing the final prompt — the one someone arrived at after five, ten, maybe twenty rounds of refinement. You're seeing the highlight reel, not the practice sessions.
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          The real workflow looks like this:
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <div style={`position: relative; padding-left: 2.5rem; margin-bottom: 3rem;`}>
-          <div style={`position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, ${chapter.accent}, ${chapter.accent}20);`}></div>
-          {[
-            { word: 'Prompt.', desc: 'Write your best first attempt.' },
-            { word: 'Evaluate.', desc: 'Read the response. What\'s good? What\'s off?' },
-            { word: 'Refine.', desc: 'Adjust the prompt. Be more specific where it failed.' },
-            { word: 'Repeat.', desc: 'Until the output is something you\'d actually use.' },
-          ].map((step, i) => (
-            <div style={`position: relative; padding-bottom: ${i < 3 ? '1.75rem' : '0'};`}>
-              <div style={`position: absolute; left: -2.5rem; top: 6px; width: 15px; height: 15px; border-radius: 50%; border: 2px solid ${chapter.accent}; background: var(--color-cream);`}></div>
-              <p style="margin: 0; font-size: 1rem; line-height: 1.5;">
-                <strong style={`color: ${chapter.accent}; font-family: var(--font-heading); font-weight: 700;`}>{step.word}</strong>
-                <span style="opacity: 0.7;"> {step.desc}</span>
-              </p>
-            </div>
-          ))}
-        </div>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          You Already<br />Speak AI
+        </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
-        <p class="text-lg leading-[1.85] mb-10">
-          This loop — prompt, evaluate, refine, repeat — is the <em>actual skill</em> of working with AI. Not crafting some magical perfect prompt on the first try. That's a myth.
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          Your first draft won't be magic.<br />But your third one might be.
         </p>
       </FadeInBlock>
+    </div>
 
-      <FadeInBlock client:visible delay={0.35}>
-        <div class="insight-box">
-          <p style={`font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The average good result takes 3-5 iterations, not 1.</p>
-          <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-            If you're nailing it on the first try, you're probably not pushing hard enough. The best outputs come from a back-and-forth where you and the AI refine together.
-          </p>
-        </div>
-      </FadeInBlock>
-    </section>
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
 
-    <!-- WIDGET: ITERATION LOOP -->
-    <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <IterationLoop client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- THE PROMPT SPECTRUM -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
-      <FadeInBlock client:visible>
-        <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-        <h2 class="mb-8" style="font-family: var(--font-heading);">
-          The Prompt Spectrum
-        </h2>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] mb-12">
-          Think of every prompt on a spectrum from vague to precise:
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.15}>
-        <div style="margin-bottom: 3rem;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">VAGUE</span>
-            <div style="flex: 1; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #CBD5E1 0%, #F5A623 40%, #E94560 70%, #16C79A 100%);"></div>
-            <span style="font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; color: var(--color-subtle); opacity: 0.6;">PRECISE</span>
-          </div>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-subtle); margin: 0 0 4px;">"help me"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">generic response</p>
-            </div>
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-amber); margin: 0 0 4px;">"write about X"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">okay but unfocused</p>
-            </div>
-            <div>
-              <p style={`font-family: var(--font-mono); font-size: 0.75rem; color: ${chapter.accent}; font-weight: 600; margin: 0 0 4px;`}>"all five blocks"</p>
-              <p style="font-family: var(--font-body); font-size: 0.7rem; color: var(--color-subtle); opacity: 0.5; margin: 0;">targeted, useful</p>
-            </div>
-          </div>
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.2}>
-        <p class="text-lg leading-[1.85] mb-10">
-          Your goal isn't to always be at the "precise" end. A casual brainstorm can be vague on purpose. But <strong>you should be choosing where you are on the spectrum intentionally</strong>, not landing there by accident.
-        </p>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.25}>
-        <p class="text-lg leading-[1.85]">
-          The people who get the most out of AI don't memorize magic prompts. They develop a feel for <em>how specific to be</em> — and when the first answer isn't good enough, they know exactly which dial to turn.
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[2].id} beatTitle={beats[2].title} nextBeatTitle={beats[3].title} accentColor={chapter.accent} client:visible />
-  </BeatSection>
+  <!-- ═══ OPENING HOOK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        You've been talking to AI your whole life — every search query, every Siri question, every Netflix recommendation. But there's a difference between talking <em>at</em> a machine and talking <em>with</em> one. Right now, millions of people type a prompt, get a mediocre response, and think: "I guess AI isn't that smart." They're wrong. The gap between what AI can do and what most people get it to do is enormous. And it's not a technology problem — it's a communication problem.
+      </p>
+    </FadeInBlock>
+  </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ BEAT 4: Test Yourself ═══ -->
-  <BeatSection
-    beatId={beats[3].id}
-    beatNumber={4}
-    totalBeats={beats.length}
-    title={beats[3].title}
-    tldr={beats[3].tldr}
-    estimatedMinutes={beats[3].estimatedMinutes}
-    accentColor={chapter.accent}
-    client:load
-  >
-    <!-- WIDGET: GUESS THE PROMPT -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          Got all that? Let's put it to the test.
+  <!-- ═══ THE FIVE BUILDING BLOCKS ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Five Building Blocks
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Here's the secret: people who get incredible results from AI aren't smarter than you. They use a formula — five building blocks that work every single time. You don't always need all five. But knowing they exist is like learning to see the Matrix.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      {[
+        { letter: 'R', name: 'Role', color: '#E94560', text: 'Who should the AI be? A tutor explains differently than a professor. The role shapes everything.' },
+        { letter: 'T', name: 'Task', color: '#0F3460', text: 'What exactly should it do? Not "help me" but "strengthen my thesis statement." One task per prompt.' },
+        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'How should the response look? "Give me 3 alternatives as a numbered list." Format prevents rambling.' },
+        { letter: 'C', name: 'Constraints', color: '#16C79A', text: 'What should it not do? "Avoid clichés. Keep it under 200 words." Guardrails prevent bad outputs.' },
+        { letter: 'E', name: 'Examples', color: '#F5A623', text: 'Show, don\'t tell. One example of what "good" looks like is worth a hundred words of description.' },
+      ].map((block, i) => (
+        <FadeInBlock client:visible delay={i * 0.08}>
+          <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
+            <div style={`flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: ${block.color};`}>
+              {block.letter}
+            </div>
+            <div style="flex: 1;">
+              <p style={`font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: ${block.color}; margin: 0 0 0.35rem; line-height: 1.3;`}>
+                {block.name}
+              </p>
+              <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">
+                {block.text}
+              </p>
+            </div>
+          </div>
+        </FadeInBlock>
+      ))}
+    </div>
+
+    <FadeInBlock client:visible delay={0.5}>
+      <div class="insight-box">
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Key insight</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          You don't need all five every time. But when the AI gives you garbage, look at what's missing — it's almost always one of these five.
         </p>
-      </FadeInBlock>
-    </section>
+      </div>
+    </FadeInBlock>
+  </section>
 
-    <section id="guess-the-prompt" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
-        <GuessThePrompt client:visible />
-      </FadeInBlock>
-    </section>
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+        Enough theory. Toggle the building blocks and watch the AI response transform in real time.
+      </p>
+    </FadeInBlock>
+  </section>
 
-    <Divider accent={chapter.accent} client:load />
+  <!-- ═══ THE WIDGET ═══ -->
+  <section id="prompt-makeover" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <PromptMakeover client:visible />
+  </section>
 
-    <!-- PROMPT ROAST BRIDGE -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-12">
-      <FadeInBlock client:visible>
-        <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-          Think you can write a good prompt now? There's only one way to find out.
-        </p>
-      </FadeInBlock>
-    </section>
+  <Divider accent={chapter.accent} client:load />
 
-    <!-- WIDGET: PROMPT ROAST -->
-    <section id="prompt-roast" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-      <FadeInBlock client:visible>
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
+        You already speak AI. You just need to speak it with intention.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
+        Next up: the techniques that turn a simple back-and-forth into a real conversation — where the AI doesn't just answer, it <em>thinks with you</em>.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#E94560" toolName="Prompt Roast" client:visible>
         <PromptRoast client:visible />
-      </FadeInBlock>
-    </section>
-
-    <Divider accent={chapter.accent} client:load />
-
-    <!-- CLOSING -->
-    <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
-      <FadeInBlock client:visible>
-        <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-          You already speak AI. You just need to speak it with intention.
-        </div>
-      </FadeInBlock>
-
-      <FadeInBlock client:visible delay={0.1}>
-        <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-          Next up: the techniques that turn a simple back-and-forth into a real conversation — where the AI doesn't just answer, it <em>thinks with you</em>.
-        </p>
-      </FadeInBlock>
-    </section>
-    <BeatCompletionCard beatId={beats[3].id} beatTitle={beats[3].title} accentColor={chapter.accent} client:visible />
-  </BeatSection>
+      </BreakReveal>
+    </div>
+  </section>
 
 </ChapterLayout>

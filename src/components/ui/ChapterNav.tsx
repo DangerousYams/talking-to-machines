@@ -1,4 +1,6 @@
 import { useIsMobile } from '../../hooks/useMediaQuery';
+import { useAuth } from '../../hooks/useAuth';
+import { hasPersona } from '../../lib/persona';
 import type { Chapter } from '../../data/chapters';
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 export default function ChapterNav({ prev, next, locale = 'en' }: Props) {
   const prefix = locale === 'en' ? '' : `/${locale}`;
   const isMobile = useIsMobile();
+  const { isPaid } = useAuth();
 
   return (
     <nav style={{
@@ -40,6 +43,12 @@ export default function ChapterNav({ prev, next, locale = 'en' }: Props) {
       {next ? (
         <a
           href={`${prefix}/${next.slug}`}
+          onClick={(e) => {
+            if (next.slug === 'ch2' && isPaid && !hasPersona()) {
+              e.preventDefault();
+              window.location.href = `${prefix}/personalize`;
+            }
+          }}
           style={{
             flex: 1, display: 'flex', flexDirection: 'column' as const,
             alignItems: isMobile ? 'flex-start' : 'flex-end',

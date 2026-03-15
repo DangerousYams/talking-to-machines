@@ -1,0 +1,38 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import PersonalizeInterview from '../components/PersonalizeInterview';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Personalize your Talking to Machines experience" />
+    <title>Personalize — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+    <!-- Minimal header -->
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 40;">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div style="max-width: 960px; margin: 0 auto; padding: 0 1.5rem; height: 48px; display: flex; align-items: center;">
+          <a
+            href="/"
+            style="font-family: var(--font-heading); font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-decoration: none; color: rgba(107,114,128,0.7);"
+          >
+            Talking to Machines
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main style="padding-top: 48px;">
+      <PersonalizeInterview client:load />
+    </main>
+
+    <Analytics />
+  </body>
+</html>

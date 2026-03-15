@@ -39,21 +39,7 @@ const isTranslated = locale !== 'en';
     <meta property="og:title" content={`${chapter.title} — Talking to Machines`} />
     <meta property="og:description" content={chapter.hook} />
     <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
-    <script define:vars={{ slug: chapter.slug, locale }}>
-      // Redirect to cards on mobile UA OR narrow viewport (DevTools responsive mode)
-      // Skip redirect for translated pages — card decks are English-only for now
-      if (locale === 'en') {
-        const params = new URLSearchParams(window.location.search);
-        const forceScroll = params.get('force') === 'scroll' || params.has('desktop');
-        const forceMobile = params.has('mobile');
-        const isMobileUA = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
-        const isNarrowViewport = window.innerWidth <= 768;
-
-        if (!forceScroll && (forceMobile || isMobileUA || isNarrowViewport)) {
-          window.location.replace('/' + slug + '-cards' + window.location.search);
-        }
-      }
-    </script>
+    <!-- Mobile redirect removed: unified scroll experience on all devices -->
   </head>
   <body class="bg-cream text-deep min-h-screen">
     <ScrollProgress color={chapter.accent} client:load />
@@ -81,15 +67,17 @@ const isTranslated = locale !== 'en';
           </div>
           <div class="flex items-center gap-3">
             <LanguageSelector currentLocale={locale} chapterSlug={chapter.slug} />
-            {!isTranslated && <ListenButton accentColor={chapter.accent} client:load />}
-            {!isTranslated && <QuotaCounter client:load />}
-            {hasBeats && !isTranslated && (
-              <BeatProgress
-                beats={chapter.beats!}
-                accentColor={chapter.accent}
-                chapterSlug={chapter.slug}
-                client:load
-              />
+            <span class:list={[{ hidden: isTranslated }]}><ListenButton accentColor={chapter.accent} client:load /></span>
+            <span class:list={[{ hidden: isTranslated }]}><QuotaCounter client:load /></span>
+            {hasBeats && (
+              <span class:list={[{ hidden: isTranslated }]}>
+                <BeatProgress
+                  beats={chapter.beats!}
+                  accentColor={chapter.accent}
+                  chapterSlug={chapter.slug}
+                  client:load
+                />
+              </span>
             )}
             <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
               {chapter.number} / {chapters.length}
@@ -107,7 +95,7 @@ const isTranslated = locale !== 'en';
       <slot />
     </main>
 
-    {!isTranslated && <ListenController accentColor={chapter.accent} chapterSlug={chapter.slug} client:load />}
+    <div class:list={[{ hidden: isTranslated }]}><ListenController accentColor={chapter.accent} chapterSlug={chapter.slug} client:load /></div>
 
     <ChapterNav prev={prev} next={next} locale={locale} client:load />
 

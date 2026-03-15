@@ -124,10 +124,10 @@ export default function FlipTheScript() {
   const { response: liveResponse, isStreaming, error: liveError, sendMessages, abort } =
     useStreamingResponse({ systemPrompt: FLIP_SYSTEM_PROMPT, maxTokens: 1500 });
 
-  // Auto-scroll chat (desktop only)
+  // Auto-scroll chat (desktop only) — use block:'nearest' to avoid scrolling the whole page
   useEffect(() => {
     if (!isMobile) {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }, [liveMessages, liveResponse, isMobile]);
 

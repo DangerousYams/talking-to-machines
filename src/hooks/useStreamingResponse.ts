@@ -5,6 +5,7 @@ interface UseStreamingResponseOptions {
   systemPrompt?: string;
   maxTokens?: number;
   source?: ChatSource;
+  skipPersona?: boolean;
 }
 
 interface UseStreamingResponseReturn {
@@ -56,6 +57,7 @@ export function useStreamingResponse(
         systemPrompt: options.systemPrompt,
         maxTokens: options.maxTokens,
         source: options.source,
+        skipPersona: options.skipPersona,
         onChunk: (text) => {
           accumulated += text;
           setResponse(accumulated);
@@ -74,7 +76,7 @@ export function useStreamingResponse(
 
       controllerRef.current = controller;
     },
-    [options.systemPrompt, options.maxTokens, options.source]
+    [options.systemPrompt, options.maxTokens, options.source, options.skipPersona]
   );
 
   const sendMessage = useCallback(

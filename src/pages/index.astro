@@ -100,210 +100,70 @@ import { chapters } from '../data/chapters';
         <div class="flex-1 h-px bg-deep/15"></div>
       </div>
 
-      <!-- Part I -->
-      <div class="mb-20">
-        <div class="mb-8 flex items-baseline gap-4">
-          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-accent-red);">
-            Part I
-          </span>
-          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
-            The Fundamentals
-          </span>
-          <div class="flex-1 h-px bg-deep/8"></div>
+      {[
+        { label: 'Part I', title: 'The Fundamentals', color: 'var(--color-accent-red)', chapters: chapters.slice(0, 3) },
+        { label: 'Part II', title: 'The Toolkit', color: 'var(--color-sky)', chapters: chapters.slice(3, 7) },
+        { label: 'Part III', title: 'The Craft', color: 'var(--color-teal)', chapters: chapters.slice(7, 11) },
+      ].map((part) => (
+        <div class="mb-16">
+          <div class="mb-6 flex items-baseline gap-4">
+            <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style={`font-family: var(--font-mono); color: ${part.color};`}>
+              {part.label}
+            </span>
+            <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
+              {part.title}
+            </span>
+            <div class="flex-1 h-px bg-deep/8"></div>
+          </div>
+          <div class="grid gap-1">
+            {part.chapters.map((ch) => (
+              <a
+                href={`/${ch.slug}`}
+                class="group flex items-baseline gap-4 py-3 px-1 rounded-lg transition-all duration-200 hover:bg-deep/[0.02]"
+                style="text-decoration: none;"
+              >
+                <span
+                  class="text-[12px] font-semibold tabular-nums flex-shrink-0 w-6 text-right"
+                  style={`font-family: var(--font-mono); color: ${ch.accent}; opacity: 0.5;`}
+                >
+                  {String(ch.number).padStart(2, '0')}
+                </span>
+                <h3
+                  class="text-[17px] md:text-[18px] font-bold leading-tight transition-colors duration-200"
+                  style={`font-family: var(--font-heading); color: ${ch.accent};`}
+                >
+                  {ch.title}
+                </h3>
+                <span class="text-[15px] text-deep/45 leading-snug hidden md:inline" style="font-family: var(--font-body); font-style: italic;">
+                  {ch.hook}
+                </span>
+                <svg
+                  width="14" height="14" viewBox="0 0 16 16" fill="none"
+                  class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-200 group-hover:opacity-30 group-hover:translate-x-0 ml-auto"
+                >
+                  <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
-        <div class="grid gap-4">
-          {chapters.slice(0, 3).map((ch) => (
-            <a
-              href={`/${ch.slug}`}
-              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
-            >
-              <div class="flex items-start gap-5 md:gap-7">
-                <!-- Accent bar + number -->
-                <div class="flex flex-col items-center gap-2 pt-0.5">
-                  <span
-                    class="text-[12px] font-semibold tabular-nums"
-                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
-                  >
-                    {String(ch.number).padStart(2, '0')}
-                  </span>
-                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
-                </div>
+      ))}
 
-                <!-- Content -->
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-baseline gap-3 mb-1.5">
-                    <h3
-                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
-                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
-                    >
-                      {ch.title}
-                    </h3>
-                    <svg
-                      width="16" height="16" viewBox="0 0 16 16" fill="none"
-                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
-                    >
-                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
-                    {ch.hook}
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    {ch.concepts.slice(0, 3).map((c) => (
-                      <span
-                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
-                      >
-                        {c.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Part II -->
-      <div class="mb-20">
-        <div class="mb-8 flex items-baseline gap-4">
-          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-sky);">
-            Part II
-          </span>
-          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
-            The Toolkit
-          </span>
-          <div class="flex-1 h-px bg-deep/8"></div>
-        </div>
-        <div class="grid gap-4">
-          {chapters.slice(3, 7).map((ch) => (
-            <a
-              href={`/${ch.slug}`}
-              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
-            >
-              <div class="flex items-start gap-5 md:gap-7">
-                <div class="flex flex-col items-center gap-2 pt-0.5">
-                  <span
-                    class="text-[12px] font-semibold tabular-nums"
-                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
-                  >
-                    {String(ch.number).padStart(2, '0')}
-                  </span>
-                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-baseline gap-3 mb-1.5">
-                    <h3
-                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
-                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
-                    >
-                      {ch.title}
-                    </h3>
-                    <svg
-                      width="16" height="16" viewBox="0 0 16 16" fill="none"
-                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
-                    >
-                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
-                    {ch.hook}
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    {ch.concepts.slice(0, 3).map((c) => (
-                      <span
-                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
-                      >
-                        {c.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Part III -->
-      <div class="mb-20">
-        <div class="mb-8 flex items-baseline gap-4">
-          <span class="text-[11px] tracking-[0.2em] uppercase font-medium" style="font-family: var(--font-mono); color: var(--color-teal);">
-            Part III
-          </span>
-          <span class="text-[15px] text-deep/40" style="font-family: var(--font-body); font-style: italic;">
-            The Craft
-          </span>
-          <div class="flex-1 h-px bg-deep/8"></div>
-        </div>
-        <div class="grid gap-4">
-          {chapters.slice(7, 11).map((ch) => (
-            <a
-              href={`/${ch.slug}`}
-              class="group block no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 md:p-7 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
-            >
-              <div class="flex items-start gap-5 md:gap-7">
-                <div class="flex flex-col items-center gap-2 pt-0.5">
-                  <span
-                    class="text-[12px] font-semibold tabular-nums"
-                    style={`font-family: var(--font-mono); color: ${ch.accent};`}
-                  >
-                    {String(ch.number).padStart(2, '0')}
-                  </span>
-                  <div class="w-px flex-1 min-h-[24px] transition-all duration-300" style={`background: ${ch.accent}; opacity: 0.2;`}></div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-baseline gap-3 mb-1.5">
-                    <h3
-                      class="text-[20px] md:text-[22px] font-bold leading-tight transition-colors duration-300"
-                      style={`font-family: var(--font-heading); color: ${ch.accent};`}
-                    >
-                      {ch.title}
-                    </h3>
-                    <svg
-                      width="16" height="16" viewBox="0 0 16 16" fill="none"
-                      class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-40 group-hover:translate-x-0 mt-1"
-                    >
-                      <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <p class="text-[14px] md:text-[15px] text-deep/50 leading-relaxed mb-3" style="font-family: var(--font-body); font-style: italic;">
-                    {ch.hook}
-                  </p>
-                  <div class="flex flex-wrap gap-2">
-                    {ch.concepts.slice(0, 3).map((c) => (
-                      <span
-                        class="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                        style={`font-family: var(--font-mono); background: ${ch.accent}08; color: ${ch.accent}; border: 1px solid ${ch.accent}18;`}
-                      >
-                        {c.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Practice + Course links -->
+      <!-- Toolbox + Course links -->
       <div class="flex flex-col sm:flex-row gap-4 mt-8">
         <a
-          href="/feed"
+          href="/toolbox"
           class="group flex-1 flex items-center gap-4 no-underline rounded-2xl border border-deep/[0.06] bg-warm-white/60 p-6 transition-all duration-300 hover:border-deep/[0.12] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)]"
         >
-          <span class="text-2xl">⚡</span>
+          <span class="text-2xl" style="line-height: 1;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" /></svg>
+          </span>
           <div>
             <h3 class="text-[17px] font-bold leading-tight mb-0.5" style="font-family: var(--font-heading); color: var(--color-purple);">
-              Practice Arena
+              Toolbox
             </h3>
             <p class="text-[13px] text-deep/50 leading-relaxed" style="font-family: var(--font-body);">
-              Quick challenges to sharpen your AI skills
+              AI tools you unlock by completing chapters
             </p>
           </div>
         </a>

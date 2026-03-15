@@ -311,6 +311,49 @@ a:hover {
   }
 }
 
+/* ─── Expandable response ─── */
+.response-expandable {
+  position: relative;
+  max-height: 150px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.response-expandable.expanded {
+  max-height: none;
+}
+
+.response-expandable:not(.expanded)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--color-cream, #FAF8F5));
+  pointer-events: none;
+}
+
+.response-expand-btn {
+  display: block;
+  margin: 0.5rem auto 0;
+  padding: 6px 16px;
+  border: 1px solid rgba(26, 26, 46, 0.1);
+  border-radius: 100px;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-subtle);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.response-expand-btn:hover {
+  border-color: rgba(26, 26, 46, 0.2);
+  color: var(--color-deep);
+}
+
 /* ─── Card Deck Mode ─── */
 body.card-deck-page {
   overflow: hidden;

@@ -1,17 +1,19 @@
 import { getAccessToken } from './auth';
+import { getPersonaContext } from './persona';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
 }
 
-export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge';
+export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge' | 'project-builder' | 'socratic-smackdown' | 'break' | 'personalize';
 
 export interface StreamChatOptions {
   messages: ChatMessage[];
   systemPrompt?: string;
   maxTokens?: number;
   source?: ChatSource;
+  skipPersona?: boolean;
   onChunk: (text: string) => void;
   onDone: () => void;
   onError: (error: string) => void;
@@ -52,7 +54,7 @@ function readQuotaHeaders(res: Response) {
  * Returns an AbortController so callers can cancel the request.
  */
 export function streamChat(options: StreamChatOptions): AbortController {
-  const { messages, systemPrompt, maxTokens, source, onChunk, onDone, onError, onQuotaUpdate } = options;
+  const { messages, systemPrompt, maxTokens, source, skipPersona, onChunk, onDone, onError, onQuotaUpdate } = options;
   const controller = new AbortController();
 
   (async () => {
@@ -63,7 +65,14 @@ export function streamChat(options: StreamChatOptions): AbortController {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const bodyPayload: Record<string, unknown> = { messages, systemPrompt, maxTokens };
+      // Inject persona context into system prompt unless opted out
+      let finalSystemPrompt = systemPrompt;
+      if (systemPrompt && !skipPersona) {
+        const ctx = getPersonaContext();
+        if (ctx) finalSystemPrompt = systemPrompt + ctx;
+      }
+
+      const bodyPayload: Record<string, unknown> = { messages, systemPrompt: finalSystemPrompt, maxTokens };
       if (source) bodyPayload.source = source;
 
       const res = await fetch('/api/chat', {

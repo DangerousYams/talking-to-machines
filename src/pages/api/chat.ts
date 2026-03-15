@@ -12,6 +12,10 @@ const MODEL_MAP: Record<string, string> = {
   'prompt-roast': 'claude-haiku-4-5-20251001',
   'block-gen': 'claude-haiku-4-5-20251001',
   'feed-challenge': 'claude-haiku-4-5-20251001',
+  'project-builder': 'claude-haiku-4-5-20251001',
+  'socratic-smackdown': 'claude-haiku-4-5-20251001',
+  'break': 'claude-haiku-4-5-20251001',
+  'personalize': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
@@ -19,6 +23,10 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'prompt-roast': 512,
   'block-gen': 200,
   'feed-challenge': 512,
+  'project-builder': 1024,
+  'socratic-smackdown': 512,
+  'break': 512,
+  'personalize': 256,
 };
 
 // ---------------------------------------------------------------------------
@@ -268,6 +276,26 @@ export const POST: APIRoute = async ({ request }) => {
     }
     const blockQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
     const quota = await checkAndIncrQuota(kv, blockQuotaKey, 30);
+    if (!quota.allowed) {
+      return jsonResponse(
+        { error: 'Daily limit reached. Resets at midnight UTC.' },
+        429,
+        quotaHeaders(quota.remaining, quota.limit, quota.reset)
+      );
+    }
+    if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
+    return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
+  }
+
+  // -----------------------------------------------------------------------
+  // Route: project-builder (paid only, Haiku)
+  // -----------------------------------------------------------------------
+  if (source === 'project-builder') {
+    if (!isPaidUser) {
+      return jsonResponse({ error: 'This feature requires full access' }, 401);
+    }
+    const pbQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
+    const quota = await checkAndIncrQuota(kv, pbQuotaKey, 30);
     if (!quota.allowed) {
       return jsonResponse(
         { error: 'Daily limit reached. Resets at midnight UTC.' },
