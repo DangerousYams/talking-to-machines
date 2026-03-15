@@ -550,7 +550,7 @@ export default function SweetTalker() {
               subtitle={evaluation.bestLine}
               accentColor={getScoreColor(evaluation.score)}
               tweetText={`I tested AI for sycophancy: ${evaluation.tier} (${evaluation.score}/100) — "${evaluation.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch9#sweet-talker` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=sweet-talker` : undefined}
             />
 
             {/* Play again */}

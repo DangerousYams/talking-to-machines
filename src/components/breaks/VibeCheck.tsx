@@ -293,7 +293,7 @@ export default function VibeCheck() {
             subtitle={result.bestLine}
             accentColor="#7B61FF"
             tweetText={`My writing vibe: "${result.vibe}" (${result.score}/100) — "${result.bestLine}"`}
-            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch3#vibe-check` : undefined}
+            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=vibe-check` : undefined}
           />
 
           {/* Try Another Text */}

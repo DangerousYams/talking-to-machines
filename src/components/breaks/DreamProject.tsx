@@ -422,7 +422,7 @@ export default function DreamProject() {
               subtitle={result.bestLine}
               accentColor={getScoreColor(result.score)}
               tweetText={`My dream project ambition: ${result.tier} (${result.score}/100) — "${result.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch4#dream-project` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=dream-project` : undefined}
             />
 
             {/* Try again */}

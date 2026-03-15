@@ -403,7 +403,7 @@ export default function ShipIt() {
               subtitle={result.bestLine}
               accentColor={getScoreColor(result.score)}
               tweetText={`My app idea scored ${result.score}/100 — ${result.tier}. "${result.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch7#ship-it` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=ship-it` : undefined}
             />
 
             {/* Pitch Another Idea */}

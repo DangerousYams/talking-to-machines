@@ -1,14 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { breakTools } from '../data/break-tools';
 import { getUnlockedTools, TOOLS_CHANGE_EVENT } from '../lib/tools-unlock';
 
 export default function ToolsCollection() {
   const [unlocked, setUnlocked] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [featured, setFeatured] = useState<string | null>(null);
 
   useEffect(() => {
     setUnlocked(getUnlockedTools());
     setMounted(true);
+
+    // Check for ?tool= query param
+    const params = new URLSearchParams(window.location.search);
+    const toolParam = params.get('tool');
+    if (toolParam && breakTools.some(t => t.id === toolParam)) {
+      setFeatured(toolParam);
+    }
 
     const sync = () => setUnlocked(getUnlockedTools());
     window.addEventListener(TOOLS_CHANGE_EVENT, sync);
@@ -20,9 +28,15 @@ export default function ToolsCollection() {
   }, []);
 
   const count = unlocked.length;
+  const featuredTool = featured ? breakTools.find(t => t.id === featured) : null;
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem 6rem' }}>
+
+      {/* Featured tool card (from ?tool= param) */}
+      {featuredTool && (
+        <FeaturedCard tool={featuredTool} isUnlocked={unlocked.includes(featuredTool.id)} mounted={mounted} />
+      )}
 
       {/* Progress */}
       <div style={{
@@ -71,6 +85,7 @@ export default function ToolsCollection() {
               isUnlocked={isUnlocked}
               index={i}
               mounted={mounted}
+              isFeatured={tool.id === featured}
             />
           );
         })}
@@ -79,11 +94,162 @@ export default function ToolsCollection() {
   );
 }
 
-function ToolCard({ tool, isUnlocked, index, mounted }: {
+function FeaturedCard({ tool, isUnlocked, mounted }: {
+  tool: typeof breakTools[number];
+  isUnlocked: boolean;
+  mounted: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (mounted && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [mounted]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        borderRadius: 16,
+        border: `1.5px solid ${tool.accent}30`,
+        background: `linear-gradient(135deg, ${tool.accent}06 0%, ${tool.accent}02 100%)`,
+        padding: '32px 28px',
+        marginBottom: 40,
+        opacity: mounted ? 1 : 0,
+        transform: mounted ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.62rem',
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: tool.accent,
+          opacity: 0.7,
+        }}>
+          Chapter {String(tool.chapter).padStart(2, '0')}
+        </span>
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.58rem',
+          fontWeight: 600,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'var(--color-subtle)',
+          opacity: 0.4,
+        }}>
+          /
+        </span>
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.62rem',
+          fontWeight: 600,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: isUnlocked ? '#16C79A' : 'var(--color-subtle)',
+          opacity: isUnlocked ? 0.8 : 0.5,
+        }}>
+          {isUnlocked ? 'Unlocked' : 'Locked'}
+        </span>
+      </div>
+
+      <h2 style={{
+        fontFamily: 'var(--font-heading)',
+        fontSize: 'clamp(1.4rem, 4vw, 1.8rem)',
+        fontWeight: 800,
+        color: 'var(--color-deep)',
+        margin: '0 0 10px',
+        letterSpacing: '-0.02em',
+      }}>
+        {tool.name}
+      </h2>
+
+      <p style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: '1rem',
+        lineHeight: 1.7,
+        color: 'var(--color-deep)',
+        opacity: 0.65,
+        margin: '0 0 24px',
+        maxWidth: '55ch',
+      }}>
+        {tool.description}
+      </p>
+
+      {isUnlocked ? (
+        <a
+          href={`/ch${tool.chapter}#break`}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 24px',
+            borderRadius: 100,
+            background: tool.accent,
+            color: 'white',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            textDecoration: 'none',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = `0 6px 24px ${tool.accent}30`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+        >
+          Open tool
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      ) : (
+        <a
+          href="/ch1"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 24px',
+            borderRadius: 100,
+            border: '1.5px solid rgba(26,26,46,0.12)',
+            background: 'transparent',
+            color: 'var(--color-deep)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            textDecoration: 'none',
+            transition: 'background 0.2s',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(26,26,46,0.03)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          Start reading to unlock
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      )}
+    </div>
+  );
+}
+
+function ToolCard({ tool, isUnlocked, index, mounted, isFeatured }: {
   tool: typeof breakTools[number];
   isUnlocked: boolean;
   index: number;
   mounted: boolean;
+  isFeatured: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -96,9 +262,11 @@ function ToolCard({ tool, isUnlocked, index, mounted }: {
       style={{
         position: 'relative',
         borderRadius: 14,
-        border: `1px solid ${isUnlocked
-          ? (hovered ? `${tool.accent}40` : `${tool.accent}18`)
-          : 'rgba(26,26,46,0.06)'}`,
+        border: `1px solid ${isFeatured
+          ? `${tool.accent}40`
+          : isUnlocked
+            ? (hovered ? `${tool.accent}40` : `${tool.accent}18`)
+            : 'rgba(26,26,46,0.06)'}`,
         background: isUnlocked
           ? (hovered ? `${tool.accent}08` : 'rgba(255,255,255,0.6)')
           : 'rgba(26,26,46,0.015)',

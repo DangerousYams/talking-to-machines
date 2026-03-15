@@ -336,7 +336,7 @@ export default function IrreplaceableYou() {
             subtitle={`${result.tier} — "${result.bestLine}"`}
             accentColor="#16C79A"
             tweetText={`My irreplaceability score: ${result.score}/100 (${result.tier}) — "${result.bestLine}"`}
-            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch10#irreplaceable-you` : undefined}
+            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=irreplaceable-you` : undefined}
           />
 
           {/* Try Again */}

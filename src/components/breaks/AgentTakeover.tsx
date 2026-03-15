@@ -468,7 +468,7 @@ export default function AgentTakeover() {
               subtitle={result.bestLine}
               accentColor={getScoreColor(result.score)}
               tweetText={`An AI agent could automate ${result.score}% of my day (${result.tier}) — "${result.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch6#agent-takeover` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=agent-takeover` : undefined}
             />
 
             {/* Try Another Day */}

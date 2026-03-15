@@ -541,7 +541,7 @@ export default function SocraticSmackdown() {
               subtitle={verdict.bestLine}
               accentColor={getScoreColor(verdict.score)}
               tweetText={`Socrates grilled me on "${opinion.slice(0, 60)}${opinion.length > 60 ? '...' : ''}" and I scored ${verdict.score}/100 — "${verdict.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch2#socratic-smackdown` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=socratic-smackdown` : undefined}
             />
 
             {/* Play again */}

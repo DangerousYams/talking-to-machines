@@ -410,7 +410,7 @@ export default function ComplexityScore() {
               subtitle={result.bestLine}
               accentColor="#0F3460"
               tweetText={`My project complexity: ${result.tier} (${result.score}/100, ${result.subtaskCount} sub-tasks) — "${result.bestLine}"`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch8#complexity-score` : undefined}
+              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=complexity-score` : undefined}
             />
 
             {/* Try Another */}
