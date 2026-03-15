@@ -1,0 +1,287 @@
+---
+// LinkedIn share image — 1200×627 (1.91:1 landscape)
+// Network graph generated programmatically
+
+const W = 1200;
+const H = 627;
+const colors = ['#16C79A', '#7B61FF', '#E94560', '#F5A623', '#0EA5E9'];
+
+// Deterministic pseudo-random
+let seed = 42;
+function rand() {
+  seed = (seed * 16807 + 0) % 2147483647;
+  return (seed - 1) / 2147483646;
+}
+function pick<T>(arr: T[]): T { return arr[Math.floor(rand() * arr.length)]; }
+function range(min: number, max: number) { return min + rand() * (max - min); }
+
+// Distance from center — used for vignette (0 at center, 1 at corner)
+function vignette(x: number, y: number) {
+  const dx = (x - W / 2) / (W / 2);
+  const dy = (y - H / 2) / (H / 2);
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+// Generate circles with vignette distribution (dense at edges, sparse center)
+interface Circle { cx: number; cy: number; r: number; fill: string; opacity: number; }
+const circles: Circle[] = [];
+
+// Corner mega-nodes (4 corners, 15 nodes each)
+const corners = [
+  { x: 0, y: 0 }, { x: W, y: 0 }, { x: 0, y: H }, { x: W, y: H }
+];
+for (const c of corners) {
+  for (let i = 0; i < 15; i++) {
+    const spread = 60 + rand() * 130;
+    const angle = rand() * Math.PI * 2;
+    const cx = c.x + Math.cos(angle) * spread * (0.3 + rand() * 0.7);
+    const cy = c.y + Math.sin(angle) * spread * (0.3 + rand() * 0.7);
+    circles.push({
+      cx: Math.max(-10, Math.min(W + 10, cx)),
+      cy: Math.max(-10, Math.min(H + 10, cy)),
+      r: range(4, 22),
+      fill: pick(colors),
+      opacity: range(0.15, 0.42),
+    });
+  }
+}
+
+// Edge runners — top and bottom (30 each)
+for (let i = 0; i < 30; i++) {
+  circles.push({
+    cx: range(50, W - 50), cy: range(-5, 55),
+    r: range(2, 12), fill: pick(colors), opacity: range(0.12, 0.35),
+  });
+  circles.push({
+    cx: range(50, W - 50), cy: range(H - 55, H + 5),
+    r: range(2, 12), fill: pick(colors), opacity: range(0.12, 0.35),
+  });
+}
+
+// Edge runners — left and right (20 each)
+for (let i = 0; i < 20; i++) {
+  circles.push({
+    cx: range(-5, 55), cy: range(80, H - 80),
+    r: range(2, 14), fill: pick(colors), opacity: range(0.12, 0.35),
+  });
+  circles.push({
+    cx: range(W - 55, W + 5), cy: range(80, H - 80),
+    r: range(2, 14), fill: pick(colors), opacity: range(0.12, 0.35),
+  });
+}
+
+// Mid-field scatter (sparser, smaller, lower opacity — vignette fade)
+for (let i = 0; i < 200; i++) {
+  const cx = range(40, W - 40);
+  const cy = range(20, H - 20);
+  const v = vignette(cx, cy);
+  // Skip circles too close to center (protect text zone)
+  if (v < 0.25) continue;
+  const scale = Math.max(0, (v - 0.25) / 0.75); // 0 at center, 1 at edge
+  circles.push({
+    cx, cy,
+    r: range(1.5, 4 + scale * 10),
+    fill: pick(colors),
+    opacity: range(0.04, 0.08 + scale * 0.25),
+  });
+}
+
+// Sparkle dust — tiny dots everywhere (edge-biased)
+for (let i = 0; i < 400; i++) {
+  const cx = range(-5, W + 5);
+  const cy = range(-5, H + 5);
+  const v = vignette(cx, cy);
+  if (v < 0.3 && rand() > 0.15) continue; // mostly skip center
+  circles.push({
+    cx, cy,
+    r: range(1, 3.5),
+    fill: pick(colors),
+    opacity: range(0.08, 0.12 + v * 0.2),
+  });
+}
+
+// ═══ POST-PROCESS: Remap all circle opacities by distance from center ═══
+// Center = fully transparent, edges = nearly opaque
+for (const c of circles) {
+  const v = vignette(c.cx, c.cy);
+  // Remap: v=0 → 0, v≥1 → 0.85. Cubic easing for smooth falloff.
+  const t = Math.max(0, Math.min((v - 0.35) / 0.6, 1)); // nothing inside v=0.35, ramps from there
+  const alpha = t * t * t * 0.85; // cubic ramp for aggressive falloff
+  c.opacity = alpha;
+  c.r = c.r * t * t; // zero at center, full at edge
+}
+
+// Soft ambient glows (large blurred circles for color atmosphere)
+const glows = [
+  { cx: 80, cy: 70, r: 100, fill: '#7B61FF', opacity: 0.05 },
+  { cx: 1130, cy: 65, r: 95, fill: '#E94560', opacity: 0.045 },
+  { cx: 60, cy: 565, r: 90, fill: '#E94560', opacity: 0.045 },
+  { cx: 1140, cy: 560, r: 105, fill: '#7B61FF', opacity: 0.05 },
+  { cx: 600, cy: 313, r: 140, fill: '#16C79A', opacity: 0.018 },
+  { cx: 180, cy: 310, r: 80, fill: '#F5A623', opacity: 0.035 },
+  { cx: 1020, cy: 310, r: 85, fill: '#0EA5E9', opacity: 0.03 },
+  { cx: 350, cy: 80, r: 70, fill: '#16C79A', opacity: 0.03 },
+  { cx: 850, cy: 80, r: 70, fill: '#F5A623', opacity: 0.025 },
+  { cx: 350, cy: 550, r: 70, fill: '#0EA5E9', opacity: 0.025 },
+  { cx: 850, cy: 550, r: 70, fill: '#E94560', opacity: 0.03 },
+];
+
+// Generate straight connections between nearby circles
+interface Line { x1: number; y1: number; x2: number; y2: number; color1: string; color2: string; id: string; width: number; opacity: number; }
+const lines: Line[] = [];
+let lineId = 0;
+
+// Only connect circles that are within a reasonable distance
+for (let i = 0; i < circles.length; i++) {
+  const a = circles[i];
+  let connections = 0;
+  const maxConn = Math.floor(range(1, 3.5));
+  for (let j = i + 1; j < circles.length && connections < maxConn; j++) {
+    const b = circles[j];
+    const dx = a.cx - b.cx;
+    const dy = a.cy - b.cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    const threshold = 60 + (a.r + b.r) * 3;
+    if (dist < threshold && dist > 15) {
+      lines.push({
+        x1: a.cx, y1: a.cy,
+        x2: b.cx, y2: b.cy,
+        color1: a.fill,
+        color2: b.fill,
+        id: `g${lineId++}`,
+        width: range(0.6, 2.2),
+        opacity: Math.min(a.opacity, b.opacity) * range(0.4, 0.9),
+      });
+      connections++;
+    }
+  }
+}
+
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Share Card — LinkedIn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1200px;
+      height: 627px;
+      overflow: hidden;
+      background: #F8F6F3;
+    }
+
+    .canvas {
+      position: relative;
+      width: 1200px;
+      height: 627px;
+      overflow: hidden;
+    }
+
+    .el {
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- NETWORK GRAPH — procedurally generated            -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <svg class="el" style="top: 0; left: 0;" width="1200" height="627" viewBox="0 0 1200 627" fill="none">
+
+    <!-- Soft ambient glows -->
+    {glows.map(g => (
+      <circle cx={g.cx} cy={g.cy} r={g.r} fill={g.fill} opacity={g.opacity} />
+    ))}
+
+    <!-- Gradient definitions -->
+    <defs>
+      {lines.map(l => (
+        <linearGradient id={l.id} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color={l.color1} />
+          <stop offset="100%" stop-color={l.color2} />
+        </linearGradient>
+      ))}
+    </defs>
+
+    <!-- Connections -->
+    {lines.map(l => (
+      <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke={`url(#${l.id})`} stroke-width={l.width} opacity={l.opacity} />
+    ))}
+
+    <!-- Circles -->
+    {circles.map(c => (
+      <circle cx={c.cx} cy={c.cy} r={c.r} fill={c.fill} opacity={c.opacity} />
+    ))}
+
+  </svg>
+
+  <!-- Darkening vignette overlay — only at extreme edges -->
+  <div class="el" style="top: 0; left: 0; width: 1200px; height: 627px; background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 0%, transparent 65%, rgba(26,26,46,0.08) 82%, rgba(26,26,46,0.2) 100%); pointer-events: none;"></div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- CONTENT — centered, poster layout                 -->
+  <!-- ══════════════════════════════════════════════════ -->
+
+  <!-- All text centered in a single flex column -->
+  <div class="el" style="top: 0; left: 0; width: 1200px; height: 627px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px; gap: 0;">
+
+    <!-- Tagline -->
+    <div style="text-align: center; margin-bottom: 10px;">
+      <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 800; line-height: 1; color: #1A1A2E;">
+        The future belongs to those who ask the <em style="font-style: italic; color: #7B61FF;">right questions.</em>
+      </span>
+    </div>
+
+    <!-- Dots divider — top -->
+    <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #E94560; opacity: 0.55;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #7B61FF; opacity: 0.50;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #16C79A; opacity: 0.55;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #F5A623; opacity: 0.60;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #0EA5E9; opacity: 0.45;"></div>
+    </div>
+
+    <!-- Title -->
+    <div style="text-align: center; margin-bottom: 6px;">
+      <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 108px; font-weight: 800; line-height: 1.05; color: #1A1A2E;">
+        Talking to<br /><span style="color: #E94560;">Machines</span>
+      </span>
+    </div>
+
+    <!-- Handwritten label -->
+    <div style="text-align: center; margin-bottom: 6px;">
+      <span style="display: inline-block; font-family: 'Caveat', cursive; font-size: 40px; font-weight: 600; color: #16C79A; opacity: 0.85; transform: rotate(-2deg);">
+        An online AI class!
+      </span>
+    </div>
+
+    <!-- Details -->
+    <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 12px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; color: #1A1A2E; opacity: 0.50;">3 sessions</span>
+      <div style="width: 5px; height: 5px; border-radius: 50%; background: #1A1A2E; opacity: 0.2;"></div>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; color: #E94560; opacity: 0.65;">April 20, 22, 24</span>
+    </div>
+
+    <!-- Dots divider — bottom -->
+    <div style="display: flex; gap: 12px;">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #16C79A; opacity: 0.55;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #F5A623; opacity: 0.50;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #E94560; opacity: 0.55;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #7B61FF; opacity: 0.50;"></div>
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #0EA5E9; opacity: 0.45;"></div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
