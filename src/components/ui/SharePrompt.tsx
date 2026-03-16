@@ -8,7 +8,7 @@ interface Props {
 export default function SharePrompt({ text, url }: Props) {
   const [hovered, setHovered] = useState(false);
 
-  const defaultUrl = url || 'https://talkingtomachines.ai';
+  const defaultUrl = url || 'https://www.talkingtomachines.xyz';
   const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(defaultUrl)}`;
 
   const handleClick = useCallback((e: React.MouseEvent) => {

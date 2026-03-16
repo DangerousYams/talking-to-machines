@@ -68,7 +68,7 @@ const isTranslated = locale !== 'en';
           <div class="flex items-center gap-3">
             <LanguageSelector currentLocale={locale} chapterSlug={chapter.slug} />
             <span class:list={[{ hidden: isTranslated }]}><ListenButton accentColor={chapter.accent} client:load /></span>
-            <span class:list={[{ hidden: isTranslated }]}><QuotaCounter client:load /></span>
+            <!-- QuotaCounter removed from header — only shown when user runs out -->
             {hasBeats && (
               <span class:list={[{ hidden: isTranslated }]}>
                 <BeatProgress

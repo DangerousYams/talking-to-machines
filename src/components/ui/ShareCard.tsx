@@ -89,7 +89,7 @@ function renderCardToCanvas(
   ctx.font = '600 24px "JetBrains Mono", monospace';
   ctx.letterSpacing = '2px';
   ctx.textBaseline = 'bottom';
-  ctx.fillText('talkingtomachines.vercel.app', contentX, H - 80);
+  ctx.fillText('www.talkingtomachines.xyz', contentX, H - 80);
 
   // --- Small decorative accent line above branding ---
   ctx.fillStyle = accentColor + '40';
@@ -375,7 +375,7 @@ export default function ShareCard({
           margin: '1rem 0 0',
           letterSpacing: '0.04em',
         }}>
-          talkingtomachines.vercel.app
+          www.talkingtomachines.xyz
         </p>
       </div>
     </div>
