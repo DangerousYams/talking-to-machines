@@ -90,14 +90,16 @@ const scenarios: Scenario[] = [
   },
 ];
 
-const FLIP_SYSTEM_PROMPT = `You are a planning assistant helping a teenager. The user will state a goal. Do NOT start planning immediately. Instead, ask exactly 5 specific clarifying questions, ONE at a time. After collecting all 5 answers, produce a detailed, personalized plan.
+const FLIP_SYSTEM_PROMPT = `You are a friendly planning assistant. The user will state a goal. Do NOT start planning immediately. Instead, ask exactly 5 specific clarifying questions, ONE at a time. After collecting all 5 answers, produce a short, actionable plan.
 
 Rules:
-- Ask only ONE question per message
-- Make questions specific and practical
-- After the 5th answer, produce a comprehensive plan tailored to their answers
-- Keep a warm, supportive tone
-- Number your questions (1/5, 2/5, etc.)`;
+- Ask only ONE question per message. Keep each question to 1-2 sentences.
+- Make questions specific and practical.
+- After the 5th answer, write a plan that is 8-12 bullet points MAX, using short plain sentences.
+- The final plan should fit on one screen — no sections, no sub-lists, no elaborate breakdowns.
+- Keep a warm, conversational tone. Write like a helpful friend, not a consultant.
+- Number your questions (1/5, 2/5, etc.)
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.`;
 
 type Phase = 'choose' | 'questioning' | 'result';
 type Mode = 'guided' | 'freeform';
@@ -122,7 +124,7 @@ export default function FlipTheScript() {
 
   // Live AI
   const { response: liveResponse, isStreaming, error: liveError, sendMessages, abort } =
-    useStreamingResponse({ systemPrompt: FLIP_SYSTEM_PROMPT, maxTokens: 1500 });
+    useStreamingResponse({ systemPrompt: FLIP_SYSTEM_PROMPT, maxTokens: 600 });
 
   // Auto-scroll chat (desktop only) — use block:'nearest' to avoid scrolling the whole page
   useEffect(() => {
@@ -195,8 +197,11 @@ export default function FlipTheScript() {
         apiMessages.push({ role: msg.role, content: msg.text });
       }
       apiMessages.push({ role: 'user', content: answer });
-      const isDone = questionIndex + 1 >= 5;
-      if (isDone) setPhase('result');
+      const isDone = newAnswers.length >= 5;
+      if (isDone) {
+        setPhase('result');
+        apiMessages.push({ role: 'user', content: 'That was my 5th answer. Now produce the final plan.' });
+      }
       sendMessages(apiMessages);
     } else {
       if (questionIndex + 1 >= (scenario?.questions.length || 5)) {
@@ -241,18 +246,17 @@ export default function FlipTheScript() {
   // Render result text
   const renderResultText = (text: string) => {
     return text.split('\n').map((line, i) => {
-      if (line.startsWith('**') && line.includes('**')) {
-        const parts = line.split('**');
-        return (
-          <p key={i} style={{ margin: '0.6em 0' }}>
-            {parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: '#0F3460' }}>{p}</strong> : <span key={j}>{p}</span>)}
-          </p>
-        );
+      // Strip markdown headers
+      const stripped = line.replace(/^#{1,4}\s*/, '').replace(/\*\*/g, '');
+      // Bullet lines (-, •, numbered)
+      if (/^\s*[-•]\s/.test(stripped) || /^\s*\d+[.)]\s/.test(stripped)) {
+        return <p key={i} style={{ margin: '0.3em 0', paddingLeft: '0.5rem' }}>{stripped.replace(/^\s*[-•]\s*/, '• ')}</p>;
       }
-      if (line.startsWith('\u2022')) {
-        return <p key={i} style={{ margin: '0.3em 0', paddingLeft: '0.5rem' }}>{line}</p>;
+      // Non-empty lines
+      if (stripped.trim()) {
+        return <p key={i} style={{ margin: '0.5em 0' }}>{stripped}</p>;
       }
-      return line ? <p key={i} style={{ margin: '0.5em 0' }}>{line}</p> : <br key={i} />;
+      return <br key={i} />;
     });
   };
 

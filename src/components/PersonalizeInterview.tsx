@@ -34,7 +34,8 @@ Respond with ONLY valid JSON, no markdown formatting:
 {
   "context": "2-3 sentence paragraph in third person. Include profession, AI experience, goals. Under 80 words.",
   "keywords": ["5-8 domain-specific terms for their field"]
-}`;
+}
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.`;
 
 const STEP_PHASES: Phase[] = ['profession', 'experience', 'goals', 'challenge'];
 

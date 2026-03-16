@@ -19,7 +19,8 @@ Rules:
 - Make it specific to what they said — no generic "but what IS truth?" questions.
 - Keep it under 40 words.
 - Address them as "you" directly.
-- Channel the energy of Socrates at a party — charming but relentless.`;
+- Channel the energy of Socrates at a party — charming but relentless.
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.`;
 
 const VERDICT_PROMPT = `You are Socrates delivering a final verdict on a teenager's reasoning. You asked them a probing question about their opinion, and they defended themselves. Now judge their thinking.
 
@@ -44,6 +45,7 @@ Rules:
 - Score honestly — most teens will land 30-65
 - A truly thoughtful, self-aware defense deserves 70+
 - If they just agreed with your question or deflected, score low (10-30)
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.
 - ONLY output the JSON object, nothing else`;
 
 function getScoreColor(score: number): string {
@@ -119,7 +121,7 @@ export default function SocraticSmackdown() {
         { role: 'user', content: text },
       ],
       systemPrompt: VERDICT_PROMPT,
-      maxTokens: 512,
+      maxTokens: 300,
       source: 'socratic-smackdown',
       onChunk: (chunk) => {
         accumulated += chunk;

@@ -29,6 +29,7 @@ Rules:
 - The bestLine should be the kind of thing someone screenshots
 - Traits should be 3 specific adjectives that capture their voice
 - Score 0-100 represents "vibe intensity" — how distinctive their voice is
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.
 - ONLY output the JSON object, nothing else`;
 
 function getScoreColor(score: number): string {
@@ -67,7 +68,7 @@ export default function VibeCheck() {
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: trimmed }],
       systemPrompt: SYSTEM_PROMPT,
-      maxTokens: 512,
+      maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
         accumulated += chunk;

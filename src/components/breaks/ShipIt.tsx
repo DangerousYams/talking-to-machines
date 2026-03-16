@@ -38,6 +38,7 @@ Rules:
 - Time estimates (withAI/withoutAI) should be realistic and show the dramatic difference AI makes
 - Be encouraging about ambitious ideas even if they're raw
 - Score based on: originality, market potential, and how fun it sounds
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.
 - ONLY output the JSON object, nothing else`;
 
 function getScoreColor(score: number): string {
@@ -76,7 +77,7 @@ export default function ShipIt() {
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
       systemPrompt: SYSTEM_PROMPT,
-      maxTokens: 512,
+      maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
         accumulated += chunk;

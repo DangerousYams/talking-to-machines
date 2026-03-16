@@ -37,6 +37,7 @@ Rules:
 - The bestLine should make them feel powerful about being human
 - Be warm, specific, and empowering — this should make teens feel GOOD
 - Even low scores should feel positive ("AI frees you up to do the things only you can do")
+- Do NOT use markdown formatting — no bold, no asterisks, no headers, no hashtags. Plain text only.
 - ONLY output the JSON object, nothing else`;
 
 function getScoreColor(score: number): string {
@@ -76,7 +77,7 @@ export default function IrreplaceableYou() {
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: trimmed }],
       systemPrompt: SYSTEM_PROMPT,
-      maxTokens: 512,
+      maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
         accumulated += chunk;

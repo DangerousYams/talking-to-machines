@@ -134,6 +134,16 @@ export default function ProjectInstructionsBuilder() {
   const sendMessage = useCallback((userText: string) => {
     const userMsg: ChatMessage = { role: 'user', content: userText };
     const newMessages = [...messages, userMsg];
+
+    // Guard: if we've already collected 8+ answers, force the AI to produce final output
+    if (questionIndex >= 8) {
+      const forceMsg: ChatMessage = {
+        role: 'user',
+        content: userText + '\n\n[System note: You have asked enough questions. Do NOT ask any more questions. Say "I have everything I need." and generate the final project instruction file now.]',
+      };
+      newMessages[newMessages.length - 1] = forceMsg;
+    }
+
     setMessages(newMessages);
     setCurrentResponse('');
     setIsStreaming(true);
