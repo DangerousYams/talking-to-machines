@@ -9,8 +9,10 @@ import TerminalPlayground from '../components/widgets/ch7/TerminalPlayground';
 import ShipIt from '../components/breaks/ShipIt';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -111,6 +113,15 @@ const chapter = chapters[6];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="This chapter on Claude Code is wild — watched an AI pair programmer think through a problem, write code, and debug itself. The future of coding is here." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

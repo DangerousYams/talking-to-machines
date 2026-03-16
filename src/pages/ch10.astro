@@ -9,8 +9,10 @@ import JobTransformer from '../components/widgets/ch10/JobTransformer';
 import IrreplaceableYou from '../components/breaks/IrreplaceableYou';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -105,6 +107,15 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="This course doesn't hype AI or fear-monger about jobs. It maps exactly which skills stay human and which get augmented. Refreshingly honest." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

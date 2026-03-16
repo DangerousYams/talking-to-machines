@@ -9,8 +9,10 @@ import AgentBlueprint from '../components/widgets/ch6/AgentBlueprint';
 import AgentTakeover from '../components/breaks/AgentTakeover';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -131,6 +133,15 @@ const chapter = chapters[5];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Just designed my first AI agent from scratch. This course walks you through the architecture step by step with live demos. No hype, just building." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

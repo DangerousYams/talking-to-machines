@@ -9,8 +9,10 @@ import ContextWindowViz from '../components/widgets/ch3/ContextWindowViz';
 import VibeCheck from '../components/breaks/VibeCheck';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -111,6 +113,15 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Finally understand why AI 'forgets' things mid-conversation. It's not memory — it's a context window. This course explains it so clearly with live demos." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

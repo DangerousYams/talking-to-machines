@@ -9,8 +9,10 @@ import FactOrFabrication from '../components/widgets/ch9/FactOrFabrication';
 import SweetTalker from '../components/breaks/SweetTalker';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -105,6 +107,15 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Every AI user needs this chapter. It teaches you exactly how AI hallucinates, why it agrees with wrong answers, and how to catch it. Super practical." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

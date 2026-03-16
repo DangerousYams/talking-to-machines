@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 interface Props {
   text: string;
@@ -8,8 +8,15 @@ interface Props {
 export default function SharePrompt({ text, url }: Props) {
   const [hovered, setHovered] = useState(false);
 
-  const shareUrl = url || (typeof window !== 'undefined' ? `${window.location.origin}` : 'https://talkingtomachines.ai');
-  const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+  const defaultUrl = url || 'https://talkingtomachines.ai';
+  const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(defaultUrl)}`;
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const shareUrl = url || (typeof window !== 'undefined' ? window.location.origin : defaultUrl);
+    const liveUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    window.open(liveUrl, '_blank', 'noopener,noreferrer');
+  }, [text, url, defaultUrl]);
 
   return (
     <div style={{
@@ -23,6 +30,7 @@ export default function SharePrompt({ text, url }: Props) {
       <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.06)' }} />
       <a
         href={tweetUrl}
+        onClick={handleClick}
         target="_blank"
         rel="noopener noreferrer"
         onMouseEnter={() => setHovered(true)}

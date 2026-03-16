@@ -9,8 +9,10 @@ import ToolWall from '../components/widgets/ch4/ToolWall';
 import DreamProject from '../components/breaks/DreamProject';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
+import ForYouCard from '../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter}>
@@ -131,6 +133,15 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="There are way more AI tools than I realized. This interactive guide maps out 8 families of tools — image gen, video, music, research, coding — with examples of each." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
