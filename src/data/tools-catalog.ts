@@ -101,6 +101,15 @@ export const toolsCatalog: Tool[] = [
     detail: 'Industry-leading realistic human movement and emotional micro-expressions. The fastest and most cost-effective option for volume creators. "Fast" variant optimized for batch production. Free tier available.',
   },
 
+  {
+    name: 'Kling 2.6',
+    category: 'video',
+    desc: 'Longest AI videos (2 min), generous free tier, very affordable',
+    pricing: 'freemium',
+    detail: 'By Kuaishou. The only generator that does up to 2-minute videos with consistent quality. Strong human motion and lip-sync. 66 free credits/day (1-2 short videos). Standard just $6.99/mo — the best value in video gen.',
+    zeroBudget: true,
+  },
+
   // ═══ MUSIC ═══
   {
     name: 'Suno',
