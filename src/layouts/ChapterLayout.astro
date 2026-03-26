@@ -22,7 +22,13 @@ interface Props {
 
 const { chapter, locale = 'en' } = Astro.props;
 const prev = chapters.find((c) => c.number === chapter.number - 1);
-const next = chapters.find((c) => c.number === chapter.number + 1);
+const rawNext = chapters.find((c) => c.number === chapter.number + 1);
+// Playbook interludes: ch3 → playbook instead of ch4
+const playbooks: Record<number, { slug: string; title: string }> = {
+  3: { slug: 'playbook', title: 'The Playbook' },
+};
+const interlude = locale === 'en' ? playbooks[chapter.number] : undefined;
+const next = interlude ? { ...rawNext, slug: interlude.slug, title: interlude.title, number: chapter.number } as typeof rawNext : rawNext;
 const needsPaywall = chapter.number > 1 && locale === 'en';
 const hasBeats = chapter.beats && chapter.beats.length > 0;
 const textDir = getDir(locale);

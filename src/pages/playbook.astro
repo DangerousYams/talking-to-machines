@@ -3,15 +3,16 @@ export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import PlaybookCard from '../components/PlaybookCard';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import Divider from '../components/ui/Divider';
 ---
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Playbook — Talking to Machines</title>
-  <meta name="description" content="7 power prompts that change how you work with AI. Copy, adapt, and use them immediately." />
+  <meta name="description" content="9 power prompts that change how you work with AI. Copy, adapt, and use them immediately." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -20,271 +21,160 @@ import PlaybookCard from '../components/PlaybookCard';
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes pb-fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @media print {
+      nav, .pb-actions, .no-print { display: none !important; }
+      [style*="animation"] { animation: none !important; opacity: 1 !important; transform: none !important; }
     }
-    @keyframes pb-slide-up {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pb-glow-pulse {
-      0%, 100% { opacity: 0.03; }
-      50% { opacity: 0.06; }
-    }
-    @keyframes pb-dots-pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-    }
-
-    .pb-body {
-      background: #0D0D1A;
-      min-height: 100vh;
-      color: #FFFFFFDD;
-      position: relative;
-      overflow-x: hidden;
-    }
-    .pb-body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(123,97,255,0.06) 0%, transparent 60%),
-                  radial-gradient(ellipse 40% 40% at 80% 80%, rgba(22,199,154,0.04) 0%, transparent 50%),
-                  radial-gradient(ellipse 40% 40% at 20% 90%, rgba(233,69,96,0.04) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .pb-content {
-      position: relative;
-      z-index: 1;
-    }
-    .pb-action-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 24px; border-radius: 100;
-      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s;
-      text-decoration: none; border: none; min-height: 44px;
-    }
-    .pb-action-btn:hover { transform: translateY(-1px); }
   </style>
 </head>
-<body class="pb-body">
-<div class="pb-content">
+<body>
 
-  <!-- Ambient glow orb -->
-  <div style="position: fixed; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(123,97,255,0.04) 0%, transparent 60%); pointer-events: none; animation: pb-glow-pulse 8s ease-in-out infinite; z-index: 0;"></div>
-
-  <!-- Navigation back -->
-  <nav style="padding: 1.5rem 2rem; opacity: 0; animation: pb-fade-in 0.5s ease 0.2s forwards;">
-    <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: rgba(255,255,255,0.4); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; transition: color 0.2s;"
-       onmouseover="this.style.color='rgba(255,255,255,0.7)'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+  <!-- Nav -->
+  <nav class="no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 0;">
+    <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--color-subtle); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; transition: color 0.2s; opacity: 0.6;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       Back to course
     </a>
   </nav>
 
   <!-- Hero -->
-  <header style="max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 4rem; text-align: center;">
+  <header style="max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 2rem; text-align: center;">
     <!-- Dots -->
-    <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 2rem; opacity: 0; animation: pb-fade-in 0.5s ease 0.3s forwards;">
-      {['#E94560', '#7B61FF', '#16C79A', '#F5A623', '#0EA5E9'].map((c, i) => (
-        <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; animation: pb-dots-pulse 3s ease-in-out ${i * 0.15}s infinite;`}></div>
-      ))}
-    </div>
+    <FadeInBlock client:visible>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem;">
+        {['#E94560', '#7B61FF', '#16C79A', '#F5A623', '#0EA5E9'].map((c) => (
+          <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; opacity: 0.55;`}></div>
+        ))}
+      </div>
+    </FadeInBlock>
 
-    <!-- Handwritten label -->
-    <p style="font-family: 'Caveat', cursive; font-size: 1.4rem; font-weight: 600; color: #16C79A; margin: 0 0 0.5rem; opacity: 0; animation: pb-slide-up 0.6s ease 0.4s forwards; transform: rotate(-2deg); display: inline-block;">
-      Between chapters 3 & 4
-    </p>
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+        Between chapters 3 & 4
+      </p>
+    </FadeInBlock>
 
-    <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; color: #FFFFFFEE; margin: 0 0 1rem; line-height: 1.08; letter-spacing: -0.03em; opacity: 0; animation: pb-slide-up 0.6s ease 0.5s forwards;">
-      The Playbook
-    </h1>
+    <FadeInBlock client:visible delay={0.15}>
+      <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--color-deep); margin: 0 0 0.75rem; line-height: 1.08; letter-spacing: -0.03em;">
+        The Playbook
+      </h1>
+    </FadeInBlock>
 
-    <p style="font-family: var(--font-body); font-size: 1.1rem; color: rgba(255,255,255,0.45); margin: 0 0 0.5rem; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; opacity: 0; animation: pb-slide-up 0.6s ease 0.6s forwards;">
-      7 prompts that change how you work with AI.<br />Copy any card. Use them immediately.
-    </p>
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; color: var(--color-subtle); margin: 0; line-height: 1.6; max-width: 420px; margin-left: auto; margin-right: auto;">
+        9 prompts that change how you work with AI.<br />Copy any card. Use them immediately.
+      </p>
+    </FadeInBlock>
 
-    <p style="font-family: var(--font-mono); font-size: 0.7rem; color: rgba(255,255,255,0.25); margin-top: 1.5rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; animation: pb-fade-in 0.5s ease 0.8s forwards;">
-      Tap any card to copy
-    </p>
+    <FadeInBlock client:visible delay={0.25}>
+      <p class="no-print" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--color-subtle); margin-top: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.4; text-align: center;">
+        Tap any card to copy
+      </p>
+    </FadeInBlock>
   </header>
 
   <!-- Cards -->
-  <section style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem 3rem; display: flex; flex-direction: column; gap: 1.25rem;">
+  <section style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem;">
 
-    <PlaybookCard client:visible
-      number={1}
-      title="The Research Prompt"
-      subtitle="Make AI do homework before it answers."
+    <PlaybookCard client:visible number={1} title="The Research Prompt" subtitle="Make AI do homework before it answers."
       prompt={"Before answering, research this thoroughly. Find 3 credible perspectives, summarize what you learn from each, then give me your recommendation based on the evidence. Show your reasoning."}
-      color="#7B61FF"
-      delay={0.1}
-    />
+      color="#7B61FF" delay={0.1} />
 
-    <PlaybookCard client:visible
-      number={2}
-      title="The Interview Prompt"
-      subtitle="Make AI ask YOU before it builds."
+    <PlaybookCard client:visible number={2} title="The Interview Prompt" subtitle="Make AI ask YOU before it builds."
       prompt={"Before you build, write, or plan anything — interview me first. Ask me 5 specific questions to understand exactly what I need, one at a time. Don't start working until you have all my answers."}
-      color="#16C79A"
-      delay={0.15}
-    />
+      color="#16C79A" delay={0.15} />
 
-    <PlaybookCard client:visible
-      number={3}
-      title="The Reference Prompt"
-      subtitle="Give AI the right examples to learn from."
+    <PlaybookCard client:visible number={3} title="The Reference Prompt" subtitle="Give AI the right examples to learn from."
       prompt={"Here's an example of the quality and style I want:\n\n[paste your example here]\n\nMatch this tone, structure, and level of detail. Don't copy it — use it as a reference for what \"good\" looks like. Explain what you're borrowing from it."}
-      color="#0EA5E9"
-      delay={0.2}
-    />
+      color="#0EA5E9" delay={0.2} />
 
-    <PlaybookCard client:visible
-      number={4}
-      title="The Improvement Prompt"
-      subtitle="Find the single highest-leverage change."
+    <PlaybookCard client:visible number={4} title="The Improvement Prompt" subtitle="Find the single highest-leverage change."
       prompt={"Look at what we have so far. What is the single most impactful improvement you could make right now? Not a list of 10 things — one move that makes the biggest difference. Explain why this one matters most."}
-      color="#F5A623"
-      delay={0.25}
-    />
+      color="#F5A623" delay={0.25} />
 
-    <PlaybookCard client:visible
-      number={5}
-      title="The Stress-Test Prompt"
-      subtitle="Shoot holes in your own plan."
+    <PlaybookCard client:visible number={5} title="The Stress-Test Prompt" subtitle="Shoot holes in your own plan."
       prompt={"Act as a skeptical critic. What are the 3 weakest parts of this? Where will it break? What am I not seeing? Be honest and specific — I need the hard truth, not encouragement."}
-      color="#E94560"
-      delay={0.3}
-    />
+      color="#E94560" delay={0.3} />
 
-    <PlaybookCard client:visible
-      number={6}
-      title="The Explain Yourself Prompt"
-      subtitle="Make AI justify its choices."
+    <PlaybookCard client:visible number={6} title="The Explain Yourself Prompt" subtitle="Make AI justify its choices."
       prompt={"Explain why you chose this approach over the alternatives. What are the tradeoffs? What would you do differently if you had different constraints? If I asked you to start over with a completely different strategy, what would it be and why?"}
-      color="#7B61FF"
-      delay={0.35}
-    />
+      color="#7B61FF" delay={0.35} />
 
-    <PlaybookCard client:visible
-      number={7}
-      title="The Ship-It Prompt"
-      subtitle="Define what 'done' looks like before you start."
+    <PlaybookCard client:visible number={7} title="The Ship-It Prompt" subtitle="Define what 'done' looks like before you start."
       prompt={"Write acceptance criteria for this project. What specific conditions must be true for this to be considered done? List them as checkboxes I can verify. Include edge cases that would catch a sloppy version."}
-      color="#16C79A"
-      delay={0.4}
-    />
+      color="#16C79A" delay={0.4} />
   </section>
 
-  <!-- Divider -->
   <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
-    <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);"></div>
+    <Divider accent="#16C79A" client:load />
   </div>
 
-  <!-- Bonus: Build Your Own -->
-  <section style="max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem;">
-    <div style="text-align: center; margin-bottom: 2rem; opacity: 0; animation: pb-slide-up 0.6s ease 0.5s forwards;">
-      <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; font-weight: 600; color: #F5A623; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
-        Bonus
-      </p>
-      <h2 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #FFFFFFDD; margin: 0; letter-spacing: -0.02em;">
-        Build Your Own Playbook
-      </h2>
+  <!-- Bonus section -->
+  <section style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 2rem;">
+    <FadeInBlock client:visible>
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <p style="font-family: 'Caveat', cursive; font-size: 1.15rem; font-weight: 600; color: #F5A623; margin: 0 0 0.15rem; transform: rotate(-1.5deg); display: inline-block;">
+          Bonus
+        </p>
+        <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0; letter-spacing: -0.02em;">
+          Build Your Own Playbook
+        </h2>
+      </div>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <PlaybookCard client:visible number={8} title="The SOP Prompt" subtitle="Turn your best work into a reusable template."
+        prompt={"Look at this project I'm proud of:\n\n[paste or describe your best work]\n\nIdentify the patterns that made it good. What decisions, structures, or approaches could I reuse? Turn those patterns into a reusable prompt template I can apply to future projects."}
+        color="#F5A623" delay={0.1} />
+
+      <PlaybookCard client:visible number={9} title="The Devlog Prompt" subtitle="Turn your work into shareable updates."
+        prompt={"Summarize what I just built / wrote / created in a way I could share publicly. Write it as a short, engaging update — like a devlog or LinkedIn post. Focus on what's interesting about the approach, not just what was done. Keep it under 150 words."}
+        color="#E94560" delay={0.15} />
     </div>
-
-    <PlaybookCard client:visible
-      number={8}
-      title="The SOP Prompt"
-      subtitle="Turn your best work into a reusable template."
-      prompt={"Look at this project I'm proud of:\n\n[paste or describe your best work]\n\nIdentify the patterns that made it good. What decisions, structures, or approaches could I reuse? Turn those patterns into a reusable prompt template I can apply to future projects."}
-      color="#F5A623"
-      delay={0.1}
-    />
-
-    <div style="height: 1.25rem;"></div>
-
-    <PlaybookCard client:visible
-      number={9}
-      title="The Devlog Prompt"
-      subtitle="Turn your work into shareable updates."
-      prompt={"Summarize what I just built / wrote / created in a way I could share publicly. Write it as a short, engaging update — like a devlog or LinkedIn post. Focus on what's interesting about the approach, not just what was done. Keep it under 150 words."}
-      color="#E94560"
-      delay={0.15}
-    />
   </section>
 
-  <!-- Actions bar -->
-  <section style="max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem;">
-    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; opacity: 0; animation: pb-fade-in 0.5s ease 0.6s forwards;">
+  <!-- Actions -->
+  <section class="pb-actions no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <button
+          onclick="window.print()"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Save as PDF
+        </button>
 
-      <!-- Download PDF -->
-      <button
-        class="pb-action-btn"
-        style="background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1);"
-        onclick="window.print()"
-        onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.2)'"
-        onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(255,255,255,0.1)'"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-        Save as PDF
-      </button>
+        <a
+          href="https://x.com/intent/tweet?text=The%20Playbook%20%E2%80%94%209%20power%20prompts%20that%20change%20how%20you%20work%20with%20AI.%20Tap%20to%20copy%20any%20of%20them.&url=https%3A%2F%2Fwww.talkingtomachines.xyz%2Fplaybook"
+          target="_blank" rel="noopener noreferrer"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Share on X
+        </a>
 
-      <!-- Share to X -->
-      <a
-        class="pb-action-btn"
-        style="background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1);"
-        href="https://x.com/intent/tweet?text=The%20Playbook%20%E2%80%94%209%20power%20prompts%20that%20change%20how%20you%20work%20with%20AI.%20Tap%20to%20copy%20any%20of%20them.&url=https%3A%2F%2Fwww.talkingtomachines.xyz%2Fplaybook"
-        target="_blank"
-        rel="noopener noreferrer"
-        onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.2)'"
-        onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.borderColor='rgba(255,255,255,0.1)'"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-        Share on X
-      </a>
-
-      <!-- Back to course -->
-      <a
-        class="pb-action-btn"
-        style="background: #16C79A; color: white;"
-        href="/ch4"
-        onmouseover="this.style.boxShadow='0 6px 20px rgba(22,199,154,0.3)'"
-        onmouseout="this.style.boxShadow='none'"
-      >
-        Continue to Chapter 4 &rarr;
-      </a>
-    </div>
+        <a
+          href="/ch4"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: none; background: #16C79A; color: white; min-height: 44px;"
+        >
+          Continue to Chapter 4 &rarr;
+        </a>
+      </div>
+    </FadeInBlock>
   </section>
 
   <!-- Footer -->
-  <footer style="text-align: center; padding: 2rem 1.5rem 3rem; border-top: 1px solid rgba(255,255,255,0.04);">
-    <p style="font-family: var(--font-mono); font-size: 0.65rem; color: rgba(255,255,255,0.2); letter-spacing: 0.06em;">
+  <footer class="no-print" style="text-align: center; padding: 1.5rem 1.5rem 2.5rem; border-top: 1px solid rgba(26,26,46,0.06);">
+    <p style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--color-subtle); letter-spacing: 0.06em; opacity: 0.4;">
       www.talkingtomachines.xyz
     </p>
   </footer>
 
-</div>
-
-<Analytics />
-
-<!-- Print styles for PDF save -->
-<style>
-  @media print {
-    .pb-body { background: white !important; color: #1A1A2E !important; }
-    .pb-body::before { display: none; }
-    nav, .pb-action-btn, footer { display: none !important; }
-    [style*="animation"] { animation: none !important; opacity: 1 !important; transform: none !important; }
-    div[style*="border: 1px solid"] { border-color: #e5e7eb !important; background: white !important; }
-    div[style*="background: rgba(0,0,0,0.2)"] { background: #f3f4f6 !important; border-color: #e5e7eb !important; }
-    h1, h2, h3 { color: #1A1A2E !important; }
-    p { color: #374151 !important; }
-    span[style*="color: rgba(255,255,255"] { color: #374151 !important; }
-  }
-</style>
+  <Analytics />
 </body>
 </html>

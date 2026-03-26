@@ -101,7 +101,7 @@ import { chapters } from '../data/chapters';
       </div>
 
       {[
-        { label: 'Part I', title: 'The Fundamentals', color: 'var(--color-accent-red)', chapters: chapters.slice(0, 3) },
+        { label: 'Part I', title: 'The Fundamentals', color: 'var(--color-accent-red)', chapters: chapters.slice(0, 3), playbook: { slug: 'playbook', title: 'The Playbook', hook: '9 power prompts to take with you' } },
         { label: 'Part II', title: 'The Toolkit', color: 'var(--color-sky)', chapters: chapters.slice(3, 7) },
         { label: 'Part III', title: 'The Craft', color: 'var(--color-teal)', chapters: chapters.slice(7, 11) },
       ].map((part) => (
@@ -146,6 +146,31 @@ import { chapters } from '../data/chapters';
               </a>
             ))}
           </div>
+
+          {/* Playbook interlude (if this part has one) */}
+          {part.playbook && (
+            <a
+              href={`/${part.playbook.slug}`}
+              class="group flex items-center gap-4 mt-3 py-3 px-4 rounded-lg transition-all duration-200 hover:bg-deep/[0.02]"
+              style="text-decoration: none; border: 1px dashed rgba(26,26,46,0.1);"
+            >
+              <span class="text-[12px] font-semibold flex-shrink-0 w-6 text-right" style="font-family: var(--font-mono); color: var(--color-teal); opacity: 0.6;">
+                &#9830;
+              </span>
+              <span class="text-[17px] md:text-[18px] font-bold leading-tight" style={`font-family: var(--font-heading); color: var(--color-teal);`}>
+                {part.playbook.title}
+              </span>
+              <span class="text-[15px] text-deep/45 leading-snug hidden md:inline" style="font-family: var(--font-body); font-style: italic;">
+                {part.playbook.hook}
+              </span>
+              <svg
+                width="14" height="14" viewBox="0 0 16 16" fill="none"
+                class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-200 group-hover:opacity-30 group-hover:translate-x-0 ml-auto"
+              >
+                <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          )}
         </div>
       ))}
 

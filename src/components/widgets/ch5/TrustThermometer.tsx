@@ -135,6 +135,7 @@ export default function TrustThermometer() {
   const [showTradeoff, setShowTradeoff] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
 
   const scenario = scenarios[currentScenario];
   const currentChoice = choices[currentScenario];
@@ -155,8 +156,13 @@ export default function TrustThermometer() {
         setShowSummary(true);
       }
     } else {
-      setCurrentScenario((s) => s + 1);
-      setShowTradeoff(false);
+      // Animate out, swap, animate in
+      setTransitioning(true);
+      setTimeout(() => {
+        setCurrentScenario((s) => s + 1);
+        setShowTradeoff(false);
+        setTransitioning(false);
+      }, 250);
     }
   };
 
@@ -311,6 +317,12 @@ export default function TrustThermometer() {
     );
   };
 
+  const collapseStyles = `
+    @keyframes tt-collapse { from { max-height: 80px; opacity: 1; margin-bottom: 6px; } to { max-height: 0; opacity: 0; margin-bottom: 0; padding: 0; border-width: 0; overflow: hidden; } }
+    @keyframes tt-reveal { from { max-height: 0; opacity: 0; } to { max-height: 400px; opacity: 1; } }
+    @keyframes tt-scene-in { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+  `;
+
   // --- MOBILE LAYOUT ---
   if (isMobile) {
     // If summary is showing on desktop, also show sheet on mobile
@@ -320,6 +332,7 @@ export default function TrustThermometer() {
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <style dangerouslySetInnerHTML={{ __html: collapseStyles }} />
         {/* Compact header */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
@@ -362,7 +375,13 @@ export default function TrustThermometer() {
         </div>
 
         {/* Main content area */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '6px 12px', overflow: 'hidden' }}>
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column', padding: '6px 12px', overflow: 'hidden',
+          opacity: transitioning ? 0 : 1,
+          transform: transitioning ? 'translateX(-20px)' : 'translateX(0)',
+          transition: 'opacity 0.25s ease, transform 0.25s ease',
+          animation: !transitioning && !showTradeoff ? 'tt-scene-in 0.3s ease' : 'none',
+        }}>
           {/* Stakes badge + scenario text (max 3 lines) */}
           <div style={{ flexShrink: 0, marginBottom: '8px' }}>
             <span style={{
@@ -386,15 +405,20 @@ export default function TrustThermometer() {
             Your AI agent wants to: <span style={{ color: '#F5A623' }}>{scenario.action.toLowerCase()}</span>
           </p>
 
-          {/* Three large tappable buttons */}
+          {/* Three large tappable buttons — unchosen collapse */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
             {choiceLabels.map((label, i) => {
               const isSelected = currentChoice === i;
+              const isUnchosen = showTradeoff && !isSelected;
               const icons = [
                 <svg key="auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>,
                 <svg key="ask" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>,
                 <svg key="never" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
               ];
+
+              if (isUnchosen) {
+                return <div key={label} style={{ animation: 'tt-collapse 0.3s ease forwards', overflow: 'hidden' }} />;
+              }
 
               return (
                 <button
@@ -408,7 +432,6 @@ export default function TrustThermometer() {
                     background: isSelected ? choiceColors[i] + '08' : 'transparent',
                     cursor: showTradeoff ? 'default' : 'pointer',
                     textAlign: 'left' as const, width: '100%',
-                    opacity: showTradeoff && !isSelected ? 0.4 : 1,
                     transition: 'all 0.2s',
                   }}
                 >
@@ -434,14 +457,12 @@ export default function TrustThermometer() {
             })}
           </div>
 
-          {/* Inline feedback (2 lines clamped) + Next button */}
+          {/* Tradeoff + Next — replaces collapsed options */}
           {showTradeoff && currentChoice !== null && (
-            <div style={{ marginTop: '8px', flexShrink: 0 }}>
+            <div style={{ marginTop: '6px', flexShrink: 0, animation: 'tt-reveal 0.35s ease 0.15s both', overflow: 'hidden' }}>
               <p style={{
-                fontFamily: 'var(--font-body)', fontSize: '0.75rem', lineHeight: 1.5,
+                fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.5,
                 color: '#1A1A2E', margin: '0 0 8px', opacity: 0.75,
-                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const,
-                overflow: 'hidden',
               }}>
                 {currentChoice === 0 && scenario.tradeoffs.auto}
                 {currentChoice === 1 && scenario.tradeoffs.ask}
@@ -692,7 +713,14 @@ export default function TrustThermometer() {
         </div>
       </div>
 
-      <div style={{ padding: '1.5rem 2rem' }}>
+      <div style={{
+        padding: '1.5rem 2rem',
+        opacity: transitioning ? 0 : 1,
+        transform: transitioning ? 'translateX(-20px)' : 'translateX(0)',
+        transition: 'opacity 0.25s ease, transform 0.25s ease',
+        animation: !transitioning && !showTradeoff ? 'tt-scene-in 0.3s ease' : 'none',
+      }}>
+        <style dangerouslySetInnerHTML={{ __html: collapseStyles }} />
         {/* Progress bar */}
         <div style={{
           display: 'flex', gap: 4, marginBottom: '1.5rem',
@@ -743,18 +771,24 @@ export default function TrustThermometer() {
           </p>
         </div>
 
-        {/* Choice buttons */}
+        {/* Choice buttons — unchosen collapse after selection */}
         <div style={{
           display: 'flex', flexDirection: 'column' as const, gap: '0.5rem',
           marginBottom: '1.5rem',
         }}>
+          <style dangerouslySetInnerHTML={{ __html: collapseStyles }} />
           {choiceLabels.map((label, i) => {
             const isSelected = currentChoice === i;
+            const isUnchosen = showTradeoff && !isSelected;
             const icons = [
               <svg key="auto" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>,
               <svg key="ask" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>,
               <svg key="never" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
             ];
+
+            if (isUnchosen) {
+              return <div key={label} style={{ animation: 'tt-collapse 0.35s ease forwards', overflow: 'hidden' }} />;
+            }
 
             return (
               <button
@@ -769,7 +803,6 @@ export default function TrustThermometer() {
                   cursor: showTradeoff ? 'default' : 'pointer',
                   transition: 'all 0.25s', textAlign: 'left' as const,
                   width: '100%',
-                  opacity: showTradeoff && !isSelected ? 0.4 : 1,
                 }}
                 onMouseEnter={(e) => {
                   if (!showTradeoff) {
@@ -812,64 +845,53 @@ export default function TrustThermometer() {
               </button>
             );
           })}
-        </div>
 
-        {/* Tradeoff explanation */}
-        {showTradeoff && currentChoice !== null && (
-          <div style={{
-            background: `linear-gradient(135deg, ${choiceColors[currentChoice]}06, ${choiceColors[currentChoice]}03)`,
-            border: `1px solid ${choiceColors[currentChoice]}18`,
-            borderRadius: 12, padding: '1.25rem 1.5rem', marginBottom: '1rem',
-            animation: 'fadeIn 0.3s ease',
-          }}>
-            <p style={{
-              fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
-              color: choiceColors[currentChoice], margin: '0 0 0.5rem',
-            }}>
-              Tradeoff
-            </p>
-            <p style={{
-              fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65,
-              color: '#1A1A2E', margin: '0 0 1rem', opacity: 0.8,
-            }}>
-              {currentChoice === 0 && scenario.tradeoffs.auto}
-              {currentChoice === 1 && scenario.tradeoffs.ask}
-              {currentChoice === 2 && scenario.tradeoffs.never}
-            </p>
-
-            {/* What others chose */}
-            <div style={{
-              background: 'rgba(26,26,46,0.03)', borderRadius: 8,
-              padding: '0.75rem 1rem',
-            }}>
+          {/* Tradeoff + social proof — appears in place of collapsed options */}
+          {showTradeoff && currentChoice !== null && (
+            <div style={{ animation: 'tt-reveal 0.4s ease 0.2s both', overflow: 'hidden' }}>
               <p style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                letterSpacing: '0.06em', textTransform: 'uppercase' as const,
-                color: '#6B7280', marginBottom: '0.5rem',
+                fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.65,
+                color: '#1A1A2E', margin: '0.75rem 0 1rem', opacity: 0.8,
               }}>
-                What others chose
+                {currentChoice === 0 && scenario.tradeoffs.auto}
+                {currentChoice === 1 && scenario.tradeoffs.ask}
+                {currentChoice === 2 && scenario.tradeoffs.never}
               </p>
-              <div style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden' as const }}>
-                {scenario.averageDistribution.map((pct, pi) => (
-                  <div key={pi} style={{
-                    width: `${pct}%`, height: '100%', background: choiceColors[pi],
-                    opacity: 0.5, transition: 'width 0.5s ease',
-                  }} />
-                ))}
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                {scenario.averageDistribution.map((pct, pi) => (
-                  <span key={pi} style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
-                    color: choiceColors[pi], fontWeight: currentChoice === pi ? 700 : 400,
-                  }}>
-                    {pct}%
-                  </span>
-                ))}
+
+              {/* What others chose — compact bar */}
+              <div style={{
+                background: 'rgba(26,26,46,0.03)', borderRadius: 8,
+                padding: '0.6rem 0.75rem',
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600,
+                  letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                  color: '#6B7280', marginBottom: '0.4rem',
+                }}>
+                  What others chose
+                </p>
+                <div style={{ display: 'flex', height: 6, borderRadius: 3, overflow: 'hidden' as const }}>
+                  {scenario.averageDistribution.map((pct, pi) => (
+                    <div key={pi} style={{
+                      width: `${pct}%`, height: '100%', background: choiceColors[pi],
+                      opacity: 0.5, transition: 'width 0.5s ease',
+                    }} />
+                  ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                  {scenario.averageDistribution.map((pct, pi) => (
+                    <span key={pi} style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.68rem',
+                      color: choiceColors[pi], fontWeight: currentChoice === pi ? 700 : 400,
+                    }}>
+                      {pct}%
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Next button */}
         {showTradeoff && (

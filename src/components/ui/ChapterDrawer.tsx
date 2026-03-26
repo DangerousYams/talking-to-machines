@@ -179,52 +179,93 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
               {chapters.map((ch) => {
                 const isCurrent = ch.slug === currentSlug;
                 return (
-                  <a
-                    key={ch.slug}
-                    href={`${prefix}/${ch.slug}`}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 10,
-                      padding: '9px 10px',
-                      borderRadius: 8,
-                      textDecoration: 'none',
-                      background: isCurrent ? `${accentColor}0A` : 'transparent',
-                      transition: 'background 0.15s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isCurrent) e.currentTarget.style.background = 'rgba(0,0,0,0.03)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = isCurrent ? `${accentColor}0A` : 'transparent';
-                    }}
-                  >
-                    <span style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: '50%',
-                      background: isCurrent ? accentColor : 'rgba(0,0,0,0.05)',
-                      color: isCurrent ? '#fff' : 'var(--color-subtle)',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.6rem',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}>
-                      {ch.number}
-                    </span>
-                    <span style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '0.82rem',
-                      fontWeight: isCurrent ? 600 : 400,
-                      color: isCurrent ? accentColor : 'var(--color-deep)',
-                      lineHeight: 1.3,
-                    }}>
-                      {ch.title}
-                    </span>
-                  </a>
+                  <>
+                    <a
+                      key={ch.slug}
+                      href={`${prefix}/${ch.slug}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 10,
+                        padding: '9px 10px',
+                        borderRadius: 8,
+                        textDecoration: 'none',
+                        background: isCurrent ? `${accentColor}0A` : 'transparent',
+                        transition: 'background 0.15s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isCurrent) e.currentTarget.style.background = 'rgba(0,0,0,0.03)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = isCurrent ? `${accentColor}0A` : 'transparent';
+                      }}
+                    >
+                      <span style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: isCurrent ? accentColor : 'rgba(0,0,0,0.05)',
+                        color: isCurrent ? '#fff' : 'var(--color-subtle)',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.6rem',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}>
+                        {ch.number}
+                      </span>
+                      <span style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '0.82rem',
+                        fontWeight: isCurrent ? 600 : 400,
+                        color: isCurrent ? accentColor : 'var(--color-deep)',
+                        lineHeight: 1.3,
+                      }}>
+                        {ch.title}
+                      </span>
+                    </a>
+                    {/* Playbook interlude after ch3 */}
+                    {ch.number === 3 && locale === 'en' && (
+                      <a
+                        key="playbook"
+                        href="/playbook"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          padding: '7px 10px',
+                          margin: '2px 0',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          background: currentSlug === 'playbook' ? '#16C79A0A' : 'transparent',
+                          borderLeft: '2px dashed #16C79A30',
+                          transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(22,199,154,0.04)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'playbook' ? '#16C79A0A' : 'transparent'; }}
+                      >
+                        <span style={{
+                          width: 22, height: 22, borderRadius: '50%',
+                          background: currentSlug === 'playbook' ? '#16C79A' : 'rgba(22,199,154,0.1)',
+                          color: currentSlug === 'playbook' ? '#fff' : '#16C79A',
+                          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                        }}>
+                          &#9830;
+                        </span>
+                        <span style={{
+                          fontFamily: 'var(--font-body)', fontSize: '0.78rem',
+                          fontWeight: currentSlug === 'playbook' ? 600 : 400,
+                          color: currentSlug === 'playbook' ? '#16C79A' : '#16C79A90',
+                          lineHeight: 1.3, fontStyle: 'italic',
+                        }}>
+                          The Playbook
+                        </span>
+                      </a>
+                    )}
+                  </>
                 );
               })}
             </nav>
