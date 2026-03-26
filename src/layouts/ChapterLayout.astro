@@ -26,6 +26,7 @@ const rawNext = chapters.find((c) => c.number === chapter.number + 1);
 // Playbook interludes: ch3 → playbook instead of ch4
 const playbooks: Record<number, { slug: string; title: string }> = {
   3: { slug: 'playbook', title: 'The Playbook' },
+  6: { slug: 'field-guide', title: 'The Field Guide' },
 };
 const interlude = locale === 'en' ? playbooks[chapter.number] : undefined;
 const next = interlude ? { ...rawNext, slug: interlude.slug, title: interlude.title, number: chapter.number } as typeof rawNext : rawNext;

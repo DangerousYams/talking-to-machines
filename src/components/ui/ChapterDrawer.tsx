@@ -226,7 +226,7 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         {ch.title}
                       </span>
                     </a>
-                    {/* Playbook interlude after ch3 */}
+                    {/* Playbook interludes */}
                     {ch.number === 3 && locale === 'en' && (
                       <a
                         key="playbook"
@@ -262,6 +262,44 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                           lineHeight: 1.3, fontStyle: 'italic',
                         }}>
                           The Playbook
+                        </span>
+                      </a>
+                    )}
+                    {ch.number === 6 && locale === 'en' && (
+                      <a
+                        key="field-guide"
+                        href="/field-guide"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          padding: '7px 10px',
+                          margin: '2px 0',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          background: currentSlug === 'field-guide' ? '#F5A6230A' : 'transparent',
+                          borderLeft: '2px dashed #F5A62330',
+                          transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(245,166,35,0.04)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'field-guide' ? '#F5A6230A' : 'transparent'; }}
+                      >
+                        <span style={{
+                          width: 22, height: 22, borderRadius: '50%',
+                          background: currentSlug === 'field-guide' ? '#F5A623' : 'rgba(245,166,35,0.1)',
+                          color: currentSlug === 'field-guide' ? '#fff' : '#F5A623',
+                          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                        }}>
+                          &#9830;
+                        </span>
+                        <span style={{
+                          fontFamily: 'var(--font-body)', fontSize: '0.78rem',
+                          fontWeight: currentSlug === 'field-guide' ? 600 : 400,
+                          color: currentSlug === 'field-guide' ? '#F5A623' : '#F5A62390',
+                          lineHeight: 1.3, fontStyle: 'italic',
+                        }}>
+                          The Field Guide
                         </span>
                       </a>
                     )}

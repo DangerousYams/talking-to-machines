@@ -1,0 +1,338 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import PlaybookCard from '../components/PlaybookCard';
+import PromptFramer from '../components/PromptFramer';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import Divider from '../components/ui/Divider';
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Field Guide — Talking to Machines</title>
+  <meta name="description" content="Prompt recipes for every AI tool type, workflow chains, and when to use an agent vs. a tool." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    @keyframes pb-card-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media print {
+      nav, .pb-actions, .no-print { display: none !important; }
+      [style*="animation"] { animation: none !important; opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 0;">
+    <a href="/" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--color-subtle); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; opacity: 0.6;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to course
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header style="max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem;">
+        {['#E94560', '#7B61FF', '#16C79A', '#F5A623', '#0EA5E9'].map((c) => (
+          <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; opacity: 0.55;`}></div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #F5A623; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+        Between chapters 6 & 7
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--color-deep); margin: 0 0 0.75rem; line-height: 1.08; letter-spacing: -0.03em;">
+        The Field Guide
+      </h1>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; color: var(--color-subtle); margin: 0; line-height: 1.6; max-width: 460px; margin-left: auto; margin-right: auto;">
+        Different tools need different prompts.<br />Here's how to talk to each one.
+      </p>
+    </FadeInBlock>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 1: Start with aggregators                   -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section style="max-width: 680px; margin: 0 auto; padding: 0 1.5rem 2rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;">
+        <span style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: #F5A623; opacity: 0.25; line-height: 1;">1</span>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0 0 0.5rem; letter-spacing: -0.02em;">
+            Try everything first
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 0.95rem; color: var(--color-deep); margin: 0; line-height: 1.7; opacity: 0.75;">
+            Don't marry a tool until you've dated several. Aggregators like <strong>Krea</strong> (for images and video) and <strong>Poe</strong> (for chat models) let you test dozens of AI tools under one roof. The same prompt will produce wildly different results across tools &mdash; that difference <em>is</em> the information you need.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <div style="max-width: 720px;">
+      <PlaybookCard client:visible number={0} title="The Test-Drive Prompt" subtitle="Same task, multiple tools — find where each one shines."
+        prompt={"I want to [describe your task]. Show me how you'd approach this. I'm going to give the same prompt to several AI tools to compare results, so give me your best, most distinctive output — not a safe, generic one."}
+        color="#F5A623" delay={0.1} />
+    </div>
+  </section>
+
+  <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
+    <Divider accent="#F5A623" client:load />
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 2: Prompt recipes by tool type               -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section style="max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 1rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem;">
+        <span style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: #7B61FF; opacity: 0.25; line-height: 1;">2</span>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0 0 0.5rem; letter-spacing: -0.02em;">
+            Every tool speaks a different language
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 0.95rem; color: var(--color-deep); margin: 0; line-height: 1.7; opacity: 0.75;">
+            An image generator wants camera language. A music tool wants tempo and structure. A code tool wants context and constraints. Fill in your details below and the prompt frames itself for the tool you're using.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- The interactive prompt framer -->
+  <section style="max-width: 900px; margin: 0 auto; padding: 1rem 1.5rem 2rem;">
+    <PromptFramer client:visible />
+  </section>
+
+  <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
+    <Divider accent="#7B61FF" client:load />
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 3: Chaining tools into workflows             -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section style="max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 2rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;">
+        <span style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: #16C79A; opacity: 0.25; line-height: 1;">3</span>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0 0 0.5rem; letter-spacing: -0.02em;">
+            Chain tools into workflows
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 0.95rem; color: var(--color-deep); margin: 0; line-height: 1.7; opacity: 0.75;">
+            The real power isn't any single tool &mdash; it's connecting them. Each tool's output becomes the next tool's input. Here are three workflows to try:
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <!-- Workflow cards -->
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <FadeInBlock client:visible delay={0.1}>
+        <div style="padding: 1.25rem 1.5rem; border-radius: 12; border: 1px solid rgba(22,199,154,0.15); background: rgba(22,199,154,0.03); position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, #16C79A, #16C79A50); border-radius: 3px 0 0 3px;"></div>
+          <p style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #16C79A; margin: 0 0 0.5rem;">Blog Post Pipeline</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep);">
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(14,165,233,0.08); color: #0EA5E9; font-weight: 600; font-size: 0.8rem;">Perplexity</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(123,97,255,0.08); color: #7B61FF; font-weight: 600; font-size: 0.8rem;">Claude</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(233,69,96,0.08); color: #E94560; font-weight: 600; font-size: 0.8rem;">Midjourney</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(15,52,96,0.08); color: #0F3460; font-weight: 600; font-size: 0.8rem;">Descript</span>
+          </div>
+          <p style="font-family: var(--font-body); font-size: 0.82rem; color: var(--color-subtle); margin: 0.75rem 0 0; line-height: 1.5;">
+            Research &rarr; Write &rarr; Illustrate &rarr; Record as audio article
+          </p>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <div style="padding: 1.25rem 1.5rem; border-radius: 12; border: 1px solid rgba(245,166,35,0.15); background: rgba(245,166,35,0.03); position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, #F5A623, #F5A62350); border-radius: 3px 0 0 3px;"></div>
+          <p style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #F5A623; margin: 0 0 0.5rem;">Product Launch Pipeline</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep);">
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(123,97,255,0.08); color: #7B61FF; font-weight: 600; font-size: 0.8rem;">Pomelli</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(22,199,154,0.08); color: #16C79A; font-weight: 600; font-size: 0.8rem;">Suno</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(123,97,255,0.08); color: #7B61FF; font-weight: 600; font-size: 0.8rem;">Seedance</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(245,166,35,0.08); color: #F5A623; font-weight: 600; font-size: 0.8rem;">Photoroom</span>
+          </div>
+          <p style="font-family: var(--font-body); font-size: 0.82rem; color: var(--color-subtle); margin: 0.75rem 0 0; line-height: 1.5;">
+            Campaign copy &rarr; Jingle &rarr; Promo video &rarr; Product shots
+          </p>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <div style="padding: 1.25rem 1.5rem; border-radius: 12; border: 1px solid rgba(14,165,233,0.15); background: rgba(14,165,233,0.03); position: relative; overflow: hidden;">
+          <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, #0EA5E9, #0EA5E950); border-radius: 3px 0 0 3px;"></div>
+          <p style="font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0EA5E9; margin: 0 0 0.5rem;">Study Project Pipeline</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep);">
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(14,165,233,0.08); color: #0EA5E9; font-weight: 600; font-size: 0.8rem;">NotebookLM</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(123,97,255,0.08); color: #7B61FF; font-weight: 600; font-size: 0.8rem;">Claude</span>
+            <span style="color: var(--color-subtle); font-size: 0.75rem;">&rarr;</span>
+            <span style="padding: 4px 10px; border-radius: 6px; background: rgba(233,69,96,0.08); color: #E94560; font-weight: 600; font-size: 0.8rem;">Stitch</span>
+          </div>
+          <p style="font-family: var(--font-body); font-size: 0.82rem; color: var(--color-subtle); margin: 0.75rem 0 0; line-height: 1.5;">
+            Synthesize sources &rarr; Outline + draft &rarr; Design the presentation
+          </p>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 4: Agent or tool?                            -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section style="max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 2rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;">
+        <span style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: #E94560; opacity: 0.25; line-height: 1;">4</span>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0 0 0.5rem; letter-spacing: -0.02em;">
+            Agent or tool? A decision framework
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 0.95rem; color: var(--color-deep); margin: 0 0 1.5rem; line-height: 1.7; opacity: 0.75;">
+            Not everything needs an agent. Here's how to decide:
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <FadeInBlock client:visible delay={0.1}>
+        <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(22,199,154,0.1); color: #16C79A;">&#9889;</div>
+          <div>
+            <p style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.25rem;">Use a tool directly</p>
+            <p style="font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep); margin: 0; line-height: 1.6; opacity: 0.7;">
+              One step, one output. Generate an image. Summarize a document. Translate a paragraph. The task is clear and self-contained.
+            </p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.2}>
+        <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(245,166,35,0.1); color: #F5A623;">&#9881;</div>
+          <div>
+            <p style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.25rem;">Use an agent</p>
+            <p style="font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep); margin: 0; line-height: 1.6; opacity: 0.7;">
+              Multiple steps. Needs decisions along the way. "Research this, then write a draft, then find images that match." The AI needs to plan, not just execute.
+            </p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <div style="display: flex; gap: 1.25rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: rgba(233,69,96,0.1); color: #E94560;">&#128683;</div>
+          <div>
+            <p style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; color: #E94560; margin: 0 0 0.25rem;">Use an agent with checkpoints</p>
+            <p style="font-family: var(--font-body); font-size: 0.88rem; color: var(--color-deep); margin: 0; line-height: 1.6; opacity: 0.7;">
+              High stakes. Deleting files, sending emails, spending money, posting publicly. Let the agent plan and propose &mdash; but you approve each step before it executes.
+            </p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <div style="max-width: 720px; margin: 0 auto; padding: 0 1.5rem;">
+    <Divider accent="#E94560" client:load />
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- SECTION 5: The taste test challenge                  -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <section style="max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 1rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;">
+        <span style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: #0EA5E9; opacity: 0.25; line-height: 1;">5</span>
+        <div>
+          <h2 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--color-deep); margin: 0 0 0.5rem; letter-spacing: -0.02em;">
+            The Taste Test
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 0.95rem; color: var(--color-deep); margin: 0; line-height: 1.7; opacity: 0.75;">
+            The core skill isn't knowing every tool. It's knowing which tool fits which job. Try this exercise: pick ONE task, give the same prompt to 3 different tools, compare the results. Your judgment on which output is best &mdash; that's the skill no AI can replace.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <div style="max-width: 720px;">
+      <PlaybookCard client:visible number={0} title="The Taste Test Prompt" subtitle="Same task, three tools, your judgment."
+        prompt={"Pick a task you actually care about — a real project, not a test.\n\nGive the exact same prompt to 3 different AI tools.\n\nCompare the outputs. Ask yourself:\n- Which one understood what I actually wanted?\n- Which one surprised me in a good way?\n- Which one would I actually use?\n\nThe tool that wins isn't always the 'best' tool. It's the best tool for YOU, for THIS task. That distinction is the whole game."}
+        color="#0EA5E9" delay={0.1} />
+    </div>
+  </section>
+
+  <!-- Actions -->
+  <section class="pb-actions no-print" style="max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 3rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <button
+          onclick="window.print()"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Save as PDF
+        </button>
+
+        <a
+          href="https://x.com/intent/tweet?text=The%20Field%20Guide%20%E2%80%94%20prompt%20recipes%20for%20every%20AI%20tool%20type.%20Image%20gen%2C%20video%2C%20music%2C%20code%2C%20research%2C%20writing%2C%20slides.&url=https%3A%2F%2Fwww.talkingtomachines.xyz%2Ffield-guide"
+          target="_blank" rel="noopener noreferrer"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Share on X
+        </a>
+
+        <a
+          href="/ch7"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: none; background: #F5A623; color: white; min-height: 44px;"
+        >
+          Continue to Chapter 7 &rarr;
+        </a>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- Footer -->
+  <footer class="no-print" style="text-align: center; padding: 1.5rem 1.5rem 2.5rem; border-top: 1px solid rgba(26,26,46,0.06);">
+    <p style="font-family: var(--font-mono); font-size: 0.62rem; color: var(--color-subtle); letter-spacing: 0.06em; opacity: 0.4;">
+      www.talkingtomachines.xyz
+    </p>
+  </footer>
+
+  <Analytics />
+</body>
+</html>
