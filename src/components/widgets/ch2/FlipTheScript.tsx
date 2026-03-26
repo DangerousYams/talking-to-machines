@@ -149,6 +149,7 @@ export default function FlipTheScript() {
     }
   }, [isStreaming]);
 
+
   const handlePickScenario = (id: string) => {
     setScenarioId(id);
     setPhase('questioning');
@@ -272,33 +273,14 @@ export default function FlipTheScript() {
           <div style={{ flex: 1 }}>
             <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#1A1A2E' }}>Flip the Script</span>
           </div>
-          {phase === 'choose' && (
-            <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-              <button onClick={() => setMode('guided')} style={{ padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: mode === 'guided' ? '#1A1A2E' : 'transparent', color: mode === 'guided' ? '#FAF8F5' : '#6B7280' }}>GUIDED</button>
-              <button onClick={() => setMode('freeform')} style={{ padding: '4px 8px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, background: mode === 'freeform' ? '#16C79A' : 'transparent', color: mode === 'freeform' ? '#FFFFFF' : '#6B7280' }}>LIVE AI</button>
-            </div>
-          )}
         </div>
 
         {/* CHOOSE PHASE */}
         {phase === 'choose' && (
           <div style={{ flex: 1, overflow: 'auto', padding: '10px 12px' }}>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#1A1A2E', marginBottom: 12, lineHeight: 1.6 }}>
-              {liveMode ? 'Type a goal or pick a preset.' : 'Pick a goal. The AI asks 5 questions first.'}
+              Pick a goal. The AI asks 5 questions first.
             </p>
-            {liveMode && (
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleCustomGoal(); }} placeholder="Type your own goal..." style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '16px', color: '#1A1A2E', outline: 'none', minHeight: 40 }} />
-                  <button onClick={handleCustomGoal} disabled={!customGoal.trim()} style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, minHeight: 40 }}>Go</button>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '10px 0 6px' }}>
-                  <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>OR PRESET</span>
-                  <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
-                </div>
-              </div>
-            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {scenarios.map((s) => (
                 <button key={s.id} onClick={() => handlePickScenario(s.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(26,26,46,0.08)', background: 'transparent', cursor: 'pointer', textAlign: 'left', minHeight: 44 }}>
@@ -306,6 +288,13 @@ export default function FlipTheScript() {
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{'\u2192'}</span>
                 </button>
               ))}
+            </div>
+            {/* Custom goal — always visible as the last option */}
+            <div style={{ marginTop: 10 }}>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && customGoal.trim()) { setMode('freeform'); handleCustomGoal(); } }} placeholder="Or type your own goal..." style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: '1px solid rgba(22,199,154,0.25)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '16px', color: '#1A1A2E', outline: 'none', minHeight: 40 }} onFocus={(e) => e.currentTarget.style.borderColor = '#16C79A60'} onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(22,199,154,0.25)'} />
+                <button onClick={() => { setMode('freeform'); handleCustomGoal(); }} disabled={!customGoal.trim()} style={{ padding: '10px 16px', borderRadius: 8, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, minHeight: 40, transition: 'all 0.2s' }}>Go</button>
+              </div>
             </div>
           </div>
         )}
@@ -488,37 +477,16 @@ export default function FlipTheScript() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Flip the Script</h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>What happens when the AI interviews you first?</p>
           </div>
-          {phase === 'choose' && (
-            <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-              <button onClick={() => setMode('guided')} style={{ padding: '5px 10px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', transition: 'all 0.25s', background: mode === 'guided' ? '#1A1A2E' : 'transparent', color: mode === 'guided' ? '#FAF8F5' : '#6B7280' }}>GUIDED</button>
-              <button onClick={() => setMode('freeform')} style={{ padding: '5px 10px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', transition: 'all 0.25s', background: mode === 'freeform' ? '#16C79A' : 'transparent', color: mode === 'freeform' ? '#FFFFFF' : '#6B7280' }}>LIVE AI</button>
-            </div>
-          )}
         </div>
+
       </div>
 
       {/* Choose phase */}
       {phase === 'choose' && (
         <div style={{ padding: '2rem' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#1A1A2E', marginBottom: '1.5rem', lineHeight: 1.7 }}>
-            {liveMode
-              ? <>Type your own goal, or pick a preset. The AI will ask you <strong>5 real clarifying questions</strong> before planning.</>
-              : <>Pick a goal. Instead of giving you a generic answer, the AI will ask you <strong>5 clarifying questions</strong> first. Watch how much better the result gets.</>
-            }
+            Pick a goal. Instead of giving you a generic answer, the AI will ask you <strong>5 clarifying questions</strong> first. Watch how much better the result gets.
           </p>
-          {liveMode && (
-            <div style={{ marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleCustomGoal(); }} placeholder="Type your own goal... e.g., Help me learn guitar" style={{ flex: 1, padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E', outline: 'none', minHeight: 44 }} onFocus={(e) => e.currentTarget.style.borderColor = '#16C79A40'} onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'} />
-                <button onClick={handleCustomGoal} disabled={!customGoal.trim()} style={{ padding: '10px 20px', borderRadius: 10, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.25s', flexShrink: 0, minHeight: 44 }}>Go →</button>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '1rem 0 0.5rem' }}>
-                <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.06em' }}>OR PICK A PRESET</span>
-                <div style={{ flex: 1, height: 1, background: 'rgba(26,26,46,0.08)' }} />
-              </div>
-            </div>
-          )}
           <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 10 }}>
             {scenarios.map((s) => (
               <button key={s.id} onClick={() => handlePickScenario(s.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderRadius: 10, border: '1px solid rgba(26,26,46,0.08)', background: 'transparent', cursor: 'pointer', transition: 'all 0.25s', textAlign: 'left' as const, minHeight: 44 }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0F346030'; e.currentTarget.style.background = 'rgba(15,52,96,0.03)'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; e.currentTarget.style.background = 'transparent'; }}>
@@ -526,6 +494,13 @@ export default function FlipTheScript() {
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{'\u2192'}</span>
               </button>
             ))}
+          </div>
+          {/* Custom goal — always visible */}
+          <div style={{ marginTop: 12 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input type="text" value={customGoal} onChange={(e) => setCustomGoal(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && customGoal.trim()) { setMode('freeform'); handleCustomGoal(); } }} placeholder="Or type your own goal..." style={{ flex: 1, padding: '10px 14px', borderRadius: 10, border: '1px solid rgba(22,199,154,0.25)', background: '#FEFDFB', fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#1A1A2E', outline: 'none', minHeight: 44 }} onFocus={(e) => e.currentTarget.style.borderColor = '#16C79A60'} onBlur={(e) => e.currentTarget.style.borderColor = 'rgba(22,199,154,0.25)'} />
+              <button onClick={() => { setMode('freeform'); handleCustomGoal(); }} disabled={!customGoal.trim()} style={{ padding: '10px 20px', borderRadius: 10, border: 'none', background: !customGoal.trim() ? 'rgba(26,26,46,0.08)' : '#16C79A', color: '#FFFFFF', cursor: !customGoal.trim() ? 'default' : 'pointer', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.25s', flexShrink: 0, minHeight: 44 }}>Go &rarr;</button>
+            </div>
           </div>
         </div>
       )}
@@ -664,6 +639,7 @@ export default function FlipTheScript() {
           )}
         </div>
       )}
+
     </div>
   );
 }

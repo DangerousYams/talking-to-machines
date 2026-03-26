@@ -12,7 +12,7 @@ interface Message {
 
 const SYSTEM_PROMPT = 'You are a helpful, harmless, and honest assistant.';
 const SYSTEM_TOKENS = Math.ceil(SYSTEM_PROMPT.length / 4);
-const MAX_VISIBLE = 7;
+const MAX_VISIBLE = 4;
 
 const COLORS = [
   '#E94560', '#0F3460', '#16C79A', '#F5A623',
@@ -24,6 +24,7 @@ export default function ContextWindowViz() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [nextId, setNextId] = useState(1);
+  const [blowingAway, setBlowingAway] = useState<number[]>([]); // ids of messages being animated out
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -41,7 +42,16 @@ export default function ContextWindowViz() {
     const trimmed = input.trim();
     if (!trimmed) return;
     const tokens = estimateTokens(trimmed);
-    setMessages(prev => [...prev, { id: nextId, text: trimmed, tokens, role: 'user' }]);
+    const newMessages = [...messages, { id: nextId, text: trimmed, tokens, role: 'user' as const }];
+    // Figure out which messages will be newly dropped
+    const newDropped = newMessages.length - MAX_VISIBLE;
+    const oldDropped = messages.length - MAX_VISIBLE;
+    if (newDropped > oldDropped && newDropped > 0) {
+      const newlyDroppedIds = newMessages.slice(Math.max(0, oldDropped), newDropped).map(m => m.id);
+      setBlowingAway(newlyDroppedIds);
+      setTimeout(() => setBlowingAway([]), 600);
+    }
+    setMessages(newMessages);
     setNextId(prev => prev + 1);
     setInput('');
   };
@@ -286,8 +296,16 @@ export default function ContextWindowViz() {
     );
   }
 
-  // ==================== DESKTOP LAYOUT (unchanged) ====================
+  // ==================== DESKTOP LAYOUT ====================
   return (
+    <>
+    <style>{`
+      @keyframes cwv-blow-away {
+        0% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        40% { opacity: 0.6; transform: translateX(30px) scale(0.95); filter: blur(1px); }
+        100% { opacity: 0; transform: translateX(120px) scale(0.8); filter: blur(4px); }
+      }
+    `}</style>
     <div className="widget-container" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
       <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
@@ -416,20 +434,22 @@ export default function ContextWindowViz() {
             </span>
             {messages.length === 0 && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', fontStyle: 'italic', margin: 0 }}>
-                Start typing messages below. Watch the context window fill up on the left. After {MAX_VISIBLE} messages, the oldest ones will start to disappear -- that is the AI "forgetting."
+                Start typing messages below. Watch the context window fill up on the left. After a few messages, the oldest ones will blow away — that's the AI "forgetting."
               </p>
             )}
             {messages.map((msg, i) => {
               const isDropped = i < droppedCount;
+              const isBlowing = blowingAway.includes(msg.id);
               return (
                 <div
                   key={msg.id}
                   style={{
                     padding: '8px 12px', marginBottom: 6, borderRadius: 8,
                     background: isDropped ? 'rgba(26,26,46,0.03)' : 'rgba(123,97,255,0.04)',
-                    opacity: isDropped ? 0.4 : 1,
-                    transition: 'opacity 0.3s ease',
+                    opacity: isDropped && !isBlowing ? 0.4 : 1,
+                    transition: isBlowing ? 'none' : 'opacity 0.3s ease',
                     borderLeft: isDropped ? '2px solid rgba(26,26,46,0.1)' : `2px solid ${COLORS[i % COLORS.length]}`,
+                    animation: isBlowing ? 'cwv-blow-away 0.6s ease-out forwards' : 'none',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -497,5 +517,6 @@ export default function ContextWindowViz() {
         </p>
       </div>
     </div>
+    </>
   );
 }

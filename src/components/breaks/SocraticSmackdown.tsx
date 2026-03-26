@@ -226,7 +226,7 @@ export default function SocraticSmackdown() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              Drop your spiciest opinion. Socrates will question everything.
+              Drop your boldest opinion. Socrates will question everything.
             </p>
             <textarea
               value={opinion}

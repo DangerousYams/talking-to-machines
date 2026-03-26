@@ -1,5 +1,5 @@
-import { useState, useEffect, type ReactNode } from 'react';
-import { unlockTool } from '../../lib/tools-unlock';
+import { useState, useEffect, useMemo, type ReactNode } from 'react';
+import { unlockTool, isToolUnlocked } from '../../lib/tools-unlock';
 
 interface Props {
   accentColor: string;
@@ -7,21 +7,93 @@ interface Props {
   children: ReactNode;
 }
 
+const PALETTE = ['#16C79A', '#7B61FF', '#E94560', '#F5A623', '#0EA5E9'];
+const PARTICLE_COUNT = 28;
+const CELEBRATION_MS = 2400;
+
+// Deterministic-ish seed from tool name so each chapter's burst looks different
+function hashStr(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return h;
+}
+
+function seededRand(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+interface Particle {
+  x: number;   // final offset X (px)
+  y: number;   // final offset Y (px)
+  r: number;   // radius
+  color: string;
+  delay: number;
+  duration: number;
+}
+
 export default function BreakReveal({ accentColor, toolName, children }: Props) {
-  const [revealed, setRevealed] = useState(false);
+  const toolId = toolName.replace(/\s+/g, '-').toLowerCase();
+  const alreadyUnlocked = typeof window !== 'undefined' && isToolUnlocked(toolId);
+
+  const [phase, setPhase] = useState<'celebrating' | 'ready'>(
+    alreadyUnlocked ? 'ready' : 'celebrating'
+  );
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(t);
-  }, []);
+  // Generate particles with seeded random for consistency
+  const particles = useMemo<Particle[]>(() => {
+    const rand = seededRand(Math.abs(hashStr(toolName)));
+    return Array.from({ length: PARTICLE_COUNT }, () => {
+      const angle = rand() * Math.PI * 2;
+      const dist = 80 + rand() * 160;
+      return {
+        x: Math.cos(angle) * dist,
+        y: Math.sin(angle) * dist - 20, // slight upward bias
+        r: 4 + rand() * 10,
+        color: PALETTE[Math.floor(rand() * PALETTE.length)],
+        delay: rand() * 0.35,
+        duration: 0.6 + rand() * 0.4,
+      };
+    });
+  }, [toolName]);
 
-  if (revealed) {
+  useEffect(() => {
+    // Stagger the mount-in
+    const t1 = setTimeout(() => setMounted(true), 80);
+
+    if (phase === 'celebrating') {
+      // Unlock immediately
+      unlockTool(toolId);
+      // Transition to ready after celebration
+      const t2 = setTimeout(() => setPhase('ready'), CELEBRATION_MS);
+      return () => { clearTimeout(t1); clearTimeout(t2); };
+    }
+    return () => clearTimeout(t1);
+  }, [phase, toolId]);
+
+  // Already unlocked — just show the tool
+  if (phase === 'ready' && alreadyUnlocked && !mounted) {
     return <>{children}</>;
   }
 
-  // Unique ID for keyframes scoping
-  const id = toolName.replace(/\s+/g, '-').toLowerCase();
+  // Tool revealed after celebration
+  if (phase === 'ready') {
+    return (
+      <div style={{
+        opacity: mounted ? 1 : 0,
+        transition: 'opacity 0.6s ease',
+      }}>
+        {children}
+      </div>
+    );
+  }
+
+  // ── Celebration phase ──
+  const id = toolId;
 
   return (
     <div style={{
@@ -29,170 +101,154 @@ export default function BreakReveal({ accentColor, toolName, children }: Props) 
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 320,
       padding: '3rem 1.5rem',
       overflow: 'hidden',
     }}>
       <style>{`
-        @keyframes br-shackle-${id} {
-          0% { transform: rotate(0deg); transform-origin: right bottom; }
-          20% { transform: rotate(-8deg); transform-origin: right bottom; }
-          40% { transform: rotate(6deg); transform-origin: right bottom; }
-          60% { transform: rotate(-4deg); transform-origin: right bottom; }
-          80% { transform: rotate(2deg); transform-origin: right bottom; }
-          100% { transform: rotate(0deg); transform-origin: right bottom; }
+        @keyframes br-burst-${id} {
+          0% {
+            opacity: 0;
+            transform: translate(0, 0) scale(0);
+          }
+          20% {
+            opacity: 0.9;
+            transform: translate(calc(var(--bx) * 0.3), calc(var(--by) * 0.3)) scale(1.2);
+          }
+          60% {
+            opacity: 0.7;
+            transform: translate(var(--bx), var(--by)) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(calc(var(--bx) * 1.1), calc(var(--by) * 1.3 - 30px)) scale(0.6);
+          }
         }
-        @keyframes br-glow-${id} {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.15); }
+        @keyframes br-title-${id} {
+          0% {
+            opacity: 0;
+            transform: scale(0.85) translateY(8px);
+            filter: blur(4px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+          }
         }
-        @keyframes br-float-${id} {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-4px); }
+        @keyframes br-sub-${id} {
+          0% {
+            opacity: 0;
+            transform: translateY(6px) rotate(-2deg);
+          }
+          100% {
+            opacity: 0.8;
+            transform: translateY(0) rotate(-2deg);
+          }
         }
-        @keyframes br-shimmer-${id} {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
+        @keyframes br-dot-pulse-${id} {
+          0%, 100% { transform: scale(1); opacity: 0.55; }
+          50% { transform: scale(1.3); opacity: 0.8; }
         }
-        .br-lock-${id}:hover .br-shackle {
-          animation: br-shackle-${id} 0.6s ease-in-out;
-        }
-        .br-cta-${id} {
-          position: relative;
-          overflow: hidden;
-        }
-        .br-cta-${id}::after {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
-          transform: translateX(-100%);
-          animation: br-shimmer-${id} 3s ease-in-out infinite;
-          animation-delay: 1.5s;
+        @keyframes br-line-grow-${id} {
+          0% { transform: scaleX(0); }
+          100% { transform: scaleX(1); }
         }
       `}</style>
 
-      {/* Glow orb behind lock */}
+      {/* ── Particles ── */}
+      {particles.map((p, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '45%',
+            width: p.r * 2,
+            height: p.r * 2,
+            marginLeft: -p.r,
+            marginTop: -p.r,
+            borderRadius: '50%',
+            background: p.color,
+            opacity: 0,
+            willChange: 'transform, opacity',
+            '--bx': `${p.x}px`,
+            '--by': `${p.y}px`,
+            animation: mounted
+              ? `br-burst-${id} ${p.duration}s cubic-bezier(0.22, 1, 0.36, 1) ${p.delay}s forwards`
+              : 'none',
+            pointerEvents: 'none',
+          } as React.CSSProperties}
+        />
+      ))}
+
+      {/* ── Center accent line ── */}
       <div style={{
-        position: 'absolute',
-        width: 120, height: 120, borderRadius: '50%',
-        background: `radial-gradient(circle, ${accentColor}20 0%, transparent 70%)`,
-        top: '1.5rem', left: '50%', transform: 'translateX(-50%)',
-        animation: `br-glow-${id} 3s ease-in-out infinite`,
-        pointerEvents: 'none',
+        width: 48,
+        height: 2,
+        background: `linear-gradient(90deg, ${accentColor}, ${accentColor}60)`,
+        borderRadius: 2,
+        marginBottom: 20,
+        transformOrigin: 'center',
+        animation: mounted ? `br-line-grow-${id} 0.5s ease 0.5s both` : 'none',
       }} />
 
-      {/* Lock icon with animated shackle */}
-      <div
-        className={`br-lock-${id}`}
-        style={{
-          position: 'relative',
-          width: 56, height: 56,
-          marginBottom: 20,
-          cursor: 'default',
-          animation: `br-float-${id} 3s ease-in-out infinite`,
-          opacity: mounted ? 1 : 0,
-          transform: mounted ? 'translateY(0)' : 'translateY(12px)',
-          transition: 'opacity 0.6s ease, transform 0.6s ease',
-        }}
-      >
-        {/* Lock body */}
-        <svg
-          width="56" height="56" viewBox="0 0 56 56" fill="none"
-          style={{ position: 'absolute', top: 0, left: 0 }}
-        >
-          {/* Body */}
-          <rect x="12" y="26" width="32" height="22" rx="4"
-            fill={accentColor} opacity="0.12"
-            stroke={accentColor} strokeWidth="2"
+      {/* ── Dot divider (matches the course's 5-dot pattern) ── */}
+      <div style={{
+        display: 'flex',
+        gap: 10,
+        marginBottom: 24,
+      }}>
+        {PALETTE.map((color, i) => (
+          <div
+            key={i}
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: '50%',
+              background: color,
+              opacity: 0,
+              animation: mounted
+                ? `br-dot-pulse-${id} 2s ease-in-out ${0.6 + i * 0.08}s infinite, br-sub-${id} 0.4s ease ${0.5 + i * 0.06}s forwards`
+                : 'none',
+            }}
           />
-          {/* Keyhole */}
-          <circle cx="28" cy="35" r="3" fill={accentColor} opacity="0.5" />
-          <rect x="27" y="36" width="2" height="5" rx="1" fill={accentColor} opacity="0.5" />
-        </svg>
-        {/* Shackle — separate so it can animate */}
-        <svg
-          className="br-shackle"
-          width="56" height="56" viewBox="0 0 56 56" fill="none"
-          style={{
-            position: 'absolute', top: 0, left: 0,
-            transformOrigin: '36px 26px',
-          }}
-        >
-          <path
-            d="M20 26V20a8 8 0 0 1 16 0v6"
-            stroke={accentColor} strokeWidth="2.5" strokeLinecap="round"
-            fill="none"
-          />
-        </svg>
+        ))}
       </div>
 
-      {/* Tool name — the star of the show */}
+      {/* ── Tool name ── */}
       <h3 style={{
         fontFamily: 'var(--font-heading)',
-        fontSize: 'clamp(1.3rem, 4vw, 1.6rem)',
+        fontSize: 'clamp(1.5rem, 5vw, 2rem)',
         fontWeight: 800,
         color: '#1A1A2E',
-        margin: '0 0 4px',
-        lineHeight: 1.2,
+        margin: '0 0 8px',
+        lineHeight: 1.15,
         letterSpacing: '-0.02em',
-        opacity: mounted ? 1 : 0,
-        transform: mounted ? 'translateY(0)' : 'translateY(10px)',
-        transition: 'opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s',
+        textAlign: 'center',
+        opacity: 0,
+        animation: mounted
+          ? `br-title-${id} 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards`
+          : 'none',
       }}>
         {toolName}
       </h3>
 
-      {/* Subtitle */}
+      {/* ── Handwritten unlock note ── */}
       <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: '0.88rem',
-        color: '#6B7280',
-        margin: '0 0 28px',
-        lineHeight: 1.5,
-        opacity: mounted ? 1 : 0,
-        transform: mounted ? 'translateY(0)' : 'translateY(8px)',
-        transition: 'opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s',
+        fontFamily: "'Caveat', cursive",
+        fontSize: 'clamp(1.1rem, 3vw, 1.35rem)',
+        fontWeight: 600,
+        color: accentColor,
+        margin: 0,
+        opacity: 0,
+        animation: mounted
+          ? `br-sub-${id} 0.5s ease 0.7s forwards`
+          : 'none',
       }}>
-        Chapter complete — new tool unlocked
+        New tool unlocked!
       </p>
-
-      {/* CTA button */}
-      <button
-        className={`br-cta-${id}`}
-        onClick={() => {
-          const toolId = toolName.replace(/\s+/g, '-').toLowerCase();
-          unlockTool(toolId);
-          setRevealed(true);
-        }}
-        style={{
-          padding: '13px 36px',
-          borderRadius: 100,
-          border: `1.5px solid ${accentColor}`,
-          cursor: 'pointer',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.82rem',
-          fontWeight: 600,
-          letterSpacing: '0.05em',
-          background: 'transparent',
-          color: accentColor,
-          transition: 'background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, opacity 0.5s ease 0.45s',
-          opacity: mounted ? 1 : 0,
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = accentColor;
-          e.currentTarget.style.color = 'white';
-          e.currentTarget.style.transform = 'translateY(-2px)';
-          e.currentTarget.style.boxShadow = `0 8px 30px ${accentColor}35`;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'transparent';
-          e.currentTarget.style.color = accentColor;
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = 'none';
-        }}
-      >
-        Open
-      </button>
     </div>
   );
 }

@@ -235,6 +235,7 @@ export default function PromptLaboratory() {
   const qualityLabel = qualityPercent >= 80 ? 'Expert' : qualityPercent >= 50 ? 'Strong' : qualityPercent >= 25 ? 'Basic' : 'Minimal';
   const qualityColor = qualityPercent >= 80 ? '#16C79A' : qualityPercent >= 50 ? '#0EA5E9' : qualityPercent >= 25 ? '#F5A623' : '#6B7280';
 
+
   // Render response text
   const renderResponse = (text: string) => {
     return text.split('\n').map((line, i) => {
@@ -267,29 +268,42 @@ export default function PromptLaboratory() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
           </div>
           <span style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, color: '#1A1A2E', flex: 1 }}>Prompt Lab</span>
-          {/* Mode toggle */}
-          <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-            <button
-              onClick={() => handleModeSwitch('guided')}
-              style={{
-                padding: '4px 8px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'guided' ? '#1A1A2E' : 'transparent',
-                color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
-              }}
-            >GUIDED</button>
-            <button
-              onClick={() => handleModeSwitch('freeform')}
-              style={{
-                padding: '4px 8px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'freeform' ? '#16C79A' : 'transparent',
-                color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
-              }}
-            >LIVE AI</button>
-          </div>
+        </div>
+
+        {/* Tab bar */}
+        <div style={{ display: 'flex', gap: 0, padding: '0.75rem 1rem 0' }}>
+          <button
+            onClick={() => handleModeSwitch('guided')}
+            style={{
+              flex: 1, padding: '10px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
+              letterSpacing: '0.06em', transition: 'all 0.25s',
+              background: 'transparent',
+              color: mode === 'guided' ? '#1A1A2E' : '#6B728080',
+              borderBottom: mode === 'guided' ? '2px solid #1A1A2E' : '2px solid transparent',
+            }}
+          >
+            GUIDED
+          </button>
+          <button
+            onClick={() => handleModeSwitch('freeform')}
+            style={{
+              flex: 1, padding: '10px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
+              letterSpacing: '0.06em', transition: 'all 0.25s',
+              background: 'transparent',
+              color: mode === 'freeform' ? '#16C79A' : '#6B728080',
+              borderBottom: mode === 'freeform' ? '2px solid #16C79A' : '2px solid transparent',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            }}
+          >
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: mode === 'freeform' ? '#16C79A' : '#16C79A80',
+              display: 'inline-block', flexShrink: 0,
+            }} />
+            LIVE AI
+          </button>
         </div>
 
         {/* Template picker as tab bar */}
@@ -482,33 +496,42 @@ export default function PromptLaboratory() {
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Prompt Laboratory</h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle technique blocks to build a sophisticated prompt</p>
           </div>
-          {/* Mode toggle */}
-          <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-            <button
-              onClick={() => handleModeSwitch('guided')}
-              style={{
-                padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'guided' ? '#1A1A2E' : 'transparent',
-                color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
-              }}
-            >
-              GUIDED
-            </button>
-            <button
-              onClick={() => handleModeSwitch('freeform')}
-              style={{
-                padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'freeform' ? '#16C79A' : 'transparent',
-                color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
-              }}
-            >
-              LIVE AI
-            </button>
-          </div>
+        </div>
+
+        {/* Tab bar */}
+        <div style={{ display: 'flex', gap: 0, padding: '1rem 2rem 0' }}>
+          <button
+            onClick={() => handleModeSwitch('guided')}
+            style={{
+              flex: 1, padding: '10px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
+              letterSpacing: '0.06em', transition: 'all 0.25s',
+              background: 'transparent',
+              color: mode === 'guided' ? '#1A1A2E' : '#6B728080',
+              borderBottom: mode === 'guided' ? '2px solid #1A1A2E' : '2px solid transparent',
+            }}
+          >
+            GUIDED
+          </button>
+          <button
+            onClick={() => handleModeSwitch('freeform')}
+            style={{
+              flex: 1, padding: '10px 0', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
+              letterSpacing: '0.06em', transition: 'all 0.25s',
+              background: 'transparent',
+              color: mode === 'freeform' ? '#16C79A' : '#6B728080',
+              borderBottom: mode === 'freeform' ? '2px solid #16C79A' : '2px solid transparent',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            }}
+          >
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: mode === 'freeform' ? '#16C79A' : '#16C79A80',
+              display: 'inline-block', flexShrink: 0,
+            }} />
+            LIVE AI
+          </button>
         </div>
 
         {/* Template tabs */}
@@ -700,6 +723,7 @@ export default function PromptLaboratory() {
           }
         </p>
       </div>
+
     </div>
   );
 }

@@ -93,9 +93,9 @@ export default function PromptMakeover() {
   };
 
   const buildPrompt = () => {
-    const parts: { text: string; color: string }[] = [];
-    if (active.size === 0) return [{ text: 'design me a cool sneaker', color: '#6B7280' }];
-
+    const parts: { text: string; color: string }[] = [
+      { text: 'Design me a cool sneaker.', color: '#6B7280' },
+    ];
     blocks.forEach((b) => {
       if (active.has(b.id)) {
         parts.push({ text: b.text, color: b.color });
@@ -168,10 +168,7 @@ Rules:
         setMode('freeform');
         return;
       }
-      const guidedText = active.size === 0
-        ? ''
-        : blocks.filter((b) => active.has(b.id)).map((b) => b.text).join(' ');
-      setFreeformText(guidedText);
+      setFreeformText('');
       setUsedBlocks(new Set());
       setGeneratingBlock(null);
       setResponseExpanded(false);
@@ -185,6 +182,7 @@ Rules:
   };
 
   const qualityPercent = Math.min(100, score * 20);
+
 
   const renderResponse = () => {
     if (mode === 'freeform' && !liveResponse && !isStreaming) {
@@ -211,65 +209,75 @@ Rules:
     );
   };
 
-  const showShareCard = (mode === 'guided' && qualityPercent === 100) || (mode === 'freeform' && liveResponse && !isStreaming);
+  const showShareCard = mode === 'freeform' && liveResponse && !isStreaming;
   const responseIsLong = displayedResponse.length > 400;
 
   return (
     <div className="widget-container">
-      {/* Header */}
-      <div style={{ padding: isMobile ? '0.75rem 1rem' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: isMobile ? '0.75rem' : '1.25rem' }}>
+      {/* Header + Mode tabs */}
+      <div style={{ borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
+        <div style={{ padding: isMobile ? '0.75rem 1rem 0' : '1.25rem 2rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, borderRadius: 8, background: 'linear-gradient(135deg, #E94560, #E9456080)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Prompt Makeover</h3>
-            {!isMobile && (
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Toggle building blocks to transform a vague prompt</p>
-            )}
-          </div>
-          {/* Mode toggle */}
-          <div style={{ display: 'flex', borderRadius: 100, border: '1px solid rgba(26,26,46,0.1)', overflow: 'hidden', flexShrink: 0 }}>
-            <button
-              onClick={() => handleModeSwitch('guided')}
-              style={{
-                padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'guided' ? '#1A1A2E' : 'transparent',
-                color: mode === 'guided' ? '#FAF8F5' : '#6B7280',
-              }}
-            >
-              GUIDED
-            </button>
-            <button
-              onClick={() => handleModeSwitch('freeform')}
-              style={{
-                padding: '5px 10px', border: 'none', cursor: 'pointer',
-                fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                letterSpacing: '0.04em', transition: 'all 0.25s',
-                background: mode === 'freeform' ? '#16C79A' : 'transparent',
-                color: mode === 'freeform' ? '#FFFFFF' : '#6B7280',
-              }}
-            >
-              LIVE AI
-            </button>
           </div>
         </div>
+
       </div>
 
       {/* Unified layout — stacked on mobile, side-by-side on desktop */}
-      <div style={isMobile ? {} : { display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 400 }}>
+      <div style={isMobile ? {} : { display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'start' }}>
         {/* Left: Prompt controls */}
         <div style={{ padding: isMobile ? '0.75rem 1rem' : '1.5rem 2rem', borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)', borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none' }}>
 
           {mode === 'guided' ? (
-            <>
+            <div style={{ display: 'flex', flexDirection: 'column', maxHeight: isMobile ? 'none' : 420 }}>
+              {/* Toggle switches — compact row on top */}
+              <div style={{
+                display: 'flex', flexWrap: 'wrap' as const, gap: 6,
+                marginBottom: isMobile ? 8 : 12,
+              }}>
+                {blocks.map((block) => {
+                  const isActive = active.has(block.id);
+                  return (
+                    <button
+                      key={block.id}
+                      onClick={() => toggle(block.id)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 6,
+                        padding: '6px 12px', borderRadius: 100,
+                        border: '1px solid', cursor: 'pointer', transition: 'all 0.25s ease',
+                        background: isActive ? `${block.color}12` : 'transparent',
+                        borderColor: isActive ? block.color : 'rgba(26,26,46,0.1)',
+                      }}
+                    >
+                      <span style={{
+                        width: 18, height: 18, borderRadius: 4,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '0.7rem', fontWeight: 800, color: 'white',
+                        background: isActive ? block.color : 'rgba(26,26,46,0.15)',
+                        transition: 'background 0.25s',
+                      }}>
+                        {block.letter}
+                      </span>
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                        color: isActive ? block.color : '#6B7280', transition: 'color 0.25s',
+                      }}>
+                        {block.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* Quality meter */}
-              <div style={{ marginBottom: isMobile ? 10 : '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Prompt Quality</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: qualityPercent > 60 ? '#16C79A' : qualityPercent > 20 ? '#F5A623' : '#6B7280' }}>{qualityPercent}%</span>
+              <div style={{ marginBottom: isMobile ? 8 : 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 3 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Prompt Quality</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: qualityPercent > 60 ? '#16C79A' : qualityPercent > 20 ? '#F5A623' : '#6B7280' }}>{qualityPercent}%</span>
                 </div>
                 <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
                   <div style={{
@@ -280,12 +288,13 @@ Rules:
                 </div>
               </div>
 
-              {/* Prompt display */}
+              {/* Prompt display — scrollable, fills remaining space */}
               <div style={{
+                flex: 1, minHeight: 0,
                 background: '#FEFDFB', border: '1px solid rgba(26,26,46,0.06)', borderRadius: 10,
-                padding: isMobile ? '0.6rem 0.75rem' : '1.25rem 1.5rem', marginBottom: isMobile ? 10 : '1.25rem',
-                minHeight: isMobile ? undefined : 120,
-                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.72rem' : '0.82rem', lineHeight: 1.7,
+                padding: isMobile ? '0.6rem 0.75rem' : '1rem 1.25rem',
+                fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.72rem' : '0.8rem', lineHeight: 1.7,
+                overflowY: 'auto' as const,
               }}>
                 {buildPrompt().map((part, i) => (
                   <span key={i} style={{
@@ -299,64 +308,59 @@ Rules:
                 ))}
               </div>
 
-              {/* Toggle switches */}
-              <div style={isMobile
-                ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }
-                : { display: 'flex', flexDirection: 'column' as const, gap: 8 }
-              }>
-                {blocks.map((block) => {
-                  const isActive = active.has(block.id);
-                  return (
-                    <button
-                      key={block.id}
-                      onClick={() => toggle(block.id)}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: isMobile ? 8 : 10, padding: '8px 12px',
-                        minHeight: isMobile ? 38 : undefined,
-                        borderRadius: 8, border: '1px solid', cursor: 'pointer', transition: 'all 0.25s ease',
-                        background: isActive ? `${block.color}08` : 'transparent',
-                        borderColor: isActive ? `${block.color}30` : 'rgba(26,26,46,0.06)',
-                      }}
-                    >
-                      <div style={{
-                        width: isMobile ? 30 : 36, height: isMobile ? 16 : 20, borderRadius: isMobile ? 8 : 10,
-                        position: 'relative' as const, flexShrink: 0,
-                        background: isActive ? block.color : 'rgba(26,26,46,0.12)', transition: 'background 0.3s',
-                      }}>
-                        <div style={{
-                          position: 'absolute' as const, top: 2,
-                          left: isActive ? (isMobile ? 16 : 18) : 2,
-                          width: isMobile ? 12 : 16, height: isMobile ? 12 : 16,
-                          borderRadius: '50%', background: 'white',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.15)', transition: 'left 0.3s ease',
-                        }} />
-                      </div>
-                      <span style={{
-                        fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.75rem' : '0.8rem', fontWeight: 600,
-                        color: isActive ? block.color : '#6B7280', transition: 'color 0.25s',
-                      }}>
-                        {block.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </>
+              {/* Try my own prompt button */}
+              <button
+                onClick={() => handleModeSwitch('freeform')}
+                style={{
+                  width: '100%', marginTop: isMobile ? 10 : 12,
+                  padding: '11px 0', borderRadius: 8,
+                  border: 'none',
+                  background: '#16C79A',
+                  cursor: 'pointer', transition: 'all 0.25s',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.78rem',
+                  fontWeight: 700, letterSpacing: '0.04em', color: 'white',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  boxShadow: '0 2px 8px rgba(22,199,154,0.25)',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(22,199,154,0.35)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(22,199,154,0.25)'; }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C79A', flexShrink: 0 }} />
+                Try my own prompt
+              </button>
+            </div>
           ) : (showUnlockPrompt && !isPaid) ? (
             <div style={{ display: 'flex', flexDirection: 'column' as const, justifyContent: 'center', minHeight: isMobile ? 200 : 280 }}>
               <UnlockModal feature="Live AI mode" accentColor="#16C79A" />
             </div>
           ) : (
             <>
-              <div style={{ marginBottom: 10 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Your Prompt</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C79A' }} />
+                  Live AI
+                </span>
+                <button
+                  onClick={() => handleModeSwitch('guided')}
+                  style={{
+                    padding: '3px 10px', borderRadius: 100,
+                    border: '1px solid rgba(26,26,46,0.1)', background: 'transparent',
+                    cursor: 'pointer', fontFamily: 'var(--font-mono)',
+                    fontSize: '0.68rem', fontWeight: 600, color: '#6B7280',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.25)'; e.currentTarget.style.color = '#1A1A2E'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'; e.currentTarget.style.color = '#6B7280'; }}
+                >
+                  &larr; Back to guided
+                </button>
               </div>
               <textarea
                 ref={textareaRef}
                 value={freeformText}
                 onChange={(e) => setFreeformText(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type any prompt here — or click the building blocks below to assemble one..."
+                placeholder="Type any prompt, then click the building blocks below to strengthen it..."
                 style={{
                   width: '100%', minHeight: isMobile ? 100 : 180, padding: isMobile ? '0.75rem' : '1rem 1.25rem',
                   fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.8rem' : '0.85rem', lineHeight: 1.7,
@@ -452,26 +456,18 @@ Rules:
             )}
           </div>
 
-          {/* Response with expand pattern — no scrollbar */}
+          {/* Response — scrollable */}
           <div
             ref={responseRef}
-            className={`response-expandable${responseExpanded || !responseIsLong ? ' expanded' : ''}`}
             style={{
               fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.75,
               color: '#1A1A2E', whiteSpace: 'pre-wrap' as const,
+              maxHeight: isMobile ? 250 : 320,
+              overflowY: 'auto' as const,
             }}
           >
             {renderResponse()}
           </div>
-
-          {responseIsLong && !responseExpanded && !isTyping && (
-            <button
-              className="response-expand-btn"
-              onClick={() => setResponseExpanded(true)}
-            >
-              Show full response
-            </button>
-          )}
         </div>
       </div>
 
@@ -489,6 +485,7 @@ Rules:
           />
         </div>
       )}
+
     </div>
   );
 }
