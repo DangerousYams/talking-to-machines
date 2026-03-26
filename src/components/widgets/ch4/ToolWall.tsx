@@ -49,19 +49,24 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
     >
       {/* Top line with badges */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' as const }}>
-        <span style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase' as const,
-          color: catColor,
-          background: catColor + '12',
-          padding: '2px 8px',
-          borderRadius: 4,
-        }}>
-          {categoryLabels[tool.category]}
-        </span>
+        {(tool.categories || [tool.category]).map((cat) => {
+          const cc = categoryColors[cat];
+          return (
+            <span key={cat} style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase' as const,
+              color: cc,
+              background: cc + '12',
+              padding: '2px 8px',
+              borderRadius: 4,
+            }}>
+              {categoryLabels[cat]}
+            </span>
+          );
+        })}
         <span style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '0.75rem',
@@ -157,7 +162,8 @@ export default function ToolWall() {
 
   const filteredTools = useMemo(() => {
     return toolsCatalog.filter((tool) => {
-      const matchesCategory = activeCategory === 'all' || tool.category === activeCategory;
+      const cats = tool.categories || [tool.category];
+      const matchesCategory = activeCategory === 'all' || cats.includes(activeCategory);
       const matchesSearch =
         searchQuery === '' ||
         tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

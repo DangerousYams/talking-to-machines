@@ -1,6 +1,7 @@
 export interface Tool {
   name: string;
   category: ToolCategory;
+  categories?: ToolCategory[];
   desc: string;
   pricing: 'free' | 'freemium' | 'paid';
   detail?: string;
@@ -58,22 +59,15 @@ export const toolsCatalog: Tool[] = [
   {
     name: 'Nano Banana 2',
     category: 'image-gen',
+    categories: ['image-gen', 'image-edit'],
     desc: 'Google\'s powerhouse — fastest gen, best text, seamless editing',
     pricing: 'freemium',
-    detail: 'The only image generator that pulls from live web knowledge, renders accurate multi-language text, and handles generation + editing in a single conversational flow inside the free Gemini app. Full access on Google AI Pro ($20/mo).',
+    detail: 'The only image generator that pulls from live web knowledge, renders accurate multi-language text, and handles generation + editing in a single conversational flow. Highlight an area, type what you want changed, and it preserves the rest. Free tier in the Gemini app. Full access on Google AI Pro ($20/mo).',
     studentDeal: 'Included in Google Workspace for Education and Google One Student plans.',
     zeroBudget: true,
   },
 
   // ═══ IMAGE EDITING ═══
-  {
-    name: 'Nano Banana 2',
-    category: 'image-edit',
-    desc: 'Edit images with language — "make this a sunset" just works',
-    pricing: 'freemium',
-    detail: 'Highlight an area, type what you want changed, and it preserves the rest. Best generative fill and world-building capabilities for non-technical people. Free tier in Gemini app.',
-    zeroBudget: true,
-  },
   {
     name: 'Photoroom',
     category: 'image-edit',
