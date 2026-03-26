@@ -4,7 +4,7 @@ import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
 
 const allCategories: (ToolCategory | 'all')[] = [
-  'all', 'image-gen', 'image-edit', 'video', 'music', 'audio', 'research', 'browser', 'coding',
+  'all', 'image-gen', 'image-edit', 'video', 'music', 'audio', 'research', 'browser', 'coding', 'aggregator', 'other',
 ];
 
 const pricingColors: Record<string, { bg: string; text: string; label: string }> = {
@@ -22,6 +22,8 @@ const categoryEmojis: Record<string, string> = {
   'research': '\u{1F50D}',
   'browser': '\u{1F310}',
   'coding': '\u{1F4BB}',
+  'aggregator': '\u{1F4E6}',
+  'other': '\u{2728}',
 };
 
 function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpanded: boolean; onToggle: () => void; isMobile: boolean }) {
@@ -114,6 +116,16 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
           }}>
             {tool.detail}
           </p>
+          {tool.studentDeal && (
+            <div style={{
+              marginTop: '0.75rem', padding: '8px 12px', borderRadius: 8,
+              background: 'rgba(22,199,154,0.06)', border: '1px solid rgba(22,199,154,0.15)',
+              display: 'flex', alignItems: 'flex-start', gap: 8,
+            }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#16C79A', flexShrink: 0, marginTop: 1 }}>STUDENT</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#1A1A2E', lineHeight: 1.4, opacity: 0.8 }}>{tool.studentDeal}</span>
+            </div>
+          )}
         </div>
       )}
 

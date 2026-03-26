@@ -4,6 +4,7 @@ export interface Tool {
   desc: string;
   pricing: 'free' | 'freemium' | 'paid';
   detail?: string;
+  studentDeal?: string;
 }
 
 export type ToolCategory =
@@ -14,7 +15,9 @@ export type ToolCategory =
   | 'audio'
   | 'research'
   | 'browser'
-  | 'coding';
+  | 'coding'
+  | 'aggregator'
+  | 'other';
 
 export const categoryLabels: Record<ToolCategory, string> = {
   'image-gen': 'Image Gen',
@@ -23,8 +26,10 @@ export const categoryLabels: Record<ToolCategory, string> = {
   'music': 'Music',
   'audio': 'Audio',
   'research': 'Research',
-  'browser': 'Browsers',
+  'browser': 'Browsers & Agents',
   'coding': 'Coding',
+  'aggregator': 'Aggregators',
+  'other': 'Other',
 };
 
 export const categoryColors: Record<ToolCategory, string> = {
@@ -36,246 +41,373 @@ export const categoryColors: Record<ToolCategory, string> = {
   'research': '#0EA5E9',
   'browser': '#6B7280',
   'coding': '#E94560',
+  'aggregator': '#F5A623',
+  'other': '#7B61FF',
 };
 
 export const toolsCatalog: Tool[] = [
-  // Image Synthesis
+  // ═══ IMAGE GENERATION ═══
   {
-    name: 'Midjourney',
+    name: 'Midjourney v7',
     category: 'image-gen',
-    desc: 'Artistic image generation via Discord and web',
+    desc: 'Highest artistic quality of any image generator',
     pricing: 'paid',
-    detail: 'Known for stunning, artistic outputs with a distinctive style. Excels at concept art, illustrations, and photorealistic scenes. Accessed through Discord or the web app.',
+    detail: 'Market leader for artistic image generation. Distinctive aesthetic with rich depth and coherence. Web + Discord. $10/mo Basic, $30/mo Standard (unlimited Relax mode).',
   },
   {
-    name: 'DALL-E 3',
+    name: 'GPT Image (ChatGPT)',
     category: 'image-gen',
-    desc: 'OpenAI\'s text-to-image, integrated in ChatGPT',
+    desc: 'OpenAI\'s native image gen, replacing DALL-E 3',
     pricing: 'freemium',
-    detail: 'Tightly integrated into ChatGPT, making it easy to iterate on images conversationally. Strong at following complex, detailed prompts and rendering text in images.',
+    detail: 'Built into ChatGPT — best prompt comprehension of any generator. Iterate on images conversationally. Free tier via ChatGPT, more with Plus ($20/mo).',
   },
   {
-    name: 'Stable Diffusion',
+    name: 'Stable Diffusion 3.5',
     category: 'image-gen',
-    desc: 'Open-source, runs locally or in cloud',
+    desc: 'Open-source, runs locally for free',
     pricing: 'free',
-    detail: 'The open-source powerhouse. Run it on your own hardware for free, fine-tune it on custom data, and customize every parameter. Huge community of models and extensions.',
+    detail: 'The only fully open-source image generator. Run it on your own hardware, fine-tune on custom data, customize everything. Massive community of models and extensions.',
   },
   {
-    name: 'Flux',
+    name: 'Flux 2',
     category: 'image-gen',
-    desc: 'Fast, high-quality open model by Black Forest Labs',
+    desc: 'Fast photorealism by Black Forest Labs',
     pricing: 'freemium',
-    detail: 'Created by former Stability AI researchers. Known for speed and quality, with multiple model sizes to balance performance and resource requirements.',
+    detail: 'By ex-Stability AI researchers. Leads in photorealism and speed (4.5s per image). Flux.1 Schnell is open-source and free. Pro models ~$0.01-0.03/image via API.',
   },
   {
-    name: 'Ideogram',
+    name: 'Ideogram v3',
     category: 'image-gen',
-    desc: 'Strongest at text rendering in images',
+    desc: 'Best-in-class text rendering in images',
     pricing: 'freemium',
-    detail: 'The go-to choice when you need legible text in generated images -- logos, posters, signs. Other models often garble text, but Ideogram handles it reliably.',
+    detail: 'The go-to when you need legible text in generated images — logos, posters, signs. 90-95% text accuracy. Free: 10 slow credits/day. Plus: $15/mo.',
+  },
+  {
+    name: 'Adobe Firefly 3',
+    category: 'image-gen',
+    desc: 'Commercially safe, trained on licensed content',
+    pricing: 'freemium',
+    detail: 'Integrated into the Adobe ecosystem. Legally safe for commercial use. Free: 25 credits/mo (watermarked). Standard: $9.99/mo.',
+    studentDeal: 'Student/Teacher CC plans include unlimited standard gen features at discounted rate.',
+  },
+  {
+    name: 'Photoroom',
+    category: 'image-gen',
+    desc: 'AI product photography and background removal',
+    pricing: 'freemium',
+    detail: '300M+ users. Instant background removal, virtual models, batch editing. Great for e-commerce and social media content. Free basic tier; paid for higher resolution.',
+  },
+  {
+    name: 'Google Pomelli',
+    category: 'image-gen',
+    desc: 'Free AI marketing asset generator from Google Labs',
+    pricing: 'free',
+    detail: 'Creates on-brand marketing assets from your website. "Photoshoot" feature turns phone photos into studio-quality product shots. Completely free, no limits, 170+ countries.',
   },
 
-  // Image Editing
+  // ═══ IMAGE EDITING ═══
   {
     name: 'Photoshop AI',
     category: 'image-edit',
-    desc: 'Generative fill, expand, remove inside Photoshop',
+    desc: 'Generative Fill, Expand, Remove inside Photoshop',
     pricing: 'paid',
-    detail: 'Adobe integrated generative AI directly into Photoshop. Select a region, describe what you want, and it fills seamlessly. Works within your existing creative workflow.',
+    detail: 'Industry standard. Select a region, describe what you want, and it fills seamlessly. Part of Creative Cloud ($22.99/mo).',
+    studentDeal: 'Student/Teacher CC plans at significant discount with unlimited standard AI features.',
   },
   {
     name: 'Runway Inpainting',
     category: 'image-edit',
     desc: 'Mask and replace regions of any image',
     pricing: 'freemium',
-    detail: 'Brush over any part of an image and describe what should replace it. Web-based, no software install needed. Part of the larger Runway creative AI suite.',
+    detail: 'Brush over any part of an image and describe what should replace it. Web-based, no install needed. Free tier available; Standard $12/mo.',
   },
   {
     name: 'Magnific',
     category: 'image-edit',
-    desc: 'AI upscaling that adds real detail',
+    desc: 'AI upscaling that adds real detail, up to 10K',
     pricing: 'paid',
-    detail: 'Goes beyond simple upscaling -- it hallucinates plausible new detail into low-resolution images. Photographers and designers use it to rescue and enhance images.',
+    detail: 'Goes beyond simple upscaling — hallucinates plausible new detail into low-res images. New Precision V2 mode for zero-hallucination faithful upscaling.',
   },
   {
     name: 'Clipdrop',
     category: 'image-edit',
-    desc: 'Remove backgrounds, relight, cleanup',
+    desc: 'Background removal, relighting, cleanup',
     pricing: 'freemium',
-    detail: 'A Swiss army knife for quick image edits: background removal, relighting, object cleanup, and style transfer. Fast and accessible for everyday tasks.',
+    detail: 'Swiss army knife for quick image edits. Now owned by Jasper.ai. Free basic features; Pro ~$8-9/mo.',
   },
 
-  // Video Synthesis
+  // ═══ VIDEO ═══
   {
-    name: 'Sora',
+    name: 'Runway Gen-4.5',
     category: 'video',
-    desc: 'OpenAI\'s text and image-to-video model',
+    desc: '#1 video benchmark, professional filmmaking tools',
     pricing: 'paid',
-    detail: 'Generates high-quality video clips from text descriptions or still images. Known for impressive physics simulation and cinematic quality, though access is limited.',
+    detail: 'Top-rated video model (1,247 Elo). Motion brushes, scene consistency, cinematic quality. Standard $12/mo (625 credits), Pro $28/mo, Unlimited $76/mo.',
   },
   {
-    name: 'Runway Gen-3',
+    name: 'Kling 2.6',
     category: 'video',
-    desc: 'Professional video generation and editing',
-    pricing: 'paid',
-    detail: 'The most established AI video platform. Text-to-video, image-to-video, and video-to-video transformations. Used by filmmakers and content creators professionally.',
-  },
-  {
-    name: 'Kling',
-    category: 'video',
-    desc: 'High-quality video gen with strong motion',
+    desc: 'Strong human motion, up to 2-minute videos',
     pricing: 'freemium',
-    detail: 'Developed by Kuaishou. Particularly strong at generating natural human motion and complex physical interactions between objects.',
+    detail: 'By Kuaishou. Simultaneous audio-visual generation. Impressive realism for human subjects. 66 free credits/day (1-2 short videos). Standard $6.99/mo.',
   },
   {
-    name: 'Veo',
+    name: 'Google Veo 3.1',
     category: 'video',
-    desc: 'Google DeepMind\'s video generation',
+    desc: 'Native 4K with character consistency',
     pricing: 'paid',
-    detail: 'Google\'s entry into AI video. Strong understanding of physics and real-world dynamics. Integrated into Google\'s creative tools ecosystem.',
+    detail: 'Vertical video, character consistency across shots. Integrated into Google ecosystem. AI Pro $19.99/mo (~90 videos), Ultra $249.99/mo.',
+    studentDeal: 'Students with .edu email get 12 months of Google AI Pro free.',
   },
   {
-    name: 'Pika',
+    name: 'Pika 2.5',
     category: 'video',
-    desc: 'Quick video clips from text or images',
+    desc: 'Quick creative clips with fun effects',
     pricing: 'freemium',
-    detail: 'Optimized for fast, short video clips. Great for social media content, animated stickers, and quick visual experiments. Lower barrier to entry than pro tools.',
+    detail: 'Fast 42s renders. Creative effects like Pikaswaps (face/object swaps) and Pikaffects. Great for social media. Free: 80 credits (watermarked, 480p). From ~$8/mo.',
+  },
+  {
+    name: 'Luma Ray3',
+    category: 'video',
+    desc: 'First HDR video generation, start/end frame control',
+    pricing: 'freemium',
+    detail: 'Professional quality with HDR support (industry first). Character consistency and precise start/end frame control. From $7.99/mo. Free tier via Dream Machine.',
+  },
+  {
+    name: 'Seedance 2.0',
+    category: 'video',
+    desc: 'Multi-modal: generates video WITH synchronized audio',
+    pricing: 'freemium',
+    detail: 'Accepts images, videos, audio, and text as inputs. Generates video with matched audio — a leap beyond video-only tools. 41.4s for 5-sec 1080p. Free tier available.',
+  },
+  {
+    name: 'Hailuo 2.3',
+    category: 'video',
+    desc: 'Industry-leading human motion and cinematic VFX',
+    pricing: 'freemium',
+    detail: 'By MiniMax. Expressive characters, cinematic VFX, strong anime/illustration support. Free tier available.',
   },
 
-  // Music
+  // ═══ MUSIC ═══
   {
-    name: 'Suno',
+    name: 'Suno v5',
     category: 'music',
-    desc: 'Full song generation from text prompts',
+    desc: 'Full song generation with vocals and instruments',
     pricing: 'freemium',
-    detail: 'Describe a song in natural language and get a full track with vocals, instruments, and structure. Supports genres from pop to metal to jazz. Surprisingly catchy results.',
+    detail: '2M paid subscribers, $300M ARR. Licensed deals with major labels. Free: 50 credits/day (10 songs, non-commercial). Pro: $10/mo. Premier: $30/mo.',
   },
   {
-    name: 'Udio',
+    name: 'Stable Audio 2.5',
     category: 'music',
-    desc: 'Music generation with high audio fidelity',
+    desc: 'Sound effects, ambient audio, and music clips',
     pricing: 'freemium',
-    detail: 'Competes directly with Suno with a focus on audio quality and production value. Particularly strong at capturing genre-specific production styles.',
+    detail: 'Quick sound effects and ambient audio generation. Under 2 second inference on GPU. Audio inpainting. Commercially safe. Available via API and platforms.',
   },
 
-  // Audio
+  // ═══ AUDIO ═══
   {
-    name: 'ElevenLabs',
+    name: 'ElevenLabs v3',
     category: 'audio',
-    desc: 'Voice cloning and text-to-speech',
+    desc: 'Voice cloning, text-to-speech, AI dubbing',
     pricing: 'freemium',
-    detail: 'Industry-leading voice synthesis. Clone any voice from a short sample, or choose from a library of natural-sounding voices. Used for audiobooks, dubbing, and accessibility.',
-  },
-  {
-    name: 'Play.ht',
-    category: 'audio',
-    desc: 'Natural-sounding AI voices',
-    pricing: 'freemium',
-    detail: 'Text-to-speech platform with a large library of voices across languages. Popular for podcast production, e-learning content, and automated customer service.',
-  },
-  {
-    name: 'Stable Audio',
-    category: 'audio',
-    desc: 'Sound effects and ambient audio generation',
-    pricing: 'freemium',
-    detail: 'Generate sound effects, ambient soundscapes, and short musical clips from text descriptions. Great for game developers, filmmakers, and content creators.',
+    detail: '$11B valuation. Voice cloning, TTS, dubbing, sound effects, Conversational AI, ElevenReader app. Free: 10,000 chars/mo + 3 custom voices. Starter: $5/mo.',
+    studentDeal: 'Free access via ElevenLabs for Students program + $1,500 in credits via AI Student Pack.',
   },
 
-  // Research Agents
+  // ═══ RESEARCH ═══
   {
     name: 'Perplexity',
     category: 'research',
-    desc: 'AI search engine with cited sources',
+    desc: 'AI search engine with inline citations',
     pricing: 'freemium',
-    detail: 'Searches the web in real-time and synthesizes answers with inline citations. Think of it as Google meets Wikipedia meets a research assistant. Great for fact-checking.',
+    detail: 'Market leader in AI-powered search. Academic focus mode for peer-reviewed sources. Free tier (limited). Pro: $20/mo.',
+    studentDeal: 'Education Pro: $10/mo (50% off). Schools with 500+ signups can get a free year.',
   },
   {
     name: 'Elicit',
     category: 'research',
-    desc: 'Research assistant that reads academic papers',
+    desc: 'Structured literature review from academic papers',
     pricing: 'freemium',
-    detail: 'Designed for academic research. Searches millions of papers, extracts key findings, and helps you synthesize literature reviews. A grad student\'s best friend.',
+    detail: 'Best for structured literature reviews. Reads papers, extracts data across multiple sources, builds evidence tables. Free tier + paid plans.',
   },
   {
     name: 'Consensus',
     category: 'research',
-    desc: 'Search engine for scientific consensus',
+    desc: 'Search 200M+ academic papers for evidence',
     pricing: 'freemium',
-    detail: 'Asks a question, gets answers backed by peer-reviewed research. Shows you what the scientific community actually agrees on, with links to the underlying papers.',
+    detail: '"Consensus Meter" shows the weight of scientific evidence on any topic. Best for quick evidence-based questions. Free tier + paid plans.',
   },
   {
     name: 'Claude Research',
     category: 'research',
-    desc: 'Deep research with comprehensive reports',
+    desc: 'Deep research with comprehensive cited reports',
     pricing: 'paid',
-    detail: 'Anthropic\'s deep research feature. Give it a complex question and it researches for minutes, reading dozens of sources to produce a comprehensive, cited report.',
+    detail: 'Reads dozens of web sources, produces comprehensive reports with citations. Part of Claude Pro ($20/mo) or Max.',
   },
   {
     name: 'NotebookLM',
     category: 'research',
-    desc: 'Google\'s document analysis and podcast generation',
+    desc: 'Upload docs, ask questions, generate audio podcasts',
     pricing: 'free',
-    detail: 'Upload documents and NotebookLM becomes an expert on them. Ask questions, get summaries, and even generate podcast-style audio discussions of your sources.',
+    detail: 'By Google. Upload your own documents and get AI analysis grounded only in those sources — no hallucination risk. Can generate podcast-style audio summaries. Completely free.',
   },
 
-  // AI Browsers
+  // ═══ BROWSERS & AGENTS ═══
   {
-    name: 'Arc',
+    name: 'Dia',
     category: 'browser',
-    desc: 'Browser with built-in AI summaries and actions',
+    desc: 'AI-first browser that chats with your tabs',
     pricing: 'free',
-    detail: 'A reimagined web browser with AI built into the browsing experience. Summarizes pages, answers questions about content, and helps you organize information.',
+    detail: 'Successor to Arc (which stopped development in 2025). Summarizes content, integrates with Slack, Notion, Gmail, Calendar. Mac available; Windows in testing. Free.',
   },
   {
-    name: 'Operator',
+    name: 'ChatGPT Agent',
     category: 'browser',
-    desc: 'OpenAI\'s autonomous web browsing agent',
+    desc: 'Browser automation + deep research in ChatGPT',
     pricing: 'paid',
-    detail: 'An AI agent that can navigate websites, fill out forms, and complete tasks on your behalf. Like having a virtual assistant that can use any website.',
+    detail: 'Replaced OpenAI\'s Operator. Combines autonomous web browsing with deep research using its own virtual computer. Part of ChatGPT Plus ($20/mo).',
   },
   {
     name: 'Claude Computer Use',
     category: 'browser',
-    desc: 'Claude controls your screen and browser',
+    desc: 'Claude opens apps, navigates browsers on your Mac',
     pricing: 'paid',
-    detail: 'Claude can see your screen and control your mouse and keyboard. Navigate websites, use applications, and complete multi-step tasks across any software.',
+    detail: 'Launched March 23, 2026. Claude can open applications, navigate browsers, fill spreadsheets directly on your computer. macOS only (for now). Part of Claude Pro ($20/mo).',
   },
 
-  // Coding Tools
+  // ═══ CODING ═══
   {
     name: 'Claude Code',
     category: 'coding',
-    desc: 'Agentic CLI that reads, writes, and runs your code',
+    desc: 'Terminal-based AI agent that reads, writes, and runs code',
     pricing: 'paid',
-    detail: 'A command-line AI agent that understands your entire codebase. It reads files, writes code, runs tests, fixes errors, and iterates -- all from your terminal.',
+    detail: 'Reads your full codebase, edits files, runs commands, debugs errors. Went from zero to #1 in 8 months. Requires Claude Pro ($20/mo) or Max ($100-200/mo).',
   },
   {
     name: 'Cursor',
     category: 'coding',
-    desc: 'AI-native code editor with full codebase context',
+    desc: 'AI-native code editor, 1M+ users',
     pricing: 'freemium',
-    detail: 'A VS Code fork rebuilt around AI. It indexes your entire codebase for context, suggests multi-line edits, and can refactor across files. The IDE reimagined.',
+    detail: 'VS Code fork with multi-file editing, Background Agents, and full codebase awareness. Most popular AI coding tool. Free tier (limited). Pro: $20/mo.',
+    studentDeal: '1 year of Cursor Pro FREE for verified students (.edu + SheerID).',
   },
   {
     name: 'Windsurf',
     category: 'coding',
-    desc: 'AI editor with autonomous coding flows',
+    desc: 'AI editor with autonomous "Cascade" mode',
     pricing: 'freemium',
-    detail: 'Another AI-first code editor that emphasizes autonomous multi-step coding. Can plan and execute complex changes across multiple files with minimal guidance.',
+    detail: 'VS Code-based IDE acquired by Cognition (makers of Devin). Fast, good for beginners. Free: 25 prompts/mo + unlimited autocomplete. Pro: $15-20/mo.',
   },
   {
     name: 'GitHub Copilot',
     category: 'coding',
-    desc: 'Inline code suggestions in VS Code',
+    desc: 'Industry standard, 77K+ organizations',
     pricing: 'freemium',
-    detail: 'The original AI coding assistant. Provides real-time code completions as you type, integrated directly into VS Code and other editors. Free for students.',
+    detail: '400+ Fortune 500 companies, 3B+ lines of accepted code/month. Agent Mode added. Free tier available. Pro: $10/mo.',
+    studentDeal: 'FREE for verified students via GitHub Education pack.',
   },
   {
-    name: 'Replit Agent',
+    name: 'Replit Agent 4',
     category: 'coding',
-    desc: 'AI that builds and deploys full apps from prompts',
+    desc: 'Builds full apps from prompts with parallel agents',
     pricing: 'freemium',
-    detail: 'Describe an app and Replit Agent builds it end-to-end: sets up the project, writes the code, configures the database, and deploys it live. Zero to production in minutes.',
+    detail: 'Launched March 2026. Infinite canvas, parallel multi-agent execution. 10x faster than Agent 3. $9B valuation. Free tier works well for learning.',
+  },
+  {
+    name: 'Google Antigravity',
+    category: 'coding',
+    desc: 'Free AI IDE with 5 parallel autonomous agents',
+    pricing: 'free',
+    detail: 'VS Code fork powered by Gemini 3.1 Pro. Also supports Claude models. 5 parallel agents. Free for individuals during public preview.',
+  },
+  {
+    name: 'OpenAI Codex',
+    category: 'coding',
+    desc: 'Open-source CLI coding agent',
+    pricing: 'paid',
+    detail: 'Rust-based CLI agent with GPT-5-Codex optimized for coding. New Codex App on Windows. Part of ChatGPT Plus/Pro/Business/Edu.',
+  },
+  {
+    name: 'Amazon Kiro',
+    category: 'coding',
+    desc: 'Spec-driven development — requirements before code',
+    pricing: 'freemium',
+    detail: 'Writes requirements specs before generating code. Python + JavaScript. Free: 50 interactions/mo. Pro: $19/mo.',
+    studentDeal: 'Free 1-year access for college students.',
+  },
+
+  // ═══ AGGREGATORS ═══
+  {
+    name: 'Krea AI',
+    category: 'aggregator',
+    desc: 'Access Flux, Veo, Runway, Luma, Kling + more in one place',
+    pricing: 'freemium',
+    detail: '30M+ users. Aggregates image gen, video, 3D, upscaling, and LoRA fine-tuning from many top models. Used by Nike, Samsung, Lego. Free tier (generous). Basic: $9/mo.',
+  },
+  {
+    name: 'Poe',
+    category: 'aggregator',
+    desc: 'Chat with GPT-4o, Claude, Gemini, Llama and more',
+    pricing: 'freemium',
+    detail: 'By Quora. One subscription gives you access to all major chat models plus image gen. Create and share custom bots. Free tier + $19.99/mo.',
+  },
+  {
+    name: 'Replicate',
+    category: 'aggregator',
+    desc: 'Run any open-source AI model via API',
+    pricing: 'freemium',
+    detail: 'Run thousands of open-source models (Flux, Stable Diffusion, Whisper, etc.) without managing infrastructure. Pay per second of compute. Free credits to start.',
+  },
+  {
+    name: 'HuggingFace',
+    category: 'aggregator',
+    desc: 'The GitHub of AI — models, datasets, and Spaces',
+    pricing: 'free',
+    detail: 'Hosts 500K+ models, 100K+ datasets, and free "Spaces" to run demos. The open-source AI community hub. Free for most use; Pro for compute.',
+  },
+
+  {
+    name: 'OpenRouter',
+    category: 'aggregator',
+    desc: 'One API key for 100+ LLMs from every provider',
+    pricing: 'freemium',
+    detail: 'Unified API that routes to OpenAI, Anthropic, Google, Meta, Mistral, and open-source models through a single endpoint. Pay-per-use at pass-through pricing (often cheaper than direct).',
+  },
+  {
+    name: 'Together AI',
+    category: 'aggregator',
+    desc: 'Cheapest way to run open-source AI models fast',
+    pricing: 'freemium',
+    detail: 'Cloud platform optimized for open-source models (Llama, Mistral, Flux, etc.) at high speed. API + playground. Competitive per-token pricing — often the cheapest option for open models.',
+  },
+
+  // ═══ OTHER ═══
+  {
+    name: 'Google Stitch',
+    category: 'other',
+    desc: 'AI UI design — generates interfaces from text or sketches',
+    pricing: 'free',
+    detail: 'Generate high-fidelity web/mobile interfaces from text, sketches, or voice. Integrates with Claude Code and Cursor via MCP. 350 free generations/month via Google Labs.',
+  },
+  {
+    name: 'Google Project Genie',
+    category: 'other',
+    desc: 'Creates interactive 3D worlds from text or images',
+    pricing: 'paid',
+    detail: 'AI world model — generates explorable 3D environments. Powered by Genie 3 (30K hours of gameplay training). 20-24 FPS, 720p. Requires Google AI Ultra ($249.99/mo). US only, 18+.',
+  },
+  {
+    name: 'Meta Llama 4',
+    category: 'other',
+    desc: 'Open-source agentic AI model by Meta',
+    pricing: 'free',
+    detail: 'Fully open-source and free to use. Agentic capabilities — can plan, reason, and use tools. Run locally or via cloud providers.',
+  },
+  {
+    name: 'FutureTools.io',
+    category: 'other',
+    desc: 'AI tool discovery — 4,000+ tools cataloged',
+    pricing: 'free',
+    detail: 'By Matt Wolfe. The most comprehensive AI tool directory with 4,000+ tools across 29 categories. 230K+ subscribers. Free to browse and search.',
   },
 ];
