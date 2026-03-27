@@ -3,7 +3,6 @@ import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import { streamChat } from '../../../lib/claude';
 import { useAuth } from '../../../hooks/useAuth';
-import ShareCard from '../../ui/ShareCard';
 import UnlockModal from '../../ui/UnlockModal';
 
 interface BuildingBlock {
@@ -209,7 +208,6 @@ Rules:
     );
   };
 
-  const showShareCard = mode === 'freeform' && liveResponse && !isStreaming;
   const responseIsLong = displayedResponse.length > 400;
 
   return (
@@ -470,21 +468,6 @@ Rules:
           </div>
         </div>
       </div>
-
-      {/* ShareCard — unified */}
-      {showShareCard && (
-        <div style={{ padding: isMobile ? '0 1rem 1rem' : '0 2rem 1.5rem' }}>
-          <ShareCard
-            title="Prompt Makeover"
-            metric={mode === 'guided' ? '100%' : 'Complete'}
-            metricColor={mode === 'guided' ? '#16C79A' : '#7B61FF'}
-            subtitle="I took a vague prompt to 100% and watched the AI response completely transform."
-            accentColor="#E94560"
-            tweetText={`I took a vague prompt to 100% and watched the AI response completely transform — live.\n\nLearn to prompt like a pro at TalkingToMachines.xyz`}
-            shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-makeover` : undefined}
-          />
-        </div>
-      )}
 
     </div>
   );

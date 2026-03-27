@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { promptChallenges } from '../../../data/prompt-challenges';
-import ShareCard from '../../ui/ShareCard';
 import BottomSheet from '../../cards/BottomSheet';
 import { dvhValue } from '../../../lib/css-compat';
 
@@ -99,15 +98,6 @@ export default function GuessThePrompt() {
 
           <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title="Results">
             <div style={{ maxWidth: 400, margin: '0 auto', textAlign: 'left' as const }}>
-              <ShareCard
-                title={tier}
-                metric={`${score}/${totalRounds}`}
-                metricColor="#E94560"
-                subtitle={message}
-                accentColor="#7B61FF"
-                tweetText={`I scored ${score}/${totalRounds} on Guess The Prompt \u2014 can you reverse-engineer AI output back to its prompt? \ud83d\udd0d ${tier}`}
-                shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#guess-the-prompt` : undefined}
-              />
               <div style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <button
                   onClick={handleRestart}
@@ -138,18 +128,6 @@ export default function GuessThePrompt() {
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: '#6B7280', marginBottom: '1.5rem' }}>
             The skill isn't memorizing prompts &mdash; it's recognizing what makes one <em>specific enough</em> to produce great output.
           </p>
-
-          <div style={{ maxWidth: 400, margin: '0 auto 1.5rem', textAlign: 'left' as const }}>
-            <ShareCard
-              title={tier}
-              metric={`${score}/${totalRounds}`}
-              metricColor="#E94560"
-              subtitle={message}
-              accentColor="#7B61FF"
-              tweetText={`I scored ${score}/${totalRounds} on Guess The Prompt \u2014 can you reverse-engineer AI output back to its prompt? \ud83d\udd0d ${tier}`}
-              shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#guess-the-prompt` : undefined}
-            />
-          </div>
 
           <button
             onClick={handleRestart}

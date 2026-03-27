@@ -30,7 +30,7 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'break': 512,
   'personalize': 256,
   'agent-arena': 150,
-  'agent-swarm': 500,
+  'agent-swarm': 800,
 };
 
 // ---------------------------------------------------------------------------

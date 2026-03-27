@@ -13,8 +13,7 @@ export default function SharePrompt({ text, url }: Props) {
 
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    const shareUrl = url || (typeof window !== 'undefined' ? window.location.origin : defaultUrl);
-    const liveUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    const liveUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(defaultUrl)}`;
     window.open(liveUrl, '_blank', 'noopener,noreferrer');
   }, [text, url, defaultUrl]);
 

@@ -26,18 +26,17 @@ const PRESETS = [
   'Open a chain of ramen restaurants',
 ];
 
-const SYSTEM_PROMPT = `You are an AI orchestration planner. The user describes a complex task. Break it into 5-7 specialized agents, each with a clear role and 2-3 specific subtasks.
+const SYSTEM_PROMPT = `You break complex tasks into specialized AI agents. Respond with ONLY valid JSON, nothing else.
 
-Respond ONLY with valid JSON in this exact format, no other text:
-{"summary":"One sentence executive briefing of the plan","agents":[{"name":"Agent Name","role":"One-line role description","tasks":["task 1","task 2","task 3"]}]}
+Format: {"summary":"Brief plan (1 sentence)","agents":[{"name":"Short Name","role":"5-word role","tasks":["task","task"]}]}
 
 Rules:
-- Agent names should be memorable and descriptive (e.g., "The Dealmaker", "Brand Architect", "Supply Chain Commander")
-- Each agent gets 2-3 very specific, actionable tasks (not vague)
-- The summary should sound like a confident executive assistant briefing their boss
-- 5-7 agents total, no more
-- Keep it fun and slightly dramatic — this is a visualization people want to share
-- Do NOT use markdown. Pure JSON only.`;
+- Exactly 5 agents
+- Names: 2-3 words max (e.g., "The Dealmaker", "Brand Lead")
+- Role: under 8 words
+- Each agent gets exactly 2 tasks, each under 10 words
+- Summary: 1 confident sentence, under 20 words
+- Output ONLY the JSON object. No explanation, no markdown, no wrapping text.`;
 
 export default function AgentSwarm() {
   const { isPaid } = useAuth();
@@ -65,23 +64,25 @@ export default function AgentSwarm() {
     streamChat({
       messages: [{ role: 'user', content: trimmed }],
       systemPrompt: SYSTEM_PROMPT,
-      maxTokens: 500,
+      maxTokens: 800,
       source: 'agent-swarm',
       skipPersona: true,
       onChunk: (t) => { accumulated += t; },
       onDone: () => {
+        console.log('[AgentSwarm] raw response:', accumulated);
         try {
           // Extract JSON from response (in case there's wrapper text)
           const jsonMatch = accumulated.match(/\{[\s\S]*\}/);
-          if (!jsonMatch) throw new Error('No JSON found');
+          if (!jsonMatch) throw new Error('No JSON in response: ' + accumulated.slice(0, 200));
           const parsed = JSON.parse(jsonMatch[0]) as SwarmPlan;
-          if (!parsed.agents || parsed.agents.length === 0) throw new Error('No agents');
+          if (!parsed.agents || parsed.agents.length === 0) throw new Error('No agents in parsed JSON');
           // Assign colors
           parsed.agents = parsed.agents.map((a, i) => ({ ...a, color: COLORS[i % COLORS.length] }));
           setPlan(parsed);
           setPhase('animating');
-        } catch {
-          setError('Failed to generate plan. Try again with a different task.');
+        } catch (e) {
+          console.error('[AgentSwarm] parse error:', e);
+          setError('Failed to generate plan. Try again.');
           setPhase('input');
         }
       },

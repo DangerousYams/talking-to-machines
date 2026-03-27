@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
-import ShareCard from '../../ui/ShareCard';
 import BottomSheet from '../../cards/BottomSheet';
 import { dvhValue } from '../../../lib/css-compat';
 
@@ -456,7 +455,6 @@ export default function FlipTheScript() {
                   <strong style={{ color: '#0F3460' }}>The Socratic Method works.</strong> Five questions turned a generic checklist into a plan built around <em>your</em> specific situation.
                 </p>
               </div>
-              <ShareCard title="Socratic Method" metric="5 Qs" metricColor="#16C79A" subtitle="A vague prompt got a generic checklist. After 5 AI questions, I got a plan built for MY situation." accentColor="#16C79A" tweetText="A vague prompt got me a generic checklist. After 5 AI questions, I got a plan built for MY situation. Try the Socratic method:" shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=socratic-smackdown` : undefined} />
             </div>
           )}
         </BottomSheet>
@@ -628,9 +626,6 @@ export default function FlipTheScript() {
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65, color: '#1A1A2E', margin: 0 }}>
                   <strong style={{ color: '#0F3460' }}>The Socratic Method works.</strong> Five questions turned a generic checklist into a plan built around <em>your</em> specific situation. The AI didn't get smarter {'\u2014'} it just had better context.
                 </p>
-              </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <ShareCard title="Socratic Method" metric="5 Qs" metricColor="#16C79A" subtitle="A vague prompt got a generic checklist. After 5 AI questions, I got a plan built for MY situation." accentColor="#16C79A" tweetText="A vague prompt got me a generic checklist. After 5 AI questions, I got a plan built for MY situation. Try the Socratic method:" shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/toolbox?tool=socratic-smackdown` : undefined} />
               </div>
               <button onClick={handleReset} style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, padding: '0.6rem 1.5rem', borderRadius: 100, border: 'none', cursor: 'pointer', background: '#1A1A2E', color: '#FAF8F5', transition: 'all 0.25s', minHeight: 44 }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                 Try Another Scenario

@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { streamChat } from '../../../lib/claude';
-import ShareCard from '../../ui/ShareCard';
 import BottomSheet from '../../cards/BottomSheet';
 
 interface RoastResult {
@@ -291,7 +290,7 @@ export default function PromptRoast() {
                 </button>
               </div>
 
-              {/* BottomSheet with full roast, bestLine, tips, ShareCard, Roast Another */}
+              {/* BottomSheet with full roast, bestLine, tips, Roast Another */}
               <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title="Roast Details">
                 {/* Full roast */}
                 <div style={{
@@ -337,17 +336,6 @@ export default function PromptRoast() {
                     </div>
                   </div>
                 )}
-
-                {/* ShareCard */}
-                <ShareCard
-                  title={result.tier}
-                  metric={`${result.score}/100`}
-                  metricColor={getScoreColor(result.score)}
-                  subtitle={result.bestLine}
-                  accentColor={getScoreColor(result.score)}
-                  tweetText={`My prompt scored ${result.score}/100 on the Prompt Roast \u{1F480} "${result.bestLine}" Can yours do better?`}
-                  shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-roast` : undefined}
-                />
 
                 {/* Retry / Reset */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: '1rem' }}>
@@ -522,17 +510,6 @@ export default function PromptRoast() {
                   </div>
                 </div>
               )}
-
-              {/* ShareCard */}
-              <ShareCard
-                title={result.tier}
-                metric={`${result.score}/100`}
-                metricColor={getScoreColor(result.score)}
-                subtitle={result.bestLine}
-                accentColor={getScoreColor(result.score)}
-                tweetText={`My prompt scored ${result.score}/100 on the Prompt Roast \u{1F480} "${result.bestLine}" Can yours do better?`}
-                shareUrl={typeof window !== 'undefined' ? `${window.location.origin}/ch1#prompt-roast` : undefined}
-              />
 
               {/* Retry / Reset */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: '1.25rem' }}>
