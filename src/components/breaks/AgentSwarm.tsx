@@ -66,7 +66,7 @@ export default function AgentSwarm() {
       messages: [{ role: 'user', content: trimmed }],
       systemPrompt: SYSTEM_PROMPT,
       maxTokens: 500,
-      source: 'widget',
+      source: 'agent-swarm',
       skipPersona: true,
       onChunk: (t) => { accumulated += t; },
       onDone: () => {
