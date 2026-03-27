@@ -120,6 +120,15 @@ export const toolsCatalog: Tool[] = [
     zeroBudget: true,
   },
 
+  {
+    name: 'Google Lyria',
+    category: 'music',
+    desc: 'Google DeepMind\'s music model — vocals, lyrics, and instrumentals from text or image prompts',
+    pricing: 'freemium',
+    detail: 'Powers music generation across Gemini, YouTube Shorts (Dream Track), and developer APIs. Lyria 3 Pro generates 3-minute tracks with structural awareness (intro/verse/chorus/bridge). SynthID watermarking baked in. Trained on licensed data — no copyright lawsuit risk. Free: 30-second clips in Gemini. Paid (Google AI Plus $8/mo): 3-min tracks, 10/day.',
+    zeroBudget: true,
+  },
+
   // ═══ VOICE & AUDIO ═══
   {
     name: 'ElevenLabs',
@@ -196,9 +205,17 @@ export const toolsCatalog: Tool[] = [
   {
     name: 'Poe',
     category: 'aggregator',
-    desc: 'Easiest way to test every major LLM in one interface',
+    desc: '200+ AI models in one interface — text, image, video, audio',
     pricing: 'freemium',
-    detail: 'By Quora. Switch between Claude, GPT, Gemini, Llama, and dozens more. Create and share custom bots. The best way for beginners to compare models without API keys. Free tier + $19.99/mo.',
+    detail: 'By Quora. 18M monthly users. Access GPT-5, Claude, Gemini, Llama, Flux, Veo, ElevenLabs, and 200+ more. Multi-bot chat compares models side by side. 1M+ community-created custom bots. The cheapest way to access premium models. Free tier + $4.99/mo entry.',
+    zeroBudget: true,
+  },
+  {
+    name: 'Genspark',
+    category: 'aggregator',
+    desc: 'AI workspace — routes tasks across 9+ models that cross-check each other',
+    pricing: 'freemium',
+    detail: 'Mixture-of-Agents architecture: a coordinator breaks your task into sub-tasks, routes to the best model (GPT-5, Claude, Gemini, Grok, DeepSeek), and cross-checks results. Goes beyond chat — generates slides, spreadsheets, websites, images (Flux), video (Veo, Sora, Kling), and even makes phone calls for you. 2M+ MAU. Free: 100 credits/day. Plus: $25/mo.',
     zeroBudget: true,
   },
   {

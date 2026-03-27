@@ -18,6 +18,7 @@ const MODEL_MAP: Record<string, string> = {
   'personalize': 'claude-haiku-4-5-20251001',
   'agent-arena': 'claude-haiku-4-5-20251001',
   'agent-swarm': 'claude-haiku-4-5-20251001',
+  'prompt-framer': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
@@ -31,6 +32,7 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'personalize': 256,
   'agent-arena': 150,
   'agent-swarm': 800,
+  'prompt-framer': 400,
 };
 
 // ---------------------------------------------------------------------------
@@ -312,9 +314,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // -----------------------------------------------------------------------
-  // Route: agent-arena + agent-swarm (paid only, Haiku)
+  // Route: agent-arena + agent-swarm + prompt-framer (paid only, Haiku)
   // -----------------------------------------------------------------------
-  if (source === 'agent-arena' || source === 'agent-swarm') {
+  if (source === 'agent-arena' || source === 'agent-swarm' || source === 'prompt-framer') {
     if (!isPaidUser) {
       return jsonResponse({ error: 'This feature requires full access' }, 401);
     }
