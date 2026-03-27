@@ -6,6 +6,7 @@ import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
 import AgentBlueprint from '../components/widgets/ch6/AgentBlueprint';
+import AgentArena from '../components/widgets/ch6/AgentArena';
 import AgentTakeover from '../components/breaks/AgentTakeover';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
@@ -120,13 +121,18 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Time to build one. Design your own agent from scratch.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Time to build one. Design a buying agent &mdash; pick its strategy, tools, and risk level &mdash; then watch it negotiate against a seller with hidden motivations.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <AgentArena client:load />
+  </section>
+
+  <!-- ═══ AGENT BLUEPRINT (static reference) ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <AgentBlueprint client:visible />
   </section>
