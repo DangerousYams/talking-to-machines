@@ -9,7 +9,7 @@ interface Props {
   accentColor: string;
 }
 
-const CACHE_PREFIX = 'ttm_foryou_';
+const CACHE_PREFIX = 'ttm_foryou2_';
 
 export default function ForYouCard({ chapterSlug, chapterTitle, chapterConcepts, accentColor }: Props) {
   const [content, setContent] = useState<string | null>(null);
@@ -47,8 +47,8 @@ export default function ForYouCard({ chapterSlug, chapterTitle, chapterConcepts,
         role: 'user',
         content: `Chapter: "${chapterTitle}"\nKey concepts: ${chapterConcepts}\n\nStudent profile: ${persona.context}\nDomain keywords: ${persona.keywords.join(', ')}`,
       }],
-      systemPrompt: `You write a single short "For You" insight (2-3 sentences, max 50 words) that connects THIS chapter's concepts to the student's specific background and goals. Be concrete — reference their domain. Don't be generic. Don't start with "As a..." — jump straight to the insight. No markdown.`,
-      maxTokens: 100,
+      systemPrompt: `Write ONE punchy sentence (under 25 words) connecting this chapter's concept to the reader's domain. Be specific — name something from their field. No filler, no "As a...", no markdown.`,
+      maxTokens: 60,
       source: 'personalize',
       skipPersona: true,
       onChunk: (text) => {
