@@ -7,7 +7,7 @@ import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
 import AgentBlueprint from '../components/widgets/ch6/AgentBlueprint';
 import AgentArena from '../components/widgets/ch6/AgentArena';
-import AgentTakeover from '../components/breaks/AgentTakeover';
+import AgentSwarm from '../components/breaks/AgentSwarm';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
 import ForYouCard from '../components/ui/ForYouCard';
@@ -132,10 +132,6 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
     <AgentArena client:load />
   </section>
 
-  <!-- ═══ AGENT BLUEPRINT (static reference) ═══ -->
-  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
-  </section>
 
   <Divider accent={chapter.accent} client:load />
 
@@ -168,8 +164,8 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

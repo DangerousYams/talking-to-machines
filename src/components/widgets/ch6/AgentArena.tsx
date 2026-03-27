@@ -22,6 +22,7 @@ interface ToolDef {
   label: string;
   desc: string;
   defaultOn: boolean;
+  required?: boolean;
 }
 
 interface TurnEvent {
@@ -33,9 +34,9 @@ interface TurnEvent {
 // ═══ CONSTANTS ═══
 
 const TOOLS: ToolDef[] = [
-  { id: 'propose_price', label: 'Propose Price', desc: 'Make a specific dollar offer', defaultOn: true },
-  { id: 'counter', label: 'Counter', desc: 'Counter-offer with a reason', defaultOn: true },
-  { id: 'accept', label: 'Accept', desc: 'Close the deal at current price', defaultOn: true },
+  { id: 'propose_price', label: 'Propose Price', desc: 'Make a specific dollar offer', defaultOn: true, required: true },
+  { id: 'counter', label: 'Counter', desc: 'Counter-offer with a reason', defaultOn: true, required: true },
+  { id: 'accept', label: 'Accept', desc: 'Close the deal at current price', defaultOn: true, required: true },
   { id: 'walk_away', label: 'Walk Away', desc: 'Bluff or actually leave', defaultOn: false },
   { id: 'ask_condition', label: 'Ask Condition', desc: 'Ask about damage or wear', defaultOn: false },
   { id: 'set_deadline', label: 'Final Offer', desc: '"Take it or leave it"', defaultOn: false },
@@ -108,7 +109,7 @@ RULES:
 ${canWalkAway ? '- If the buyer walks away: ' + (seller.desperation > 0.6 ? 'panic and offer a significant discount to bring them back' : 'let them go, you\'re not desperate') : ''}
 - If the buyer asks for extras, you can offer: ${seller.extrasAvailable.join(', ') || 'nothing, apologize'}
 - Be conversational and natural, like a real person selling on Craigslist
-- Keep responses to 2-3 sentences max
+- Keep responses to 1 sentence max. Be punchy and direct — no filler
 
 Respond ONLY as the seller. Use the appropriate tool for your action.
 Do NOT use markdown formatting. Plain text only.`;
@@ -135,7 +136,7 @@ RULES:
 - Use exactly ONE tool per turn
 - Never exceed your $800 budget
 - Be conversational and natural
-- Keep responses to 2-3 sentences max, plus your tool call
+- Keep responses to 1 sentence max. Be punchy and direct — no filler
 - Focus on getting the best deal possible using your strategy
 
 Respond ONLY as the buyer. Use the appropriate tool for your action.
@@ -311,7 +312,7 @@ export default function AgentArena() {
       return;
     }
 
-    const sellerProfile = randomSeller();
+    const sellerProfile = seller || randomSeller();
     setSeller(sellerProfile);
     setPhase('running');
     setEvents([]);
@@ -323,19 +324,20 @@ export default function AgentArena() {
     const sellerSystem = buildSellerPrompt(sellerProfile, tools);
     const temp = 0.3 + riskLevel * 0.7; // 0.3 - 1.0
 
-    const conversation: { role: 'user' | 'assistant'; content: string }[] = [];
+    // Two separate conversation histories — each agent only sees its own perspective
+    const buyerHistory: { role: 'user' | 'assistant'; content: string }[] = [];
+    const sellerHistory: { role: 'user' | 'assistant'; content: string }[] = [];
     const allEvents: TurnEvent[] = [];
     let dealClosed = false;
 
     // Opening: seller introduces
-    const openingEvent: TurnEvent = {
-      role: 'seller',
-      text: `Hi! I'm selling my laptop for $${sellerProfile.listingPrice}. It's a great machine — interested?`,
-    };
+    const opening = `Hi! I'm selling my laptop for $${sellerProfile.listingPrice}. Interested?`;
+    const openingEvent: TurnEvent = { role: 'seller', text: opening };
     allEvents.push(openingEvent);
     setEvents([...allEvents]);
 
-    conversation.push({ role: 'user', content: openingEvent.text });
+    // Buyer sees seller's opening as a "user" message
+    buyerHistory.push({ role: 'user', content: opening });
 
     for (let round = 0; round < maxRounds && !dealClosed; round++) {
       setCurrentRound(round + 1);
@@ -345,30 +347,31 @@ export default function AgentArena() {
       let buyerText = '';
       try {
         await new Promise<void>((resolve, reject) => {
-          const ctrl = streamChat({
-            messages: [
-              ...conversation,
-              { role: 'user', content: `Round ${round + 1}/${maxRounds}. The seller just said: "${conversation[conversation.length - 1]?.content}"\n\nRespond with your action. Use one of your tools.` },
-            ],
+          streamChat({
+            messages: [...buyerHistory],
             systemPrompt: buyerSystem,
-            maxTokens: 200,
+            maxTokens: 80,
             source: 'widget',
             skipPersona: true,
             onChunk: (t) => { buyerText += t; },
             onDone: () => resolve(),
-            onError: (e) => reject(e),
+            onError: () => resolve(), // don't break on error — just use whatever we got
           });
-          abortRef.current = ctrl;
         });
-      } catch { break; }
+      } catch { /* continue */ }
+
+      buyerText = buyerText.trim();
+      if (!buyerText) buyerText = 'I\'d like to make an offer. [propose_price: $600]';
 
       const buyerTool = parseToolCall(buyerText, tools);
-      const buyerEvent: TurnEvent = { role: 'buyer', text: buyerText.trim(), toolCall: buyerTool || undefined };
+      const buyerEvent: TurnEvent = { role: 'buyer', text: buyerText, toolCall: buyerTool || undefined };
       allEvents.push(buyerEvent);
       setEvents([...allEvents]);
       setIsThinking(false);
 
-      conversation.push({ role: 'assistant', content: buyerText });
+      // Update both histories
+      buyerHistory.push({ role: 'assistant', content: buyerText });
+      sellerHistory.push({ role: 'user', content: buyerText });
 
       // Check for deal-ending actions
       if (buyerTool?.name === 'accept') {
@@ -380,14 +383,14 @@ export default function AgentArena() {
       }
       if (buyerTool?.name === 'walk_away') {
         if (sellerProfile.desperation > 0.6) {
-          const panicEvent: TurnEvent = { role: 'seller', text: `Wait! Don't go. Look, I really need to sell this. How about $${sellerProfile.floorPrice + 50}? That's practically giving it away.` };
-          allEvents.push(panicEvent);
+          const panic = `Wait! Don't go. How about $${sellerProfile.floorPrice + 50}? I really need to sell.`;
+          allEvents.push({ role: 'seller', text: panic });
           setEvents([...allEvents]);
-          conversation.push({ role: 'user', content: panicEvent.text });
+          buyerHistory.push({ role: 'user', content: panic });
+          sellerHistory.push({ role: 'assistant', content: panic });
           continue;
         } else {
-          const sysEvent: TurnEvent = { role: 'system', text: 'Your agent walked away. The seller shrugged and moved on.' };
-          allEvents.push(sysEvent);
+          allEvents.push({ role: 'system', text: 'Your agent walked away. The seller let them go.' });
           setEvents([...allEvents]);
           dealClosed = true;
           break;
@@ -399,30 +402,31 @@ export default function AgentArena() {
       let sellerText = '';
       try {
         await new Promise<void>((resolve, reject) => {
-          const ctrl = streamChat({
-            messages: [
-              { role: 'user', content: `The buyer says: "${buyerText}"\n\nRespond as the seller.` },
-              ...conversation.slice(-4).map((m, i) => ({ role: (i % 2 === 0 ? 'user' : 'assistant') as 'user' | 'assistant', content: m.content })),
-            ],
+          streamChat({
+            messages: [...sellerHistory],
             systemPrompt: sellerSystem,
-            maxTokens: 200,
+            maxTokens: 80,
             source: 'widget',
             skipPersona: true,
             onChunk: (t) => { sellerText += t; },
             onDone: () => resolve(),
-            onError: (e) => reject(e),
+            onError: () => resolve(),
           });
-          abortRef.current = ctrl;
         });
-      } catch { break; }
+      } catch { /* continue */ }
+
+      sellerText = sellerText.trim();
+      if (!sellerText) sellerText = `I can do $${sellerProfile.listingPrice - 50}. That's a fair price.`;
 
       const sellerTool = parseToolCall(sellerText, ['accept', 'counter', 'propose_price', 'walk_away']);
-      const sellerEvent: TurnEvent = { role: 'seller', text: sellerText.trim(), toolCall: sellerTool || undefined };
+      const sellerEvent: TurnEvent = { role: 'seller', text: sellerText, toolCall: sellerTool || undefined };
       allEvents.push(sellerEvent);
       setEvents([...allEvents]);
       setIsThinking(false);
 
-      conversation.push({ role: 'user', content: sellerText });
+      // Update both histories
+      sellerHistory.push({ role: 'assistant', content: sellerText });
+      buyerHistory.push({ role: 'user', content: sellerText });
 
       if (sellerTool?.name === 'accept') {
         const price = sellerTool.args.price || '?';
@@ -444,7 +448,7 @@ export default function AgentArena() {
     const result = scoreMatch(allEvents, sellerProfile, maxBudget);
     setMatchResult(result);
     setPhase('result');
-  }, [isPaid, strategy, briefing, enabledTools, riskLevel, modelChoice, maxRounds]);
+  }, [isPaid, strategy, briefing, enabledTools, riskLevel, modelChoice, maxRounds, seller]);
 
   const handleRestart = () => {
     setPhase('design');
@@ -542,15 +546,18 @@ export default function AgentArena() {
               {TOOLS.map(t => {
                 const on = enabledTools.has(t.id);
                 const c = toolColor(t.id);
+                const locked = t.required;
                 return (
-                  <button key={t.id} onClick={() => toggleTool(t.id)} title={t.desc} style={{
+                  <button key={t.id} onClick={() => !locked && toggleTool(t.id)} title={locked ? `${t.desc} (required)` : t.desc} style={{
                     padding: '5px 12px', borderRadius: 100, border: `1px solid ${on ? c : 'rgba(26,26,46,0.1)'}`,
-                    background: on ? c + '10' : 'transparent', cursor: 'pointer', transition: 'all 0.2s',
+                    background: on ? c + '10' : 'transparent', cursor: locked ? 'default' : 'pointer', transition: 'all 0.2s',
                     fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: on ? c : '#6B7280',
                     display: 'flex', alignItems: 'center', gap: 4,
+                    opacity: locked ? 0.85 : 1,
                   }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: on ? c : 'rgba(26,26,46,0.15)', transition: 'background 0.2s' }} />
                     {t.label}
+                    {locked && <span style={{ fontSize: '0.55rem', opacity: 0.5 }}>&#x1F512;</span>}
                   </button>
                 );
               })}
@@ -690,17 +697,25 @@ export default function AgentArena() {
                   )}
                 </div>
 
-                {/* Hidden seller info reveal */}
+                {/* Seller's hidden stats — revealed */}
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#F5A623', margin: '0 0 6px' }}>
+                  Seller's hidden stats
+                </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 8, marginBottom: 12 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(26,26,46,0.04)', color: '#6B7280' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.12)', color: '#F5A623' }}>
                     Floor: ${seller.floorPrice}
                   </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(26,26,46,0.04)', color: '#6B7280' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.12)', color: '#F5A623' }}>
                     Desperation: {Math.round(seller.desperation * 100)}%
                   </span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(26,26,46,0.04)', color: '#6B7280' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.12)', color: '#F5A623' }}>
                     Condition: {seller.condition.replace('_', ' ')}
                   </span>
+                  {seller.extrasAvailable.length > 0 && (
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', padding: '3px 8px', borderRadius: 4, background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.12)', color: '#F5A623' }}>
+                      Extras: {seller.extrasAvailable.join(', ')}
+                    </span>
+                  )}
                 </div>
 
                 {/* Analysis */}
@@ -712,20 +727,20 @@ export default function AgentArena() {
 
                 {/* Actions */}
                 <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                  <button onClick={handleRestart} style={{
+                  <button onClick={() => { setPhase('design'); setEvents([]); setCurrentRound(0); setMatchResult(null); }} style={{
                     flex: 1, padding: '10px', borderRadius: 8, border: 'none',
-                    background: '#1A1A2E', color: 'white', cursor: 'pointer',
+                    background: '#16C79A', color: 'white', cursor: 'pointer',
                     fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 600,
                   }}>
-                    Edit Agent &amp; Retry
+                    Retry Same Seller
                   </button>
-                  <button onClick={() => { handleRestart(); runMatch(); }} style={{
-                    padding: '10px 16px', borderRadius: 8,
+                  <button onClick={() => { setPhase('design'); setEvents([]); setCurrentRound(0); setMatchResult(null); setSeller(null); }} style={{
+                    flex: 1, padding: '10px', borderRadius: 8,
                     border: '1px solid rgba(26,26,46,0.12)', background: 'transparent',
                     color: '#1A1A2E', cursor: 'pointer',
                     fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 600,
                   }}>
-                    Same Agent, New Seller
+                    Try New Seller
                   </button>
                 </div>
               </div>
