@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
 
 // ═══════════════════════════════════════════════
 // TYPES
@@ -33,6 +33,8 @@ interface TankState {
   prevY: number;
   stuckFrames: number;
   stuckAngle: number;
+  treadOffset: number;
+  thought: string;
 }
 
 interface Bullet {
@@ -87,18 +89,52 @@ const BUDGET = 15;
 const P_COLOR = '#0EA5E9';
 const E_COLOR = '#E94560';
 
+// Per-enemy visual identity
+const ENEMY_STYLES: Record<string, { body: string; tread: string; flash: string }> = {
+  'Rookie':  { body: '#9CA3AF', tread: '#6B7280', flash: '#D1D5DB' },
+  'Scout':   { body: '#F59E0B', tread: '#B45309', flash: '#FDE68A' },
+  'Turtle':  { body: '#16C79A', tread: '#0E8A6D', flash: '#6EE7B7' },
+  'Ghost':   { body: '#8B5CF6', tread: '#5B21B6', flash: '#C4B5FD' },
+  'Railgun': { body: '#EF4444', tread: '#B91C1C', flash: '#FCA5A5' },
+};
+
+const getEnemyColor = (name: string) => ENEMY_STYLES[name]?.body || E_COLOR;
+
 const toHp = (a: number) => a * 32 + 28;
 const toSpd = (s: number) => s * 0.65 + 0.55;
 const toDmg = (p: number) => p * 3 + 2;
 const toCd = (r: number) => Math.max(14, 82 - r * 14);
 const toRng = (r: number) => r * 38 + 62;
 
+const G = 20; // Grid unit — obstacles snap to this
+
 const OBSTACLES: Rect[] = [
-  { x: 155, y: 60, w: 48, h: 48 },
-  { x: 497, y: 60, w: 48, h: 48 },
-  { x: 312, y: 190, w: 76, h: 32 },
-  { x: 155, y: 332, w: 48, h: 48 },
-  { x: 497, y: 332, w: 48, h: 48 },
+  // ── Top-left L ──
+  { x: G*8, y: G*3, w: G*2, h: G },       // 2-unit bar
+  { x: G*8, y: G*4, w: G, h: G*2 },       // 2-unit stem
+
+  // ── Top-right L (mirror) ──
+  { x: G*25, y: G*3, w: G*2, h: G },
+  { x: G*26, y: G*4, w: G, h: G*2 },
+
+  // ── Mid-left wall ──
+  { x: G*12, y: G*7, w: G, h: G*3 },      // 3-unit vertical
+
+  // ── Center cross ──
+  { x: G*17, y: G*9, w: G, h: G },        // 1-unit cap
+  { x: G*16, y: G*10, w: G*3, h: G },     // 3-unit bar
+  { x: G*17, y: G*11, w: G, h: G*2 },     // 2-unit stem
+
+  // ── Mid-right wall ──
+  { x: G*22, y: G*12, w: G, h: G*3 },     // 3-unit vertical
+
+  // ── Bottom-left L ──
+  { x: G*8, y: G*16, w: G, h: G*2 },
+  { x: G*8, y: G*18, w: G*2, h: G },
+
+  // ── Bottom-right L (mirror) ──
+  { x: G*26, y: G*16, w: G, h: G*2 },
+  { x: G*25, y: G*18, w: G*2, h: G },
 ];
 
 // ═══════════════════════════════════════════════
@@ -161,13 +197,40 @@ function hitsAny(x: number, y: number, r: number, obs: Rect[]): boolean {
 }
 
 function inBounds(x: number, y: number, r: number): boolean {
-  return x > r + 2 && x < W - r - 2 && y > r + 2 && y < H - r - 2;
+  return x > r + 5 && x < W - r - 5 && y > r + 5 && y < H - r - 5;
+}
+
+// Hard-clamp a tank inside walls and outside obstacles (runs every frame)
+function clampTank(t: TankState, obstacles: Rect[]) {
+  const pad = TANK_R + 5;
+  t.x = Math.max(pad, Math.min(W - pad, t.x));
+  t.y = Math.max(pad, Math.min(H - pad, t.y));
+  for (const o of obstacles) {
+    const nearX = Math.max(o.x, Math.min(t.x, o.x + o.w));
+    const nearY = Math.max(o.y, Math.min(t.y, o.y + o.h));
+    const dx = t.x - nearX, dy = t.y - nearY;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    const minD = TANK_R + 4;
+    if (d < minD) {
+      if (d > 0.01) {
+        t.x += (dx / d) * (minD - d);
+        t.y += (dy / d) * (minD - d);
+      } else {
+        const dists = [t.x - o.x, o.x + o.w - t.x, t.y - o.y, o.y + o.h - t.y];
+        const mi = dists.indexOf(Math.min(...dists));
+        if (mi === 0) t.x = o.x - minD;
+        else if (mi === 1) t.x = o.x + o.w + minD;
+        else if (mi === 2) t.y = o.y - minD;
+        else t.y = o.y + o.h + minD;
+      }
+    }
+  }
 }
 
 function makeTank(cfg: TankConfig, x: number, y: number, angle: number, isPlayer: boolean): TankState {
   const mhp = toHp(cfg.armor);
   return { x, y, bodyAngle: angle, turretAngle: angle, hp: mhp, maxHp: mhp, config: cfg,
-    cooldown: 0, isPlayer, hitFlash: 0, alive: true, prevX: x, prevY: y, stuckFrames: 0, stuckAngle: 0 };
+    cooldown: 0, isPlayer, hitFlash: 0, alive: true, prevX: x, prevY: y, stuckFrames: 0, stuckAngle: 0, treadOffset: 0, thought: '' };
 }
 
 function initGame(pCfg: TankConfig, eCfg: TankConfig): GameState {
@@ -194,7 +257,9 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
   let aimTh = 0.3;
   let wantFire = false;
 
-  const jitter = Math.sin(game.frame * 0.047 + (tank.isPlayer ? 0 : 137)) * 0.06;
+  // Stronger jitter at close range to break symmetry
+  const jitterAmp = dist < TANK_R * 6 ? 0.18 : 0.06;
+  const jitter = Math.sin(game.frame * 0.047 + (tank.isPlayer ? 0 : 137)) * jitterAmp;
 
   switch (tank.config.strategy) {
     case 'aggressive':
@@ -202,21 +267,30 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
       moveDir = dist > TANK_R * 5 ? 1 : 0;
       wantFire = dist < myRng * 1.2;
       aimTh = 0.4;
+      if (tank.isPlayer) tank.thought = moveDir ? 'Closing distance...' : 'Point blank — engaging!';
       break;
     case 'defensive':
-      if (dist < myRng * 0.45) { wantBody = toFoe + Math.PI; moveDir = 1; }
-      else if (dist < myRng * 0.8) {
+      if (dist < myRng * 0.45) { wantBody = toFoe + Math.PI; moveDir = 1;
+        if (tank.isPlayer) tank.thought = 'Too close — retreating...';
+      } else if (dist < myRng * 0.8) {
         wantBody = toFoe + (Math.PI / 2) * (game.frame % 280 < 140 ? 1 : -1);
         moveDir = 1;
-      } else { wantBody = toFoe; moveDir = 0; }
+        if (tank.isPlayer) tank.thought = 'Maintaining safe distance...';
+      } else { wantBody = toFoe; moveDir = 0;
+        if (tank.isPlayer) tank.thought = 'Holding position...';
+      }
       wantFire = dist < myRng;
       aimTh = 0.22;
       break;
     case 'flanker': {
       const ideal = myRng * 0.6;
-      if (dist > ideal * 1.5) wantBody = toFoe + Math.PI * 0.25;
-      else if (dist < ideal * 0.55) wantBody = toFoe + Math.PI * 0.75;
-      else wantBody = toFoe + Math.PI / 2;
+      if (dist > ideal * 1.5) { wantBody = toFoe + Math.PI * 0.25;
+        if (tank.isPlayer) tank.thought = 'Approaching at angle...';
+      } else if (dist < ideal * 0.55) { wantBody = toFoe + Math.PI * 0.75;
+        if (tank.isPlayer) tank.thought = 'Too close — peeling off...';
+      } else { wantBody = toFoe + Math.PI / 2;
+        if (tank.isPlayer) tank.thought = 'Circling target...';
+      }
       moveDir = 1;
       wantFire = dist < myRng;
       aimTh = 0.35;
@@ -224,21 +298,137 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     }
     case 'sniper': {
       const ideal = myRng * 0.78;
-      if (dist < ideal * 0.55) { wantBody = toFoe + Math.PI; moveDir = 1; }
-      else if (dist > ideal * 1.15) { wantBody = toFoe; moveDir = 1; }
-      else { wantBody = toFoe; moveDir = 0; }
+      if (dist < ideal * 0.55) { wantBody = toFoe + Math.PI; moveDir = 1;
+        if (tank.isPlayer) tank.thought = 'Too close — pulling back...';
+      } else if (dist > ideal * 1.15) { wantBody = toFoe; moveDir = 1;
+        if (tank.isPlayer) tank.thought = 'Moving into range...';
+      } else { wantBody = toFoe; moveDir = 0;
+        if (tank.isPlayer) tank.thought = 'In position — lining up shot...';
+      }
       wantFire = dist < myRng;
       aimTh = 0.1;
       break;
     }
     case 'balanced':
-      if (hpPct > 0.5) { wantBody = toFoe; moveDir = dist > myRng * 0.35 ? 1 : 0; aimTh = 0.35; }
-      else { wantBody = dist < myRng * 0.45 ? toFoe + Math.PI : toFoe; moveDir = dist < myRng * 0.45 ? 1 : 0; aimTh = 0.2; }
+      if (hpPct > 0.5) { wantBody = toFoe; moveDir = dist > myRng * 0.35 ? 1 : 0; aimTh = 0.35;
+        if (tank.isPlayer) tank.thought = moveDir ? 'Health good — advancing...' : 'In range — engaging...';
+      } else { wantBody = dist < myRng * 0.45 ? toFoe + Math.PI : toFoe; moveDir = dist < myRng * 0.45 ? 1 : 0; aimTh = 0.2;
+        if (tank.isPlayer) tank.thought = moveDir ? 'Taking damage — falling back...' : 'Playing cautious...';
+      }
       wantFire = dist < myRng;
       break;
   }
 
   wantBody += jitter;
+
+  // Close-range circling: never park nose-to-nose
+  if (dist < TANK_R * 5 && moveDir === 0) {
+    const side = ((game.frame + (tank.isPlayer ? 0 : 70)) % 220 < 110) ? 1 : -1;
+    wantBody = toFoe + (Math.PI * 0.55) * side;
+    moveDir = 1;
+    if (tank.isPlayer) tank.thought = 'Close quarters — strafing!';
+  }
+
+  // ── Enemy intelligence upgrades ──
+  let aimAt = toFoe;
+  let tTurnBoost = 0;
+
+  if (!tank.isPlayer) {
+    switch (tank.config.name) {
+      case 'Turtle': {
+        // Tighter aim than base defensive
+        aimTh = Math.min(aimTh, 0.18);
+        // Desperation mode: go aggressive below 35% HP
+        if (hpPct < 0.35) {
+          wantBody = toFoe;
+          moveDir = 1;
+          aimTh = 0.35;
+          wantFire = true;
+        }
+        // Smarter retreats: prefer backing toward arena center when fleeing
+        if (moveDir === 1 && Math.abs(angleDiff(wantBody, toFoe + Math.PI)) < 0.6) {
+          const toCenterX = W / 2 - tank.x, toCenterY = H / 2 - tank.y;
+          const toCenter = Math.atan2(toCenterY, toCenterX);
+          wantBody = toFoe + Math.PI * 0.7 + angleDiff(toFoe + Math.PI, toCenter) * 0.3;
+        }
+        break;
+      }
+      case 'Ghost': {
+        // Lead targeting (moderate — 50% prediction)
+        const gSpd = toSpd(foe.config.speed);
+        const gVx = Math.cos(foe.bodyAngle) * gSpd;
+        const gVy = Math.sin(foe.bodyAngle) * gSpd;
+        const gFrames = dist / BULLET_SPD;
+        aimAt = Math.atan2(
+          foe.y + gVy * gFrames * 0.5 - tank.y,
+          foe.x + gVx * gFrames * 0.5 - tank.x
+        );
+        tTurnBoost = 0.012;
+        aimTh = Math.min(aimTh, 0.28);
+
+        // Extra wobble — hard to hit
+        wantBody += Math.sin(game.frame * 0.09 + 42) * 0.25;
+
+        // Bullet dodge: jink sideways when a bullet is heading our way
+        for (const b of game.bullets) {
+          if (b.owner === 'enemy') continue;
+          const bDx = b.x - tank.x, bDy = b.y - tank.y;
+          const bDist = Math.sqrt(bDx * bDx + bDy * bDy);
+          if (bDist < 65) {
+            const bAngle = Math.atan2(b.dy, b.dx);
+            const toMe = Math.atan2(-bDy, -bDx);
+            const bDiff = angleDiff(bAngle, toMe);
+            if (Math.abs(bDiff) < 0.5) {
+              wantBody = bAngle + (Math.PI / 2) * (bDiff > 0 ? 1 : -1);
+              moveDir = 1;
+              break;
+            }
+          }
+        }
+        break;
+      }
+      case 'Railgun': {
+        // Strong lead targeting (75% prediction)
+        const rSpd = toSpd(foe.config.speed);
+        const rVx = Math.cos(foe.bodyAngle) * rSpd;
+        const rVy = Math.sin(foe.bodyAngle) * rSpd;
+        const rFrames = dist / BULLET_SPD;
+        aimAt = Math.atan2(
+          foe.y + rVy * rFrames * 0.75 - tank.y,
+          foe.x + rVx * rFrames * 0.75 - tank.x
+        );
+        tTurnBoost = 0.008;
+
+        // Very precise aim — only fires when dialed in
+        aimTh = 0.08;
+
+        // Post-shot repositioning: sidestep after firing
+        if (tank.cooldown > toCd(tank.config.rate) * 0.7) {
+          const stepDir = game.frame % 300 < 150 ? 1 : -1;
+          wantBody = toFoe + (Math.PI / 2) * stepDir;
+          moveDir = 1;
+        }
+
+        // Bullet dodge (wider detection range)
+        for (const b of game.bullets) {
+          if (b.owner === 'enemy') continue;
+          const bDx = b.x - tank.x, bDy = b.y - tank.y;
+          const bDist = Math.sqrt(bDx * bDx + bDy * bDy);
+          if (bDist < 85) {
+            const bAngle = Math.atan2(b.dy, b.dx);
+            const toMe = Math.atan2(-bDy, -bDx);
+            const bDiff = angleDiff(bAngle, toMe);
+            if (Math.abs(bDiff) < 0.4) {
+              wantBody = bAngle + (Math.PI / 2) * (bDiff > 0 ? 1 : -1);
+              moveDir = 1;
+              break;
+            }
+          }
+        }
+        break;
+      }
+    }
+  }
 
   // Stuck detection
   if (game.frame % 25 === 0) {
@@ -249,23 +439,26 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     }
     tank.prevX = tank.x; tank.prevY = tank.y;
   }
-  if (tank.stuckFrames > 0) { wantBody = tank.stuckAngle; moveDir = 1; tank.stuckFrames--; }
+  if (tank.stuckFrames > 0) { wantBody = tank.stuckAngle; moveDir = 1; tank.stuckFrames--;
+    if (tank.isPlayer) tank.thought = 'Path blocked — rerouting...';
+  }
 
   // Rotate body
   const bTurn = 0.04 + toSpd(tank.config.speed) * 0.009;
   const bd = angleDiff(tank.bodyAngle, wantBody);
   tank.bodyAngle += Math.abs(bd) > bTurn ? Math.sign(bd) * bTurn : bd;
 
-  // Rotate turret toward foe
-  const tTurn = 0.065;
-  const td = angleDiff(tank.turretAngle, toFoe);
+  // Rotate turret toward target (lead position for smart enemies)
+  const tTurn = 0.065 + tTurnBoost;
+  const td = angleDiff(tank.turretAngle, aimAt);
   tank.turretAngle += Math.abs(td) > tTurn ? Math.sign(td) * tTurn : td;
 
   // Move
   if (moveDir !== 0) {
     const nx = tank.x + Math.cos(tank.bodyAngle) * mySpd * moveDir;
     const ny = tank.y + Math.sin(tank.bodyAngle) * mySpd * moveDir;
-    if (inBounds(nx, ny, TANK_R) && !hitsAny(nx, ny, TANK_R + 2, game.obstacles)) {
+    if (inBounds(nx, ny, TANK_R) && !hitsAny(nx, ny, TANK_R + 4, game.obstacles)) {
+      tank.treadOffset += mySpd * moveDir;
       tank.x = nx; tank.y = ny;
     }
   }
@@ -292,7 +485,7 @@ function spawnBullet(tank: TankState, game: GameState) {
     owner: tank.isPlayer ? 'player' : 'enemy',
   });
   game.particles.push({ x: tx, y: ty, dx: 0, dy: 0, life: 5, maxLife: 5,
-    color: tank.isPlayer ? '#7DD3FC' : '#FCA5A5', size: 5 });
+    color: tank.isPlayer ? '#7DD3FC' : (ENEMY_STYLES[tank.config.name]?.flash || '#FCA5A5'), size: 5 });
 }
 
 function stepGame(g: GameState) {
@@ -302,6 +495,23 @@ function stepGame(g: GameState) {
     if (runAI(t, f, g)) spawnBullet(t, g);
     t.hitFlash = Math.max(0, t.hitFlash - 1);
   }
+
+  // Tank-to-tank separation — prevent overlapping
+  if (g.player.alive && g.enemy.alive) {
+    const sx = g.player.x - g.enemy.x, sy = g.player.y - g.enemy.y;
+    const sd = Math.sqrt(sx * sx + sy * sy);
+    const minSep = TANK_R * 2.5;
+    if (sd < minSep && sd > 0.1) {
+      const push = (minSep - sd) * 0.35;
+      const nx = (sx / sd) * push, ny = (sy / sd) * push;
+      g.player.x += nx; g.player.y += ny;
+      g.enemy.x -= nx; g.enemy.y -= ny;
+    }
+  }
+
+  // Hard-clamp both tanks inside arena and outside obstacles
+  if (g.player.alive) clampTank(g.player, g.obstacles);
+  if (g.enemy.alive) clampTank(g.enemy, g.obstacles);
 
   // Bullets
   g.bullets = g.bullets.filter(b => {
@@ -326,7 +536,7 @@ function stepGame(g: GameState) {
           const a = (Math.PI * 2 * i) / 20, s = 1 + Math.random() * 2.5;
           g.particles.push({ x: tgt.x, y: tgt.y, dx: Math.cos(a) * s, dy: Math.sin(a) * s,
             life: 25 + Math.random() * 25, maxLife: 50,
-            color: tgt.isPlayer ? P_COLOR : E_COLOR, size: 2.5 + Math.random() * 4 });
+            color: tgt.isPlayer ? P_COLOR : getEnemyColor(tgt.config.name), size: 2.5 + Math.random() * 4 });
         }
       }
       return false;
@@ -354,28 +564,59 @@ function draw(ctx: CanvasRenderingContext2D, g: GameState, cw: number, ch: numbe
   ctx.fillStyle = '#F5F2ED';
   ctx.fillRect(0, 0, W, H);
 
-  // Grid
-  ctx.strokeStyle = 'rgba(26,26,46,0.025)';
-  ctx.lineWidth = 1;
-  for (let x = 0; x <= W; x += 35) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-  for (let y = 0; y <= H; y += 35) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  // Grid (aligned to obstacle grid)
+  ctx.strokeStyle = 'rgba(26,26,46,0.018)';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x <= W; x += G) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y <= H; y += G) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
   // Border
   ctx.strokeStyle = 'rgba(26,26,46,0.07)';
   ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.roundRect(1, 1, W - 2, H - 2, 10); ctx.stroke();
 
-  // Obstacles
+  // Obstacles (LEGO bricks)
   for (const o of g.obstacles) {
-    ctx.fillStyle = 'rgba(26,26,46,0.04)';
-    ctx.beginPath(); ctx.roundRect(o.x + 2, o.y + 2, o.w, o.h, 7); ctx.fill();
-    ctx.fillStyle = '#D6D1C9';
-    ctx.beginPath(); ctx.roundRect(o.x, o.y, o.w, o.h, 7); ctx.fill();
+    // Drop shadow
+    ctx.fillStyle = 'rgba(26,26,46,0.05)';
+    ctx.beginPath(); ctx.roundRect(o.x + 1.5, o.y + 1.5, o.w, o.h, 3); ctx.fill();
+
+    // Brick body
+    ctx.fillStyle = '#D4CFC7';
+    ctx.beginPath(); ctx.roundRect(o.x, o.y, o.w, o.h, 3); ctx.fill();
+
+    // Top highlight edge
+    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.beginPath(); ctx.roundRect(o.x + 1, o.y + 0.5, o.w - 2, 2, 1); ctx.fill();
+
+    // Bottom shadow edge
+    ctx.fillStyle = 'rgba(26,26,46,0.06)';
+    ctx.fillRect(o.x + 2, o.y + o.h - 1.5, o.w - 4, 1);
+
+    // Studs (one per grid cell)
+    const cols = Math.round(o.w / G);
+    const rows = Math.round(o.h / G);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const cx = o.x + c * G + G / 2;
+        const cy = o.y + r * G + G / 2;
+        // Stud shadow
+        ctx.fillStyle = 'rgba(26,26,46,0.04)';
+        ctx.beginPath(); ctx.arc(cx + 0.5, cy + 0.5, 3.5, 0, Math.PI * 2); ctx.fill();
+        // Stud face
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, Math.PI * 2); ctx.fill();
+        // Stud highlight
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        ctx.beginPath(); ctx.arc(cx - 0.7, cy - 0.7, 1.8, 0, Math.PI * 2); ctx.fill();
+      }
+    }
   }
 
   // Bullets
+  const eBulletColor = getEnemyColor(g.enemy.config.name);
   for (const b of g.bullets) {
-    const c = b.owner === 'player' ? P_COLOR : E_COLOR;
+    const c = b.owner === 'player' ? P_COLOR : eBulletColor;
     ctx.globalAlpha = 0.3;
     ctx.strokeStyle = c; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.x - b.dx * 2, b.y - b.dy * 2); ctx.stroke();
@@ -397,39 +638,250 @@ function draw(ctx: CanvasRenderingContext2D, g: GameState, cw: number, ch: numbe
   // Tanks
   const drawTank = (t: TankState) => {
     if (!t.alive && g.endTimer < 50) return;
-    const col = t.isPlayer ? P_COLOR : E_COLOR;
-    ctx.globalAlpha = t.alive ? 1 : Math.max(0, (g.endTimer - 20) / 60);
 
-    // Shadow
+    const es = ENEMY_STYLES[t.config.name];
+    const col = t.isPlayer ? P_COLOR : (es?.body || E_COLOR);
+    const baseAlpha = t.alive ? 1 : Math.max(0, (g.endTimer - 20) / 60);
+
+    // Ghost: flickering transparency
+    const isGhost = !t.isPlayer && t.config.name === 'Ghost';
+    const ghostMul = isGhost ? (0.62 + Math.sin(g.frame * 0.15) * 0.2 + Math.sin(g.frame * 0.37) * 0.13) : 1;
+    ctx.globalAlpha = baseAlpha * ghostMul;
+
+    // Stat-dependent visual sizes (collision still uses TANK_R)
+    const vR = TANK_R + (t.config.armor - 2) * 1.2;
+    const vTurretLen = TURRET_LEN + (t.config.range - 2) * 1.8;
+    const vTurretW = 3.5 + (t.config.power - 2) * 0.5;
+
+    // ── Ghost afterimages ──
+    if (isGhost && t.alive) {
+      const spd = toSpd(t.config.speed);
+      for (let gi = 3; gi >= 1; gi--) {
+        const gx = t.x - Math.cos(t.bodyAngle) * spd * gi * 5;
+        const gy = t.y - Math.sin(t.bodyAngle) * spd * gi * 5;
+        ctx.globalAlpha = (0.13 - gi * 0.03) * (0.5 + Math.sin(g.frame * 0.08 + gi) * 0.5);
+        ctx.fillStyle = col;
+        ctx.beginPath(); ctx.arc(gx, gy, vR, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = baseAlpha * ghostMul;
+    }
+
+    // ── Treads ──
+    ctx.save();
+    ctx.translate(t.x, t.y);
+    ctx.rotate(t.bodyAngle + Math.PI / 2);
+    const treadW = 5 + (t.config.armor - 2) * 0.3;
+    const treadH = vR * 2 + 4;
+    const treadX = vR - 1.5;
+    const treadColor = t.hitFlash > 0 ? '#DDD' : (t.isPlayer ? '#0284C7' : (es?.tread || '#BE123C'));
+    const treadShadow = 'rgba(26,26,46,0.12)';
+    for (const side of [-1, 1]) {
+      const px = side * treadX;
+      ctx.fillStyle = treadShadow;
+      ctx.beginPath(); ctx.roundRect(px - treadW / 2 + 1, -treadH / 2 + 1, treadW, treadH, 2); ctx.fill();
+      ctx.fillStyle = treadColor;
+      ctx.beginPath(); ctx.roundRect(px - treadW / 2, -treadH / 2, treadW, treadH, 2); ctx.fill();
+    }
+    const treadOff = ((t.treadOffset * 1.5) % 6 + 6) % 6;
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    for (let ny = -treadH / 2 + 2 + treadOff; ny < treadH / 2 - 1; ny += 6) {
+      const nw = treadW - 2, nh = 1.5;
+      ctx.fillRect(-treadX - nw / 2, ny, nw, nh);
+      ctx.fillRect(treadX - nw / 2, ny, nw, nh);
+    }
+    ctx.restore();
+
+    // ── Shadow ──
     ctx.fillStyle = 'rgba(26,26,46,0.08)';
-    ctx.beginPath(); ctx.arc(t.x + 1.5, t.y + 1.5, TANK_R, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(t.x + 1.5, t.y + 1.5, vR, 0, Math.PI * 2); ctx.fill();
 
-    // Body
+    // ── Turtle: shield glow ──
+    if (!t.isPlayer && t.config.name === 'Turtle' && t.alive) {
+      ctx.save();
+      ctx.globalAlpha = 0.07 + Math.sin(g.frame * 0.03) * 0.04;
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(t.x, t.y, vR + 6, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      ctx.globalAlpha = baseAlpha;
+    }
+
+    // ── Body ──
     ctx.fillStyle = t.hitFlash > 0 ? '#FFF' : col;
-    ctx.beginPath(); ctx.arc(t.x, t.y, TANK_R, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(t.x, t.y, vR, 0, Math.PI * 2); ctx.fill();
 
-    // Ring
+    // ── Per-enemy body decorations ──
+    if (!t.isPlayer && t.alive) {
+      switch (t.config.name) {
+        case 'Rookie': {
+          // Simple target circle
+          ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+          ctx.lineWidth = 0.7;
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR * 0.45, 0, Math.PI * 2); ctx.stroke();
+          ctx.fillStyle = 'rgba(255,255,255,0.12)';
+          ctx.beginPath(); ctx.arc(t.x, t.y, 2, 0, Math.PI * 2); ctx.fill();
+          break;
+        }
+        case 'Scout': {
+          // Forward-pointing chevron
+          ctx.save();
+          ctx.translate(t.x, t.y);
+          ctx.rotate(t.bodyAngle);
+          ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+          ctx.lineWidth = 1.2;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(-3, -3.5); ctx.lineTo(4, 0); ctx.lineTo(-3, 3.5);
+          ctx.stroke();
+          // Second chevron
+          ctx.globalAlpha = (baseAlpha * ghostMul) * 0.15;
+          ctx.beginPath();
+          ctx.moveTo(-6, -3.5); ctx.lineTo(1, 0); ctx.lineTo(-6, 3.5);
+          ctx.stroke();
+          ctx.restore();
+          ctx.globalAlpha = baseAlpha * ghostMul;
+          break;
+        }
+        case 'Turtle': {
+          // Shell segments - hexagonal pattern
+          ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+          ctx.lineWidth = 0.7;
+          // Outer shell ring
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR - 1.5, 0, Math.PI * 2); ctx.stroke();
+          // Inner ring
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR - 4.5, 0, Math.PI * 2); ctx.stroke();
+          // Hex segment lines
+          for (let i = 0; i < 6; i++) {
+            const a = (Math.PI * 2 * i) / 6 + t.bodyAngle;
+            ctx.beginPath();
+            ctx.moveTo(t.x + Math.cos(a) * (vR - 4.5), t.y + Math.sin(a) * (vR - 4.5));
+            ctx.lineTo(t.x + Math.cos(a) * (vR - 1.5), t.y + Math.sin(a) * (vR - 1.5));
+            ctx.stroke();
+          }
+          // Center dot
+          ctx.fillStyle = 'rgba(255,255,255,0.15)';
+          ctx.beginPath(); ctx.arc(t.x, t.y, 2.5, 0, Math.PI * 2); ctx.fill();
+          break;
+        }
+        case 'Ghost': {
+          // Dashed ethereal ring
+          ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+          ctx.lineWidth = 0.8;
+          ctx.setLineDash([2.5, 3]);
+          ctx.lineDashOffset = g.frame * 0.3;
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR - 2, 0, Math.PI * 2); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.lineDashOffset = 0;
+          // Eerie inner glow
+          ctx.save();
+          ctx.globalAlpha = 0.08 + Math.sin(g.frame * 0.06) * 0.05;
+          ctx.fillStyle = '#DDD6FE';
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR * 0.6, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+          ctx.globalAlpha = baseAlpha * ghostMul;
+          break;
+        }
+        case 'Railgun': {
+          // Crosshair targeting reticle
+          ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+          ctx.lineWidth = 0.6;
+          const cr = vR * 0.5;
+          ctx.beginPath(); ctx.moveTo(t.x - cr, t.y); ctx.lineTo(t.x - 2, t.y); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(t.x + 2, t.y); ctx.lineTo(t.x + cr, t.y); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(t.x, t.y - cr); ctx.lineTo(t.x, t.y - 2); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(t.x, t.y + 2); ctx.lineTo(t.x, t.y + cr); ctx.stroke();
+          ctx.beginPath(); ctx.arc(t.x, t.y, vR * 0.35, 0, Math.PI * 2); ctx.stroke();
+          break;
+        }
+      }
+    }
+
+    // Armor rings (generic, for player)
+    if (t.isPlayer && t.config.armor >= 4) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.arc(t.x, t.y, vR - 2, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // Inner ring
     ctx.strokeStyle = 'rgba(255,255,255,0.25)';
     ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(t.x, t.y, TANK_R - 2.5, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(t.x, t.y, vR * 0.7, 0, Math.PI * 2); ctx.stroke();
 
-    // Turret
-    ctx.strokeStyle = col; ctx.lineWidth = 3.5; ctx.lineCap = 'round';
+    // ── Railgun: targeting laser (behind turret layer looks better, but after body) ──
+    if (!t.isPlayer && t.config.name === 'Railgun' && t.alive) {
+      const laserLen = toRng(t.config.range);
+      const lx = t.x + Math.cos(t.turretAngle) * (vR + vTurretLen);
+      const ly = t.y + Math.sin(t.turretAngle) * (vR + vTurretLen);
+      const lx2 = lx + Math.cos(t.turretAngle) * laserLen;
+      const ly2 = ly + Math.sin(t.turretAngle) * laserLen;
+      ctx.save();
+      ctx.globalAlpha = 0.1 + Math.sin(g.frame * 0.1) * 0.05;
+      ctx.strokeStyle = '#FCA5A5';
+      ctx.lineWidth = 0.5;
+      ctx.setLineDash([2, 4]);
+      ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx2, ly2); ctx.stroke();
+      ctx.setLineDash([]);
+      // Laser dot at end
+      ctx.fillStyle = '#EF4444';
+      ctx.globalAlpha = 0.2 + Math.sin(g.frame * 0.15) * 0.1;
+      ctx.beginPath(); ctx.arc(lx2, ly2, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      ctx.globalAlpha = baseAlpha * ghostMul;
+    }
+
+    // ── Turret ──
+    ctx.strokeStyle = col; ctx.lineWidth = vTurretW; ctx.lineCap = 'round';
     const tx1 = t.x + Math.cos(t.turretAngle) * 3;
     const ty1 = t.y + Math.sin(t.turretAngle) * 3;
-    const tx2 = t.x + Math.cos(t.turretAngle) * (TANK_R + TURRET_LEN - 3);
-    const ty2 = t.y + Math.sin(t.turretAngle) * (TANK_R + TURRET_LEN - 3);
+    const tx2 = t.x + Math.cos(t.turretAngle) * (vR + vTurretLen - 3);
+    const ty2 = t.y + Math.sin(t.turretAngle) * (vR + vTurretLen - 3);
     ctx.beginPath(); ctx.moveTo(tx1, ty1); ctx.lineTo(tx2, ty2); ctx.stroke();
+
+    // ── Railgun: muzzle brake ──
+    if (!t.isPlayer && t.config.name === 'Railgun') {
+      const brakeD = vR + vTurretLen - 8;
+      const bx = t.x + Math.cos(t.turretAngle) * brakeD;
+      const by = t.y + Math.sin(t.turretAngle) * brakeD;
+      const pa = t.turretAngle + Math.PI / 2;
+      ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(bx + Math.cos(pa) * 4, by + Math.sin(pa) * 4);
+      ctx.lineTo(bx - Math.cos(pa) * 4, by - Math.sin(pa) * 4);
+      ctx.stroke();
+    }
 
     // Tip dot
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.beginPath(); ctx.arc(tx2, ty2, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(tx2, ty2, vTurretW * 0.35 + 0.5, 0, Math.PI * 2); ctx.fill();
+
+    // ── Scout: speed lines behind ──
+    if (!t.isPlayer && t.config.name === 'Scout' && t.alive) {
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 0.8;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < 3; i++) {
+        const spread = (i - 1) * 5;
+        const perpA = t.bodyAngle + Math.PI / 2;
+        const ox = Math.cos(perpA) * spread;
+        const oy = Math.sin(perpA) * spread;
+        const trail = vR + 4 + i * 3;
+        const sx = t.x - Math.cos(t.bodyAngle) * trail + ox;
+        const sy = t.y - Math.sin(t.bodyAngle) * trail + oy;
+        const len = 8 + (2 - Math.abs(i - 1)) * 5;
+        const ex = sx - Math.cos(t.bodyAngle) * len;
+        const ey = sy - Math.sin(t.bodyAngle) * len;
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+      }
+      ctx.restore();
+    }
 
     ctx.globalAlpha = 1;
 
-    // HP bar
+    // ── HP bar ──
     if (t.alive) {
-      const bw = 26, bh = 2.5, bx = t.x - bw / 2, by = t.y - TANK_R - 9;
+      const bw = 26, bh = 2.5, bx = t.x - bw / 2, by = t.y - vR - 9;
       const frac = t.hp / t.maxHp;
       ctx.fillStyle = 'rgba(26,26,46,0.06)';
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 1); ctx.fill();
@@ -446,6 +898,29 @@ function draw(ctx: CanvasRenderingContext2D, g: GameState, cw: number, ch: numbe
   };
   drawTank(g.player);
   drawTank(g.enemy);
+
+  // Player agent thought
+  if (g.player.alive && g.player.thought && g.countdown <= 0) {
+    const th = g.player.thought;
+    ctx.font = '600 8.5px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const tm = ctx.measureText(th);
+    const px = 10, py = 10;
+    const pw = tm.width + 22, ph = 16;
+
+    ctx.fillStyle = 'rgba(26,26,46,0.55)';
+    ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 5); ctx.fill();
+
+    ctx.fillStyle = P_COLOR;
+    ctx.globalAlpha = 0.9;
+    ctx.fillText('\u25b8', px + 5, py + 3.5);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.fillText(th, px + 15, py + 3.5);
+    ctx.globalAlpha = 1;
+    ctx.textBaseline = 'alphabetic';
+  }
 
   // Countdown
   if (g.countdown > 0) {
@@ -474,7 +949,7 @@ function draw(ctx: CanvasRenderingContext2D, g: GameState, cw: number, ch: numbe
   // Winner
   if (g.over && g.endTimer < 50) {
     ctx.globalAlpha = Math.min(1, (50 - g.endTimer) / 25);
-    ctx.fillStyle = g.winner === 'player' ? '#16C79A' : '#E94560';
+    ctx.fillStyle = g.winner === 'player' ? '#16C79A' : getEnemyColor(g.enemy.config.name);
     ctx.font = '800 26px "Playfair Display", serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(g.winner === 'player' ? 'VICTORY' : 'DEFEATED', W / 2, H / 2);
@@ -521,6 +996,12 @@ export default function AgentArena() {
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<GameState | null>(null);
   const animRef = useRef(0);
+  const previewRef = useRef<HTMLCanvasElement>(null);
+  const previewAnimRef = useRef(0);
+  const statsRef = useRef(stats);
+  const strategyRef = useRef(strategy);
+  statsRef.current = stats;
+  strategyRef.current = strategy;
 
   const totalUsed = Object.values(stats).reduce((a, b) => a + b, 0);
   const remaining = BUDGET - totalUsed;
@@ -612,168 +1093,423 @@ export default function AgentArena() {
 
   const stratDef = STRATEGIES.find(s => s.key === strategy)!;
 
-  // ─── DESIGN PHASE ───
-  if (phase === 'design') return (
-    <div>
-      <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--color-deep)', margin: 0, opacity: 0.55, lineHeight: 1.6 }}>
-          Configure your tank agent's capabilities and strategy, then deploy it to fight.
-        </p>
-      </div>
+  // Preview tank animation
+  useEffect(() => {
+    if (phase !== 'design') return;
+    const canvas = previewRef.current;
+    if (!canvas) return;
 
-      {/* Name + Budget */}
-      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
-        <input type="text" value={tankName} onChange={e => setTankName(e.target.value)}
-          placeholder="Name your agent..." maxLength={12}
-          style={{ flex: 1, minWidth: 140, padding: '8px 12px', borderRadius: 8,
-            border: '1px solid rgba(26,26,46,0.08)', background: '#FEFDFB',
-            fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: '#1A1A2E', outline: 'none' }}
-          onFocus={e => e.currentTarget.style.borderColor = '#E9456030'}
-          onBlur={e => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'}
-        />
-        <div style={{ padding: '5px 12px', borderRadius: 100,
-          background: remaining > 0 ? 'rgba(22,199,154,0.06)' : remaining === 0 ? 'rgba(26,26,46,0.04)' : 'rgba(233,69,96,0.06)',
-          border: `1px solid ${remaining > 0 ? 'rgba(22,199,154,0.15)' : 'rgba(26,26,46,0.08)'}`,
-          fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700,
-          color: remaining > 0 ? '#16C79A' : '#6B7280', whiteSpace: 'nowrap' as const }}>
-          {remaining} pts left
+    const SIZE = 160;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    canvas.style.width = SIZE + 'px';
+    canvas.style.height = SIZE + 'px';
+
+    let frame = 0;
+    let running = true;
+    let muzzleFlash = 0;
+
+    const loop = () => {
+      if (!running) return;
+      frame++;
+      const ctx = canvas.getContext('2d')!;
+      const s = statsRef.current;
+      const strat = strategyRef.current;
+      const stratColor = STRATEGIES.find(st => st.key === strat)?.color || P_COLOR;
+
+      ctx.clearRect(0, 0, SIZE * dpr, SIZE * dpr);
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      const cx = SIZE / 2;
+      const cy = SIZE / 2 + 4;
+
+      // Stat-dependent sizes
+      const bodyR = 16 + s.armor * 2.5;
+      const turretLen = 14 + s.range * 4;
+      const turretW = 3 + s.power * 0.7;
+      const treadSpd = 0.2 + s.speed * 0.12;
+
+      // Idle animation
+      const bodyRock = Math.sin(frame * 0.025) * 0.08;
+      const turretSway = Math.sin(frame * 0.018) * 0.35;
+      const treadOff = (frame * treadSpd) % 7;
+      const breathe = Math.sin(frame * 0.03) * 0.8;
+
+      // Fire flash based on rate
+      const fireInterval = Math.max(30, 120 - s.rate * 18);
+      if (frame % fireInterval === 0) muzzleFlash = 8;
+      if (muzzleFlash > 0) muzzleFlash--;
+
+      const bodyAngle = -Math.PI / 2 + bodyRock;
+      const turretAngle = bodyAngle + turretSway;
+
+      // Ground shadow
+      ctx.fillStyle = 'rgba(26,26,46,0.04)';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + bodyR + 6, bodyR + 8, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Treads
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(bodyAngle + Math.PI / 2);
+      const tW = 5 + s.armor * 0.4;
+      const tH = bodyR * 2 + 6;
+      const tX = bodyR - 1;
+      const treadCol = '#0284C7';
+      const treadShadow = 'rgba(26,26,46,0.1)';
+      for (const side of [-1, 1]) {
+        const px = side * tX;
+        ctx.fillStyle = treadShadow;
+        ctx.beginPath(); ctx.roundRect(px - tW / 2 + 1, -tH / 2 + 1, tW, tH, 2); ctx.fill();
+        ctx.fillStyle = treadCol;
+        ctx.beginPath(); ctx.roundRect(px - tW / 2, -tH / 2, tW, tH, 2); ctx.fill();
+        // Tread notches
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        for (let ny = -tH / 2 + 2 + treadOff; ny < tH / 2 - 1; ny += 7) {
+          ctx.fillRect(px - (tW - 2) / 2, ny, tW - 2, 1.5);
+        }
+      }
+      ctx.restore();
+
+      // Body shadow
+      ctx.fillStyle = 'rgba(26,26,46,0.08)';
+      ctx.beginPath(); ctx.arc(cx + 1.5, cy + 1.5, bodyR, 0, Math.PI * 2); ctx.fill();
+
+      // Body
+      ctx.fillStyle = P_COLOR;
+      ctx.beginPath(); ctx.arc(cx, cy, bodyR + breathe * 0.3, 0, Math.PI * 2); ctx.fill();
+
+      // Armor rings
+      if (s.armor >= 3) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(cx, cy, bodyR - 3, 0, Math.PI * 2); ctx.stroke();
+      }
+      if (s.armor >= 5) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(cx, cy, bodyR - 6, 0, Math.PI * 2); ctx.stroke();
+      }
+
+      // Inner ring
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(cx, cy, bodyR * 0.55, 0, Math.PI * 2); ctx.stroke();
+
+      // Turret barrel
+      const tipX = cx + Math.cos(turretAngle) * (bodyR + turretLen - 2);
+      const tipY = cy + Math.sin(turretAngle) * (bodyR + turretLen - 2);
+      const baseX = cx + Math.cos(turretAngle) * (bodyR * 0.3);
+      const baseY = cy + Math.sin(turretAngle) * (bodyR * 0.3);
+
+      // Barrel shadow
+      ctx.strokeStyle = 'rgba(26,26,46,0.08)';
+      ctx.lineWidth = turretW + 1.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(baseX + 1, baseY + 1); ctx.lineTo(tipX + 1, tipY + 1); ctx.stroke();
+
+      // Barrel
+      ctx.strokeStyle = P_COLOR;
+      ctx.lineWidth = turretW;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(baseX, baseY); ctx.lineTo(tipX, tipY); ctx.stroke();
+
+      // Barrel highlight
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(baseX + Math.cos(turretAngle + 0.3) * 1, baseY + Math.sin(turretAngle + 0.3) * 1);
+      ctx.lineTo(tipX + Math.cos(turretAngle + 0.3) * 1, tipY + Math.sin(turretAngle + 0.3) * 1);
+      ctx.stroke();
+
+      // Tip dot
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.beginPath(); ctx.arc(tipX, tipY, turretW * 0.35, 0, Math.PI * 2); ctx.fill();
+
+      // Muzzle flash
+      if (muzzleFlash > 0) {
+        const flashR = (turretW + 4) * (muzzleFlash / 8);
+        const flashX = tipX + Math.cos(turretAngle) * 4;
+        const flashY = tipY + Math.sin(turretAngle) * 4;
+        ctx.globalAlpha = muzzleFlash / 8 * 0.6;
+        ctx.fillStyle = '#7DD3FC';
+        ctx.beginPath(); ctx.arc(flashX, flashY, flashR, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#FFF';
+        ctx.beginPath(); ctx.arc(flashX, flashY, flashR * 0.4, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      // Strategy indicator glow
+      ctx.globalAlpha = 0.08 + Math.sin(frame * 0.04) * 0.04;
+      ctx.fillStyle = stratColor;
+      ctx.beginPath(); ctx.arc(cx, cy, bodyR + 10, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Speed lines (when speed is high)
+      if (s.speed >= 3) {
+        ctx.globalAlpha = 0.06 + s.speed * 0.02;
+        ctx.strokeStyle = P_COLOR;
+        ctx.lineWidth = 1;
+        const linesCount = s.speed - 1;
+        for (let i = 0; i < linesCount; i++) {
+          const ly = cy + bodyR + 10 + i * 4;
+          const lx = cx - bodyR * 0.6 + Math.sin(frame * 0.05 + i) * 3;
+          ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 12 + s.speed * 3, ly); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.restore();
+      previewAnimRef.current = requestAnimationFrame(loop);
+    };
+
+    previewAnimRef.current = requestAnimationFrame(loop);
+    return () => { running = false; cancelAnimationFrame(previewAnimRef.current); };
+  }, [phase]);
+
+  // ─── Container shell ───
+  const oppColor = getEnemyColor(OPPONENTS[oppIdx].name);
+
+  const shell = (body: ReactNode, headerCenter?: ReactNode) => (
+    <div style={{
+      borderRadius: 16, overflow: 'hidden',
+      border: '1px solid rgba(26,26,46,0.08)',
+      boxShadow: '0 4px 40px rgba(26,26,46,0.09), 0 1px 3px rgba(26,26,46,0.05)',
+    }}>
+      {/* Header bar */}
+      <div style={{
+        background: 'linear-gradient(135deg, #1A1A2E, #1F2041)',
+        padding: '11px 20px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <div style={{
+            width: 7, height: 7, background: P_COLOR, borderRadius: 2,
+            transform: 'rotate(45deg)', boxShadow: `0 0 6px ${P_COLOR}60`,
+          }} />
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+            letterSpacing: '0.12em', textTransform: 'uppercase' as const,
+            color: 'rgba(255,255,255,0.45)' }}>
+            Agent Arena
+          </span>
         </div>
-      </div>
-
-      {/* Stats */}
-      <div style={{ marginBottom: '1.25rem' }}>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
-          textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
-          Capabilities
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-          {STAT_DEFS.map(({ key, label }) => {
-            const val = stats[key as keyof Stats];
+        {headerCenter && <div style={{ flex: 1, textAlign: 'center' as const }}>{headerCenter}</div>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
+          {OPPONENTS.map((opp, i) => {
+            const dotColor = ENEMY_STYLES[opp.name]?.body || E_COLOR;
             return (
-              <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
-                  color: '#1A1A2E', width: 48, textAlign: 'right' as const, opacity: 0.7 }}>{label}</span>
-                <div style={{ display: 'flex', gap: 3 }}>
-                  {[1, 2, 3, 4, 5].map(n => {
-                    const filled = n <= val;
-                    const over = !filled && (n - val) > remaining;
-                    return (
-                      <button key={n} onClick={() => handleStat(key as keyof Stats, n)}
-                        style={{ width: 20, height: 20, borderRadius: 4, border: 'none', padding: 0,
-                          background: filled ? '#E94560' : 'rgba(26,26,46,0.05)',
-                          cursor: over ? 'default' : 'pointer',
-                          opacity: filled ? 1 : over ? 0.12 : 0.28,
-                          transition: 'all 0.15s' }} />
-                    );
-                  })}
-                </div>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--color-subtle)', opacity: 0.6 }}>{val}</span>
-              </div>
+              <div key={i} title={opp.name} style={{
+                width: 6, height: 6, borderRadius: '50%',
+                background: wins[i] ? dotColor : 'rgba(255,255,255,0.1)',
+                boxShadow: wins[i] ? `0 0 4px ${dotColor}50` : 'none',
+                transition: 'all 0.3s',
+              }} />
             );
           })}
         </div>
       </div>
-
-      {/* Strategy */}
-      <div style={{ marginBottom: '1.25rem' }}>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
-          textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
-          Strategy <span style={{ opacity: 0.5, fontWeight: 400, letterSpacing: 0, textTransform: 'none' as const }}>(system prompt)</span>
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 5, marginBottom: 8 }}>
-          {STRATEGIES.map(s => (
-            <button key={s.key} onClick={() => setStrategy(s.key)}
-              style={{ padding: '5px 12px', borderRadius: 100, border: 'none',
-                background: strategy === s.key ? s.color : 'rgba(26,26,46,0.04)',
-                color: strategy === s.key ? 'white' : 'var(--color-subtle)',
-                fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600,
-                cursor: 'pointer', transition: 'all 0.15s' }}>
-              {s.name}
-            </button>
-          ))}
-        </div>
-        <div style={{ padding: '8px 12px', borderRadius: 8, background: 'rgba(26,26,46,0.02)',
-          borderLeft: `2px solid ${stratDef.color}20` }}>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontStyle: 'italic',
-            color: 'var(--color-deep)', opacity: 0.45, margin: 0, lineHeight: 1.5 }}>
-            "{stratDef.prompt}"
-          </p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: stratDef.color,
-            margin: '4px 0 0', opacity: 0.7 }}>
-            Pairs with: {stratDef.tip}
-          </p>
-        </div>
-      </div>
-
-      {/* Opponents */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
-          textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
-          Opponent
-        </p>
-        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' as const }}>
-          {OPPONENTS.map((opp, i) => (
-            <button key={i} onClick={() => setOppIdx(i)}
-              style={{ padding: '7px 12px', borderRadius: 8, textAlign: 'left' as const,
-                border: `1.5px solid ${oppIdx === i ? '#E94560' : 'rgba(26,26,46,0.06)'}`,
-                background: oppIdx === i ? 'rgba(233,69,96,0.03)' : 'transparent',
-                cursor: 'pointer', transition: 'all 0.15s', position: 'relative' as const }}>
-              {wins[i] && (
-                <span style={{ position: 'absolute' as const, top: -3, right: -3, width: 13, height: 13,
-                  borderRadius: '50%', background: '#16C79A', display: 'flex', alignItems: 'center',
-                  justifyContent: 'center', fontSize: '0.45rem', color: 'white', fontWeight: 800 }}>✓</span>
-              )}
-              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.78rem', fontWeight: 700,
-                color: '#1A1A2E', margin: '0 0 1px' }}>{opp.name}</p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'var(--color-subtle)', margin: 0 }}>
-                {opp.desc}
-              </p>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Deploy */}
-      <div style={{ textAlign: 'center' }}>
-        <button onClick={startBattle}
-          style={{ padding: '11px 32px', borderRadius: 100, border: 'none',
-            background: '#1A1A2E', color: 'white',
-            fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
-            cursor: 'pointer', transition: 'all 0.2s' }}>
-          Deploy to Arena
-        </button>
-        {wins.some(Boolean) && (
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-subtle)',
-            margin: '0.6rem 0 0', opacity: 0.6 }}>
-            {wins.filter(Boolean).length}/{OPPONENTS.length} defeated
-          </p>
-        )}
+      {/* Body */}
+      <div style={{
+        background: '#FEFDFB',
+        padding: '24px 28px 28px',
+        backgroundImage: 'radial-gradient(circle, rgba(26,26,46,0.018) 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}>
+        {body}
       </div>
     </div>
   );
 
-  // ─── BATTLE PHASE ───
-  if (phase === 'battle') return (
-    <div ref={containerRef}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        marginBottom: 6, padding: '0 2px' }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: P_COLOR }}>
-          {tankName || 'Agent'}
-        </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'var(--color-subtle)', opacity: 0.5 }}>
-          VS
-        </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: E_COLOR }}>
-          {OPPONENTS[oppIdx].name}
-        </span>
+  // ─── DESIGN PHASE ───
+  if (phase === 'design') return shell(
+    <div>
+      {/* Name */}
+      <div style={{ maxWidth: 420, margin: '0 auto 1.25rem' }}>
+        <input type="text" value={tankName} onChange={e => setTankName(e.target.value)}
+          placeholder="Name your agent..." maxLength={12}
+          style={{ width: '100%', padding: '8px 14px', borderRadius: 8,
+            border: '1px solid rgba(26,26,46,0.08)', background: '#FEFDFB',
+            fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: '#1A1A2E', outline: 'none',
+            boxSizing: 'border-box' as const }}
+          onFocus={e => e.currentTarget.style.borderColor = '#E9456030'}
+          onBlur={e => e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'}
+        />
       </div>
-      <canvas ref={canvasRef} style={{ display: 'block', borderRadius: 10 }} />
+
+      {/* Tank Preview (left) + Stats (right) — centered together */}
+      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'center',
+        marginBottom: '1.5rem' }}>
+        {/* Tank Preview */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+          <canvas ref={previewRef} style={{ borderRadius: 12, background: 'rgba(26,26,46,0.03)',
+            border: '1px solid rgba(26,26,46,0.04)' }} />
+        </div>
+
+        {/* Stats */}
+        <div style={{ flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            margin: '0 0 0.5rem', gap: 10 }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
+              textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: 0 }}>
+              Capabilities
+            </p>
+            <div style={{ padding: '3px 10px', borderRadius: 100,
+              background: remaining > 0 ? 'rgba(22,199,154,0.08)' : remaining === 0 ? 'rgba(26,26,46,0.04)' : 'rgba(233,69,96,0.08)',
+              border: `1px solid ${remaining > 0 ? 'rgba(22,199,154,0.2)' : remaining === 0 ? 'rgba(26,26,46,0.08)' : 'rgba(233,69,96,0.15)'}`,
+              fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 700,
+              color: remaining > 0 ? '#16C79A' : remaining === 0 ? '#6B7280' : '#E94560',
+              whiteSpace: 'nowrap' as const }}>
+              {remaining} pts left
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            {STAT_DEFS.map(({ key, label }) => {
+              const val = stats[key as keyof Stats];
+              return (
+                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
+                    color: '#1A1A2E', width: 48, textAlign: 'right' as const, opacity: 0.7 }}>{label}</span>
+                  <div style={{ display: 'flex', gap: 3 }}>
+                    {[1, 2, 3, 4, 5].map(n => {
+                      const filled = n <= val;
+                      const over = !filled && (n - val) > remaining;
+                      return (
+                        <button key={n} onClick={() => handleStat(key as keyof Stats, n)}
+                          style={{ width: 20, height: 20, borderRadius: 4, border: 'none', padding: 0,
+                            background: filled ? '#E94560' : 'rgba(26,26,46,0.05)',
+                            cursor: over ? 'default' : 'pointer',
+                            opacity: filled ? 1 : over ? 0.12 : 0.28,
+                            transition: 'all 0.15s' }} />
+                      );
+                    })}
+                  </div>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--color-subtle)', opacity: 0.6 }}>{val}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Strategy + Opponents + Deploy — centered column */}
+      <div style={{ maxWidth: 540, margin: '0 auto' }}>
+        {/* Strategy */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
+            textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
+            Strategy <span style={{ opacity: 0.5, fontWeight: 400, letterSpacing: 0, textTransform: 'none' as const }}>(system prompt)</span>
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 5, marginBottom: 8 }}>
+            {STRATEGIES.map(s => (
+              <button key={s.key} onClick={() => setStrategy(s.key)}
+                style={{ padding: '5px 12px', borderRadius: 100, border: 'none',
+                  background: strategy === s.key ? s.color : 'rgba(26,26,46,0.04)',
+                  color: strategy === s.key ? 'white' : 'var(--color-subtle)',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600,
+                  cursor: 'pointer', transition: 'all 0.15s' }}>
+                {s.name}
+              </button>
+            ))}
+          </div>
+          <div style={{ padding: '8px 12px', borderRadius: 8, background: 'rgba(26,26,46,0.02)',
+            borderLeft: `2px solid ${stratDef.color}20` }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
+              color: 'var(--color-deep)', opacity: 0.45, margin: 0, lineHeight: 1.5 }}>
+              {stratDef.prompt}
+            </p>
+          </div>
+        </div>
+
+        {/* Opponents */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
+            textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
+            Opponent
+          </p>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {OPPONENTS.map((opp, i) => {
+              const ec = ENEMY_STYLES[opp.name]?.body || E_COLOR;
+              return (
+                <button key={i} onClick={() => setOppIdx(i)}
+                  style={{ flex: 1, padding: '6px 6px', borderRadius: 8, textAlign: 'center' as const,
+                    border: `1.5px solid ${oppIdx === i ? ec : 'rgba(26,26,46,0.06)'}`,
+                    background: oppIdx === i ? `${ec}08` : 'transparent',
+                    cursor: 'pointer', transition: 'all 0.15s', position: 'relative' as const }}>
+                  {wins[i] && (
+                    <span style={{ position: 'absolute' as const, top: -3, right: -3, width: 13, height: 13,
+                      borderRadius: '50%', background: '#16C79A', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', fontSize: '0.45rem', color: 'white', fontWeight: 800 }}>✓</span>
+                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, margin: '0 0 1px' }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: ec, flexShrink: 0,
+                      opacity: oppIdx === i ? 1 : 0.5 }} />
+                    <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.72rem', fontWeight: 700,
+                      color: oppIdx === i ? ec : '#1A1A2E', margin: 0 }}>{opp.name}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Deploy */}
+        <div style={{ textAlign: 'center' }}>
+          <button onClick={startBattle}
+            style={{ padding: '11px 32px', borderRadius: 100, border: 'none',
+              background: '#1A1A2E', color: 'white',
+              fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
+              cursor: 'pointer', transition: 'all 0.2s' }}>
+            Deploy to Arena
+          </button>
+        </div>
+      </div>
+
+      {/* Defeated count — full width centered */}
+      {wins.some(Boolean) && (
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-subtle)',
+          margin: '0.75rem 0 0', opacity: 0.5, textAlign: 'center' as const }}>
+          {wins.filter(Boolean).length}/{OPPONENTS.length} defeated
+        </p>
+      )}
+    </div>,
+    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+      letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+      color: 'rgba(255,255,255,0.25)' }}>Configure</span>
+  );
+
+  // ─── BATTLE PHASE ───
+  if (phase === 'battle') return shell(
+    <div ref={containerRef} style={{ maxWidth: W, margin: '0 auto' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', borderRadius: 8, width: '100%' }} />
+    </div>,
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: P_COLOR }}>
+        {tankName || 'Agent'}
+      </span>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
+        VS
+      </span>
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: oppColor }}>
+        {OPPONENTS[oppIdx].name}
+      </span>
     </div>
   );
 
   // ─── RESULT PHASE ───
-  return (
-    <div style={{ textAlign: 'center', padding: '1.5rem 0.5rem' }}>
+  // Find next unbeaten opponent (or a different one to suggest)
+  const nextOpp = result?.won
+    ? OPPONENTS.findIndex((_, i) => i !== oppIdx && !wins[i])
+    : -1;
+
+  const trySuggestion = result?.won && nextOpp === -1
+    ? OPPONENTS.findIndex((_, i) => i !== oppIdx)
+    : nextOpp;
+
+  return shell(
+    <div style={{ textAlign: 'center', padding: '1rem 0', maxWidth: 520, margin: '0 auto' }}>
       <div style={{ width: 40, height: 40, borderRadius: '50%', margin: '0 auto 0.75rem',
         background: result?.won ? 'rgba(22,199,154,0.08)' : 'rgba(233,69,96,0.08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -816,6 +1552,15 @@ export default function AgentArena() {
             color: '#1A1A2E', cursor: 'pointer' }}>
           Retry
         </button>
+        {result?.won && trySuggestion !== -1 && (
+          <button onClick={() => { setOppIdx(trySuggestion); setPhase('design'); }}
+            style={{ padding: '9px 22px', borderRadius: 100, border: 'none',
+              background: '#E94560', color: 'white',
+              fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
+              cursor: 'pointer' }}>
+            Try {OPPONENTS[trySuggestion].name} {!wins[trySuggestion] ? 'next' : ''}
+          </button>
+        )}
         <button onClick={() => setPhase('design')}
           style={{ padding: '9px 22px', borderRadius: 100, border: 'none',
             background: '#1A1A2E', color: 'white',
@@ -824,6 +1569,42 @@ export default function AgentArena() {
           Redesign
         </button>
       </div>
-    </div>
+
+      {/* Progress indicator when won */}
+      {result?.won && (
+        <div style={{ marginTop: '1.25rem' }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-subtle)',
+            margin: '0 0 0.5rem', opacity: 0.5 }}>
+            {wins.filter(Boolean).length}/{OPPONENTS.length} opponents defeated
+          </p>
+          <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+            {OPPONENTS.map((opp, i) => (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 3 }}>
+                <div style={{ width: 22, height: 22, borderRadius: '50%',
+                  background: wins[i] ? '#16C79A' : i === oppIdx ? 'rgba(233,69,96,0.15)' : 'rgba(26,26,46,0.05)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: wins[i] ? 'white' : 'var(--color-subtle)',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.45rem', fontWeight: 800,
+                  border: i === oppIdx && !wins[i] ? '1.5px solid #E94560' : 'none',
+                  cursor: !wins[i] ? 'pointer' : 'default',
+                  transition: 'all 0.15s' }}
+                  onClick={() => { if (!wins[i]) { setOppIdx(i); setPhase('design'); } }}>
+                  {wins[i] ? '✓' : ''}
+                </div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.45rem', color: 'var(--color-subtle)',
+                  opacity: wins[i] ? 0.8 : 0.4 }}>
+                  {opp.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>,
+    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+      letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+      color: result?.won ? '#16C79A' : 'rgba(255,255,255,0.3)' }}>
+      {result?.won ? 'Victory' : 'Defeated'}
+    </span>
   );
 }
