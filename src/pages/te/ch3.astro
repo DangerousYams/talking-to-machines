@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="te">
@@ -22,7 +25,7 @@ const chapter = chapters[2];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          మూడో అధ్యాయం
+          మూడవ అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI మర్చిపోదు &mdash; అసలు<br />గుర్తుంచుకోవడమే లేదు.
+          AI మర్చిపోదు &mdash; అసలు<br />గుర్తుపెట్టుకోవడమే మొదలవ్వలేదు.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ప్రతిసారి నువ్వు AI కి message పంపినప్పుడు, అది నీ <em>మొత్తం conversation</em> ను మొదటి నుండి చదువుతుంది &mdash; నువ్వు పంపిన ప్రతి message, అది ఇచ్చిన ప్రతి response &mdash; reply generate చేసి, అంతా మర్చిపోతుంది. తర్వాతి turn, అదే. మొత్తం transcript మళ్ళీ feed అవుతుంది. ఇది ప్రపంచంలోనే అత్యంత శ్రద్ధగల కానీ జ్ఞాపకశక్తి లేని reader: ప్రతిసారీ పూర్తిగా చదువుతుంది, ప్రతి turn zero నుండి start చేస్తుంది.
+        నువ్వు AI కి message పంపించినప్పుడల్లా, అది నీ <em>మొత్తం conversation</em> ని మొదటి నుండి చదువుతుంది &mdash; నువ్వు పంపిన ప్రతి message, అది ఇచ్చిన ప్రతి response &mdash; reply generate చేస్తుంది, ఆ తర్వాత అంతా మర్చిపోతుంది. తర్వాతి turn లో అదే. మొత్తం transcript మళ్ళీ feed అవుతుంది. ఇది ప్రపంచంలోనే అత్యంత శ్రద్ధగల కానీ amnesia ఉన్న reader: ప్రతిసారి పూర్తిగా చదువుతుంది, ప్రతి turn లో zero నుండి మొదలు.
       </p>
     </FadeInBlock>
   </section>
@@ -63,33 +66,33 @@ const chapter = chapters[2];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Window కి అంచులు ఉంటాయి
+        Window కి అంచులు ఉన్నాయి
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI ప్రతి turn లో re-read చేసే transcript? అది <strong>context window</strong> అనే దాంట్లో ఉంటుంది &mdash; <strong>tokens</strong> లో measure అవుతుంది (సుమారుగా ఒక word కి ఒకటిన్నర tokens). Claude window సుమారు 2,00,000 tokens hold చేస్తుంది &mdash; ఒక 500-page book. చాలా ఉన్నట్టు అనిపిస్తుంది, కానీ నువ్వు పంపే ప్రతి message, నీకు వచ్చే ప్రతి response, ప్రతి hidden system instruction — అన్నీ అదే budget నుండి తింటాయి. నువ్వు అనుకున్నదాని కంటే fast గా నిండిపోతుంది.
+        AI ప్రతి turn లో మళ్ళీ చదివే ఆ transcript? అది <strong>context window</strong> అనే దానిలో ఉంటుంది &mdash; <strong>tokens</strong> లో కొలుస్తారు (ఒక token అంటే సుమారు ఒక word లో మూడో వంతు). Claude window సుమారు 2,00,000 tokens పడుతుంది &mdash; 500-పేజీల పుస్తకం. చాలా పెద్దదిగా అనిపిస్తుంది, కానీ నువ్వు పంపే ప్రతి message, వచ్చే ప్రతి response, ప్రతి hidden system instruction — అన్నీ ఒకే budget నుండి తింటాయి. నువ్వు అనుకునే దానికంటే వేగంగా నిండిపోతుంది.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Budget అయిపోయినప్పుడు, పాత messages అంచు నుండి జారిపోతాయి. మూడో message లో నీ dietary restrictions చెప్పావా? పదిహేనో message కల్లా AI వాటిని చూడలేకపోవచ్చు. అది careless గా ఉండట్లేదు &mdash; దాని ముందు లేనిది literally చూడలేదు. AI దాని window లో ఇప్పుడు ఉన్న information అంత మాత్రమే మంచిది.
+        Budget అయిపోయినప్పుడు, అత్యంత పాత messages అంచు నుండి జారిపోతాయి. Message మూడులో నీ dietary restrictions చెప్పావా? Message పదిహేను కల్లా AI వాటిని చూడలేకపోవచ్చు. అది careless గా ఉండడం కాదు &mdash; దాని ముందు లేనిది అక్షరాలా చూడలేదు. AI దాని window లో ప్రస్తుతం ఉన్న information అంత మాత్రమే బాగుంటుంది.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        అందుకే best AI users కేవలం మంచి prompts రాయరు &mdash; window <em>లోకి</em> ఏం వెళ్తుందో manage చేస్తారు. Key details కనిపించేలా periodically summarize చేయి. ముఖ్యమైనది ముందు పెట్టు. Topic మారినప్పుడు fresh start చెయ్. AI నీ context efficiently parse చేయడానికి structured formats వాడు. <strong>Context engineering అనేది కొత్త prompt engineering.</strong>
+        అందుకే అత్యుత్తమ AI users కేవలం మంచి prompts రాయరు &mdash; window <em>లోకి</em> ఏం వెళ్తుందో manage చేస్తారు. అప్పుడప్పుడు summarize చెయ్యి, key details కనిపించేలా ఉంచు. ముఖ్యమైనవి ముందు పెట్టు. Topic మారినప్పుడు fresh start చెయ్యి. Structured formats వాడు, AI నీ context ని efficiently parse చేయగలిగేలా. <strong>Context engineering అనేది కొత్త prompt engineering.</strong>
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంతర్దృష్టి</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          గొప్ప prompt రాయడం step one. AI ముందు ఏ information పెట్టాలో &mdash; దాన్ని ఎలా structure చేయాలో &mdash; decide చేయడంలో అసలు leverage ఉంది. ప్రపంచంలో best prompt కూడా context తప్పుగా ఉంటే fail అవుతుంది.
+          మంచి prompt రాయడం step one. AI ముందు ఏ information పెట్టాలో &mdash; దాన్ని ఎలా structure చేయాలో &mdash; decide చేయడంలోనే నిజమైన leverage ఉంది. ప్రపంచంలోనే అత్యుత్తమ prompt కూడా context తప్పు అయితే fail అవుతుంది.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Context window నిండిపోవడం, overflow అవ్వడం, మర్చిపోవడం &mdash; real time లో చూడు.
+        Context window నిండడం, overflow అవడం, మర్చిపోవడం &mdash; real time లో చూడు.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI conversation మధ్యలో ఎందుకు 'మర్చిపోతుందో' చివరకు అర్థమైంది. ఇది memory కాదు — ఇది context window. ఈ course live demos తో చాలా clearly explain చేస్తుంది." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Context Manage చేయడానికి strategies
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        ఇప్పుడు window ఎలా పని చేస్తుందో అర్థమైంది, దాన్ని pro లాగా manage చేయడం నేర్చుకో. "AI వాడతారు" అనేవాళ్ళకి, "AI నుండి అసాధారణ results పొందతారు" అనేవాళ్ళకి మధ్య ఈ techniques నే తేడా చేస్తాయి.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">వెళ్తూ వెళ్తూ summarize చెయ్యి</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">ప్రతి 5-10 messages కి, AI ని key decisions మరియు details యొక్క brief recap రాయమని అడుగు. ఆ summary నీ తర్వాతి message లో paste చెయ్యి. ఇది అతి ముఖ్యమైన information ని ముందుగా ఉంచి context ని "reset" చేస్తుంది.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">ముఖ్యమైనవి ముందు పెట్టు</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">అత్యంత critical information నీ message మొదట్లో పెట్టు, చివరలో కాదు. AI మొదటి మరియు చివరి భాగానికి ఎక్కువ attention ఇస్తుంది &mdash; మధ్యలోది lost అవ్వవచ్చు, ముఖ్యంగా పొడవైన prompts లో.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">strategically గా fresh start చెయ్యి</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Topic గణనీయంగా మారినప్పుడు కొత్త conversation start చేయడానికి భయపడకు. Full history కాదు, ఏం decide చేశావో summary carry over చెయ్యి. Clean context cluttered context కంటే తరచుగా మంచిది.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">ఏం గుర్తుపెట్టుకోవాలో explicitly చెప్పు</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"Important: user vegetarian. ఇది మర్చిపోకు." Silly గా అనిపిస్తుంది, కానీ పని చేస్తుంది. Explicit reminders AI ఎక్కువ weightage ఇచ్చే anchors లాగా పని చేస్తాయి.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">Structured formats వాడు</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Bulleted lists, headers, clear labels AI నీ context ని efficiently parse చేయడంలో సాయం చేస్తాయి. Well-organized prompt, prose గోడ కంటే దాని token count లో రెట్టింపు విలువ చేస్తుంది.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI conversation మధ్యలో ఎందుకు 'మర్చిపోతుందో' ఇప్పటికీ అర్థమైంది. ఇది memory కాదు — context window. ఈ course live demos తో చాలా clearly explain చేస్తుంది." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ఇప్పుడు whiteboard కనిపిస్తోంది. Window అంచులు feel అవుతున్నాయి. ఇది AI తో నీ ప్రతి conversation ని మారుస్తుంది.
+        ఇప్పుడు నీకు whiteboard కనిపిస్తుంది. Window అంచులు తెలుస్తున్నాయి. ఇది AI తో నీ ప్రతి conversation ని మారుస్తుంది.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ఇప్పటి వరకు chatbots తో work చేస్తున్నాం. తర్వాత, zoom out చేద్దాం &mdash; chat window బయట వందల AI tools ఉన్నాయి, landscape తెలిసుకుంటే ఏం possible అనుకుంటావో అదే మారుతుంది.
+        నువ్వు fundamentals నేర్చుకున్నావ్ &mdash; prompting, asking, context. తర్వాత: నీతో తీసుకెళ్ళడానికి power prompts cheat sheet.
       </p>
     </FadeInBlock>
   </section>

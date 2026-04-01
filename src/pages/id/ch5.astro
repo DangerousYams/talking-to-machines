@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        Sampai sekarang, setiap interaksi AI-mu mengikuti pola yang sama. Kamu mengetik sesuatu. AI mengetik balasan. Autocomplete yang sangat canggih. Tapi bagaimana kalau AI bisa <em>melakukan sesuatu</em>? Bukan cuma memberitahu cuaca, tapi mengecek prakiraan. Bukan cuma menulis kode, tapi menjalankannya. Bukan cuma menyarankan apa yang perlu di-Google, tapi mencari sendiri di web dan membawa hasilnya.
+        Sampai sekarang, setiap interaksimu dengan AI mengikuti pola yang sama. Kamu ketik sesuatu. AI mengetik balasan. Autocomplete canggih. Tapi bagaimana kalau AI bisa <em>melakukan sesuatu</em>? Bukan cuma kasih tahu soal cuaca, tapi cek prakiraan cuaca. Bukan cuma nulis kode, tapi menjalankannya. Bukan cuma saran apa yang harus di-Google, tapi mencari sendiri di web dan membawakan hasilnya.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Ketika kamu memberi AI tool, kamu menyerahkan kotak peralatan dan bilang: <em>"Ini hal-hal yang bisa kamu lakukan. Kamu yang putuskan kapan memakainya."</em> Dia bisa mencari di web, menjalankan kode, membaca file, memanggil API. AI-nya tidak jadi lebih pintar — dia jadi <strong>terhubung</strong>. Dan itu menimbulkan pertanyaan yang tidak ada hubungannya dengan teknologi dan segalanya tentang kamu: seberapa banyak yang harus AI lakukan sendiri sebelum mengecek denganmu?
+        Waktu kamu kasih AI tool, kamu menyerahkan kotak peralatan dan bilang: <em>"Ini hal-hal yang bisa kamu lakukan. Kamu yang putuskan kapan pakai."</em> Dia bisa cari di web, jalankan kode, baca file, panggil API. AI-nya nggak jadi lebih pintar — dia jadi <strong>terhubung</strong>. Dan itu menimbulkan pertanyaan yang bukan soal teknologi tapi soal kamu: seberapa banyak yang boleh AI lakukan sendiri sebelum bertanya dulu?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        Jawabannya tergantung pada tiga hal. <strong>Risiko</strong> — apa yang terburuk bisa terjadi? <strong>Reversibilitas</strong> — bisakah kamu membatalkannya? Dan <strong>kepercayaan</strong> — seberapa baik kamu mengenal tool ini? Kalkulator yang sudah kamu pakai ratusan kali pantas mendapat lebih banyak kebebasan daripada plugin baru yang belum pernah kamu tes.
+        Jawabannya tergantung tiga hal. <strong>Risiko</strong> — apa hal terburuk yang bisa terjadi? <strong>Reversibilitas</strong> — bisa di-undo nggak? Dan <strong>kepercayaan</strong> — seberapa kenal kamu dengan tool ini? Kalkulator yang sudah kamu pakai ratusan kali layak dapat kebebasan lebih daripada plugin baru yang belum pernah kamu coba.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Bukan semua-atau-tidak-sama-sekali. Workflow AI terbaik memberi kebebasan pada tugas berisiko rendah dan reversibel sambil menjaga manusia tetap dalam loop untuk tugas berisiko tinggi dan ireversibel. Tugasmu adalah mendesain batasnya.
+          Ini bukan soal semua atau nggak sama sekali. Workflow AI terbaik memberi kebebasan untuk tugas berisiko rendah yang bisa di-undo, sambil tetap melibatkan manusia untuk yang berisiko tinggi dan nggak bisa dibalik. Tugasmu adalah mendesain batasannya.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Di mana kamu akan menarik garis? Atur tingkat otonomi milikmu sendiri.
+        Di mana kamu akan menarik garis? Atur level otonomi versimu sendiri.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Belajar tentang tool use dan function calling AI dengan cara paling hands-on. Kursus ini mengajakmu benar-benar membangun dan menguji, bukan cuma membaca." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Belajar tentang tool use AI dan function calling dengan cara paling hands-on. Kursus ini beneran bikin kamu membangun dan menguji, bukan cuma baca teori." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tool mengubah AI dari penasihat jadi asisten — dari seseorang yang memberitahu apa yang harus dilakukan, jadi seseorang yang benar-benar melakukannya.
+        Tool mengubah AI dari penasihat jadi asisten — dari seseorang yang kasih tahu apa yang harus dilakukan, jadi seseorang yang benar-benar melakukannya.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Kamu sudah memberi AI tangan. Selanjutnya, kita menghubungkan tool-tool itu menjadi sesuatu yang bisa mengejar tujuan sendiri — merencanakan, mengeksekusi, pulih dari kesalahan. Saatnya membangun agent.
+        Kamu sudah memberi AI tangan. Selanjutnya, kita sambungkan tool-tool itu jadi sesuatu yang bisa mengejar tujuan sendiri — merencanakan, mengeksekusi, pulih dari kesalahan. Saatnya membangun agent.
       </p>
     </FadeInBlock>
   </section>

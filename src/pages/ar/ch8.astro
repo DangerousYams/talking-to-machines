@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          إدارة<br />التعقيد
+          تحدث<br />اللغة
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          إدارة الذكاء الاصطناعي عبر مشاريع أكبر<br />من أي نافذة سياق.
+          مفردات البناء &mdash;<br />ليس كودًا، فقط الأسماء والأفعال.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        هذه اللحظة التي يصطدم بها كل مبتدئ طموح: تطلب من الذكاء الاصطناعي بناء شيء حقيقي — لعبة كاملة، موقع ويب بواجهة خلفية، ورقة بحثية بمراجع — وكل شيء ينهار. ليس لأن الذكاء الاصطناعي ليس ذكيًا بما فيه الكفاية. بل لأن المشروع أكبر من أن تتحمله محادثة واحدة. تلصق جدارًا من المتطلبات وبعد عشرين دقيقة تدرك أنه نسي نصف ما طلبته.
+        أنت على وشك الجلوس مع وكيل برمجة وبناء شيء. سيستخدم كلمات مثل "deploy" و"endpoint" و"component" و"schema". إذا كانت هذه الكلمات غامضة، ستشعر بالضياع &mdash; ليس لأنك لا تستطيع البناء، بل لأنك لا تستطيع <em>التوجيه</em>. هذا الفصل يعطيك حلقة فك التشفير. ليس كيف تبرمج. بل كيف <strong>تتحدث لغة</strong> البناء.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        هذه ليست مشكلة ذكاء اصطناعي. إنها <strong>مشكلة إدارة</strong>. وتعلم حلها هو الفرق بين شخص يستخدم الذكاء الاصطناعي لمهام فردية وشخص يستخدمه لبناء أشياء حقيقية.
+        فكر فيها مثل قيادة السيارة. لا تحتاج أن تفهم محركات الاحتراق الداخلي، أو نسب نقل الحركة، أو ضغط سائل الفرامل. تحتاج أن تعرف: دواسة البنزين، الفرامل، المقود، المرايا. مفردات <em>التوجيه</em>، لا التنفيذ.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        فن حزم السياق
+        الـ Stack: حلقة فك التشفير
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        المشاريع المعقدة تكسر نهج التوجيه الواحد. السياق يفيض، الانتباه يتشتت، الأخطاء تتراكم. الحل ليس توجيهًا أفضل — بل <strong>التقسيم</strong>. قسّم المشروع إلى مهام مركزة، ثم لكل مهمة، اختر بعناية السياق الذي يحتاجه الذكاء الاصطناعي فعلاً. قليل جدًا فيهلوس. كثير جدًا فيفقد التركيز. النقطة المثالية هي الدقة الجراحية.
+        كل تطبيق &mdash; من Instagram إلى قائمة مهام بسيطة &mdash; مبني من أربع طبقات. المطورون يسمونها "الـ stack". إليك الموضوع كاملًا، مبسطًا:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        فكر في الأمر مثل حزم حقيبة سفر. لا تستطيع أخذ خزانتك بالكامل. تحتاج أن تفكر أين أنت ذاهب (المهمة)، ماذا ستحتاج (المعلومات المفيدة)، وماذا يمكنك تركه (كل شيء آخر). كل محادثة تحصل على السياق الذي تحتاجه بالضبط — لا أكثر، لا أقل.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend (الواجهة الأمامية)</p>
+          <p style="margin: 0; line-height: 1.6;">ما يراه الناس ويلمسونه. الأزرار، النصوص، الصور، الحركات. غرفة الطعام في المطعم.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend (الواجهة الخلفية)</p>
+          <p style="margin: 0; line-height: 1.6;">المنطق خلف الكواليس. يعالج الطلبات، يتحقق من كلمات المرور، يرسل الإيميلات. المطبخ.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Database (قاعدة البيانات)</p>
+          <p style="margin: 0; line-height: 1.6;">حيث يتذكر تطبيقك الأشياء. حسابات المستخدمين، المنشورات، الإعدادات. المخزن وكتاب الوصفات.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment (النشر)</p>
+          <p style="margin: 0; line-height: 1.6;">كيف يصل على الإنترنت. الاستضافة، النطاقات، البث المباشر. فتح أبواب المطعم.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        هذا كل شيء. كل تطبيق استخدمته يومًا هو مزيج من هذه الطبقات الأربع. عندما يقول وكيل البرمجة "سأعد الـ backend"، يعني "سأكتب المنطق الذي يعمل خلف الكواليس." عندما يقول "لننشره"، يعني "لنضعه على الإنترنت." لا تحتاج أن تعرف <em>كيف</em> تعمل أي من هذه الطبقات. تحتاج أن تعرف <em>أنها</em> موجودة ولماذا.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        الوكيل كمعلم
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        إليك الجزء الذي لا يخبرك به أحد: <strong>وكيل البرمجة هو أيضًا معلمك.</strong> لا تعرف ماذا يعني "npm"؟ اسأل. محتار من رسالة خطأ؟ الصقها وقل "اشرح لي هذا كشخص غير مطور." تريد أن تعرف لماذا اختار الوكيل React بدل شيء آخر؟ اسأل. سيشرح منطقه بلغة بسيطة، خطوة بخطوة، بعدد المرات التي تحتاجها.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">فكرة أساسية</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>أول خمس دقائق</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          جودة مُنتَج التسليم تحدد جودة كل ما يُبنى بعده. مخطط واضح يتغلب على وصف غامض في كل مرة. قمامة تدخل، قمامة تخرج — عبر المحادثات.
+          افتح أداة البرمجة. صِف مشروعك بلغة بسيطة: "أريد بناء متتبع تمارين حيث أسجل تمريناتي وأرى تقدمي مع الوقت." الوكيل سيطرح أسئلة توضيحية، ويقترح stack، ويبدأ البناء. مهمتك الأولى هي أن <em>تجيب على أسئلته</em> و<em>تراقب ما يبنيه</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        احزم حقيبة سياق. هل تستطيع وضع ما يهم دون أن تفيض؟
+        استكشف الطبقات الأربع لتطبيق الويب. اضغط لتتعلم المفردات &mdash; ثم اختبر نفسك.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="The hardest part of AI isn't prompting — it's orchestrating complex projects across multiple conversations. This course finally explains how." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="This chapter explains the tech stack without any code. Frontend, backend, database, deployment — finally makes sense. Wish I'd read this years ago." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        المشاريع المعقدة ليست مخيفة. إنها مجرد سلسلة محادثات مركزة مربوطة بمُنتَجات واضحة.
+        لا تحتاج أن تعرف كيف يعمل المحرك. تحتاج أن تعرف كيف تقود.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        تاليًا: معرفة متى يكون الذكاء الاصطناعي <em>مخطئًا</em>. الهلوسات، والتملق، وعادات التحقق التي تبقيك صادقًا.
+        تعرف الكلمات. عندك الفكرة. الآن حان وقت الجلوس مع وكيل البرمجة والبناء فعلًا. التالي: فن حلقة البناء &mdash; التكرار، والتقييم، وماذا تفعل عندما تنكسر الأشياء.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -31,13 +33,13 @@ const chapter = chapters[9];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Keunggulan<br />Manusia
+          Taste adalah<br />Produknya
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Apa yang AI tidak bisa gantikan &mdash;<br />dan apa yang jadi 10x lebih mudah.
+          AI menghasilkan opsi. Kamu memilih<br />yang tepat. Itulah skill-nya.
         </p>
       </FadeInBlock>
     </div>
@@ -51,41 +53,71 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Setiap kali kemampuan AI baru muncul, judul yang sama selalu muncul: <em>"Akankah AI menggantikan [masukkan pekerjaan]?"</em> Itu pertanyaan yang salah. AI tidak menggantikan manusia. AI menggantikan <strong>tugas</strong>. Dan ketika kamu zoom in ke pekerjaan mana pun — karier apa pun, bidang kreatif apa pun — kamu akan menemukan campuran: beberapa tugas AI tangani dengan cemerlang, beberapa dia bantu, dan beberapa tetap keras kepala, indahnya manusiawi.
+        AI bisa bikin website dalam tiga puluh detik. Kebanyakan terlihat sama: sudut membulat, latar belakang gradien, hero section generik, frasa stok basa-basi. Ini adalah <strong>AI slop</strong> &mdash; output default kalau nggak ada yang menggunakan taste. Secara teknis fungsional. Secara estetika mudah dilupakan. Dan itulah yang kamu dapat kalau kamu menerima apa pun yang AI berikan tanpa mendorong untuk sesuatu yang lebih baik.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Penawarnya bukan lebih banyak prompting. Tapi punya standar. Tahu seperti apa yang bagus itu. Dan menunjukkan ke AI apa yang kamu mau, bukan berharap dia menebak dengan benar.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Pekerjaan Tidak Hilang — Mereka Berubah Bentuk
+        Referensi Lebih Baik dari Deskripsi
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Ketika ATM hadir, semua orang memprediksi teller bank akan lenyap. Sebaliknya, jumlah mereka malah <em>bertambah</em> — karena ATM membuat biaya membuka cabang lebih murah, dan pekerjaan teller bergeser dari menghitung uang ke membangun hubungan. AI melakukan hal yang sama, tapi lebih cepat dan di semua industri sekaligus. Judul pekerjaannya tetap sama. <em>Deskripsi</em> pekerjaannya berubah drastis.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Bikin tampilannya modern dan bersih" nggak memberi tahu AI apa-apa. "Bikin tampilannya seperti stripe.com &mdash; minimal, banyak whitespace, satu warna aksen, judul besar dan tebal" memberi tahu semuanya. <strong>Referensi mengalahkan deskripsi setiap saat.</strong> Screenshot nilainya seribu kata prompting. Kumpulkan contoh hal-hal yang kamu suka &mdash; website, aplikasi, desain &mdash; dan berikan ke agent. "Saya mau layout ini tapi dengan warna ini." "Tipografi ini tapi diterapkan ke dashboard."
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Input data? AI yang tangani. Draft pertama? Luar biasa bagus. Tapi <em>memilih apa yang harus dibangun</em>, <em>membaca situasi di tengah krisis</em>, <em>memutuskan apa arti data</em> — itu butuh penilaian, empati, dan visi yang secara fundamental tidak dimiliki AI.
+      <p class="text-lg leading-[1.85] mb-14">
+        Taste bukan bakat bawaan. Ini paparan plus penilaian. Kamu mengembangkannya dengan melihat hal-hal hebat dan memahami <em>kenapa</em> hal itu hebat. Semakin banyak referensi yang kamu kumpulkan, semakin tajam matamu. Dan semakin tajam matamu, semakin bagus instruksimu ke agent.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tiga lensa evaluasi</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ini bukan "manusia vs. AI." Ini <strong>manusia dengan AI vs. manusia tanpa AI</strong>. Orang yang belajar bekerja <em>dengan</em> tool AI tidak kehilangan pekerjaan — mereka mengerjakan pekerjaan lebih cepat, lebih baik, dan dengan kemampuan yang sebelumnya tidak mereka miliki.
+          Nilai hasil buatan agent lewat tiga lensa. <strong>Visual:</strong> apakah terlihat seperti referensiku? <strong>Fungsional:</strong> apakah berfungsi sesuai spesifikasi? <strong>Pengguna:</strong> apakah aku benar-benar mau pakai ini? Kalau jawaban salah satu di antaranya tidak, iterasi. Kamu nggak perlu baca kode untuk memakai lensa-lensa ini.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Keunggulan Manusia
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        AI menghasilkan opsi. Kamu memilih yang tepat. Penilaian itu &mdash; taste, empati, visi &mdash; adalah keunggulanmu. AI bisa bikin sepuluh variasi logo dalam semenit. Tapi hanya kamu yang tahu mana yang <em>terasa</em> tepat untuk brand-mu. AI bisa bikin draf sepuluh versi landing page. Tapi hanya kamu yang tahu mana yang akan nyambung dengan audiensmu. Skill langka itu bukan generasi. Tapi <strong>kurasi</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Apa yang AI secara fundamental nggak bisa: memilih <em>apa</em> yang dibangun. Memutuskan untuk <em>siapa</em>. Menentukan <em>kenapa</em> itu penting. Menetapkan visi kreatif. Membaca situasi. Tahu kapan sesuatu "nggak pas" meskipun kamu nggak bisa menjelaskan kenapa. Ini bukan kekurangan AI &mdash; ini kelebihan menjadi manusia. Dan di dunia di mana generasi itu gratis, hal-hal ini lebih berharga dari sebelumnya.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -93,7 +125,7 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Pilih karier di bawah dan lihat persis bagaimana AI mentransformasinya dari dalam. Tidak ada satu pun tugas yang hilang sepenuhnya.
+        Rangking opsi-opsi ini dari terbaik ke terburuk. Lalu lihat bagaimana para ahli menilainya &mdash; dan kenapa.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +137,28 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Kursus ini tidak menghype AI atau menakut-nakuti soal pekerjaan. Dia memetakan persis skill mana yang tetap manusiawi dan mana yang di-augment. Jujur dan menyegarkan." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="'AI menghasilkan opsi. Kamu memilih yang tepat.' Bab tentang taste, referensi, dan keunggulan manusia ini adalah pelajaran terpenting dalam membangun dengan AI." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI menghasilkan opsi. Kamu memilih yang tepat. Penilaian itu — taste, empati, visi, prinsip dasar — adalah keunggulanmu.
+        Di dunia di mana generasi itu gratis, taste adalah satu-satunya yang penting.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tinggal satu bab lagi. Tidak ada teori lagi. Saatnya menggabungkan semua yang sudah kamu pelajari dan membangun sesuatu yang nyata &mdash; sesuatu yang hanya kamu yang bisa pikirkan untuk dibuat.
+        Tinggal satu bab lagi. Nggak ada lagi teori. Saatnya menggabungkan semua yang sudah kamu pelajari dan membangun sesuatu yang nyata &mdash; sesuatu yang hanya kamu yang akan kepikiran membuatnya.
       </p>
     </FadeInBlock>
   </section>

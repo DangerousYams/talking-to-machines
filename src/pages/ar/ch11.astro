@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          ابنِ شيئاً<br />حقيقياً
+          ابنِ شيئًا<br />حقيقيًا
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          المعرفة بلا إبداع مجرد معلومات.<br />حان وقت البناء.
+          المعرفة بدون إبداع مجرّد معلومات عامة.<br />حان وقت الإطلاق.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        وصلت. خلال عشرة فصول انطلقت من "ساعدني في مقالي" إلى هندسة السياق، وبناء الوكلاء، وتصحيح الهلوسات. تعلمت عن الذكاء الاصطناعي أكثر من معظم البالغين. لكن إليك الحقيقة المزعجة: <strong>لا شيء من هذا مهم حتى تبني شيئًا.</strong> القراءة عن الذكاء الاصطناعي مثل القراءة عن السباحة — يمكنك دراسة كل تقنية ضربة، لكن حتى تنزل الماء، لا <em>تعرف</em> أي شيء. أنت فقط تعرف <em>عن</em> الأشياء.
+        وصلت. على مدار عشرة فصول، انتقلت من "ساعدني في مقالتي" إلى هندسة السياق، وبناء الوكلاء، وتعلّم مفردات البرمجيات، وإتقان حلقة البناء، وتطوير الذوق. لكن إليك الحقيقة المزعجة: <strong>لا شيء من هذا مهم حتى تبني شيئًا.</strong> القراءة عن الذكاء الاصطناعي كالقراءة عن السباحة &mdash; يمكنك دراسة كل أسلوب، لكن حتى تنزل الماء، أنت لا <em>تعرف</em> أيّ شيء. أنت فقط تعرف <em>عنه</em>.
       </p>
     </FadeInBlock>
   </section>
@@ -60,27 +61,27 @@ const chapter = chapters[10];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        جهّز ذكاءك الاصطناعي
+        جهّز أداة الذكاء الاصطناعي
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        قبل أن تكتب أول توجيه، هناك خطوة قوية يتخطاها معظم المبتدئين: <strong>أعطِ أداة الذكاء الاصطناعي ملف تعليمات دائم.</strong> بدلاً من إعادة شرح مشروعك في كل جلسة، تكتبه مرة واحدة ويقرأه الذكاء الاصطناعي تلقائيًا. Claude Code يقرأ <code>CLAUDE.md</code>. Cursor يقرأ <code>.cursorrules</code>. GitHub Copilot يقرأ <code>.github/copilot-instructions.md</code>. نفس المفهوم، أسماء ملفات مختلفة. هذه هندسة السياق من الفصل الثالث — مطبقة على مستوى المشروع.
+        قبل أن تكتب أول تعليمة، هناك خطوة قوية يتخطاها معظم المبتدئين: <strong>أعطِ أداة الذكاء الاصطناعي ملف تعليمات دائم.</strong> بدلاً من إعادة شرح مشروعك في كل جلسة، تكتبه مرة واحدة وأداتك تقرأه تلقائيًا. Claude Code يقرأ <code>CLAUDE.md</code>. Cursor يقرأ <code>.cursorrules</code>. GitHub Copilot يقرأ <code>.github/copilot-instructions.md</code>. نفس الفكرة، أسماء ملفات مختلفة. هذه هندسة السياق من الفصل الثالث — مطبّقة على مستوى المشروع.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        ملف تعليمات جيد يجيب على ثلاثة أسئلة: ماذا تبني، ما هي القواعد، وكيف يبدو "الجيد"؟ أجب على هذه بشكل صحيح وكل محادثة مع ذكائك الاصطناعي تبدأ عشر خطوات للأمام. حدد نطاق مشروعك صغيرًا بما يكفي للإنهاء — مشروع نهاية أسبوع مكتمل يتغلب على تحفة مهجورة في كل مرة.
+        ملف التعليمات الجيد يجيب على ثلاثة أسئلة: ماذا تبني، ما القواعد، وما شكل "الجيد"؟ أجب عليها بشكل صحيح وكل محادثة مع الذكاء الاصطناعي تبدأ عشر خطوات للأمام. حدّد نطاق مشروعك بحيث يكون صغيرًا بما يكفي للإنهاء — مشروع نهاية أسبوع مكتمل أفضل من تحفة فنية مهجورة في كل مرة.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">فكرة أساسية</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">فكرة جوهرية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ملف تعليمات المشروع الجيد هو الفرق بين ذكاء اصطناعي يساعدك وذكاء اصطناعي <em>يفهمك</em>. اكتبه مرة واحدة، واستفد في كل جلسة.
+          ملف تعليمات المشروع الجيد هو الفرق بين ذكاء اصطناعي يساعدك وذكاء اصطناعي <em>يفهمك</em>. اكتبه مرة واحدة، واستفد منه في كل جلسة.
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        ابنِ ملف تعليمات مشروعك هنا. املأ الأقسام وصدّره لأداة الذكاء الاصطناعي التي تختارها.
+        ابنِ ملف تعليمات مشروعك هنا مباشرة. املأ الأقسام وصدّره لأداة الذكاء الاصطناعي التي تفضلها.
       </p>
     </FadeInBlock>
   </section>
@@ -106,19 +107,19 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        الأدوات لا تبني الأشياء. الناس مع الأدوات يبنون الأشياء. وعندك أفضل صندوق أدوات وصل إليه جيلك.
+        الأدوات لا تبني الأشياء. الناس الذين يملكون أدوات يبنون الأشياء. وأنت تملك أفضل مجموعة أدوات أتيحت لجيلك على الإطلاق.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        قبل أحد عشر فصلاً، كتبت "ساعدني في مقالي" وتمنيت الأفضل. الآن تهندس السياق، وتصمم الوكلاء، وتتحقق من المخرجات، وتجلب الحكم لكل خطوة. الدورة انتهت. التعلم الحقيقي يبدأ الآن — اذهب واصنع شيئًا لن يفكر في صنعه إلا أنت.
+        قبل أحد عشر فصلاً، كتبت "ساعدني في مقالتي" وتمنيت الأفضل. الآن أنت تهندس السياق، وتبني وكلاء، وتتحدث لغة البرمجيات، وتكرّر بثقة، وتضيف الذوق لكل ما تصنعه. الدورة انتهت. التعلّم الحقيقي يبدأ الآن &mdash; اذهب واصنع شيئًا لن يفكر فيه أحد غيرك.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-center mt-4" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
-        أرسله.
+        أطلقه.
       </p>
     </FadeInBlock>
   </section>

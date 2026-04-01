@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +25,7 @@ const chapter = chapters[5];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel sechs
+          Kapitel Sechs
         </p>
       </FadeInBlock>
 
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Ein Chatbot wartet darauf, dass du sprichst. Ein Agent nicht. Gib ihm ein Ziel -- "recherchiere die Mars-Kolonisierung und schreib einen Bericht" -- und er zerlegt die Arbeit in Schritte, wählt die richtigen Werkzeuge, führt sie nacheinander aus, überprüft seine eigenen Ergebnisse und macht weiter, bis die Aufgabe erledigt ist. Dieser Unterschied -- zwischen <em>auf Anweisungen reagieren</em> und <em>ein Ziel verfolgen</em> -- ist der Unterschied zwischen einem Taschenrechner und einem Kollegen.
+        Ein Chatbot wartet darauf, dass du sprichst. Ein Agent nicht. Gib ihm ein Ziel &mdash; &bdquo;recherchiere die Mars-Kolonisierung und schreib einen Bericht&ldquo; &mdash; und er zerlegt die Arbeit in Schritte, wählt die richtigen Werkzeuge, führt sie nacheinander aus, überprüft seine eigenen Ergebnisse und macht weiter, bis die Aufgabe erledigt ist. Dieser Unterschied &mdash; zwischen <em>auf Anweisungen reagieren</em> und <em>ein Ziel verfolgen</em> &mdash; ist der Unterschied zwischen einem Taschenrechner und einem Kollegen.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Agenten laufen in einer Schleife: Ziel empfangen, Schritte planen, mit Werkzeugen ausführen, Ergebnisse beobachten, Fortschritt bewerten, anpassen. Sie planen nicht einmal und führen blind aus -- die besten erholen sich elegant, wenn Schritt drei schiefgeht. Aber diese Macht hat eine Schattenseite: Agenten geben nicht nur falsche Antworten, sie <em>handeln</em> danach und nutzen das fehlerhafte Ergebnis für die nächste Entscheidung. Fehler potenzieren sich.
+        Agenten laufen in einer Schleife: Ziel empfangen, Schritte planen, mit Werkzeugen ausführen, Ergebnisse beobachten, Fortschritt bewerten, anpassen. Sie planen nicht einmal und führen blind aus &mdash; die besten erholen sich elegant, wenn Schritt drei schiefgeht. Aber diese Macht hat eine Schattenseite: Agenten geben nicht nur falsche Antworten, sie <em>handeln</em> danach und nutzen das fehlerhafte Ergebnis für die nächste Entscheidung. Fehler potenzieren sich.
       </p>
     </FadeInBlock>
   </section>
@@ -81,11 +84,11 @@ const chapter = chapters[5];
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal', color: '#E94560', text: 'Ein klares Ziel empfangen. "Recherchiere Mars" ist kein Ziel. "Schreib eine 500-Wörter-Zusammenfassung der Herausforderungen der Mars-Kolonisierung, mit Quellen" schon.' },
+        { letter: 'G', name: 'Ziel', color: '#E94560', text: 'Ein klares Ziel empfangen. \u201ERecherchiere Mars\u201C ist kein Ziel. \u201ESchreib eine 500-Wörter-Zusammenfassung der Herausforderungen der Mars-Kolonisierung, mit Quellen\u201C schon.' },
         { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Das Ziel in konkrete Schritte zerlegen. Gute Planer erstellen flexible Pläne. Schlechte Planer erstellen starre Skripte, die bei der ersten Überraschung zerbrechen.' },
-        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: 'Jeden Schritt mit dem richtigen Werkzeug ausführen -- Suchmaschinen, Code-Interpreter, Dateileser, APIs. Agenten denken nicht nur. Sie handeln.' },
-        { letter: 'M', name: 'Observe', color: '#16C79A', text: 'Aufzeichnen, was passiert ist, und Ergebnisse prüfen. Ohne Gedächtnis könnte ein Agent dieselbe fehlschlagende Aktion endlos wiederholen.' },
-        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: 'Hat das funktioniert? Bin ich dem Ziel näher? Wenn etwas nicht stimmt, den Plan anpassen und erneut durchlaufen. Das unterscheidet einen Agenten von einem Skript.' },
+        { letter: 'T', name: 'Ausführung', color: '#0EA5E9', text: 'Jeden Schritt mit dem richtigen Werkzeug ausführen \u2014 Suchmaschinen, Code-Interpreter, Dateileser, APIs. Agenten denken nicht nur. Sie handeln.' },
+        { letter: 'M', name: 'Beobachten', color: '#16C79A', text: 'Aufzeichnen, was passiert ist, und Ergebnisse prüfen. Ohne Gedächtnis könnte ein Agent dieselbe fehlschlagende Aktion endlos wiederholen.' },
+        { letter: 'E', name: 'Bewerten', color: '#F5A623', text: 'Hat das funktioniert? Bin ich dem Ziel näher? Wenn etwas nicht stimmt, den Plan anpassen und erneut durchlaufen. Das unterscheidet einen Agenten von einem Skript.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +112,7 @@ const chapter = chapters[5];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ein Chatbot ist ein einzelner Zug. Ein Agent ist eine ganze Unterhaltung -- mit sich selbst, seinen Werkzeugen und der Welt. Die besten Agenten-Bauer maximieren nicht die Autonomie. Sie gestalten durchdachte Checkpoints, an denen der Agent pausiert und einen Menschen entscheiden lässt, ob es weitergehen soll.
+          Ein Chatbot ist ein einzelner Zug. Ein Agent ist eine ganze Unterhaltung &mdash; mit sich selbst, seinen Werkzeugen und der Welt. Die besten Agenten-Bauer maximieren nicht die Autonomie. Sie gestalten durchdachte Checkpoints, an denen der Agent pausiert und einen Menschen entscheiden lässt, ob es weitergehen soll.
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Zeit, einen zu bauen. Entwirf deinen eigenen Agenten von Grund auf.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Zeit, einen zu bauen. Entwirf einen Panzer-Agenten &mdash; wähle seine Fähigkeiten, verteile sein Budget und schreibe seine Strategie &mdash; dann setze ihn in der Arena ein und schau zu, wie er autonom kämpft.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Gerade meinen ersten KI-Agenten von Grund auf entworfen. Dieser Kurs führt dich Schritt für Schritt durch die Architektur mit Live-Demos. Kein Hype, nur Bauen." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Das Ziel ist nicht, jedes Scheitern zu verhindern -- sondern Scheitern behebbar zu machen.
+        Das Ziel ist nicht, jedes Scheitern zu verhindern &mdash; sondern Scheitern behebbar zu machen.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Als Nächstes: Du wirst einen echten Agenten nutzen -- einen, der deinen Code liest, Änderungen schreibt, Tests ausführt und seine eigenen Fehler behebt. Lerne Claude Code kennen.
+        Als Nächstes: Du wirst einen echten Agenten nutzen &mdash; einen, der deinen Code liest, Änderungen schreibt, Tests ausführt und seine eigenen Fehler behebt. Lerne Claude Code kennen.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

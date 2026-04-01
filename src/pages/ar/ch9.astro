@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          عندما يخطئ<br />الذكاء الاصطناعي
+          حلقة<br />البناء
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          عادات التحقق التي تفصل<br />المبتدئين عن المحترفين.
+          توقع عدم الكمال. استمتع بالتحسين.<br />النسخة الثالثة هي حيث يحدث السحر.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        الذكاء الاصطناعي الذي ساعدك للتو في كتابة مقال خالٍ من الأخطاء يمكنه أيضًا، بنفس الثقة، أن يخبرك أن نابليون انتصر في معركة واترلو. لن يتردد. ولن يتلعثم. سيذكر "حقيقة" ملفقة تمامًا بنفس النبرة الموثوقة التي يستخدمها لكل شيء آخر. هذه هي المفارقة في قلب العمل مع الذكاء الاصطناعي: <strong>نفس الطلاقة التي تجعله مفيدًا تجعله خطيرًا.</strong>
+        أكثر خطأ شائع عند البناء مع الذكاء الاصطناعي ليس أمرًا سيئًا. بل توقع سيئ. تكتب وصفًا طويلًا واحدًا، تضغط إرسال، وتتوقع منتجًا مكتملًا. لا ينجح. لا ينجح أبدًا. الناس الذين يبنون أشياء مذهلة مع الذكاء الاصطناعي يعرفون سرًا: <strong>النسخة الأولى دائمًا خاطئة.</strong> النسخة الثالثة جيدة. الخامسة رائعة. وعملية الانتقال من واحد لخمسة؟ هي المهارة الفعلية.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        كل فنان يكرر. كل معماري يراجع. كل صانع أفلام يصور عدة لقطات. البناء مع الذكاء الاصطناعي لا يختلف. الناس الذين يستمتعون بالحلقة &mdash; لا يستاءون منها &mdash; هم من يبنون أفضل الأشياء.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        المعقولية ليست حقيقة
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        حدّد، ولّد، تحقّق
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        نماذج الذكاء الاصطناعي لا تسترجع حقائق من قاعدة بيانات. إنها تتنبأ بالكلمة التالية الأكثر احتمالاً. عندما تسأل عن شيء حقيقي، بيانات التدريب توجهها نحو معلومات صحيحة. عندما تسأل عن شيء غير موجود، النموذج لا يقول "لا أعرف." بل يولّد ما <em>ستبدو عليه</em> الإجابة الصحيحة — مع أسماء وتواريخ ومراجع. كلها ملفقة.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        كل جلسة منتجة مع وكيل برمجة تتبع نفس الإيقاع. <strong>حدّد</strong> ما تريده &mdash; كن محددًا، أعطِ أمثلة، صِف كيف يبدو "المنتهي". دع الوكيل <strong>يولّده</strong>. ثم <strong>تحقّق</strong>: هل يعمل؟ هل يبدو صحيحًا؟ هل يفعل ما طلبته؟ إذا لا، تحدد مرة أخرى، بدقة أكبر. هذه هي الحلقة. ليست علامة فشل. إنها العملية.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        لا يوجد ارتباط بين مدى ثقة صوت الذكاء الاصطناعي ومدى دقته فعلاً. الإجابة الخاطئة والإجابة الصحيحة تبدوان متطابقتين من الخارج. لا تستطيع الحكم على الدقة من النبرة، أو من التفاصيل، أو من عدد الأرقام المحددة التي يذكرها الذكاء الاصطناعي. اختبار "يبدو صحيحًا" عديم القيمة. دفاعك الوحيد هو التحقق.
+        الخطوة الاحترافية هي كتابة <strong>معايير القبول</strong> قبل أن تبدأ البناء. "الزر يجب أن يتحول للون الأخضر عند الضغط." "القائمة يجب أن تبقى عند تحديث الصفحة." "نموذج التسجيل يجب أن يرفض الإيميلات بدون علامة @." هذه الأوصاف بلغة بسيطة لـ"المنتهي" تصبح إطار تقييمك. عندما يكون شيء خاطئًا، الصق معاييرك للوكيل وقل "هذا لا يطابق." الوكيل يستطيع الاختبار مقابل <em>معاييرك أنت</em>.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        ماذا تفعل عندما تعلق
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        الوكيل ولّد شيئًا معطلًا. ماذا الآن؟ خمس استراتيجيات، بترتيب ما تجربه أولًا:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. صِف العَرَض، لا التشخيص</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"الزر لا يستجيب عند الضغط" أفضل من "أظن أن معالج onClick معطل."</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. شارك رسالة الخطأ كما هي</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">انسخ والصق الخطأ بالضبط. إنه أكثر شيء مفيد يمكنك إعطاءه للوكيل.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. اطلب من الوكيل أن يشرح ماذا فعل</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"اشرح لي ما غيّرته للتو ولماذا." الفهم غالبًا يكشف المشكلة.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. اطلب نهجًا مختلفًا</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"هذا النهج لا ينجح. هل تستطيع حل هذا بطريقة مختلفة تمامًا؟"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. ابدأ من جديد مع الدروس المستفادة</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">أحيانًا محادثة جديدة أسرع من تصحيح محادثة متشابكة. خذ القرارات الرئيسية معك.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>الاختبارات كحواجز حماية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          الذكاء الاصطناعي ليس لديه مفهوم الحقيقة. لديه مفهوم <em>المعقولية</em>. يولّد نصًا يتناسب مع النمط — سواء كان ذلك النص يتوافق مع الواقع أم لا.
+          يمكنك أن تطلب من الوكيل كتابة اختبارات آلية &mdash; بلغة بسيطة. "اكتب اختبارًا يتحقق أن نموذج التسجيل يرفض الإيميلات بدون علامة @." الوكيل يكتب الاختبار <em>و</em> الكود الذي يجتازه. هذا هو التطوير المبني على الاختبارات، يديره شخص لم يكتب اختبارًا في حياته. بمجرد أن يلتقط اختبار خللًا، لا يمكن لهذا الخلل أن يعود أبدًا.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        اختبر كاشفك. هل تستطيع تمييز أي ادعاءات الذكاء الاصطناعي حقيقية وأيها ملفقة؟
+        تدرّب على المهارة. كيف ستصف هذه الأخطاء لوكيل برمجة؟
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Every AI user needs this chapter. It teaches you exactly how AI hallucinates, why it agrees with wrong answers, and how to catch it. Super practical." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="This chapter on building with AI coding agents is gold. The 5 debugging strategies alone are worth it — describe symptoms, share errors, ask for explanations." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        الناس الذين يحصلون على أقصى قيمة من الذكاء الاصطناعي هم من تعلموا بالضبط متى يثقون ومتى يتحققون.
+        النسخة الأولى دائمًا خاطئة. الثالثة جيدة. الخامسة رائعة. استمتع بالحلقة.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        معرفة متى يخطئ الذكاء الاصطناعي تقود لسؤال أكبر: ماذا لا يستطيع فعله <em>أبدًا</em>؟ تاليًا، نستكشف المهارات التي تبقى بعناد وجمال بشرية — ولماذا أصبحت أهم من أي وقت مضى.
+        تستطيع التكرار. تستطيع تصحيح الأخطاء. لكن كيف تعرف إذا كان ما تبنيه <em>جيدًا</em> فعلًا؟ ليس فقط يعمل &mdash; جيد. هذا يتطلب شيئًا لا يستطيع الذكاء الاصطناعي إعطاءك إياه: الذوق. هذا التالي.
       </p>
     </FadeInBlock>
   </section>

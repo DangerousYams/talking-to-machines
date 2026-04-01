@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -51,20 +54,20 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Chatbot நீ பேசும் வரை காத்திருக்கும். Agent அப்படி இல்லை. ஒரு goal கொடு &mdash; "செவ்வாய் colonization பற்றி research செய்து report எழுது" &mdash; அது வேலையை steps-ஆக உடைக்கும், சரியான tools-ஐ pick செய்யும், ஒன்றன்பின் ஒன்றாக execute செய்யும், results-ஐ check செய்யும், வேலை முடியும் வரை தொடரும். <em>Instructions-க்கு respond செய்வது</em> vs <em>goal-ஐ pursue செய்வது</em> &mdash; இந்த வித்தியாசம் calculator-க்கும் coworker-க்கும் உள்ள வித்தியாசம்.
+        Chatbot நீ பேசும் வரை காத்திருக்கிறது. Agent அப்படி இல்லை. ஒரு இலக்கு கொடு — "Mars colonization பற்றி research செய்து ஒரு report எழுது" — அது வேலையை steps ஆக உடைக்கிறது, சரியான tools தேர்வு செய்கிறது, ஒவ்வொன்றாக execute செய்கிறது, தன் results-ஐ check செய்கிறது, வேலை முடியும் வரை தொடர்கிறது. <em>Instructions-க்கு respond செய்வது</em> மற்றும் <em>ஒரு goal-ஐ pursue செய்வது</em> — இந்த வித்தியாசம்தான் calculator-க்கும் coworker-க்கும் இடையே உள்ளது.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Agents ஒரு loop-ல் run ஆகின்றன: goal receive செய், steps plan செய், tools-உடன் execute செய், results observe செய், progress evaluate செய், adjust செய். ஒரு முறை plan செய்து blindly execute செய்வதில்லை &mdash; சிறந்தவை மூன்றாம் step தவறாகும்போது gracefully recover செய்யும். ஆனால் இந்த power-க்கு ஒரு dark side இருக்கு: agents தவறான answers கொடுப்பது மட்டுமல்ல, அவற்றின் மேல் <em>act</em> செய்து, broken result-ஐ அடுத்த decision-க்கு பயன்படுத்தும். தோல்விகள் compound ஆகின்றன.
+        Agents ஒரு loop-ல் இயங்குகின்றன: goal பெறு, steps plan செய், tools-உடன் execute செய், results observe செய், progress evaluate செய், adjust செய். ஒரே முறை plan செய்து கண்மூடித்தனமாக execute செய்வதில்லை — சிறந்தவை, மூன்றாவது step தவறாக போனாலும் நேர்த்தியாக recover ஆகும். ஆனால் அந்த சக்திக்கு ஒரு dark side இருக்கிறது: agents தவறான பதில்கள் மட்டும் சொல்வதில்லை, அவற்றின் மீது <em>செயல்படுகின்றன</em>, பிறகு அந்த உடைந்த result-ஐ அடுத்த முடிவுக்கு பயன்படுத்துகின்றன. தவறுகள் compound ஆகின்றன.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE AGENT LOOP ═══ -->
+  <!-- ═══ THE ANATOMY OF AN AGENT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        ஒவ்வொரு agent-உம் அதே ஐந்து-படி cycle-ல் run ஆகிறது. இந்த steps புரிந்துகொள்வது &mdash; பயனுள்ள ஒன்று build செய்வதற்கும், infinite loop-ல் உன் API credits எரிக்கும் ஒன்று build செய்வதற்கும் உள்ள வித்தியாசம்.
+        ஒவ்வொரு agent-உம் அதே ஐந்து-படி cycle-ல் இயங்குகிறது. இந்த steps புரிந்துகொள்வது, பயனுள்ள ஒன்றை build செய்வதற்கும் உன் API credits-ஐ infinite loop-ல் எரிப்பதற்கும் இடையே உள்ள வித்தியாசம்.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal', color: '#E94560', text: 'தெளிவான objective receive செய். "செவ்வாய் பற்றி research செய்" என்பது goal அல்ல. "செவ்வாய் colonization challenges பற்றி sources-உடன் 500-வார்த்தை summary எழுது" என்பது goal.' },
-        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Goal-ஐ concrete steps-ஆக உடை. நல்ல planners flexible plans உருவாக்குவார்கள். மோசமானவை முதல் surprise-ல் உடையும் rigid scripts உருவாக்கும்.' },
-        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: 'சரியான tool பயன்படுத்தி ஒவ்வொரு step-ஐயும் run செய் &mdash; search engines, code interpreters, file readers, APIs. Agents வெறுமனே சிந்திப்பதில்லை. செயல்படுகின்றன.' },
-        { letter: 'M', name: 'Observe', color: '#16C79A', text: 'என்ன நடந்தது என்று record செய்து results check செய். Memory இல்லாமல், agent அதே failing action-ஐ forever repeat செய்யலாம்.' },
-        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: 'இது வேலை செய்ததா? Goal-க்கு closer ஆனேனா? ஏதாவது தவறு இருந்தால், plan-ஐ adjust செய்து மறுபடி loop செய். இதுதான் agent-ஐ script-இலிருந்து பிரிக்கிறது.' },
+        { letter: 'G', name: 'Goal (இலக்கு)', color: '#E94560', text: '"Mars பற்றி research செய்" ஒரு goal இல்லை. "Mars colonization challenges பற்றி 500 வார்த்தை summary எழுது, sources-உடன்" — அது goal.' },
+        { letter: 'P', name: 'Plan (திட்டம்)', color: '#7B61FF', text: 'Goal-ஐ concrete steps ஆக உடை. நல்ல planners flexible plans உருவாக்குகின்றன. மோசமான planners முதல் surprise-ல் உடையும் rigid scripts உருவாக்குகின்றன.' },
+        { letter: 'T', name: 'Execute (செயல்படுத்து)', color: '#0EA5E9', text: 'ஒவ்வொரு step-ஐயும் சரியான tool பயன்படுத்தி run செய் — search engines, code interpreters, file readers, APIs. Agents சிந்திப்பது மட்டும் அல்ல. செயல்படுகின்றன.' },
+        { letter: 'M', name: 'Observe (கவனி)', color: '#16C79A', text: 'என்ன நடந்தது என்று record செய்து results check செய். Memory இல்லாமல், ஒரு agent அதே fail ஆகும் action-ஐ எப்போதும் repeat செய்யலாம்.' },
+        { letter: 'E', name: 'Evaluate (மதிப்பிடு)', color: '#F5A623', text: 'இது வேலை செய்ததா? Goal-க்கு நெருக்கமாக இருக்கிறேனா? ஏதாவது தவறாக இருந்தால், plan-ஐ adjust செய்து மறுபடி loop செய். இதுதான் agent-ஐ script-லிருந்து வேறுபடுத்துகிறது.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +112,7 @@ const chapter = chapters[5];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Chatbot ஒரு single turn. Agent ஒரு முழு உரையாடல் &mdash; தன்னுடன், அதன் tools-உடன், உலகத்துடன். சிறந்த agent builders autonomy-ஐ maximize செய்வதில்லை. Agent pause செய்து மனிதன் continue செய்யலாமா என்று decide செய்ய அனுமதிக்கும் thoughtful checkpoints design செய்கிறார்கள்.
+          Chatbot ஒரு single turn. Agent ஒரு முழு உரையாடல் — தன்னுடன், தன் tools-உடன், உலகத்துடன். சிறந்த agent builders autonomy-ஐ maximize செய்வதில்லை. Agent நிறுத்தி, தொடரலாமா என்று மனிதன் முடிவு செய்யும் thoughtful checkpoints design செய்கிறார்கள்.
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        ஒன்று build செய்யும் நேரம். உன் சொந்த agent-ஐ scratch-இலிருந்து design செய்.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        ஒன்றை build செய்ய நேரம். ஒரு tank agent design செய் — அதன் capabilities தேர், budget allocate செய், strategy எழுது — பிறகு arena-வில் deploy செய்து தானாக fight செய்வதை பார்.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Just designed my first AI agent from scratch. This course walks you through the architecture step by step with live demos. No hype, just building." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        இலக்கு எல்லா failure-ஐயும் தடுப்பது அல்ல &mdash; failure-ஐ recoverable ஆக மாற்றுவது.
+        இலக்கு எல்லா failure-ஐயும் தடுப்பது அல்ல — failure-ஐ recoverable ஆக்குவது.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        அடுத்தது: ஒரு real agent பயன்படுத்துவாய் &mdash; உன் code படிக்கும், changes எழுதும், tests run செய்யும், தன் தவறுகளை fix செய்யும் ஒன்று. Claude Code-ஐ சந்தி.
+        அடுத்தது: ஒரு real agent பயன்படுத்துவாய் — உன் code படிக்கும், changes எழுதும், tests run செய்யும், தன் சொந்த தவறுகளை fix செய்யும். Claude Code-ஐ சந்தி.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

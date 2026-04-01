@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -31,13 +34,13 @@ const chapter = chapters[2];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Context<br />Engineering
+          컨텍스트<br />엔지니어링
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI는 잊어버리는 게 아냐 &mdash; 애초에<br />기억하고 있었던 적이 없어.
+          AI는 까먹는 게 아니야 &mdash;<br />애초에 기억한 적이 없거든.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        AI한테 메시지를 보낼 때마다, AI는 <em>전체 대화</em>를 처음부터 다시 읽어 &mdash; 네가 보낸 모든 메시지, AI가 한 모든 응답 &mdash; 답을 생성하고, 그 다음 전부 잊어버려. 다음 턴에도 똑같아. 전체 대화 기록이 다시 들어가. 세상에서 가장 성실하지만 기억상실증에 걸린 독자야: 매번 완벽하게 꼼꼼하지만, 매 턴마다 제로에서 시작해.
+        AI한테 메시지를 보낼 때마다, AI는 너의 <em>전체 대화</em>를 처음부터 다시 읽어 &mdash; 네가 보낸 모든 메시지, AI가 한 모든 답변 &mdash; 응답을 생성하고, 그다음 전부 잊어버려. 다음 턴에도 똑같아. 전체 대화록이 다시 입력돼. 세상에서 가장 성실하지만 기억상실증에 걸린 독자인 셈이야: 매번 완벽하게 꼼꼼하지만, 매 턴 제로에서 시작해.
       </p>
     </FadeInBlock>
   </section>
@@ -69,19 +72,19 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI가 매 턴마다 다시 읽는 그 대화 기록? 그건 <strong>context window</strong>라는 곳에 들어 있어 &mdash; <strong>토큰</strong>으로 측정돼 (대략 단어 하나당 토큰 하나 정도). Claude의 window는 약 200,000 토큰을 담을 수 있어 &mdash; 500쪽짜리 책 한 권. 엄청 커 보이지만, 네가 보내는 모든 메시지, 받는 모든 응답, 숨겨진 시스템 명령까지 전부 같은 예산에서 나와. 생각보다 빨리 차.
+        AI가 매 턴마다 다시 읽는 그 대화록? 그건 <strong>컨텍스트 윈도우</strong>라는 곳 안에 살아 &mdash; <strong>토큰</strong>(대략 한 단어의 4분의 3 정도) 단위로 측정돼. Claude의 윈도우는 약 200,000 토큰을 담을 수 있어 &mdash; 500페이지짜리 책 분량이야. 엄청 커 보이지만, 네가 보내는 모든 메시지, 받는 모든 응답, 숨겨진 시스템 지시문까지 전부 같은 예산에서 빠져나가. 생각보다 훨씬 빨리 차.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        예산이 다 떨어지면, 가장 오래된 메시지가 창 밖으로 떨어져. 세 번째 메시지에서 식단 제한을 언급했어? 열다섯 번째쯤 되면 AI가 더 이상 그걸 못 볼 수도 있어. AI가 부주의한 게 아냐 &mdash; 말 그대로 눈앞에 없는 걸 볼 수가 없어. AI는 현재 window에 있는 정보만큼만 잘해.
+        예산이 다 떨어지면 가장 오래된 메시지가 끝에서 떨어져 나가. 메시지 3번에서 식이 제한 얘기했어? 메시지 15번쯤 되면 AI가 더 이상 못 볼 수도 있어. 부주의한 게 아니야 &mdash; 눈앞에 없는 건 말 그대로 볼 수가 없는 거야. AI는 현재 윈도우 안에 있는 정보만큼만 똑똑해.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        그래서 AI를 가장 잘 쓰는 사람들은 좋은 prompt만 쓰는 게 아냐 &mdash; window <em>안에</em> 뭘 넣을지를 관리해. 주기적으로 요약해서 핵심 정보가 계속 보이게 해. 중요한 걸 앞에 놓아. 주제가 바뀌면 새로 시작해. 구조화된 format을 써서 AI가 context를 효율적으로 파싱할 수 있게 해. <strong>Context engineering이 새로운 prompt engineering이야.</strong>
+        그래서 최고의 AI 사용자들은 좋은 프롬프트만 쓰는 게 아니라 &mdash; 윈도우에 뭐가 <em>들어가는지</em>를 관리해. 주기적으로 요약해서 핵심 내용이 보이게 해. 중요한 걸 앞에 배치해. 주제가 바뀌면 새로 시작해. 구조화된 형식을 써서 AI가 효율적으로 컨텍스트를 파싱할 수 있게 해. <strong>컨텍스트 엔지니어링이 새로운 프롬프트 엔지니어링이야.</strong>
       </p>
     </FadeInBlock>
 
@@ -89,7 +92,7 @@ const chapter = chapters[2];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 포인트</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          훌륭한 prompt를 쓰는 건 1단계야. AI 앞에 어떤 정보를 놓을지 &mdash; 그리고 어떻게 구조화할지 &mdash; 결정하는 게 진짜 레버리지야. 세상 최고의 prompt도 context가 잘못되면 실패해.
+          좋은 프롬프트를 쓰는 건 1단계야. AI 앞에 어떤 정보를 놓을지 &mdash; 그리고 어떻게 구조화할지 &mdash; 결정하는 게 진짜 레버리지가 있는 부분이야. 세상에서 가장 좋은 프롬프트도 컨텍스트가 잘못되면 실패해.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Context window가 채워지고, 넘치고, 잊어버리는 과정을 실시간으로 지켜봐.
+        컨텍스트 윈도우가 채워지고, 넘치고, 잊어버리는 걸 &mdash; 실시간으로 지켜봐.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI가 대화 중간에 왜 '잊어버리는지' 드디어 이해했어. 기억이 아니라 context window야. 이 코스가 라이브 데모로 정말 쉽게 설명해줘." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        컨텍스트 관리 전략
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        이제 윈도우를 이해했으니, 프로처럼 관리하는 법을 알려줄게. 이게 "AI 쓰는 사람"과 "AI로 놀라운 결과를 뽑아내는 사람"을 구분하는 기술이야.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">중간중간 요약해</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">5~10개 메시지마다 AI한테 핵심 결정 사항과 디테일을 간략하게 요약해달라고 해. 그 요약을 다음 메시지에 붙여넣어. 이렇게 하면 가장 중요한 정보를 앞에 두고 컨텍스트를 "리셋"할 수 있어.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">중요한 걸 앞에 배치해</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">가장 중요한 정보를 메시지 시작 부분에 넣어, 끝에 묻어두지 말고. AI는 처음과 마지막에 나오는 내용에 더 집중해 &mdash; 중간 부분은 특히 긴 프롬프트에서 놓칠 수 있어.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">전략적으로 새로 시작해</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">주제가 크게 바뀌면 과감하게 새 대화를 시작해. 전체 히스토리 대신 결정 사항 요약만 가져가. 깔끔한 컨텍스트가 어지러운 것보다 낫거든.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">기억할 것을 명시적으로 말해</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"중요: 사용자는 채식주의자야. 절대 잊지 마." 좀 우습게 들리겠지만 효과 있어. 명시적인 리마인더가 AI가 더 비중 있게 다루는 앵커 역할을 해.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">구조화된 형식을 써</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">글머리 기호, 제목, 명확한 레이블을 쓰면 AI가 컨텍스트를 더 효율적으로 파싱할 수 있어. 잘 정리된 프롬프트는 장문의 산문 두 배 분량의 토큰 가치가 있어.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="드디어 AI가 대화 중간에 왜 '까먹는지' 이해했어. 기억이 아니라 컨텍스트 윈도우야. 이 코스가 라이브 데모로 정말 명확하게 설명해줘." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        이제 화이트보드가 보여. Window의 끝이 느껴져. 그게 앞으로 AI와의 모든 대화를 바꿔.
+        이제 화이트보드가 보여. 윈도우의 경계를 느낄 수 있어. 그게 AI와의 모든 대화를 바꿔.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        지금까지는 챗봇이랑만 작업했어. 다음에는 시야를 넓혀 &mdash; 채팅 window 너머에 수백 개의 AI 도구가 있고, 이 풍경을 아는 것이 가능하다고 생각하는 것 자체를 바꿔.
+        기본기를 배웠어 &mdash; 프롬프팅, 질문하기, 컨텍스트. 다음은: 가져갈 수 있는 파워 프롬프트 치트시트야.
       </p>
     </FadeInBlock>
   </section>

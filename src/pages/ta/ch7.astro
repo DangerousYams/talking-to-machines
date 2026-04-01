@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code<br />கற்றுக்கொள்
+          யாரும் இதை<br />Build செய்யலாம்
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          உன் AI pair programmer, முதல்<br />command இலிருந்து custom Skills வரை.
+          நீ programmer ஆக இருக்க வேண்டியதில்லை.<br />உனக்கு ஒரு idea வேண்டும்.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ஒவ்வொரு coder-க்கும் நினைவில் இருக்கும் ஒரு தருணம் உண்டு. Terminal திறந்து, natural language-ல் ஒரு request type செய்யும்போது, AI உன் files படிக்கிறது, architecture புரிந்துகொள்கிறது, பல files-ல் code எழுதுகிறது, run செய்கிறது, error வருகிறது, error fix செய்கிறது, மறுபடி run செய்கிறது &mdash; நீ ஒரு line கூட தொடாமல். Claude Code autocomplete அல்ல. உன் முழு project-ஐயும் பார்க்கும், files-ல் changes செய்யும், shell commands execute செய்யும், தன் தவறுகளை iterate செய்யும் <em>agentic</em> coding tool.
+        Ohio-ல் ஒரு teacher ஒரு weekend-ல் grading app build செய்தார். ஒரு musician, songs-ஐ energy மற்றும் key-ன் அடிப்படையில் arrange செய்யும் setlist optimizer build செய்தார். ஒரு high school junior, எந்த resolution-க்கும் counterarguments generate செய்யும் debate prep tool build செய்தார். இவர்களில் யாரும் programmers இல்லை. யாரும் coding class எடுக்கவில்லை. என்ன வேண்டும் என்று describe செய்தார்கள், coding agent அதை build செய்தது.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        ஆனால் tool, அதை steer செய்யும் மனிதனைப் பொறுத்தது. Claude Code ஒரு second-ல் ஆயிரம் lines perfect code எழுதலாம் &mdash; அல்லது ஆயிரம் lines plausible-ஆக தெரியும் garbage எழுதலாம். வித்தியாசம் நீதான்.
+        இதுதான் யாரும் எதிர்பார்க்காத unlock. Coders வேகமானார்கள் என்பது அல்ல — <strong>non-coders software build செய்ய முடிகிறது</strong> என்பது. Spreadsheets data analysis-ஐ ஜனநாயகமாக்கியது போலும், Canva graphic design-ஐ ஜனநாயகமாக்கியது போலும், AI coding agents software development-ஐயே ஜனநாயகமாக்குகின்றன.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Specify, Generate, Verify
+        Personal Software புரட்சி
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Claude Code-க்கு task கொடுத்தால், agent loop run ஆகிறது: codebase படி, என்ன மாற்ற வேண்டும் என்று plan செய், edits எழுது, code run செய், எது உடைந்தாலும் fix செய். இந்த loop மூன்று, ஐந்து, பத்து முறை cycle ஆகலாம் &mdash; எல்லாம் seconds-ல். உன் வேலை இனி ஒவ்வொரு line எழுதுவது அல்ல. என்ன build செய்ய வேண்டும் என்று <strong>specify</strong> செய்வது, AI generate செய்ய விடுவது, பிறகு அது உண்மையில் correct-ஆ என்று <strong>verify</strong> செய்வது. பெரும்பாலான beginners கடைசி step-ஐ skip செய்கிறார்கள். Code appear ஆகிறது, reasonable-ஆ தெரிகிறது, move on செய்துவிடுவார்கள். அவர்களாக ஆகாதே. Generated code ஒரு first draft. உன் verification தான் அதை publishable ஆக மாற்றும் edit.
+        எல்லாவற்றையும் மாற்றும் idea இதோ: <strong>personal software.</strong> ஒரே ஒரு நபருக்காக build செய்யப்பட்ட tools — உனக்காக. Market research இல்லை, business plan இல்லை, venture funding இல்லை. நீ எதிர்கொள்ளும் ஒரு problem, அதை solve செய்யும் ஒரு tool. AI-க்கு முன், personal software build செய்ய code கற்றுக்கொள்ள வேண்டும் — அது மாதங்கள் அல்லது வருடங்கள் ஆகும். இப்போது ஒரு afternoon போதும். Build செய்வதின் cost கிட்டத்தட்ட zero-க்கு குறைந்துவிட்டது — அதாவது build செய்ய worth ஆன idea மட்டும்தான் முக்கியம்.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Secret weapon &mdash; <code>CLAUDE.md</code> file. Project root-ல் போட்டால் Claude Code ஒவ்வொரு session ஆரம்பத்திலும் படிக்கும். உன் tech stack, naming conventions, style rules, testing expectations &mdash; எல்லாம் ஒரு முறை encode செய்தால் போதும். Chapter 3-ன் context engineering coding-க்கு apply ஆவது.
+        இதை சாத்தியமாக்கும் tools-க்கு <strong>coding agents</strong> என்று பெயர். Claude Code, Cursor, Antigravity, Replit — இவை உன் முழு project-ஐ படிக்கும், multiple files-ல் code எழுதும், run செய்யும், error வரும், error fix செய்யும், மறுபடி run செய்யும் AI tools. நீ ஒரு line code-ஐ கூட touch செய்யாமல். இவை autocomplete அல்ல. உன் descriptions-ஐ working software-ஆக மாற்றும் AI collaborators.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>இலக்கு ஒவ்வொரு line எழுதுவது அல்ல &mdash; ஒவ்வொரு line புரிந்துகொள்வது.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Director-ன் பங்கு</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Claude generate செய்யும் code படிக்க முடியவில்லை என்றால், verify செய்ய முடியாது. சிறந்த Claude Code users அதிக code generate செய்பவர்கள் அல்ல &mdash; சிறந்த கேள்விகள் கேட்டு நுட்பமான bugs catch செய்பவர்கள்.
+          நீ code எழுதுவதில்லை. நீ <strong>direct</strong> செய்கிறாய். என்ன build செய்ய வேண்டும் என்று specify செய்வது, output-ஐ evaluate செய்வது, சரியாக வரும் வரை iterate செய்வது — இதுதான் உன் வேலை. Agent technical execution-ஐ handle செய்கிறது. உன்னை ஒரு film director-ஆக நினைத்துக்கொள் — நீ camera operate செய்வதில்லை, ஆனால் உன் vision இல்லாமல் ஒன்றும் உருவாகாது.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        உனக்கு தெரியாததெல்லாம் உன் Agent-க்கு தெரியும்
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "ஆனா database என்னன்னே எனக்கு தெரியாது." Good news: தெரிய வேண்டிய அவசியமில்லை. உன் coding agent உன் tutor-உம் கூட. எதையும் கேள். "React component என்ன?" விளக்கும். "இதை internet-ல் deploy செய்வது எப்படி?" Step by step சொல்லும். "இந்த error என்ன?" Jargon-ஐ plain English-ல் translate செய்யும்.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        இதுதான் மற்ற எல்லாவற்றையும் சாத்தியமாக்கும் safety net. Technical vocabulary மனப்பாடம் செய்ய வேண்டியதில்லை — அது <em>இருக்கிறது</em> என்று தெரிந்தால் போதும், அதைப் பற்றி கேட்கலாம். Agent ஒவ்வொரு gap-ஐயும் நிரப்பும். உன் பக்கத்தில் உட்கார்ந்து, basic question கேட்டாலும் ஒருபோதும் judge செய்யாத, பொறுமையான, சோர்வடையாத expert இருப்பது போன்றது.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Skill paradox</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Output-ஐ <em>evaluate</em> செய்ய போதுமான knowledge வேண்டும், ஒவ்வொரு line-ஐயும் எழுத அல்ல. Film director-க்கு camera build செய்ய தெரிய வேண்டியதில்லை — ஆனால் shot சரியாக இருக்கிறதா என்று தெரிய வேண்டும். இதுவும் அப்படித்தான்: app வேலை செய்கிறதா என்று தெரிய வேண்டும், code எப்படி வேலை செய்கிறது என்று அல்ல.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Loop-ஐ action-ல் பார். ஒரு request type செய்து Claude Code வேலை செய்வதை பார்.
+        Non-coders என்ன build செய்திருக்கிறார்கள் என்று பார் — பிறகு உனக்கான ஒன்றை கற்பனை செய்.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="This chapter on Claude Code is wild — watched an AI pair programmer think through a problem, write code, and debug itself. The future of coding is here." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="This chapter just convinced me that anyone can build software with AI. Not in a hand-wavy way — it shows exactly how non-coders are building real tools." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code உனக்காக code எழுதவில்லை &mdash; உன்னுடன் சேர்ந்து code எழுதுகிறது.
+        Software build செய்வதின் cost zero-வுக்கு குறைந்துவிட்டது. Build செய்ய worth ஆன idea மட்டும்தான் மிச்சம்.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ஒரு conversation ஒரு task handle செய்யலாம். ஆனால் real projects-ல் dozens இருக்கும். அடுத்தது: பெரிய ambitions-ஐ AI உண்மையில் execute செய்யக்கூடிய pieces-ஆக உடைப்பது எப்படி.
+        Idea இருக்கிறது. ஆனால் coding agent open செய்வதற்கு முன், அதன் மொழி பேச வேண்டும். Code அல்ல — build செய்வதின் vocabulary. அதுதான் அடுத்தது.
       </p>
     </FadeInBlock>
   </section>

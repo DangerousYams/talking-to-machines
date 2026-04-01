@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +24,7 @@ const chapter = chapters[7];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel acht
+          Kapitel Acht
         </p>
       </FadeInBlock>
 
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Komplexität<br />orchestrieren
+          Die Sprache<br />des Bauens
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          KI-Projekte managen, die größer sind<br />als jedes Kontextfenster.
+          Das Vokabular des Bauens &mdash;<br />kein Code, nur die Substantive und Verben.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Hier ist der Moment, an den jeder ambitionierte Anfänger stößt: Du bittest KI, etwas Echtes zu bauen -- ein ganzes Spiel, eine Website mit Backend, eine Forschungsarbeit mit Quellenangaben -- und das Ganze fällt auseinander. Nicht weil die KI nicht schlau genug ist. Sondern weil das Projekt zu groß für eine einzelne Unterhaltung ist. Du fügst eine Wand von Anforderungen ein und merkst zwanzig Minuten später, dass sie die Hälfte vergessen hat.
+        Du bist kurz davor, dich mit einem Coding-Agenten hinzusetzen und etwas zu bauen. Er wird Wörter wie &bdquo;Deploy&ldquo;, &bdquo;Endpoint&ldquo;, &bdquo;Komponente&ldquo; und &bdquo;Schema&ldquo; benutzen. Wenn diese Wörter undurchsichtig sind, wirst du dich verloren fühlen &mdash; nicht weil du nicht bauen kannst, sondern weil du nicht <em>Regie führen</em> kannst. Dieses Kapitel gibt dir den Decoder-Ring. Nicht wie man programmiert. Wie man <strong>die Sprache des Bauens spricht</strong>.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Das ist kein KI-Problem. Es ist ein <strong>Orchestrierungsproblem</strong>. Und es lösen zu lernen ist der Unterschied zwischen jemandem, der KI für Einzelaufgaben nutzt, und jemandem, der damit echte Dinge baut.
+        Stell es dir wie Autofahren vor. Du musst Verbrennungsmotoren, Übersetzungsverhältnisse oder Bremsflüssigkeitsdruck nicht verstehen. Du musst wissen: Gaspedal, Bremse, Lenkrad, Spiegel. Das Vokabular der <em>Steuerung</em>, nicht der Implementierung.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Die Kunst des Kontextpackens
+        Der Stack: ein Decoder-Ring
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Komplexe Projekte sprengen den Ein-Prompt-Ansatz. Der Kontext läuft über, die Aufmerksamkeit verwässert, Fehler potenzieren sich. Die Lösung ist kein besserer Prompt -- es ist <strong>Zerlegung</strong>. Zerlege das Projekt in fokussierte Aufgaben und wähle dann für jede Aufgabe sorgfältig aus, welchen Kontext die KI wirklich braucht. Zu wenig und sie halluziniert. Zu viel und sie verliert den Fokus. Der Sweet Spot ist chirurgische Präzision.
+        Jede App &mdash; von Instagram bis zu einer einfachen To-Do-Liste &mdash; besteht aus vier Schichten. Entwickler nennen das &bdquo;den Stack.&ldquo; Hier ist das Ganze, entmystifiziert:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Stell es dir wie Kofferpacken vor. Du kannst nicht deinen ganzen Kleiderschrank mitnehmen. Du musst überlegen, wohin du fährst (die Aufgabe), was du brauchen wirst (relevante Informationen) und was du zurücklassen kannst (alles andere). Jede Unterhaltung bekommt genau den Kontext, den sie braucht -- nicht mehr und nicht weniger.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">Was die Leute sehen und anfassen. Buttons, Text, Bilder, Animationen. Der Gastraum eines Restaurants.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">Die Logik hinter den Kulissen. Verarbeitet Anfragen, prüft Passwörter, verschickt E-Mails. Die Küche.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Datenbank</p>
+          <p style="margin: 0; line-height: 1.6;">Wo deine App sich Dinge merkt. Benutzerkonten, Beiträge, Einstellungen. Die Vorratskammer und das Rezeptbuch.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">Wie es ins Internet kommt. Hosting, Domains, live gehen. Die Restauranttüren öffnen.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Das war's. Jede App, die du je benutzt hast, ist irgendeine Kombination dieser vier Schichten. Wenn dein Coding-Agent sagt &bdquo;Ich richte das Backend ein&ldquo;, meint er &bdquo;Ich schreibe die Logik hinter den Kulissen.&ldquo; Wenn er sagt &bdquo;Lass uns deployen&ldquo;, meint er &bdquo;Lass uns das ins Internet stellen.&ldquo; Du musst nicht wissen, <em>wie</em> diese Schichten funktionieren. Du musst wissen, <em>dass</em> sie existieren und wofür sie da sind.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Der Agent als Tutor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Hier ist der Teil, den niemand dir sagt: <strong>Der Coding-Agent ist auch dein Lehrer.</strong> Weißt du nicht, was &bdquo;npm&ldquo; bedeutet? Frag. Verwirrt von einer Fehlermeldung? Kopier sie rein und sag &bdquo;Erkläre das so, als wäre ich kein Entwickler.&ldquo; Willst du wissen, warum der Agent React statt etwas anderem gewählt hat? Frag. Er erklärt seine Überlegungen in einfacher Sprache, Schritt für Schritt, so oft du willst.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Wichtige Erkenntnis</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Deine ersten fünf Minuten</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Die Qualität deines Übergabe-Artefakts bestimmt die Qualität von allem, was darauf aufbaut. Ein präzises Schema schlägt jedes Mal eine vage Beschreibung. Müll rein, Müll raus -- über Unterhaltungen hinweg.
+          Öffne dein Coding-Tool. Beschreibe dein Projekt in einfacher Sprache: &bdquo;Ich möchte einen Workout-Tracker bauen, wo ich meine Übungen eintrage und meinen Fortschritt sehen kann.&ldquo; Der Agent wird Rückfragen stellen, einen Stack vorschlagen und anfangen zu bauen. Dein erster Job ist es, <em>seine Fragen zu beantworten</em> und <em>zu beobachten, was er erstellt</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Packe einen Kontext-Koffer. Schaffst du es, das Wichtige unterzubringen, ohne überzulaufen?
+        Entdecke die vier Schichten einer Web-App. Klick, um das Vokabular zu lernen &mdash; dann teste dich selbst.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Das Schwierigste an KI ist nicht das Prompting -- es ist das Orchestrieren komplexer Projekte über mehrere Unterhaltungen hinweg. Dieser Kurs erklärt endlich, wie das geht." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Dieses Kapitel erklärt den Tech-Stack ohne Code. Frontend, Backend, Datenbank, Deployment &mdash; endlich ergibt alles Sinn. Hätte ich das vor Jahren gelesen." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Komplexe Projekte sind nicht beängstigend. Sie sind nur eine Reihe fokussierter Unterhaltungen, verbunden durch präzise Artefakte.
+        Du musst nicht wissen, wie der Motor funktioniert. Du musst wissen, wie man fährt.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Als Nächstes: erkennen, wann KI <em>falsch liegt</em>. Halluzinationen, Gefälligkeitsantworten und die Überprüfungsgewohnheiten, die dich ehrlich halten.
+        Du kennst die Wörter. Du hast die Idee. Jetzt ist es Zeit, dich mit deinem Coding-Agenten hinzusetzen und tatsächlich zu bauen. Als Nächstes: die Kunst des Build-Loops &mdash; Iteration, Bewertung und was du tust, wenn etwas kaputtgeht.
       </p>
     </FadeInBlock>
   </section>

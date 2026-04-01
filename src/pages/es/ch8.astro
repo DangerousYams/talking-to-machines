@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Orquestando<br />complejidad
+          Hablando<br />el idioma
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Gestionar la IA en proyectos más grandes<br />que cualquier ventana de contexto.
+          El vocabulario de construir &mdash;<br />no código, solo los sustantivos y verbos.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Este es el momento en que todo principiante ambicioso se topa con la pared: le pides a la IA que construya algo real — un juego completo, un sitio web con backend, un trabajo de investigación con citas — y todo se desmorona. No porque la IA no sea lo suficientemente inteligente. Porque el proyecto es demasiado grande para una sola conversación. Pegas un muro de requisitos y veinte minutos después te das cuenta de que olvidó la mitad de lo que pediste.
+        Estás a punto de sentarte con un agente de código y construir algo. Va a usar palabras como "deploy," "endpoint," "componente" y "schema." Si esas palabras te resultan opacas, te sentirás perdido &mdash; no porque no puedas construir, sino porque no puedes <em>dirigir</em>. Este capítulo te da el anillo decodificador. No cómo programar. Cómo <strong>hablar el idioma</strong> de construir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Esto no es un problema de IA. Es un <strong>problema de orquestación</strong>. Y aprender a resolverlo es la diferencia entre alguien que usa IA para tareas sueltas y alguien que la usa para construir cosas reales.
+        Piénsalo como conducir un coche. No necesitas entender motores de combustión, relaciones de transmisión ni presión de líquido de frenos. Necesitas saber: acelerador, freno, volante, espejos. El vocabulario de <em>dirección</em>, no de implementación.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        El arte de empacar contexto
+        El stack: un anillo decodificador
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Los proyectos complejos rompen el enfoque de un solo prompt. El contexto se desborda, la atención se diluye, los errores se acumulan. La solución no es un mejor prompt — es la <strong>descomposición</strong>. Divide el proyecto en tareas enfocadas, y para cada tarea, elige cuidadosamente qué contexto realmente necesita la IA. Muy poco y alucina. Demasiado y pierde el foco. El punto ideal es la precisión quirúrgica.
+        Cada app &mdash; desde Instagram hasta una simple lista de tareas &mdash; está construida con cuatro capas. Los desarrolladores lo llaman "el stack." Aquí está todo, desmitificado:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Piénsalo como empacar una maleta. No puedes traer todo tu clóset. Necesitas pensar en adónde vas (la tarea), qué necesitarás (información relevante) y qué puedes dejar atrás (todo lo demás). Cada conversación recibe exactamente el contexto que necesita — ni más, ni menos.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">Lo que la gente ve y toca. Botones, texto, imágenes, animaciones. El comedor de un restaurante.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">La lógica detrás de escena. Procesa peticiones, verifica contraseñas, envía emails. La cocina.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Base de datos</p>
+          <p style="margin: 0; line-height: 1.6;">Donde tu app recuerda cosas. Cuentas de usuario, publicaciones, configuraciones. La despensa y el libro de recetas.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">Cómo llega a internet. Hosting, dominios, salir en vivo. Abrir las puertas del restaurante.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Eso es todo. Cada app que has usado es alguna combinación de esas cuatro capas. Cuando tu agente de código dice "voy a configurar el backend," significa "voy a escribir la lógica detrás de escena." Cuando dice "vamos a hacer deploy," significa "vamos a ponerlo en internet." No necesitas saber <em>cómo</em> funciona cada capa. Necesitas saber <em>que</em> existen y para qué sirven.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        El agente como tutor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Esto es lo que nadie te cuenta: <strong>el agente de código también es tu profesor.</strong> ¿No sabes qué significa "npm"? Pregunta. ¿Un mensaje de error te confunde? Pégalo y di "explícame esto como si no fuera desarrollador." ¿Quieres saber por qué el agente eligió React en vez de otra cosa? Pregunta. Te explicará su razonamiento en español llano, paso a paso, las veces que necesites.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tus primeros cinco minutos</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          La calidad de tu artefacto de transferencia determina la calidad de todo lo que se construye después. Un esquema nítido le gana siempre a una descripción vaga. Basura entra, basura sale — entre conversaciones.
+          Abre tu herramienta de código. Describe tu proyecto en lenguaje natural: "Quiero crear un seguimiento de entrenamientos donde registre mis ejercicios y vea mi progreso a lo largo del tiempo." El agente te hará preguntas para clarificar, sugerirá un stack y empezará a construir. Tu primer trabajo es <em>responder sus preguntas</em> y <em>observar lo que crea</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Empaca una maleta de contexto. ¿Puedes meter lo que importa sin desbordarte?
+        Explora las cuatro capas de una app web. Haz clic para aprender el vocabulario &mdash; y luego ponte a prueba.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Lo más difícil de la IA no es hacer prompts — es orquestar proyectos complejos entre múltiples conversaciones. Este curso por fin lo explica bien." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Este capítulo explica el stack tecnológico sin nada de código. Frontend, backend, base de datos, deployment: por fin tiene sentido. Ojalá lo hubiera leído hace años." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Los proyectos complejos no dan miedo. Son simplemente una serie de conversaciones enfocadas conectadas por artefactos nítidos.
+        No necesitas saber cómo funciona el motor. Necesitas saber cómo conducir.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Lo que sigue: saber cuándo la IA está <em>equivocada</em>. Alucinaciones, adulación y los hábitos de verificación que te mantienen honesto.
+        Ya conoces las palabras. Tienes la idea. Ahora es hora de sentarte con tu agente de código y construir de verdad. A continuación: el arte del ciclo de construcción &mdash; iteración, evaluación y qué hacer cuando las cosas se rompen.
       </p>
     </FadeInBlock>
   </section>

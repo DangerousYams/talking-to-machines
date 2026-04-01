@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          القفزة من "أجب على الأسئلة"<br />إلى "نفّذ الإجراءات."
+          القفزة من "أجب على الأسئلة"<br />إلى "اتخذ إجراءات."
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        حتى الآن، كل تفاعل لك مع الذكاء الاصطناعي يتبع نفس النمط. تكتب شيئًا. الذكاء الاصطناعي يكتب شيئًا بالمقابل. إكمال تلقائي متطور جدًا. لكن ماذا لو كان الذكاء الاصطناعي يستطيع <em>فعل أشياء</em>؟ ليس فقط يخبرك عن الطقس، بل يتحقق من التوقعات. ليس فقط يكتب كودًا، بل يشغله. ليس فقط يقترح ما تبحث عنه في Google، بل يبحث في الويب بنفسه ويعود بما وجده.
+        حتى الآن، كل تفاعل لك مع الذكاء الاصطناعي يتبع نفس النمط. تكتب شيئًا. الذكاء الاصطناعي يكتب شيئًا بالمقابل. إكمال تلقائي متطور للغاية. لكن ماذا لو كان الذكاء الاصطناعي يستطيع <em>فعل أشياء</em>؟ ليس فقط يخبرك عن الطقس، بل يتحقق من التوقعات. ليس فقط يكتب كودًا، بل يشغّله. ليس فقط يقترح ما تبحث عنه في Google، بل يبحث في الويب بنفسه ويعود بما وجده.
       </p>
     </FadeInBlock>
   </section>
@@ -69,13 +71,13 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        عندما تعطي الذكاء الاصطناعي أدوات، أنت تسلمه صندوق أدوات وتقول: <em>"هذه أشياء تستطيع فعلها. أنت تقرر متى تستخدمها."</em> يستطيع البحث في الويب، وتشغيل الكود، وقراءة الملفات، واستدعاء واجهات API. الذكاء الاصطناعي لم يصبح أذكى — أصبح <strong>متصلاً</strong>. وهذا يطرح سؤالاً لا علاقة له بالتقنية وكل العلاقة بك: كم يجب أن يفعل الذكاء الاصطناعي بمفرده قبل أن يستشيرك؟
+        عندما تعطي الذكاء الاصطناعي أدوات، أنت تسلمه صندوق أدوات وتقول: <em>"هذه أشياء تستطيع فعلها. أنت تقرر متى تستخدمها."</em> يستطيع البحث في الويب، وتشغيل الكود، وقراءة الملفات، واستدعاء واجهات API. الذكاء الاصطناعي لم يصبح أذكى &mdash; أصبح <strong>متصلًا</strong>. وهذا يطرح سؤالًا لا علاقة له بالتقنية وكل العلاقة بك: كم يجب أن يفعل الذكاء الاصطناعي بمفرده قبل أن يستشيرك؟
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        الإجابة تعتمد على ثلاثة أشياء. <strong>المخاطر</strong> — ما أسوأ ما يمكن أن يحدث؟ <strong>إمكانية التراجع</strong> — هل يمكنك التراجع عنه؟ و<strong>الثقة</strong> — ما مدى معرفتك بهذه الأداة؟ آلة حاسبة استخدمتها مئة مرة تستحق حرية أكبر من إضافة جديدة لم تختبرها أبدًا.
+        الإجابة تعتمد على ثلاثة أشياء. <strong>المخاطر</strong> &mdash; ما أسوأ ما يمكن أن يحدث؟ <strong>إمكانية التراجع</strong> &mdash; هل يمكنك التراجع عنه؟ و<strong>الثقة</strong> &mdash; ما مدى معرفتك بهذه الأداة؟ آلة حاسبة استخدمتها مئة مرة تستحق حرية أكبر من إضافة جديدة لم تختبرها أبدًا.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[4];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ليس الأمر كله أو لا شيء. أفضل سير عمل الذكاء الاصطناعي يمنح حرية في المهام منخفضة المخاطر القابلة للتراجع، مع إبقاء البشر في الحلقة للمهام عالية المخاطر التي لا يمكن التراجع عنها. وظيفتك هي تصميم الحدود.
+          ليس الأمر كله أو لا شيء. أفضل سلاسل عمل الذكاء الاصطناعي تمنح حرية في المهام منخفضة المخاطر القابلة للتراجع، مع إبقاء البشر في الحلقة للمهام عالية المخاطر التي لا يمكن التراجع عنها. وظيفتك هي تصميم الحدود.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        أين ترسم الخط؟ حدد مستويات الاستقلالية الخاصة بك.
+        أين ترسم الخط؟ حدد مستويات الاستقلالية بنفسك.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Learning about AI tool use and function calling in the most hands-on way possible. This course lets you actually build and test things, not just read about them." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        الأدوات تحول الذكاء الاصطناعي من مستشار إلى مساعد — من شخص يخبرك ماذا تفعل، إلى شخص يفعله فعلاً.
+        الأدوات تحوّل الذكاء الاصطناعي من مستشار إلى مساعد &mdash; من شخص يخبرك ماذا تفعل، إلى شخص يفعله فعلًا.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        أعطيت الذكاء الاصطناعي يدين. تاليًا، سنربط هذه الأدوات في شيء يمكنه متابعة هدف بمفرده — التخطيط، والتنفيذ، والتعافي من الأخطاء. حان وقت بناء الوكلاء.
+        أعطيت الذكاء الاصطناعي يدين. التالي: سنربط هذه الأدوات في شيء يمكنه متابعة هدف بمفرده &mdash; التخطيط، والتنفيذ، والتعافي من الأخطاء. حان وقت بناء الوكلاء.
       </p>
     </FadeInBlock>
   </section>

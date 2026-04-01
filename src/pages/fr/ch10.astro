@@ -9,8 +9,10 @@ import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -31,13 +33,13 @@ const chapter = chapters[9];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          L'avantage<br />humain
+          Le go&ucirc;t,<br />c'est le produit
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Ce que l'IA ne peut pas remplacer &mdash;<br />et ce qu'elle rend 10 fois plus facile.
+          L'IA g&eacute;n&egrave;re des options. Tu choisis<br />la bonne. C'est &ccedil;a, la comp&eacute;tence.
         </p>
       </FadeInBlock>
     </div>
@@ -51,41 +53,71 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Chaque fois qu'une nouvelle capacite d'IA sort, le meme titre apparait : <em>« L'IA va-t-elle remplacer [insere un metier] ? »</em> C'est la mauvaise question. L'IA ne remplace pas les humains. Elle remplace <strong>des taches</strong>. Et quand tu regardes de pres n'importe quel metier — carriere, activite creative, profession — tu trouves un melange : certaines taches que l'IA gere brillamment, d'autres qu'elle assiste, et d'autres qui restent obstinement, magnifiquement humaines.
+        L'IA peut g&eacute;n&eacute;rer un site web en trente secondes. La plupart se ressemblent : coins arrondis, d&eacute;grad&eacute;s, sections hero g&eacute;n&eacute;riques, phrases passe-partout. C'est du <strong>slop IA</strong> &mdash; le r&eacute;sultat par d&eacute;faut quand personne n'exerce son go&ucirc;t. C'est techniquement fonctionnel. C'est esth&eacute;tiquement oubliable. Et c'est ce que tu obtiens quand tu acceptes ce que l'IA te donne sans pousser pour quelque chose de mieux.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        L'antidote, ce n'est pas plus de prompting. C'est avoir des standards. Savoir &agrave; quoi ressemble le &laquo;&nbsp;bon&nbsp;&raquo;. Et montrer &agrave; l'IA ce que tu veux au lieu d'esp&eacute;rer qu'elle devine juste.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Les metiers ne disparaissent pas — ils se transforment
+        Les r&eacute;f&eacute;rences plut&ocirc;t que les descriptions
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Quand les DAB sont arrives, tout le monde predisait que les guichetiers allaient disparaitre. A la place, leur nombre a <em>augmente</em> — parce que les DAB ont rendu les agences moins cheres a ouvrir, et le boulot du guichetier a evolue : de compter l'argent a construire des relations client. L'IA fait la meme chose, mais plus vite et dans toutes les industries a la fois. Le titre du poste reste le meme. La <em>description</em> du travail change dramatiquement.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        &laquo;&nbsp;Fais-le moderne et &eacute;pur&eacute;&nbsp;&raquo; ne dit presque rien &agrave; l'IA. &laquo;&nbsp;Fais-le comme stripe.com &mdash; minimaliste, beaucoup d'espace blanc, une seule couleur d'accent, gros titres en gras&nbsp;&raquo; lui dit tout. <strong>Les r&eacute;f&eacute;rences battent les descriptions &agrave; tous les coups.</strong> Une capture d'&eacute;cran vaut mille mots de prompting. Collectionne des exemples de choses que tu adores &mdash; sites web, applis, designs &mdash; et nourris-en l'agent. &laquo;&nbsp;Je veux cette mise en page mais avec ces couleurs.&nbsp;&raquo; &laquo;&nbsp;Cette typographie mais appliqu&eacute;e &agrave; un tableau de bord.&nbsp;&raquo;
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        La saisie de donnees ? L'IA s'en charge. Les premiers brouillons ? Etonnamment bons. Mais <em>choisir quoi construire</em>, <em>lire l'ambiance dans une crise</em>, <em>decider ce que signifient les donnees</em> — ca demande du jugement, de l'empathie et une vision que l'IA n'a fondamentalement pas.
+      <p class="text-lg leading-[1.85] mb-14">
+        Le go&ucirc;t n'est pas inn&eacute;. C'est de l'exposition plus du jugement. Tu le d&eacute;veloppes en regardant de belles choses et en comprenant <em>pourquoi</em> elles sont belles. Plus tu collectes de r&eacute;f&eacute;rences, plus ton &oelig;il s'aiguise. Et plus ton &oelig;il est aiguise, meilleures sont tes instructions &agrave; l'agent.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idee cle</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Les trois prismes d'&eacute;valuation</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ce n'est pas « humains contre IA ». C'est <strong>humains avec IA contre humains sans IA</strong>. Les gens qui apprennent a travailler <em>avec</em> les outils d'IA ne perdent pas leur boulot — ils le font plus vite, mieux, et avec des capacites qu'ils n'avaient pas avant.
+          Juge ce que l'agent construit &agrave; travers trois prismes. <strong>Visuel :</strong> est-ce que &ccedil;a ressemble &agrave; mes r&eacute;f&eacute;rences&nbsp;? <strong>Fonctionnel :</strong> est-ce que &ccedil;a fait ce que j'ai sp&eacute;cifi&eacute;&nbsp;? <strong>Utilisateur :</strong> est-ce que j'aurais vraiment envie d'utiliser &ccedil;a&nbsp;? Si la r&eacute;ponse &agrave; l'une de ces questions est non, it&egrave;re. Tu n'as pas besoin de lire le code pour appliquer ces prismes.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        L'avantage humain
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        L'IA g&eacute;n&egrave;re des options. Tu choisis la bonne. Ce jugement &mdash; le go&ucirc;t, l'empathie, la vision &mdash; c'est ton avantage. L'IA peut produire dix variantes de logo en une minute. Mais toi seul sais laquelle <em>colle</em> &agrave; ta marque. L'IA peut r&eacute;diger dix versions d'une page d'accueil. Mais toi seul sais laquelle va r&eacute;sonner avec ton audience. La comp&eacute;tence rare, ce n'est pas la g&eacute;n&eacute;ration. C'est la <strong>curation</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Ce que l'IA ne peut fondamentalement pas faire : choisir <em>quoi</em> construire. D&eacute;cider <em>pour qui</em> c'est. D&eacute;terminer <em>pourquoi</em> c'est important. Fixer la vision cr&eacute;ative. Lire l'atmosph&egrave;re d'une pi&egrave;ce. Sentir quand quelque chose ne va pas sans pouvoir l'expliquer. Ce ne sont pas des bugs de l'IA &mdash; ce sont des fonctionnalit&eacute;s de l'&ecirc;tre humain. Et dans un monde o&ugrave; la g&eacute;n&eacute;ration est gratuite, elles ont plus de valeur que jamais.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -93,7 +125,7 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Choisis un metier ci-dessous et vois exactement comment l'IA le transforme de l'interieur. Aucune tache ne disparait entierement.
+        Classe ces options de la meilleure &agrave; la pire. Puis d&eacute;couvre comment les experts les ont not&eacute;es &mdash; et pourquoi.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +137,28 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Ce cours ne fait ni du hype ni de l'alarmisme sur les emplois. Il cartographie exactement quelles competences restent humaines et lesquelles sont augmentees. Rafraichissant d'honnetete." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="\u00ab\u00a0L'IA g\u00e9n\u00e8re des options. Tu choisis la bonne.\u00a0\u00bb Ce chapitre sur le go\u00fbt, les r\u00e9f\u00e9rences et l'avantage humain est la le\u00e7on la plus importante quand on construit avec l'IA." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        L'IA genere des options. Tu choisis la bonne. Ce jugement — le gout, l'empathie, la vision, le raisonnement par premiers principes — c'est ton avantage.
+        Dans un monde o&ugrave; la g&eacute;n&eacute;ration est gratuite, le go&ucirc;t est la seule chose qui compte.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Il reste un chapitre. Plus de theorie. Il est temps de combiner tout ce que tu as appris et de construire quelque chose de reel &mdash; quelque chose que toi seul penserais a faire.
+        Il reste un chapitre. Plus de th&eacute;orie. Il est temps de combiner tout ce que tu as appris et de construire quelque chose de r&eacute;el &mdash; quelque chose que toi seul penserais &agrave; faire.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="te">
@@ -22,7 +24,7 @@ const chapter = chapters[1];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          రెండో అధ్యాయం
+          రెండవ అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -31,13 +33,13 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          అడగడం<br />ఒక కళ
+          అడగడంలో<br />కళ
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          అత్యుత్తమ prompt అంటే AI నిన్ను<br />ప్రశ్నలు అడిగేలా చేసే ప్రశ్న.
+          అత్యుత్తమ prompt అంటే AI ని<br />నిన్ను ప్రశ్నలు అడిగేలా చేసే ప్రశ్న.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        చాలా మంది AI ని vending machine లా వాడతారు. Prompt insert చేయి, answer receive చేయి. కానీ best results <em>conversations</em> నుండి వస్తాయి, commands నుండి కాదు. Prompt టైప్ చేసే వాళ్ళకి, prompt craft చేసే వాళ్ళకి మధ్య తేడా — అదే తేడా 2,400 సంవత్సరాలుగా గొప్ప ఆలోచనాపరులను నడిపిస్తోంది: సరైన ప్రశ్నలు అడగడం.
+        చాలామంది AI ని vending machine లాగా వాడతారు. Prompt వేయి, answer తీసుకో. కానీ అత్యుత్తమ results commands నుండి కాదు, <em>conversations</em> నుండి వస్తాయి. ఒక prompt టైప్ చేసేవాడికి, prompt craft చేసేవాడికి మధ్య తేడా 2,400 సంవత్సరాలుగా గొప్ప ఆలోచనాపరులను నడిపిస్తున్న అదే తేడా: సరైన ప్రశ్నలు అడగడం.
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        The Socratic Flip
+        సోక్రటిక్ ఫ్లిప్
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrates ఎప్పుడూ ప్రశ్నకు directly answer ఇవ్వలేదు. తన students deeper understanding కి చేరుకునే వరకు <em>ఇంకా</em> ప్రశ్నలు అడిగేవాడు. AI తో కూడా అదే trick వాడవచ్చు, కానీ flipped గా: answer కోసం అడగడానికి బదులు, AI ని <em>నిన్ను</em> interview చేయమని అడుగు. నువ్వు "birthday party plan చెయ్" అని టైప్ చేసినప్పుడు, answer ని massively మార్చే డజన్ల details వదిలేస్తున్నావ్. AI కి అవి తెలియవు — కానీ అడగగలదు.
+        సోక్రటీస్ ఎప్పుడూ ప్రశ్నకు నేరుగా సమాధానం చెప్పలేదు. విద్యార్థులు లోతైన అవగాహనకు చేరుకునే వరకు <em>మరిన్ని</em> ప్రశ్నలు అడిగాడు. నువ్వు AI తో అదే trick వాడవచ్చు, కానీ reverse లో: answer అడగడం బదులు, AI ని <em>నిన్ను</em> interview చేయమని అడుగు. "birthday party plan చెయ్యి" అని టైప్ చేసినప్పుడు, answer ని భారీగా మార్చే డజన్ల కొద్దీ details మిస్ అవుతున్నావ్. AI కి అవి తెలియవు — కానీ అడగగలదు.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        ఈ ఒక్క technique — ఎవరు ప్రశ్నలు అడుగుతారో flip చేయడం — AI ని answer machine నుండి <strong>thinking partner</strong> గా మారుస్తుంది. Probe చేయడానికి, clarify చేయడానికి, challenge చేయడానికి permission ఇవ్వు. ఐదు back-and-forth ప్రశ్నల తర్వాత output, single-shot command తో పోలిస్తే గుర్తుపట్టలేనంత మారుతుంది.
+        ఈ ఒక్క technique — ఎవరు ప్రశ్నలు అడుగుతారో flip చేయడం — AI ని answer machine నుండి <strong>thinking partner</strong> గా మారుస్తుంది. అది probe చేయడానికి, clarify చేయడానికి, challenge చేయడానికి permission ఇవ్వు. ఐదు ముందుకు-వెనక్కి ప్రశ్నల తర్వాత వచ్చే output, single-shot command తో వచ్చే output తో పోలిస్తే గుర్తు పట్టలేనంత మారుతుంది.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంతర్దృష్టి</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Best AI users topic experts కాదు — వాళ్ళు అడగడంలో experts. నువ్వు అడగగలిగే అత్యంత powerful ప్రశ్న ఏంటంటే: "Answer ఇవ్వడానికి ముందు, నీకు ఏం తెలియాలి?"
+          అత్యుత్తమ AI users ఆ topic లో experts కాదు — వాళ్ళు అడగడంలో experts. నువ్వు అడగగలిగే అత్యంత శక్తివంతమైన ప్రశ్న: "Answer ఇవ్వడానికి ముందు, నీకు ఏం తెలియాలి?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        నువ్వే try చెయ్. ఒక goal చెప్పు — AI ఎలా script flip చేస్తుందో చూడు.
+        నువ్వే ప్రయత్నించు. ఒక goal చెప్పు — AI ఎలా script flip చేస్తుందో చూడు.
       </p>
     </FadeInBlock>
   </section>
@@ -105,7 +107,16 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="ఈ AI course prompting గురించి నా ఆలోచన విధానాన్నే మార్చేసింది. AI కి ఏం చేయాలో చెప్పడం కాదు, ముందు నిన్ను interview చేయమని అడుగు. Results రాత్రికి పగలు తేడా." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="ఈ AI course prompting గురించి నా ఆలోచన విధానాన్ని మార్చేసింది. AI కి ఏం చేయాలో చెప్పడం బదులు, మొదట నిన్ను interview చేయమని అడుగు. Results రాత్రికి-పగలుకి తేడా." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -117,7 +128,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        కానీ నువ్వు నేర్చుకున్న ప్రతి technique అదే invisible wall లోకి వెళ్తుంది: <em>context window</em>. తర్వాత, దాన్ని crack open చేసి AI actually ఏం చూస్తుందో engineer చేయడం నేర్చుకుందాం.
+        కానీ నువ్వు నేర్చుకున్న ప్రతి technique ఒకే కనిపించని గోడకి తగులుతుంది: <em>context window</em>. తర్వాత, దాన్ని విప్పి AI నిజంగా ఏం చూస్తుందో engineer చేయడం నేర్చుకుందాం.
       </p>
     </FadeInBlock>
   </section>

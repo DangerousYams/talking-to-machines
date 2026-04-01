@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -31,13 +34,13 @@ const chapter = chapters[5];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Ajanlar<br />İnşa Etmek
+          Ajan<br />İnşa Etmek
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Bir hesap makinesiyle<br />bir iş arkadaşı arasındaki fark.
+          Hesap makinesiyle<br />iş arkadaşı arasındaki fark.
         </p>
       </FadeInBlock>
     </div>
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Bir sohbet botu senin konuşmanı bekler. Ajan beklemez. Ona bir hedef ver — "Mars kolonizasyonunu araştır ve bir rapor yaz" — ve işi adımlara böler, doğru araçları seçer, bunları tek tek uygular, kendi sonuçlarını kontrol eder ve iş bitene kadar devam eder. Bu ayrım — <em>talimatlara cevap vermek</em> ile <em>bir hedefe yönelmek</em> arasındaki — hesap makinesiyle iş arkadaşı arasındaki farktır.
+        Bir sohbet botu senin konuşmanı bekler. Bir ajan beklemez. Ona bir hedef ver — "Mars kolonizasyonunu araştır ve bir rapor yaz" — ve işi adımlara böler, doğru araçları seçer, teker teker yürütür, kendi sonuçlarını kontrol eder ve iş bitene kadar devam eder. Bu ayrım — <em>talimatlara yanıt vermek</em> ile <em>bir hedefe yönelmek</em> arasındaki — hesap makinesiyle iş arkadaşı arasındaki fark.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Ajanlar bir döngü üzerinde çalışır: hedef al, adımlar planla, araçlarla uygula, sonuçları gözlemle, ilerlemeyi değerlendir, ayarla. Bir kere planlayıp körü körüne uygulamazlar — en iyileri üçüncü adım ters gittiğinde zarifçe toparlanır. Ama bu gücün karanlık bir tarafı var: ajanlar sadece kötü cevaplar vermez, onlara göre <em>hareket eder</em>, sonra bozuk sonucu bir sonraki kararı vermek için kullanır. Başarısızlıklar birikerek büyür.
+        Ajanlar bir döngü üzerinde çalışır: hedefi al, adımları planla, araçlarla yürüt, sonuçları gözlemle, ilerlemeyi değerlendir, ayarla. Bir kere planlayıp körü körüne yürütmezler — en iyileri üçüncü adım ters gittiğinde zarif bir şekilde toparlanır. Ama bu gücün karanlık bir yönü var: ajanlar sadece kötü yanıtlar vermez, onlara göre <em>hareket eder</em>, sonra kırık sonucu bir sonraki kararı vermek için kullanır. Başarısızlıklar birikir.
       </p>
     </FadeInBlock>
   </section>
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Her ajan aynı beş adımlı döngü üzerinde çalışır. Bu adımları anlamak, işe yarayan bir şey inşa etmekle API kredilerini sonsuz döngüde tüketen bir şey inşa etmek arasındaki farktır.
+        Her ajan aynı beş adımlı döngüde çalışır. Bu adımları anlamak, işe yarar bir şey inşa etmekle API kredilerini sonsuz bir döngüde tüketmek arasındaki farkı oluşturur.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Hedef', color: '#E94560', text: 'Net bir amaç al. "Mars\'ı araştır" bir hedef değil. "Mars kolonizasyonunun zorluklarının 500 kelimelik özetini kaynaklarıyla yaz" bir hedef.' },
-        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Hedefi somut adımlara böl. İyi plancılar esnek planlar yapar. Kötü plancılar ilk sürprizde kırılan katı senaryolar oluşturur.' },
-        { letter: 'T', name: 'Uygulama', color: '#0EA5E9', text: 'Her adımı doğru araçla çalıştır — arama motorları, kod yorumlayıcıları, dosya okuyucular, API\'ler. Ajanlar sadece düşünmez. Harekete geçer.' },
-        { letter: 'M', name: 'Gözlem', color: '#16C79A', text: 'Ne olduğunu kaydet ve sonuçları kontrol et. Hafıza olmadan, bir ajan aynı başarısız eylemi sonsuza kadar tekrarlayabilir.' },
-        { letter: 'E', name: 'Değerlendirme', color: '#F5A623', text: 'Bu işe yaradı mı? Hedefe yaklaştım mı? Bir şeyler ters gittiyse, planı ayarla ve döngüye geri dön. Bu, ajanı bir betikten ayıran şeydir.' },
+        { letter: 'G', name: 'Hedef', color: '#E94560', text: 'Net bir amaç al. "Mars\'ı araştır" bir hedef değil. "Mars kolonizasyonunun zorluklarını kaynaklı 500 kelimelik bir özet yaz" hedeftir.' },
+        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Hedefi somut adımlara böl. İyi planlamacılar esnek planlar yapar. Kötü planlamacılar ilk sürprizde kırılan katı senaryolar.' },
+        { letter: 'T', name: 'Yürütme', color: '#0EA5E9', text: 'Her adımı doğru araçla çalıştır — arama motorları, kod yorumlayıcıları, dosya okuyucuları, API\'lar. Ajanlar sadece düşünmez. Harekete geçer.' },
+        { letter: 'M', name: 'Gözlemleme', color: '#16C79A', text: 'Olan biteni kaydet ve sonuçları kontrol et. Hafıza olmadan bir ajan aynı başarısız eylemi sonsuza kadar tekrarlayabilir.' },
+        { letter: 'E', name: 'Değerlendirme', color: '#F5A623', text: 'Bu işe yaradı mı? Hedefe daha yakın mıyım? Bir şeyler ters gidiyorsa planı ayarla ve tekrar döngüye gir. Bu, bir ajanı bir betikten ayıran şeydir.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Temel fikir</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Sohbet botu tek bir tur. Ajan ise bütün bir sohbet — kendisiyle, araçlarıyla ve dünyayla. En iyi ajan yapıcılar otonomiyi maksimize etmez. Ajanın durup bir insanın devam edip etmeyeceğine karar verdiği düşünceli kontrol noktaları tasarlar.
+          Bir sohbet botu tek bir turdur. Bir ajan komple bir konuşmadır — kendisiyle, araçlarıyla ve dünyayla. En iyi ajan yapımcıları otonomiyi maksimize etmez. Ajanın duraksayıp bir insanın devam edip etmeyeceğine karar verdiği düşünceli kontrol noktaları tasarlar.
         </p>
       </div>
     </FadeInBlock>
@@ -118,20 +121,30 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Bir tane inşa etme zamanı. Kendi ajanını sıfırdan tasarla.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Bir tane inşa etme zamanı. Bir tank ajanı tasarla &mdash; yeteneklerini seç, bütçesini ayarla, stratejisini yaz &mdash; sonra arenaya gönder ve otonom savaşını izle.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Az önce sıfırdan ilk yapay zeka ajanımı tasarladım. Bu kurs mimariyi adım adım canlı demolarla anlatıyor. Abartmasız, sadece inşa." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Sıfırdan ilk yapay zeka ajanımı tasarladım. Bu kurs mimariyi adım adım canlı demolarla anlatıyor. Hype yok, sadece inşaat." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -143,7 +156,7 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Sırada: gerçek bir ajan kullanacaksın — kodunu okuyan, değişiklikler yazan, testleri çalıştıran ve kendi hatalarını düzelten biri. Claude Code ile tanış.
+        Sırada: gerçek bir ajan kullanacaksın — kodunu okuyan, değişiklik yazan, testleri çalıştıran ve kendi hatalarını düzelten bir ajan. Claude Code ile tanışın.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

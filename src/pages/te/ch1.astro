@@ -31,13 +31,13 @@ const chapter = chapters[0];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          నువ్వు ఇప్పటికే<br />AI మాట్లాడతావ్
+          నువ్వు ఇప్పటికే<br />AI మాట్లాడుతున్నావ్
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          నీ మొదటి draft మ్యాజిక్ కాదు.<br />కానీ మూడోది కావచ్చు.
+          నీ మొదటి డ్రాఫ్ట్ మ్యాజిక్ కాదు.<br />కానీ మూడో డ్రాఫ్ట్ మ్యాజిక్ కావచ్చు.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        నువ్వు జీవితమంతా AI తో మాట్లాడుతూనే ఉన్నావ్ — ప్రతి search query, ప్రతి Siri ప్రశ్న, ప్రతి Netflix recommendation. కానీ మెషీన్ <em>దగ్గర</em> మాట్లాడటానికి మెషీన్ <em>తో</em> మాట్లాడటానికి తేడా ఉంది. ఇప్పుడు లక్షలాది మంది ఒక prompt టైప్ చేస్తారు, మామూలు response వస్తుంది, అనుకుంటారు: "AI అంత smart కాదేమో." వాళ్ళు తప్పు. AI ఏం చేయగలదో, చాలా మంది దాన్ని ఏం చేయిస్తున్నారో — ఈ రెండింటి మధ్య gap భారీగా ఉంది. ఇది technology problem కాదు — ఇది communication problem.
+        నువ్వు చిన్నప్పటి నుండి AI తో మాట్లాడుతున్నావ్ — ప్రతి search query, ప్రతి Siri ప్రశ్న, ప్రతి Netflix recommendation. కానీ machine <em>వైపు</em> మాట్లాడటానికి, machine <em>తో</em> మాట్లాడటానికి చాలా తేడా ఉంది. ఇప్పుడు లక్షలాది మంది ఒక prompt టైప్ చేసి, మామూలు జవాబు చూసి, "AI అంత గొప్పది కాదేమో" అనుకుంటారు. వాళ్ళు తప్పు. AI చేయగలిగేదానికి, చాలామంది AI నుండి పొందేదానికి మధ్య అంతరం చాలా పెద్దది. ఇది సాంకేతిక సమస్య కాదు — ఇది సంభాషణ సమస్య.
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ఐదు Building Blocks
+        ఐదు బిల్డింగ్ బ్లాక్స్
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        ఇదిగో రహస్యం: AI నుండి అద్భుతమైన results పొందే వాళ్ళు నీ కంటే smart కాదు. వాళ్ళు ఒక formula వాడతారు — ఐదు building blocks ప్రతిసారీ పని చేస్తాయి. ఎల్లప్పుడూ అన్ని ఐదూ అవసరం లేదు. కానీ అవి ఉన్నాయని తెలుసుకోవడం Matrix చూడడం లాంటిది.
+        ఒక రహస్యం చెప్తా: AI నుండి అద్భుతమైన ఫలితాలు పొందేవాళ్ళు నీ కంటే తెలివైనవాళ్ళు కాదు. వాళ్ళు ఒక సూత్రం వాడతారు — ప్రతిసారి పని చేసే ఐదు building blocks. ప్రతిసారీ ఐదూ అవసరం లేదు. కానీ అవి ఉన్నాయని తెలుసుకోవడం Matrix చూడగలగటం లాంటిది.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role (పాత్ర)', color: '#E94560', text: 'AI ఎవరు అవ్వాలి? Tutor వేరేగా explain చేస్తాడు, professor వేరేగా. Role అంతా shape చేస్తుంది.' },
-        { letter: 'T', name: 'Task (పని)', color: '#0F3460', text: 'సరిగ్గా ఏం చేయాలి? "నాకు help చెయ్" కాదు — "నా thesis statement ను strengthen చెయ్." ఒక prompt కి ఒక task.' },
-        { letter: 'F', name: 'Format (ఫార్మాట్)', color: '#7B61FF', text: 'Response ఎలా కనిపించాలి? "3 alternatives numbered list గా ఇవ్వు." Format rambling ను ఆపుతుంది.' },
-        { letter: 'C', name: 'Constraints (పరిమితులు)', color: '#16C79A', text: 'ఏం చేయకూడదు? "Clichés avoid చెయ్. 200 words లోపల ఉంచు." Guardrails చెడ్డ outputs ను ఆపుతాయి.' },
-        { letter: 'E', name: 'Examples (ఉదాహరణలు)', color: '#F5A623', text: 'చెప్పకు, చూపించు. "మంచిది" ఎలా ఉంటుందో ఒక example వంద words వర్ణన కంటే విలువైనది.' },
+        { letter: 'R', name: 'పాత్ర (Role)', color: '#E94560', text: 'AI ఎవరిగా ఉండాలి? ఒక tutor వివరించే విధానం professor కంటే వేరుగా ఉంటుంది. Role అంతా మారుస్తుంది.' },
+        { letter: 'T', name: 'పని (Task)', color: '#0F3460', text: 'ఖచ్చితంగా ఏం చేయాలి? "నాకు సాయం చెయ్యి" కాదు — "నా thesis statement ని బలంగా చెయ్యి." ఒక prompt కి ఒక task.' },
+        { letter: 'F', name: 'ఫార్మాట్ (Format)', color: '#7B61FF', text: 'జవాబు ఎలా ఉండాలి? "3 ప్రత్యామ్నాయాలు numbered list లో ఇవ్వు." Format వల్ల AI అనవసరంగా రాయదు.' },
+        { letter: 'C', name: 'పరిమితులు (Constraints)', color: '#16C79A', text: 'ఏం చేయకూడదు? "Clichés వాడకు. 200 words లోపల ఉంచు." Guardrails చెడ్డ outputs ని ఆపుతాయి.' },
+        { letter: 'E', name: 'ఉదాహరణలు (Examples)', color: '#F5A623', text: 'చెప్పకు, చూపించు. "మంచిది" ఎలా ఉంటుందో ఒక ఉదాహరణ, వంద పదాల వివరణ కంటే విలువైనది.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -101,9 +101,9 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">కీలక అంశం</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">కీలక అంతర్దృష్టి</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ప్రతిసారీ అన్ని ఐదూ అవసరం లేదు. కానీ AI చెత్త ఇచ్చినప్పుడు, ఏది missing అయిందో చూడు — దాదాపు ఎల్లప్పుడూ ఈ ఐదిలో ఒకటి.
+          ప్రతిసారీ ఐదూ అవసరం లేదు. కానీ AI చెత్త output ఇచ్చినప్పుడు, ఏది తప్పిపోయిందో చూడు — దాదాపు ఎప్పుడూ ఈ ఐదింటిలో ఒకటి ఉంటుంది.
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Theory చాలు. Building blocks toggle చేసి AI response real time లో ఎలా మారుతుందో చూడు.
+        సిద్ధాంతం చాలు. Building blocks toggle చెయ్యి, AI response real time లో ఎలా మారుతుందో చూడు.
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="మంచి AI prompt యొక్క 5 building blocks ఇప్పుడే కనుగొన్నాను. ఈ interactive course నిజంగా బాగా చేసారు — నువ్వే prompts build చేసి వాటిని real time లో improve అవ్వడం చూస్తావ్." client:visible />
+  <SharePrompt text="AI prompt లో ఉండే 5 building blocks ఇప్పుడే కనుగొన్నాను. ఈ interactive course నిజంగా బాగుంది — నువ్వే prompts build చేసి, అవి real time లో improve అవడం చూస్తావ్." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        నువ్వు ఇప్పటికే AI మాట్లాడతావ్. కేవలం intention తో మాట్లాడాలి.
+        నువ్వు ఇప్పటికే AI మాట్లాడుతున్నావ్. ఇప్పుడు ఉద్దేశ్యంతో మాట్లాడటం నేర్చుకో.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        తర్వాత: simple back-and-forth ని నిజమైన conversation గా మార్చే techniques — AI కేవలం answer చేయదు, నీతో <em>ఆలోచిస్తుంది</em>.
+        తర్వాత: సాధారణ ముందుకు-వెనక్కి సంభాషణను నిజమైన సంవాదంగా మార్చే పద్ధతులు — AI కేవలం జవాబు ఇవ్వదు, నీతో <em>ఆలోచిస్తుంది</em>.
       </p>
     </FadeInBlock>
   </section>

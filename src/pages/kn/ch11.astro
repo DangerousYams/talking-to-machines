@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="kn">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Creation ಇಲ್ಲದ knowledge trivia.<br />Ship ಮಾಡೋ ಸಮಯ ಬಂತು.
+          Create ಮಾಡದ knowledge trivia ಅಷ್ಟೇ.<br />Ship ಮಾಡೋ ಸಮಯ ಬಂತು.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ನೀನು ಇಲ್ಲಿಗೆ ಬಂದೆ. ಹತ್ತು chapters ಒಳಗೆ ನೀನು "ನನ್ನ essay ಗೆ help ಮಾಡು" ನಿಂದ context engineering, agents building, ಮತ್ತು hallucinations debugging ವರೆಗೆ ಹೋದೆ. ಹೆಚ್ಚಿನ adults ಗೊತ್ತಿರೋದಕ್ಕಿಂತ ಹೆಚ್ಚು AI ಬಗ್ಗೆ ಕಲಿತೆ. ಆದ್ರೆ ಇಲ್ಲಿ uncomfortable truth ಇದೆ: <strong>ನೀನು ಏನಾದ್ರೂ build ಮಾಡೋ ತನಕ ಇದ್ಯಾವುದೂ matter ಆಗಲ್ಲ.</strong> AI ಬಗ್ಗೆ ಓದೋದು swimming ಬಗ್ಗೆ ಓದೋ ಥರ — ಪ್ರತಿ stroke technique study ಮಾಡಬಹುದು, ಆದ್ರೆ ನೀರಿಗೆ ಇಳಿಯೋ ತನಕ ನಿನಗೆ ಅದು <em>ಗೊತ್ತಿಲ್ಲ</em>. ಅದರ <em>ಬಗ್ಗೆ</em> ಗೊತ್ತಿರುತ್ತೆ ಅಷ್ಟೇ.
+        ನೀನು ಇಲ್ಲಿ ಬಂದೆ. ಹತ್ತು ಅಧ್ಯಾಯಗಳಲ್ಲಿ "help me with my essay" ಇಂದ context engineering, agents build ಮಾಡೋದು, software ನ vocabulary ಕಲಿಯೋದು, build loop master ಮಾಡೋದು, taste develop ಮಾಡೋದು ವರೆಗೆ ಬಂದೆ. ಆದ್ರೆ ಇಲ್ಲಿ ಒಂದು uncomfortable truth ಇದೆ: <strong>ನೀನು ಏನಾದ್ರೂ build ಮಾಡೋ ತನಕ ಇದ್ಯಾವುದೂ matter ಆಗಲ್ಲ.</strong> AI ಬಗ್ಗೆ ಓದೋದು swimming ಬಗ್ಗೆ ಓದೋ ಥರ &mdash; ಪ್ರತಿ stroke technique study ಮಾಡಬಹುದು, ಆದ್ರೆ ನೀರಿಗೆ ಇಳಿಯೋ ತನಕ ನಿನಗೆ ಅದು <em>ಗೊತ್ತಿಲ್ಲ</em>. ಅದರ <em>ಬಗ್ಗೆ</em> ಗೊತ್ತಿರುತ್ತೆ ಅಷ್ಟೇ.
       </p>
     </FadeInBlock>
   </section>
@@ -66,13 +67,13 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        ಮೊದಲ prompt ಬರೆಯೋ ಮುಂಚೆ, ಹೆಚ್ಚಿನ beginners skip ಮಾಡೋ power move ಇದೆ: <strong>ನಿನ್ನ AI tool ಗೆ permanent instruction file ಕೊಡು.</strong> ಪ್ರತಿ session ನಲ್ಲಿ ನಿನ್ನ project ಬಗ್ಗೆ ಮತ್ತೆ explain ಮಾಡೋ ಬದ್ಲು, ಒಮ್ಮೆ ಬರಿ, ನಿನ್ನ AI automatically ಓದುತ್ತೆ. Claude Code <code>CLAUDE.md</code> ಓದುತ್ತೆ. Cursor <code>.cursorrules</code> ಓದುತ್ತೆ. GitHub Copilot <code>.github/copilot-instructions.md</code> ಓದುತ್ತೆ. ಅದೇ concept, ಬೇರೆ filenames. ಇದು Chapter 3 ನ context engineering — project level ನಲ್ಲಿ apply ಮಾಡಿದ್ದು.
+        ಮೊದಲ prompt ಬರೆಯೋ ಮುಂಚೆ, ಹೆಚ್ಚಿನ beginners skip ಮಾಡೋ ಒಂದು power move ಇದೆ: <strong>ನಿನ್ನ AI tool ಗೆ permanent instruction file ಕೊಡು.</strong> ಪ್ರತಿ session ನಲ್ಲಿ project ಬಗ್ಗೆ ಮತ್ತೆ explain ಮಾಡೋ ಬದಲು, ಒಮ್ಮೆ ಬರಿ ಮತ್ತು AI automatically ಓದುತ್ತೆ. Claude Code <code>CLAUDE.md</code> ಓದುತ್ತೆ. Cursor <code>.cursorrules</code> ಓದುತ್ತೆ. GitHub Copilot <code>.github/copilot-instructions.md</code> ಓದುತ್ತೆ. ಅದೇ concept, ಬೇರೆ filenames. ಇದು ಅಧ್ಯಾಯ 3 ನ context engineering &mdash; project level ನಲ್ಲಿ apply ಮಾಡಿದ್ದು.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        ಒಳ್ಳೆ instruction file ಮೂರು questions ಗೆ answer ಮಾಡುತ್ತೆ: ನೀನು ಏನು build ಮಾಡ್ತಿದ್ದೀಯ, rules ಏನು, ಮತ್ತು "good" ಹೇಗೆ ಕಾಣುತ್ತೆ? ಅವನ್ನ right ಮಾಡಿದ್ರೆ ನಿನ್ನ AI ಜೊತೆ ಪ್ರತಿ conversation ಹತ್ತು steps ಮುಂದೆ start ಆಗುತ್ತೆ. ನಿನ್ನ project ಮುಗಿಸೋಷ್ಟು small ಆಗಿ scope ಮಾಡು — completed weekend hack abandoned masterpiece ನ ಯಾವಾಗ್ಲೂ beat ಮಾಡುತ್ತೆ.
+        ಒಳ್ಳೆ instruction file ಮೂರು questions ಗೆ answer ಕೊಡುತ್ತೆ: ಏನು build ಮಾಡ್ತಿದ್ದೀಯ, rules ಏನು, ಮತ್ತು "good" ಹೇಗೆ ಕಾಣುತ್ತೆ? ಇವನ್ನ right ಆಗಿ ಮಾಡಿದ್ರೆ AI ಜೊತೆ ಪ್ರತಿ conversation ಹತ್ತು steps ಮುಂದೆ start ಆಗುತ್ತೆ. Project ಮುಗಿಸೋಷ್ಟು small ಆಗಿ scope ಮಾಡು &mdash; completed weekend hack abandoned masterpiece ನ ಯಾವಾಗ್ಲೂ beat ಮಾಡುತ್ತೆ.
       </p>
     </FadeInBlock>
 
@@ -80,7 +81,7 @@ const chapter = chapters[10];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">ಪ್ರಮುಖ ಒಳನೋಟ</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ಒಳ್ಳೆ project instruction file ನಿನಗೆ help ಮಾಡೋ AI ಮತ್ತು ನಿನ್ನ <em>ಅರ್ಥ ಮಾಡ್ಕೊಳ್ಳೋ</em> AI ನಡುವಿನ ವ್ಯತ್ಯಾಸ. ಒಮ್ಮೆ ಬರಿ, ಪ್ರತಿ session benefit ಆಗು.
+          ಒಳ್ಳೆ project instruction file ನಿನಗೆ help ಮಾಡೋ AI ಮತ್ತು ನಿನ್ನ <em>ಅರ್ಥ ಮಾಡ್ಕೊಳ್ಳೋ</em> AI ನಡುವಿನ ವ್ಯತ್ಯಾಸ. ಒಮ್ಮೆ ಬರಿ, ಪ್ರತಿ session ನಲ್ಲಿ benefit ಪಡೆ.
         </p>
       </div>
     </FadeInBlock>
@@ -112,7 +113,7 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        ಹನ್ನೊಂದು chapters ಹಿಂದೆ, ನೀನು "ನನ್ನ essay ಗೆ help ಮಾಡು" ಅಂತ type ಮಾಡಿ best hope ಮಾಡ್ತಿದ್ದೆ. ಈಗ ನೀನು context engineer ಮಾಡ್ತೀಯ, agents design ಮಾಡ್ತೀಯ, outputs verify ಮಾಡ್ತೀಯ, ಮತ್ತು ಪ್ರತಿ step ಗೆ judgment ತರ್ತೀಯ. Course ಮುಗಿಯಿತು. ನಿಜವಾದ learning ಈಗ start ಆಗುತ್ತೆ — ನೀನು ಮಾತ್ರ ಯೋಚಿಸೋ ಥರದ್ದು ಏನೋ ಮಾಡು.
+        ಹನ್ನೊಂದು ಅಧ್ಯಾಯಗಳ ಹಿಂದೆ, ನೀನು "help me with my essay" ಅಂತ type ಮಾಡಿ best hope ಮಾಡ್ತಿದ್ದೆ. ಈಗ ನೀನು context engineer ಮಾಡ್ತೀಯ, agents build ಮಾಡ್ತೀಯ, software ನ ಭಾಷೆ ಮಾತಾಡ್ತೀಯ, confidence ನಿಂದ iterate ಮಾಡ್ತೀಯ, ಮತ್ತು ಪ್ರತಿದಕ್ಕೂ taste ತರ್ತೀಯ. Course ಮುಗಿಯಿತು. ನಿಜವಾದ learning ಈಗ start ಆಗುತ್ತೆ &mdash; ನೀನು ಮಾತ್ರ ಯೋಚಿಸಬಹುದಾದ ಏನೋ ಮಾಡು.
       </p>
     </FadeInBlock>
 

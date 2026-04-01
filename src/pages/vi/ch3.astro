@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI không quên &mdash; ngay từ đầu<br />nó chẳng hề nhớ gì cả.
+          AI không quên &mdash; nó chưa bao giờ<br />ghi nhớ ngay từ đầu.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Mỗi lần bạn gửi tin nhắn cho AI, nó đọc <em>toàn bộ cuộc trò chuyện</em> từ đầu &mdash; mọi tin nhắn bạn gửi, mọi câu trả lời nó đưa ra &mdash; tạo phản hồi, rồi quên hết. Lượt tiếp theo, lặp lại y chang. Toàn bộ bản ghi được nạp vào lần nữa. Nó là độc giả siêng năng nhất nhưng mất trí nhớ nhất thế giới: đọc kỹ từng lần, bắt đầu từ số không mỗi lượt.
+        Mỗi lần bạn gửi tin nhắn cho AI, nó đọc lại <em>toàn bộ cuộc trò chuyện</em> từ đầu &mdash; mọi tin nhắn bạn gửi, mọi câu trả lời nó đã đưa &mdash; tạo phản hồi, rồi quên sạch. Lượt tiếp theo, lặp lại y hệt. Toàn bộ bản ghi lại được nạp vào lần nữa. Nó là độc giả siêng năng nhất nhưng cũng mất trí nhớ nhất thế giới: mỗi lần đều đọc kỹ từ đầu, bắt đầu từ số không.
       </p>
     </FadeInBlock>
   </section>
@@ -69,19 +72,19 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Bản ghi mà AI đọc lại mỗi lượt nằm trong thứ gọi là <strong>cửa sổ ngữ cảnh</strong> &mdash; đo bằng <strong>token</strong> (khoảng một token cho ba phần tư từ). Cửa sổ của Claude chứa khoảng 200.000 token &mdash; tương đương một cuốn sách 500 trang. Nghe có vẻ nhiều, nhưng mỗi tin nhắn bạn gửi, mỗi câu trả lời bạn nhận, và mọi hướng dẫn hệ thống ẩn đều ăn vào cùng một ngân sách. Nó đầy nhanh hơn bạn nghĩ.
+        Bản ghi mà AI đọc lại mỗi lượt ấy nằm trong thứ gọi là <strong>cửa sổ ngữ cảnh</strong> &mdash; đo bằng <strong>token</strong> (khoảng một token cho mỗi ba phần tư từ). Cửa sổ của Claude chứa được khoảng 200.000 token &mdash; tương đương một cuốn sách 500 trang. Nghe thì nhiều, nhưng mỗi tin nhắn bạn gửi, mỗi câu trả lời bạn nhận, và mỗi chỉ dẫn hệ thống ẩn đều ăn chung một ngân sách. Nó đầy nhanh hơn bạn tưởng.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Khi ngân sách hết, những tin nhắn cũ nhất rơi khỏi mép cửa sổ. Bạn nhắc đến chế độ ăn kiêng ở tin nhắn thứ ba? Đến tin nhắn thứ mười lăm, AI có thể không còn nhìn thấy nó nữa. Nó không cẩu thả &mdash; nó đúng là không thể nhìn thấy thứ không còn trước mắt. AI chỉ giỏi bằng thông tin hiện có trong cửa sổ của nó.
+        Khi ngân sách cạn, những tin nhắn cũ nhất rơi khỏi mép. Bạn nhắc đến chế độ ăn kiêng ở tin nhắn thứ ba? Đến tin nhắn thứ mười lăm, AI có thể không còn nhìn thấy nó nữa. Nó không phải đang cẩu thả &mdash; nó thực sự không thể thấy thứ không còn trước mặt nó. AI chỉ giỏi bằng thông tin hiện có trong cửa sổ của nó.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Đây là lý do những người dùng AI giỏi nhất không chỉ viết prompt hay &mdash; họ quản lý những gì đi <em>vào</em> cửa sổ. Tóm tắt định kỳ để giữ chi tiết quan trọng luôn hiển thị. Đặt thứ quan trọng lên đầu. Bắt đầu cuộc trò chuyện mới khi chủ đề thay đổi. Dùng định dạng có cấu trúc để AI phân tích ngữ cảnh hiệu quả hơn. <strong>Context engineering là prompt engineering thế hệ mới.</strong>
+        Đó là lý do những người dùng AI giỏi nhất không chỉ viết prompt hay &mdash; họ quản lý những gì đi <em>vào</em> cửa sổ. Tóm tắt định kỳ để chi tiết quan trọng luôn hiển thị. Đặt thông tin quan trọng lên đầu. Bắt đầu cuộc trò chuyện mới khi chủ đề thay đổi. Dùng định dạng có cấu trúc để AI xử lý ngữ cảnh hiệu quả hơn. <strong>Context engineering là prompt engineering thế hệ mới.</strong>
       </p>
     </FadeInBlock>
 
@@ -89,7 +92,7 @@ const chapter = chapters[2];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Viết prompt hay là bước một. Quyết định đưa thông tin gì vào trước mắt AI &mdash; và cấu trúc nó như thế nào &mdash; mới là nơi tạo ra đòn bẩy thực sự. Prompt hay nhất thế giới cũng thất bại nếu ngữ cảnh sai.
+          Viết prompt hay là bước một. Quyết định đặt thông tin gì trước mặt AI &mdash; và cấu trúc nó thế nào &mdash; mới là chỗ tạo đòn bẩy thực sự. Prompt hay nhất thế giới cũng thất bại nếu ngữ cảnh sai.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Xem cửa sổ ngữ cảnh đầy lên, tràn ra, và quên &mdash; theo thời gian thực.
+        Xem cửa sổ ngữ cảnh đầy lên, tràn ra, và quên đi &mdash; theo thời gian thực.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Cuối cùng cũng hiểu vì sao AI 'quên' mọi thứ giữa cuộc trò chuyện. Không phải bộ nhớ — mà là cửa sổ ngữ cảnh. Khóa học này giải thích cực kỳ rõ ràng với demo trực tiếp." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Chiến lược quản lý ngữ cảnh
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Giờ bạn đã hiểu cửa sổ rồi, đây là cách quản lý nó như dân chuyên nghiệp. Đây là những kỹ thuật phân biệt người "dùng AI" với người đạt kết quả phi thường từ nó.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">Tóm tắt theo từng chặng</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Cứ mỗi 5-10 tin nhắn, nhờ AI viết bản tóm tắt ngắn các quyết định và chi tiết quan trọng. Rồi dán bản tóm tắt đó vào tin nhắn tiếp theo. Cách này "reset" ngữ cảnh với thông tin quan trọng nhất luôn ở phía trước.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">Đặt thông tin quan trọng lên đầu</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Đưa thông tin quan trọng nhất lên đầu tin nhắn, đừng chôn ở cuối. AI chú ý nhiều hơn đến phần đầu và phần cuối &mdash; phần giữa có thể bị lạc, đặc biệt trong prompt dài.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">Bắt đầu lại đúng lúc</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Đừng ngại bắt đầu cuộc trò chuyện mới khi chủ đề thay đổi đáng kể. Mang theo bản tóm tắt những gì đã quyết định, không phải toàn bộ lịch sử. Ngữ cảnh sạch thường tốt hơn ngữ cảnh lộn xộn.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">Nhắc rõ ràng những gì cần nhớ</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"Quan trọng: người dùng ăn chay. Đừng quên điều này." Nghe ngốc nghếch, nhưng hiệu quả lắm. Lời nhắc rõ ràng đóng vai trò như mỏ neo mà AI coi trọng hơn.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">Dùng định dạng có cấu trúc</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Danh sách gạch đầu dòng, tiêu đề, và nhãn rõ ràng giúp AI xử lý ngữ cảnh hiệu quả hơn. Một prompt có tổ chức đáng giá gấp đôi số token so với một bức tường văn bản.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Cuối cùng cũng hiểu tại sao AI 'quên' mọi thứ giữa cuộc trò chuyện. Không phải bộ nhớ — mà là cửa sổ ngữ cảnh. Khóa học này giải thích rõ ràng với demo trực tiếp." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Giờ bạn đã nhìn thấy tấm bảng trắng. Bạn cảm nhận được mép cửa sổ. Điều đó thay đổi mọi cuộc trò chuyện của bạn với AI.
+        Giờ bạn đã thấy tấm bảng trắng. Bạn cảm nhận được mép cửa sổ. Điều đó thay đổi mọi cuộc trò chuyện của bạn với AI.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Đến giờ ta mới làm việc với chatbot. Tiếp theo, ta sẽ phóng tầm nhìn ra &mdash; hàng trăm công cụ AI tồn tại ngoài cửa sổ chat, và biết toàn cảnh sẽ thay đổi những gì bạn nghĩ là có thể.
+        Bạn đã nắm những kiến thức nền tảng &mdash; viết prompt, đặt câu hỏi, và ngữ cảnh. Tiếp theo: bảng tóm tắt các prompt quyền năng để bạn mang theo.
       </p>
     </FadeInBlock>
   </section>

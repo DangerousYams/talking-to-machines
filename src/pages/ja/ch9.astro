@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AIが間違える<br />とき
+          ビルド<br />ループ
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          アマチュアとプロを分ける<br />検証の習慣。
+          不完全を覚悟せよ。改善を楽しめ。<br />魔法が起きるのは3回目だ。
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        完璧なエッセイを書く手助けをしてくれたAIが、同じ自信満々の口調で「ナポレオンはワーテルローの戦いに勝った」と言い切ることもある。ためらわない。口ごもらない。完全にでっち上げた「事実」を、本当のことと全く同じ権威ある調子で述べる。これがAIと付き合う上でのパラドックスの核心だ：<strong>AIを便利にしている流暢さが、そのまま危険性にもなる。</strong>
+        AIで何かを作るときの最も多いミスは、悪いプロンプトじゃない。悪い期待値だ。長い説明を一発で打ち込み、エンターを押して、完成品を期待する。うまくいかない。絶対にうまくいかない。AIですごいものを作る人たちは秘密を知っている。<strong>最初のバージョンは必ず間違っている。</strong>3回目がまあまあ。5回目が素晴らしい。そして1から5に至るプロセス、それこそが本当のスキルだ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        すべてのアーティストはイテレーションする。すべての建築家は修正する。すべての映画監督は複数テイクを撮る。AIでの制作も同じだ。ループを楽しめる人、うんざりしない人が、最高のものを作る。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        もっともらしさは真実ではない
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        仕様を出す、生成する、検証する
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AIモデルはデータベースから事実を検索しているんじゃない。次に来る確率が最も高い単語を予測している。実在するものについて聞けば、訓練データのパターンが正しい情報へ導いてくれる。存在しないものについて聞いたとき、モデルは「わかりません」とは言わない。正しい答えが<em>あるとしたらどう見えるか</em>を生成する &mdash; 名前も日付も引用も全部でっち上げて。
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        コーディングエージェントとの生産的なセッションはすべて同じリズムに従う。<strong>仕様を出す</strong>：何がほしいか具体的に、例を示し、「完成」の定義を描く。エージェントに<strong>生成</strong>させる。そして<strong>検証</strong>する：動くか？ 見た目は合っているか？ 頼んだ通りか？ ダメならもう一度、もっと正確に仕様を出す。これがループだ。失敗の兆候じゃない。プロセスそのものだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        AIがどれだけ自信ありげに聞こえるかと、実際にどれだけ正確かは無関係だ。間違った答えと正しい答えは外から見ると同じに見える。口調で、詳細さで、具体的な数字の量で正確さは判断できない。「それっぽく聞こえる」テストは無意味だ。唯一の防御は検証だ。
+        強力なテクニックは、作り始める前に<strong>受け入れ条件</strong>を書くことだ。「ボタンをクリックしたら緑に変わること。」「リストはページをリロードしても残ること。」「登録フォームは@なしのメールを拒否すること。」こうした平易な「完成」の定義が、君の評価フレームワークになる。何かおかしいとき、条件をエージェントに貼り直して「これと合っていない」と言えばいい。エージェントは<em>君の基準</em>に照らしてテストできる。
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        行き詰まったときにどうするか
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        エージェントが壊れたものを生成した。どうする？ 5つの戦略を、試す順番で紹介する。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. 診断じゃなく症状を伝える</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">「onClickハンドラが壊れてると思う」より「ボタンをクリックしても反応しない」のほうがいい。</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. エラーメッセージをそのまま共有する</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">エラーをそのままコピペする。エージェントに渡せる最も有用な情報だ。</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. エージェントに何をしたか説明させる</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">「今変更したことと理由を順番に説明して。」理解することで問題が見えてくることが多い。</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. 別のアプローチを頼む</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">「そのやり方はうまくいかない。全然違う方法で解決できない？」</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. 学んだことを持って最初からやり直す</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">こんがらがった会話をデバッグするより、新しい会話を始めたほうが速いこともある。重要な決定事項だけ持っていこう。</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ガードレールとしてのテスト</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AIには「真実」という概念がない。あるのは「もっともらしさ」だ。パターンに合ったテキストを生成する &mdash; そのテキストが現実に対応しているかどうかに関係なく。
+          エージェントに自動テストを書かせることができる。普通の言葉で。「登録フォームが@なしのメールを拒否するテストを書いて。」エージェントはテスト<em>と</em>それをパスするコードの両方を書く。これはテスト駆動開発だ。テストを書いたことがない人が指揮しても成立する。一度テストに捕まったバグは、二度と戻ってこない。
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        検出力を試してみよう。AIの主張のうち、どれが本物でどれがでっち上げか見分けられるだろうか？
+        スキルを練習しよう。これらのバグをコーディングエージェントにどう伝える？
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="すべてのAIユーザーにこの章が必要だ。AIがどうハルシネーションするか、なぜ間違った答えに同意するか、どう見抜くかを教えてくれる。超実践的。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AIコーディングエージェントと一緒に作るこの章は最高。5つのデバッグ戦略だけでも価値がある。症状を伝えよ、エラーを共有せよ、説明を求めよ。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AIから最大の価値を引き出す人は、いつ信じていいか、いつ検証すべきかを正確に見極めている。
+        最初のバージョンは必ず間違っている。3回目がまあまあ。5回目が素晴らしい。ループを楽しめ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AIが間違えるときを知ることは、もっと大きな問いにつながる：AIに<em>絶対にできない</em>ことは何か？次は、頑固なまでに美しく人間的であり続けるスキルを探る &mdash; そしてなぜそれがかつてないほど重要なのかを。
+        イテレーションはできる。デバッグもできる。でも、作っているものが本当に<em>いい</em>かどうか、どうやってわかる？ 機能するだけじゃなく、いいかどうか。それにはAIが与えられないものが必要だ。テイスト。次の話だ。
       </p>
     </FadeInBlock>
   </section>

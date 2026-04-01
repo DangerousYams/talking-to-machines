@@ -9,8 +9,10 @@ import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,13 +33,13 @@ const chapter = chapters[9];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          மனித<br />முன்னணி
+          Taste தான்<br />Product
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI replace செய்ய முடியாதது &mdash;<br />10x easy ஆக்குவது.
+          AI options generate செய்கிறது. நீ சரியானதை<br />choose செய்கிறாய். அதுதான் skill.
         </p>
       </FadeInBlock>
     </div>
@@ -51,41 +53,71 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ஒவ்வொரு முறை புதிய AI capability வரும்போது, அதே headline தோன்றும்: <em>"AI [insert job]-ஐ replace செய்துவிடுமா?"</em> தவறான கேள்வி. AI மனிதர்களை replace செய்வதில்லை. <strong>Tasks-ஐ</strong> replace செய்கிறது. எந்த job-ஐயும் &mdash; career, creative pursuit &mdash; zoom in செய்து பார்த்தால், ஒரு mix காண்பாய்: சில tasks-ஐ AI brilliantly handle செய்கிறது, சிலவற்றில் assist செய்கிறது, சில பிடிவாதமாக, அழகாக மனிதனாகவே இருக்கின்றன.
+        AI முப்பது seconds-ல் ஒரு website generate செய்ய முடியும். பெரும்பாலானவை ஒரே மாதிரி தெரியும்: rounded corners, gradient backgrounds, generic hero sections, placeholder stock phrases. இது <strong>AI slop</strong> &mdash; யாரும் taste exercise செய்யாதபோது வரும் default output. Technically functional. Aesthetically மறக்கக்கூடியது. AI கொடுப்பதை better-க்கு push செய்யாமல் accept செய்தால் கிடைப்பது இது.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Antidote அதிக prompting அல்ல. Standards வைத்திருப்பது. Good எப்படி இருக்கும் என்று தெரிந்திருப்பது. AI கிட்ட சரியாக guess செய்யும் என்று hope பண்ணுவதற்கு பதிலாக, நீ என்ன விரும்புகிறாய் என்று காண்பிப்பது.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        வேலைகள் மறையாது &mdash; உருமாறும்
+        விளக்கங்களை விட References
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        ATMs வந்தபோது, bank tellers மறைந்துவிடுவார்கள் என்று எல்லாரும் predict செய்தார்கள். அதற்கு பதிலாக, எண்ணிக்கை <em>அதிகரித்தது</em> &mdash; ATMs புதிய branches திறப்பதை cheaper ஆக்கியது, teller-ன் வேலை cash எண்ணுவதிலிருந்து relationships build செய்வதற்கு shift ஆனது. AI அதே விஷயம் செய்கிறது, ஆனால் faster-ஆகவும் ஒவ்வொரு industry-லும் ஒரே நேரத்தில்.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Modern-ஆகவும் clean-ஆகவும் இருக்கட்டும்" என்பது AI க்கு கிட்டத்தட்ட ஒன்றும் சொல்வதில்லை. "stripe.com மாதிரி இருக்கட்டும் &mdash; minimal, நிறைய whitespace, ஒரே accent color, பெரிய bold headings" என்பது எல்லாவற்றையும் சொல்கிறது. <strong>References எப்போதும் descriptions-ஐ beat செய்யும்.</strong> ஒரு screenshot ஆயிரம் வார்த்தை prompting-க்கு சமம். நீ விரும்பும் விஷயங்களின் examples collect செய் &mdash; websites, apps, designs &mdash; agent-கிட்ட கொடு. "இந்த layout வேண்டும் ஆனால் இந்த colors-உடன்." "இந்த typography ஆனால் dashboard-க்கு apply செய்."
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Data entry? AI handle செய்கிறது. First drafts? Shockingly good. ஆனால் <em>என்ன build செய்ய வேண்டும் என்று choose செய்வது</em>, <em>crisis-ல் room read செய்வது</em>, <em>data என்ன mean ஆகிறது என்று decide செய்வது</em> &mdash; இவற்றுக்கு judgment, empathy, vision தேவை &mdash; AI கிட்ட fundamentally இல்லாதவை.
+      <p class="text-lg leading-[1.85] mb-14">
+        Taste பிறவிக்குணம் அல்ல. Exposure + judgment. சிறந்த விஷயங்களை பார்த்து அவை <em>ஏன்</em> சிறந்தவை என்று புரிந்துகொள்வதன் மூலம் develop ஆகிறது. நீ collect செய்யும் references அதிகமாக, உன் கண் கூர்மையாகும். உன் கண் கூர்மையாக, agent-கிட்ட உன் instructions better ஆகும்.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>மூன்று evaluation lenses</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          இது "மனிதர்கள் vs. AI" அல்ல. <strong>AI உடன் மனிதர்கள் vs. AI இல்லாத மனிதர்கள்</strong>. AI tools-உடன் வேலை செய்ய கற்றுக்கொள்பவர்கள் வேலை இழப்பதில்லை &mdash; வேகமாகவும், better-ஆகவும், முன்பு இல்லாத capabilities-உடனும் வேலை செய்கிறார்கள்.
+          Agent build செய்வதை மூன்று lens-கள் வழியாக judge செய். <strong>Visual:</strong> என் references போல் தெரிகிறதா? <strong>Functional:</strong> நான் specify செய்ததை செய்கிறதா? <strong>User:</strong> நான் உண்மையில் இதை use செய்ய விரும்புவேனா? இதில் ஏதாவது ஒன்றுக்கு no என்றால், iterate செய். இந்த lenses apply செய்ய code படிக்க தெரிய வேண்டியதில்லை.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        மனித முன்னணி
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        AI options generate செய்கிறது. நீ சரியானதை choose செய்கிறாய். அந்த judgment &mdash; taste, empathy, vision &mdash; உன் edge. AI ஒரு minute-ல் பத்து logo variants produce செய்யலாம். ஆனால் உன் brand-க்கு எது <em>சரியாக feel</em> ஆகிறது என்று உனக்கு மட்டுமே தெரியும். AI பத்து versions landing page draft செய்யலாம். ஆனால் உன் audience-உடன் எது resonate ஆகும் என்று உனக்கு மட்டுமே தெரியும். Scarce skill generation அல்ல. <strong>Curation</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        AI fundamentally செய்ய முடியாதது: <em>என்ன</em> build செய்ய வேண்டும் என்று choose செய்வது. <em>யாருக்காக</em> என்று decide செய்வது. <em>ஏன்</em> முக்கியம் என்று determine செய்வது. Creative vision set செய்வது. Room read செய்வது. ஏன் என்று articulate செய்ய முடியாவிட்டாலும் ஏதோ "off" ஆக இருக்கிறது என்று feel ஆவது. இவை AI-ல் உள்ள bugs அல்ல &mdash; மனிதனாக இருப்பதின் features. Generation free ஆன உலகில், இவை முன்னெப்போதையும் விட மதிப்புள்ளவை.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -93,7 +125,7 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        கீழே ஒரு career select செய்து AI அதை உள்ளிருந்து எப்படி transform செய்கிறது என்று பார். ஒரு single task கூட முழுமையாக மறையாது.
+        இந்த options-ஐ best-இலிருந்து worst-க்கு rank செய். பிறகு experts எப்படி score செய்தார்கள் &mdash; ஏன் என்றும் பார்.
       </p>
     </FadeInBlock>
   </section>
@@ -105,13 +137,22 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="This course doesn't hype AI or fear-monger about jobs. It maps exactly which skills stay human and which get augmented. Refreshingly honest." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="'AI generates options. You choose the right one.' This chapter on taste, references, and the human edge is the most important lesson in building with AI." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI options generate செய்கிறது. நீ சரியானதை choose செய்கிறாய். அந்த judgment &mdash; taste, empathy, vision, first principles &mdash; அதுதான் உன் edge.
+        Generation free ஆன உலகில், taste மட்டுமே matter ஆகிறது.
       </div>
     </FadeInBlock>
 

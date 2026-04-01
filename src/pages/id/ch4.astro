@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -31,13 +33,13 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Lanskap<br />AI
+          Peta<br />Dunia AI
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Panduan lengkap semua tool AI<br />yang bisa kamu pakai sekarang juga.
+          Panduan lapangan untuk setiap tool AI<br />yang bisa kamu pakai sekarang.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           TERAKHIR DIPERBARUI MARET 2026
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Ketika kebanyakan orang bilang "AI," mereka maksudnya ChatGPT. Itu seperti bilang "internet" tapi yang dimaksud Google. Saat ini, ada ratusan tool AI yang bisa kamu pakai hari ini — tool yang menghasilkan gambar fotorealistik dari satu kalimat, membuat lagu utuh, atau membaca semua paper akademik tentang topik risetmu dan merangkum konsensusnya dalam tiga paragraf. Bab ini adalah petamu untuk memahami medannya.
+        Kalau kebanyakan orang bilang "AI," yang mereka maksud adalah ChatGPT. Itu seperti bilang "internet" tapi yang dimaksud cuma Google. Sekarang ada ratusan tool AI yang bisa kamu pakai hari ini — tool yang bikin gambar fotorealistis dari satu kalimat, menggubah lagu utuh, atau membaca semua paper akademik tentang topik risetmu dan merangkum konsensusnya dalam tiga paragraf. Bab ini adalah petamu untuk menjelajahi medan ini.
       </p>
     </FadeInBlock>
   </section>
@@ -66,26 +68,26 @@ const chapter = chapters[3];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Delapan Keluarga Besar
+        Delapan Keluarga
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Pikirkan seperti alat musik. Piano dan drum set sama-sama "alat musik," tapi kamu tidak akan minta pianis bikin beat. Tool AI juga sama — tool untuk bikin gambar secara fundamental beda dari tool untuk coding. Setiap tool yang akan kamu temui masuk ke salah satu dari delapan keluarga ini.
+        Bayangkan seperti alat musik. Piano dan drum kit sama-sama "instrumen," tapi kamu nggak akan minta pianis main beat. Tool AI juga begitu — tool untuk bikin gambar secara fundamental beda dari tool untuk coding. Setiap tool yang kamu temui masuk ke salah satu dari delapan keluarga ini.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Generator Gambar', color: '#E94560', text: 'Teks masuk, gambar keluar. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
-        { icon: '2', name: 'Editor Gambar', color: '#F5A623', text: 'Mulai dengan gambar asli dan ubah. Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'Pembuat Video', color: '#7B61FF', text: 'Hasilkan klip video dari teks atau gambar diam. Sora, Runway, Kling, Pika.' },
+        { icon: '1', name: 'Pembuat Gambar', color: '#E94560', text: 'Teks masuk, gambar keluar. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Editor Gambar', color: '#F5A623', text: 'Mulai dari gambar asli dan transformasikan. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Pembuat Video', color: '#7B61FF', text: 'Buat klip video dari teks atau gambar diam. Sora, Runway, Kling, Pika.' },
         { icon: '4', name: 'Musik & Audio', color: '#16C79A', text: 'Lagu utuh dari prompt, kloning suara, efek suara. Suno, Udio, ElevenLabs.' },
         { icon: '5', name: 'Agen Riset', color: '#0EA5E9', text: 'AI yang membaca internet untukmu. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'Browser AI', color: '#6B7280', text: 'Agen yang menjelajahi web seperti manusia. Arc, Operator, Claude Computer Use.' },
-        { icon: '7', name: 'Tool Coding', color: '#E94560', text: 'AI yang menulis, mengedit, dan men-debug kode. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Chatbot & Asisten', color: '#0F3460', text: 'AI percakapan general-purpose yang sudah kamu kenal: ChatGPT, Claude, Gemini.' },
+        { icon: '6', name: 'Browser AI', color: '#6B7280', text: 'Agen yang menjelajah web seperti manusia. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Tool Coding', color: '#E94560', text: 'AI yang menulis, mengedit, dan mendebug kode. Claude Code, Cursor, Antigravity, Copilot.' },
+        { icon: '8', name: 'Chatbot & Asisten', color: '#0F3460', text: 'AI percakapan serbaguna yang sudah kamu kenal: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Orang yang tahu 10 tool AI secara permukaan akan selalu mengungguli seseorang yang tahu satu tool secara mendalam. Tukang kayu profesional tidak punya tool favorit — mereka punya tool favorit <em>untuk setiap tugas</em>.
+          Orang yang tahu 10 tool AI secara dasar akan konsisten mengalahkan orang yang tahu satu tool secara mendalam. Tukang kayu profesional nggak punya satu tool favorit — mereka punya tool favorit <em>untuk setiap tugas</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Jelajahi katalog lengkapnya. Klik tool mana pun untuk tahu fungsinya.
+        Jelajahi katalog lengkapnya. Klik tool manapun untuk tahu fungsinya.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Ternyata ada jauh lebih banyak tool AI dari yang aku kira. Panduan interaktif ini memetakan 8 keluarga tool — image gen, video, musik, riset, coding — lengkap dengan contoh." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Ternyata tool AI itu jauh lebih banyak dari yang aku kira. Panduan interaktif ini memetakan 8 keluarga tool — image gen, video, musik, riset, coding — lengkap dengan contoh masing-masing." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Lanskapnya bergeser setiap bulan. Tapi kategorinya stabil meski tool-nya tidak — dan <em>itulah</em> peta yang layak dihafal.
+        Lanskap ini berubah setiap bulan. Tapi kategorinya stabil meskipun tool-nya berganti — dan <em>itulah</em> peta yang layak dihafal.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Sejauh ini, tool-tool ini hanya merespons kamu. Bagaimana kalau mereka bisa <em>mengambil tindakan sendiri</em>? Itulah lompatan dari tool ke agent — dan ini mengubah segalanya.
+        Sejauh ini, tool-tool ini cuma meresponsmu. Bagaimana kalau mereka bisa <em>bertindak sendiri</em>? Itulah lompatan dari tool ke agent — dan itu mengubah segalanya.
       </p>
     </FadeInBlock>
   </section>

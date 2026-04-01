@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AIは忘れたんじゃない &mdash;<br />そもそも覚えていなかっただけだ。
+          AIは忘れない &mdash; そもそも<br />覚えていなかっただけだ。
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        AIにメッセージを送るたびに、AIは<em>会話全体</em>をゼロから読み直す &mdash; 送ったすべてのメッセージ、返したすべてのレスポンス &mdash; 返事を生成して、そしてすべてを忘れる。次のターンも同じこと。トランスクリプト全体がまた読み込まれる。世界一勤勉だけど健忘症の読者 &mdash; 毎回完全に読み通すけど、ターンごとにゼロから始める。
+        AIにメッセージを送るたび、AIは<em>会話全体</em>をゼロから読み直す。君が送ったすべてのメッセージ、AIが返したすべての回答。そして返答を生成して、すべて忘れる。次のターンも同じ。全文がまた入力される。世界一勤勉だけど記憶喪失な読者だ。毎回完璧に読むが、毎回ゼロからスタートする。
       </p>
     </FadeInBlock>
   </section>
@@ -69,19 +72,19 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AIが毎ターン読み直すトランスクリプトは、<strong>コンテキストウィンドウ</strong>と呼ばれるものの中に存在する &mdash; <strong>トークン</strong>（ざっくり単語の4分の3）で測られる。Claudeのウィンドウは約200,000トークン &mdash; 500ページの本くらいだ。巨大に聞こえるけど、送るすべてのメッセージ、受け取るすべてのレスポンス、隠れたシステム指示のすべてが同じバジェットから消費される。思ったより早く埋まる。
+        AIが毎ターン読み直すそのテキスト、それは<strong>コンテキストウィンドウ</strong>と呼ばれるものの中にある。単位は<strong>トークン</strong>（だいたい1トークン＝英語の0.75語くらい）。Claudeのウィンドウは約200,000トークン、つまり500ページの本に相当する。大きく聞こえるけど、送ったメッセージも、受け取った回答も、隠れたシステム指示も、すべて同じ予算から消費される。思ったより早く埋まる。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        バジェットがなくなると、最も古いメッセージが端からこぼれ落ちる。3番目のメッセージで食事制限について言った？15番目のメッセージでは、もうAIに見えていないかもしれない。不注意なんじゃない &mdash; 文字通り、もう目の前にないものは見えないんだ。AIは、今ウィンドウの中にある情報でしか仕事ができない。
+        予算が尽きると、古いメッセージが端から落ちていく。メッセージ3番で食事制限について伝えた？ メッセージ15番には、もうAIの目には入っていないかもしれない。不注意なんじゃない。目の前にないものは文字通り見えないのだ。AIの実力は、今そのウィンドウの中にある情報の質次第だ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        だからAIの上級者は、ただ良いプロンプトを書くだけじゃない &mdash; ウィンドウに何を<em>入れるか</em>を管理している。定期的に要約して重要な情報が見え続けるようにする。大事なことを先頭に置く。トピックが変わったら新しく始める。構造化されたフォーマットを使って、AIがコンテキストを効率的にパースできるようにする。<strong>コンテキストエンジニアリングは、新しいプロンプトエンジニアリングだ。</strong>
+        だからこそ、最高のAIユーザーはプロンプトを上手に書くだけじゃない。ウィンドウに<em>何を入れるか</em>を管理している。定期的に要約して重要な情報を残す。大事なことを先頭に置く。話題が変わったら新しい会話を始める。構造化されたフォーマットでAIがコンテキストを効率よく読めるようにする。<strong>コンテキストエンジニアリングこそが、新時代のプロンプトエンジニアリングだ。</strong>
       </p>
     </FadeInBlock>
 
@@ -89,7 +92,7 @@ const chapter = chapters[2];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          良いプロンプトを書くのは第一歩。AIの前にどんな情報を置くか &mdash; そしてどう構造化するか &mdash; そこに本当のレバレッジがある。世界最高のプロンプトも、コンテキストが間違っていたら失敗する。
+          良いプロンプトを書くのはステップ1。AIの前にどの情報を置き、どう構造化するかを決めること、そこに本当のレバレッジがある。世界最高のプロンプトも、コンテキストが間違っていれば失敗する。
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        コンテキストウィンドウが埋まり、溢れ、忘れていく様子を &mdash; リアルタイムで見てみよう。
+        コンテキストウィンドウが埋まり、あふれ、忘れていくのを &mdash; リアルタイムで見よう。
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AIが会話の途中で「忘れる」理由がやっとわかった。記憶じゃない——コンテキストウィンドウなんだ。このコースはライブデモで本当にわかりやすく説明してくれる。" client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        コンテキスト管理の戦略
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        ウィンドウの仕組みがわかったところで、プロのように管理する方法を紹介しよう。「AIを使っている」人と「AIから驚異的な結果を引き出している」人を分けるテクニックだ。
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">途中で要約する</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">5〜10メッセージごとに、重要な決定事項と詳細のまとめをAIに書かせよう。そのサマリーを次のメッセージに貼り付ければ、最も重要な情報を最前面に置いた状態でコンテキストを「リセット」できる。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">大事なことを先に書く</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">最も重要な情報はメッセージの冒頭に。末尾に埋もれさせない。AIは最初と最後に注目しやすい。特に長いプロンプトでは真ん中が見落とされがちだ。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">戦略的にリセットする</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">話題が大きく変わったら、新しい会話を始めることを恐れないで。全履歴じゃなく、決まったことのサマリーだけ持ち越そう。きれいなコンテキストは、散らかったものよりたいてい良い結果を出す。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">覚えておくべきことを明示する</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">「重要：ユーザーはベジタリアンです。忘れないでください。」バカバカしく聞こえるけど、効く。明示的なリマインダーはアンカーとして機能し、AIはそれをより重視する。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">構造化されたフォーマットを使う</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">箇条書き、見出し、明確なラベルはAIがコンテキストをより効率的に解析する助けになる。整理されたプロンプトは、同じトークン数の散文に比べて2倍の価値がある。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AIが会話の途中で「忘れる」理由がやっとわかった。記憶じゃない、コンテキストウィンドウだ。このコースはライブデモで本当にわかりやすく説明してくれる。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ホワイトボードが見えるようになった。ウィンドウの端を感じる。それがAIとのすべての会話を変える。
+        ホワイトボードが見えた。ウィンドウの端が感じられた。それがAIとのすべての会話を変える。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ここまではチャットボットと向き合ってきた。次はズームアウトしよう &mdash; チャットウィンドウの向こう側に何百ものAIツールが存在していて、そのランドスケープを知ることで「何ができるか」の感覚が変わる。
+        基礎は学んだ &mdash; プロンプティング、質問の仕方、コンテキスト。次は、持ち歩ける最強プロンプト集だ。
       </p>
     </FadeInBlock>
   </section>

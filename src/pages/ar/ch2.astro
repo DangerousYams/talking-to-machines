@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -37,7 +39,7 @@ const chapter = chapters[1];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          أفضل توجيه هو سؤال يجعل<br />الذكاء الاصطناعي يسألك أسئلة.
+          أفضل أمر هو سؤال يجعل<br />الذكاء الاصطناعي يسألك أسئلة.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        معظم الناس يستخدمون الذكاء الاصطناعي كآلة بيع. أدخل التوجيه، واستلم الإجابة. لكن أفضل النتائج تأتي من <em>المحادثات</em>، وليس الأوامر. الفرق بين شخص يكتب توجيهًا وشخص يصنع توجيهًا هو نفس الفرق الذي يحرك المفكرين العظماء منذ 2400 سنة: طرح الأسئلة الصحيحة.
+        معظم الناس يستخدمون الذكاء الاصطناعي كآلة بيع. أدخل الأمر، واستلم الجواب. لكن أفضل النتائج تأتي من <em>المحادثات</em>، لا من الأوامر. الفرق بين شخص يكتب أمرًا وشخص يصوغ واحدًا هو نفس الفرق الذي يحرّك المفكرين العظام منذ 2,400 سنة: طرح الأسئلة الصحيحة.
       </p>
     </FadeInBlock>
   </section>
@@ -63,19 +65,19 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        الانقلاب السقراطي
+        القلب السقراطي
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        سقراط لم يجب على أي سؤال مباشرة. كان يطرح أسئلة <em>أكثر</em> حتى يصل طلابه إلى فهم أعمق. يمكنك استخدام نفس الطريقة مع الذكاء الاصطناعي، لكن معكوسة: بدلاً من أن تطلب إجابة، اطلب من الذكاء الاصطناعي أن يُقابلك <em>أنت</em>. عندما تكتب "خطط حفلة عيد ميلاد"، أنت تحذف عشرات التفاصيل التي تغير الإجابة بشكل جذري. الذكاء الاصطناعي لا يعرفها — لكنه يستطيع السؤال.
+        سقراط لم يُجب على سؤال مباشرة قط. كان يسأل <em>مزيدًا</em> من الأسئلة حتى يصل طلابه إلى فهم أعمق. يمكنك استخدام نفس الحيلة مع الذكاء الاصطناعي، لكن بشكل معكوس: بدلًا من طلب إجابة، اطلب من الذكاء الاصطناعي أن يُجري معك <em>مقابلة</em>. عندما تكتب "خطط لحفلة عيد ميلاد"، أنت تحذف عشرات التفاصيل التي تغيّر الإجابة بشكل جذري. الذكاء الاصطناعي لا يعرفها — لكنه يستطيع أن يسأل عنها.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        هذه التقنية الواحدة — عكس من يطرح الأسئلة — تحول الذكاء الاصطناعي من آلة إجابات إلى <strong>شريك في التفكير</strong>. أعطه الإذن ليستقصي ويوضح ويتحدى. النتيجة بعد خمسة أسئلة متبادلة ستكون مختلفة تمامًا مقارنة بأمر من محاولة واحدة.
+        هذه التقنية الواحدة — قلب من يسأل الأسئلة — تحوّل الذكاء الاصطناعي من آلة إجابات إلى <strong>شريك تفكير</strong>. أعطه الإذن بأن يستفسر ويوضح ويتحدى. النتيجة بعد خمس جولات من الأسئلة المتبادلة ستكون مختلفة تمامًا مقارنة بأمر واحد مباشر.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[1];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          أفضل مستخدمي الذكاء الاصطناعي ليسوا خبراء في الموضوع — إنهم خبراء في السؤال. وأقوى سؤال يمكنك طرحه هو: "قبل أن تجيب، ماذا تحتاج أن تعرف؟"
+          أفضل مستخدمي الذكاء الاصطناعي ليسوا خبراء في الموضوع — إنهم خبراء في طرح الأسئلة. وأقوى سؤال يمكنك طرحه هو: "قبل أن تجيب، ما الذي تحتاج معرفته؟"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        جربها بنفسك. حدد هدفًا — وشاهد الذكاء الاصطناعي يعكس الأدوار.
+        جرّبها بنفسك. حدد هدفًا — وشاهد الذكاء الاصطناعي يقلب الأدوار.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="This AI course just flipped how I think about prompting. Instead of telling AI what to do, you ask it to interview YOU first. The results are night and day." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        توقف عن إخبار الذكاء الاصطناعي بماذا يفكر. ابدأ بإعطائه مساحة ليفكر معك.
+        توقف عن إخبار الذكاء الاصطناعي بماذا يفكر. أعطه مساحة ليفكر معك.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        لكن كل تقنية تعلمتها تصطدم بنفس الجدار الخفي: <em>نافذة السياق</em>. التالي، سنفتحها ونتعلم كيف نهندس ما يراه الذكاء الاصطناعي فعلاً.
+        لكن كل تقنية تعلمتها تصطدم بنفس الجدار الخفي: <em>نافذة السياق</em>. التالي: سنفتحها ونتعلم كيف نهندس ما يراه الذكاء الاصطناعي فعلًا.
       </p>
     </FadeInBlock>
   </section>

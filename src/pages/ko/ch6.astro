@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -57,7 +60,7 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        에이전트는 루프로 돌아: 목표를 받고, 단계를 계획하고, 도구로 실행하고, 결과를 관찰하고, 진행 상황을 평가하고, 조정해. 한 번 계획하고 눈 감고 실행하는 게 아냐 — 최고의 에이전트는 세 번째 단계가 꼬여도 우아하게 복구해. 근데 그 힘에는 어두운 면이 있어: 에이전트는 나쁜 답을 주는 것만 하는 게 아냐, 그걸 기반으로 <em>행동해</em>, 그리고 깨진 결과로 다음 결정을 내려. 실패가 쌓여.
+        에이전트는 루프로 돌아가: 목표를 받고, 단계를 계획하고, 도구로 실행하고, 결과를 관찰하고, 진행 상황을 평가하고, 조정해. 한 번 계획하고 눈 감고 실행하는 게 아니야 — 최고의 에이전트는 세 번째 단계가 꼬여도 우아하게 복구해. 근데 그 힘에는 어두운 면이 있어: 에이전트는 나쁜 답을 주는 데서 그치지 않아, 그걸 기반으로 <em>행동하고</em>, 깨진 결과로 다음 결정을 내려. 실패가 쌓여.
       </p>
     </FadeInBlock>
   </section>
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        모든 에이전트는 같은 다섯 단계 사이클로 돌아. 이 단계들을 이해하는 게 유용한 걸 만드는 것과 API 크레딧을 무한 루프로 태우는 것의 차이야.
+        모든 에이전트는 같은 다섯 단계 사이클로 돌아가. 이 단계들을 이해하는 게 유용한 걸 만드는 것과 API 크레딧을 무한 루프로 태우는 것의 차이야.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal', color: '#E94560', text: '명확한 목표를 받아. "화성 조사해"는 목표가 아냐. "화성 식민지의 도전과제에 대해 출처 포함 500단어 요약을 써줘"가 목표야.' },
-        { letter: 'P', name: 'Plan', color: '#7B61FF', text: '목표를 구체적인 단계로 나눠. 좋은 플래너는 유연한 계획을 만들어. 나쁜 플래너는 첫 번째 예상치 못한 상황에 깨지는 딱딱한 스크립트를 만들어.' },
-        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: '각 단계를 적절한 도구로 실행해 — 검색 엔진, 코드 인터프리터, 파일 리더, API. 에이전트는 생각만 하는 게 아냐. 행동해.' },
-        { letter: 'M', name: 'Observe', color: '#16C79A', text: '무슨 일이 있었는지 기록하고 결과를 확인해. 메모리 없이는 에이전트가 같은 실패하는 행동을 영원히 반복할 수 있어.' },
-        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: '이게 작동했어? 목표에 더 가까워졌어? 뭔가 잘못되면 계획을 조정하고 다시 루프. 이게 에이전트와 스크립트를 구분하는 거야.' },
+        { letter: 'G', name: '목표 (Goal)', color: '#E94560', text: '명확한 목표를 받아. "화성 조사해"는 목표가 아니야. "화성 식민지의 도전과제에 대해 출처 포함 500단어 요약을 써줘"가 목표야.' },
+        { letter: 'P', name: '계획 (Plan)', color: '#7B61FF', text: '목표를 구체적인 단계로 나눠. 좋은 플래너는 유연한 계획을 만들어. 나쁜 플래너는 첫 번째 예상치 못한 상황에 부서지는 딱딱한 스크립트를 만들어.' },
+        { letter: 'T', name: '실행 (Execute)', color: '#0EA5E9', text: '각 단계를 적절한 도구로 실행해 — 검색 엔진, 코드 인터프리터, 파일 리더, API. 에이전트는 생각만 하는 게 아니야. 행동해.' },
+        { letter: 'M', name: '관찰 (Observe)', color: '#16C79A', text: '무슨 일이 있었는지 기록하고 결과를 확인해. 메모리 없이는 에이전트가 같은 실패하는 행동을 영원히 반복할 수 있어.' },
+        { letter: 'E', name: '평가 (Evaluate)', color: '#F5A623', text: '이게 작동했어? 목표에 더 가까워졌어? 뭔가 잘못되면 계획을 조정하고 다시 루프. 이게 에이전트와 스크립트를 구분하는 거야.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -118,26 +121,36 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        만들어볼 시간이야. 처음부터 네만의 에이전트를 설계해봐.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        만들어볼 시간이야. 탱크 에이전트를 설계해 &mdash; 능력을 선택하고, 예산을 배분하고, 전략을 짜 &mdash; 그리고 아레나에 배치해서 자율적으로 싸우는 걸 지켜봐.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="방금 처음으로 AI 에이전트를 직접 설계했어. 이 코스가 아키텍처를 라이브 데모와 함께 단계별로 알려줘. 과대광고 없이 그냥 만들기." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        목표는 모든 실패를 막는 게 아냐 — 실패를 복구 가능하게 만드는 거야.
+        목표는 모든 실패를 막는 게 아니야 — 실패를 복구 가능하게 만드는 거야.
       </div>
     </FadeInBlock>
 
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

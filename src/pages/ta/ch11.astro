@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          உண்மையான ஒன்று<br />Build செய்
+          உண்மையான ஒன்றை<br />Build பண்ணு
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Creation இல்லாத knowledge trivia.<br />Ship செய்யும் நேரம் வந்தாச்சு.
+          படைக்காம இருக்குற அறிவு trivia மட்டுமே.<br />Ship பண்ற நேரம் வந்தாச்சு.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        கடைசி chapter-க்கு வந்துவிட்டாய். பத்து chapters-ல் "என் essay-க்கு உதவு" என்பதிலிருந்து context engineering, agents build செய்வது, hallucinations debug செய்வது வரை வந்தாய். பெரும்பாலான adults-ஐ விட AI பற்றி அதிகம் கற்றுக்கொண்டாய். ஆனால் uncomfortable உண்மை: <strong>நீ ஏதாவது build செய்யும் வரை இதில் எதுவும் matter ஆகாது.</strong> AI பற்றி படிப்பது swimming பற்றி படிப்பது போன்றது &mdash; ஒவ்வொரு stroke technique-ஐயும் study செய்யலாம், ஆனால் தண்ணீரில் இறங்கும் வரை உனக்கு எதுவும் <em>தெரியாது</em>. அதைப் <em>பற்றி</em> மட்டும் தெரியும்.
+        நீ வந்துட்ட. பத்து அத்தியாயங்கள்ல "help me with my essay"-லிருந்து context engineering, agents build பண்றது, software-ன் சொல்வளம் கத்துக்கிறது, build loop-ல master ஆகுறது, taste develop பண்றது வரை வந்துட்ட. ஆனா இங்க ஒரு uncomfortable உண்மை இருக்கு: <strong>நீ ஏதாவது build பண்றது வரை இதுல எதுவும் matter ஆகாது.</strong> AI பத்தி படிக்குறது swimming பத்தி படிக்குற மாதிரி &mdash; ஒவ்வொரு stroke technique-ஐயும் study பண்ணலாம், ஆனா தண்ணியில இறங்குறது வரை உனக்கு எதுவும் <em>தெரியாது</em>. அதைப் <em>பத்தி</em> மட்டுமே தெரியும்.
       </p>
     </FadeInBlock>
   </section>
@@ -60,19 +61,19 @@ const chapter = chapters[10];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        உன் AI-ஐ Setup செய்
+        உன் AI-ஐ Setup பண்ணு
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        முதல் prompt எழுதுவதற்கு முன், பெரும்பாலான beginners skip செய்யும் ஒரு power move இருக்கு: <strong>உன் AI tool-க்கு permanent instruction file கொடு.</strong> ஒவ்வொரு session-லும் project மறுபடி explain செய்வதற்கு பதிலாக, ஒரு முறை எழுதினால் AI automatically படிக்கும். Claude Code <code>CLAUDE.md</code> படிக்கும். Cursor <code>.cursorrules</code> படிக்கும். GitHub Copilot <code>.github/copilot-instructions.md</code> படிக்கும். Same concept, different filenames. Chapter 3-ன் context engineering &mdash; project level-ல் apply ஆவது.
+        முதல் prompt எழுதுறதுக்கு முன்னாடி, பெரும்பாலான beginners skip பண்ற ஒரு power move இருக்கு: <strong>உன் AI tool-க்கு permanent instruction file கொடு.</strong> ஒவ்வொரு session-லயும் project-ஐ மறுபடி explain பண்றதுக்கு பதிலா, ஒரு தடவை எழுதினா AI automatically படிக்கும். Claude Code <code>CLAUDE.md</code> படிக்கும். Cursor <code>.cursorrules</code> படிக்கும். GitHub Copilot <code>.github/copilot-instructions.md</code> படிக்கும். Same concept, different filenames. அத்தியாயம் 3-ன் context engineering &mdash; project level-ல apply ஆவது.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        நல்ல instruction file மூன்று கேள்விகளுக்கு பதில் சொல்கிறது: என்ன build செய்கிறாய், rules என்ன, "good" எப்படி இருக்கும்? இவை சரியாக இருந்தால் ஒவ்வொரு AI conversation-உம் பத்து steps முன்னால் ஆரம்பிக்கும். Project-ஐ finish செய்யும் அளவுக்கு சிறியதாக scope செய் &mdash; completed weekend hack எப்போதும் abandoned masterpiece-ஐ விட better.
+        நல்ல instruction file மூணு கேள்விகளுக்கு பதில் சொல்லும்: என்ன build பண்ற, rules என்ன, "good" எப்படி இருக்கும்? இவை சரியா இருந்தா ஒவ்வொரு AI conversation-உம் பத்து steps முன்னாடி ஆரம்பிக்கும். Project-ஐ finish பண்ற அளவுக்கு சின்னதா scope பண்ணு &mdash; complete ஆன weekend hack எப்போவும் abandoned masterpiece-ஐ விட better.
       </p>
     </FadeInBlock>
 
@@ -80,7 +81,7 @@ const chapter = chapters[10];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          நல்ல project instruction file &mdash; உனக்கு உதவும் AI க்கும் உன்னை <em>புரிந்துகொள்ளும்</em> AI க்கும் உள்ள வித்தியாசம். ஒரு முறை எழுது, ஒவ்வொரு session-லும் benefit பெறு.
+          நல்ல project instruction file &mdash; உனக்கு help பண்ற AI-க்கும் உன்னை <em>புரிஞ்சுக்குற</em> AI-க்கும் உள்ள வித்தியாசம். ஒரு தடவை எழுது, ஒவ்வொரு session-லயும் benefit பெறு.
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        உன் project instruction file-ஐ இங்கேயே build செய். Sections நிரப்பி, உன் AI tool-க்கு export செய்.
+        உன் project instruction file-ஐ இங்கேயே build பண்ணு. Sections நிரப்பி, உன் AI tool-க்கு export பண்ணு.
       </p>
     </FadeInBlock>
   </section>
@@ -106,19 +107,19 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tools விஷயங்கள் build செய்வதில்லை. Tools-உடன் மனிதர்கள் build செய்கிறார்கள். உன் generation-க்கு இதுவரை access கிடைத்ததிலேயே சிறந்த toolkit உன்கிட்ட இருக்கு.
+        Tools விஷயங்கள் build பண்றதில்ல. Tools-கிட்ட இருக்குற மனுஷங்க build பண்றாங்க. உன் generation-க்கு இதுவரை கிடைச்சதுல சிறந்த toolkit உன்கிட்ட இருக்கு.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        பதினொரு chapters முன், நீ "என் essay-க்கு உதவு" டைப் செய்து best-ஐ hope பண்ணினாய். இப்போ context engineer செய்கிறாய், agents design செய்கிறாய், outputs verify செய்கிறாய், ஒவ்வொரு step-லும் judgment கொண்டுவருகிறாய். Course முடிந்தது. உண்மையான learning இப்போது ஆரம்பிக்கிறது &mdash; நீ மட்டுமே நினைக்கும் ஒன்றை போய் உருவாக்கு.
+        பதினொரு அத்தியாயங்கள் முன்னாடி, நீ "help me with my essay" டைப் பண்ணி best-ஐ hope பண்ண. இப்போ context engineer பண்ற, agents build பண்ற, software-ன் மொழி பேசுற, confidence-ஆ iterate பண்ற, எல்லாத்துலயும் taste கொண்டு வர்ற. Course முடிஞ்சது. உண்மையான learning இப்போ ஆரம்பிக்குது &mdash; நீ மட்டுமே யோசிக்க கூடிய ஒன்றை போய் உருவாக்கு.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-center mt-4" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
-        Ship செய்.
+        Ship பண்ணு.
       </p>
     </FadeInBlock>
   </section>

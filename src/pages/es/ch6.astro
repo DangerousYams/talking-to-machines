@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Un chatbot espera a que hables. Un agente no. Dale un objetivo — "investiga la colonización de Marte y escribe un informe" — y divide el trabajo en pasos, elige las herramientas correctas, las ejecuta una por una, revisa sus propios resultados y sigue adelante hasta terminar el trabajo. Esa distinción — entre <em>responder a instrucciones</em> y <em>perseguir un objetivo</em> — es la diferencia entre una calculadora y un compañero de trabajo.
+        Un chatbot espera a que hables. Un agente no. Dale un objetivo &mdash; "investiga la colonización de Marte y escribe un informe" &mdash; y divide el trabajo en pasos, elige las herramientas adecuadas, las ejecuta una por una, revisa sus propios resultados y sigue adelante hasta terminar. Esa distinción &mdash; entre <em>responder a instrucciones</em> y <em>perseguir un objetivo</em> &mdash; es la diferencia entre una calculadora y un compañero de trabajo.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Los agentes funcionan en un ciclo: reciben un objetivo, planifican pasos, ejecutan con herramientas, observan resultados, evalúan el progreso, ajustan. No planifican una vez y ejecutan a ciegas — los mejores se recuperan con gracia cuando el paso tres sale mal. Pero ese poder tiene un lado oscuro: los agentes no solo dan malas respuestas, <em>actúan</em> basándose en ellas, y luego usan el resultado roto para tomar la siguiente decisión. Los fallos se acumulan.
+        Los agentes funcionan en un ciclo: reciben un objetivo, planifican pasos, ejecutan con herramientas, observan resultados, evalúan el progreso, ajustan. No planifican una vez y ejecutan a ciegas: los mejores se recuperan con gracia cuando el paso tres sale mal. Pero ese poder tiene un lado oscuro: los agentes no solo dan malas respuestas, <em>actúan</em> basándose en ellas y luego usan el resultado fallido para tomar la siguiente decisión. Los errores se acumulan.
       </p>
     </FadeInBlock>
   </section>
@@ -83,7 +86,7 @@ const chapter = chapters[5];
       {[
         { letter: 'G', name: 'Objetivo', color: '#E94560', text: 'Recibe un objetivo claro. "Investiga Marte" no es un objetivo. "Escribe un resumen de 500 palabras sobre los desafíos de la colonización de Marte, con fuentes" sí lo es.' },
         { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'Divide el objetivo en pasos concretos. Los buenos planificadores crean planes flexibles. Los malos crean guiones rígidos que se rompen a la primera sorpresa.' },
-        { letter: 'T', name: 'Ejecutar', color: '#0EA5E9', text: 'Ejecuta cada paso usando la herramienta correcta — motores de búsqueda, intérpretes de código, lectores de archivos, APIs. Los agentes no solo piensan. Actúan.' },
+        { letter: 'T', name: 'Ejecutar', color: '#0EA5E9', text: 'Ejecuta cada paso usando la herramienta correcta: motores de búsqueda, intérpretes de código, lectores de archivos, APIs. Los agentes no solo piensan. Actúan.' },
         { letter: 'M', name: 'Observar', color: '#16C79A', text: 'Registra lo que pasó y revisa resultados. Sin memoria, un agente podría repetir la misma acción fallida para siempre.' },
         { letter: 'E', name: 'Evaluar', color: '#F5A623', text: '¿Funcionó? ¿Estoy más cerca del objetivo? Si algo está mal, ajusta el plan y repite el ciclo. Esto es lo que separa a un agente de un script.' },
       ].map((block, i) => (
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Un chatbot es un solo turno. Un agente es toda una conversación — consigo mismo, con sus herramientas y con el mundo. Los mejores constructores de agentes no maximizan la autonomía. Diseñan puntos de control donde el agente hace una pausa y deja que un humano decida si continuar.
+          Un chatbot es un solo turno. Un agente es toda una conversación &mdash; consigo mismo, con sus herramientas y con el mundo. Los mejores constructores de agentes no maximizan la autonomía. Diseñan puntos de control donde el agente hace una pausa y deja que un humano decida si continuar.
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Es hora de construir uno. Diseña tu propio agente desde cero.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Es hora de construir uno. Diseña un agente tanque &mdash; elige sus capacidades, asigna su presupuesto y escribe su estrategia &mdash; luego despliégalo en la arena y míralo luchar de forma autónoma.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Acabo de diseñar mi primer agente de IA desde cero. Este curso te guía paso a paso por la arquitectura con demos en vivo. Sin exageraciones, solo construyendo." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        El objetivo no es prevenir todos los fallos — es hacer que los fallos sean recuperables.
+        El objetivo no es prevenir todos los fallos: es hacer que los fallos sean recuperables.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Lo que sigue: usarás un agente real — uno que lee tu código, escribe cambios, ejecuta pruebas y corrige sus propios errores. Conoce a Claude Code.
+        A continuación: usarás un agente real &mdash; uno que lee tu código, escribe cambios, ejecuta pruebas y corrige sus propios errores. Conoce a Claude Code.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

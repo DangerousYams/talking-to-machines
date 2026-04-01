@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="te">
@@ -22,7 +24,7 @@ const chapter = chapters[3];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          నాలుగో అధ్యాయం
+          నాలుగవ అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -37,7 +39,7 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          నువ్వు ఇప్పుడే వాడగలిగే ప్రతి AI tool కి<br />ఒక field guide.
+          ఇప్పుడు నువ్వు నిజంగా వాడగలిగే<br />ప్రతి AI tool కి field guide.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           LAST UPDATED MARCH 2026
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        చాలా మంది "AI" అంటే ChatGPT అని అర్థం చేసుకుంటారు. అది "internet" అంటే Google అని అనడం లాంటిది. ఇప్పుడు వందలాది AI tools ఉన్నాయి — ఒక sentence నుండి photorealistic images generate చేసేవి, complete songs compose చేసేవి, లేదా నీ research topic మీద ప్రతి academic paper చదివి మూడు paragraphs లో consensus summarize చేసేవి. ఈ chapter నీ terrain map.
+        చాలామంది "AI" అంటే ChatGPT అనుకుంటారు. అది "internet" అంటే Google అనడం లాంటిది. ఇప్పుడు, నువ్వు ఈ రోజే వాడగలిగే వందల AI tools ఉన్నాయి — ఒక sentence నుండి photorealistic images generate చేసే tools, పూర్తి పాటలు compose చేసే tools, లేదా నీ research topic మీద ప్రతి academic paper చదివి consensus ని మూడు paragraphs లో summarize చేసే tools. ఈ chapter నీ terrain map.
       </p>
     </FadeInBlock>
   </section>
@@ -72,20 +74,20 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Musical instruments లాగా ఆలోచించు. Piano మరియు drum kit రెండూ "instruments," కానీ pianist ని beat వేయమని అడగవు. AI tools కూడా అంతే — image generation కోసం build అయిన tool, code కోసం build అయిన tool కి fundamentally different. నువ్వు encounter అయ్యే ప్రతి tool ఈ ఎనిమిది families లో ఒకదాంట్లో fit అవుతుంది.
+        Musical instruments లాగా ఆలోచించు. Piano, drum kit రెండూ "instruments" నే, కానీ pianist ని beat వేయమని అడగవు కదా. AI tools కూడా అంతే — image generation కోసం build అయిన tool, code కోసం build అయిన tool కంటే fundamentally వేరు. నువ్వు encounter అయ్యే ప్రతి tool ఈ ఎనిమిది families లో ఒకదానిలో fit అవుతుంది.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text వెళ్తుంది, images వస్తాయి. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
-        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'Real image తో start చేసి transform చెయ్. Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text లేదా stills నుండి video clips generate చెయ్. Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt నుండి full songs, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text వేయి, images వస్తాయి. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'నిజమైన image తో మొదలుపెట్టి transform చెయ్యి. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text లేదా stills నుండి video clips generate చెయ్యి. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt నుండి పూర్తి పాటలు, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
         { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'నీ కోసం internet చదివే AI. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'మనిషి లాగా web navigate చేసే agents. Arc, Operator, Claude Computer Use.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'మనిషిలా web navigate చేసే agents. Arc, Operator, Claude Computer Use.' },
         { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code రాసే, edit చేసే, debug చేసే AI. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'నీకు already తెలిసిన general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'నీకు ఇప్పటికే తెలిసిన general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంతర్దృష్టి</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          10 AI tools surface level లో తెలిసిన వ్యక్తి, ఒక tool deeply తెలిసిన వ్యక్తి కంటే consistently better perform చేస్తాడు. Professional carpenter కి favorite tool ఒకటే ఉండదు — <em>ప్రతి task కి</em> favorite tool ఉంటుంది.
+          10 AI tools surface level లో తెలిసిన వ్యక్తి, ఒక tool లోతుగా తెలిసిన వ్యక్తి కంటే consistently బాగా perform చేస్తాడు. Professional carpenter కి favorite tool ఉండదు — ప్రతి <em>task కి</em> favorite tool ఉంటుంది.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Full catalog explore చెయ్. ఏ tool అయినా click చేసి ఏం చేస్తుందో తెలుసుకో.
+        పూర్తి catalog explore చెయ్యి. ఏదైనా tool click చేసి అది ఏం చేస్తుందో తెలుసుకో.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="నేను అనుకున్నదాని కంటే చాలా ఎక్కువ AI tools ఉన్నాయి. ఈ interactive guide 8 families of tools ను map చేస్తుంది — image gen, video, music, research, coding — ప్రతిదానికి examples తో." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="నేను అనుకున్నదానికంటే చాలా ఎక్కువ AI tools ఉన్నాయి. ఈ interactive guide 8 tool families ని map చేస్తుంది — image gen, video, music, research, coding — ప్రతిదానికి examples తో." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Landscape ప్రతి నెల మారుతుంది. కానీ tools మారినా categories stable గా ఉంటాయి — <em>అదే</em> గుర్తుంచుకోవాల్సిన map.
+        Landscape ప్రతి నెలా మారుతుంది. కానీ tools మారినా categories stable గా ఉంటాయి — <em>అదే</em> గుర్తుపెట్టుకోవలసిన map.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ఇప్పటి వరకు ఈ tools నీకు respond చేస్తున్నాయి. వాటికి <em>స్వంతంగా actions తీసుకునే</em> సామర్థ్యం ఉంటే? అదే tool నుండి agent కి leap — అది అంతా మారుస్తుంది.
+        ఇప్పటి వరకు, ఈ tools నీకు respond చేస్తాయి. వాటికి <em>తమంతట తాము actions తీసుకోగలిగే</em> సామర్థ్యం ఉంటే? Tool నుండి agent కి ఆ leap — అదే అంతా మారుస్తుంది.
       </p>
     </FadeInBlock>
   </section>

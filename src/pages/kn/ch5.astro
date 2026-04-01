@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="kn">
@@ -105,6 +107,15 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="AI tool use ಮತ್ತು function calling ಬಗ್ಗೆ ಅತ್ಯಂತ hands-on ರೀತಿಯಲ್ಲಿ ಕಲಿತೆ. ಈ course ನಲ್ಲಿ ನಿಜವಾಗ್ಲೂ build ಮತ್ತು test ಮಾಡ್ತೀಯ, ಬರೀ ಓದೋದಲ್ಲ." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        Cho đến giờ, mọi tương tác AI của bạn đều theo cùng một pattern. Bạn gõ gì đó. AI gõ lại. Một autocomplete cực kỳ tinh vi. Nhưng nếu AI có thể <em>làm</em> mọi thứ thì sao? Không chỉ kể về thời tiết, mà thực sự kiểm tra dự báo. Không chỉ viết code, mà chạy nó. Không chỉ gợi ý nên Google gì, mà tự tìm kiếm web và mang về những gì tìm được.
+        Cho đến giờ, mọi tương tác AI của bạn đều theo cùng một khuôn mẫu. Bạn gõ gì đó. AI gõ lại. Một autocomplete cực kỳ tinh vi. Nhưng nếu AI có thể <em>làm</em> mọi thứ thì sao? Không chỉ kể về thời tiết, mà thực sự kiểm tra dự báo. Không chỉ viết code, mà chạy nó. Không chỉ gợi ý nên Google gì, mà tự tìm kiếm web và mang về những gì tìm được.
       </p>
     </FadeInBlock>
   </section>
@@ -75,7 +77,7 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        Câu trả lời phụ thuộc vào ba yếu tố. <strong>Mức độ nghiêm trọng</strong> — tệ nhất có thể xảy ra là gì? <strong>Khả năng hoàn tác</strong> — bạn có thể undo không? Và <strong>niềm tin</strong> — bạn biết công cụ này tốt cỡ nào? Máy tính bỏ túi bạn dùng hàng trăm lần xứng đáng được tự do hơn plugin mới toanh chưa bao giờ test.
+        Câu trả lời phụ thuộc vào ba yếu tố. <strong>Mức độ nghiêm trọng</strong> — tệ nhất có thể xảy ra là gì? <strong>Khả năng hoàn tác</strong> — bạn có thể undo không? Và <strong>niềm tin</strong> — bạn biết công cụ này tốt cỡ nào? Máy tính bỏ túi bạn đã dùng cả trăm lần xứng đáng được tự do hơn plugin mới toanh chưa từng test.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[4];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Không phải tất cả hoặc không. Quy trình AI tốt nhất cho AI tự do ở việc nhỏ, có thể hoàn tác, đồng thời giữ con người kiểm soát ở việc lớn, không thể hoàn tác. Nhiệm vụ của bạn là thiết kế ranh giới.
+          Không phải tất cả hoặc không. Quy trình AI tốt nhất cho tự do ở việc nhỏ, có thể hoàn tác, đồng thời giữ con người kiểm soát ở việc lớn, không thể hoàn tác. Nhiệm vụ của bạn là thiết kế ranh giới.
         </p>
       </div>
     </FadeInBlock>
@@ -105,7 +107,16 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Đang học về tool use và function calling trong AI theo cách thực hành nhất có thể. Khóa học này cho bạn tự tay xây và test, không chỉ đọc suông." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Đang học về tool use và function calling theo cách thực hành nhất có thể. Khóa học này cho bạn tự tay xây và test, không chỉ đọc suông." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">

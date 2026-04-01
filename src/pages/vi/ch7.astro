@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Thành thạo<br />Claude Code
+          Ai cũng có thể<br />xây được
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Đồng đội lập trình AI của bạn, từ lệnh<br />đầu tiên đến Skill tùy chỉnh.
+          Bạn không cần là lập trình viên.<br />Bạn cần một ý tưởng.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Có một khoảnh khắc mà mọi lập trình viên đều nhớ. Bạn mở terminal, gõ yêu cầu bằng ngôn ngữ tự nhiên, và xem AI đọc file, hiểu kiến trúc, viết code xuyên nhiều file, chạy thử, gặp lỗi, sửa lỗi, và chạy lại — tất cả mà bạn không chạm vào một dòng nào. Claude Code không phải autocomplete. Nó là công cụ lập trình <em>agentic</em> có thể thấy toàn bộ dự án, thay đổi xuyên file, chạy lệnh shell, và tự sửa lỗi.
+        Một giáo viên ở Ohio xây ứng dụng chấm bài trong một cuối tuần. Một nhạc sĩ xây trình tối ưu setlist, sắp xếp bài hát theo năng lượng và tông nhạc. Một học sinh cấp ba xây công cụ chuẩn bị tranh biện, tự động tạo phản biện cho mọi luận đề. Không ai trong số họ là lập trình viên. Không ai từng học lớp code. Họ mô tả thứ mình muốn, và coding agent xây nó.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Tuy nhiên, công cụ chỉ giỏi bằng người điều khiển. Claude Code có thể viết một nghìn dòng code hoàn hảo trong vài giây — hoặc một nghìn dòng rác trông hợp lý. Sự khác biệt là bạn.
+        Đây là bước đột phá không ai ngờ tới. Không phải coder nhanh hơn &mdash; mà là <strong>người không biết code cũng có thể xây phần mềm.</strong> Giống như spreadsheet dân chủ hóa phân tích dữ liệu và Canva dân chủ hóa thiết kế đồ họa, AI coding agent đang dân chủ hóa chính việc phát triển phần mềm.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Chỉ định, tạo, kiểm tra
+        Cuộc cách mạng phần mềm cá nhân
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Khi bạn giao nhiệm vụ cho Claude Code, nó chạy agent loop: đọc codebase, lên kế hoạch thay đổi, viết sửa đổi, chạy code, sửa lỗi. Nó có thể lặp qua vòng đó ba, năm, mười lần — tất cả trong vài giây. Vai trò của bạn không còn là viết mọi dòng nữa. Mà là <strong>chỉ định</strong> cần xây gì, để AI <strong>tạo</strong> ra, rồi <strong>kiểm tra</strong> xem nó có thực sự đúng không. Đa số người mới bỏ qua bước cuối. Họ thấy code xuất hiện, trông hợp lý, rồi chuyển sang việc khác. Đừng như vậy. Code được tạo tự động là bản nháp đầu tiên. Việc kiểm tra của bạn mới là lần chỉnh sửa biến nó thành thứ xuất bản được.
+        Đây là ý tưởng thay đổi tất cả: <strong>phần mềm cá nhân.</strong> Công cụ được xây cho đối tượng duy nhất là một người &mdash; bạn. Không cần nghiên cứu thị trường, không cần kế hoạch kinh doanh, không cần vốn đầu tư. Chỉ cần một vấn đề bạn gặp và một công cụ giải quyết nó. Trước AI, xây phần mềm cá nhân nghĩa là phải học code, mất hàng tháng hay hàng năm. Giờ chỉ mất một buổi chiều. Chi phí xây dựng vừa giảm xuống gần bằng không &mdash; nghĩa là thứ duy nhất còn quan trọng là có ý tưởng đáng xây.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Vũ khí bí mật là file <code>CLAUDE.md</code> — đặt nó ở thư mục gốc dự án và Claude Code đọc nó ngay đầu mỗi phiên làm việc. Tech stack, quy ước đặt tên, quy tắc phong cách, yêu cầu test — tất cả được mã hóa một lần để bạn không bao giờ phải lặp lại. Đó là context engineering áp dụng cho lập trình.
+        Những công cụ làm điều này khả thi gọi là <strong>coding agent</strong>. Claude Code, Cursor, Antigravity, Replit &mdash; đây là các công cụ AI có thể đọc toàn bộ dự án, viết code xuyên nhiều file, chạy nó, gặp lỗi, sửa lỗi, rồi chạy lại. Tất cả mà bạn không chạm vào một dòng code. Chúng không phải autocomplete. Chúng là cộng tác viên AI biến mô tả của bạn thành phần mềm hoạt động.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Mục tiêu không phải viết mọi dòng — mà là hiểu mọi dòng.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Vai trò đạo diễn</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Nếu bạn không đọc được code Claude tạo ra, bạn không kiểm tra được nó. Người dùng Claude Code giỏi nhất không phải người tạo nhiều code nhất — họ là người đặt câu hỏi hay nhất và bắt lỗi tinh tế nhất.
+          Bạn không viết code. Bạn <strong>đạo diễn</strong>. Nhiệm vụ của bạn là chỉ rõ cần xây gì, đánh giá kết quả, và lặp lại cho đến khi đúng. Agent lo phần kỹ thuật. Hãy nghĩ mình như đạo diễn phim &mdash; bạn không vận hành máy quay, nhưng không có tầm nhìn của bạn thì chẳng có gì được tạo ra.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Agent biết mọi thứ bạn chưa biết
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Nhưng mình không biết database là gì." Tin vui: bạn không cần biết. Coding agent cũng là gia sư. Hỏi nó bất cứ gì. "React component là gì?" Nó sẽ giải thích. "Làm sao deploy lên internet?" Nó sẽ hướng dẫn từng bước. "Lỗi này nghĩa là gì?" Nó sẽ dịch thuật ngữ sang tiếng Việt bình thường.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Đây là lưới an toàn giúp mọi thứ khác khả thi. Bạn không cần thuộc lòng thuật ngữ kỹ thuật &mdash; bạn cần biết nó <em>tồn tại</em> để có thể hỏi về nó. Agent lấp đầy mọi khoảng trống. Giống như có một chuyên gia kiên nhẫn, không mệt mỏi ngồi cạnh bạn, không bao giờ phán xét bạn vì hỏi câu hỏi cơ bản.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Nghịch lý kỹ năng</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Bạn cần đủ kiến thức để <em>đánh giá</em> kết quả, không phải để viết từng dòng. Đạo diễn phim không cần biết cách chế tạo máy quay &mdash; nhưng cần biết cảnh quay có đẹp không. Ở đây cũng vậy: bạn cần biết ứng dụng có hoạt động không, chứ không cần biết code chạy như thế nào.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Xem vòng lặp hoạt động. Gõ yêu cầu và xem Claude Code làm việc.
+        Xem những người không biết code đã xây gì &mdash; rồi tưởng tượng ý tưởng của riêng bạn.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Chương về Claude Code này thật kinh ngạc — xem AI pair programmer suy nghĩ qua vấn đề, viết code, và tự debug. Tương lai lập trình đã ở đây." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Chương này thuyết phục mình rằng ai cũng có thể xây phần mềm với AI. Không phải kiểu nói chung chung — nó cho thấy chính xác người không biết code đang xây công cụ thật như thế nào." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code không viết code thay bạn — nó viết code cùng bạn.
+        Chi phí xây phần mềm vừa giảm xuống bằng không. Thứ duy nhất còn lại là có ý tưởng đáng xây.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Một cuộc trò chuyện xử lý được một nhiệm vụ. Nhưng dự án thực có hàng chục. Tiếp theo: cách chia tham vọng lớn thành mảnh AI có thể thực hiện.
+        Bạn có ý tưởng rồi. Nhưng trước khi mở coding agent, bạn cần nói ngôn ngữ của nó. Không phải code &mdash; chỉ là từ vựng của việc xây dựng. Phần tiếp theo.
       </p>
     </FadeInBlock>
   </section>

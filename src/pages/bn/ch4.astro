@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -31,13 +33,13 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI-এর<br />বিস্তৃত জগৎ
+          AI-এর<br />ভূদৃশ্য
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          এই মুহূর্তে তুমি যত AI টুল<br />ব্যবহার করতে পারো, তার একটি ফিল্ড গাইড।
+          এই মুহূর্তে ব্যবহার করা যায়<br />এমন প্রতিটা AI টুলের একটা ফিল্ড গাইড।
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           সর্বশেষ আপডেট মার্চ ২০২৬
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        বেশিরভাগ মানুষ যখন "AI" বলে, তারা ChatGPT বোঝায়। এটা অনেকটা "ইন্টারনেট" বলে শুধু Google বোঝানোর মতো। এই মুহূর্তে শত শত AI টুল আছে যেগুলো তুমি আজই ব্যবহার করতে পারো &mdash; যেগুলো একটা বাক্য থেকে ফটোরিয়েলিস্টিক ছবি বানায়, পুরো গান তৈরি করে, বা তোমার রিসার্চ টপিকের প্রতিটা একাডেমিক পেপার পড়ে তিন প্যারাগ্রাফে সারমর্ম করে দেয়। এই অধ্যায়টা তোমার ল্যান্ডস্কেপের ম্যাপ।
+        বেশিরভাগ মানুষ যখন "AI" বলে, তারা ChatGPT বোঝায়। এটা "ইন্টারনেট" বলে শুধু Google বোঝানোর মতো। এই মুহূর্তে শত শত AI টুল আছে যেগুলো তুমি আজই ব্যবহার করতে পারো — যেগুলো একটা বাক্য থেকে ফটোরিয়ালিস্টিক ছবি তৈরি করে, পুরো গান কম্পোজ করে, বা তোমার গবেষণার বিষয়ে প্রতিটা একাডেমিক পেপার পড়ে তিন প্যারাগ্রাফে সারমর্ম লিখে দেয়। এই অধ্যায় তোমার এই ভূখণ্ডের মানচিত্র।
       </p>
     </FadeInBlock>
   </section>
@@ -66,26 +68,26 @@ const chapter = chapters[3];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        আট পরিবার
+        আটটি পরিবার
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        সঙ্গীতের যন্ত্রের কথা ভেবে দেখো। পিয়ানো আর ড্রামস দুটোই "যন্ত্র," কিন্তু তুমি একজন পিয়ানিস্টকে বিট দিতে বলবে না। AI টুলগুলোও একই রকম &mdash; ছবি বানানোর টুল আর কোড লেখার টুল সম্পূর্ণ আলাদা। তুমি যে AI টুলের সাথেই দেখা করবে, সেটা এই আটটা পরিবারের কোনো একটায় পড়বে।
+        এটাকে বাদ্যযন্ত্রের মতো ভাবো। পিয়ানো আর ড্রাম কিট দুটোই "যন্ত্র," কিন্তু তুমি একজন পিয়ানোবাদককে বিট বাজাতে বলবে না। AI টুলগুলোও একই রকম — ছবি তৈরির জন্য বানানো টুল আর কোডের জন্য বানানো টুল মৌলিকভাবে আলাদা। তোমার সামনে যত টুলই আসুক, সবকটা এই আটটা পরিবারের কোনো একটায় পড়ে।
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '১', name: 'ইমেজ জেনারেটর', color: '#E94560', text: 'টেক্সট ঢোকে, ছবি বেরোয়। Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram।' },
-        { icon: '২', name: 'ইমেজ এডিটর', color: '#F5A623', text: 'আসল ছবি দিয়ে শুরু করে বদলাও। Photoshop AI, Magnific, Clipdrop।' },
-        { icon: '৩', name: 'ভিডিও ক্রিয়েটর', color: '#7B61FF', text: 'টেক্সট বা স্থির ছবি থেকে ভিডিও ক্লিপ তৈরি করো। Sora, Runway, Kling, Pika।' },
-        { icon: '৪', name: 'সঙ্গীত ও অডিও', color: '#16C79A', text: 'প্রম্পট থেকে পুরো গান, ভয়েস ক্লোনিং, সাউন্ড এফেক্ট। Suno, Udio, ElevenLabs।' },
-        { icon: '৫', name: 'রিসার্চ এজেন্ট', color: '#0EA5E9', text: 'AI যা তোমার জন্য ইন্টারনেট পড়ে। Perplexity, Elicit, Consensus, NotebookLM।' },
-        { icon: '৬', name: 'AI ব্রাউজার', color: '#6B7280', text: 'এজেন্ট যারা মানুষের মতো ওয়েব নেভিগেট করে। Arc, Operator, Claude Computer Use।' },
-        { icon: '৭', name: 'কোডিং টুল', color: '#E94560', text: 'AI যা কোড লেখে, এডিট করে আর ডিবাগ করে। Claude Code, Cursor, Antigravity, Copilot।' },
-        { icon: '৮', name: 'চ্যাটবট ও অ্যাসিস্ট্যান্ট', color: '#0F3460', text: 'সাধারণ উদ্দেশ্যের কথোপকথনমূলক AI যা তুমি আগে থেকেই চেনো: ChatGPT, Claude, Gemini।' },
+        { icon: '১', name: 'ছবি জেনারেটর', color: '#E94560', text: 'টেক্সট ঢোকে, ছবি বের হয়। Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram।' },
+        { icon: '২', name: 'ছবি এডিটর', color: '#F5A623', text: 'আসল ছবি নিয়ে সেটাকে রূপান্তরিত করো। Photoshop AI, Magnific, Clipdrop।' },
+        { icon: '৩', name: 'ভিডিও ক্রিয়েটর', color: '#7B61FF', text: 'টেক্সট বা স্থিরচিত্র থেকে ভিডিও ক্লিপ তৈরি করো। Sora, Runway, Kling, Pika।' },
+        { icon: '৪', name: 'সংগীত ও অডিও', color: '#16C79A', text: 'একটা প্রম্পট থেকে পুরো গান, ভয়েস ক্লোনিং, সাউন্ড ইফেক্ট। Suno, Udio, ElevenLabs।' },
+        { icon: '৫', name: 'গবেষণা এজেন্ট', color: '#0EA5E9', text: 'AI যেটা তোমার হয়ে ইন্টারনেট পড়ে। Perplexity, Elicit, Consensus, NotebookLM।' },
+        { icon: '৬', name: 'AI ব্রাউজার', color: '#6B7280', text: 'এজেন্ট যেগুলো মানুষের মতো ওয়েব ব্রাউজ করে। Arc, Operator, Claude Computer Use।' },
+        { icon: '৭', name: 'কোডিং টুল', color: '#E94560', text: 'AI যেটা কোড লেখে, এডিট করে, আর ডিবাগ করে। Claude Code, Cursor, Antigravity, Copilot।' },
+        { icon: '৮', name: 'চ্যাটবট ও সহকারী', color: '#0F3460', text: 'যে সাধারণ-উদ্দেশ্যের কথোপকথন AI তুমি আগে থেকেই চেনো: ChatGPT, Claude, Gemini।' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল শিক্ষা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          যে ব্যক্তি ১০টা AI টুল সাধারণ লেভেলে চেনে, সে একটা টুল গভীরভাবে চেনা কারো চেয়ে ধারাবাহিকভাবে ভালো করবে। পেশাদার ছুতোরমিস্ত্রির কোনো প্রিয় টুল নেই &mdash; <em>প্রতিটা কাজের</em> জন্য প্রিয় টুল আছে।
+          যে ১০টা AI টুল ভাসা ভাসা চেনে, সে সবসময় একটা টুল গভীরভাবে জানা কাউকে ছাড়িয়ে যাবে। একজন পেশাদার ছুতোরের কোনো প্রিয় টুল নেই — তার আছে <em>প্রতিটা কাজের জন্য</em> প্রিয় টুল।
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        পুরো ক্যাটালগ এক্সপ্লোর করো। যেকোনো টুলে ক্লিক করো জানতে সেটা কি করে।
+        পুরো ক্যাটালগ ঘুরে দেখো। যেকোনো টুলে ক্লিক করো জানতে এটা কী করে।
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="আমার ধারণার চেয়ে অনেক বেশি AI টুল আছে। এই ইন্টার‍্যাক্টিভ গাইড ৮টা পরিবারের টুল ম্যাপ করেছে — ইমেজ জেন, ভিডিও, মিউজিক, রিসার্চ, কোডিং — প্রতিটার উদাহরণসহ।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="আমি ভাবতেও পারিনি এত রকমের AI টুল আছে। এই ইন্টারেক্টিভ গাইড ৮টা টুল পরিবারের মানচিত্র দেখায় — ছবি, ভিডিও, সংগীত, গবেষণা, কোডিং — প্রতিটার উদাহরণসহ।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ল্যান্ডস্কেপ প্রতি মাসে বদলায়। কিন্তু টুল বদলালেও ক্যাটেগরিগুলো স্থিতিশীল থাকে &mdash; আর <em>সেটাই</em> মনে রাখার মতো ম্যাপ।
+        ভূদৃশ্য প্রতি মাসে বদলায়। কিন্তু ক্যাটাগরিগুলো স্থিতিশীল এমনকি টুলগুলো না হলেও — আর <em>সেটাই</em> মনে রাখার মতো মানচিত্র।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        এ পর্যন্ত এই টুলগুলো শুধু তোমার কথার জবাব দেয়। যদি তারা <em>নিজেদের থেকে অ্যাকশন নিতে</em> পারে তাহলে কি হবে? সেটাই টুল থেকে এজেন্টে লাফ &mdash; আর সেটা সবকিছু বদলে দেয়।
+        এখন পর্যন্ত এই টুলগুলো শুধু তোমার কথায় সাড়া দেয়। যদি ওরা <em>নিজে থেকে কাজ করতে</em> পারতো? সেটাই হলো টুল থেকে এজেন্টে লাফ — আর এটা সবকিছু বদলে দেয়।
       </p>
     </FadeInBlock>
   </section>

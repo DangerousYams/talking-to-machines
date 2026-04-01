@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -31,7 +34,7 @@ const chapter = chapters[5];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          এজেন্ট<br />তৈরি করা
+          এজেন্ট<br />বানানো
         </h1>
       </FadeInBlock>
 
@@ -51,20 +54,20 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        চ্যাটবট তোমার কথা বলার জন্য অপেক্ষা করে। এজেন্ট করে না। তাকে একটা লক্ষ্য দাও &mdash; "মঙ্গল গ্রহে উপনিবেশ নিয়ে রিসার্চ করে একটা রিপোর্ট লেখো" &mdash; আর সে কাজটাকে ধাপে ভাগ করে, সঠিক টুলস বেছে নেয়, একে একে এক্সিকিউট করে, নিজের ফলাফল চেক করে, আর কাজ শেষ না হওয়া পর্যন্ত চালিয়ে যায়। এই পার্থক্য &mdash; <em>নির্দেশনার জবাব দেওয়া</em> আর <em>একটা লক্ষ্য অনুসরণ করা</em> &mdash; এটাই ক্যালকুলেটর আর সহকর্মীর মধ্যে পার্থক্য।
+        একটা চ্যাটবট তোমার কথার জন্য অপেক্ষা করে। একটা এজেন্ট করে না। ওকে একটা লক্ষ্য দাও — "মঙ্গলগ্রহ উপনিবেশ নিয়ে রিসার্চ করো আর একটা রিপোর্ট লেখো" — আর সে কাজটাকে ধাপে ভাগ করে, সঠিক টুল বেছে নেয়, একটা একটা করে চালায়, নিজের ফলাফল যাচাই করে, আর কাজ শেষ না হওয়া পর্যন্ত চালিয়ে যায়। এই পার্থক্যটা — <em>নির্দেশ মেনে চলা</em> আর <em>লক্ষ্য অনুসরণ করা</em> — এটাই ক্যালকুলেটর আর সহকর্মীর মধ্যে পার্থক্য।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        এজেন্ট একটা লুপে চলে: লক্ষ্য নাও, ধাপ প্ল্যান করো, টুলস দিয়ে এক্সিকিউট করো, ফলাফল দেখো, অগ্রগতি মূল্যায়ন করো, সংশোধন করো। তারা একবার প্ল্যান করে অন্ধভাবে এক্সিকিউট করে না &mdash; সেরা এজেন্টরা তিন নম্বর ধাপ গোলমাল হলে সুন্দরভাবে সামলে নেয়। কিন্তু এই ক্ষমতার একটা অন্ধকার দিক আছে: এজেন্ট শুধু খারাপ উত্তর দেয় না, সেগুলোর উপর <em>কাজ করে</em>, তারপর ভাঙা ফলাফল ব্যবহার করে পরবর্তী সিদ্ধান্ত নেয়। ব্যর্থতা জটিল থেকে জটিলতর হয়।
+        এজেন্ট চলে একটা লুপে: লক্ষ্য গ্রহণ, ধাপ পরিকল্পনা, টুল দিয়ে সম্পাদন, ফলাফল পর্যবেক্ষণ, অগ্রগতি মূল্যায়ন, সামঞ্জস্য। তারা একবার পরিকল্পনা করে অন্ধভাবে চালায় না — সেরা এজেন্টগুলো তৃতীয় ধাপ ভেঙে পড়লেও সুন্দরভাবে সামলে নেয়। কিন্তু এই ক্ষমতার একটা অন্ধকার দিক আছে: এজেন্ট শুধু খারাপ উত্তর দেয় না, ওগুলোর ওপর <em>কাজ করে</em>, তারপর ভাঙা ফলাফল ব্যবহার করে পরের সিদ্ধান্ত নেয়। ভুলগুলো জমতে থাকে।
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE AGENT LOOP ═══ -->
+  <!-- ═══ THE ANATOMY OF AN AGENT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        প্রতিটা এজেন্ট একই পাঁচ-ধাপের চক্রে চলে। এই ধাপগুলো বুঝলেই পার্থক্য হয় কাজের কিছু বানানো আর API ক্রেডিট পুড়িয়ে ইনফিনিট লুপে আটকে যাওয়ার মধ্যে।
+        প্রতিটা এজেন্ট একই পাঁচ-ধাপের চক্রে চলে। এই ধাপগুলো বোঝাটাই তফাৎ করে দেয় কার্যকরী কিছু বানানো আর অসীম লুপে API ক্রেডিট পুড়িয়ে ফেলার মধ্যে।
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'লক্ষ্য', color: '#E94560', text: 'একটা স্পষ্ট উদ্দেশ্য নাও। "মঙ্গল নিয়ে রিসার্চ" লক্ষ্য না। "মঙ্গল উপনিবেশের চ্যালেঞ্জের ৫০০ শব্দের সামারি সোর্স-সহ লেখো" হলো লক্ষ্য।' },
-        { letter: 'P', name: 'পরিকল্পনা', color: '#7B61FF', text: 'লক্ষ্যকে কংক্রিট ধাপে ভাগ করো। ভালো পরিকল্পনাকারী নমনীয় প্ল্যান বানায়। খারাপ পরিকল্পনাকারী শক্ত স্ক্রিপ্ট বানায় যা প্রথম বিপত্তিতেই ভেঙে পড়ে।' },
-        { letter: 'T', name: 'এক্সিকিউট', color: '#0EA5E9', text: 'সঠিক টুল দিয়ে প্রতিটা ধাপ চালাও &mdash; সার্চ ইঞ্জিন, কোড ইন্টারপ্রিটার, ফাইল রিডার, API। এজেন্ট শুধু চিন্তা করে না। কাজও করে।' },
-        { letter: 'M', name: 'পর্যবেক্ষণ', color: '#16C79A', text: 'কি হলো রেকর্ড করো আর ফলাফল চেক করো। মেমোরি ছাড়া, এজেন্ট একই ব্যর্থ কাজ চিরকাল করতে থাকতে পারে।' },
-        { letter: 'E', name: 'মূল্যায়ন', color: '#F5A623', text: 'এটা কি কাজ করেছে? আমি কি লক্ষ্যের কাছাকাছি এসেছি? কিছু ভুল হলে, প্ল্যান সংশোধন করো আর আবার লুপ করো। এটাই এজেন্টকে স্ক্রিপ্ট থেকে আলাদা করে।' },
+        { letter: 'G', name: 'লক্ষ্য (Goal)', color: '#E94560', text: 'একটা স্পষ্ট উদ্দেশ্য গ্রহণ করো। "মঙ্গল নিয়ে রিসার্চ করো" কোনো লক্ষ্য না। "মঙ্গল উপনিবেশের চ্যালেঞ্জ নিয়ে ৫০০ শব্দের সারসংক্ষেপ লেখো, সূত্রসহ" — এটা লক্ষ্য।' },
+        { letter: 'P', name: 'পরিকল্পনা (Plan)', color: '#7B61FF', text: 'লক্ষ্যকে ছোট ছোট ধাপে ভাঙো। ভালো পরিকল্পনাকারী নমনীয় পরিকল্পনা করে। খারাপ পরিকল্পনাকারী শক্ত স্ক্রিপ্ট বানায় যা প্রথম চমকেই ভেঙে পড়ে।' },
+        { letter: 'T', name: 'সম্পাদন (Execute)', color: '#0EA5E9', text: 'সঠিক টুল ব্যবহার করে প্রতিটা ধাপ চালাও — সার্চ ইঞ্জিন, কোড ইন্টারপ্রেটার, ফাইল রিডার, API। এজেন্ট শুধু ভাবে না। কাজ করে।' },
+        { letter: 'M', name: 'পর্যবেক্ষণ (Observe)', color: '#16C79A', text: 'কী ঘটলো সেটা রেকর্ড করো আর ফলাফল যাচাই করো। মেমোরি ছাড়া একটা এজেন্ট একই ব্যর্থ কাজ চিরকাল পুনরাবৃত্তি করতে পারে।' },
+        { letter: 'E', name: 'মূল্যায়ন (Evaluate)', color: '#F5A623', text: 'এটা কি কাজ করলো? লক্ষ্যের কি কাছে এলাম? কিছু গোলমাল হলে পরিকল্পনা বদলাও আর আবার লুপ করো। এটাই এজেন্টকে স্ক্রিপ্ট থেকে আলাদা করে।' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল শিক্ষা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          চ্যাটবট হলো একটা পালা। এজেন্ট হলো পুরো কথোপকথন &mdash; নিজের সাথে, টুলসের সাথে, আর পৃথিবীর সাথে। সেরা এজেন্ট নির্মাতারা স্বায়ত্তশাসন সর্বোচ্চ করে না। তারা চিন্তাশীল চেকপয়েন্ট ডিজাইন করে যেখানে এজেন্ট থেমে যায় আর একজন মানুষকে সিদ্ধান্ত নিতে দেয় চালিয়ে যাবে কি না।
+          চ্যাটবট একটা একক পালা। এজেন্ট একটা পুরো কথোপকথন — নিজের সাথে, তার টুলের সাথে, আর পৃথিবীর সাথে। সেরা এজেন্ট নির্মাতারা স্বায়ত্তশাসন সর্বোচ্চ করার চেষ্টা করে না। তারা চিন্তাশীল চেকপয়েন্ট ডিজাইন করে যেখানে এজেন্ট থামে আর মানুষকে সিদ্ধান্ত নিতে দেয়।
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        এবার একটা বানানোর সময়। নিজের এজেন্ট ডিজাইন করো একদম স্ক্র্যাচ থেকে।
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        এবার বানানোর পালা। একটা ট্যাঙ্ক এজেন্ট ডিজাইন করো &mdash; তার ক্ষমতা বেছে নাও, বাজেট বরাদ্দ করো, আর কৌশল লেখো &mdash; তারপর এরেনায় নামাও আর দেখো সে নিজে থেকে লড়ছে।
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="এইমাত্র আমার প্রথম AI এজেন্ট স্ক্র্যাচ থেকে ডিজাইন করলাম। এই কোর্সটা ধাপে ধাপে আর্কিটেকচার শেখায় লাইভ ডেমো দিয়ে। হাইপ না, শুধু বিল্ডিং।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="এইমাত্র শূন্য থেকে আমার প্রথম AI এজেন্ট ডিজাইন করলাম। এই কোর্স লাইভ ডেমো দিয়ে ধাপে ধাপে আর্কিটেকচার শেখায়। কোনো হাইপ না, শুধু বানানো।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        লক্ষ্য সব ব্যর্থতা প্রতিরোধ করা না &mdash; ব্যর্থতাকে পুনরুদ্ধারযোগ্য করা।
+        লক্ষ্য সব ব্যর্থতা আটকানো না — লক্ষ্য হলো ব্যর্থতা থেকে সেরে ওঠা সম্ভব করা।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        এরপর, তুমি একটা সত্যিকারের এজেন্ট ব্যবহার করবে &mdash; যে তোমার কোড পড়ে, পরিবর্তন লেখে, টেস্ট চালায়, আর নিজের ভুল ঠিক করে। Claude Code-এর সাথে পরিচিত হও।
+        এরপর: তুমি একটা আসল এজেন্ট ব্যবহার করবে — যেটা তোমার কোড পড়ে, পরিবর্তন লেখে, টেস্ট চালায়, আর নিজের ভুল ঠিক করে। Claude Code-এর সাথে পরিচিত হও।
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

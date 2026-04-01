@@ -75,11 +75,11 @@ const chapter = chapters[0];
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role', color: '#E94560', text: 'AI ಏನಾಗಿರಬೇಕು? Tutor explain ಮಾಡ್ತಾನೆ, professor ಬೇರೆ ಥರ ಹೇಳ್ತಾನೆ. Role ಎಲ್ಲಾನೂ shape ಮಾಡುತ್ತೆ.' },
-        { letter: 'T', name: 'Task', color: '#0F3460', text: 'Exactly ಏನು ಮಾಡಬೇಕು? "help ಮಾಡು" ಅಲ್ಲ, "ನನ್ನ thesis statement ನ strengthen ಮಾಡು." ಒಂದು prompt ಗೆ ಒಂದು task.' },
-        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'Response ಹೇಗೆ ಕಾಣಬೇಕು? "3 alternatives numbered list ಆಗಿ ಕೊಡು." Format rambling ತಡೆಯುತ್ತೆ.' },
-        { letter: 'C', name: 'Constraints', color: '#16C79A', text: 'ಏನು ಮಾಡಬಾರದು? "Clichés ಬೇಡ. 200 words ಒಳಗೆ ಇಡು." Guardrails bad outputs ತಡೆಯುತ್ತೆ.' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: 'Show ಮಾಡು, tell ಮಾಡಬೇಡ. "Good" ಹೇಗೆ ಕಾಣುತ್ತೆ ಅಂತ ಒಂದು example ನೂರು words description ಗೆ ಸಮ.' },
+        { letter: 'R', name: 'Role (ಪಾತ್ರ)', color: '#E94560', text: 'AI ಏನಾಗಿರಬೇಕು? Tutor explain ಮಾಡ್ತಾನೆ, professor ಬೇರೆ ಥರ ಹೇಳ್ತಾನೆ. Role ಎಲ್ಲಾನೂ shape ಮಾಡುತ್ತೆ.' },
+        { letter: 'T', name: 'Task (ಕೆಲಸ)', color: '#0F3460', text: 'Exactly ಏನು ಮಾಡಬೇಕು? "help ಮಾಡು" ಅಲ್ಲ, "ನನ್ನ thesis statement ನ strengthen ಮಾಡು." ಒಂದು prompt ಗೆ ಒಂದು task.' },
+        { letter: 'F', name: 'Format (ರೂಪ)', color: '#7B61FF', text: 'Response ಹೇಗೆ ಕಾಣಬೇಕು? "3 alternatives numbered list ಆಗಿ ಕೊಡು." Format rambling ತಡೆಯುತ್ತೆ.' },
+        { letter: 'C', name: 'Constraints (ಮಿತಿಗಳು)', color: '#16C79A', text: 'ಏನು ಮಾಡಬಾರದು? "Clichés ಬೇಡ. 200 words ಒಳಗೆ ಇಡು." Guardrails bad outputs ತಡೆಯುತ್ತೆ.' },
+        { letter: 'E', name: 'Examples (ಉದಾಹರಣೆಗಳು)', color: '#F5A623', text: 'ಹೇಳಬೇಡ, ತೋರಿಸು. "Good" ಹೇಗೆ ಕಾಣುತ್ತೆ ಅಂತ ಒಂದು example ನೂರು words description ಗೆ ಸಮ.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -125,7 +125,7 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI prompt ನ 5 building blocks ಬಗ್ಗೆ ಈಗಷ್ಟೇ ಕಲಿತೆ. ಈ interactive course ನಿಜವಾಗ್ಲೂ ಚೆನ್ನಾಗಿದೆ — ನೀನೇ prompts build ಮಾಡ್ತೀಯ ಮತ್ತು improve ಆಗೋದು ನೋಡ್ತೀಯ." client:visible />
+  <SharePrompt text="AI prompt ನ 5 building blocks ಬಗ್ಗೆ ಈಗಷ್ಟೇ ಕಲಿತೆ. ಈ interactive course ನಿಜವಾಗ್ಲೂ ಚೆನ್ನಾಗಿದೆ — ನೀನೇ prompts build ಮಾಡ್ತೀಯ ಮತ್ತು real time ನಲ್ಲಿ improve ಆಗೋದು ನೋಡ್ತೀಯ." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -137,7 +137,7 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ಮುಂದೆ: simple back-and-forth ನ real conversation ಆಗಿ ಬದಲಾಯಿಸೋ techniques — ಅಲ್ಲಿ AI ಬರೀ answer ಮಾಡಲ್ಲ, ನಿನ್ನ ಜೊತೆ <em>think ಮಾಡುತ್ತೆ</em>.
+        ಮುಂದೆ: simple back-and-forth ನ real conversation ಆಗಿ ಬದಲಾಯಿಸೋ techniques — ಅಲ್ಲಿ AI ಬರೀ ಉತ್ತರ ಕೊಡಲ್ಲ, ನಿನ್ನ ಜೊತೆ <em>ಯೋಚನೆ ಮಾಡುತ್ತೆ</em>.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -31,13 +33,13 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI-কে টুলস<br />দিয়ে দাও
+          ওকে দাও<br />টুল
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "প্রশ্নের উত্তর দেওয়া" থেকে<br />"কাজ করার" জগতে লাফ।
+          "প্রশ্নের উত্তর দাও" থেকে<br />"কাজ করো"-তে লাফ।
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        এখন পর্যন্ত AI-এর সাথে তোমার যত ইন্টার‍্যাকশন হয়েছে, সবগুলো একই প্যাটার্ন মানে। তুমি কিছু টাইপ করো। AI কিছু টাইপ করে ফেরত দেয়। খুবই সফিস্টিকেটেড একটা অটোকমপ্লিট। কিন্তু যদি AI আসলেই <em>কিছু করতে</em> পারে? শুধু আবহাওয়ার কথা না বলে, সত্যিই ফোরকাস্ট চেক করতে। শুধু কোড না লিখে, সেটা রান করতে। শুধু কি গুগল করবে বলার বদলে, নিজেই ওয়েবে সার্চ করে ফলাফল নিয়ে আসতে।
+        এখন পর্যন্ত তোমার প্রতিটা AI ইন্টার‌্যাকশন একই প্যাটার্ন মেনে চলেছে। তুমি কিছু টাইপ করো। AI কিছু লিখে ফেরত দেয়। অত্যন্ত অত্যাধুনিক একটা অটোকমপ্লিট। কিন্তু যদি AI <em>কিছু করতে</em> পারতো? শুধু আবহাওয়ার কথা বলা না, বরং পূর্বাভাস চেক করা। শুধু কোড লেখা না, বরং চালানো। শুধু Google-এ কী সার্চ করতে হবে বলা না, বরং নিজেই ওয়েব সার্চ করে ফলাফল নিয়ে আসা।
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        তুমি যখন AI-কে টুলস দাও, তুমি মূলত একটা টুলবক্স হাতে দিয়ে বলছ: <em>"এই জিনিসগুলো তুমি করতে পারো। কোনটা কখন ব্যবহার করবে তুমি ঠিক করো।"</em> সে ওয়েব সার্চ করতে পারে, কোড চালাতে পারে, ফাইল পড়তে পারে, API কল করতে পারে। AI স্মার্ট হয়নি &mdash; সে হয়েছে <strong>কানেক্টেড</strong>। আর সেটা একটা প্রশ্ন তোলে যার সাথে টেকনোলজির কোনো সম্পর্ক নেই, সব কিছুই তোমার সাথে: তোমার সাথে চেক না করেই AI কতটুকু নিজে নিজে করবে?
+        যখন তুমি AI-কে টুল দাও, তুমি ওকে একটা টুলবক্স ধরিয়ে বলো: <em>"এগুলো তুমি করতে পারো। কখন ব্যবহার করবে সেটা তুমি ঠিক করো।"</em> সে ওয়েব সার্চ করতে পারে, কোড চালাতে পারে, ফাইল পড়তে পারে, API কল করতে পারে। AI বেশি চালাক হয়নি — সে হয়েছে <strong>সংযুক্ত</strong>। আর এটা এমন একটা প্রশ্ন তোলে যেটার সাথে প্রযুক্তির কোনো সম্পর্ক নেই, সম্পর্ক আছে তোমার সাথে: তোমার সাথে চেক করার আগে AI কতটুকু নিজে থেকে করবে?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        উত্তরটা তিনটা জিনিসের উপর নির্ভর করে। <strong>ঝুঁকি</strong> &mdash; সবচেয়ে খারাপ কি হতে পারে? <strong>পুনরুদ্ধারযোগ্যতা</strong> &mdash; তুমি কি আনডু করতে পারবে? আর <strong>বিশ্বাস</strong> &mdash; এই টুলকে কতটা চেনো? শতবার ব্যবহার করা ক্যালকুলেটর, কখনো টেস্ট করোনি এমন নতুন প্লাগইনের চেয়ে বেশি স্বাধীনতা পাওয়ার যোগ্য।
+        উত্তরটা তিনটা জিনিসের ওপর নির্ভর করে। <strong>ঝুঁকি</strong> — সবচেয়ে খারাপ কী হতে পারে? <strong>উল্টানো যায় কি না</strong> — পূর্বাবস্থায় ফেরানো যাবে? আর <strong>বিশ্বাস</strong> — এই টুলটাকে তুমি কতটা ভালো চেনো? শতবার ব্যবহার করা একটা ক্যালকুলেটর কখনো পরীক্ষা করোনি এমন নতুন একটা প্লাগইনের চেয়ে বেশি স্বাধীনতা পাওয়ার যোগ্য।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল শিক্ষা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          এটা সব-বা-কিছু না। সেরা AI ওয়ার্কফ্লোগুলো কম-ঝুঁকি, পুনরুদ্ধারযোগ্য কাজে স্বাধীনতা দেয় আর বেশি-ঝুঁকি, অপরিবর্তনীয় কাজে মানুষকে লুপে রাখে। তোমার কাজ হলো সেই সীমানা ডিজাইন করা।
+          এটা সব-অথবা-কিছুই না। সেরা AI ওয়ার্কফ্লোগুলো কম-ঝুঁকি, উল্টানো যায় এমন কাজে স্বাধীনতা দেয়, আর বেশি-ঝুঁকি, অপরিবর্তনীয় কাজে মানুষকে লুপে রাখে। সীমানা ডিজাইন করাটাই তোমার কাজ।
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        তুমি কোথায় দাগ টানবে? নিজের অটোনমি লেভেল সেট করো।
+        তুমি কোথায় সীমারেখা টানবে? নিজের স্বায়ত্তশাসন লেভেল ঠিক করো।
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI টুল ইউজ আর ফাংশন কলিং নিয়ে শিখছি সবচেয়ে হ্যান্ডস-অন উপায়ে। এই কোর্সে আসলে নিজে বানিয়ে টেস্ট করতে পারো, শুধু পড়তে হয় না।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI টুল ইউজ আর ফাংশন কলিং সম্পর্কে সবচেয়ে হ্যান্ডস-অন উপায়ে শিখছি। এই কোর্সে আসলেই জিনিস বানানো আর টেস্ট করা যায়, শুধু পড়া না।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        টুলস AI-কে উপদেষ্টা থেকে সহকারীতে বদলে দেয় &mdash; যে তোমাকে বলে কি করতে হবে, তার বদলে সেই যে আসলেই কাজটা করে দেয়।
+        টুল AI-কে উপদেষ্টা থেকে সহকারীতে বদলে দেয় — যে তোমাকে বলে কী করতে হবে, তার থেকে যে আসলেই করে দেয়।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        তুমি AI-কে হাত দিয়েছ। এবার আমরা সেই টুলগুলোকে এমন কিছুতে সংযুক্ত করব যেটা নিজে নিজে একটা লক্ষ্য পূরণ করতে পারে &mdash; পরিকল্পনা করে, এক্সিকিউট করে, ভুল থেকে শেখে। এজেন্ট বানানোর সময় হয়েছে।
+        তুমি AI-কে হাত দিয়েছো। এরপর, আমরা সেই টুলগুলো এমন কিছুতে জুড়ে দেবো যেটা নিজে থেকে একটা লক্ষ্য অনুসরণ করতে পারে — পরিকল্পনা করে, কাজ করে, ভুল থেকে সামলে ওঠে। এবার এজেন্ট বানানোর পালা।
       </p>
     </FadeInBlock>
   </section>

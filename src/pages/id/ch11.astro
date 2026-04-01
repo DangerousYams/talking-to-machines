@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Pengetahuan tanpa karya hanya trivia.<br />Saatnya kirim.
+          Pengetahuan tanpa kreasi cuma trivia.<br />Saatnya kirim.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Kamu sudah sampai. Selama sepuluh bab kamu beranjak dari "bantu essay saya" menjadi membangun agent, merancang konteks, dan men-debug halusinasi. Kamu sudah belajar lebih banyak tentang AI dari kebanyakan orang dewasa. Tapi ini kenyataan yang tidak nyaman: <strong>semua itu tidak berarti apa-apa sampai kamu membangun sesuatu.</strong> Membaca tentang AI itu seperti membaca tentang berenang — kamu bisa mempelajari setiap teknik gaya, tapi sampai kamu masuk ke air, kamu tidak <em>tahu</em> apa-apa. Kamu cuma tahu <em>tentangnya</em>.
+        Kamu berhasil sampai sini. Selama sepuluh bab kamu bergerak dari "bantu aku sama esaiku" ke merancang konteks, membangun agent, belajar kosakata software, menguasai build loop, dan mengembangkan taste. Tapi inilah kenyataan yang nggak enak: <strong>semua itu nggak ada artinya kalau kamu belum membangun sesuatu.</strong> Membaca tentang AI itu seperti membaca tentang berenang &mdash; kamu bisa mempelajari setiap teknik gerakan, tapi sampai kamu nyebur ke air, kamu belum <em>tahu</em> apa-apa. Kamu cuma tahu <em>tentang</em> itu.
       </p>
     </FadeInBlock>
   </section>
@@ -66,21 +67,21 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Sebelum menulis prompt pertama, ada langkah yang kebanyakan pemula lewatkan: <strong>beri tool AI-mu file instruksi permanen.</strong> Daripada menjelaskan ulang proyekmu setiap sesi, kamu menulisnya sekali dan AI-mu membacanya secara otomatis. Claude Code membaca <code>CLAUDE.md</code>. Cursor membaca <code>.cursorrules</code>. GitHub Copilot membaca <code>.github/copilot-instructions.md</code>. Konsep yang sama, nama file yang berbeda. Ini context engineering dari Bab 3 — diterapkan di level proyek.
+        Sebelum kamu menulis prompt pertama, ada langkah powerful yang kebanyakan pemula lewatkan: <strong>beri tool AI-mu file instruksi permanen.</strong> Daripada menjelaskan ulang proyekmu setiap sesi, kamu tuliskan sekali dan AI-mu membacanya otomatis. Claude Code membaca <code>CLAUDE.md</code>. Cursor membaca <code>.cursorrules</code>. GitHub Copilot membaca <code>.github/copilot-instructions.md</code>. Konsep yang sama, nama file yang beda. Ini context engineering dari Bab 3 — diterapkan di level proyek.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        File instruksi yang baik menjawab tiga pertanyaan: apa yang kamu bangun, apa aturannya, dan seperti apa yang "bagus" itu? Jawab itu dengan benar dan setiap percakapan dengan AI-mu dimulai sepuluh langkah di depan. Batasi scope proyekmu cukup kecil untuk diselesaikan — proyek akhir pekan yang selesai selalu mengalahkan mahakarya yang terbengkalai.
+        File instruksi yang bagus menjawab tiga pertanyaan: apa yang kamu bangun, apa aturannya, dan seperti apa "bagus" itu? Dapat tiga itu dengan benar dan setiap percakapan dengan AI-mu dimulai sepuluh langkah lebih maju. Skalakan proyekmu cukup kecil supaya bisa selesai — proyek akhir pekan yang selesai mengalahkan mahakarya yang terbengkalai setiap saat.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Poin penting</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          File instruksi proyek yang baik adalah perbedaan antara AI yang membantumu dan AI yang <em>memahami</em> kamu. Tulis sekali, nikmati manfaatnya setiap sesi.
+          File instruksi proyek yang bagus adalah perbedaan antara AI yang membantumu dan AI yang <em>memahamimu</em>. Tulis sekali, manfaatnya di setiap sesi.
         </p>
       </div>
     </FadeInBlock>
@@ -106,19 +107,19 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tool tidak membangun sesuatu. Manusia dengan tool yang membangun sesuatu. Dan kamu punya toolkit terbaik yang pernah dimiliki generasimu.
+        Tool nggak membangun apa pun. Orang dengan tool yang membangun. Dan kamu punya toolkit terbaik yang pernah diakses generasimu.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Sebelas bab yang lalu, kamu mengetik "bantu essay saya" dan berharap yang terbaik. Sekarang kamu merancang konteks, mendesain agent, memverifikasi output, dan membawa penilaian ke setiap langkah. Kursusnya selesai. Pembelajaran sesungguhnya dimulai sekarang — pergi buat sesuatu yang hanya kamu yang bisa pikirkan untuk dibuat.
+        Sebelas bab yang lalu, kamu mengetik "bantu aku sama esaiku" dan berharap yang terbaik. Sekarang kamu merancang konteks, membangun agent, bicara bahasa software, mengiterasi dengan percaya diri, dan membawa taste ke semua yang kamu buat. Kursusnya selesai. Pembelajaran yang sesungguhnya dimulai sekarang &mdash; pergi dan buat sesuatu yang hanya kamu yang akan kepikiran membuatnya.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-center mt-4" style={`font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: ${chapter.accent}; letter-spacing: -0.02em;`}>
-        Kirim sekarang.
+        Kirim.
       </p>
     </FadeInBlock>
   </section>

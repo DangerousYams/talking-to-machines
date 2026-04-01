@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Maitriser<br />Claude Code
+          Tout le monde<br />peut construire
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Ton programmeur IA en binome, de la premiere<br />commande aux Skills personnalises.
+          Tu n'as pas besoin d'&ecirc;tre programmeur.<br />Tu as besoin d'une id&eacute;e.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Il y a un moment dont chaque developpeur se souvient. Tu ouvres un terminal, tu tapes une requete en langage naturel, et tu regardes une IA lire tes fichiers, comprendre ton architecture, ecrire du code dans plusieurs fichiers, le lancer, tomber sur une erreur, la corriger, et relancer le tout — sans que tu touches une seule ligne. Claude Code n'est pas de l'autocompletion. C'est un outil de programmation <em>agentique</em> qui voit l'ensemble de ton projet, fait des modifications dans plusieurs fichiers, execute des commandes shell et itere sur ses propres erreurs.
+        Un prof &agrave; Lyon a construit une appli de notation en un week-end. Un musicien a cr&eacute;&eacute; un optimiseur de setlist qui arrange les morceaux par &eacute;nergie et tonalit&eacute;. Un lyc&eacute;en a construit un outil de pr&eacute;p &agrave; l'oral qui g&eacute;n&egrave;re des contre-arguments pour n'importe quelle th&egrave;se. Aucun d'eux n'est programmeur. Aucun d'eux n'a suivi un cours de code. Ils ont d&eacute;crit ce qu'ils voulaient, et un agent de code l'a construit.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Mais l'outil est aussi bon que la personne qui le pilote. Claude Code peut ecrire mille lignes de code parfait en quelques secondes — ou mille lignes de code qui a l'air correct mais qui est du grand n'importe quoi. La difference, c'est toi.
+        C'est la r&eacute;volution que personne n'avait vue venir. Pas que les codeurs soient devenus plus rapides &mdash; mais que <strong>les non-codeurs puissent cr&eacute;er des logiciels</strong>. De la m&ecirc;me mani&egrave;re que les tableurs ont d&eacute;mocratise l'analyse de donn&eacute;es et Canva le design graphique, les agents de code d&eacute;mocratisent le d&eacute;veloppement logiciel.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Specifier, generer, verifier
+        La r&eacute;volution du logiciel personnel
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Quand tu donnes une tache a Claude Code, il execute une boucle agentique : lire la codebase, planifier les modifications, ecrire le code, le lancer, corriger ce qui a casse. Il peut parcourir cette boucle trois, cinq, dix fois — le tout en quelques secondes. Ton role n'est plus d'ecrire chaque ligne. C'est de <strong>specifier</strong> ce qu'il faut construire, laisser l'IA le <strong>generer</strong>, puis <strong>verifier</strong> que c'est vraiment correct. La plupart des debutants sautent cette derniere etape. Ils voient du code apparaitre, ca a l'air raisonnable, et ils passent a la suite. Ne sois pas cette personne. Du code genere, c'est un premier brouillon. Ta verification, c'est la relecture qui le rend publiable.
+        Voici l'id&eacute;e qui change tout : le <strong>logiciel personnel</strong>. Des outils con&ccedil;us pour un public d'une seule personne &mdash; toi. Pas d'&eacute;tude de march&eacute;, pas de business plan, pas de lev&eacute;e de fonds. Juste un probl&egrave;me que tu as et un outil qui le r&eacute;sout. Avant l'IA, cr&eacute;er un logiciel personnel signifiait apprendre &agrave; coder, ce qui prend des mois ou des ann&eacute;es. Maintenant, &ccedil;a prend un apr&egrave;s-midi. Le co&ucirc;t de construction est tomb&eacute; &agrave; presque z&eacute;ro &mdash; ce qui veut dire que la seule chose qui compte, c'est d'avoir une id&eacute;e qui vaut la peine d'&ecirc;tre construite.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        L'arme secrete, c'est le fichier <code>CLAUDE.md</code> — place-le a la racine de ton projet et Claude Code le lit au debut de chaque session. Ton stack technique, tes conventions de nommage, tes regles de style, tes attentes en matiere de tests — tout encode une seule fois pour ne jamais te repeter. C'est l'ingenierie du contexte appliquee au code.
+        Les outils qui rendent &ccedil;a possible s'appellent des <strong>agents de code</strong>. Claude Code, Cursor, Antigravity, Replit &mdash; ce sont des outils IA capables de lire ton projet entier, d'&eacute;crire du code dans plusieurs fichiers, de l'ex&eacute;cuter, de tomber sur une erreur, de la corriger et de relancer. Le tout sans que tu touches une seule ligne de code. Ce n'est pas de l'autocompl&eacute;tion. Ce sont des collaborateurs IA qui transforment tes descriptions en logiciel fonctionnel.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>L'objectif n'est pas d'ecrire chaque ligne — c'est de comprendre chaque ligne.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Le r&ocirc;le du r&eacute;alisateur</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Si tu ne peux pas lire le code que Claude genere, tu ne peux pas le verifier. Les meilleurs utilisateurs de Claude Code ne sont pas ceux qui generent le plus de code — ce sont ceux qui posent les meilleures questions et reperent les bugs les plus subtils.
+          Tu n'&eacute;cris pas le code. Tu <strong>diriges</strong>. Ton boulot, c'est de sp&eacute;cifier ce qu'il faut construire, &eacute;valuer le r&eacute;sultat et it&eacute;rer jusqu'&agrave; ce que ce soit bon. L'agent g&egrave;re l'ex&eacute;cution technique. Pense &agrave; toi comme un r&eacute;alisateur de film &mdash; tu ne manipules pas la cam&eacute;ra, mais rien ne se fait sans ta vision.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Ton agent sait tout ce que tu ignores
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        &laquo;&nbsp;Mais je ne sais pas ce qu'est une base de donn&eacute;es.&nbsp;&raquo; Bonne nouvelle : tu n'as pas besoin de le savoir. Ton agent de code est aussi ton tuteur. Demande-lui n'importe quoi. &laquo;&nbsp;C'est quoi un composant React&nbsp;?&nbsp;&raquo; Il t'explique. &laquo;&nbsp;Comment je d&eacute;ploie &ccedil;a sur internet&nbsp;?&nbsp;&raquo; Il te guide &eacute;tape par &eacute;tape. &laquo;&nbsp;Ce message d'erreur veut dire quoi&nbsp;?&nbsp;&raquo; Il traduit le jargon en fran&ccedil;ais clair.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        C'est le filet de s&eacute;curit&eacute; qui rend tout le reste possible. Tu n'as pas besoin de m&eacute;moriser le vocabulaire technique &mdash; tu as besoin de savoir qu'il <em>existe</em> pour pouvoir poser des questions dessus. L'agent comble chaque lacune. C'est comme avoir un expert patient et infatigable assis &agrave; c&ocirc;t&eacute; de toi qui ne te juge jamais pour une question basique.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Le paradoxe des comp&eacute;tences</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Tu as besoin d'assez de connaissances pour <em>&eacute;valuer</em> le r&eacute;sultat, pas pour &eacute;crire chaque ligne. Un r&eacute;alisateur n'a pas besoin de savoir fabriquer une cam&eacute;ra &mdash; mais il doit savoir si le plan est bon. Pareil ici : tu dois savoir si l'appli marche, pas comment le code fonctionne.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Observe la boucle en action. Tape une requete et regarde Claude Code travailler.
+        D&eacute;couvre ce que des non-codeurs ont construit &mdash; puis imagine le tien.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Ce chapitre sur Claude Code est dingue — j'ai regarde un programmeur IA reflechir a un probleme, ecrire du code et se debugger tout seul. Le futur du code est la." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Ce chapitre m'a convaincu que tout le monde peut cr\u00e9er des logiciels avec l'IA. Pas dans le vague \u2014 il montre exactement comment des non-codeurs construisent de vrais outils." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code n'ecrit pas du code a ta place — il ecrit du code avec toi.
+        Le co&ucirc;t de construction d'un logiciel vient de tomber &agrave; z&eacute;ro. La seule chose qui reste, c'est d'avoir une id&eacute;e qui vaut la peine d'&ecirc;tre construite.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Une conversation peut gerer une seule tache. Mais les vrais projets en ont des dizaines. La suite : comment decouper de grandes ambitions en morceaux que l'IA peut vraiment executer.
+        Tu as l'id&eacute;e. Mais avant d'ouvrir un agent de code, tu dois parler son langage. Pas du code &mdash; juste le vocabulaire de la construction. C'est le prochain chapitre.
       </p>
     </FadeInBlock>
   </section>

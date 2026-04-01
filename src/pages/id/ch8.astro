@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Mengorkestrasi<br />Kompleksitas
+          Bicara<br />Bahasanya
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Mengelola AI untuk proyek yang lebih besar<br />dari context window mana pun.
+          Kosakata membangun &mdash;<br />bukan kode, cuma kata benda dan kata kerja.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Inilah momen ketika setiap pemula ambisius terhantam: kamu meminta AI membangun sesuatu yang nyata — game utuh, website dengan backend, paper penelitian dengan sitasi — dan semuanya berantakan. Bukan karena AI-nya tidak cukup pintar. Tapi karena proyeknya terlalu besar untuk satu percakapan. Kamu menempel daftar persyaratan panjang dan dua puluh menit kemudian sadar AI-nya lupa separuh dari yang kamu minta.
+        Kamu akan duduk bareng coding agent dan membangun sesuatu. Dia akan pakai kata-kata seperti "deploy," "endpoint," "component," dan "schema." Kalau kata-kata itu asing, kamu akan merasa bingung &mdash; bukan karena kamu nggak bisa membangun, tapi karena kamu nggak bisa <em>mengarahkan</em>. Bab ini memberimu decoder ring-nya. Bukan cara coding. Cara <strong>bicara bahasanya</strong> membangun.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Ini bukan masalah AI. Ini masalah <strong>orkestrasi</strong>. Dan belajar menyelesaikannya adalah perbedaan antara orang yang menggunakan AI untuk tugas sekali jalan dan orang yang menggunakannya untuk membangun hal-hal nyata.
+        Bayangkan seperti nyetir mobil. Kamu nggak perlu paham mesin pembakaran, rasio transmisi, atau tekanan minyak rem. Kamu perlu tahu: pedal gas, rem, setir, spion. Kosakata untuk <em>mengarahkan</em>, bukan implementasi.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Seni Context Packing
+        The Stack: Decoder Ring
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Proyek kompleks memecahkan pendekatan satu prompt. Context meluap, perhatian terencerkan, kesalahan terakumulasi. Solusinya bukan prompt yang lebih baik — tapi <strong>dekomposisi</strong>. Pecah proyek jadi tugas-tugas terfokus, lalu untuk setiap tugas, pilih konteks apa yang benar-benar AI butuhkan. Terlalu sedikit dan dia berhalusinasi. Terlalu banyak dan dia kehilangan fokus. Sweet spot-nya adalah presisi bedah.
+        Setiap aplikasi &mdash; dari Instagram sampai to-do list sederhana &mdash; dibangun dari empat lapisan. Developer menyebutnya "the stack." Ini semuanya, dibedah:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Pikirkan seperti mengemas koper. Kamu tidak bisa bawa seluruh lemari. Kamu perlu memikirkan ke mana kamu pergi (tugas), apa yang kamu butuhkan (informasi relevan), dan apa yang bisa ditinggalkan (sisanya). Setiap percakapan mendapat persis konteks yang dibutuhkan — tidak lebih, tidak kurang.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">Apa yang orang lihat dan sentuh. Tombol, teks, gambar, animasi. Ruang makan restoran.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">Logika di balik layar. Memproses permintaan, cek password, kirim email. Dapurnya.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Database</p>
+          <p style="margin: 0; line-height: 1.6;">Tempat aplikasimu mengingat sesuatu. Akun pengguna, postingan, pengaturan. Gudang dan buku resep.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">Cara supaya bisa diakses di internet. Hosting, domain, go live. Membuka pintu restorannya.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Itu saja. Setiap aplikasi yang pernah kamu pakai adalah kombinasi dari empat lapisan itu. Kalau coding agent bilang "Saya akan set up backend-nya," artinya "Saya akan tulis logika di balik layarnya." Kalau dia bilang "ayo deploy," artinya "ayo taruh ini di internet." Kamu nggak perlu tahu <em>bagaimana</em> setiap lapisan ini bekerja. Kamu perlu tahu <em>bahwa</em> mereka ada dan untuk apa fungsinya.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Agent sebagai Tutor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Ini yang nggak ada yang kasih tahu: <strong>coding agent juga gurumu.</strong> Nggak tahu apa itu "npm"? Tanya. Bingung sama pesan error? Tempel dan bilang "jelaskan ini seolah aku bukan developer." Mau tahu kenapa agent memilih React dan bukan yang lain? Tanya. Dia akan jelaskan alasannya dalam bahasa biasa, langkah demi langkah, sebanyak yang kamu butuhkan.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Lima menit pertamamu</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Kualitas artefak handoff-mu menentukan kualitas semua yang dibangun downstream. Schema yang tajam selalu mengalahkan deskripsi yang kabur. Garbage in, garbage out — lintas percakapan.
+          Buka coding tool-mu. Jelaskan proyekmu dalam bahasa biasa: "Saya mau bikin workout tracker di mana saya mencatat latihan dan melihat progres dari waktu ke waktu." Agent akan bertanya untuk klarifikasi, menyarankan stack, dan mulai membangun. Tugas pertamamu adalah <em>menjawab pertanyaannya</em> dan <em>memperhatikan apa yang dia buat</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Kemas koper konteks. Bisakah kamu memuat yang penting tanpa meluap?
+        Jelajahi empat lapisan web app. Klik untuk pelajari kosakatanya &mdash; lalu uji dirimu sendiri.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Bagian tersulit dari AI bukan prompting — tapi mengorkestrasi proyek kompleks di banyak percakapan. Kursus ini akhirnya menjelaskan caranya." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Bab ini menjelaskan tech stack tanpa kode sama sekali. Frontend, backend, database, deployment — akhirnya masuk akal. Andai aku baca ini dari dulu." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Proyek kompleks tidak menakutkan. Mereka hanya serangkaian percakapan terfokus yang dihubungkan oleh artefak yang tajam.
+        Kamu nggak perlu tahu cara kerja mesinnya. Kamu perlu tahu cara menyetir.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Selanjutnya: mengetahui kapan AI <em>salah</em>. Halusinasi, sikofansi, dan kebiasaan verifikasi yang membuatmu tetap jujur.
+        Kamu sudah tahu kata-katanya. Kamu punya idenya. Sekarang saatnya duduk bareng coding agent dan benar-benar membangun. Selanjutnya: seni build loop &mdash; iterasi, evaluasi, dan apa yang harus dilakukan kalau ada yang rusak.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -37,7 +39,7 @@ const chapter = chapters[1];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Prompt tốt nhất là câu hỏi khiến<br />AI hỏi ngược lại bạn.
+          Prompt hay nhất là câu hỏi khiến<br />AI hỏi ngược lại bạn.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Đa số mọi người dùng AI như máy bán hàng tự động. Bỏ prompt vào, nhận câu trả lời ra. Nhưng kết quả tốt nhất đến từ <em>cuộc trò chuyện</em>, không phải mệnh lệnh. Sự khác biệt giữa người gõ prompt và người chế tác prompt cũng chính là sự khác biệt đã thúc đẩy những bộ óc vĩ đại suốt 2.400 năm qua: đặt đúng câu hỏi.
+        Đa số mọi người dùng AI như máy bán hàng tự động. Bỏ prompt vào, nhận câu trả lời ra. Nhưng kết quả tốt nhất đến từ <em>cuộc trò chuyện</em>, không phải mệnh lệnh. Sự khác biệt giữa người gõ prompt và người thiết kế prompt cũng chính là sự khác biệt đã tiếp sức cho những bộ óc vĩ đại suốt 2.400 năm qua: biết hỏi đúng câu hỏi.
       </p>
     </FadeInBlock>
   </section>
@@ -63,19 +65,19 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Cú lật Socrates
+        Đảo ngược Socrates
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrates chẳng bao giờ trả lời trực tiếp một câu hỏi. Ông hỏi <em>thêm</em> câu hỏi cho đến khi học trò tự đạt đến hiểu biết sâu hơn. Bạn có thể dùng chiêu tương tự với AI, nhưng đảo ngược: thay vì xin câu trả lời, hãy yêu cầu AI phỏng vấn <em>bạn</em>. Khi bạn gõ "lên kế hoạch tiệc sinh nhật," bạn đang bỏ qua hàng tá chi tiết ảnh hưởng rất lớn đến kết quả. AI không biết chúng — nhưng nó có thể hỏi.
+        Socrates chẳng bao giờ trả lời thẳng câu hỏi. Ông hỏi <em>thêm</em> câu hỏi cho đến khi học trò tự đạt đến hiểu biết sâu hơn. Bạn có thể dùng mẹo tương tự với AI, nhưng đảo ngược: thay vì xin câu trả lời, hãy bảo AI phỏng vấn <em>bạn</em>. Khi bạn gõ "lên kế hoạch tiệc sinh nhật," bạn đang bỏ qua hàng chục chi tiết ảnh hưởng rất lớn đến kết quả. AI không biết những điều đó — nhưng nó có thể hỏi.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Chỉ một kỹ thuật này — đảo ngược ai là người hỏi — biến AI từ cỗ máy trả lời thành <strong>đối tác tư duy</strong>. Cho nó quyền thăm dò, làm rõ và thách thức. Kết quả sau năm câu hỏi qua lại sẽ hoàn toàn khác so với một lệnh đơn lẻ.
+        Chỉ riêng kỹ thuật này — đảo ngược ai là người hỏi — đã biến AI từ cỗ máy trả lời thành <strong>đối tác tư duy</strong>. Cho nó quyền thăm dò, làm rõ và thách thức. Kết quả sau năm câu hỏi qua lại sẽ hoàn toàn khác so với một mệnh lệnh đơn lẻ.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[1];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Điểm mấu chốt</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Những người dùng AI giỏi nhất không phải chuyên gia về chủ đề — họ là chuyên gia đặt câu hỏi. Và câu hỏi mạnh nhất bạn có thể hỏi là: "Trước khi trả lời, bạn cần biết thêm gì?"
+          Những người dùng AI giỏi nhất không phải chuyên gia về chủ đề — họ là chuyên gia hỏi. Và câu hỏi mạnh mẽ nhất bạn có thể đặt ra là: "Trước khi trả lời, bạn cần biết gì từ mình?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Thử ngay nào. Nêu một mục tiêu — và xem AI lật ngược kịch bản.
+        Thử ngay. Nêu mục tiêu của bạn — và xem AI đảo ngược thế trận.
       </p>
     </FadeInBlock>
   </section>
@@ -105,7 +107,16 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Khóa học AI này vừa thay đổi cách mình nghĩ về prompting. Thay vì bảo AI phải làm gì, bạn yêu cầu nó phỏng vấn BẠN trước. Kết quả khác nhau một trời một vực." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Khóa học AI này đã thay đổi hoàn toàn cách mình viết prompt. Thay vì ra lệnh cho AI, bạn bảo nó phỏng vấn BẠN trước. Kết quả khác nhau một trời một vực." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -117,7 +128,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Nhưng mọi kỹ thuật bạn học đều đụng phải cùng một bức tường vô hình: <em>cửa sổ ngữ cảnh</em>. Tiếp theo, ta sẽ mở nó ra và học cách kiểm soát những gì AI thực sự nhìn thấy.
+        Nhưng mọi kỹ thuật bạn học được đều chạm phải cùng một bức tường vô hình: <em>cửa sổ ngữ cảnh</em>. Tiếp theo, chúng ta sẽ mở nó ra và học cách thiết kế những gì AI thực sự nhìn thấy.
       </p>
     </FadeInBlock>
   </section>

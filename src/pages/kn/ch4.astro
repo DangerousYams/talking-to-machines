@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="kn">
@@ -131,6 +133,15 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="ನಾನು ಅಂದ್ಕೊಂಡಿದ್ದಕ್ಕಿಂತ ತುಂಬಾ ಹೆಚ್ಚು AI tools ಇವೆ. ಈ interactive guide 8 families of tools map ಮಾಡುತ್ತೆ — image gen, video, music, research, coding — ಪ್ರತಿಯೊಂದಕ್ಕೂ examples ಜೊತೆ." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

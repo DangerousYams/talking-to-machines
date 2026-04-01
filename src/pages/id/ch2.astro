@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Kebanyakan orang pakai AI seperti mesin penjual. Masukkan prompt, terima jawaban. Tapi hasil terbaik datang dari <em>percakapan</em>, bukan perintah. Perbedaan antara orang yang mengetik prompt dan orang yang merancang prompt sama dengan perbedaan yang sudah menggerakkan pemikir-pemikir hebat selama 2.400 tahun: mengajukan pertanyaan yang tepat.
+        Kebanyakan orang pakai AI seperti mesin penjual otomatis. Masukkan prompt, terima jawaban. Tapi hasil terbaik datang dari <em>percakapan</em>, bukan perintah. Perbedaan antara orang yang sekadar mengetik prompt dan orang yang merancangnya sama dengan perbedaan yang sudah menggerakkan pemikir-pemikir hebat selama 2.400 tahun: bertanya dengan pertanyaan yang tepat.
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Metode Sokratik Terbalik
+        Pembalikan Sokratis
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrates tidak pernah menjawab pertanyaan secara langsung. Dia mengajukan pertanyaan <em>lebih banyak</em> sampai muridnya sampai pada pemahaman yang lebih dalam. Kamu bisa pakai trik yang sama dengan AI, tapi dibalik: daripada meminta jawaban, minta AI untuk mewawancarai <em>kamu</em>. Ketika kamu mengetik "rencanakan pesta ulang tahun," kamu meninggalkan puluhan detail yang sangat mengubah jawaban. AI-nya tidak tahu — tapi dia bisa bertanya.
+        Socrates nggak pernah menjawab pertanyaan secara langsung. Dia justru bertanya <em>lebih banyak</em> sampai murid-muridnya sampai pada pemahaman yang lebih dalam. Kamu bisa pakai trik yang sama dengan AI, tapi dibalik: daripada minta jawaban, minta AI untuk mewawancarai <em>kamu</em>. Waktu kamu ketik "rencanakan pesta ulang tahun," kamu meninggalkan puluhan detail yang sangat mengubah jawaban. AI nggak tahu detail itu — tapi dia bisa bertanya.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Teknik tunggal ini — membalik siapa yang bertanya — mengubah AI dari mesin jawaban jadi <strong>partner berpikir</strong>. Beri dia izin untuk menggali, mengklarifikasi, dan menantang. Output setelah lima pertanyaan bolak-balik akan jauh berbeda dibanding perintah satu kali.
+        Teknik tunggal ini — membalik siapa yang bertanya — mengubah AI dari mesin jawaban menjadi <strong>partner berpikir</strong>. Beri dia izin untuk menggali, mengklarifikasi, dan menantang. Hasilnya setelah lima pertanyaan bolak-balik akan jauh berbeda dibanding satu perintah langsung.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Pengguna AI terbaik bukan ahli di bidang topiknya — mereka ahli dalam bertanya. Dan pertanyaan paling powerful yang bisa kamu ajukan adalah: "Sebelum kamu jawab, apa yang perlu kamu ketahui?"
+          Pengguna AI terbaik bukan ahli di topiknya — mereka ahli bertanya. Dan pertanyaan paling powerful yang bisa kamu ajukan adalah: "Sebelum kamu jawab, apa yang perlu kamu ketahui?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Coba sendiri. Sebutkan tujuanmu — dan lihat AI membalik pertanyaan.
+        Coba sendiri. Sebutkan tujuanmu — dan lihat AI membalik arah percakapan.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Kursus AI ini mengubah cara aku berpikir tentang prompting. Daripada menyuruh AI, kamu minta dia mewawancarai KAMU dulu. Hasilnya beda jauh." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Kursus AI ini mengubah cara aku mikir tentang prompting. Daripada kasih perintah ke AI, kamu minta AI mewawancarai KAMU dulu. Hasilnya beda jauh." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Berhenti menyuruh AI apa yang harus dipikirkan. Mulai beri dia ruang untuk berpikir bersamamu.
+        Berhenti kasih tahu AI apa yang harus dipikirkan. Mulai beri ruang untuk berpikir bersamamu.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tapi setiap teknik yang sudah kamu pelajari akan menabrak tembok tak terlihat yang sama: <em>context window</em>. Selanjutnya, kita bongkar itu dan belajar cara merekayasa apa yang sebenarnya dilihat AI.
+        Tapi setiap teknik yang sudah kamu pelajari akan mentok di dinding yang sama: <em>context window</em>. Selanjutnya, kita bongkar dan pelajari cara mengelola apa yang benar-benar dilihat AI.
       </p>
     </FadeInBlock>
   </section>

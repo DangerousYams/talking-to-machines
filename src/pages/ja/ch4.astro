@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,7 +33,7 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AIの<br />ランドスケープ
+          AIツールの<br />全体像
         </h1>
       </FadeInBlock>
 
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ほとんどの人が「AI」と言うとき、ChatGPTのことを指している。「インターネット」と言ってGoogleだけを意味するようなものだ。今、何百ものAIツールが使える——一文からフォトリアルな画像を生成するツール、フル楽曲を作るツール、研究トピックに関するすべての学術論文を読んでコンセンサスを3段落でまとめるツール。この章は君の地形の地図だ。
+        ほとんどの人が「AI」と言うとき、それはChatGPTのことだ。それは「インターネット」と言ってGoogleだけを指すようなものだ。いま、今日使えるAIツールは何百もある。一文からフォトリアルな画像を生成するもの、完成した楽曲を作るもの、研究テーマに関するすべての学術論文を読んでコンセンサスを3段落でまとめるもの。この章は、その地形の地図だ。
       </p>
     </FadeInBlock>
   </section>
@@ -72,7 +74,7 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        楽器に例えて考えよう。ピアノとドラムセットはどちらも「楽器」だけど、ピアニストにビートを刻めとは言わない。AIツールも同じだ——画像生成用に作られたツールは、コード用に作られたものとは根本的に異なる。出会うすべてのツールは、この8つのファミリーのどれかに当てはまる。
+        楽器で考えてみよう。ピアノとドラムはどちらも「楽器」だけど、ピアニストにビートを刻んでとは言わない。AIツールも同じだ。画像生成用に作られたツールと、コーディング用に作られたツールは根本的に違う。出会うすべてのツールは、この8つのファミリーのどれかに入る。
       </p>
     </FadeInBlock>
 
@@ -80,12 +82,12 @@ const chapter = chapters[3];
       {[
         { icon: '1', name: '画像生成', color: '#E94560', text: 'テキストを入れると画像が出てくる。Midjourney、DALL-E 3、Stable Diffusion、Flux、Ideogram。' },
         { icon: '2', name: '画像編集', color: '#F5A623', text: '実際の画像から始めて変換する。Photoshop AI、Magnific、Clipdrop。' },
-        { icon: '3', name: '動画制作', color: '#7B61FF', text: 'テキストや静止画から動画クリップを生成する。Sora、Runway、Kling、Pika。' },
-        { icon: '4', name: '音楽＆オーディオ', color: '#16C79A', text: 'プロンプトからフル楽曲、音声クローン、効果音。Suno、Udio、ElevenLabs。' },
+        { icon: '3', name: '動画生成', color: '#7B61FF', text: 'テキストや静止画から動画クリップを生成。Sora、Runway、Kling、Pika。' },
+        { icon: '4', name: '音楽・オーディオ', color: '#16C79A', text: 'プロンプトから完成した楽曲、ボイスクローン、効果音。Suno、Udio、ElevenLabs。' },
         { icon: '5', name: 'リサーチエージェント', color: '#0EA5E9', text: 'インターネットを代わりに読んでくれるAI。Perplexity、Elicit、Consensus、NotebookLM。' },
-        { icon: '6', name: 'AIブラウザ', color: '#6B7280', text: '人間のようにウェブをナビゲートするエージェント。Arc、Operator、Claude Computer Use。' },
+        { icon: '6', name: 'AIブラウザ', color: '#6B7280', text: '人間のようにウェブを操作するエージェント。Arc、Operator、Claude Computer Use。' },
         { icon: '7', name: 'コーディングツール', color: '#E94560', text: 'コードを書き、編集し、デバッグするAI。Claude Code、Cursor、Antigravity、Copilot。' },
-        { icon: '8', name: 'チャットボット＆アシスタント', color: '#0F3460', text: 'おなじみの汎用会話AI：ChatGPT、Claude、Gemini。' },
+        { icon: '8', name: 'チャットボット・アシスタント', color: '#0F3460', text: 'おなじみの汎用対話型AI。ChatGPT、Claude、Gemini。' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +111,7 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          10個のAIツールを表面的に知っている人は、1つのツールを深く知っている人を常に上回る。プロの大工にはお気に入りのツールはない &mdash; <em>各タスクごとの</em>お気に入りがある。
+          10個のAIツールを浅く知っている人は、1つのツールを深く知っている人に一貫して勝つ。プロの大工にお気に入りの道具はない。<em>タスクごとの</em>お気に入りがあるだけだ。
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        フルカタログを探索しよう。どのツールもクリックで詳細がわかる。
+        全カタログを探索しよう。どのツールもクリックすれば詳細がわかる。
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="思った以上にたくさんのAIツールがあった。このインタラクティブなガイドが8つのツールファミリー——画像生成、動画、音楽、リサーチ、コーディング——をそれぞれの例と一緒にマッピングしてくれる。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AIツールって思ったよりずっと多い。このインタラクティブガイドが8つのファミリーを解説してくれる。画像生成、動画、音楽、リサーチ、コーディングまで全部。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ランドスケープは毎月変わる。でもカテゴリはツールが入れ替わっても安定している &mdash; <em>それ</em>こそが覚える価値のある地図だ。
+        ランドスケープは毎月変わる。でもカテゴリはツールが入れ替わっても安定している。覚えるべきはカテゴリという<em>地図</em>だ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ここまでのツールは、君に反応するだけだった。もし<em>自分で行動を起こせる</em>としたら？それがツールからエージェントへの飛躍 &mdash; そしてすべてが変わる。
+        ここまで、これらのツールは君に応答するだけだった。もしAIが<em>自分で行動を起こせたら</em>？ それがツールからエージェントへの飛躍だ。すべてが変わる。
       </p>
     </FadeInBlock>
   </section>

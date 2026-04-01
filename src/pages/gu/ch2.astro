@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="gu">
@@ -22,7 +24,7 @@ const chapter = chapters[1];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          અધ્યાય બે
+          પ્રકરણ બે
         </p>
       </FadeInBlock>
 
@@ -37,7 +39,7 @@ const chapter = chapters[1];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          સૌથી સારો prompt એ છે<br />જે AI ને તને questions પૂછવા મજબૂર કરે.
+          સૌથી સારો prompt એ છે જે<br />AI ને તને સવાલ પૂછવા મજબૂર કરે.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        મોટાભાગના લોકો AI ને vending machine ની જેમ વાપરે. Prompt નાખો, answer લો. પણ best results <em>conversations</em> માંથી આવે, commands માંથી નહીં. Prompt type કરનાર અને prompt craft કરનાર વચ્ચેનો ફરક એ જ ફરક છે જે 2,400 વર્ષથી great thinkers ને power કરે છે: right questions પૂછવા.
+        મોટાભાગના લોકો AI ને vending machine ની જેમ વાપરે છે. Prompt નાખ, જવાબ મળ. પણ સૌથી સારા results <em>conversations</em> માંથી આવે, commands માંથી નહીં. જે માણસ ફક્ત prompt ટાઈપ કરે અને જે માણસ prompt craft કરે — એ બંનેમાં એ જ ફરક છે જે 2,400 વર્ષથી મહાન વિચારકોને power આપતો આવ્યો છે: સાચા સવાલ પૂછવા.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrates ક્યારેય question નો directly answer ન આપતા. એ <em>વધુ</em> questions પૂછતા જ્યાં સુધી એના students deeper understanding સુધી ન પહોંચે. તું AI સાથે same trick વાપરી શકે, પણ flipped: answer માંગવાના બદલે, AI ને કહે કે <em>તારો</em> interview લે. જ્યારે તું "birthday party plan કર" type કરે, ત્યારે ડઝનો details છોડી દે છે જે answer ને drastically change કરે. AI ને ખબર નથી — પણ એ પૂછી શકે.
+        Socrates ક્યારેય સવાલનો સીધો જવાબ નહોતા આપતા. એ <em>વધુ</em> સવાલ પૂછતા, જ્યાં સુધી એમના students ઊંડી સમજ સુધી ન પહોંચે. તું AI સાથે આ જ trick વાપરી શકે, પણ ઉલટી: જવાબ માંગવાને બદલે, AI ને કહે કે <em>તને</em> interview કરે. જ્યારે તું ટાઈપ કરે "birthday party plan કર," તું ઘણી બધી details છોડી દે છે જે answer ને ધરમૂળથી બદલી નાખે. AI ને ખબર નથી — પણ એ પૂછી શકે.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        આ single technique — questions કોણ પૂછે એ flip કરવું — AI ને answer machine માંથી <strong>thinking partner</strong> બનાવે. એને probe, clarify, અને challenge કરવાની permission આપ. પાંચ back-and-forth questions પછી output, single-shot command ની comparison માં ઓળખાય ન એવો હશે.
+        આ એક technique — કોણ સવાલ પૂછે એ flip કરવું — AI ને answer machine માંથી <strong>thinking partner</strong> માં બદલી નાખે. એને permission આપ probe કરવાની, clarify કરવાની, challenge કરવાની. પાંચ back-and-forth સવાલ પછીનો output, single-shot command કરતાં ઓળખાય જ નહીં.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>મુખ્ય સમજ</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>મુખ્ય વાત</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          સૌથી સારા AI users topic ના experts નથી — એ પૂછવાના experts છે. અને સૌથી powerful question જે તું પૂછી શકે: "Answer આપતા પહેલાં, તારે શું જાણવું જોઈએ?"
+          સૌથી સારા AI users topic ના experts નથી — એ પૂછવામાં expert છે. અને સૌથી powerful સવાલ જે તું પૂછી શકે: "જવાબ આપતા પહેલાં, તારે શું જાણવું જોઈએ?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        જાતે try કર. Goal જણાવ — અને AI ને script flip કરતા જો.
+        જાતે try કર. એક goal જણાવ — અને AI ને script flip કરતું જો.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="આ AI course એ prompting વિશે મારી સમજ flip કરી નાખી. AI ને શું કરવું કહેવાના બદલે, તું AI ને પહેલાં તારો INTERVIEW લેવા કહે. Results માં જમીન-આસમાનનો ફરક." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="આ AI course એ prompting વિશે મારી વિચારસરણી જ બદલી નાખી. AI ને શું કરવું એ કહેવાને બદલે, તું એને કહે કે પહેલાં તારો INTERVIEW લે. Result માં જમીન-આસમાનનો ફરક." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI ને શું think કરવું એ કહેવાનું બંધ કર. એને તારી સાથે think કરવાની જગ્યા આપ.
+        AI ને શું વિચારવું એ કહેવાનું બંધ કર. એને તારી સાથે વિચારવાની જગ્યા આપ.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        પણ તેં શીખેલી દરેક technique એક invisible wall માં ટકરાય છે: <em>context window</em>. આગળ, એ crack open કરીશું અને શીખીશું કે AI actually શું જુએ છે.
+        પણ તું જે પણ technique શીખ્યો, એ બધી એક જ અદૃશ્ય દીવાલ સામે અથડાય છે: <em>context window</em>. આગળ, આપણે એને ખોલીશું અને શીખીશું કે AI ખરેખર શું જુએ છે.
       </p>
     </FadeInBlock>
   </section>

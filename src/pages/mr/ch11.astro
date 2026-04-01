@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="mr">
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          काहीतरी खरं<br />Build कर
+          काहीतरी खरं<br />बनव
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Creation शिवाय knowledge म्हणजे trivia.<br />Ship करायची वेळ आली.
+          निर्मिती नसलेलं ज्ञान म्हणजे trivia.<br />Ship करायची वेळ आली.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        तू पोहोचलास. दहा chapters मध्ये तू "help me with my essay" पासून context engineering, agents बनवणं, आणि hallucinations debug करण्यापर्यंत गेलास. तू AI बद्दल बहुतेक adults पेक्षा जास्त शिकलास. पण ही uncomfortable truth आहे: <strong>तू काहीतरी build करेपर्यंत यातलं काहीच matter करत नाही.</strong> AI बद्दल वाचणं म्हणजे swimming बद्दल वाचण्यासारखं — तू प्रत्येक stroke technique study करू शकतोस, पण पाण्यात उतरेपर्यंत तुला ते <em>माहीत</em> नाही. तुला फक्त <em>माहीत आहे बद्दल</em> माहीत आहे.
+        तू पोहोचलास. दहा अध्यायांमध्ये "माझ्या essay मध्ये help कर" पासून context engineering, agents बनवणं, software ची vocabulary शिकणं, build loop master करणं, आणि taste develop करण्यापर्यंत आलास. पण इथे एक uncomfortable truth आहे: <strong>तू काहीतरी build करेपर्यंत यातलं काहीच matter करत नाही.</strong> AI बद्दल वाचणं म्हणजे swimming बद्दल वाचण्यासारखं &mdash; तू प्रत्येक stroke technique study करू शकतोस, पण पाण्यात उतरेपर्यंत तुला काहीच <em>कळत</em> नाही. तुला फक्त त्या<em>बद्दल</em> कळतं.
       </p>
     </FadeInBlock>
   </section>
@@ -66,7 +67,7 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        पहिला prompt लिहिण्यापूर्वी, एक power move आहे जी बहुतेक beginners skip करतात: <strong>तुझ्या AI tool ला permanent instruction file दे.</strong> प्रत्येक session मध्ये तुझा project परत समजावण्याऐवजी, एकदा लिहा आणि तुझा AI automatically वाचतो. Claude Code <code>CLAUDE.md</code> वाचतो. Cursor <code>.cursorrules</code> वाचतो. GitHub Copilot <code>.github/copilot-instructions.md</code> वाचतो. तीच concept, वेगवेगळे filenames. हे Chapter 3 मधलं context engineering आहे — project level वर applied.
+        पहिला prompt लिहिण्यापूर्वी, एक power move आहे जी बहुतेक beginners skip करतात: <strong>तुझ्या AI tool ला permanent instruction file दे.</strong> प्रत्येक session मध्ये तुझा project परत समजावण्याऐवजी, एकदा लिही आणि तुझा AI automatically वाचतो. Claude Code <code>CLAUDE.md</code> वाचतो. Cursor <code>.cursorrules</code> वाचतो. GitHub Copilot <code>.github/copilot-instructions.md</code> वाचतो. तीच concept, वेगवेगळे filenames. हे Chapter 3 मधलं context engineering आहे — project level वर applied.
       </p>
     </FadeInBlock>
 
@@ -78,9 +79,9 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Key insight</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">मुख्य अंतर्दृष्टी</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          चांगला project instruction file हा तुला help करणाऱ्या AI आणि तुला <em>समजणाऱ्या</em> AI मधला फरक आहे. एकदा लिहा, प्रत्येक session मध्ये फायदा मिळव.
+          चांगला project instruction file हा तुला help करणाऱ्या AI आणि तुला <em>समजणाऱ्या</em> AI मधला फरक आहे. एकदा लिही, प्रत्येक session मध्ये फायदा मिळव.
         </p>
       </div>
     </FadeInBlock>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tools गोष्टी build करत नाहीत. Tools असलेले लोक गोष्टी build करतात. आणि तुझ्याकडे तुझ्या generation ने कधीही access केलेलं सर्वात चांगलं toolkit आहे.
+        Tools गोष्टी build करत नाहीत. Tools असलेले लोक गोष्टी build करतात. आणि तुझ्याकडे तुझ्या generation ला कधीही मिळालेलं सर्वात चांगलं toolkit आहे.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        अकरा chapters आधी, तू "help me with my essay" टाइप केलंस आणि best ची आशा ठेवलीस. आता तू context engineer करतोस, agents design करतोस, outputs verify करतोस, आणि प्रत्येक step ला judgment आणतोस. Course संपला. खरं शिकणं आता सुरू होतं — जा आणि असं काहीतरी बनव जे फक्त तुलाच बनवायला सुचेल.
+        अकरा अध्याय आधी, तू "माझ्या essay मध्ये help कर" टाइप केलंस आणि best ची आशा ठेवलीस. आता तू context engineer करतोस, agents build करतोस, software ची भाषा बोलतोस, confidence ने iterate करतोस, आणि तू बनवतोस त्या प्रत्येक गोष्टीत taste आणतोस. Course संपला. खरं शिकणं आता सुरू होतं &mdash; जा आणि असं काहीतरी बनव जे फक्त तुलाच सुचेल.
       </p>
     </FadeInBlock>
 

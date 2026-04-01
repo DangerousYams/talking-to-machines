@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code'da<br />Ustalaşmak
+          Bunu Herkes<br />Yapabilir
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Yapay zeka eş programcın, ilk<br />komuttan özel Skill'lere kadar.
+          Programcı olmana gerek yok.<br />Bir fikrin olması yeterli.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Her kodcunun hatırladığı bir an vardır. Terminali açıyorsun, doğal dilde bir istek yazıyorsun ve bir yapay zekanın dosyalarını okuyup, mimarisini anlayıp, birden fazla dosyaya kod yazıp, çalıştırıp, hata alıp, hatayı düzeltip ve yeniden çalıştırmasını izliyorsun — tek bir satıra dokunmadan. Claude Code otomatik tamamlama değil. Tüm projeni gören, dosyalar arası değişiklik yapan, shell komutları çalıştıran ve kendi hatalarını düzeltip yineleyen <em>ajantik</em> bir kodlama aracı.
+        Ohio'da bir öğretmen hafta sonunda bir notlandırma uygulaması yaptı. Bir müzisyen şarkıları enerji ve tonaliteye göre sıralayan bir setlist optimizer'ı yaptı. Bir lise öğrencisi herhangi bir önerme için karşı argüman üreten bir münazara hazırlama aracı yaptı. Hiçbiri programcı değil. Hiçbiri kodlama kursu almadı. Ne istediklerini tarif ettiler ve bir kodlama ajanı onu inşa etti.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Ama araç ancak onu yönlendiren insan kadar iyi. Claude Code saniyeler içinde bin satır kusursuz kod yazabilir — ya da bin satır inandırıcı görünen çöp. Aradaki fark sensin.
+        Bu, kimsenin öngöremediği kilit açılım. Yazılımcıların daha hızlı olması değil — <strong>yazılımcı olmayanların artık yazılım yapabilmesi.</strong> Elektronik tabloların veri analizini demokratikleştirmesi ve Canva'nın grafik tasarımı demokratikleştirmesi gibi, yapay zeka kodlama ajanları da yazılım geliştirmenin kendisini demokratikleştiriyor.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Belirle, Üret, Doğrula
+        Kişisel Yazılım Devrimi
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Claude Code'a bir görev verdiğinde, bir ajan döngüsü çalıştırır: kod tabanını oku, neyi değiştireceğini planla, düzenlemeleri yaz, kodu çalıştır, bozulanı düzelt. Bu döngüyü üç, beş, on kez tekrarlayabilir — hepsi saniyeler içinde. Senin işin artık her satırı yazmak değil. Ne inşa edileceğini <strong>belirlemek</strong>, yapay zekanın <strong>üretmesine</strong> izin vermek ve sonra gerçekten doğru olduğunu <strong>doğrulamak</strong>. Çoğu yeni başlayan bu son adımı atlar. Kod belirir, makul görünür ve devam ederler. O kişi olma. Üretilmiş kod bir ilk taslaktır. Senin doğrulaman onu yayınlanabilir yapan düzenlemedir.
+        İşte her şeyi değiştiren fikir: <strong>kişisel yazılım.</strong> Tek kişilik bir kitle için yapılmış araçlar — sen. Pazar araştırması yok, iş planı yok, yatırım turu yok. Sadece senin bir sorunun ve onu çözen bir araç. Yapay zeka öncesinde kişisel yazılım yapmak kod öğrenmeyi gerektiriyordu, bu da aylar hatta yıllar alıyordu. Şimdi bir öğle sonrası sürüyor. İnşa etmenin maliyeti neredeyse sıfıra düştü — yani önemli olan tek şey, inşa etmeye değer bir fikre sahip olmak.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Gizli silah <code>CLAUDE.md</code> dosyasıdır — projenin köküne bırak ve Claude Code her oturumun başında okur. Teknoloji yığınını, adlandırma kurallarını, stil kurallarını, test beklentilerini — hepsini bir kere kodlarsın ve kendini asla tekrarlaman gerekmez. Bu, kodlamaya uygulanmış bağlam mühendisliğidir.
+        Bunu mümkün kılan araçlara <strong>kodlama ajanları</strong> deniyor. Claude Code, Cursor, Antigravity, Replit — tüm projeni okuyabilen, birden fazla dosyada kod yazabilen, çalıştıran, hatayla karşılaşan, hatayı düzelten ve tekrar çalıştıran yapay zeka araçları. Tek bir satır koda dokunmana gerek kalmadan. Otomatik tamamlama değiller. Senin tariflerini çalışan yazılıma dönüştüren yapay zeka iş birlikçileri.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Amaç her satırı yazmak değil — her satırı anlamak.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Yönetmenin rolü</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Claude'un ürettiği kodu okuyamıyorsan, doğrulayamazsın. En iyi Claude Code kullanıcıları en çok kodu üretenler değil — en iyi soruları sorup en ince hataları yakalayanlardır.
+          Kodu sen yazmıyorsun. <strong>Yönetiyorsun</strong>. Senin işin ne inşa edileceğini belirtmek, çıktıyı değerlendirmek ve doğru olana kadar tekrarlamak. Ajan teknik yürütmeyi hallediyor. Kendini bir film yönetmeni gibi düşün — kamerayı sen kullanmıyorsun, ama senin vizyonun olmadan hiçbir şey yapılmıyor.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Ajanın Senin Bilmediklerini Biliyor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Ama veritabanı ne bilmiyorum." İyi haber: bilmene gerek yok. Kodlama ajanın aynı zamanda öğretmenin. İstediğin her şeyi sor. "React component ne?" Açıklar. "Bunu internete nasıl yayınlarım?" Adım adım yönlendirir. "Bu hata ne demek?" Jargonu sade Türkçeye çevirir.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Diğer her şeyi mümkün kılan güvenlik ağı bu. Teknik kelime haznesi ezberlemenin gerekmez — sorabilmek için <em>var olduğunu</em> bilmen yeterli. Ajan her boşluğu dolduruyor. Basit bir soru sorduğun için seni asla yargılamayan, sabrı tükenmeyen, bir uzmanın yanında oturması gibi.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Beceri paradoksu</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Çıktıyı <em>değerlendirmek</em> için yeterli bilgiye ihtiyacın var, her satırı yazmak için değil. Bir film yönetmeninin kamera nasıl yapılır bilmesi gerekmez — ama çekimin doğru görünüp görünmediğini bilmesi gerekir. Burada da aynı: uygulamanın çalışıp çalışmadığını bilmen gerekiyor, kodun nasıl çalıştığını değil.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Döngüyü çalışırken gör. Bir istek yaz ve Claude Code'un nasıl çalıştığını izle.
+        Kod bilmeyenlerin neler inşa ettiğine göz at &mdash; sonra kendininki hayal et.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Bu Claude Code bölümü çok etkileyici — bir yapay zeka eş programcının bir problemi düşünüp, kod yazıp ve kendi hatasını ayıkladığını izledim. Kodlamanın geleceği burada." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Bu bölüm beni herkesin yapay zekayla yazılım yapabileceğine ikna etti. Havadan değil — kod bilmeyenlerin nasıl gerçek araçlar inşa ettiğini somut olarak gösteriyor." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code senin için kod yazmıyor — seninle birlikte yazıyor.
+        Yazılım inşa etmenin maliyeti sıfıra düştü. Geriye kalan tek şey, inşa etmeye değer bir fikre sahip olmak.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tek bir sohbet tek bir görevi halledebilir. Ama gerçek projelerin düzinelercesi var. Sırada: büyük hedefleri yapay zekanın gerçekten uygulayabileceği parçalara nasıl bölünür.
+        Fikrin var. Ama bir kodlama ajanını açmadan önce, onun dilini konuşman gerekiyor. Kod değil — sadece inşa etmenin kelime haznesi. Sıradaki bu.
       </p>
     </FadeInBlock>
   </section>

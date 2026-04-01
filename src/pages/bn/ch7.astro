@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code-এ<br />দক্ষতা অর্জন
+          যে কেউ<br />এটা বানাতে পারে
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          তোমার AI পেয়ার প্রোগ্রামার, প্রথম<br />কমান্ড থেকে কাস্টম Skills পর্যন্ত।
+          তোমার প্রোগ্রামার হতে হবে না।<br />তোমার দরকার একটা আইডিয়া।
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        এমন একটা মুহূর্ত আসে যা প্রতিটা কোডার মনে রাখে। তুমি একটা টার্মিনাল খুলেছ, সাধারণ ভাষায় একটা রিকোয়েস্ট টাইপ করেছ, আর দেখছ একটা AI তোমার ফাইল পড়ছে, তোমার আর্কিটেকচার বুঝছে, একাধিক ফাইলে কোড লিখছে, রান করছে, এরর পাচ্ছে, এরর ঠিক করছে, আর আবার রান করছে &mdash; তুমি একটা লাইনও ছুঁচ্ছ না। Claude Code অটোকমপ্লিট না। এটা একটা <em>এজেন্টিক</em> কোডিং টুল যে তোমার পুরো প্রজেক্ট দেখতে পায়, ফাইল জুড়ে পরিবর্তন করে, শেল কমান্ড চালায়, আর নিজের ভুল থেকে শেখে।
+        ওহাইও-তে একজন শিক্ষক সপ্তাহান্তে একটা গ্রেডিং অ্যাপ বানিয়ে ফেললেন। একজন সংগীতশিল্পী একটা সেটলিস্ট অপটিমাইজার বানালেন যেটা গানগুলোকে এনার্জি আর কী অনুযায়ী সাজায়। একজন হাই স্কুল ছাত্র একটা ডিবেট প্রেপ টুল বানালো যেটা যেকোনো প্রস্তাবের বিপক্ষে যুক্তি তৈরি করে। এদের কেউই প্রোগ্রামার না। কেউ কোডিং ক্লাস করেনি। তারা বর্ণনা করেছে কী চায়, আর একটা কোডিং এজেন্ট বানিয়ে দিয়েছে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        তবে টুলটা ততটাই ভালো যতটা ভালো মানুষটা যে স্টিয়ারিং করছে। Claude Code সেকেন্ডে হাজার লাইনের পারফেক্ট কোড লিখতে পারে &mdash; অথবা হাজার লাইনের বিশ্বাসযোগ্য দেখতে আবর্জনা। পার্থক্যটা তুমি।
+        এটাই সেই আনলক যা কেউ আসতে দেখেনি। কোডাররা দ্রুত হলো না &mdash; বরং <strong>যারা কোড জানে না তারা আদৌ সফটওয়্যার বানাতে পারলো।</strong> যেভাবে স্প্রেডশিট ডেটা অ্যানালিসিসকে গণতান্ত্রিক করেছিল আর Canva গ্রাফিক ডিজাইনকে, AI কোডিং এজেন্ট সফটওয়্যার ডেভেলপমেন্টকেই গণতান্ত্রিক করছে।
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ SPECIFY, GENERATE, VERIFY ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        স্পেসিফাই, জেনারেট, ভেরিফাই
+        পার্সোনাল সফটওয়্যার বিপ্লব
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        তুমি যখন Claude Code-কে একটা কাজ দাও, সে একটা এজেন্ট লুপ চালায়: কোডবেস পড়ে, কি বদলাতে হবে প্ল্যান করে, এডিট লেখে, কোড রান করে, যা ভাঙে ঠিক করে। এই সাইকেলটা তিন, পাঁচ, দশবার ঘটতে পারে &mdash; সব কয়েক সেকেন্ডে। তোমার কাজ আর প্রতিটা লাইন লেখা না। তোমার কাজ হলো কি বানাতে হবে <strong>স্পেসিফাই</strong> করা, AI-কে সেটা <strong>জেনারেট</strong> করতে দেওয়া, আর তারপর <strong>ভেরিফাই</strong> করা সেটা আসলেই ঠিক কিনা। বেশিরভাগ নতুনরা শেষ ধাপটা বাদ দেয়। কোড দেখা যাচ্ছে, যুক্তিসঙ্গত লাগছে, আর তারা এগিয়ে যায়। সেই মানুষ হয়ো না। জেনারেটেড কোড হলো ফার্স্ট ড্রাফট। তোমার ভেরিফিকেশনই সেই এডিট যা এটাকে পাবলিশযোগ্য করে।
+        এই ধারণাটাই সবকিছু বদলে দেয়: <strong>পার্সোনাল সফটওয়্যার।</strong> শুধু একজনের জন্য বানানো টুল &mdash; তোমার জন্য। কোনো মার্কেট রিসার্চ না, কোনো বিজনেস প্ল্যান না, কোনো ভেঞ্চার ফান্ডিং না। শুধু একটা সমস্যা যেটা তোমার আছে আর একটা টুল যেটা সেটার সমাধান করে। AI-এর আগে, পার্সোনাল সফটওয়্যার বানাতে কোডিং শিখতে হতো, যেটায় মাস বা বছর লাগে। এখন লাগে একটা বিকেল। বানানোর খরচ প্রায় শূন্যে নেমে এসেছে &mdash; মানে একমাত্র যেটা দরকার সেটা হলো বানানোর মতো একটা আইডিয়া।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        গোপন অস্ত্র হলো <code>CLAUDE.md</code> ফাইল &mdash; তোমার প্রজেক্টের রুটে রেখে দাও আর Claude Code প্রতিটা সেশনের শুরুতে সেটা পড়বে। তোমার টেক স্ট্যাক, নামকরণের কনভেনশন, স্টাইল রুল, টেস্টিং প্রত্যাশা &mdash; সব একবার এনকোড করো যাতে আর কখনো নিজেকে রিপিট করতে না হয়। এটা কনটেক্সট ইঞ্জিনিয়ারিং কোডিংয়ে প্রয়োগ করা।
+        যে টুলগুলো এটা সম্ভব করছে সেগুলোকে বলে <strong>কোডিং এজেন্ট</strong>। Claude Code, Cursor, Antigravity, Replit &mdash; এরা এমন AI টুল যেগুলো তোমার পুরো প্রজেক্ট পড়তে পারে, একাধিক ফাইলে কোড লিখতে পারে, চালাতে পারে, এরর পেলে ঠিক করতে পারে, আবার চালাতে পারে। সব একটাও লাইন কোড না ছুঁয়ে। ওরা অটোকমপ্লিট না। ওরা AI সহযোগী যারা তোমার বর্ণনাকে চলমান সফটওয়্যারে রূপান্তরিত করে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>লক্ষ্য প্রতিটা লাইন লেখা না &mdash; প্রতিটা লাইন বোঝা।</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>পরিচালকের ভূমিকা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Claude যে কোড জেনারেট করে সেটা তুমি পড়তে না পারলে, ভেরিফাই করতে পারবে না। সেরা Claude Code ব্যবহারকারীরা তারা না যারা সবচেয়ে বেশি কোড জেনারেট করে &mdash; তারা সেই মানুষ যারা সবচেয়ে ভালো প্রশ্ন করে আর সবচেয়ে সূক্ষ্ম বাগগুলো ধরে।
+          তুমি কোড লেখো না। তুমি <strong>পরিচালনা</strong> করো। তোমার কাজ হলো কী বানাতে হবে তা বলা, আউটপুট মূল্যায়ন করা, আর ঠিক না হওয়া পর্যন্ত পুনরায় চেষ্টা করা। এজেন্ট প্রযুক্তিগত কাজটা সামলায়। নিজেকে একজন চলচ্চিত্র পরিচালক ভাবো &mdash; তুমি ক্যামেরা চালাও না, কিন্তু তোমার দৃষ্টিভঙ্গি ছাড়া কিছুই হয় না।
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        তুমি যা জানো না, তোমার এজেন্ট সব জানে
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "কিন্তু আমি তো জানি না ডেটাবেস কী।" সুখবর: জানার দরকার নেই। তোমার কোডিং এজেন্ট তোমার টিউটরও। যা খুশি জিজ্ঞেস করো। "React component কী?" বুঝিয়ে দেবে। "এটা ইন্টারনেটে কীভাবে দেবো?" ধাপে ধাপে দেখাবে। "এই error-টার মানে কী?" প্রযুক্তিগত ভাষাকে সহজ বাংলায় অনুবাদ করবে।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        এটাই সেই সেফটি নেট যেটা বাকি সবকিছু সম্ভব করে। তোমার প্রযুক্তিগত শব্দ মুখস্থ করার দরকার নেই &mdash; শুধু জানতে হবে যে সেগুলো <em>আছে</em> যাতে জিজ্ঞেস করতে পারো। এজেন্ট প্রতিটা ফাঁক পূরণ করে দেয়। এটা যেন একজন ধৈর্যশীল, অক্লান্ত বিশেষজ্ঞ তোমার পাশে বসে আছে যে কখনো বেসিক প্রশ্ন করার জন্য তোমাকে জাজ করে না।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>দক্ষতার প্যারাডক্স</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          তোমার যথেষ্ট জ্ঞান দরকার আউটপুট <em>মূল্যায়ন</em> করতে, প্রতিটা লাইন লিখতে না। একজন চলচ্চিত্র পরিচালকের ক্যামেরা বানানো জানার দরকার নেই &mdash; কিন্তু শটটা ঠিক দেখাচ্ছে কি না বুঝতে হবে। এখানেও একই: তোমার জানতে হবে অ্যাপটা কাজ করছে কি না, কোড কীভাবে কাজ করে সেটা না।
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        লুপটা কাজ করতে দেখো। একটা রিকোয়েস্ট টাইপ করো আর Claude Code-কে কাজ করতে দেখো।
+        কোড না জানা মানুষেরা কী কী বানিয়েছে ঘুরে দেখো &mdash; তারপর তোমারটা কল্পনা করো।
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Claude Code নিয়ে এই অধ্যায়টা অসাধারণ — একটা AI পেয়ার প্রোগ্রামারকে সমস্যা নিয়ে ভাবতে, কোড লিখতে, আর নিজেই ডিবাগ করতে দেখলাম। কোডিংয়ের ভবিষ্যৎ এসে গেছে।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="এই অধ্যায়টা আমাকে বিশ্বাস করালো যে AI দিয়ে যে কেউ সফটওয়্যার বানাতে পারে। ফাঁকা বুলি না — এটা দেখায় কোড না জানা মানুষেরা কীভাবে আসল টুল বানাচ্ছে।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code তোমার জন্য কোড লিখছে না &mdash; তোমার সাথে লিখছে।
+        সফটওয়্যার বানানোর খরচ এইমাত্র শূন্যে নেমে গেছে। একমাত্র যেটা বাকি আছে সেটা হলো বানানোর মতো একটা আইডিয়া।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        একটা কথোপকথন একটা কাজ সামলাতে পারে। কিন্তু আসল প্রজেক্টে ডজনখানেক কাজ থাকে। পরের পর্বে: বড় স্বপ্নকে কিভাবে টুকরোয় ভাঙবে যেগুলো AI আসলেই করতে পারে।
+        তোমার কাছে আইডিয়া আছে। কিন্তু কোডিং এজেন্ট খোলার আগে তোমাকে ওর ভাষা বলতে হবে। কোড না &mdash; শুধু বানানোর শব্দভাণ্ডার। সেটা এরপর।
       </p>
     </FadeInBlock>
   </section>

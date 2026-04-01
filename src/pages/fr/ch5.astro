@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Le saut de « repondre aux questions »<br />a « passer a l'action ».
+          Le saut de &laquo;&nbsp;r&eacute;pondre aux questions&nbsp;&raquo;<br />&agrave; &laquo;&nbsp;passer &agrave; l'action&nbsp;&raquo;.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        Jusqu'a maintenant, chaque interaction avec l'IA suivait le meme schema. Tu tapes quelque chose. L'IA tape quelque chose en retour. Un autocomplete tres sophistique. Mais et si l'IA pouvait <em>faire des choses</em> ? Pas juste te parler de la meteo, mais consulter les previsions. Pas juste ecrire du code, mais l'executer. Pas juste te suggerer quoi chercher sur Google, mais fouiller le web elle-meme et te ramener ce qu'elle a trouve.
+        Jusqu'ici, chaque interaction avec l'IA suivait le m&ecirc;me sch&eacute;ma. Tu tapes quelque chose. L'IA tape quelque chose en retour. Un autocomplete tr&egrave;s sophistiqu&eacute;. Mais et si l'IA pouvait <em>faire des choses</em>&nbsp;? Pas juste te parler de la m&eacute;t&eacute;o, mais consulter les pr&eacute;visions. Pas juste &eacute;crire du code, mais l'ex&eacute;cuter. Pas juste te sugg&eacute;rer quoi chercher, mais fouiller le web elle-m&ecirc;me et te ramener ce qu'elle a trouv&eacute;.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Quand tu donnes des outils a l'IA, tu lui tends une boite a outils en disant : <em>« Voici ce que tu peux faire. C'est toi qui decides quand les utiliser. »</em> Elle peut chercher sur le web, executer du code, lire des fichiers, appeler des APIs. L'IA n'est pas devenue plus intelligente — elle est devenue <strong>connectee</strong>. Et ca souleve une question qui n'a rien a voir avec la technologie et tout a voir avec toi : jusqu'ou l'IA doit-elle aller toute seule avant de te consulter ?
+        Quand tu donnes des outils &agrave; l'IA, tu lui tends une bo&icirc;te &agrave; outils en disant : <em>&laquo;&nbsp;Voici ce que tu peux faire. C'est toi qui d&eacute;cides quand les utiliser.&nbsp;&raquo;</em> Elle peut chercher sur le web, ex&eacute;cuter du code, lire des fichiers, appeler des APIs. L'IA n'est pas devenue plus intelligente &mdash; elle est devenue <strong>connect&eacute;e</strong>. Et &ccedil;a soul&egrave;ve une question qui n'a rien &agrave; voir avec la technologie et tout &agrave; voir avec toi : jusqu'o&ugrave; l'IA doit-elle aller toute seule avant de te consulter&nbsp;?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        La reponse depend de trois choses. Les <strong>enjeux</strong> — quel est le pire scenario ? La <strong>reversibilite</strong> — est-ce que tu peux annuler ? Et la <strong>confiance</strong> — tu connais bien cet outil ? Une calculatrice que tu as utilisee cent fois merite plus de liberte qu'un nouveau plugin que tu n'as jamais teste.
+        La r&eacute;ponse d&eacute;pend de trois choses. Les <strong>enjeux</strong> &mdash; quel est le pire sc&eacute;nario&nbsp;? La <strong>r&eacute;versibilit&eacute;</strong> &mdash; est-ce que tu peux annuler&nbsp;? Et la <strong>confiance</strong> &mdash; tu connais bien cet outil&nbsp;? Une calculatrice que tu as utilis&eacute;e cent fois m&eacute;rite plus de libert&eacute; qu'un nouveau plugin que tu n'as jamais test&eacute;.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idee cle</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Id&eacute;e cl&eacute;</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ce n'est pas tout ou rien. Les meilleurs workflows IA donnent la liberte sur les taches a faibles enjeux et reversibles, tout en gardant l'humain dans la boucle pour celles a hauts enjeux et irreversibles. Ton boulot, c'est de definir la frontiere.
+          Ce n'est pas tout ou rien. Les meilleurs workflows IA donnent la libert&eacute; sur les t&acirc;ches &agrave; faibles enjeux et r&eacute;versibles, tout en gardant l'humain dans la boucle pour celles &agrave; hauts enjeux et irr&eacute;versibles. Ton boulot, c'est de d&eacute;finir la fronti&egrave;re.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Ou placerais-tu la limite ? Definis tes propres niveaux d'autonomie.
+        O&ugrave; placerais-tu la limite&nbsp;? D&eacute;finis tes propres niveaux d'autonomie.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="J'apprends l'utilisation des outils et le function calling de l'IA de la maniere la plus concrete possible. Ce cours te laisse vraiment construire et tester des choses, pas juste lire a leur sujet." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="J'apprends l'utilisation des outils et le function calling de l'IA de la mani\u00e8re la plus concr\u00e8te possible. Ce cours te laisse vraiment construire et tester, pas juste lire." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Les outils transforment l'IA de conseillere en assistante — de quelqu'un qui te dit quoi faire a quelqu'un qui le fait vraiment.
+        Les outils transforment l'IA de conseill&egrave;re en assistante &mdash; de quelqu'un qui te dit quoi faire &agrave; quelqu'un qui le fait vraiment.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tu as donne des mains a l'IA. Ensuite, on assemble ces outils en quelque chose capable de poursuivre un objectif tout seul — planifier, executer, se remettre d'erreurs. Il est temps de construire des agents.
+        Tu as donn&eacute; des mains &agrave; l'IA. Ensuite, on assemble ces outils en quelque chose capable de poursuivre un objectif tout seul &mdash; planifier, ex&eacute;cuter, se remettre d'erreurs. Il est temps de construire des agents.
       </p>
     </FadeInBlock>
   </section>

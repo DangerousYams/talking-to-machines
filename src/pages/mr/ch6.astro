@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="mr">
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Chatbot तू बोलण्याची वाट बघतो. Agent नाही. त्याला goal दे — "Mars colonization वर research करून report लिहा" — आणि तो काम steps मध्ये तोडतो, योग्य tools निवडतो, एक एक करून execute करतो, स्वतःचे results check करतो, आणि काम पूर्ण होईपर्यंत चालू ठेवतो. <em>Instructions ला respond करणं</em> आणि <em>goal pursue करणं</em> यातला फरक — हाच calculator आणि coworker मधला फरक आहे.
+        Chatbot तू बोलेपर्यंत वाट बघतो. Agent नाही. त्याला goal दे — "Mars colonization वर research कर आणि report लिही" — आणि तो काम steps मध्ये तोडतो, योग्य tools निवडतो, एक एक करून execute करतो, स्वतःचे results check करतो, आणि काम पूर्ण होईपर्यंत चालू ठेवतो. हा फरक — <em>instructions ला respond करणं</em> आणि <em>goal pursue करणं</em> — हा calculator आणि coworker मधला फरक आहे.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Agents एका loop वर चालतात: goal मिळव, steps plan कर, tools ने execute कर, results observe कर, progress evaluate कर, adjust कर. ते एकदा plan करून blindly execute करत नाहीत — सर्वात चांगले step तीन sideways गेल्यावर gracefully recover होतात. पण या power ची dark side आहे: agents फक्त चुकीची उत्तरं देत नाहीत, ते त्यावर <em>act</em> करतात, मग तुटलेला result वापरून पुढचा decision घेतात. Failures compound होतात.
+        Agents एका loop वर चालतात: goal मिळवा, steps plan करा, tools ने execute करा, results observe करा, progress evaluate करा, adjust करा. ते एकदा plan करून blindly execute करत नाहीत — सर्वात चांगले agents तिसरा step चुकला तरी gracefully recover करतात. पण या power ची dark side आहे: agents फक्त चुकीची उत्तरं देत नाहीत, ते त्यांवर <em>act</em> करतात, आणि मग तो broken result पुढचा decision घेण्यासाठी वापरतात. चुका compound होतात.
       </p>
     </FadeInBlock>
   </section>
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        प्रत्येक agent एकाच पाच-step cycle वर चालतो. हे steps समजणं हाच उपयुक्त काहीतरी बनवणं आणि API credits infinite loop मध्ये जाळणं यातला फरक आहे.
+        प्रत्येक agent एकाच पाच-step cycle वर चालतो. हे steps समजणं म्हणजे काहीतरी useful बनवणं आणि API credits infinite loop मध्ये जाळणं यातला फरक आहे.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal (ध्येय)', color: '#E94560', text: 'स्पष्ट objective मिळव. "Mars वर research कर" हे goal नाही. "Mars colonization च्या challenges चा 500-शब्दांचा summary लिहा, sources सहित" हे आहे.' },
-        { letter: 'P', name: 'Plan (योजना)', color: '#7B61FF', text: 'Goal concrete steps मध्ये तोड. चांगले planners flexible plans बनवतात. वाईट planners rigid scripts बनवतात जे पहिल्या surprise ला तुटतात.' },
-        { letter: 'T', name: 'Execute (अंमलबजावणी)', color: '#0EA5E9', text: 'प्रत्येक step योग्य tool वापरून run कर — search engines, code interpreters, file readers, APIs. Agents फक्त विचार करत नाहीत. ते act करतात.' },
-        { letter: 'M', name: 'Observe (निरीक्षण)', color: '#16C79A', text: 'काय झालं ते record कर आणि results check कर. Memory शिवाय, agent तेच failing action कायम repeat करत राहू शकतो.' },
-        { letter: 'E', name: 'Evaluate (मूल्यांकन)', color: '#F5A623', text: 'हे काम केलं का? मी goal च्या जवळ आलो का? काही चुकलं तर plan adjust कर आणि परत loop कर. हेच agent ला script पासून वेगळं करतं.' },
+        { letter: 'G', name: 'Goal (ध्येय)', color: '#E94560', text: 'स्पष्ट objective मिळव. "Mars वर research कर" हे goal नाही. "Mars colonization challenges चं 500-शब्दी summary लिही, sources सह" हे goal आहे.' },
+        { letter: 'P', name: 'Plan (योजना)', color: '#7B61FF', text: 'Goal ला concrete steps मध्ये तोड. चांगले planners flexible plans बनवतात. वाईट planners rigid scripts बनवतात जे पहिल्या surprise ला तुटतात.' },
+        { letter: 'T', name: 'Execute (अमलबजावणी)', color: '#0EA5E9', text: 'प्रत्येक step योग्य tool वापरून run कर — search engines, code interpreters, file readers, APIs. Agents फक्त विचार करत नाहीत. ते act करतात.' },
+        { letter: 'M', name: 'Observe (निरीक्षण)', color: '#16C79A', text: 'काय झालं ते record कर आणि results check कर. Memory शिवाय, agent तीच failing action कायमची repeat करू शकतो.' },
+        { letter: 'E', name: 'Evaluate (मूल्यांकन)', color: '#F5A623', text: 'हे काम झालं का? मी goal च्या जवळ आलो का? काही चुकलं तर plan adjust कर आणि परत loop कर. हेच agent ला script पेक्षा वेगळं करतं.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>मुख्य मुद्दा</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Chatbot एक single turn आहे. Agent एक पूर्ण conversation आहे — स्वतःशी, त्याच्या tools शी, आणि जगाशी. सर्वात चांगले agent builders autonomy maximize करत नाहीत. ते विचारपूर्वक checkpoints design करतात जिथे agent थांबतो आणि माणसाला ठरवू देतो पुढे जायचं की नाही.
+          Chatbot एक single turn आहे. Agent एक संपूर्ण conversation आहे — स्वतःशी, त्याच्या tools शी, आणि जगाशी. सर्वात चांगले agent builders autonomy maximize करत नाहीत. ते विचारपूर्वक checkpoints design करतात जिथे agent थांबतो आणि माणसाला पुढे जायचं का ते ठरवू देतो.
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        एक बनवायची वेळ आली. स्वतःचा agent scratch पासून design कर.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        आता एक बनव. Tank agent design कर &mdash; त्याच्या capabilities निवड, budget allocate कर, आणि strategy लिही &mdash; मग arena मध्ये deploy कर आणि तो autonomously लढताना बघ.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="नुकताच माझा पहिला AI agent scratch पासून design केला. हा course step by step architecture शिकवतो live demos सोबत. Hype नाही, फक्त building." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="नुकताच माझा पहिला AI agent scratch पासून design केला. हा course architecture step by step live demos सह समजावतो. Hype नाही, फक्त building." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ध्येय सगळ्या failures ला रोखणं नाही — failure recoverable बनवणं आहे.
+        ध्येय सगळ्या failures रोखणं नाही — failure recoverable बनवणं आहे.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        पुढे: तू एक खरा agent वापरशील — जो तुझा code वाचतो, changes लिहितो, tests run करतो, आणि स्वतःच्या चुका fix करतो. Claude Code ला भेट.
+        पुढे: तू एक खरा agent वापरशील — जो तुझा code वाचतो, changes लिहितो, tests run करतो, आणि स्वतःच्या चुका दुरुस्त करतो. Claude Code ला भेट.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

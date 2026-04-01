@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Codeを<br />マスターする
+          誰でも<br />作れる
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AIペアプログラマー、最初のコマンドから<br />カスタムSkillsまで。
+          プログラマーである必要はない。<br />必要なのはアイデアだ。
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        すべてのコーダーが覚えている瞬間がある。ターミナルを開いて、自然言語でリクエストを打つと、AIがファイルを読み、アーキテクチャを理解し、複数のファイルにコードを書き、実行し、エラーが出て、エラーを修正し、もう一度実行する &mdash; 一行も触らずに。Claude Codeはオートコンプリートじゃない。プロジェクト全体を見渡し、ファイルをまたいで変更し、シェルコマンドを実行し、自分のミスをイテレーションする<em>エージェンティック</em>なコーディングツールだ。
+        オハイオ州の教師が週末で採点アプリを作った。ミュージシャンがエネルギーとキーで曲順を最適化するセットリストツールを作った。高校生がどんな論題にも反論を生成するディベート練習ツールを作った。誰一人プログラマーじゃない。プログラミングの授業を受けたこともない。欲しいものを説明したら、コーディングエージェントが作ってくれたのだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        ただし、ツールは操縦する人間次第でしかない。Claude Codeは数秒で千行の完璧なコードを書ける &mdash; あるいは、千行のもっともらしいゴミを。違いを生むのは君だ。
+        これは誰も予想しなかったブレイクスルーだ。コーダーが速くなったんじゃない。<strong>非コーダーがソフトウェアを作れるようになった</strong>のだ。スプレッドシートがデータ分析を民主化し、Canvaがグラフィックデザインを民主化したように、AIコーディングエージェントがソフトウェア開発そのものを民主化している。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        指定、生成、検証
+        パーソナルソフトウェア革命
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Claude Codeにタスクを渡すと、エージェントループが回る：コードベースを読んで、何を変えるか計画して、編集を書いて、コードを実行して、壊れたものを修正する。このループが3回、5回、10回回ることもある &mdash; すべて数秒で。もう一行ずつ書く必要はない。何を作るか<strong>指定</strong>し、AIに<strong>生成</strong>させ、それが本当に正しいか<strong>検証</strong>する。ほとんどの初心者は最後のステップを飛ばす。コードが現れて、もっともらしく見えて、先に進む。そういう人にはなるな。生成されたコードはファーストドラフトだ。君の検証が、出版可能にする編集だ。
+        すべてを変えるアイデアがある。<strong>パーソナルソフトウェア</strong>だ。ユーザーがたった一人のためのツール。君自身のための。マーケットリサーチも、ビジネスプランも、資金調達も不要。あるのは君の問題と、それを解決するツールだけだ。AI以前は、パーソナルソフトウェアを作るにはプログラミングを学ぶ必要があった。何ヶ月も何年もかかる。今は午後ひとつで済む。作るコストがほぼゼロに下がった。つまり唯一大事なのは、作る価値のあるアイデアを持っているかどうかだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        秘密兵器は<code>CLAUDE.md</code>ファイル &mdash; プロジェクトのルートに置くと、Claude Codeが毎セッションの開始時に読む。テックスタック、命名規則、スタイルルール、テストの期待値 &mdash; すべてを一度エンコードすれば、繰り返す必要がない。コーディングに適用されたコンテキストエンジニアリングだ。
+        これを可能にするツールが<strong>コーディングエージェント</strong>だ。Claude Code、Cursor、Antigravity、Replit。プロジェクト全体を読み、複数ファイルにまたがってコードを書き、実行し、エラーが出たら直し、また実行する。コードに一行も触れずに。自動補完じゃない。君の説明を動くソフトウェアに変えるAIコラボレーターだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>目標はすべての行を書くことじゃない &mdash; すべての行を理解することだ。</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>ディレクターの役割</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Claude Codeが生成したコードを読めないなら、検証できない。最高のClaude Codeユーザーは、最も多くのコードを生成する人じゃない &mdash; 最高の質問をして、最も微妙なバグを見つける人だ。
+          コードを書くのは君じゃない。<strong>ディレクション</strong>するのだ。何を作るか指定し、出力を評価し、正しくなるまでイテレーションする。技術的な実行はエージェントが担当する。映画監督みたいなものだ。カメラは操作しないけど、あなたのビジョンなしには何も生まれない。
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        エージェントは君の知らないことを全部知っている
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        「でもデータベースって何かわからない」。いいニュースがある。わからなくていいのだ。コーディングエージェントは同時に君の家庭教師でもある。何でも聞いていい。「Reactコンポーネントって何？」と聞けば説明してくれる。「これをインターネットにどうやって公開するの？」と聞けばステップごとに案内してくれる。「このエラーはどういう意味？」と聞けば専門用語をわかりやすい言葉に翻訳してくれる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        これこそ、他のすべてを可能にするセーフティネットだ。技術用語を暗記する必要はない。それが<em>存在する</em>ことを知っていればいい。そうすれば聞ける。エージェントがすべてのギャップを埋めてくれる。忍耐強く、疲れ知らずの専門家が隣に座っていて、初歩的な質問をしても絶対に判断しない。そんな存在だ。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>スキルのパラドックス</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          必要なのは、出力を<em>評価</em>できるだけの知識であって、すべてのコードを書く知識じゃない。映画監督はカメラの作り方を知らなくていい。でもそのショットが良いかどうかは見極められる必要がある。ここでも同じだ。アプリが動くかどうかがわかればいい。コードの仕組みは知らなくていい。
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        ループを実際に見てみよう。リクエストを打ってClaude Codeの動きを観察しよう。
+        非コーダーたちが作ったものを見てみよう。そして自分のアイデアを想像しよう。
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Claude Codeの章がすごい &mdash; AIペアプログラマーが問題を考え抜いて、コードを書いて、自分でデバッグする様子を見た。コーディングの未来がここにある。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="この章で、AIがあれば誰でもソフトウェアを作れると確信した。ふわっとした話じゃなく、非コーダーが実際にツールを作っている具体例を見せてくれる。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Codeは君の<em>代わりに</em>コードを書いているんじゃない &mdash; 君と<em>一緒に</em>書いている。
+        ソフトウェアを作るコストがゼロになった。残っているのは、作る価値のあるアイデアだけだ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        1つの会話は1つのタスクを処理できる。でも本当のプロジェクトには何十もある。次は、大きな野望をAIが実際に実行できるピースに分解する方法だ。
+        アイデアはある。でもコーディングエージェントを開く前に、その言語を話せるようになる必要がある。コードじゃなく、ものを作るためのボキャブラリーだ。それが次の話。
       </p>
     </FadeInBlock>
   </section>

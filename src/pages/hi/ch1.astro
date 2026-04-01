@@ -31,13 +31,13 @@ const chapter = chapters[0];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          तुम पहले से ही<br />AI बोलते हो
+          तुम पहले से<br />AI बोलते हो
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          तुम्हारा पहला draft magic नहीं होगा।<br />लेकिन तीसरा हो सकता है।
+          तुम्हारा पहला draft magic नहीं होगा।<br />लेकिन तीसरा शायद हो।
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        तुम जिंदगी भर AI से बात करते रहे हो — हर search query, हर Siri question, हर Netflix recommendation। लेकिन machine <em>से</em> बात करने और machine <em>के साथ</em> बात करने में फर्क है। अभी लाखों लोग prompt type करते हैं, mediocre response मिलता है, और सोचते हैं: "लगता है AI इतना smart नहीं है।" वो गलत हैं। AI क्या कर सकता है और ज्यादातर लोग इससे क्या करवाते हैं — इनके बीच का gap बहुत बड़ा है। और यह technology problem नहीं है — यह communication problem है।
+        तुम पूरी ज़िंदगी AI से बात करते आ रहे हो — हर search query, हर Siri सवाल, हर Netflix recommendation। लेकिन किसी machine <em>से</em> बात करने और उस <em>के साथ</em> बात करने में फ़र्क़ है। अभी, लाखों लोग एक prompt type करते हैं, एक mediocre जवाब पाते हैं, और सोचते हैं: "AI इतना smart नहीं है शायद।" वो ग़लत हैं। AI जो कर <em>सकता</em> है और लोग उससे जो करवा <em>पाते</em> हैं — इस gap के बीच ज़मीन-आसमान का फ़र्क़ है। और ये technology की problem नहीं है — ये communication की problem है।
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        पांच Building Blocks
+        पाँच Building Blocks
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        यहाँ secret है: जो लोग AI से incredible results पाते हैं वो तुमसे smart नहीं हैं। वो एक formula use करते हैं — पांच building blocks जो हर बार काम करते हैं। तुम्हें हमेशा सभी पांच की जरूरत नहीं। लेकिन यह जानना कि वो exist करते हैं, Matrix देखना सीखने जैसा है।
+        यहाँ secret ये है: जो लोग AI से incredible results निकालते हैं, वो तुमसे ज़्यादा smart नहीं हैं। वो एक formula use करते हैं — पाँच building blocks जो हर बार काम करते हैं। तुम्हें हर बार पाँचों की ज़रूरत नहीं। लेकिन इन्हें जान लो तो ऐसा है जैसे Matrix दिखने लगे।
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role', color: '#E94560', text: 'AI को क्या बनना चाहिए? Tutor अलग तरह से explain करता है professor से। Role सब कुछ shape करता है।' },
-        { letter: 'T', name: 'Task', color: '#0F3460', text: 'Exactly क्या करना चाहिए? "मेरी help करो" नहीं बल्कि "मेरा thesis statement strengthen करो।" एक prompt में एक task।' },
-        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'Response कैसा दिखना चाहिए? "मुझे 3 alternatives numbered list में दो।" Format rambling prevent करता है।' },
-        { letter: 'C', name: 'Constraints', color: '#16C79A', text: 'क्या नहीं करना चाहिए? "Clichés avoid करो। 200 words के under रखो।" Guardrails bad outputs prevent करते हैं।' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: 'Show करो, tell मत करो। "Good" कैसा दिखता है इसका एक example सौ words की description से better है।' },
+        { letter: 'R', name: 'Role (भूमिका)', color: '#E94560', text: 'AI को कौन होना चाहिए? एक tutor अलग तरीके से समझाता है, एक professor अलग तरीके से। Role सब कुछ बदल देता है।' },
+        { letter: 'T', name: 'Task (काम)', color: '#0F3460', text: 'उसे exactly क्या करना चाहिए? "मेरी मदद करो" नहीं — "मेरा thesis statement मज़बूत करो।" एक prompt में एक task।' },
+        { letter: 'F', name: 'Format (रूप)', color: '#7B61FF', text: 'जवाब कैसा दिखे? "मुझे 3 alternatives एक numbered list में दो।" Format बेमतलब का भटकाव रोकता है।' },
+        { letter: 'C', name: 'Constraints (सीमाएँ)', color: '#16C79A', text: 'क्या नहीं करना चाहिए? "Clichés मत use करो। 200 शब्दों से कम रखो।" Guardrails ख़राब output रोकती हैं।' },
+        { letter: 'E', name: 'Examples (उदाहरण)', color: '#F5A623', text: 'बताओ मत, दिखाओ। "अच्छा" कैसा दिखता है — इसका एक example सौ शब्दों की description से ज़्यादा काम का है।' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -101,9 +101,9 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Key insight</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">ज़रूरी बात</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          तुम्हें हर बार सभी पांच की जरूरत नहीं। लेकिन जब AI तुम्हें garbage दे, तो देखो क्या missing है — almost हमेशा इन पांच में से कुछ होता है।
+          तुम्हें हर बार पाँचों की ज़रूरत नहीं। लेकिन जब AI तुम्हें बकवास दे, तो देखो क्या missing है — लगभग हमेशा इन्हीं पाँच में से कुछ होगा।
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        बस theory काफी है। Building blocks toggle करो और AI response को real time में transform होते देखो।
+        बहुत theory हो गई। Building blocks toggle करो और AI का response real time में बदलते देखो।
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="अभी-अभी एक अच्छे AI prompt के 5 building blocks discover किए। यह interactive course seriously well done है — तुम खुद prompts build करते हो और उन्हें improve होते देखते हो real time में।" client:visible />
+  <SharePrompt text="अभी-अभी अच्छे AI prompt के 5 building blocks discover किए। ये interactive course सच में बहुत अच्छा है — तुम ख़ुद prompts बनाते हो और उन्हें improve होते देखते हो।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        तुम पहले से ही AI बोलते हो। बस इसे intention के साथ बोलना सीखो।
+        तुम पहले से AI बोलते हो। बस अब इरादे से बोलना सीखना है।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        आगे: वो techniques जो simple back-and-forth को real conversation में बदल देती हैं — जहाँ AI सिर्फ answer नहीं करता, बल्कि <em>तुम्हारे साथ think करता है</em>।
+        अगला: वो techniques जो एक simple back-and-forth को असली conversation में बदल देती हैं — जहाँ AI सिर्फ़ जवाब नहीं देता, तुम्हारे <em>साथ सोचता</em> है।
       </p>
     </FadeInBlock>
   </section>

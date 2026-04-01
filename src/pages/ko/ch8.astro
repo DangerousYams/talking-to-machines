@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          복잡성<br />오케스트레이션
+          만들기의<br />언어
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          어떤 context window보다도 큰<br />프로젝트에서 AI를 관리하기.
+          만들기의 어휘 &mdash;<br />코드가 아니라 명사와 동사.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        야심 있는 초보자라면 반드시 부딪히는 순간이 있어: AI한테 진짜 뭔가를 만들어달라고 해 — 풀 게임, 백엔드 있는 웹사이트, 인용이 달린 연구 논문 — 그런데 전부 무너져. AI가 충분히 똑똑하지 않아서가 아냐. 프로젝트가 한 번의 대화에 넣기엔 너무 큰 거야. 요구사항을 잔뜩 붙여넣고 이십 분 뒤에 네가 요청한 것의 반을 잊어버렸다는 걸 깨달아.
+        이제 코딩 에이전트 앞에 앉아서 뭔가를 만들 거야. 에이전트가 "deploy", "endpoint", "component", "schema" 같은 단어를 쓸 거야. 이 단어들이 불투명하면 길을 잃을 거야 — 만들 수 없어서가 아니라 <em>디렉팅</em>할 수 없어서. 이 챕터가 해독기를 줘. 코딩하는 법이 아니라. <strong>만들기의 언어를 말하는</strong> 법.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        이건 AI 문제가 아냐. <strong>오케스트레이션 문제</strong>야. 그리고 이걸 해결하는 법을 배우는 게 AI를 일회성 작업에 쓰는 사람과 진짜 뭔가를 만드는 사람의 차이야.
+        자동차 운전이라고 생각해. 연소 엔진, 변속비, 브레이크 액 압력을 이해할 필요 없어. 알아야 하는 건: 가속 페달, 브레이크, 핸들, 거울. <em>방향 지시</em>의 어휘지, 구현의 어휘가 아니야.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Context Packing의 기술
+        스택: 해독기
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        복잡한 프로젝트는 prompt 하나로 되는 방식을 깨뜨려. Context가 넘치고, 집중력이 흩어지고, 에러가 쌓여. 해결책은 더 좋은 prompt가 아냐 — <strong>분해</strong>야. 프로젝트를 집중된 작업들로 나누고, 각 작업마다 AI가 실제로 필요한 context를 신중하게 선택해. 너무 적으면 hallucination이 일어나. 너무 많으면 집중력을 잃어. 딱 맞는 지점은 외과 수술 같은 정밀함이야.
+        모든 앱은 &mdash; Instagram부터 간단한 할 일 목록까지 &mdash; 네 개의 레이어로 만들어져. 개발자들은 이걸 "스택"이라고 불러. 전부 해독해줄게:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        여행 가방 싸는 거라고 생각해. 옷장 전체를 가져갈 수 없잖아. 어디 가는지(작업), 뭐가 필요한지(관련 정보), 뭘 놔두고 갈 수 있는지(나머지 전부)를 생각해야 해. 각 대화가 정확히 필요한 context만 받아 — 그 이상도 이하도 아니게.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">프론트엔드</p>
+          <p style="margin: 0; line-height: 1.6;">사람들이 보고 만지는 부분. 버튼, 텍스트, 이미지, 애니메이션. 레스토랑의 다이닝 룸.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">백엔드</p>
+          <p style="margin: 0; line-height: 1.6;">뒤에서 돌아가는 로직. 요청을 처리하고, 비밀번호를 확인하고, 이메일을 보내. 주방.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">데이터베이스</p>
+          <p style="margin: 0; line-height: 1.6;">앱이 것들을 기억하는 곳. 사용자 계정, 게시물, 설정. 식료품 저장실과 레시피 북.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">배포</p>
+          <p style="margin: 0; line-height: 1.6;">인터넷에 올리는 방법. 호스팅, 도메인, 라이브 전환. 레스토랑 문을 여는 것.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        이게 전부야. 네가 써본 모든 앱은 이 네 레이어의 조합이야. 코딩 에이전트가 "백엔드를 설정할게요"라고 하면 "뒤에서 돌아가는 로직을 쓸게요"란 뜻이야. "배포하죠"라고 하면 "인터넷에 올리죠"란 뜻이야. 이 레이어들이 <em>어떻게</em> 작동하는지 알 필요 없어. <em>존재한다는 것</em>과 각각 뭘 위한 건지만 알면 돼.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        에이전트가 튜터야
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        아무도 안 알려주는 부분이 있어: <strong>코딩 에이전트는 네 선생님이기도 해.</strong> "npm"이 뭔지 모르겠어? 물어봐. 에러 메시지에 혼란스러워? 붙여넣고 "개발자가 아닌 사람처럼 설명해줘"라고 해. 에이전트가 왜 다른 것 대신 React를 골랐는지 알고 싶어? 물어봐. 쉬운 말로, 단계별로, 네가 필요한 만큼 설명해줘.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">핵심 포인트</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>첫 5분</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          핸드오프 산출물의 품질이 하류에서 만들어지는 모든 것의 품질을 결정해. 깔끔한 스키마가 모호한 설명보다 항상 나아. 쓰레기가 들어가면 쓰레기가 나와 — 대화를 넘나들며.
+          코딩 도구를 열어. 프로젝트를 쉬운 말로 설명해: "운동을 기록하고 시간에 따른 진행 상황을 볼 수 있는 운동 트래커를 만들고 싶어." 에이전트가 확인 질문을 하고, 스택을 제안하고, 만들기 시작해. 네 첫 번째 할 일은 <em>질문에 답하고</em> <em>만들어지는 걸 지켜보는</em> 거야.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Context 여행 가방을 싸봐. 넘치지 않게 중요한 것만 넣을 수 있을까?
+        웹 앱의 네 레이어를 탐험해봐. 클릭해서 어휘를 배우고 &mdash; 테스트해봐.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI의 가장 어려운 부분은 prompting이 아냐 — 여러 대화에 걸쳐 복잡한 프로젝트를 오케스트레이션하는 거야. 이 코스가 드디어 그 방법을 설명해줘." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="이 챕터가 코드 없이 기술 스택을 설명해줘. 프론트엔드, 백엔드, 데이터베이스, 배포 — 드디어 이해됐어. 몇 년 전에 읽었으면 좋았을 텐데." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        복잡한 프로젝트는 무섭지 않아. 깔끔한 산출물로 연결된 집중된 대화의 연속일 뿐이야.
+        엔진이 어떻게 작동하는지 알 필요 없어. 운전하는 법만 알면 돼.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        다음: AI가 <em>틀릴</em> 때를 아는 것. Hallucination, 아첨, 그리고 정직하게 해주는 검증 습관들.
+        단어를 알게 됐어. 아이디어도 있어. 이제 코딩 에이전트 앞에 앉아서 실제로 만들 시간이야. 다음: 빌드 루프의 기술 &mdash; 반복, 평가, 그리고 뭔가 깨졌을 때 어떻게 하는지.
       </p>
     </FadeInBlock>
   </section>

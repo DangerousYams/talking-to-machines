@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Conocimiento sin creación es trivial.<br />Es hora de lanzarlo.
+          Conocimiento sin creación es trivia.<br />Es hora de lanzarlo.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Lo lograste. A lo largo de diez capítulos pasaste de "ayúdame con mi ensayo" a diseñar contexto, construir agentes y depurar alucinaciones. Has aprendido más sobre IA de lo que sabe la mayoría de adultos. Pero aquí está la verdad incómoda: <strong>nada de eso importa hasta que construyas algo.</strong> Leer sobre IA es como leer sobre natación — puedes estudiar cada técnica de brazada, pero hasta que te metas al agua, no <em>sabes</em> nada de eso. Solo sabes <em>sobre</em> eso.
+        Lo lograste. A lo largo de diez capítulos pasaste de "ayúdame con mi ensayo" a diseñar contexto, construir agentes, aprender el vocabulario del software, dominar el ciclo de construcción y desarrollar criterio. Pero aquí está la verdad incómoda: <strong>nada de eso importa hasta que construyas algo.</strong> Leer sobre IA es como leer sobre natación: puedes estudiar cada técnica de brazada, pero hasta que te metas al agua, no <em>sabes</em> nada. Solo sabes <em>sobre</em> ello.
       </p>
     </FadeInBlock>
   </section>
@@ -66,19 +67,19 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Antes de escribir tu primer prompt, hay un movimiento poderoso que la mayoría de principiantes se saltan: <strong>dale a tu herramienta de IA un archivo de instrucciones permanente.</strong> En lugar de re-explicar tu proyecto en cada sesión, lo escribes una vez y tu IA lo lee automáticamente. Claude Code lee <code>CLAUDE.md</code>. Cursor lee <code>.cursorrules</code>. GitHub Copilot lee <code>.github/copilot-instructions.md</code>. Mismo concepto, diferentes nombres de archivo. Esto es ingeniería de contexto del Capítulo 3 — aplicada a nivel de proyecto.
+        Antes de escribir tu primer prompt, hay un movimiento poderoso que la mayoría de principiantes se saltan: <strong>dale a tu herramienta de IA un archivo de instrucciones permanente.</strong> En lugar de reexplicar tu proyecto en cada sesión, lo escribes una vez y tu IA lo lee automáticamente. Claude Code lee <code>CLAUDE.md</code>. Cursor lee <code>.cursorrules</code>. GitHub Copilot lee <code>.github/copilot-instructions.md</code>. Mismo concepto, diferentes nombres de archivo. Esto es ingeniería de contexto del capítulo 3, aplicada a nivel de proyecto.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Un buen archivo de instrucciones responde tres preguntas: ¿qué estás construyendo?, ¿cuáles son las reglas?, y ¿cómo se ve algo "bueno"? Acértalas y cada conversación con tu IA empezará diez pasos adelante. Define el alcance de tu proyecto lo suficientemente pequeño como para terminarlo — un proyecto de fin de semana terminado le gana siempre a una obra maestra abandonada.
+        Un buen archivo de instrucciones responde tres preguntas: ¿qué estás construyendo?, ¿cuáles son las reglas?, y ¿cómo se ve algo "bueno"? Acértalas y cada conversación con tu IA empezará diez pasos adelante. Define el alcance de tu proyecto lo suficientemente pequeño como para terminarlo: un proyecto de fin de semana terminado le gana siempre a una obra maestra abandonada.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Punto clave</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
           Un buen archivo de instrucciones de proyecto es la diferencia entre una IA que te ayuda y una IA que te <em>entiende</em>. Escríbelo una vez, benefíciate en cada sesión.
         </p>
@@ -112,7 +113,7 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Hace once capítulos, escribiste "ayúdame con mi ensayo" y esperaste lo mejor. Ahora diseñas contexto, construyes agentes, verificas resultados y aplicas criterio en cada paso. El curso terminó. El aprendizaje real empieza ahora — ve y haz algo que solo tú pensarías en hacer.
+        Hace once capítulos, escribiste "ayúdame con mi ensayo" y esperaste lo mejor. Ahora diseñas contexto, construyes agentes, hablas el idioma del software, iteras con confianza y aplicas criterio a todo lo que creas. El curso terminó. El aprendizaje real empieza ahora: ve y haz algo que solo tú pensarías en hacer.
       </p>
     </FadeInBlock>
 

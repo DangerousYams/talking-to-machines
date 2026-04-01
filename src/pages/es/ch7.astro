@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Dominando<br />Claude Code
+          Cualquiera puede<br />construir esto
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Tu programador de pareja con IA, desde el<br />primer comando hasta Skills personalizadas.
+          No necesitas ser programador.<br />Necesitas una idea.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Hay un momento que todo programador recuerda. Abres una terminal, escribes una petición en lenguaje natural, y ves cómo una IA lee tus archivos, entiende tu arquitectura, escribe código en múltiples archivos, lo ejecuta, encuentra un error, lo corrige, y lo ejecuta otra vez — todo sin que toques ni una sola línea. Claude Code no es autocompletado. Es una herramienta de programación <em>agéntica</em> que ve tu proyecto entero, hace cambios en varios archivos, ejecuta comandos del sistema e itera sobre sus propios errores.
+        Una profesora en Ohio construyó una app de calificaciones en un fin de semana. Un músico construyó un optimizador de setlists que ordena canciones por energía y tonalidad. Un estudiante de preparatoria construyó una herramienta de preparación para debates que genera contraargumentos para cualquier resolución. Ninguno es programador. Ninguno tomó una clase de programación. Describieron lo que querían, y un agente de código lo construyó.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Pero la herramienta es tan buena como el humano que la dirige. Claude Code puede escribir mil líneas de código perfecto en segundos — o mil líneas de basura que parece plausible. La diferencia eres tú.
+        Este es el avance que nadie vio venir. No que los programadores se hicieran más rápidos, sino que <strong>los no programadores puedan crear software.</strong> De la misma manera que las hojas de cálculo democratizaron el análisis de datos y Canva democratizó el diseño gráfico, los agentes de código con IA están democratizando el desarrollo de software.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Especificar, generar, verificar
+        La revolución del software personal
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Cuando le das una tarea a Claude Code, ejecuta un ciclo de agente: lee la base de código, planifica qué cambiar, escribe las ediciones, ejecuta el código, arregla lo que se rompió. Puede recorrer ese ciclo tres, cinco, diez veces — todo en segundos. Tu trabajo ya no es escribir cada línea. Es <strong>especificar</strong> qué construir, dejar que la IA lo <strong>genere</strong>, y luego <strong>verificar</strong> que realmente esté bien. La mayoría de los principiantes se saltan ese último paso. Ven el código aparecer, parece razonable, y siguen adelante. No seas esa persona. El código generado es un primer borrador. Tu verificación es la edición que lo hace publicable.
+        Esta es la idea que lo cambia todo: <strong>software personal.</strong> Herramientas creadas para una audiencia de uno: tú. Sin estudio de mercado, sin plan de negocio, sin inversores. Solo un problema que tienes y una herramienta que lo resuelve. Antes de la IA, crear software personal significaba aprender a programar, lo cual toma meses o años. Ahora toma una tarde. El costo de construir cayó a casi cero, lo que significa que lo único que importa es tener una idea que valga la pena construir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        El arma secreta es el archivo <code>CLAUDE.md</code> — ponlo en la raíz de tu proyecto y Claude Code lo lee al inicio de cada sesión. Tu stack tecnológico, convenciones de nombres, reglas de estilo, expectativas de testing — todo codificado una vez para que nunca te repitas. Es ingeniería de contexto aplicada a la programación.
+        Las herramientas que hacen esto posible se llaman <strong>agentes de código</strong>. Claude Code, Cursor, Antigravity, Replit: son herramientas de IA que pueden leer tu proyecto completo, escribir código en múltiples archivos, ejecutarlo, encontrar un error, corregirlo y volver a ejecutarlo. Todo sin que toques una sola línea de código. No son autocompletado. Son colaboradores de IA que convierten tus descripciones en software funcional.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>El objetivo no es escribir cada línea — es entender cada línea.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>El rol del director</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Si no puedes leer el código que genera Claude, no puedes verificarlo. Los mejores usuarios de Claude Code no son los que generan más código — son los que hacen las mejores preguntas y detectan los bugs más sutiles.
+          Tú no escribes el código. Tú <strong>diriges</strong>. Tu trabajo es especificar qué construir, evaluar el resultado e iterar hasta que esté bien. El agente se encarga de la ejecución técnica. Piensa en ti como un director de cine: no operas la cámara, pero nada se hace sin tu visión.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tu agente sabe todo lo que tú no
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Pero no sé qué es una base de datos." Buenas noticias: no necesitas saberlo. Tu agente de código también es tu tutor. Pregúntale lo que sea. "¿Qué es un componente de React?" Te lo explicará. "¿Cómo publico esto en internet?" Te guiará paso a paso. "¿Qué significa este error?" Traducirá la jerga a español llano.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Esta es la red de seguridad que hace posible todo lo demás. No necesitas memorizar vocabulario técnico: necesitas saber que <em>existe</em> para poder preguntar sobre él. El agente llena cada hueco. Es como tener a un experto paciente e incansable sentado a tu lado que nunca te juzga por hacer una pregunta básica.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>La paradoja de las habilidades</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Necesitas suficiente conocimiento para <em>evaluar</em> el resultado, no para escribir cada línea. Un director de cine no necesita saber construir una cámara, pero sí necesita saber si la toma se ve bien. Igual aquí: necesitas saber si la app funciona, no cómo funciona el código.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Mira el ciclo en acción. Escribe una petición y observa cómo trabaja Claude Code.
+        Explora lo que personas sin experiencia en código han construido &mdash; y luego imagina lo tuyo.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Este capítulo sobre Claude Code es increíble — vi a un programador de pareja con IA pensar un problema, escribir código y depurarse a sí mismo. El futuro de la programación ya llegó." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Este capítulo me convenció de que cualquiera puede crear software con IA. No de forma abstracta: muestra exactamente cómo personas sin experiencia en código están construyendo herramientas reales." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code no está escribiendo código para ti — está escribiendo código contigo.
+        El costo de crear software cayó a cero. Lo único que queda es tener una idea que valga la pena construir.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Una conversación puede manejar una tarea. Pero los proyectos reales tienen docenas. Lo que sigue: cómo dividir grandes ambiciones en piezas que la IA realmente pueda ejecutar.
+        Tienes la idea. Pero antes de abrir un agente de código, necesitas hablar su idioma. No código, solo el vocabulario de construir. Eso es lo que sigue.
       </p>
     </FadeInBlock>
   </section>

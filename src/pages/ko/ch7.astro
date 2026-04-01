@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code<br />마스터하기
+          누구나<br />만들 수 있어
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          네 AI 페어 프로그래머, 첫 번째<br />명령부터 커스텀 Skills까지.
+          프로그래머일 필요 없어.<br />아이디어만 있으면 돼.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        모든 코더가 기억하는 순간이 있어. 터미널을 열고, 자연어로 요청을 타이핑하고, AI가 네 파일을 읽고, 아키텍처를 이해하고, 여러 파일에 걸쳐 코드를 쓰고, 실행하고, 에러를 만나고, 에러를 고치고, 다시 실행하는 걸 지켜보는 순간 — 네가 한 줄도 안 건드렸는데. Claude Code는 자동완성이 아냐. 전체 프로젝트를 보고, 파일을 넘나들며 수정하고, 셸 명령을 실행하고, 자기 실수를 반복 수정하는 <em>에이전틱</em> 코딩 도구야.
+        오하이오의 한 선생님이 주말 동안 채점 앱을 만들었어. 한 뮤지션은 에너지와 키에 맞춰 곡 순서를 정리하는 세트리스트 최적화 도구를 만들었어. 한 고등학생은 어떤 논제든 반박 논거를 생성하는 토론 준비 도구를 만들었어. 이 중 아무도 프로그래머가 아니야. 코딩 수업을 들은 적도 없어. 원하는 걸 설명했고, 코딩 에이전트가 만들어줬어.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        근데 도구는 조종하는 사람만큼만 좋아. Claude Code는 몇 초 만에 천 줄의 완벽한 코드를 쓸 수도 있고 — 천 줄의 그럴듯해 보이는 쓰레기를 쓸 수도 있어. 차이는 너야.
+        이게 아무도 예상 못 한 혁명이야. 코더가 빨라진 게 아니라 &mdash; <strong>코딩을 모르는 사람도 소프트웨어를 만들 수 있게 된</strong> 거야. 스프레드시트가 데이터 분석을 민주화하고 Canva가 그래픽 디자인을 민주화한 것처럼, AI 코딩 에이전트는 소프트웨어 개발 자체를 민주화하고 있어.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        명세, 생성, 검증
+        개인 소프트웨어 혁명
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Claude Code한테 작업을 주면, 에이전트 루프를 돌려: 코드베이스를 읽고, 뭘 바꿀지 계획하고, 수정을 쓰고, 코드를 실행하고, 깨진 거 고치고. 이 루프를 서너 번, 다섯 번, 열 번 돌릴 수도 있어 — 전부 몇 초 만에. 네 역할은 더 이상 모든 줄을 쓰는 게 아냐. 뭘 만들지 <strong>명세하고</strong>, AI가 <strong>생성하게</strong> 하고, 그게 실제로 맞는지 <strong>검증하는</strong> 거야. 대부분의 초보자는 마지막 단계를 건너뛰어. 코드가 나타나고, 합리적으로 보이면, 넘어가. 그러지 마. 생성된 코드는 초안이야. 네 검증이 출판 가능하게 만드는 편집이야.
+        모든 걸 바꾸는 아이디어가 하나 있어: <strong>개인 소프트웨어.</strong> 사용자가 한 명인 도구 &mdash; 바로 너. 시장 조사도, 사업 계획도, 투자금도 필요 없어. 네가 겪는 문제와 그걸 해결하는 도구만 있으면 돼. AI 이전에는 개인 소프트웨어를 만들려면 코딩을 배워야 했고, 그건 몇 달에서 몇 년이 걸렸어. 이제는 오후 하나면 돼. 만드는 비용이 거의 제로로 떨어졌어 &mdash; 그래서 남은 건 만들 가치 있는 아이디어를 갖는 것뿐이야.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        비밀 무기는 <code>CLAUDE.md</code> 파일이야 — 프로젝트 루트에 넣으면 Claude Code가 매 세션 시작할 때 읽어. 기술 스택, 네이밍 컨벤션, 스타일 룰, 테스트 기대치 — 전부 한 번 기록해두면 다시는 반복할 필요 없어. 코딩에 적용된 context engineering이야.
+        이걸 가능하게 하는 도구를 <strong>코딩 에이전트</strong>라고 해. Claude Code, Cursor, Antigravity, Replit &mdash; 네 프로젝트 전체를 읽고, 여러 파일에 걸쳐 코드를 쓰고, 실행하고, 에러를 만나면 고치고, 다시 실행하는 AI 도구들이야. 코드 한 줄도 안 건드려. 자동완성이 아니야. 네 설명을 작동하는 소프트웨어로 바꿔주는 AI 협업자야.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>목표는 모든 줄을 쓰는 게 아냐 — 모든 줄을 이해하는 거야.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>디렉터의 역할</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Claude가 생성한 코드를 읽을 수 없으면, 검증할 수 없어. 최고의 Claude Code 사용자는 가장 많은 코드를 생성하는 사람이 아냐 — 가장 좋은 질문을 하고 가장 미묘한 버그를 잡아내는 사람이야.
+          네가 코드를 쓰는 게 아니야. <strong>디렉팅</strong>하는 거야. 네 역할은 뭘 만들지 명시하고, 결과물을 평가하고, 맞을 때까지 반복하는 거야. 에이전트가 기술적 실행을 담당해. 영화 감독이라고 생각해 &mdash; 카메라를 직접 조작하진 않지만, 네 비전 없이는 아무것도 만들어지지 않아.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        에이전트는 네가 모르는 것도 다 알아
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "데이터베이스가 뭔지도 모르는데요." 좋은 소식: 몰라도 돼. 코딩 에이전트가 튜터이기도 하거든. 아무거나 물어봐. "React 컴포넌트가 뭐야?" 설명해줘. "이걸 인터넷에 올리려면 어떻게 해?" 단계별로 알려줘. "이 에러 메시지가 무슨 뜻이야?" 전문 용어를 쉬운 말로 번역해줘.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        이게 다른 모든 걸 가능하게 하는 안전망이야. 기술 용어를 외울 필요 없어 &mdash; 존재한다는 걸 알고 물어볼 수 있으면 돼. 에이전트가 모든 빈칸을 채워줘. 옆에 앉아서 기초적인 질문도 절대 판단 안 하는, 인내심 넘치고 지칠 줄 모르는 전문가가 있는 거랑 같아.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>스킬 패러독스</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          결과물을 <em>평가</em>할 수 있는 정도의 지식이면 돼, 모든 줄을 직접 쓸 필요는 없어. 영화 감독이 카메라 만드는 법을 알 필요는 없잖아 &mdash; 근데 샷이 괜찮은지는 알아야 해. 여기도 마찬가지: 앱이 작동하는지 알면 돼, 코드가 어떻게 작동하는지는 몰라도 돼.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        루프가 작동하는 걸 직접 봐. 요청을 타이핑하고 Claude Code가 작업하는 걸 지켜봐.
+        코딩을 모르는 사람들이 만든 것들을 구경해봐 &mdash; 그리고 네가 만들 걸 상상해봐.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="이 Claude Code 챕터 미쳤어 — AI 페어 프로그래머가 문제를 분석하고, 코드를 쓰고, 스스로 디버깅하는 걸 봤어. 코딩의 미래가 여기 있어." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="이 챕터가 누구나 AI로 소프트웨어를 만들 수 있다고 확신시켜줬어. 뜬구름 잡는 얘기가 아니라 코딩을 모르는 사람들이 진짜 도구를 만드는 방법을 정확히 보여줘." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code는 너 대신 코드를 쓰는 게 아냐 — 너와 함께 코드를 쓰는 거야.
+        소프트웨어 만드는 비용이 제로로 떨어졌어. 남은 건 만들 가치 있는 아이디어를 갖는 것뿐이야.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        하나의 대화로 하나의 작업을 처리할 수 있어. 근데 진짜 프로젝트에는 수십 개의 작업이 있어. 다음: 큰 야망을 AI가 실제로 실행할 수 있는 조각들로 나누는 법.
+        아이디어는 있어. 하지만 코딩 에이전트를 열기 전에, 그 에이전트의 언어를 알아야 해. 코드가 아니라 &mdash; 만들기의 어휘. 그게 다음이야.
       </p>
     </FadeInBlock>
   </section>

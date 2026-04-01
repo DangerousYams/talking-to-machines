@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,7 +33,7 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          ツールを<br />与える
+          ツールを<br />渡せ
         </h1>
       </FadeInBlock>
 
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        ここまでのAIとのやり取りは、すべて同じパターンだった。何かを打つ。AIが何かを返す。超高度な自動補完だ。でもAIが<em>何かをできる</em>としたら？天気について教えるだけじゃなく、実際に予報をチェックする。コードを書くだけじゃなく、実行する。Googleで検索することを提案するんじゃなく、自分でウェブを検索して結果を持ってくる。
+        ここまでのAIとのやり取りは、すべて同じパターンだった。何か打ち込む。AIが何か返す。超高度な自動補完。でも、AIが<em>何かをできる</em>としたら？ 天気を教えるだけじゃなく、予報を確認する。コードを書くだけじゃなく、実行する。何を検索すべきか提案するだけじゃなく、自分でウェブを検索して結果を持ち帰る。
       </p>
     </FadeInBlock>
   </section>
@@ -69,13 +71,13 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        AIにツールを与えるとき、道具箱を渡してこう言っているのと同じだ：<em>「これが君にできること。いつ使うかは君が決めて。」</em>ウェブ検索、コード実行、ファイル読み書き、API呼び出し。AIが賢くなったんじゃない &mdash; <strong>繋がった</strong>んだ。そしてそこに、テクノロジーとは無関係で君自身に関わる問いが生まれる：AIは確認を取る前に、どこまで自分で行動すべきか？
+        AIにツールを渡すということは、ツールボックスを手渡して「使えるものはこれだ。いつ使うかは自分で判断しろ」と言うことだ。ウェブ検索もコード実行もファイル読み取りもAPI呼び出しもできる。AIが賢くなったわけじゃない。<strong>接続された</strong>のだ。そこで生まれる問いは、テクノロジーとは何の関係もなく、すべて君自身に関わる。AIにどこまで単独で行動させるべきか？
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        答えは3つの要素で決まる。<strong>リスクの大きさ</strong> &mdash; 最悪の場合に何が起きる？<strong>取り消し可能性</strong> &mdash; 元に戻せる？そして<strong>信頼</strong> &mdash; このツールをどのくらい知っている？100回使った電卓は、テストしたことのない新しいプラグインより多くの自由に値する。
+        答えは3つの要素で決まる。<strong>リスク</strong>：最悪何が起きるか？ <strong>可逆性</strong>：取り消せるか？ そして<strong>信頼</strong>：そのツールをどれだけ知っているか？ 100回使った電卓と、一度も試したことのない新しいプラグインでは、与える自由度が違って当然だ。
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[4];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          全か無かじゃない。最高のAIワークフローは、低リスクで取り消し可能なタスクにはAIに自由を与え、高リスクで取り消し不能なタスクには人間をループに入れる。その境界線を設計するのが君の仕事だ。
+          全か無かじゃない。最高のAIワークフローは、低リスクで取り消せるタスクには自由を与え、高リスクで取り消せないタスクにはヒューマンインザループを残す。その境界線をデザインするのが君の仕事だ。
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        どこに線を引く？自分の自律性レベルを設定しよう。
+        君ならどこに線を引く？ 自分の自律レベルを設定してみよう。
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AIのツール使用とファンクションコーリングを、最もハンズオンな方法で学んでいる。このコースでは読むだけじゃなく、実際に作ってテストできる。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AIのツール使用とファンクションコーリングを、最もハンズオンな方法で学んでいる。このコースは読むだけじゃなく、実際に作って試せる。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ツールはAIをアドバイザーからアシスタントに変える &mdash; 何をすべきか教える人から、実際にやってくれる人へ。
+        ツールがAIをアドバイザーからアシスタントに変える。何をすべきか教えてくれる人から、実際にそれをやってくれる人へ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AIに手を与えた。次は、それらのツールを自分で目標を追求できるものに組み立てる &mdash; 計画し、実行し、ミスからリカバリする。エージェントを構築する時だ。
+        AIに手を与えた。次は、そのツールを組み合わせて自律的に目標を追求するものに仕上げよう。計画し、実行し、ミスから回復する。エージェントを作る時間だ。
       </p>
     </FadeInBlock>
   </section>

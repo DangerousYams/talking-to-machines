@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          编排<br />复杂性
+          说构建的<br />语言
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          在超出任何上下文窗口的<br />项目中管理 AI。
+          构建的词汇 &mdash;<br />不是代码，只是名词和动词。
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        每个有野心的新手都会撞上这个时刻：你让 AI 构建一个真正的东西——一个完整的游戏、一个带后端的网站、一篇有引用的研究论文——然后整件事崩了。不是因为 AI 不够聪明。而是因为项目对单次对话来说太大了。你贴了一整面墙的需求，二十分钟后发现它忘了你一半的要求。
+        你即将坐下来和编程智能体一起做东西。它会用到"deploy"、"endpoint"、"component"、"schema"这些词。如果这些词对你来说像天书，你会感到迷失——不是因为你做不了，而是因为你没法<em>指挥</em>。这一章给你一枚解码戒指。不是教你写代码，而是教你<strong>说构建的语言</strong>。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        这不是 AI 的问题。这是<strong>编排问题</strong>。学会解决它，是把 AI 用于零碎任务的人和用 AI 构建真正东西的人之间的分水岭。
+        把它想成开车。你不需要懂内燃机、变速比或刹车油压。你只需要知道：油门、刹车、方向盘、后视镜。这是<em>操控</em>的词汇，不是实现的词汇。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        上下文打包的艺术
+        技术栈：一枚解码戒指
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        复杂项目打破了一个提示词搞定一切的模式。上下文溢出、注意力稀释、错误层层叠加。解决方案不是更好的提示词——而是<strong>分解</strong>。把项目拆成专注的任务，然后为每个任务精心选择 AI 真正需要的上下文。给太少会产生幻觉。给太多会失去焦点。最佳点在于精准的外科手术式选择。
+        每个应用——从 Instagram 到一个简单的待办清单——都由四层构成。开发者管这个叫"技术栈"。来，全部给你揭开：
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        把它想成收拾行李箱。你不可能把整个衣柜都带上。你需要想想你要去哪里（任务）、你需要什么（相关信息）、以及什么可以留下（其他一切）。每次对话只给它需要的上下文——不多也不少。
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">前端 (Frontend)</p>
+          <p style="margin: 0; line-height: 1.6;">人们看到和触碰的部分。按钮、文字、图片、动画。餐厅的用餐区。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">后端 (Backend)</p>
+          <p style="margin: 0; line-height: 1.6;">幕后的逻辑。处理请求、验证密码、发送邮件。厨房。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">数据库 (Database)</p>
+          <p style="margin: 0; line-height: 1.6;">应用记住东西的地方。用户账号、帖子、设置。储藏室和食谱本。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">部署 (Deployment)</p>
+          <p style="margin: 0; line-height: 1.6;">它是怎么上线的。托管、域名、正式发布。打开餐厅的大门。</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        就这些。你用过的每一个应用，都是这四层的某种组合。当你的编程智能体说"我来搭后端"，意思是"我来写幕后逻辑"。当它说"来部署吧"，意思是"把它放到互联网上"。你不需要知道这些层<em>怎么</em>工作。你需要知道它们<em>存在</em>，以及它们各自负责什么。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        智能体也是你的老师
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        没人告诉你的是：<strong>编程智能体也是你的老师。</strong>不知道"npm"是什么？问它。看不懂错误信息？粘贴进去然后说"用非开发者能听懂的话解释一下。"想知道智能体为什么选了 React 而不是别的？问它。它会用大白话一步步解释，你需要多少遍都行。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">关键洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>你的头五分钟</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          交接文档的质量决定了下游一切的质量。一份清晰的 schema 永远胜过一段模糊的描述。垃圾进，垃圾出——跨对话也是如此。
+          打开你的编程工具。用大白话描述你的项目："我想做一个健身追踪器，记录我的训练并查看我的进步。"智能体会问你澄清问题，建议一个技术栈，然后开始搭建。你的第一个任务就是<em>回答它的问题</em>并<em>看着它创建的东西</em>。
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        收拾一个上下文行李箱。你能把重要的东西装进去又不溢出吗？
+        探索网页应用的四个层次。点击学习词汇——然后测试自己。
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="使用 AI 最难的部分不是提示词——而是在多个对话中编排复杂项目。这门课终于讲清楚了怎么做。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="这一章不用一行代码就解释清楚了技术栈。前端、后端、数据库、部署——终于搞懂了。真希望几年前就读过这个。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        复杂项目并不可怕。它们只是一系列专注的对话，由清晰的交接文档连接起来。
+        你不需要知道引擎怎么工作。你需要知道怎么开车。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        接下来：学会判断 AI 什么时候<em>出错了</em>。幻觉、谄媚，以及让你保持诚实的验证习惯。
+        你学会了词汇。你有了想法。现在该坐下来和你的编程智能体一起动手了。下一章：构建循环的艺术——迭代、评估，以及出问题时怎么办。
       </p>
     </FadeInBlock>
   </section>

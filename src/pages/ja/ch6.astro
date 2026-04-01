@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,7 +34,7 @@ const chapter = chapters[5];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          エージェントを<br />構築する
+          エージェントを<br />作る
         </h1>
       </FadeInBlock>
 
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        チャットボットは君が話すのを待つ。エージェントは待たない。ゴールを与える &mdash; 「火星移住について調べてレポートを書いて」 &mdash; すると、タスクをステップに分割し、正しいツールを選び、1つずつ実行し、自分の結果を確認し、仕事が終わるまで続ける。<em>指示に応答する</em>のと<em>ゴールを追求する</em>のの違い &mdash; それが電卓と同僚の違いだ。
+        チャットボットは君が話すのを待つ。エージェントは待たない。目標を与える。「火星の植民地化を調べてレポートを書いて」。するとエージェントは作業をステップに分解し、適切なツールを選び、ひとつずつ実行し、結果を自分でチェックし、仕事が終わるまで走り続ける。<em>指示に応答する</em>のと<em>目標を追求する</em>のは別物だ。それが電卓と同僚の違いだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        エージェントはループで動く：ゴールを受け取り、ステップを計画し、ツールで実行し、結果を観察し、進捗を評価し、調整する。一度計画して盲目的に実行するんじゃない &mdash; 最高のエージェントは、ステップ3がおかしくなったとき優雅にリカバリする。でもそのパワーにはダークサイドがある：エージェントはダメな答えを出すだけじゃなく、それに基づいて<em>行動し</em>、壊れた結果で次の判断を下す。失敗が連鎖する。
+        エージェントはループで動く。目標を受け取り、ステップを計画し、ツールで実行し、結果を観察し、進捗を評価し、調整する。一度計画して盲目的に実行するんじゃない。優れたエージェントはステップ3がうまくいかなくても優雅にリカバリーする。でもそのパワーには暗い面もある。エージェントは悪い答えを出すだけじゃなく、それに基づいて<em>行動</em>し、壊れた結果を使って次の判断を下す。失敗が雪だるま式に膨らむのだ。
       </p>
     </FadeInBlock>
   </section>
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        すべてのエージェントは同じ5ステップのサイクルで動く。これを理解することが、便利なものを作る人と、APIクレジットを無限ループで燃やし尽くす人の違いだ。
+        すべてのエージェントは同じ5ステップのサイクルで動く。このステップを理解することが、使えるものを作るか、APIクレジットを無限ループで溶かすかの分かれ目だ。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal', color: '#E94560', text: '明確な目標を受け取る。「火星を調べて」はゴールじゃない。「火星移住の課題について500語の要約をソース付きで書いて」がゴールだ。' },
-        { letter: 'P', name: 'Plan', color: '#7B61FF', text: 'ゴールを具体的なステップに分解する。良いプランナーは柔軟な計画を作る。ダメなプランナーは最初の想定外で壊れる硬直したスクリプトを作る。' },
-        { letter: 'T', name: 'Execute', color: '#0EA5E9', text: '適切なツールで各ステップを実行する &mdash; 検索エンジン、コードインタプリタ、ファイルリーダー、API。エージェントは考えるだけじゃない。行動する。' },
-        { letter: 'M', name: 'Observe', color: '#16C79A', text: '何が起きたか記録し、結果を確認する。記憶なしでは、エージェントは同じ失敗するアクションを永遠に繰り返すかもしれない。' },
-        { letter: 'E', name: 'Evaluate', color: '#F5A623', text: 'うまくいった？ゴールに近づいた？何かおかしければ、計画を調整してもう一周。これがエージェントをスクリプトから分けるものだ。' },
+        { letter: 'G', name: 'ゴール', color: '#E94560', text: '明確な目的を受け取る。「火星を調べて」はゴールじゃない。「火星植民地化の課題を500語でまとめろ、ソース付きで」がゴールだ。' },
+        { letter: 'P', name: 'プラン', color: '#7B61FF', text: 'ゴールを具体的なステップに分解する。良い計画者は柔軟なプランを作る。悪い計画者は最初の想定外で崩壊する硬直的なスクリプトを作る。' },
+        { letter: 'T', name: '実行', color: '#0EA5E9', text: '各ステップを適切なツールで実行する。検索エンジン、コードインタプリタ、ファイルリーダー、API。エージェントは考えるだけじゃない。行動する。' },
+        { letter: 'M', name: '観察', color: '#16C79A', text: '何が起きたか記録し、結果を確認する。記憶がなければ、エージェントは同じ失敗を永遠に繰り返すかもしれない。' },
+        { letter: 'E', name: '評価', color: '#F5A623', text: 'うまくいったか？ ゴールに近づいたか？ 何かおかしければプランを修正してもう一度ループする。これがエージェントとスクリプトを分けるものだ。' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +112,7 @@ const chapter = chapters[5];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          チャットボットは1ターン。エージェントは丸ごと1つの会話 &mdash; 自分自身、ツール、そして世界との。最高のエージェント開発者は自律性を最大化する人じゃない。エージェントが一旦停止して人間に判断を委ねる、思慮深いチェックポイントを設計する人だ。
+          チャットボットは1ターン。エージェントは丸ごとの会話だ。自分自身と、ツールと、世界との。最高のエージェント設計者は自律性を最大化しない。エージェントが立ち止まり、人間に続行するかどうかを判断させる、思慮深いチェックポイントをデザインする。
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        作ってみよう。自分のエージェントをゼロから設計しよう。
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        さあ、作ってみよう。戦車エージェントを設計し、能力を選び、予算を割り当て、戦略を書いて、アリーナに投入して自律的に戦わせよう。
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="初めてのAIエージェントをゼロから設計した。このコースはアーキテクチャをステップバイステップでライブデモ付きで解説してくれる。煽りなし、ただ作るだけ。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="初めてのAIエージェントをゼロから設計した。このコースはアーキテクチャをライブデモ付きでステップごとに解説してくれる。ハイプなし、ただ作るだけ。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        目標はすべての失敗を防ぐことじゃない &mdash; 失敗からリカバリ可能にすることだ。
+        目標はすべての失敗を防ぐことじゃない。失敗をリカバリー可能にすることだ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        次は、本物のエージェントを使う &mdash; コードを読み、変更を書き、テストを実行し、自分のミスを修正するもの。Claude Codeの登場だ。
+        次は、本物のエージェントを使う。コードを読み、変更を書き、テストを実行し、自分のミスを修正するエージェント。Claude Codeの登場だ。
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

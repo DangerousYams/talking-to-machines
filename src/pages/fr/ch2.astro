@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -31,13 +33,13 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          L'art de<br />demander
+          L'art de<br />questionner
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Le meilleur prompt est une question qui<br />pousse l'IA a te poser des questions.
+          Le meilleur prompt est une question qui<br />pousse l'IA &agrave; t'interroger.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        La plupart des gens utilisent l'IA comme un distributeur automatique. On insere un prompt, on recoit une reponse. Mais les meilleurs resultats viennent de <em>conversations</em>, pas de commandes. La difference entre quelqu'un qui tape un prompt et quelqu'un qui le construit est la meme difference qui anime les grands penseurs depuis 2 400 ans : poser les bonnes questions.
+        La plupart des gens utilisent l'IA comme un distributeur automatique. On ins&egrave;re un prompt, on re&ccedil;oit une r&eacute;ponse. Mais les meilleurs r&eacute;sultats viennent de <em>conversations</em>, pas de commandes. La diff&eacute;rence entre quelqu'un qui tape un prompt et quelqu'un qui le construit, c'est la m&ecirc;me diff&eacute;rence qui anime les grands penseurs depuis 2&nbsp;400 ans : poser les bonnes questions.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrate ne repondait jamais directement a une question. Il posait <em>encore plus</em> de questions jusqu'a ce que ses eleves atteignent une comprehension plus profonde. Tu peux utiliser la meme astuce avec l'IA, mais inversee : au lieu de demander une reponse, demande a l'IA de t'interviewer, <em>toi</em>. Quand tu tapes « organise une fete d'anniversaire », tu omets des dizaines de details qui changent radicalement la reponse. L'IA ne les connait pas — mais elle peut les demander.
+        Socrate ne r&eacute;pondait jamais directement. Il posait <em>encore plus</em> de questions jusqu'&agrave; ce que ses &eacute;l&egrave;ves acc&egrave;dent &agrave; une compr&eacute;hension plus profonde. Tu peux utiliser la m&ecirc;me astuce avec l'IA, mais invers&eacute;e : au lieu de demander une r&eacute;ponse, demande &agrave; l'IA de t'<em>interviewer</em>. Quand tu &eacute;cris &laquo;&nbsp;organise une f&ecirc;te d'anniversaire&nbsp;&raquo;, tu omets des dizaines de d&eacute;tails qui changent radicalement la r&eacute;ponse. L'IA ne les conna&icirc;t pas &mdash; mais elle peut les demander.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Cette seule technique — inverser qui pose les questions — transforme l'IA d'une machine a reponses en <strong>partenaire de reflexion</strong>. Donne-lui la permission de sonder, clarifier et challenger. Le resultat apres cinq echanges sera meconnaissable compare a une simple commande en une fois.
+        Cette simple technique &mdash; inverser qui pose les questions &mdash; transforme l'IA d'une machine &agrave; r&eacute;ponses en un v&eacute;ritable <strong>partenaire de r&eacute;flexion</strong>. Donne-lui la permission de creuser, de clarifier et de challenger. Le r&eacute;sultat apr&egrave;s cinq &eacute;changes sera m&eacute;connaissable compar&eacute; &agrave; une commande en un seul coup.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idee cle</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Id&eacute;e cl&eacute;</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Les meilleurs utilisateurs d'IA ne sont pas experts du sujet — ils sont experts pour poser des questions. Et la question la plus puissante que tu puisses poser est : « Avant de repondre, qu'as-tu besoin de savoir ? »
+          Les meilleurs utilisateurs d'IA ne sont pas experts du sujet &mdash; ils sont experts en questionnement. Et la question la plus puissante que tu puisses poser est : &laquo;&nbsp;Avant de r&eacute;pondre, de quoi as-tu besoin comme informations&nbsp;?&nbsp;&raquo;
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Essaie par toi-meme. Enonce un objectif — et regarde l'IA retourner la situation.
+        Essaie par toi-m&ecirc;me. &Eacute;nonce un objectif &mdash; et regarde l'IA inverser les r&ocirc;les.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Ce cours sur l'IA a completement change ma facon de voir le prompting. Au lieu de dire a l'IA quoi faire, tu lui demandes de t'interviewer d'abord. Les resultats sont incomparables." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Ce cours sur l'IA a compl\u00e8tement chang\u00e9 ma fa\u00e7on de penser le prompting. Au lieu de dire \u00e0 l'IA quoi faire, on lui demande de NOUS interviewer d'abord. La diff\u00e9rence est flagrante." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Arrete de dire a l'IA quoi penser. Laisse-lui de l'espace pour reflechir avec toi.
+        Arr&ecirc;te de dire &agrave; l'IA quoi penser. Donne-lui l'espace de r&eacute;fl&eacute;chir avec toi.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Mais chaque technique que tu as apprise se heurte au meme mur invisible : la <em>fenetre de contexte</em>. On va l'ouvrir et apprendre a maitriser ce que l'IA voit vraiment.
+        Mais toutes les techniques que tu as apprises se heurtent au m&ecirc;me mur invisible : la <em>fen&ecirc;tre de contexte</em>. Prochaine &eacute;tape : on l'ouvre et on apprend &agrave; ma&icirc;triser ce que l'IA voit r&eacute;ellement.
       </p>
     </FadeInBlock>
   </section>

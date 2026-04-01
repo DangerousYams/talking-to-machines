@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          சிக்கலை<br />ஒழுங்கமைத்தல்
+          மொழியைப்<br />பேசுதல்
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          எந்த context window-க்கும் பெரிய<br />projects-ல் AI manage செய்தல்.
+          உருவாக்குவதன் சொல்வளம் &mdash;<br />code அல்ல, nouns-ம் verbs-ம் மட்டும்.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ஒவ்வொரு ambitious beginner-க்கும் ஒரு தருணம் வரும்: AI யிடம் உண்மையான ஒன்று build செய்ய சொல்கிறாய் &mdash; full game, backend உள்ள website, citations உள்ள research paper &mdash; எல்லாம் உடைகிறது. AI போதுமான அளவு smart இல்லை என்பதால் அல்ல. Project ஒரு single conversation-க்கு மிகப் பெரியது என்பதால். Requirements wall-ஐ paste செய்கிறாய், இருபது நிமிடம் கழித்து நீ கேட்டதில் பாதியை மறந்துவிட்டது என்று புரிகிறது.
+        நீ ஒரு coding agent-கிட்ட உட்கார்ந்து ஏதாவது build பண்ணப் போற. அது "deploy," "endpoint," "component," "schema" மாதிரி வார்த்தைகள் பயன்படுத்தும். இந்த வார்த்தைகள் உனக்குப் புரியலன்னா, lost-ஆ உணர்வ &mdash; build பண்ண முடியாம இல்ல, <em>direct</em> பண்ண முடியாம. இந்த அத்தியாயம் உனக்கு decoder ring தரும். Code கத்துக்கிறது இல்ல. உருவாக்குவதன் <strong>மொழியைப் பேசுவது</strong>.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        இது AI problem அல்ல. இது <strong>orchestration problem</strong>. இதை solve செய்ய கற்றுக்கொள்வது &mdash; one-off tasks-க்கு AI பயன்படுத்துபவனுக்கும் உண்மையான விஷயங்கள் build செய்பவனுக்கும் உள்ள வித்தியாசம்.
+        Car ஓட்டுற மாதிரி யோசி. Combustion engine, transmission ratio, brake fluid pressure எல்லாம் புரிய வேண்டாம். தெரிஞ்சிருக்கணும்: accelerator, brake, steering, mirrors. <em>Direction</em> கொடுக்குறதுக்கான சொல்வளம், implementation-க்கு இல்ல.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Context Packing கலை
+        Stack: ஒரு Decoder Ring
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Complex projects one-prompt approach-ஐ உடைக்கும். Context overflow ஆகிறது, attention dilute ஆகிறது, errors compound ஆகின்றன. Fix &mdash; better prompt அல்ல, <strong>decomposition</strong>. Project-ஐ focused tasks-ஆக உடை, பிறகு ஒவ்வொரு task-க்கும் AI க்கு உண்மையில் என்ன context தேவை என்று carefully choose செய். மிகக் குறைவாக இருந்தால் hallucinate செய்யும். மிக அதிகமாக இருந்தால் focus இழக்கும். Sweet spot &mdash; surgical precision.
+        ஒவ்வொரு app-உம் &mdash; Instagram-இலிருந்து ஒரு simple to-do list வரை &mdash; நாலு layers-ல இருந்து build ஆகுது. Developers இதை "the stack" ன்னு சொல்வாங்க. இதோ முழுசா, எளிமையா:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Suitcase pack செய்வது போல் நினை. முழு wardrobe-ஐயும் கொண்டு போக முடியாது. எங்கே போகிறாய் (task), என்ன தேவை (relevant information), என்ன விட்டுவிடலாம் (மற்றவை எல்லாம்) என்று யோசிக்க வேண்டும். ஒவ்வொரு conversation-க்கும் exactly தேவையான context &mdash; அதிகம் இல்லை, குறைவும் இல்லை.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">மக்கள் பார்க்குறதும் தொடுறதும். Buttons, text, images, animations. Restaurant-ன் dining room மாதிரி.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">திரைக்குப் பின்னாடி நடக்குற logic. Requests process பண்றது, passwords check பண்றது, emails அனுப்புறது. Kitchen.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Database</p>
+          <p style="margin: 0; line-height: 1.6;">App எங்க விஷயங்களை நினைவுல வெச்சுக்குது. User accounts, posts, settings. Pantry-யும் recipe book-கும் மாதிரி.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">Internet-ல எப்படி போகுது. Hosting, domains, live ஆக்குறது. Restaurant கதவைத் திறக்குறது.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        அவ்ளோதான். நீ இதுவரை use பண்ணின ஒவ்வொரு app-உம் இந்த நாலு layers-ன் ஏதோ ஒரு combination. உன் coding agent "I'll set up the backend" ன்னா, "திரைக்குப் பின்னாடி logic எழுதுவேன்" ன்னு அர்த்தம். "Let's deploy" ன்னா, "இதை internet-ல போடுவோம்" ன்னு அர்த்தம். இந்த layers <em>எப்படி</em> வேலை செய்யுதுன்னு தெரிய வேண்டாம். இவை <em>இருக்குன்னும்</em> எதுக்குன்னும் தெரிஞ்சா போதும்.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Agent உன் Teacher
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        யாரும் சொல்லாத விஷயம் இது: <strong>coding agent உன் teacher-உம் கூட.</strong> "npm" என்னன்னு தெரியலையா? கேளு. Error message புரியலையா? Paste பண்ணி "explain this like I'm not a developer" ன்னு சொல்லு. Agent ஏன் React-ஐ வேற ஒண்ணுக்குப் பதிலா choose பண்ணுச்சுன்னு தெரியணுமா? கேளு. சாதாரண மொழியில், step by step, உனக்கு எத்தனை தடவை வேணுமோ அத்தனை தடவை explain பண்ணும்.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">முக்கிய கருத்து</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>உன் முதல் ஐந்து நிமிடங்கள்</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          உன் handoff artifact-ன் quality, downstream-ல் build ஆகும் எல்லாவற்றின் quality-யையும் நிர்ணயிக்கிறது. Crisp schema எப்போதும் vague description-ஐ விட better. Garbage in, garbage out &mdash; conversations-க்கு இடையே.
+          உன் coding tool-ஐ open பண்ணு. Project-ஐ சாதாரண மொழியில் describe பண்ணு: "நான் ஒரு workout tracker build பண்ணணும், exercise-ஐ log பண்ணி progress-ஐ பார்க்கணும்." Agent clarifying questions கேக்கும், stack suggest பண்ணும், build ஆரம்பிக்கும். உன் முதல் வேலை <em>அதோட கேள்விகளுக்கு பதில் சொல்றது</em> மற்றும் <em>அது என்ன create பண்றதுன்னு பார்க்கிறது</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Context suitcase pack செய்துபார். Overflow ஆகாமல் தேவையானதை fit செய்ய முடியுமா?
+        Web app-ன் நாலு layers-ஐ explore பண்ணு. சொல்வளம் கத்துக்கோ &mdash; அப்புறம் உன்னை test பண்ணு.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="The hardest part of AI isn't prompting — it's orchestrating complex projects across multiple conversations. This course finally explains how." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="இந்த அத்தியாயம் tech stack-ஐ code இல்லாம explain பண்றது. Frontend, backend, database, deployment — கடைசியா புரியுது. இதை வருஷங்கள் முன்னாடியே படிச்சிருக்கணும்." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Complex projects பயமாக இல்லை. அவை crisp artifacts-ஆல் இணைக்கப்பட்ட focused conversations-ன் தொடர் மட்டுமே.
+        Engine எப்படி வேலை செய்யுதுன்னு தெரிய வேண்டாம். Drive பண்ணத் தெரிஞ்சா போதும்.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        அடுத்தது: AI <em>தவறாக</em> இருக்கும்போது தெரிந்துகொள்வது. Hallucinations, sycophancy, உன்னை நேர்மையாக வைக்கும் verification habits.
+        வார்த்தைகள் தெரியும். Idea இருக்கு. இப்போ coding agent-கிட்ட உட்கார்ந்து உண்மையிலேயே build பண்ற நேரம். அடுத்தது: build loop-ன் கலை &mdash; iteration, evaluation, விஷயங்கள் உடையும்போது என்ன பண்றது.
       </p>
     </FadeInBlock>
   </section>

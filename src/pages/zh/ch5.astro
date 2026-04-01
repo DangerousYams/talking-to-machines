@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          从"回答问题"到<br />"采取行动"的跨越。
+          从"回答问题"<br />到"采取行动"的飞跃。
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        到目前为止，你跟 AI 的每次互动都遵循同一个模式。你输入一些东西。AI 输出一些东西回来。一个非常高级的自动补全。但如果 AI 能<em>做事</em>呢？不只是告诉你天气，而是去查天气预报。不只是写代码，而是去运行代码。不只是建议你搜什么，而是自己去搜索网页然后把结果带回来。
+        到目前为止，你和 AI 的每次互动都遵循同一个模式：你打字，AI 回复。一个精致版的自动补全。但如果 AI 能<em>做事</em>呢？不只是告诉你天气怎样，而是去查天气预报。不只是写代码，而是去运行代码。不只是建议你搜什么，而是自己去搜索然后把结果带回来。
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        当你给 AI 工具时，你递给它一个工具箱然后说：<em>"这些是你能做的事。你自己决定什么时候用。"</em>它可以搜索网页、运行代码、读取文件、调用 API。AI 没有变聪明——它变得<strong>有连接了</strong>。这引出了一个跟技术无关、但跟你密切相关的问题：在 AI 来找你确认之前，它应该自主做多少事？
+        当你给 AI 工具时，你递给它一个工具箱然后说：<em>"这些是你能做的事。你自己决定什么时候用。"</em>它可以搜索网络、运行代码、读取文件、调用 API。AI 并没有变得更聪明——它变得<strong>有了连接</strong>。这引出了一个与技术无关、却和你息息相关的问题：AI 应该在多大程度上自行决定，而不先问你？
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        答案取决于三件事。<strong>风险</strong>——最坏的情况是什么？<strong>可逆性</strong>——能撤销吗？还有<strong>信任度</strong>——你对这个工具了解多少？一个你用了上百次的计算器值得更多的自由度，而一个你从未测试过的全新插件则不行。
+        答案取决于三件事。<strong>风险</strong>——最坏能坏到什么程度？<strong>可逆性</strong>——能撤销吗？以及<strong>信任</strong>——你对这个工具有多了解？一个你用了上百次的计算器，比一个你从没测试过的新插件更值得信任。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          这不是非此即彼的选择。最好的 AI 工作流在低风险、可逆的任务上给予自由，同时在高风险、不可逆的任务上让人类参与决策。你的工作是设计这条边界。
+          不是非此即彼。最好的 AI 工作流在低风险、可逆的任务上给予自由，在高风险、不可逆的任务上保持人类介入。你的工作是设计这条边界。
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        你会把线画在哪里？设定你自己的自主级别。
+        你会在哪里划线？设定你自己的自主权级别。
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="用最动手的方式学习 AI 工具使用和函数调用。这门课让你真正构建和测试，而不只是阅读。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="正在用最动手的方式学习 AI 工具使用和函数调用。这门课程让你真正动手构建和测试，而不只是读读而已。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        工具把 AI 从顾问变成了助手——从告诉你该做什么的人，变成了真正去做的人。
+        工具把 AI 从顾问变成了助手——从一个告诉你该怎么做的人，变成了一个真的去做的人。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        你已经给了 AI 双手。接下来，我们把这些工具连接成一个能自主追求目标的东西——规划、执行、从错误中恢复。是时候构建智能体了。
+        你已经给了 AI 双手。接下来，我们把这些工具串成一个能自主追求目标的东西——规划、执行、从错误中恢复。是时候构建智能体了。
       </p>
     </FadeInBlock>
   </section>

@@ -69,17 +69,17 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        இதோ ரகசியம்: AI யிலிருந்து அற்புதமான முடிவுகள் பெறுபவர்கள் உன்னை விட smart இல்லை. அவர்கள் ஒரு formula பயன்படுத்துகிறார்கள் — ஒவ்வொரு முறையும் வேலை செய்யும் ஐந்து building blocks. எப்போதும் ஐந்தும் தேவையில்லை. ஆனால் இவை இருப்பதை தெரிந்துகொள்வது Matrix ஐ பார்க்க கற்றுக்கொள்வது போன்றது.
+        இதோ ரகசியம்: AI யிலிருந்து அற்புதமான முடிவுகள் பெறுபவர்கள் உன்னை விட smart இல்லை. அவர்கள் ஒரு formula பயன்படுத்துகிறார்கள் — ஒவ்வொரு முறையும் வேலை செய்யும் ஐந்து building blocks. எப்போதும் ஐந்தும் தேவையில்லை. ஆனால் இவை இருக்குன்னு தெரிஞ்சா, Matrix-ஐ பார்க்கக் கத்துக்கிட்ட மாதிரி.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role', color: '#E94560', text: 'AI யாராக இருக்க வேண்டும்? Tutor ஒரு மாதிரி explain செய்வார், professor வேறு மாதிரி. Role தான் எல்லாவற்றையும் நிர்ணயிக்கிறது.' },
-        { letter: 'T', name: 'Task', color: '#0F3460', text: 'சரியாக என்ன செய்ய வேண்டும்? "எனக்கு உதவு" அல்ல, "என் thesis statement ஐ பலப்படுத்து." ஒரு prompt க்கு ஒரு task.' },
-        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'பதில் எப்படி இருக்க வேண்டும்? "3 alternatives numbered list ஆக கொடு." Format மூலம் AI அலைபாய்வதை தடுக்கலாம்.' },
-        { letter: 'C', name: 'Constraints', color: '#16C79A', text: 'என்ன செய்யக் கூடாது? "Clichés தவிர். 200 வார்த்தைக்குள் வை." Guardrails மூலம் மோசமான outputs தடுக்கலாம்.' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: 'விளக்காதே, காண்பி. "நல்லது" எப்படி இருக்கும் என்று ஒரு உதாரணம் கொடு — நூறு வார்த்தை விளக்கத்திற்கு சமம்.' },
+        { letter: 'R', name: 'Role (பங்கு)', color: '#E94560', text: 'AI யாராக இருக்க வேண்டும்? Tutor ஒரு மாதிரி explain செய்வார், professor வேறு மாதிரி. Role தான் எல்லாவற்றையும் நிர்ணயிக்கிறது.' },
+        { letter: 'T', name: 'Task (பணி)', color: '#0F3460', text: 'சரியாக என்ன செய்ய வேண்டும்? "எனக்கு உதவு" அல்ல, "என் thesis statement ஐ பலப்படுத்து." ஒரு prompt க்கு ஒரு task.' },
+        { letter: 'F', name: 'Format (வடிவம்)', color: '#7B61FF', text: 'பதில் எப்படி இருக்க வேண்டும்? "3 alternatives numbered list ஆக கொடு." Format மூலம் AI அலைபாய்வதை தடுக்கலாம்.' },
+        { letter: 'C', name: 'Constraints (வரம்புகள்)', color: '#16C79A', text: 'என்ன செய்யக் கூடாது? "Clichés தவிர். 200 வார்த்தைக்குள் வை." Guardrails மூலம் மோசமான outputs தடுக்கலாம்.' },
+        { letter: 'E', name: 'Examples (எடுத்துக்காட்டுகள்)', color: '#F5A623', text: 'சொல்லி விளக்காதே, காட்டு. "நல்லது" எப்படி இருக்கும் என்று ஒரு உதாரணம் கொடு — நூறு வார்த்தை விளக்கத்திற்கு சமம்.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Just discovered the 5 building blocks of a good AI prompt. This interactive course is seriously well done — you build the prompts yourself and watch them improve in real time." client:visible />
+  <SharePrompt text="நல்ல AI prompt-ன் 5 building blocks-ஐ இப்போதான் கண்டுபிடிச்சேன். இந்த interactive course-உ ரொம்ப நல்லா இருக்கு — நீயே prompts build பண்ணி, real time-ல் improve ஆவதை பார்க்கலாம்." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        நீ ஏற்கனவே AI பேசுகிறாய். இனி intent-உடன் பேச வேண்டியதுதான்.
+        நீ ஏற்கனவே AI பேசுகிறாய். இனி நோக்கத்துடன் பேச வேண்டியதுதான்.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        அடுத்தது: ஒரு simple back-and-forth ஐ உண்மையான உரையாடலாக மாற்றும் நுட்பங்கள் — AI வெறுமனே பதில் சொல்வது மட்டும் இல்ல, <em>உன்னுடன் சேர்ந்து சிந்திக்கும்</em>.
+        அடுத்தது: ஒரு simple back-and-forth ஐ உண்மையான உரையாடலாக மாற்றும் நுட்பங்கள் — AI வெறுமனே பதில் சொல்வதில்லை, <em>உன்னுடன் சேர்ந்து சிந்திக்கிறது</em>.
       </p>
     </FadeInBlock>
   </section>

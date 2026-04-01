@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="hi">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          जब AI गलत<br />हो जाए
+          Build<br />Loop
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Verification की वो habits<br />जो amateurs को pros से अलग करती हैं।
+          Imperfection expect करो। Refinement enjoy करो।<br />तीसरे version पर magic होता है।
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        जिस AI ने अभी तुम्हारा flawless essay लिखने में help की, वही equal confidence के साथ तुम्हें बता सकता है कि Napoleon ने Waterloo की battle जीती थी। Hesitate नहीं करेगा। Stammer नहीं करेगा। Completely fabricated "fact" को same authoritative tone में state करेगा जो बाकी सब चीज़ों के लिए use करता है। यही AI के साथ काम करने का paradox है: <strong>वही fluency जो इसे useful बनाती है, वही इसे dangerous बनाती है।</strong>
+        AI के साथ build करते वक़्त सबसे common ग़लती बुरा prompt नहीं है। बुरी expectation है। तुम एक लंबी description type करते हो, enter दबाते हो, और finished product expect करते हो। काम नहीं करता। कभी नहीं करता। जो लोग AI से amazing चीज़ें बनाते हैं उन्हें एक secret पता है: <strong>पहला version हमेशा ग़लत होता है।</strong> तीसरा अच्छा होता है। पाँचवाँ great होता है। और एक से पाँच तक पहुँचने का process? वही असली skill है।
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        हर artist iterate करता है। हर architect revise करता है। हर filmmaker multiple takes shoot करता है। AI के साथ build करना अलग नहीं है। जो लोग loop enjoy करते हैं &mdash; उससे चिढ़ते नहीं &mdash; वही सबसे अच्छी चीज़ें बनाते हैं।
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Plausibility Truth नहीं है
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Specify, Generate, Verify
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI models database से facts retrieve नहीं करते। वो next most likely word predict करते हैं। जब तुम कुछ real के बारे में पूछते हो, training data इन्हें correct information की तरफ guide करता है। जब ऐसी चीज़ के बारे में पूछते हो जो exist नहीं करती, model "I don't know" नहीं कहता। वो generate करता है कि correct answer <em>कैसा दिखता</em> — names, dates, और citations के साथ। सब fabricated।
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Coding agent के साथ हर productive session एक ही rhythm follow करता है। <strong>Specify</strong> करो क्या चाहिए &mdash; concrete बनो, examples दो, बताओ "done" कैसा दिखता है। Agent को <strong>generate</strong> करने दो। फिर <strong>verify</strong>: काम करता है? सही दिखता है? वो कर रहा है जो तुमने माँगा? नहीं तो, दोबारा specify करो, और precisely। यही loop है। ये failure की निशानी नहीं है। ये process है।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        AI कितना confident sound करता है और कितना accurate actually है — इसमें कोई correlation नहीं है। Wrong answer और right answer बाहर से identical दिखते हैं। Tone से, detail से, या AI कितने specific numbers include करता है उससे accuracy judge नहीं कर सकते। "Sahi lag raha hai" test worthless है। तुम्हारा एकमात्र defense verification है।
+        Power move ये है कि build शुरू करने से पहले अपने <strong>acceptance criteria</strong> लिख लो। "Button click करने पर green हो जाए।" "Page refresh करने पर list वहीं रहे।" "Signup form बिना @ वाली email reject करे।" ये plain-English descriptions of "done" तुम्हारा evaluation framework बन जाती हैं। कुछ ग़लत हो तो अपने criteria agent को paste करो और कहो "ये match नहीं हो रहा।" Agent तुम्हारे standards के against test कर सकता है।
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        अटक जाओ तो क्या करें
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Agent ने कुछ टूटा हुआ generate किया। अब? पाँच strategies, इसी order में try करो:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Symptom बताओ, diagnosis नहीं</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Button click करने पर respond नहीं करता" ये बेहतर है "onClick handler टूटा है" से।</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Error message exactly copy-paste करो</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Exact error copy-paste करो। Agent को तुम दे सकते हो सबसे useful चीज़ यही है।</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Agent से पूछो उसने क्या किया</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Walk me through what you just changed and why." समझना अक्सर issue reveal कर देता है।</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. Different approach माँगो</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"ये approach काम नहीं कर रहा। बिल्कुल अलग तरीके से solve कर सकते हो?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. सीख लेकर fresh start करो</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">कभी-कभी नई conversation शुरू करना उलझी हुई conversation debug करने से faster है। Key decisions साथ ले जाओ।</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tests as guardrails</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI का truth का concept नहीं है। इसका <em>plausibility</em> का concept है। ये वो text generate करता है जो pattern में fit करे — चाहे वो text reality से match करे या न करे।
+          तुम agent से automated tests लिखवा सकते हो &mdash; plain English में। "ऐसा test लिखो जो verify करे कि signup form बिना @ वाली email reject करे।" Agent test <em>और</em> वो code दोनों लिखता है जो test pass करे। ये test-driven development है, किसी ऐसे इंसान की direction में जिसने कभी test नहीं लिखा। एक बार bug test से पकड़ा गया, वो कभी वापस नहीं आ सकता।
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        अपना detector test करो। क्या तुम बता सकते हो कि कौन से AI claims real हैं और कौन से fabricated?
+        Skill practice करो। ये bugs coding agent को कैसे describe करोगे?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="हर AI user को यह chapter चाहिए। सिखाता है exactly कैसे AI hallucinate करता है, wrong answers से क्यों agree करता है, और कैसे catch करें। बहुत practical।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI coding agents के साथ build करने पर ये chapter gold है। 5 debugging strategies अकेले worth it हैं — symptoms describe करो, errors share करो, explanations माँगो।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        जो लोग AI से सबसे ज्यादा value पाते हैं, वो वही हैं जिन्होंने सीखा है exactly कब trust करना है और कब verify।
+        पहला version हमेशा ग़लत होता है। तीसरा अच्छा होता है। पाँचवाँ great होता है। Loop enjoy करो।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        जानना कि AI कब wrong है एक bigger question की तरफ ले जाता है: ये कभी क्या <em>नहीं</em> कर सकता? आगे, हम उन skills explore करते हैं जो stubbornly, beautifully human रहती हैं — और क्यों वो पहले से कहीं ज़्यादा matter करती हैं।
+        तुम iterate कर सकते हो। Debug कर सकते हो। लेकिन तुम्हें कैसे पता कि जो बना रहे हो वो actually <em>अच्छा</em> है? सिर्फ़ functional नहीं &mdash; अच्छा। उसके लिए वो चीज़ चाहिए जो AI नहीं दे सकता: taste। वो अगला है।
       </p>
     </FadeInBlock>
   </section>

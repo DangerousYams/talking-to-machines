@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        聊天机器人等你说话。智能体不会。给它一个目标——"研究火星殖民并写一份报告"——它会把工作拆成步骤，选择合适的工具，逐步执行，检查自己的结果，然后一直干到任务完成。这个区别——<em>响应指令</em>与<em>追求目标</em>之间的区别——就是计算器和同事的区别。
+        聊天机器人等你开口。智能体不会。给它一个目标——"研究火星殖民并写一份报告"——它会把工作拆成步骤，挑选合适的工具，逐一执行，检查自己的结果，然后继续推进直到任务完成。这个区别——<em>响应指令</em>和<em>追求目标</em>之间的区别——就是计算器和同事之间的差距。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        智能体运行在一个循环上：接收目标、规划步骤、用工具执行、观察结果、评估进度、调整。它们不是规划一次然后盲目执行——最好的智能体能在第三步出问题时优雅地恢复。但这种能力有暗面：智能体不只是给出错误的回答，它们会<em>按照</em>错误的回答行动，然后用坏掉的结果做下一个决定。失败会层层叠加。
+        智能体运行在一个循环上：接收目标、规划步骤、用工具执行、观察结果、评估进度、调整方案。它们不是规划一次就盲目执行——最好的智能体能在第三步出了岔子时优雅地恢复。但这种能力也有阴暗面：智能体不只是给出坏答案，它们会<em>基于</em>坏答案采取行动，然后用出错的结果做下一个决策。失败会层层叠加。
       </p>
     </FadeInBlock>
   </section>
@@ -75,17 +78,17 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        每个智能体都运行在同样的五步循环上。理解这些步骤，是构建有用的东西和构建一个在无限循环里烧光 API 额度的东西之间的区别。
+        每个智能体都运行在同一个五步循环上。理解这些步骤，是构建有用东西和构建一个疯狂烧 API 额度的死循环之间的区别。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: '目标', color: '#E94560', text: '接收一个清晰的目标。"研究火星"不是目标。"写一份500字的火星殖民挑战摘要，附上来源"才是。' },
-        { letter: 'P', name: '规划', color: '#7B61FF', text: '把目标拆成具体步骤。好的规划者创建灵活的计划。差的规划者创建僵硬的脚本，遇到第一个意外就碎了。' },
-        { letter: 'T', name: '执行', color: '#0EA5E9', text: '用正确的工具运行每一步——搜索引擎、代码解释器、文件读取器、API。智能体不只是思考。它们行动。' },
-        { letter: 'M', name: '观察', color: '#16C79A', text: '记录发生了什么并检查结果。没有记忆的话，智能体可能会永远重复同一个失败的动作。' },
-        { letter: 'E', name: '评估', color: '#F5A623', text: '这步成功了吗？我离目标更近了吗？如果有什么不对，调整计划重新循环。这就是智能体和脚本的区别。' },
+        { letter: 'G', name: '目标 (Goal)', color: '#E94560', text: '接收一个清晰的目标。"研究火星"不是目标。"写一份500字的火星殖民挑战总结，附带来源"才是。' },
+        { letter: 'P', name: '规划 (Plan)', color: '#7B61FF', text: '把目标拆解成具体步骤。好的规划器创建灵活的计划。差的规划器创建僵硬的脚本，一遇意外就崩。' },
+        { letter: 'T', name: '执行 (Execute)', color: '#0EA5E9', text: '用合适的工具运行每个步骤——搜索引擎、代码解释器、文件阅读器、API。智能体不只是思考，它们行动。' },
+        { letter: 'M', name: '观察 (Observe)', color: '#16C79A', text: '记录发生了什么，检查结果。没有记忆的话，智能体可能会永远重复同一个失败的动作。' },
+        { letter: 'E', name: '评估 (Evaluate)', color: '#F5A623', text: '这步成功了吗？我离目标更近了吗？如果有问题，调整计划然后再循环。这才是智能体和脚本的区别。' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          聊天机器人是单次对话。智能体是一整轮对话——和自己、和工具、和世界的对话。最好的智能体构建者不会最大化自主性。他们设计有节制的检查点，让智能体暂停，让人类决定是否继续。
+          聊天机器人是单轮对话。智能体是一整段对话——和它自己、它的工具、以及整个世界。最好的智能体构建者不是最大化自主性，而是设计周到的检查点，让智能体暂停，让人类来决定是否继续。
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        是时候自己动手了。从头设计你的智能体。
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        是时候动手了。设计一个坦克智能体 &mdash; 选择它的能力、分配它的预算、编写它的策略 &mdash; 然后部署到竞技场，看它自主战斗。
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="刚刚从零开始设计了我的第一个 AI 智能体。这门课一步步带你了解架构，还有实时演示。没有炒作，只有实干。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="刚从零开始设计了我的第一个 AI 智能体。这门课程用实时演示一步步带你理解架构。没有炒作，只有实战。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        目标不是防止所有失败——而是让失败可以被恢复。
+        目标不是阻止所有失败——而是让失败可以恢复。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        接下来：你将使用一个真正的智能体——它能读你的代码、写改动、运行测试、修复自己的错误。来认识一下 Claude Code。
+        下一章：你将使用一个真正的智能体——一个能读你的代码、写修改、运行测试、修复自己错误的智能体。来认识 Claude Code。
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

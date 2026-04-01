@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        روبوت المحادثة ينتظرك لتتكلم. الوكيل لا ينتظر. أعطه هدفًا — "ابحث عن استعمار المريخ واكتب تقريرًا" — وهو يقسم العمل إلى خطوات، يختار الأدوات المناسبة، ينفذها واحدة تلو الأخرى، يتحقق من نتائجه، ويستمر حتى ينتهي العمل. هذا الفرق — بين <em>الاستجابة للتعليمات</em> و<em>متابعة هدف</em> — هو الفرق بين آلة حاسبة وزميل عمل.
+        روبوت المحادثة ينتظرك لتتكلم. الوكيل لا ينتظر. أعطه هدفًا &mdash; "ابحث عن استعمار المريخ واكتب تقريرًا" &mdash; وهو يقسم العمل إلى خطوات، يختار الأدوات المناسبة، ينفذها واحدة تلو الأخرى، يتحقق من نتائجه، ويستمر حتى ينتهي العمل. هذا الفرق &mdash; بين <em>الاستجابة للتعليمات</em> و<em>متابعة هدف</em> &mdash; هو الفرق بين آلة حاسبة وزميل عمل.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        الوكلاء يعملون بحلقة: استقبل الهدف، خطط الخطوات، نفّذ بالأدوات، لاحظ النتائج، قيّم التقدم، عدّل. لا يخططون مرة واحدة وينفذون بشكل أعمى — أفضلهم يتعافون بسلاسة عندما تنحرف الخطوة الثالثة. لكن هذه القوة لها جانب مظلم: الوكلاء لا يعطون إجابات سيئة فحسب، بل <em>يتصرفون</em> بناءً عليها، ثم يستخدمون النتيجة المعطوبة لاتخاذ القرار التالي. الأخطاء تتراكم.
+        الوكلاء يعملون بحلقة: استقبل الهدف، خطط الخطوات، نفّذ بالأدوات، لاحظ النتائج، قيّم التقدم، عدّل. لا يخططون مرة واحدة وينفذون بشكل أعمى &mdash; أفضلهم يتعافون بسلاسة عندما تنحرف الخطوة الثالثة. لكن هذه القوة لها جانب مظلم: الوكلاء لا يعطون إجابات سيئة فحسب، بل <em>يتصرفون</em> بناءً عليها، ثم يستخدمون النتيجة المعطوبة لاتخاذ القرار التالي. الأخطاء تتراكم.
       </p>
     </FadeInBlock>
   </section>
@@ -109,7 +112,7 @@ const chapter = chapters[5];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          روبوت المحادثة هو دور واحد. الوكيل هو محادثة كاملة — مع نفسه، وأدواته، والعالم. أفضل بناة الوكلاء لا يزيدون الاستقلالية. بل يصممون نقاط تفتيش مدروسة حيث يتوقف الوكيل ويدع الإنسان يقرر هل يستمر.
+          روبوت المحادثة هو جولة واحدة. الوكيل هو محادثة كاملة &mdash; مع نفسه، وأدواته، والعالم. أفضل بناة الوكلاء لا يزيدون الاستقلالية للحد الأقصى. بل يصممون نقاط تفتيش مدروسة حيث يتوقف الوكيل ويدع الإنسان يقرر هل يستمر.
         </p>
       </div>
     </FadeInBlock>
@@ -118,32 +121,42 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        حان وقت البناء. صمم وكيلك الخاص من الصفر.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        حان وقت البناء. صمم وكيل دبابة &mdash; اختر قدراته، وخصص ميزانيته، واكتب استراتيجيته &mdash; ثم أرسله للساحة وشاهده يقاتل باستقلالية.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Just designed my first AI agent from scratch. This course walks you through the architecture step by step with live demos. No hype, just building." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        الهدف ليس منع كل فشل — بل جعل الفشل قابلاً للتعافي.
+        الهدف ليس منع كل فشل &mdash; بل جعل الفشل قابلًا للتعافي.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        تاليًا: ستستخدم وكيلاً حقيقيًا — واحد يقرأ كودك، ويكتب التعديلات، ويشغل الاختبارات، ويصلح أخطاءه بنفسه. تعرّف على Claude Code.
+        التالي: ستستخدم وكيلًا حقيقيًا &mdash; واحد يقرأ كودك، ويكتب التعديلات، ويشغل الاختبارات، ويصلح أخطاءه بنفسه. تعرّف على Claude Code.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          সৃষ্টি ছাড়া জ্ঞান হলো ট্রিভিয়া।<br />শিপ করার সময় হয়েছে।
+          তৈরি না করলে জ্ঞান শুধু ট্রিভিয়া।<br />শিপ করার সময়।
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        তুমি শেষ পর্যন্ত পৌঁছে গেছ। দশটা অধ্যায়ে তুমি "আমার রচনায় সাহায্য করো" থেকে কনটেক্সট ইঞ্জিনিয়ারিং, এজেন্ট তৈরি, আর হ্যালুসিনেশন ডিবাগ করা পর্যন্ত এসেছ। বেশিরভাগ বড়দের চেয়ে AI সম্পর্কে বেশি শিখেছ। কিন্তু একটা অস্বস্তিকর সত্য বলি: <strong>কিছু না বানালে কিছুই মানে রাখে না।</strong> AI নিয়ে পড়া সাঁতার নিয়ে পড়ার মতো &mdash; তুমি প্রতিটা স্ট্রোক টেকনিক পড়তে পারো, কিন্তু পানিতে না নামা পর্যন্ত তুমি কিছুই <em>জানো</em> না। তুমি শুধু <em>জানো সম্পর্কে</em>।
+        তুমি এতদূর এসে গেছ। দশটা অধ্যায় ধরে তুমি "help me with my essay" থেকে শুরু করে কনটেক্সট ইঞ্জিনিয়ারিং, এজেন্ট বানানো, সফটওয়্যারের শব্দভাণ্ডার শেখা, বিল্ড লুপে দক্ষ হওয়া, আর টেস্ট ডেভেলপ করা পর্যন্ত পৌঁছেছ। কিন্তু এখানে একটা অস্বস্তিকর সত্য আছে: <strong>কিছু বানানো না পর্যন্ত কোনোটাই কাজে আসবে না।</strong> AI নিয়ে পড়া সাঁতার নিয়ে পড়ার মতো &mdash; তুমি প্রতিটা স্ট্রোক টেকনিক পড়তে পারো, কিন্তু পানিতে না নামা পর্যন্ত তুমি কিছু <em>জানো</em> না। তুমি শুধু <em>জানো সেটা সম্পর্কে</em>।
       </p>
     </FadeInBlock>
   </section>
@@ -60,19 +61,19 @@ const chapter = chapters[10];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        তোমার AI সেটআপ করো
+        তোমার AI সেট আপ করো
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        প্রথম প্রম্পট লেখার আগে একটা পাওয়ার মুভ আছে যা বেশিরভাগ নতুনরা বাদ দেয়: <strong>তোমার AI টুলকে একটা স্থায়ী নির্দেশনা ফাইল দাও।</strong> প্রতি সেশনে প্রজেক্ট আবার বোঝানোর বদলে, একবার লিখে রাখো আর AI অটোমেটিক পড়বে। Claude Code পড়ে <code>CLAUDE.md</code>। Cursor পড়ে <code>.cursorrules</code>। GitHub Copilot পড়ে <code>.github/copilot-instructions.md</code>। একই কনসেপ্ট, ভিন্ন ফাইলের নাম। এটা তৃতীয় অধ্যায়ের কনটেক্সট ইঞ্জিনিয়ারিং &mdash; প্রজেক্ট লেভেলে প্রয়োগ করা।
+        প্রথম প্রম্পট লেখার আগে একটা পাওয়ার মুভ আছে যেটা বেশিরভাগ নতুনরা স্কিপ করে: <strong>তোমার AI টুলকে একটা পার্মানেন্ট ইনস্ট্রাকশন ফাইল দাও।</strong> প্রতিবার প্রজেক্ট ব্যাখ্যা করার বদলে একবার লিখো, আর তোমার AI অটোমেটিকালি পড়বে। Claude Code পড়ে <code>CLAUDE.md</code>। Cursor পড়ে <code>.cursorrules</code>। GitHub Copilot পড়ে <code>.github/copilot-instructions.md</code>। একই কনসেপ্ট, আলাদা ফাইলনেম। এটা অধ্যায় ৩-এর কনটেক্সট ইঞ্জিনিয়ারিং &mdash; প্রজেক্ট লেভেলে প্রয়োগ।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        একটা ভালো নির্দেশনা ফাইল তিনটা প্রশ্নের উত্তর দেয়: তুমি কি বানাচ্ছ, নিয়মগুলো কি, আর "ভালো" দেখতে কেমন? এগুলো ঠিক করলে AI-এর সাথে প্রতিটা কথোপকথন দশ ধাপ এগিয়ে শুরু হয়। প্রজেক্টের স্কোপ এমন ছোট রাখো যাতে শেষ করতে পারো &mdash; শেষ করা উইকেন্ড হ্যাক ফেলে রাখা মাস্টারপিসকে প্রতিবার হারায়।
+        একটা ভালো ইনস্ট্রাকশন ফাইল তিনটা প্রশ্নের উত্তর দেয়: কী বানাচ্ছ, নিয়মগুলো কী, আর "ভালো" দেখতে কেমন? এগুলো ঠিক থাকলে AI-র সাথে প্রতিটা কথোপকথন দশ ধাপ এগিয়ে শুরু হয়। প্রজেক্ট এতটুকু ছোট রাখো যাতে শেষ করতে পারো &mdash; একটা শেষ করা উইকেন্ড প্রজেক্ট একটা অসমাপ্ত মাস্টারপিসকে প্রতিবার হারায়।
       </p>
     </FadeInBlock>
 
@@ -80,7 +81,7 @@ const chapter = chapters[10];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">মূল বিষয়</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          একটা ভালো প্রজেক্ট নির্দেশনা ফাইল হলো সেই পার্থক্য এমন AI-এর মধ্যে যে তোমাকে সাহায্য করে আর এমন AI-এর মধ্যে যে তোমাকে <em>বোঝে</em>। একবার লেখো, প্রতিটা সেশনে সুবিধা পাও।
+          একটা ভালো প্রজেক্ট ইনস্ট্রাকশন ফাইল হলো সেই পার্থক্য যেটা ঠিক করে AI তোমাকে সাহায্য করবে নাকি তোমাকে <em>বুঝবে</em>। একবার লেখো, প্রতিটা সেশনে উপকার পাও।
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        এখানেই তোমার প্রজেক্ট নির্দেশনা ফাইল বানাও। সেকশনগুলো পূরণ করো আর তোমার পছন্দের AI টুলের জন্য এক্সপোর্ট করো।
+        এখানেই তোমার প্রজেক্ট ইনস্ট্রাকশন ফাইল বানাও। সেকশনগুলো পূরণ করো আর তোমার পছন্দের AI টুলের জন্য এক্সপোর্ট করো।
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        টুল জিনিস বানায় না। টুলসহ মানুষ জিনিস বানায়। আর তোমার কাছে তোমার জেনারেশনের সেরা টুলকিট আছে।
+        টুল জিনিস বানায় না। টুল হাতে থাকা মানুষ বানায়। আর তোমার প্রজন্ম এ পর্যন্ত সবচেয়ে ভালো টুলকিট পেয়েছে।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        এগারোটা অধ্যায় আগে, তুমি "আমার রচনায় সাহায্য করো" টাইপ করেছিলে আর সেরাটা আশা করেছিলে। এখন তুমি কনটেক্সট ইঞ্জিনিয়ার করো, এজেন্ট ডিজাইন করো, আউটপুট ভেরিফাই করো, আর প্রতিটা ধাপে বিচার নিয়ে আসো। কোর্স শেষ। আসল শেখা এখন শুরু &mdash; গিয়ে এমন কিছু বানাও যা শুধু তুমিই ভাবতে পারতে।
+        এগারো অধ্যায় আগে তুমি "help me with my essay" টাইপ করে সেরাটা আশা করেছিলে। এখন তুমি কনটেক্সট ইঞ্জিনিয়ার করো, এজেন্ট বানাও, সফটওয়্যারের ভাষায় কথা বলো, আত্মবিশ্বাসের সাথে ইটারেট করো, আর তোমার তৈরি সবকিছুতে টেস্ট নিয়ে আসো। কোর্স শেষ। আসল শেখা এখন শুরু &mdash; যাও, এমন কিছু বানাও যেটা শুধু তুমিই ভাবতে পারতে।
       </p>
     </FadeInBlock>
 

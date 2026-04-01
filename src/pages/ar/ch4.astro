@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -31,16 +33,16 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          خريطة<br />الذكاء الاصطناعي
+          مشهد<br />الذكاء الاصطناعي
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          دليلك الميداني لكل أداة ذكاء<br />اصطناعي يمكنك استخدامها الآن.
+          دليلك الميداني لكل أداة ذكاء اصطناعي<br />يمكنك استخدامها الآن فعلًا.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
-          آخر تحديث: مارس 2026
+          آخر تحديث مارس 2026
         </p>
       </FadeInBlock>
     </div>
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        عندما يقول معظم الناس "الذكاء الاصطناعي"، فهم يعنون ChatGPT. هذا يشبه قول "الإنترنت" وأنت تقصد Google. الآن، هناك مئات أدوات الذكاء الاصطناعي التي يمكنك استخدامها اليوم — أدوات تُنتج صوراً واقعية من جملة واحدة، تؤلف أغاني كاملة، أو تقرأ كل ورقة أكاديمية في موضوع بحثك وتلخص الإجماع في ثلاث فقرات. هذا الفصل هو خريطتك للتضاريس.
+        عندما يقول معظم الناس "الذكاء الاصطناعي"، يقصدون ChatGPT. هذا مثل أن تقول "الإنترنت" وتقصد Google. الآن، هناك مئات أدوات الذكاء الاصطناعي التي يمكنك استخدامها اليوم &mdash; أدوات تولّد صورًا واقعية من جملة، تؤلف أغاني كاملة، أو تقرأ كل ورقة أكاديمية عن موضوع بحثك وتلخص الإجماع في ثلاث فقرات. هذا الفصل هو خريطتك لهذا العالم.
       </p>
     </FadeInBlock>
   </section>
@@ -66,26 +68,26 @@ const chapter = chapters[3];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        العائلات الثمان
+        العائلات الثماني
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        فكر في الأمر مثل الآلات الموسيقية. البيانو والطبول كلاهما "آلات موسيقية"، لكنك لن تطلب من عازف بيانو إيقاعاً. أدوات الذكاء الاصطناعي بنفس الطريقة — أداة مصممة لتوليد الصور مختلفة جوهرياً عن أداة مصممة للبرمجة. كل أداة ستصادفها تدخل في إحدى هذه العائلات الثمان.
+        فكر فيها مثل الآلات الموسيقية. البيانو والطبول كلاهما "آلات"، لكنك لن تطلب من عازف البيانو أن يعزف إيقاعًا. أدوات الذكاء الاصطناعي هكذا &mdash; أداة مبنية لتوليد الصور تختلف جذريًا عن أداة مبنية للبرمجة. كل أداة ستقابلها تنتمي لواحدة من هذه العائلات الثماني.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'مولدات الصور', color: '#E94560', text: 'النص يدخل، الصور تخرج. Midjourney، DALL-E 3، Stable Diffusion، Flux، Ideogram.' },
-        { icon: '2', name: 'محررات الصور', color: '#F5A623', text: 'ابدأ بصورة حقيقية وحولها. Photoshop AI، Magnific، Clipdrop.' },
-        { icon: '3', name: 'منشئو الفيديو', color: '#7B61FF', text: 'توليد مقاطع فيديو من نص أو صور ثابتة. Sora، Runway، Kling، Pika.' },
-        { icon: '4', name: 'الموسيقى والصوت', color: '#16C79A', text: 'أغاني كاملة من توجيه، استنساخ الصوت، مؤثرات صوتية. Suno، Udio، ElevenLabs.' },
-        { icon: '5', name: 'وكلاء البحث', color: '#0EA5E9', text: 'ذكاء اصطناعي يقرأ الإنترنت لك. Perplexity، Elicit، Consensus، NotebookLM.' },
-        { icon: '6', name: 'متصفحات الذكاء الاصطناعي', color: '#6B7280', text: 'وكلاء يتنقلون في الويب مثل الإنسان. Arc، Operator، Claude Computer Use.' },
-        { icon: '7', name: 'أدوات البرمجة', color: '#E94560', text: 'ذكاء اصطناعي يكتب ويحرر ويصحح الكود. Claude Code، Cursor، Antigravity، Copilot.' },
-        { icon: '8', name: 'الروبوتات المحادثة والمساعدات', color: '#0F3460', text: 'الذكاء الاصطناعي المحادث العام الذي تعرفه: ChatGPT، Claude، Gemini.' },
+        { icon: '1', name: 'مولّدات الصور', color: '#E94560', text: 'نص يدخل، صور تخرج. Midjourney، DALL-E 3، Stable Diffusion، Flux، Ideogram.' },
+        { icon: '2', name: 'محرّرات الصور', color: '#F5A623', text: 'ابدأ بصورة حقيقية وحوّلها. Photoshop AI، Magnific، Clipdrop.' },
+        { icon: '3', name: 'صانعات الفيديو', color: '#7B61FF', text: 'أنشئ مقاطع فيديو من نص أو صور ثابتة. Sora، Runway، Kling، Pika.' },
+        { icon: '4', name: 'الموسيقى والصوت', color: '#16C79A', text: 'أغاني كاملة من أمر، استنساخ أصوات، مؤثرات صوتية. Suno، Udio، ElevenLabs.' },
+        { icon: '5', name: 'وكلاء البحث', color: '#0EA5E9', text: 'ذكاء اصطناعي يقرأ الإنترنت نيابة عنك. Perplexity، Elicit، Consensus، NotebookLM.' },
+        { icon: '6', name: 'متصفحات الذكاء الاصطناعي', color: '#6B7280', text: 'وكلاء يتصفحون الويب مثل الإنسان. Arc، Operator، Claude Computer Use.' },
+        { icon: '7', name: 'أدوات البرمجة', color: '#E94560', text: 'ذكاء اصطناعي يكتب ويعدّل ويصلح الكود. Claude Code، Cursor، Antigravity، Copilot.' },
+        { icon: '8', name: 'المساعدات والدردشة', color: '#0F3460', text: 'الذكاء الاصطناعي المحادثاتي متعدد الأغراض الذي تعرفه: ChatGPT، Claude، Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +111,7 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          الشخص الذي يعرف 10 أدوات ذكاء اصطناعي بشكل سطحي سيتفوق باستمرار على شخص يعرف أداة واحدة بعمق. النجار المحترف ليس لديه أداة مفضلة — لديه أداة مفضلة <em>لكل مهمة</em>.
+          الشخص الذي يعرف 10 أدوات ذكاء اصطناعي بشكل سطحي سيتفوق باستمرار على من يعرف أداة واحدة بعمق. النجار المحترف ليس لديه أداة مفضلة &mdash; لديه أداة مفضلة <em>لكل مهمة</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        استكشف الكتالوج الكامل. انقر على أي أداة لتعرف ماذا تفعل.
+        استكشف الكتالوج الكامل. اضغط على أي أداة لتعرف ماذا تفعل.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="There are way more AI tools than I realized. This interactive guide maps out 8 families of tools — image gen, video, music, research, coding — with examples of each." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        المشهد يتغير كل شهر. لكن الفئات مستقرة حتى لو لم تكن الأدوات كذلك — و<em>هذه</em> هي الخريطة التي تستحق الحفظ.
+        المشهد يتغير كل شهر. لكن التصنيفات ثابتة حتى لو تغيرت الأدوات &mdash; و<em>هذه</em> هي الخريطة التي تستحق الحفظ.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        حتى الآن، هذه الأدوات فقط تستجيب لك. ماذا لو كان بإمكانها <em>اتخاذ إجراءات بنفسها</em>؟ هذه هي القفزة من أداة إلى وكيل — وهذا يغير كل شيء.
+        حتى الآن، هذه الأدوات تستجيب لك فقط. ماذا لو استطاعت أن <em>تتخذ إجراءات بنفسها</em>؟ هذه هي القفزة من أداة إلى وكيل &mdash; وهي تغيّر كل شيء.
       </p>
     </FadeInBlock>
   </section>

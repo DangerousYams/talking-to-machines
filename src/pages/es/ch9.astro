@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Cuando la IA<br />se equivoca
+          El ciclo de<br />construcción
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Los hábitos de verificación que separan<br />a los aficionados de los profesionales.
+          Espera imperfección. Disfruta del refinamiento.<br />La tercera versión es donde ocurre la magia.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        La IA que acaba de ayudarte a escribir un ensayo impecable también puede, con la misma confianza, decirte que Napoleón ganó la Batalla de Waterloo. No dudará. No tartamudeará. Afirmará un "hecho" completamente fabricado con el mismo tono autoritario que usa para todo lo demás. Esta es la paradoja en el corazón de trabajar con IA: <strong>la misma fluidez que la hace útil la hace peligrosa.</strong>
+        El error más común al construir con IA no es un mal prompt. Es una mala expectativa. Escribes una descripción larga, le das enter y esperas un producto terminado. No funciona. Nunca funciona. Las personas que construyen cosas increíbles con IA saben un secreto: <strong>la primera versión siempre está mal.</strong> La tercera es buena. La quinta es genial. Y el proceso de ir de una a cinco es la verdadera habilidad.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Todo artista itera. Todo arquitecto revisa. Todo cineasta filma múltiples tomas. Construir con IA no es diferente. Las personas que disfrutan del ciclo &mdash; en vez de resentirlo &mdash; son las que construyen las mejores cosas.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        La plausibilidad no es verdad
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Especificar, generar, verificar
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Los modelos de IA no recuperan hechos de una base de datos. Predicen la siguiente palabra más probable. Cuando preguntas sobre algo real, los datos de entrenamiento los guían hacia información correcta. Cuando preguntas sobre algo que no existe, el modelo no dice "no lo sé". Genera lo que una respuesta correcta <em>parecería</em> — con nombres, fechas y citas incluidas. Todo fabricado.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Cada sesión productiva con un agente de código sigue el mismo ritmo. <strong>Especifica</strong> lo que quieres: sé concreto, da ejemplos, describe cómo se ve algo "terminado." Deja que el agente lo <strong>genere</strong>. Luego <strong>verifica</strong>: ¿funciona? ¿Se ve bien? ¿Hace lo que pediste? Si no, especificas de nuevo, con más precisión. Ese es el ciclo. No es señal de fracaso. Es el proceso.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        No hay correlación entre qué tan segura suena la IA y qué tan precisa realmente es. Una respuesta incorrecta y una correcta se ven idénticas desde afuera. No puedes juzgar la precisión por el tono, por el detalle, ni por cuántos números específicos incluye la IA. La prueba de "suena bien" no vale nada. Tu única defensa es la verificación.
+        El movimiento poderoso es escribir tus <strong>criterios de aceptación</strong> antes de empezar a construir. "El botón debe ponerse verde al hacer clic." "La lista debe persistir cuando recargue la página." "El formulario de registro debe rechazar emails sin arroba." Estas descripciones en lenguaje natural de lo que significa "terminado" se convierten en tu marco de evaluación. Cuando algo está mal, pegas tus criterios al agente y dices "esto no coincide." El agente puede evaluar contra <em>tus</em> estándares.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Qué hacer cuando estás atascado
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        El agente generó algo roto. ¿Y ahora qué? Cinco estrategias, en orden de qué intentar primero:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Describe el síntoma, no tu diagnóstico</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"El botón no responde cuando hago clic" es mejor que "Creo que el onClick handler está roto."</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Comparte el mensaje de error textualmente</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Copia y pega el error exacto. Es lo más útil que puedes darle al agente.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Pide al agente que explique lo que hizo</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Explícame qué acabas de cambiar y por qué." Entender a menudo revela el problema.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. Pide un enfoque diferente</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Ese enfoque no funciona. ¿Puedes intentar resolver esto de una forma completamente diferente?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. Empieza de cero con lo aprendido</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">A veces una nueva conversación es más rápida que depurar una enredada. Llévate las decisiones clave contigo.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tests como guardarraíles</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          La IA no tiene un concepto de verdad. Tiene un concepto de <em>plausibilidad</em>. Genera texto que encaja con el patrón — sin importar si ese texto corresponde con la realidad.
+          Puedes pedirle al agente que escriba tests automatizados &mdash; en lenguaje natural. "Escribe un test que verifique que el formulario de registro rechaza emails sin arroba." El agente escribe el test <em>y</em> el código que lo pasa. Esto es desarrollo dirigido por tests, dirigido por alguien que nunca ha escrito un test. Una vez que un bug es capturado por un test, nunca puede volver.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Pon a prueba tu detector. ¿Puedes distinguir qué afirmaciones de IA son reales y cuáles son fabricadas?
+        Practica la habilidad. ¿Cómo le describirías estos bugs a un agente de código?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Todo usuario de IA necesita este capítulo. Te enseña exactamente cómo la IA alucina, por qué está de acuerdo con respuestas incorrectas, y cómo detectarla. Súper práctico." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Este capítulo sobre construir con agentes de código es oro puro. Solo las 5 estrategias de depuración ya valen la pena: describe síntomas, comparte errores, pide explicaciones." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Las personas que obtienen más valor de la IA son las que han aprendido exactamente cuándo confiar en ella y cuándo verificar.
+        La primera versión siempre está mal. La tercera es buena. La quinta es genial. Disfruta del ciclo.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Saber cuándo la IA se equivoca lleva a una pregunta más grande: ¿qué es lo que <em>nunca</em> podrá hacer? A continuación, exploramos las habilidades que permanecen obstinada y bellamente humanas — y por qué importan más que nunca.
+        Puedes iterar. Puedes depurar. Pero ¿cómo sabes si lo que estás construyendo es realmente <em>bueno</em>? No solo funcional, sino bueno. Eso requiere algo que la IA no puede darte: criterio. Eso es lo que sigue.
       </p>
     </FadeInBlock>
   </section>

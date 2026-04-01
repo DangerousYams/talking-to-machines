@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Cada vez que envías un mensaje a una IA, esta lee tu <em>conversación entera</em> desde cero &mdash; cada mensaje que enviaste, cada respuesta que dio &mdash; genera una respuesta y luego lo olvida todo. En el siguiente turno, lo mismo. Toda la transcripción se alimenta de nuevo. Es el lector más diligente pero amnésico del mundo: completamente minucioso cada vez, empezando desde cero en cada turno.
+        Cada vez que envías un mensaje a una IA, esta lee tu <em>conversación entera</em> desde cero &mdash; cada mensaje que enviaste, cada respuesta que dio &mdash; genera una respuesta y luego lo olvida todo. En el siguiente turno, lo mismo. Toda la transcripción se procesa de nuevo. Es el lector más diligente pero amnésico del mundo: completamente exhaustivo cada vez, empezando desde cero en cada turno.
       </p>
     </FadeInBlock>
   </section>
@@ -69,27 +72,27 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Esa transcripción que la IA relee en cada turno vive dentro de algo llamado <strong>ventana de contexto</strong> &mdash; medida en <strong>tokens</strong> (aproximadamente un token por cada tres cuartos de palabra). La ventana de Claude contiene unos 200,000 tokens &mdash; un libro de 500 páginas. Suena enorme, pero cada mensaje que envías, cada respuesta que recibes y cada instrucción oculta del sistema consumen del mismo presupuesto. Se llena más rápido de lo que crees.
+        Esa transcripción que la IA relee en cada turno vive dentro de algo llamado <strong>ventana de contexto</strong> &mdash; medida en <strong>tokens</strong> (aproximadamente un token por cada tres cuartos de palabra). La ventana de Claude tiene unas 200.000 tokens: un libro de 500 páginas. Suena enorme, pero cada mensaje que envías, cada respuesta que recibes y cada instrucción oculta del sistema consumen del mismo presupuesto. Se llena más rápido de lo que imaginas.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Cuando el presupuesto se agota, los mensajes más antiguos caen por el borde. ¿Mencionaste tus restricciones alimentarias en el mensaje tres? Para el mensaje quince, la IA puede que ya no los vea. No es que sea descuidada &mdash; literalmente no puede ver lo que ya no está frente a ella. La IA es tan buena como la información que tiene actualmente en su ventana.
+        Cuando el presupuesto se agota, los mensajes más antiguos caen por el borde. ¿Mencionaste tus restricciones alimentarias en el mensaje tres? Para el mensaje quince puede que la IA ya no las vea. No es que sea descuidada: literalmente no puede ver lo que ya no está frente a ella. La IA es tan buena como la información que tiene actualmente en su ventana.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Por eso los mejores usuarios de IA no solo escriben buenos prompts &mdash; administran lo que entra <em>en</em> la ventana. Resumen periódicamente para que los detalles clave sigan visibles. Ponen lo importante al principio. Empiezan de cero cuando cambia el tema. Usan formatos estructurados para que la IA procese el contexto eficientemente. <strong>La ingeniería de contexto es la nueva ingeniería de prompts.</strong>
+        Por eso los mejores usuarios de IA no solo escriben buenos prompts: gestionan lo que entra <em>en</em> la ventana. Resumen periódicamente para que los detalles clave sigan visibles. Ponen lo importante al principio. Empiezan de cero cuando el tema cambia. Usan formatos estructurados para que la IA procese el contexto de forma eficiente. <strong>La ingeniería de contexto es la nueva ingeniería de prompts.</strong>
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Escribir un gran prompt es el paso uno. Decidir qué información poner frente a la IA &mdash; y cómo estructurarla &mdash; es donde está la verdadera ventaja. El mejor prompt del mundo falla si el contexto está mal.
+          Escribir un gran prompt es el primer paso. Decidir qué información poner frente a la IA &mdash; y cómo estructurarla &mdash; es donde está la verdadera ventaja. El mejor prompt del mundo falla si el contexto es incorrecto.
         </p>
       </div>
     </FadeInBlock>
@@ -111,7 +114,91 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Por fin entiendo por qué la IA 'olvida' cosas a mitad de conversación. No es memoria — es una ventana de contexto. Este curso lo explica clarísimo con demos en vivo." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Estrategias para gestionar el contexto
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Ahora que entiendes la ventana, aquí tienes cómo gestionarla como un profesional. Estas son las técnicas que separan a quienes "usan IA" de quienes obtienen resultados extraordinarios.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">Resume sobre la marcha</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Cada 5-10 mensajes, pide a la IA que escriba un resumen breve de las decisiones y detalles clave. Luego pega ese resumen en tu siguiente mensaje. Esto "reinicia" el contexto con la información más importante al frente.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">Pon lo importante al principio</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Coloca la información más crítica al inicio de tu mensaje, no enterrada al final. La IA presta más atención a lo que viene primero y último &mdash; el medio puede perderse, especialmente en prompts largos.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">Empieza de cero estratégicamente</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">No tengas miedo de iniciar una nueva conversación cuando el tema cambie significativamente. Lleva un resumen de lo que decidiste, no el historial completo. Un contexto limpio suele ser mejor que uno desordenado.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">Sé explícito sobre qué recordar</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"Importante: el usuario es vegetariano. No olvides esto." Suena tonto, pero funciona. Los recordatorios explícitos actúan como anclas que la IA pondera con más fuerza.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">Usa formatos estructurados</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Listas con viñetas, encabezados y etiquetas claras ayudan a la IA a procesar tu contexto de forma más eficiente. Un prompt bien organizado vale el doble de su recuento de tokens comparado con un bloque de texto corrido.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Por fin entiendo por qué la IA 'olvida' cosas a mitad de conversación. No es memoria, es una ventana de contexto. Este curso lo explica clarísimo con demos en vivo." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -123,7 +210,7 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Hasta ahora hemos trabajado con chatbots. Ahora ampliamos la vista &mdash; existen cientos de herramientas de IA más allá de la ventana de chat, y conocer el panorama cambia lo que crees posible.
+        Has aprendido los fundamentos: prompts, preguntas y contexto. A continuación: tu guía de prompts avanzados para llevar contigo.
       </p>
     </FadeInBlock>
   </section>

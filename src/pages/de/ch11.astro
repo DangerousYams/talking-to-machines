@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Wissen ohne Schöpfung ist Trivialwissen.<br />Es ist Zeit zu shippen.
+          Wissen ohne Schaffen ist Trivialwissen.<br />Es ist Zeit zu shippen.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Du hast es geschafft. In zehn Kapiteln bist du von "hilf mir bei meinem Aufsatz" zu Context Engineering, Agenten bauen und Halluzinationen debuggen gekommen. Du hast mehr über KI gelernt als die meisten Erwachsenen wissen. Aber hier ist die unbequeme Wahrheit: <strong>Nichts davon zählt, bis du etwas baust.</strong> Über KI zu lesen ist wie über Schwimmen zu lesen -- du kannst jede Schwimmtechnik studieren, aber bis du ins Wasser gehst, <em>weißt</em> du nichts davon. Du weißt nur <em>darüber</em>.
+        Du hast es geschafft. In zehn Kapiteln bist du von "hilf mir bei meinem Aufsatz" zu Context Engineering, Agenten bauen, Software-Vokabular lernen, den Build-Loop meistern und Geschmack entwickeln gekommen. Aber hier ist die unbequeme Wahrheit: <strong>Nichts davon zählt, bis du etwas baust.</strong> Über KI zu lesen ist wie über Schwimmen zu lesen &mdash; du kannst jede Schwimmtechnik studieren, aber bis du ins Wasser gehst, <em>weißt</em> du nichts davon. Du weißt nur <em>darüber</em>.
       </p>
     </FadeInBlock>
   </section>
@@ -66,13 +67,13 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Bevor du deinen ersten Prompt schreibst, gibt es einen Power-Move, den die meisten Anfänger überspringen: <strong>Gib deinem KI-Tool eine permanente Instruktionsdatei.</strong> Statt dein Projekt jede Sitzung neu zu erklären, schreibst du es einmal und deine KI liest es automatisch. Claude Code liest <code>CLAUDE.md</code>. Cursor liest <code>.cursorrules</code>. GitHub Copilot liest <code>.github/copilot-instructions.md</code>. Gleiches Konzept, verschiedene Dateinamen. Das ist Context Engineering aus Kapitel 3 -- angewandt auf Projektebene.
+        Bevor du deinen ersten Prompt schreibst, gibt es einen Power-Move, den die meisten Anfänger überspringen: <strong>Gib deinem KI-Tool eine permanente Instruktionsdatei.</strong> Statt dein Projekt jede Sitzung neu zu erklären, schreibst du es einmal und deine KI liest es automatisch. Claude Code liest <code>CLAUDE.md</code>. Cursor liest <code>.cursorrules</code>. GitHub Copilot liest <code>.github/copilot-instructions.md</code>. Gleiches Konzept, verschiedene Dateinamen. Das ist Context Engineering aus Kapitel 3 &mdash; angewandt auf Projektebene.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Eine gute Instruktionsdatei beantwortet drei Fragen: Was baust du, was sind die Regeln und wie sieht "gut" aus? Wenn du die richtig hinbekommst, startet jedes Gespräch mit deiner KI zehn Schritte voraus. Halte dein Projekt klein genug, um es fertigzustellen -- ein fertiger Wochenend-Hack schlägt ein aufgegebenes Meisterwerk jedes Mal.
+        Eine gute Instruktionsdatei beantwortet drei Fragen: Was baust du, was sind die Regeln und wie sieht "gut" aus? Wenn du die richtig hinbekommst, startet jedes Gespräch mit deiner KI zehn Schritte voraus. Halte den Projektumfang klein genug zum Fertigwerden &mdash; ein fertiger Wochenend-Hack schlägt ein aufgegebenes Meisterwerk jedes Mal.
       </p>
     </FadeInBlock>
 
@@ -112,7 +113,7 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Vor elf Kapiteln hast du "hilf mir bei meinem Aufsatz" getippt und auf das Beste gehofft. Jetzt beherrschst du Context Engineering, entwirfst Agenten, verifizierst Ergebnisse und bringst Urteilsvermögen in jeden Schritt ein. Der Kurs ist vorbei. Das echte Lernen beginnt jetzt -- geh und mach etwas, auf das nur du kommen würdest.
+        Vor elf Kapiteln hast du "hilf mir bei meinem Aufsatz" getippt und auf das Beste gehofft. Jetzt designst du Kontext, baust Agenten, sprichst die Sprache der Software, iterierst mit Selbstvertrauen und bringst Geschmack in alles ein, was du erschaffst. Der Kurs ist vorbei. Das echte Lernen beginnt jetzt &mdash; geh und mach etwas, auf das nur du kommen würdest.
       </p>
     </FadeInBlock>
 

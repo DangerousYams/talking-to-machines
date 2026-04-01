@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        তুমি সারাজীবন ধরেই AI-এর সাথে কথা বলে আসছ — প্রতিটা সার্চ কোয়েরি, প্রতিটা Siri-কে করা প্রশ্ন, প্রতিটা Netflix রেকমেন্ডেশন। কিন্তু মেশিনের <em>দিকে</em> কথা বলা আর মেশিনের <em>সাথে</em> কথা বলার মধ্যে পার্থক্য আছে। এই মুহূর্তে, লাখ লাখ মানুষ একটা প্রম্পট টাইপ করে, একটা মাঝারি উত্তর পায়, আর ভাবে: "মনে হয় AI তেমন স্মার্ট না।" তারা ভুল ভাবছে। AI কি করতে পারে আর বেশিরভাগ মানুষ তা দিয়ে কি আদায় করে — এই ফাঁকটা বিশাল। আর এটা টেকনোলজির সমস্যা না — এটা যোগাযোগের সমস্যা।
+        তুমি সারাজীবন ধরেই AI-এর সাথে কথা বলছো — প্রতিটা সার্চ কোয়েরি, প্রতিটা Siri-কে করা প্রশ্ন, প্রতিটা Netflix-এর সুপারিশ। কিন্তু একটা যন্ত্রের <em>দিকে</em> কথা বলা আর একটা যন্ত্রের <em>সাথে</em> কথা বলার মধ্যে বিশাল ফারাক আছে। এই মুহূর্তে, লক্ষ লক্ষ মানুষ একটা প্রম্পট টাইপ করে, একটা মাঝারি মানের উত্তর পায়, আর ভাবে: "বোধহয় AI অতটা চালাক না।" তারা ভুল ভাবছে। AI আসলে কী করতে পারে আর বেশিরভাগ মানুষ এটা দিয়ে কী করাতে পারে — এই দুটোর মধ্যে ফারাকটা বিশাল। আর এটা কোনো প্রযুক্তিগত সমস্যা না — এটা একটা যোগাযোগের সমস্যা।
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        পাঁচটা বিল্ডিং ব্লক
+        পাঁচটি বিল্ডিং ব্লক
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        এটাই গোপন কথা: যারা AI থেকে অসাধারণ ফলাফল পায় তারা তোমার চেয়ে বেশি স্মার্ট না। তারা একটা ফর্মুলা ব্যবহার করে — পাঁচটা বিল্ডিং ব্লক যা প্রতিবার কাজ করে। তোমার সবসময় পাঁচটাই লাগবে না। কিন্তু এগুলোর অস্তিত্ব জানাটা Matrix দেখতে শেখার মতো।
+        গোপন কথাটা এটাই: যারা AI থেকে অবিশ্বাস্য ফলাফল পায়, তারা তোমার চেয়ে বেশি চালাক না। তারা একটা ফর্মুলা ব্যবহার করে — পাঁচটা বিল্ডিং ব্লক যেগুলো প্রতিবারই কাজ করে। প্রতিবার পাঁচটাই লাগবে এমন না। কিন্তু এগুলো আছে জানলে মনে হবে তুমি Matrix দেখতে পাচ্ছো।
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role (ভূমিকা)', color: '#E94560', text: 'AI-কে কে হতে হবে? একজন টিউটর একজন প্রফেসরের চেয়ে অন্যরকম করে ব্যাখ্যা করে। ভূমিকাটাই সব বদলে দেয়।' },
-        { letter: 'T', name: 'Task (কাজ)', color: '#0F3460', text: 'ঠিক কি করতে হবে? "আমাকে সাহায্য করো" না বরং "আমার থিসিস স্টেটমেন্টটা শক্তিশালী করো।" এক প্রম্পটে একটা কাজ।' },
-        { letter: 'F', name: 'Format (ফরম্যাট)', color: '#7B61FF', text: 'উত্তরটা দেখতে কেমন হবে? "আমাকে নম্বরযুক্ত তালিকায় ৩টা বিকল্প দাও।" ফরম্যাট ঘ্যানঘ্যানানি আটকায়।' },
-        { letter: 'C', name: 'Constraints (বাধা)', color: '#16C79A', text: 'কি করবে না? "ক্লিশে ব্যবহার করো না। ২০০ শব্দের মধ্যে রাখো।" গার্ডরেল খারাপ আউটপুট আটকায়।' },
-        { letter: 'E', name: 'Examples (উদাহরণ)', color: '#F5A623', text: 'বলো না, দেখাও। "ভালো" দেখতে কেমন তার একটা উদাহরণ শত শব্দের বর্ণনার চেয়ে বেশি কাজের।' },
+        { letter: 'R', name: 'ভূমিকা (Role)', color: '#E94560', text: 'AI কে হওয়া উচিত? একজন টিউটর আর একজন প্রফেসর আলাদাভাবে বোঝায়। ভূমিকাটাই সবকিছু বদলে দেয়।' },
+        { letter: 'T', name: 'কাজ (Task)', color: '#0F3460', text: 'ঠিক কী করতে হবে? "আমাকে সাহায্য করো" না, বরং "আমার থিসিস স্টেটমেন্টটা শক্তিশালী করো।" প্রতিটা প্রম্পটে একটাই কাজ।' },
+        { letter: 'F', name: 'ফরম্যাট (Format)', color: '#7B61FF', text: 'উত্তরটা কেমন দেখতে হবে? "৩টা বিকল্প নম্বরযুক্ত তালিকা হিসেবে দাও।" ফরম্যাট দিলে এদিক-ওদিক যাওয়া বন্ধ হয়।' },
+        { letter: 'C', name: 'সীমাবদ্ধতা (Constraints)', color: '#16C79A', text: 'কী করা যাবে না? "ক্লিশে এড়াও। ২০০ শব্দের মধ্যে রাখো।" সীমানা দিলে খারাপ আউটপুট আটকায়।' },
+        { letter: 'E', name: 'উদাহরণ (Examples)', color: '#F5A623', text: 'বলো না, দেখাও। "ভালো" দেখতে কেমন তার একটা উদাহরণ শত শত শব্দের বর্ণনার চেয়ে দামি।' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -101,9 +101,9 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">মূল বিষয়</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">মূল শিক্ষা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          প্রতিবার পাঁচটাই লাগবে না। কিন্তু যখন AI তোমাকে আবর্জনা দেবে, দেখো কি বাদ পড়েছে — এটা প্রায় সবসময় এই পাঁচটার একটা।
+          প্রতিবার পাঁচটাই লাগবে না। কিন্তু যখন AI তোমাকে আবর্জনা দেবে, দেখো কোনটা বাদ পড়েছে — প্রায় সবসময়ই এই পাঁচটার কোনো একটা।
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        থিওরি যথেষ্ট হলো। বিল্ডিং ব্লকগুলো টগল করো আর AI-এর উত্তর রিয়েল টাইমে বদলাতে দেখো।
+        যথেষ্ট তত্ত্ব হলো। বিল্ডিং ব্লকগুলো টগল করো আর দেখো AI-এর উত্তর কীভাবে রিয়েল টাইমে বদলে যায়।
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI প্রম্পটের ৫টা বিল্ডিং ব্লক আবিষ্কার করলাম। এই ইন্টার‍্যাক্টিভ কোর্সটা সত্যিই দারুণ — নিজেই প্রম্পট বানাও আর সেগুলো ভালো হতে দেখো।" client:visible />
+  <SharePrompt text="এইমাত্র একটা ভালো AI প্রম্পটের ৫টা বিল্ডিং ব্লক আবিষ্কার করলাম। এই ইন্টারেক্টিভ কোর্সটা সত্যিই দারুণ — নিজে প্রম্পট বানাও আর দেখো কীভাবে সেটা উন্নত হয়।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        তুমি ইতিমধ্যেই AI-এর ভাষা জানো। শুধু সচেতনভাবে বলতে শেখো।
+        তুমি ইতিমধ্যেই AI-এর ভাষা জানো। শুধু উদ্দেশ্য নিয়ে বলতে শেখো।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        পরের পর্বে: যে টেকনিকগুলো একটা সাধারণ আদান-প্রদানকে সত্যিকারের কথোপকথনে বদলে দেয় — যেখানে AI শুধু উত্তর দেয় না, তোমার সাথে <em>ভাবে</em>।
+        এরপর: যেসব টেকনিক একটা সাধারণ কথাবার্তাকে আসল আলোচনায় রূপান্তরিত করে — যেখানে AI শুধু উত্তর দেয় না, তোমার <em>সাথে ভাবে</em>।
       </p>
     </FadeInBlock>
   </section>

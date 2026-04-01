@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Ketika AI<br />Salah
+          Build<br />Loop
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Kebiasaan verifikasi yang membedakan<br />amatir dari profesional.
+          Harapkan ketidaksempurnaan. Nikmati penyempurnaan.<br />Versi ketiga adalah di mana keajaiban terjadi.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        AI yang baru saja membantumu menulis essay sempurna juga bisa, dengan keyakinan yang sama, bilang bahwa Napoleon memenangkan Pertempuran Waterloo. Tidak ragu. Tidak gagap. Dia akan menyatakan "fakta" yang sepenuhnya dikarang dengan nada otoritatif yang persis sama untuk segala hal lainnya. Inilah paradoks di jantung bekerja dengan AI: <strong>kelancaran yang sama yang membuatnya berguna juga membuatnya berbahaya.</strong>
+        Kesalahan paling umum saat membangun dengan AI bukan prompt yang jelek. Tapi ekspektasi yang salah. Kamu ketik satu deskripsi panjang, tekan enter, dan mengharapkan produk jadi. Nggak berhasil. Nggak pernah berhasil. Orang-orang yang membangun hal luar biasa dengan AI tahu rahasianya: <strong>versi pertama selalu salah.</strong> Versi ketiga bagus. Versi kelima hebat. Dan proses dari satu ke lima? Itulah skill yang sesungguhnya.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Setiap seniman mengiterasi. Setiap arsitek merevisi. Setiap pembuat film mengambil banyak take. Membangun dengan AI nggak beda. Orang yang menikmati loop-nya &mdash; bukan membencinya &mdash; adalah yang membangun hal-hal terbaik.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Kewajaran Bukan Kebenaran
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Specify, Generate, Verify
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Model AI tidak mengambil fakta dari database. Mereka memprediksi kata berikutnya yang paling mungkin. Ketika kamu bertanya tentang sesuatu yang nyata, data pelatihan menuntunnya ke informasi yang benar. Ketika kamu bertanya tentang sesuatu yang tidak ada, model tidak bilang "Aku tidak tahu." Dia menghasilkan apa yang <em>akan terlihat seperti</em> jawaban yang benar — lengkap dengan nama, tanggal, dan sitasi. Semuanya dikarang.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Setiap sesi produktif dengan coding agent mengikuti ritme yang sama. <strong>Specify</strong> apa yang kamu mau &mdash; spesifik, beri contoh, jelaskan seperti apa "selesai" itu. Biarkan agent <strong>generate</strong>. Lalu <strong>verify</strong>: berfungsi nggak? Tampilannya bener nggak? Sesuai yang diminta nggak? Kalau tidak, kamu specify lagi, lebih presisi. Itulah loop-nya. Itu bukan tanda kegagalan. Itu prosesnya.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Tidak ada korelasi antara seberapa yakin AI terdengar dan seberapa akurat jawabannya. Jawaban salah dan jawaban benar terlihat identik dari luar. Kamu tidak bisa menilai akurasi dari nada, dari detail, atau dari berapa banyak angka spesifik yang AI masukkan. Tes "kedengarannya benar" itu tidak berguna. Satu-satunya pertahananmu adalah verifikasi.
+        Langkah powerful-nya adalah menulis <strong>acceptance criteria</strong> sebelum mulai membangun. "Tombolnya harus berubah hijau kalau diklik." "Daftarnya harus tetap ada kalau halaman di-refresh." "Form pendaftaran harus menolak email tanpa simbol @." Deskripsi bahasa biasa tentang "selesai" ini jadi framework evaluasimu. Kalau ada yang salah, tempel kriteriamu ke agent dan bilang "ini nggak sesuai." Agent bisa mengetes terhadap <em>standarmu</em>.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Apa yang Harus Dilakukan Saat Mentok
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Agent menghasilkan sesuatu yang rusak. Sekarang apa? Lima strategi, urutkan dari yang harus dicoba dulu:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Jelaskan gejalanya, bukan diagnosamu</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Tombolnya nggak merespons waktu diklik" lebih baik dari "Kayaknya onClick handler-nya rusak."</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Bagikan pesan error persis seperti aslinya</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Copy-paste error yang persis. Itu satu hal paling berguna yang bisa kamu berikan ke agent.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Minta agent menjelaskan apa yang dia lakukan</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Jelaskan apa yang baru kamu ubah dan kenapa." Memahami sering kali mengungkap masalahnya.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. Minta pendekatan yang berbeda</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Cara itu nggak berhasil. Bisa coba cara yang benar-benar berbeda?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. Mulai baru dengan pelajaran yang sudah didapat</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Kadang percakapan baru lebih cepat daripada debug yang sudah kusut. Bawa keputusan-keputusan pentingnya.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Test sebagai pagar pembatas</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI tidak punya konsep kebenaran. AI punya konsep <em>kewajaran</em>. Dia menghasilkan teks yang cocok dengan pola — entah teks itu sesuai dengan kenyataan atau tidak.
+          Kamu bisa minta agent menulis automated test &mdash; dalam bahasa biasa. "Tulis test yang memverifikasi form pendaftaran menolak email tanpa simbol @." Agent menulis test-nya <em>dan</em> kode yang meloloskannya. Ini test-driven development, diarahkan oleh seseorang yang belum pernah menulis test. Begitu bug tertangkap oleh test, dia nggak akan pernah kembali lagi.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Uji detektormu. Bisakah kamu membedakan klaim AI yang nyata dan yang dikarang?
+        Latih skill-nya. Bagaimana kamu akan menjelaskan bug-bug ini ke coding agent?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Setiap pengguna AI butuh bab ini. Mengajarkan persis bagaimana AI berhalusinasi, kenapa dia setuju dengan jawaban yang salah, dan cara menangkapnya. Sangat praktis." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Bab tentang build loop dengan AI coding agent ini emas banget. 5 strategi debugging-nya aja sudah worth it — jelaskan gejala, bagikan error, minta penjelasan." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Orang yang mendapat nilai paling besar dari AI adalah mereka yang sudah belajar persis kapan harus percaya dan kapan harus memverifikasi.
+        Versi pertama selalu salah. Versi ketiga bagus. Versi kelima hebat. Nikmati loop-nya.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Mengetahui kapan AI salah mengarah ke pertanyaan yang lebih besar: apa yang AI <em>tidak akan pernah</em> bisa lakukan? Selanjutnya, kita eksplorasi skill-skill yang tetap keras kepala, indahnya manusiawi — dan kenapa mereka lebih penting dari sebelumnya.
+        Kamu bisa mengiterasi. Kamu bisa debug. Tapi bagaimana kamu tahu kalau yang kamu bangun itu benar-benar <em>bagus</em>? Bukan cuma fungsional &mdash; bagus. Itu butuh sesuatu yang AI nggak bisa berikan: taste. Itu topik selanjutnya.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        பெரும்பாலான மக்கள் AI யை vending machine போல் பயன்படுத்துகிறார்கள். Prompt போட்டு, பதில் வாங்கு. ஆனால் சிறந்த முடிவுகள் கட்டளைகளிலிருந்து அல்ல, <em>உரையாடல்களிலிருந்து</em> வருகின்றன. Prompt டைப் செய்பவனுக்கும் அதை craft செய்பவனுக்கும் உள்ள வித்தியாசம், 2,400 ஆண்டுகளாக சிறந்த சிந்தனையாளர்களை இயக்கும் அதே வித்தியாசம்: சரியான கேள்விகள் கேட்பது.
+        பெரும்பாலான மக்கள் AI யை vending machine போல பயன்படுத்துகிறார்கள். Prompt போடு, பதில் வாங்கு. ஆனால் சிறந்த முடிவுகள் கட்டளைகளிலிருந்து அல்ல, <em>உரையாடல்களிலிருந்து</em> வருகின்றன. Prompt டைப் செய்பவனுக்கும் அதை craft செய்பவனுக்கும் உள்ள வித்தியாசம், 2,400 ஆண்டுகளாக சிறந்த சிந்தனையாளர்களை இயக்கும் அதே வித்தியாசம்: சரியான கேள்விகள் கேட்பது.
       </p>
     </FadeInBlock>
   </section>
@@ -63,13 +65,13 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        சாக்ரட்டீஸ் முறை திருப்பம்
+        சாக்ரட்டீஸ் திருப்பம்
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        சாக்ரட்டீஸ் ஒருபோதும் கேள்வியை நேராக பதில் சொல்லவில்லை. அவர் <em>மேலும்</em> கேள்விகளை கேட்டார் — மாணவர்கள் ஆழமான புரிதலை தாங்களே அடையும் வரை. நீ AI யுடன் அதே அணுகுமுறையை பயன்படுத்தலாம், ஆனால் தலைகீழாக: பதில் கேட்பதற்கு பதிலாக, AI <em>உன்னை</em> interview செய்யச் சொல். நீ "பிறந்தநாள் விழா திட்டமிடு" என்று டைப் செய்யும்போது, பதிலை பெருமளவில் மாற்றும் டஜன் கணக்கான விவரங்களை விட்டுவிடுகிறாய். AI க்கு தெரியாது — ஆனால் அது கேட்கலாம்.
+        சாக்ரட்டீஸ் ஒருபோதும் கேள்வியை நேரடியாக பதில் சொல்லவில்லை. அவர் <em>மேலும்</em> கேள்விகள் கேட்டார் — மாணவர்கள் ஆழமான புரிதலை தாங்களே அடையும் வரை. நீ AI யுடன் அதே trick-ஐ பயன்படுத்தலாம், ஆனால் தலைகீழாக: பதில் கேட்பதற்கு பதிலாக, AI <em>உன்னை</em> interview செய்யச் சொல். நீ "பிறந்தநாள் விழா plan பண்ணு" என்று டைப் செய்யும்போது, பதிலை பெருமளவில் மாற்றும் டஜன் கணக்கான விவரங்களை விட்டுவிடுகிறாய். AI க்கு தெரியாது — ஆனால் அது கேட்கலாம்.
       </p>
     </FadeInBlock>
 
@@ -105,6 +107,15 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="This AI course just flipped how I think about prompting. Instead of telling AI what to do, you ask it to interview YOU first. The results are night and day." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

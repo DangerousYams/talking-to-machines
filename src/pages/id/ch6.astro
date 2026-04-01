@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -51,13 +54,13 @@ const chapter = chapters[5];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Chatbot menunggu kamu berbicara. Agent tidak. Beri dia tujuan — "riset kolonisasi Mars dan tulis laporan" — dan dia akan memecah pekerjaan jadi langkah-langkah, memilih tool yang tepat, menjalankannya satu per satu, memeriksa hasilnya sendiri, dan terus bekerja sampai selesai. Perbedaan itu — antara <em>merespons instruksi</em> dan <em>mengejar tujuan</em> — adalah perbedaan antara kalkulator dan rekan kerja.
+        Chatbot menunggu kamu bicara. Agent tidak. Beri dia tujuan — "riset kolonisasi Mars dan tulis laporannya" — dan dia memecah pekerjaan jadi langkah-langkah, pilih tool yang tepat, eksekusi satu per satu, cek hasilnya sendiri, dan terus jalan sampai selesai. Perbedaan itu — antara <em>merespons instruksi</em> dan <em>mengejar tujuan</em> — adalah perbedaan antara kalkulator dan rekan kerja.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Agent berjalan dalam siklus: terima tujuan, rencanakan langkah, eksekusi dengan tool, amati hasil, evaluasi progres, sesuaikan. Mereka tidak merencanakan sekali lalu menjalankan secara membabi buta — yang terbaik pulih dengan anggun ketika langkah ketiga berantakan. Tapi kekuatan itu punya sisi gelap: agent tidak hanya memberi jawaban buruk, mereka <em>bertindak</em> berdasarkannya, lalu menggunakan hasil yang rusak untuk membuat keputusan berikutnya. Kegagalan terakumulasi.
+        Agent berjalan dalam loop: terima tujuan, rencanakan langkah, eksekusi dengan tool, amati hasil, evaluasi progres, sesuaikan. Mereka nggak merencanakan sekali lalu jalan buta — yang terbaik bisa pulih dengan elegan kalau langkah ketiga bermasalah. Tapi kekuatan itu punya sisi gelap: agent nggak cuma memberi jawaban salah, mereka <em>bertindak</em> berdasarkannya, lalu pakai hasil yang rusak untuk keputusan berikutnya. Kegagalan bertumpuk.
       </p>
     </FadeInBlock>
   </section>
@@ -69,23 +72,23 @@ const chapter = chapters[5];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Siklus Agent
+        Loop Agent
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Setiap agent berjalan pada siklus lima langkah yang sama. Memahami langkah-langkah ini adalah perbedaan antara membangun sesuatu yang berguna dan membangun sesuatu yang menghabiskan kredit API-mu dalam loop tak terbatas.
+        Setiap agent berjalan dengan siklus lima langkah yang sama. Memahami langkah-langkah ini adalah perbedaan antara membangun sesuatu yang berguna dan membangun sesuatu yang menghabiskan kredit API-mu dalam loop tak berujung.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'G', name: 'Goal (Tujuan)', color: '#E94560', text: 'Terima tujuan yang jelas. "Riset Mars" bukan tujuan. "Tulis ringkasan 500 kata tentang tantangan kolonisasi Mars, dengan sumber" baru tujuan.' },
-        { letter: 'P', name: 'Plan (Rencana)', color: '#7B61FF', text: 'Pecah tujuan jadi langkah konkret. Perencana yang baik membuat rencana fleksibel. Perencana yang buruk membuat skrip kaku yang hancur pada kejutan pertama.' },
-        { letter: 'T', name: 'Execute (Eksekusi)', color: '#0EA5E9', text: 'Jalankan setiap langkah menggunakan tool yang tepat — mesin pencari, interpreter kode, pembaca file, API. Agent tidak cuma berpikir. Mereka bertindak.' },
-        { letter: 'M', name: 'Observe (Amati)', color: '#16C79A', text: 'Catat apa yang terjadi dan periksa hasilnya. Tanpa memori, agent bisa mengulangi tindakan gagal yang sama selamanya.' },
-        { letter: 'E', name: 'Evaluate (Evaluasi)', color: '#F5A623', text: 'Apakah ini berhasil? Apakah aku lebih dekat ke tujuan? Kalau ada yang salah, sesuaikan rencana dan ulangi. Ini yang memisahkan agent dari skrip biasa.' },
+        { letter: 'G', name: 'Goal (Tujuan)', color: '#E94560', text: 'Terima objektif yang jelas. "Riset Mars" bukan tujuan. "Tulis ringkasan 500 kata tentang tantangan kolonisasi Mars, dengan sumber" baru tujuan.' },
+        { letter: 'P', name: 'Plan (Rencana)', color: '#7B61FF', text: 'Pecah tujuan jadi langkah-langkah konkret. Perencana yang bagus bikin rencana fleksibel. Perencana yang buruk bikin skrip kaku yang hancur di kejutan pertama.' },
+        { letter: 'T', name: 'Execute (Eksekusi)', color: '#0EA5E9', text: 'Jalankan setiap langkah pakai tool yang tepat — mesin pencari, interpreter kode, pembaca file, API. Agent nggak cuma berpikir. Mereka bertindak.' },
+        { letter: 'M', name: 'Observe (Amati)', color: '#16C79A', text: 'Catat apa yang terjadi dan cek hasilnya. Tanpa memori, agent bisa mengulangi tindakan gagal yang sama selamanya.' },
+        { letter: 'E', name: 'Evaluate (Evaluasi)', color: '#F5A623', text: 'Berhasil nggak? Sudah lebih dekat ke tujuan? Kalau ada yang salah, sesuaikan rencana dan ulangi loop. Inilah yang membedakan agent dari skrip.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +110,9 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Chatbot adalah satu giliran. Agent adalah percakapan utuh — dengan dirinya sendiri, tool-nya, dan dunia. Pembuat agent terbaik bukan yang memaksimalkan otonomi. Mereka merancang pos pemeriksaan yang bijaksana di mana agent berhenti dan membiarkan manusia memutuskan apakah harus melanjutkan.
+          Chatbot itu satu giliran. Agent itu seluruh percakapan — dengan dirinya sendiri, tool-nya, dan dunia. Pembangun agent terbaik nggak memaksimalkan otonomi. Mereka mendesain checkpoint yang bijak di mana agent berhenti sejenak dan membiarkan manusia memutuskan apakah lanjut atau tidak.
         </p>
       </div>
     </FadeInBlock>
@@ -118,20 +121,30 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Saatnya membangun satu. Rancang agent-mu sendiri dari nol.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Saatnya membangun. Desain tank agent — pilih kemampuannya, alokasikan budgetnya, dan tulis strateginya — lalu deploy ke arena dan saksikan dia bertarung secara otonom.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Baru saja merancang agent AI pertamaku dari nol. Kursus ini memandu arsitekturnya langkah demi langkah dengan demo langsung. Tanpa hype, murni membangun." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Baru aja mendesain agent AI pertamaku dari nol. Kursus ini memandumu lewat arsitekturnya langkah demi langkah dengan demo langsung. Tanpa hype, langsung praktik." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -143,7 +156,7 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Selanjutnya: kamu akan menggunakan agent nyata — yang membaca kodemu, menulis perubahan, menjalankan tes, dan memperbaiki kesalahannya sendiri. Kenalan dengan Claude Code.
+        Selanjutnya: kamu akan pakai agent nyata — yang membaca kodemu, menulis perubahan, menjalankan tes, dan memperbaiki kesalahannya sendiri. Kenalkan Claude Code.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

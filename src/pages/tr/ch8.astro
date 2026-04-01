@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -22,7 +24,7 @@ const chapter = chapters[7];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Sekizinci Bölüm
+          Sekizinci B&#246;l&#252;m
         </p>
       </FadeInBlock>
 
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Karmaşıklığı<br />Orkestra Etmek
+          Dili<br />Konu&#351;mak
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Herhangi bir bağlam penceresinden<br />büyük projelerde yapay zekayı yönetmek.
+          &#304;n&#351;a etmenin kelime hazinesi &mdash;<br />kod de&#287;il, sadece isimler ve fiiller.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Her hırslı yeni başlayanın çarptığı an şu: yapay zekadan gerçek bir şey inşa etmesini istiyorsun — tam bir oyun, backend'li bir web sitesi, kaynaklı bir araştırma makalesi — ve her şey dağılıyor. Yapay zeka yeterince akıllı olmadığı için değil. Proje tek bir sohbete sığamayacak kadar büyük olduğu için. Bir duvar dolusu gereksinim yapıştırıyorsun ve yirmi dakika sonra istediğinin yarısını unuttuğunu fark ediyorsun.
+        Bir kodlama ajanıyla oturup bir &#351;eyler in&#351;a etmek &#252;zeresin. "Deploy," "endpoint," "component" ve "schema" gibi kelimeler kullanacak. Bu kelimeler sana yabancıysa, kaybolmu&#351; hissedeceksin &mdash; yapamayaca&#287;ın i&#231;in de&#287;il, <em>y&#246;nlendiremeyece&#287;in</em> i&#231;in. Bu b&#246;l&#252;m sana &#351;ifre &#231;&#246;z&#252;c&#252;y&#252; veriyor. Nasıl kod yazılır de&#287;il. &#304;n&#351;a etmenin <strong>dilini nasıl konu&#351;ursun</strong>.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Bu bir yapay zeka sorunu değil. Bu bir <strong>orkestrasyon sorunu</strong>. Ve bunu çözmeyi öğrenmek, yapay zekayı tek seferlik görevler için kullanan biriyle gerçek şeyler inşa etmek için kullanan biri arasındaki farktır.
+        Araba s&#252;rmek gibi d&#252;&#351;&#252;n. Yanma motorlarını, vites oranlarını veya fren hidroli&#287;ini anlaman gerekmiyor. Bilmen gereken: gaz pedalı, fren, direksiyon, aynalar. <em>Y&#246;nlendirmenin</em> kelime hazinesi, uygulamanın de&#287;il.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Bağlam Paketleme Sanatı
+        Stack: &#350;ifre &#199;&#246;z&#252;c&#252;
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Karmaşık projeler tek prompt yaklaşımını kırar. Bağlam taşar, dikkat dağılır, hatalar birikir. Çözüm daha iyi bir prompt değil — <strong>ayrıştırma</strong>dır. Projeyi odaklı görevlere böl, sonra her görev için yapay zekanın gerçekten ihtiyaç duyduğu bağlamı dikkatle seç. Çok az verirsen halüsinasyon yapar. Çok fazla verirsen odağını kaybeder. Tatlı nokta cerrahi hassasiyettir.
+        Her uygulama &mdash; Instagram'dan basit bir yapılacaklar listesine kadar &mdash; d&#246;rt katmandan olu&#351;ur. Geli&#351;tiriciler buna "stack" der. &#304;&#351;te tamamının gizemi &#231;&#246;z&#252;lm&#252;&#351; hali:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Bunu bavul hazırlamak gibi düşün. Tüm gardırobunu götüremezsin. Nereye gittiğini (görev), neye ihtiyacın olacağını (ilgili bilgi) ve neyi geride bırakabileceğini (geri kalan her şey) düşünmen gerekiyor. Her sohbet tam olarak ihtiyaç duyduğu bağlamı alır — ne fazla, ne eksik.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">&#304;nsanların g&#246;rd&#252;&#287;&#252; ve dokundu&#287;u &#351;ey. Butonlar, metin, g&#246;rseller, animasyonlar. Bir restoranın yemek salonu.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">Perde arkasındaki mantık. &#304;stekleri i&#351;ler, &#351;ifreleri kontrol eder, e-posta g&#246;nderir. Mutfak.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Veritabanı</p>
+          <p style="margin: 0; line-height: 1.6;">Uygulamanın &#351;eyleri hatırladı&#287;ı yer. Kullanıcı hesapları, g&#246;nderiler, ayarlar. Kiler ve tarif defteri.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">&#304;nternete nasıl &#231;ıkıyor. Hosting, alan adları, yayına alma. Restoran kapılarını a&#231;mak.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Hepsi bu. &#350;imdiye kadar kullandı&#287;ın her uygulama bu d&#246;rt katmanın bir kombinasyonu. Kodlama ajanın "backend'i kuraca&#287;ım" dedi&#287;inde "perde arkası mantı&#287;ı yazaca&#287;ım" demek istiyor. "Haydi deploy edelim" dedi&#287;inde "bunu internete koyalım" demek istiyor. Bu katmanların <em>nasıl</em> &#231;alı&#351;tı&#287;ını bilmene gerek yok. <em>Var olduklarını</em> ve ne i&#351;e yaradıklarını bilmen yeterli.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        &#214;&#287;retmen Olarak Ajan
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        &#304;&#351;te kimsenin s&#246;ylemedi&#287;i &#351;ey: <strong>kodlama ajanın aynı zamanda &#246;&#287;retmenin.</strong> "npm" ne demek bilmiyor musun? Sor. Bir hata mesajından kafan mı karı&#351;tı? Yapı&#351;tır ve "bunu geli&#351;tirici olmayan biri gibi a&#231;ıkla" de. Ajanın neden React'ı ba&#351;ka bir &#351;eyin yerine se&#231;ti&#287;ini mi bilmek istiyorsun? Sor. D&#252;z bir T&#252;rk&#231;eyle, adım adım, ihtiyacın oldu&#287;u kadar &#231;ok kez a&#231;ıklayacak.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>&#304;lk be&#351; dakikan</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Teslim belgenin kalitesi, sonrasında inşa edilen her şeyin kalitesini belirler. Net bir şema her zaman belirsiz bir açıklamayı yener. Çöp girerse, çöp çıkar — sohbetler arası da dahil.
+          Kodlama aracını a&#231;. Projeni sade bir dille tarif et: "Egzersizlerimi kaydedip zamanla geli&#351;imimi g&#246;rebildi&#287;im bir antrenman takip&#231;isi uygulaması yapmak istiyorum." Ajan netle&#351;tirici sorular soracak, bir stack &#246;nerecek ve in&#351;a etmeye ba&#351;layacak. &#304;lk i&#351;in onun <em>sorularını yanıtlamak</em> ve <em>ne olu&#351;turdu&#287;unu izlemek</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Bir bağlam bavulu hazırla. Önemli olanları taşırmadan sığdırabilecek misin?
+        Bir web uygulamasının d&#246;rt katmanını ke&#351;fet. Kelime hazinesini &#246;&#287;ren &mdash; sonra kendini test et.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Yapay zekanın en zor kısmı prompt yazmak değil — karmaşık projeleri birden fazla sohbet arasında orkestra etmek. Bu kurs sonunda nasıl yapılacağını açıklıyor." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Bu bölüm tech stack'i hiç kod olmadan açıklıyor. Frontend, backend, veritabanı, deployment — sonunda anlaşılır oldu. Keşke yıllar önce okumuş olsaydım." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Karmaşık projeler korkutucu değil. Sadece net belgelerle birbirine bağlanan bir dizi odaklı sohbet.
+        Motorun nasıl &#231;alı&#351;tı&#287;ını bilmene gerek yok. Nasıl kullanılaca&#287;ını bilmen yeterli.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Sırada: yapay zekanın ne zaman <em>yanlış</em> olduğunu bilmek. Halüsinasyonlar, dalkavukluk ve seni dürüst tutan doğrulama alışkanlıkları.
+        Kelimeleri biliyorsun. Fikrin var. &#350;imdi kodlama ajanınla oturup ger&#231;ekten in&#351;a etme zamanı. Sırada: in&#351;a d&#246;ng&#252;s&#252; sanatı &mdash; tekrarlama, de&#287;erlendirme ve i&#351;ler bozuldu&#287;unda ne yapılır.
       </p>
     </FadeInBlock>
   </section>

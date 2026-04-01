@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="gu">
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          કંઈક Real<br />Build કર
+          કંઈક સાચું<br />બનાવ
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Creation વગર knowledge trivia છે.<br />Ship કરવાનો time છે.
+          બનાવ્યા વગરનું જ્ઞાન trivia જ છે.<br />Ship કરવાનો સમય આવી ગયો.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        પહોંચી ગયો. દસ chapters માં "help me with my essay" થી context engineering, agents build, hallucinations debug ત્યાં ગયો. AI વિશે most adults than more શીખ્યો. પણ uncomfortable truth: <strong>build ન કરે ત્યાં સુધી none matter.</strong> AI વિશે read — swimming વિશે read same — દરેક stroke technique study, પણ પાણીમાં ન ઊતરે ત્યાં actually <em>know</em> ન. Just know <em>about</em>.
+        તું પહોંચી ગયો. દસ અધ્યાયમાં "મારા essay માં help કર" થી context engineering, agents બનાવવા, software ની vocabulary શીખવા, build loop master કરવા, અને taste develop કરવા સુધી આવ્યો. પણ એક uncomfortable truth છે: <strong>તું કંઈક build ન કરે ત્યાં સુધી આમાંનું કંઈ matter નથી કરતું.</strong> AI વિશે વાંચવું swimming વિશે વાંચવા જેવું છે &mdash; દરેક stroke technique study કરી શકે, પણ પાણીમાં ઊતરે ત્યાં સુધી તને કંઈ <em>ખબર</em> નથી. તને ફક્ત એના <em>વિશે</em> ખબર છે.
       </p>
     </FadeInBlock>
   </section>
@@ -60,19 +61,19 @@ const chapter = chapters[10];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        તારું AI Set Up કર
+        તારું AI Setup કર
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        First prompt write પહેલાં, power move most beginners skip: <strong>AI tool ને permanent instruction file આપ.</strong> Project દર session re-explain કરવાના બદલે, once write — AI automatically read. Claude Code <code>CLAUDE.md</code> read. Cursor <code>.cursorrules</code> read. GitHub Copilot <code>.github/copilot-instructions.md</code> read. Same concept, different filenames. Chapter 3 ની context engineering — project level applied.
+        તારો first prompt લખતા પહેલાં, મોટાભાગના beginners skip કરે એવો એક power move છે: <strong>તારા AI tool ને permanent instruction file આપ.</strong> દરેક session માં project ફરીથી explain કરવાના બદલે, એકવાર લખ અને તારું AI automatically વાંચશે. Claude Code <code>CLAUDE.md</code> વાંચે. Cursor <code>.cursorrules</code> વાંચે. GitHub Copilot <code>.github/copilot-instructions.md</code> વાંચે. Same concept, different filenames. આ Chapter 3 નું context engineering છે — project level પર apply કરેલું.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Good instruction file ત્રણ questions answer: શું build કરે, rules શું, "good" કેવું look? Right answer — દરેક AI conversation ten steps ahead start. Project scope small enough to finish — completed weekend hack beats abandoned masterpiece.
+        સારી instruction file ત્રણ questions ના answer આપે: તું શું build કરે છે, rules શું છે, અને "સારું" કેવું દેખાય? આ બરાબર કરી લે અને AI સાથેનું દરેક conversation દસ steps આગળથી start થાય. Project ને finish કરી શકે એટલો scope નાનો રાખ — complete થયેલો weekend hack abandon થયેલી masterpiece ને હંમેશા beat કરે.
       </p>
     </FadeInBlock>
 
@@ -80,7 +81,7 @@ const chapter = chapters[10];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">મુખ્ય સમજ</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Good project instruction file — AI help અને AI <em>understand</em> — difference. Once write, દરેક session benefit.
+          સારી project instruction file — તને help કરતા AI અને તને <em>સમજતા</em> AI વચ્ચેનો ફરક. એકવાર લખ, દરેક session માં benefit લે.
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        અહીં project instruction file build. Sections fill, AI tool of choice માટે export.
+        તારી project instruction file અહીં જ build કર. Sections ભર અને તારા પસંદના AI tool માટે export કર.
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tools things build ન કરે. Tools સાથે people things build. અને તારી generation ને ever had access — best toolkit.
+        Tools વસ્તુઓ build નથી કરતા. Tools ધરાવતા લોકો વસ્તુઓ build કરે છે. અને તારી generation ને ક્યારેય ન મળેલું સૌથી સારું toolkit તારી પાસે છે.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Eleven chapters પહેલાં, "help me with my essay" type અને best hope. હવે context engineer, agents design, outputs verify, અને every step judgment bring. Course over. Real learning starts — જા, કંઈક એવું બનાવ જે ફક્ત તને જ સૂઝે.
+        અગિયાર અધ્યાય પહેલાં, તે "મારા essay માં help કર" type કર્યું અને best ની hope રાખી. હવે તું context engineer કરે છે, agents build કરે છે, software ની ભાષા બોલે છે, confidence થી iterate કરે છે, અને તું બનાવે એ દરેક વસ્તુમાં taste લાવે છે. Course પૂરો થયો. ખરું learning હવે start થાય છે &mdash; જા અને એવું કંઈક બનાવ જે ફક્ત તને જ સૂઝે.
       </p>
     </FadeInBlock>
 

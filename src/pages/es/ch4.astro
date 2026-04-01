@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -37,7 +39,7 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Una guía de campo de todas las herramientas<br />de IA que puedes usar ahora mismo.
+          Una guía de todas las herramientas de IA<br />que puedes usar ahora mismo.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           ÚLTIMA ACTUALIZACIÓN MARZO 2026
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Cuando la mayoría de la gente dice "IA", se refiere a ChatGPT. Eso es como decir "internet" y referirse a Google. Ahora mismo, hay cientos de herramientas de IA que puedes usar hoy — herramientas que generan imágenes fotorrealistas a partir de una frase, componen canciones completas, o leen todos los artículos académicos sobre tu tema de investigación y resumen el consenso en tres párrafos. Este capítulo es tu mapa del terreno.
+        Cuando la mayoría dice "IA," se refiere a ChatGPT. Es como decir "internet" y referirse solo a Google. Ahora mismo hay cientos de herramientas de IA que puedes usar hoy: herramientas que generan imágenes fotorrealistas a partir de una frase, componen canciones completas o leen todos los artículos académicos sobre tu tema de investigación y resumen el consenso en tres párrafos. Este capítulo es tu mapa del terreno.
       </p>
     </FadeInBlock>
   </section>
@@ -72,19 +74,19 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Piénsalo como instrumentos musicales. Un piano y una batería son ambos "instrumentos", pero no le pedirías a un pianista que toque un ritmo de percusión. Las herramientas de IA funcionan igual — una herramienta creada para generación de imágenes es fundamentalmente diferente de una creada para código. Cada herramienta que encuentres cabe en una de estas ocho familias.
+        Piénsalo como instrumentos musicales. Un piano y una batería son ambos "instrumentos," pero no le pedirías a un pianista que marque el ritmo. Las herramientas de IA son igual: una diseñada para generar imágenes es fundamentalmente distinta de una diseñada para código. Cada herramienta que encuentres encaja en una de estas ocho familias.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Generadores de imágenes', color: '#E94560', text: 'Entra texto, salen imágenes. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '1', name: 'Generadores de imágenes', color: '#E94560', text: 'Entra texto, sale una imagen. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
         { icon: '2', name: 'Editores de imágenes', color: '#F5A623', text: 'Empiezan con una imagen real y la transforman. Photoshop AI, Magnific, Clipdrop.' },
         { icon: '3', name: 'Creadores de video', color: '#7B61FF', text: 'Generan clips de video a partir de texto o imágenes. Sora, Runway, Kling, Pika.' },
         { icon: '4', name: 'Música y audio', color: '#16C79A', text: 'Canciones completas desde un prompt, clonación de voz, efectos de sonido. Suno, Udio, ElevenLabs.' },
         { icon: '5', name: 'Agentes de investigación', color: '#0EA5E9', text: 'IA que lee internet por ti. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'Navegadores con IA', color: '#6B7280', text: 'Agentes que navegan la web como un humano. Arc, Operator, Claude Computer Use.' },
-        { icon: '7', name: 'Herramientas de programación', color: '#E94560', text: 'IA que escribe, edita y depura código. Claude Code, Cursor, Antigravity, Copilot.' },
+        { icon: '6', name: 'Navegadores IA', color: '#6B7280', text: 'Agentes que navegan la web como un humano. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Herramientas de código', color: '#E94560', text: 'IA que escribe, edita y depura código. Claude Code, Cursor, Antigravity, Copilot.' },
         { icon: '8', name: 'Chatbots y asistentes', color: '#0F3460', text: 'La IA conversacional de propósito general que ya conoces: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          La persona que conoce 10 herramientas de IA superficialmente superará consistentemente a alguien que conoce una a fondo. Un carpintero profesional no tiene una herramienta favorita — tiene una herramienta favorita <em>para cada tarea</em>.
+          La persona que conoce 10 herramientas de IA a nivel superficial superará consistentemente a alguien que conoce una sola a fondo. Un carpintero profesional no tiene una herramienta favorita: tiene una herramienta favorita <em>para cada tarea</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Hay muchas más herramientas de IA de las que pensaba. Esta guía interactiva mapea 8 familias de herramientas — generación de imágenes, video, música, investigación, programación — con ejemplos de cada una." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Hay muchas más herramientas de IA de las que pensaba. Esta guía interactiva mapea 8 familias: generación de imágenes, video, música, investigación, código, con ejemplos de cada una." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        El panorama cambia cada mes. Pero las categorías se mantienen estables aunque las herramientas no — y <em>ese</em> es el mapa que vale la pena memorizar.
+        El panorama cambia cada mes. Pero las categorías son estables aunque las herramientas no lo sean, y <em>ese</em> es el mapa que vale la pena memorizar.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Hasta ahora, estas herramientas solo te responden. ¿Y si pudieran <em>tomar acciones por su cuenta</em>? Ese es el salto de herramienta a agente — y lo cambia todo.
+        Hasta ahora, estas herramientas solo te responden. ¿Y si pudieran <em>actuar por su cuenta</em>? Ese es el salto de herramienta a agente, y lo cambia todo.
       </p>
     </FadeInBlock>
   </section>

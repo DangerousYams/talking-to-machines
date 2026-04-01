@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="te">
@@ -22,7 +24,7 @@ const chapter = chapters[4];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          ఐదో అధ్యాయం
+          ఐదవ అధ్యాయం
         </p>
       </FadeInBlock>
 
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "ప్రశ్నలకు answer ఇవ్వడం" నుండి<br />"actions తీసుకోవడం" కి leap.
+          "ప్రశ్నలకు జవాబు చెప్పు" నుండి<br />"actions తీసుకో" వరకు ఆ leap.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        ఇప్పటి వరకు నీ ప్రతి AI interaction ఒకే pattern follow చేసింది. నువ్వు ఏదో టైప్ చేస్తావ్. AI ఏదో టైప్ చేస్తుంది. నిజంగా sophisticated autocomplete. కానీ AI <em>పనులు చేయగలిగితే</em>? Weather గురించి చెప్పడం కాదు, forecast check చేయడం. Code రాయడం కాదు, run చేయడం. Google లో ఏం search చేయాలో suggest చేయడం కాదు, web లో search చేసి దొరికింది తీసుకురావడం.
+        ఇప్పటి వరకు నీ ప్రతి AI interaction ఒకే pattern follow చేసింది. నువ్వు ఏదో టైప్ చేస్తావ్. AI ఏదో టైప్ చేసి పంపిస్తుంది. ఒక చాలా sophisticated autocomplete. కానీ AI <em>పనులు చేయగలిగితే</em>? Weather గురించి చెప్పడమే కాదు, forecast check చేస్తే? Code రాయడమే కాదు, run చేస్తే? Google లో ఏం search చేయాలో suggest చేయడమే కాదు, web search చేసి కనుగొన్నది తీసుకువస్తే?
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[4];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Trust ప్రశ్న
+        నమ్మకం ప్రశ్న
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        AI కి tools ఇచ్చినప్పుడు, నువ్వు దానికి toolbox ఇచ్చి అంటావ్: <em>"ఇవి నువ్వు చేయగలిగేవి. ఎప్పుడు వాడాలో నువ్వే decide చెయ్."</em> అది web search చేయగలదు, code run చేయగలదు, files చదవగలదు, APIs call చేయగలదు. AI smarter కాలేదు — <strong>connected</strong> అయింది. అది technology తో సంబంధం లేని, నీతో సంబంధం ఉన్న ప్రశ్న లేపుతుంది: AI నీతో check చేయకుండా ఎంత స్వంతంగా చేయాలి?
+        AI కి tools ఇచ్చినప్పుడు, నువ్వు దానికి toolbox ఇచ్చి ఇలా చెప్తావ్: <em>"ఇవి నువ్వు చేయగలిగే పనులు. ఎప్పుడు వాడాలో నువ్వే decide చెయ్యి."</em> అది web search చేయగలదు, code run చేయగలదు, files read చేయగలదు, APIs call చేయగలదు. AI తెలివైనది కాలేదు — అది <strong>connected</strong> అయింది. ఇది ఒక ప్రశ్న లేపుతుంది, technology తో సంబంధం లేనిది, పూర్తిగా నీతో సంబంధం ఉన్నది: నిన్ను check చేయకుండా AI ఎంత చేయాలి?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        Answer మూడు విషయాల మీద depend అవుతుంది. <strong>Stakes</strong> — worst case ఏం జరగవచ్చు? <strong>Reversibility</strong> — undo చేయగలవా? మరియు <strong>trust</strong> — ఈ tool ఎంత బాగా తెలుసు? వంద సార్లు వాడిన calculator కి, ఎప్పుడూ test చేయని brand-new plugin కంటే ఎక్కువ freedom ఇవ్వవచ్చు.
+        సమాధానం మూడు విషయాల మీద ఆధారపడుతుంది. <strong>Stakes</strong> — జరగగలిగే అత్యంత చెడ్డది ఏమిటి? <strong>Reversibility</strong> — undo చేయగలవా? మరియు <strong>trust</strong> — ఈ tool ని ఎంత బాగా తెలుసు? నువ్వు వందసార్లు వాడిన calculator కి, ఎప్పుడూ test చేయని కొత్త plugin కంటే ఎక్కువ freedom ఉండాలి.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంశం</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>కీలక అంతర్దృష్టి</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ఇది all-or-nothing కాదు. Best AI workflows low-stakes, reversible tasks మీద freedom ఇస్తాయి, high-stakes, irreversible వాటి కోసం humans ని loop లో ఉంచుతాయి. Boundary design చేయడం నీ job.
+          ఇది all-or-nothing కాదు. అత్యుత్తమ AI workflows low-stakes, reversible tasks కి freedom ఇస్తాయి, high-stakes, irreversible tasks కి humans ని loop లో ఉంచుతాయి. Boundary design చేయడం నీ పని.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        నువ్వు line ఎక్కడ draw చేస్తావ్? నీ autonomy levels set చెయ్.
+        నువ్వు ఎక్కడ line draw చేస్తావ్? నీ autonomy levels set చెయ్యి.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI tool use మరియు function calling గురించి అత్యంత hands-on way లో నేర్చుకుంటున్నాను. ఈ course నిజంగా build చేయనిస్తుంది, కేవలం చదవడం కాదు." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI tool use మరియు function calling గురించి అత్యంత hands-on విధంగా నేర్చుకుంటున్నాను. ఈ course లో నువ్వే నిజంగా build చేసి test చేస్తావ్, కేవలం చదవడం కాదు." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tools AI ని advisor నుండి assistant గా మారుస్తాయి — ఏం చేయాలో చెప్పే వాడి నుండి, actually చేసే వాడికి.
+        Tools AI ని advisor నుండి assistant గా మారుస్తాయి — ఏం చేయాలో చెప్పేవాడి నుండి, నిజంగా చేసేవాడిగా.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AI కి చేతులు ఇచ్చావ్. తర్వాత, ఆ tools ని ఒక goal ను స్వంతంగా pursue చేయగలిగే దాంట్లో wire చేద్దాం — planning, executing, mistakes నుండి recover అవ్వడం. Agents build చేయడానికి time అయింది.
+        నువ్వు AI కి చేతులు ఇచ్చావ్. తర్వాత, ఆ tools ని ఒక goal ని తనంతట తాను pursue చేయగలిగే system లోకి wire చేద్దాం — planning, executing, mistakes నుండి recover అవడం. Agents build చేసే సమయం వచ్చింది.
       </p>
     </FadeInBlock>
   </section>

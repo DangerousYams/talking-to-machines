@@ -9,8 +9,10 @@ import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="pt">
@@ -31,13 +33,13 @@ const chapter = chapters[9];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          A Vantagem<br />Humana
+          Bom Gosto é<br />o Produto
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          O que a IA não pode substituir &mdash;<br />e o que ela torna 10x mais fácil.
+          A IA gera opções. Você escolhe<br />a certa. Essa é a habilidade.
         </p>
       </FadeInBlock>
     </div>
@@ -51,41 +53,71 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Toda vez que surge uma nova capacidade de IA, aparece a mesma manchete: <em>"A IA vai substituir [insira profissão]?"</em> É a pergunta errada. A IA não substitui humanos. Substitui <strong>tarefas</strong>. E quando você analisa qualquer emprego — qualquer carreira, qualquer atividade criativa — encontra uma mistura: algumas tarefas a IA executa brilhantemente, algumas ela auxilia, e outras que permanecem teimosamente, belamente humanas.
+        A IA consegue gerar um site em trinta segundos. A maioria fica igual: cantos arredondados, fundos com gradiente, seções hero genéricas, frases de preenchimento. Isso é <strong>lixo de IA</strong> &mdash; o resultado padrão quando ninguém exercita bom gosto. É tecnicamente funcional. É esteticamente esquecível. E é o que você recebe quando aceita qualquer coisa que a IA te dá sem exigir algo melhor.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        O antídoto não é mais prompts. É ter padrões. Saber como "bom" se parece. E mostrar para a IA o que você quer em vez de torcer para ela adivinhar.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Os empregos não somem — eles se transformam
+        Referências valem mais que descrições
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Quando os caixas eletrônicos chegaram, todos previram que os bancários desapareceriam. Em vez disso, o número <em>aumentou</em> — porque os caixas eletrônicos baratearam a abertura de agências, e o trabalho do bancário mudou de contar dinheiro para construir relacionamentos. A IA está fazendo a mesma coisa, só que mais rápido e em todas as indústrias ao mesmo tempo. O título do emprego continua o mesmo. A <em>descrição</em> do trabalho muda drasticamente.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Faça parecer moderno e limpo" não diz quase nada para a IA. "Faça parecer stripe.com &mdash; minimalista, muito espaço em branco, uma cor de destaque, títulos grandes e em negrito" diz tudo. <strong>Referências ganham de descrições sempre.</strong> Uma captura de tela vale mil palavras de prompting. Colecione exemplos de coisas que você ama &mdash; sites, apps, designs &mdash; e alimente o agente. "Quero esse layout mas com essas cores." "Essa tipografia mas aplicada a um dashboard."
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Entrada de dados? A IA resolve. Primeiros rascunhos? Surpreendentemente bons. Mas <em>escolher o que construir</em>, <em>ler o ambiente numa crise</em>, <em>decidir o que os dados significam</em> — isso exige julgamento, empatia e visão que a IA fundamentalmente não tem.
+      <p class="text-lg leading-[1.85] mb-14">
+        Bom gosto não é inato. É exposição mais julgamento. Você desenvolve olhando coisas ótimas e entendendo <em>por que</em> são ótimas. Quanto mais referências você coleciona, mais afiado seu olhar fica. E quanto mais afiado seu olhar, melhores suas instruções para o agente.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Ideia-chave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>As três lentes de avaliação</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Não é "humanos vs. IA." É <strong>humanos com IA vs. humanos sem IA</strong>. As pessoas que aprendem a trabalhar <em>com</em> ferramentas de IA não perdem seus empregos — fazem seus trabalhos mais rápido, melhor e com capacidades que não tinham antes.
+          Julgue o que o agente constrói por três lentes. <strong>Visual:</strong> parece com minhas referências? <strong>Funcional:</strong> faz o que eu especifiquei? <strong>Usuário:</strong> eu realmente usaria isso? Se a resposta para qualquer uma delas for não, itere. Você não precisa ler o código para aplicar essas lentes.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        A vantagem humana
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        A IA gera opções. Você escolhe a certa. Esse julgamento &mdash; bom gosto, empatia, visão &mdash; é sua vantagem. A IA pode produzir dez variações de logo num minuto. Mas só você sabe qual <em>soa</em> certa para a sua marca. A IA pode rascunhar dez versões de uma landing page. Mas só você sabe qual vai ressoar com seu público. A habilidade escassa não é geração. É <strong>curadoria</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        O que a IA fundamentalmente não sabe fazer: escolher <em>o que</em> construir. Decidir <em>para quem</em> é. Determinar <em>por que</em> importa. Definir a visão criativa. Ler o ambiente. Saber quando algo está "estranho" mesmo sem conseguir articular por quê. Essas não são falhas da IA &mdash; são características de ser humano. E num mundo onde geração é grátis, elas valem mais do que nunca.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -93,7 +125,7 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Escolha uma carreira abaixo e veja exatamente como a IA a transforma por dentro. Nenhuma tarefa desaparece completamente.
+        Classifique essas opções da melhor para a pior. Depois veja como os especialistas avaliaram &mdash; e por quê.
       </p>
     </FadeInBlock>
   </section>
@@ -105,13 +137,22 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Esse curso não faz hype com IA nem espalha medo sobre empregos. Ele mapeia exatamente quais habilidades continuam humanas e quais são ampliadas. Refrescantemente honesto." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="'A IA gera opções. Você escolhe a certa.' Esse capítulo sobre bom gosto, referências e a vantagem humana é a lição mais importante de construir com IA." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        A IA gera opções. Você escolhe a certa. Esse julgamento — bom gosto, empatia, visão, primeiros princípios — é a sua vantagem.
+        Num mundo onde geração é grátis, bom gosto é a única coisa que importa.
       </div>
     </FadeInBlock>
 

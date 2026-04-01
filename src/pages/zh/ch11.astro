@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        你走到了最后。在过去的十章里，你从"帮我写篇论文"进步到了设计上下文、构建智能体、调试幻觉。你对 AI 的了解比大多数成年人都多。但有个让人不太舒服的事实：<strong>在你真正做出东西之前，这些都不算数。</strong>学习 AI 就像学习游泳——你可以研究每种泳姿的技术，但在你下水之前，你并不<em>会</em>游泳。你只是知道<em>关于</em>游泳的知识。
+        你走到了这里。在过去的十章里，你从"帮我写篇论文"进步到了上下文工程、构建智能体、学习软件的词汇、掌握构建循环、培养品味。但有个让人不太舒服的事实：<strong>在你真正做出东西之前，这些都不算数。</strong>学习人工智能就像学习游泳 &mdash; 你可以研究每种泳姿的技术，但在你下水之前，你并不<em>会</em>。你只是<em>知道</em>而已。
       </p>
     </FadeInBlock>
   </section>
@@ -66,13 +67,13 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        在你写第一个提示词之前，有一个大多数新手跳过的高级操作：<strong>给你的 AI 工具一个永久的指令文件。</strong>与其每次会话都重新解释你的项目，不如写一次让 AI 自动读取。Claude Code 读 <code>CLAUDE.md</code>。Cursor 读 <code>.cursorrules</code>。GitHub Copilot 读 <code>.github/copilot-instructions.md</code>。概念一样，文件名不同。这就是第三章学的上下文工程——应用在项目级别。
+        在你写第一条提示词之前，有一个大多数新手会跳过的高级操作：<strong>给你的 AI 工具一个永久的指令文件。</strong>与其每次会话都重新解释你的项目，不如写一次让 AI 自动读取。Claude Code 读 <code>CLAUDE.md</code>。Cursor 读 <code>.cursorrules</code>。GitHub Copilot 读 <code>.github/copilot-instructions.md</code>。概念一样，文件名不同。这就是第三章学的上下文工程——应用在项目级别。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        一个好的指令文件回答三个问题：你在构建什么、规则是什么、"好"长什么样？把这些搞对了，你跟 AI 的每次对话都会从领先十步开始。把项目范围控制得足够小以至于能完成——一个做完的周末小项目胜过一个烂尾的杰作。
+        一个好的指令文件回答三个问题：你在构建什么、规则是什么、"好"长什么样？把这些搞对了，你跟 AI 的每次对话都从领先十步开始。把项目范围控制得足够小以确保能完成——一个做完的周末小项目永远比一个烂尾的杰作强。
       </p>
     </FadeInBlock>
 
@@ -112,7 +113,7 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        十一章前，你输入"帮我写篇论文"然后听天由命。现在你会设计上下文、构建智能体、验证输出，并在每一步都带入自己的判断。课程结束了。真正的学习现在开始——去做一些只有你才会想到要做的东西吧。
+        十一章前，你输入"帮我写篇论文"然后听天由命。现在你会设计上下文、构建智能体、说软件的语言、自信地迭代，并为你创造的每样东西注入品味。课程结束了。真正的学习现在开始 &mdash; 去做一些只有你才会想到要做的东西吧。
       </p>
     </FadeInBlock>
 

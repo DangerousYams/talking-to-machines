@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -34,7 +35,7 @@ const chapter = chapters[10];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          知識は作らなければただのトリビア。<br />出荷する時が来た。
+          作らない知識はただのトリビアだ。<br />出荷する時が来た。
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        最終章までたどり着いた。この10章を通じて、「エッセイ手伝って」からコンテキストエンジニアリング、エージェント構築、ハルシネーションのデバッグまで到達した。ほとんどの大人より多くのことをAIについて学んだ。でも居心地の悪い真実がある：<strong>何かを作るまで、そのどれも意味を持たない。</strong>AIについて読むのは水泳について読むようなものだ &mdash; ストロークのテクニックをすべて勉強できるけど、水に入るまで何も<em>知っている</em>ことにはならない。ただ<em>知識として知っている</em>だけだ。
+        ここまでたどり着いた。10章を通じて、「エッセイ手伝って」からコンテキストエンジニアリング、エージェント構築、ソフトウェアの語彙の習得、ビルドループのマスター、テイストの磨き方まで来た。でも不都合な真実がある：<strong>何かを作るまで、どれも意味がない。</strong>AIについて読むのは水泳について読むのと同じだ &mdash; あらゆるストロークのテクニックを学べるが、水に入るまで何も<em>わかっていない</em>。ただ<em>知っている</em>だけだ。
       </p>
     </FadeInBlock>
   </section>
@@ -66,13 +67,13 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        最初のプロンプトを書く前に、ほとんどの初心者がスキップするパワームーブがある：<strong>AIツールに永続的な指示ファイルを与えること。</strong>毎セッションでプロジェクトを再説明する代わりに、一度書けばAIが自動的に読む。Claude Codeは<code>CLAUDE.md</code>を読む。Cursorは<code>.cursorrules</code>を読む。GitHub Copilotは<code>.github/copilot-instructions.md</code>を読む。同じコンセプト、違うファイル名。第3章のコンテキストエンジニアリング &mdash; プロジェクトレベルで適用したものだ。
+        最初のプロンプトを書く前に、ほとんどの初心者がスキップするパワームーブがある：<strong>AIツールに永続的な指示ファイルを渡すこと。</strong>毎セッションでプロジェクトを説明し直す代わりに、一度書けばAIが自動で読む。Claude Codeは<code>CLAUDE.md</code>を読む。Cursorは<code>.cursorrules</code>を読む。GitHub Copilotは<code>.github/copilot-instructions.md</code>を読む。コンセプトは同じ、ファイル名が違うだけ。第3章のコンテキストエンジニアリングをプロジェクトレベルで適用したものだ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        良い指示ファイルは3つの問いに答える：何を作っているか、ルールは何か、「良い」とはどんな状態か。これを正しく書けば、AIとのすべての会話が10歩先からスタートする。スコープを十分に小さくして完成させよう &mdash; 週末で完成したハックは、放棄された大作に毎回勝つ。
+        良い指示ファイルは3つの問いに答える：何を作っているか、ルールは何か、「良い」とはどんな状態か。これを正しく書けば、AIとの会話は毎回10歩先からスタートする。プロジェクトのスコープは完成できるぐらい小さくしよう &mdash; 完成した週末ハックは、放棄された大作にいつだって勝る。
       </p>
     </FadeInBlock>
 
@@ -80,7 +81,7 @@ const chapter = chapters[10];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          良いプロジェクト指示ファイルは、AIが君を助けることと、AIが君を<em>理解</em>することの違いだ。一度書けば、毎セッション恩恵を受ける。
+          良いプロジェクト指示ファイルは、助けてくれるAIと<em>理解してくれる</em>AIの違いだ。一度書けば、毎セッション恩恵を受けられる。
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        ここでプロジェクト指示ファイルを作ろう。セクションを埋めて、好きなAIツール用にエクスポートしよう。
+        ここでプロジェクト指示ファイルを作ろう。セクションを埋めて、好きなAIツール用にエクスポートできる。
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        ツールはものを作らない。ツールを持った人間がものを作る。そして君は、自分の世代がかつて手にしたことのない最高のツールキットを持っている。
+        ツールはものを作らない。ツールを持った人間がものを作る。そして君は、自分の世代が手にした中で最高のツールキットを持っている。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        11章前、「エッセイ手伝って」と打って祈った。今ではコンテキストを設計し、エージェントをデザインし、アウトプットを検証し、すべてのステップに判断力を持ち込んでいる。コースは終わった。本当の学びはこれから始まる &mdash; 君にしか思いつかないものを作りに行こう。
+        11章前、「エッセイ手伝って」と打って祈っていた。今ではコンテキストを設計し、エージェントを構築し、ソフトウェアの言語を話し、自信を持ってイテレーションし、作るもの全てにテイストを持ち込んでいる。コースは終わった。本当の学びはここから始まる &mdash; 君にしか思いつかないものを作りに行こう。
       </p>
     </FadeInBlock>
 

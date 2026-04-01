@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Çoğu insan yapay zekayı otomat gibi kullanıyor. Prompt'u koy, cevabı al. Ama en iyi sonuçlar komutlardan değil, <em>sohbetlerden</em> gelir. Prompt yazan biriyle prompt <em>tasarlayan</em> birinin arasındaki fark, 2.400 yıldır büyük düşünürleri besleyen aynı farktır: doğru soruyu sormak.
+        Çoğu insan yapay zekayı otomat gibi kullanıyor. Prompt'u at, yanıtı al. Ama en iyi sonuçlar komutlardan değil, <em>konuşmalardan</em> gelir. Bir prompt yazan biriyle onu özenle hazırlayan biri arasındaki fark, 2400 yıldır büyük düşünürleri besleyen aynı fark: doğru soruyu sormak.
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Sokratik Dönüş
+        Sokratik Ters Çevirme
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Sokrates hiçbir soruyu doğrudan yanıtlamazdı. Öğrencileri daha derin anlayışa ulaşana kadar <em>daha fazla</em> soru sorardı. Aynı numarayı yapay zekayla kullanabilirsin, ama ters çevirerek: cevap istemek yerine, yapay zekadan <em>seni</em> röportaj etmesini iste. "Doğum günü partisi planla" yazdığında, cevabı kökten değiştirecek düzinelerce detayı dışarıda bırakıyorsun. Yapay zeka bunları bilmiyor — ama sorabilir.
+        Sokrates hiçbir soruyu doğrudan yanıtlamadı. Öğrencileri daha derin bir anlayışa ulaşana kadar <em>daha fazla</em> soru sordu. Aynı numarayı yapay zekayla kullanabilirsin, ama ters çevirip: yanıt istemek yerine, yapay zekadan <em>seni</em> röportaj etmesini iste. "Doğum günü partisi planla" yazdığında, yanıtı kökünden değiştiren düzinelerce detayı atlıyorsun. Yapay zeka onları bilmiyor — ama sorabilir.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Bu tek teknik — soruyu kimin sorduğunu değiştirmek — yapay zekayı bir cevap makinesinden <strong>düşünme ortağına</strong> dönüştürür. Ona sorgulama, netleştirme ve meydan okuma izni ver. Beş ileri-geri sorudan sonra elde edeceğin çıktı, tek seferlik bir komutla kıyaslanamaz bile.
+        Bu tek teknik — kimin soru sorduğunu tersine çevirmek — yapay zekayı bir yanıt makinesinden bir <strong>düşünme ortağı</strong>na dönüştürür. Ona sorgulama, netleştirme ve meydan okuma izni ver. Beş ileri-geri sorudan sonraki çıktı, tek seferlik bir komutla alınandan tanıyamayacağın kadar farklı olacak.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Temel fikir</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          En iyi yapay zeka kullanıcıları konunun uzmanı değil — sormanın uzmanı. Ve sorabileceğin en güçlü soru şu: "Cevaplamadan önce, ne bilmen gerekiyor?"
+          En iyi yapay zeka kullanıcıları konu uzmanı değil — soru sorma uzmanı. Ve sorabileceğin en güçlü soru şu: "Yanıtlamadan önce, ne bilmen gerekiyor?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Kendin dene. Bir hedef belirt — ve yapay zekanın rolleri nasıl değiştirdiğini izle.
+        Kendin dene. Bir hedef belirt — ve yapay zekanın senaryoyu nasıl tersine çevirdiğini izle.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Bu yapay zeka kursu prompt yazma konusundaki bakış açımı tamamen değiştirdi. Yapay zekaya ne yapacağını söylemek yerine, önce SANA sormasını sağlıyorsun. Sonuçlar gece gündüz farkı." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Bu yapay zeka kursu prompt yazma konusundaki bakış açımı tamamen değiştirdi. Yapay zekaya ne yapacağını söylemek yerine, önce SENİ röportaj etmesini istiyorsun. Sonuçlar gece-gündüz farkı." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Yapay zekaya ne düşüneceğini söylemeyi bırak. Seninle birlikte düşünmesi için ona alan ver.
+        Yapay zekaya ne düşüneceğini söylemeyi bırak. Onun seninle birlikte düşünmesine alan aç.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Ama öğrendiğin her teknik aynı görünmez duvara çarpıyor: <em>bağlam penceresi</em>. Sırada onu açıp yapay zekanın gerçekte ne gördüğünü mühendislik etmeyi öğreniyoruz.
+        Ama öğrendiğin her teknik aynı görünmez duvara çarpıyor: <em>bağlam penceresi</em>. Sırada onu açıp yapay zekanın aslında neyi gördüğünü mühendislik etmeyi öğreneceğiz.
       </p>
     </FadeInBlock>
   </section>

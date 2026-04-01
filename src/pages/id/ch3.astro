@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="id">
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI tidak lupa &mdash; sejak awal memang<br />tidak pernah mengingat.
+          AI nggak lupa &mdash; dia memang<br />nggak pernah mengingat sejak awal.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Setiap kali kamu mengirim pesan ke AI, dia membaca <em>seluruh percakapanmu</em> dari awal &mdash; setiap pesan yang kamu kirim, setiap respons yang dia berikan &mdash; menghasilkan balasan, lalu melupakan semuanya. Giliran berikutnya, hal yang sama. Seluruh transkrip dimasukkan lagi. Dia adalah pembaca paling rajin tapi amnesia di dunia: benar-benar teliti setiap kali, dimulai dari nol setiap giliran.
+        Setiap kali kamu kirim pesan ke AI, dia membaca <em>seluruh percakapanmu</em> dari awal &mdash; setiap pesan yang kamu kirim, setiap respons yang dia berikan &mdash; menghasilkan balasan, lalu melupakan semuanya. Giliran berikutnya, hal yang sama. Seluruh transkrip dimasukkan lagi. Dia pembaca paling rajin tapi amnesia di dunia: benar-benar teliti setiap kali, tapi mulai dari nol setiap giliran.
       </p>
     </FadeInBlock>
   </section>
@@ -63,33 +66,33 @@ const chapter = chapters[2];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Jendela Itu Punya Tepi
+        Jendela Punya Batas
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Transkrip yang dibaca ulang AI setiap giliran? Itu hidup di dalam sesuatu yang disebut <strong>context window</strong> &mdash; diukur dalam <strong>token</strong> (kira-kira satu token per tiga perempat kata). Context window Claude menampung sekitar 200.000 token &mdash; setara buku 500 halaman. Kedengarannya besar, tapi setiap pesan yang kamu kirim, setiap respons yang kamu terima, dan setiap instruksi sistem tersembunyi semuanya makan dari anggaran yang sama. Habisnya lebih cepat dari yang kamu kira.
+        Transkrip yang AI baca ulang setiap giliran itu hidup di dalam sesuatu yang disebut <strong>context window</strong> &mdash; diukur dalam <strong>token</strong> (kira-kira satu token per tiga perempat kata). Context window Claude menampung sekitar 200.000 token &mdash; setara buku 500 halaman. Kedengarannya besar, tapi setiap pesan yang kamu kirim, setiap respons yang kamu terima, dan setiap instruksi sistem tersembunyi semuanya makan dari jatah yang sama. Penuh lebih cepat dari yang kamu kira.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Ketika anggaran habis, pesan paling lama jatuh dari tepi. Kamu menyebutkan pantangan makanmu di pesan ketiga? Di pesan kelima belas, AI mungkin sudah tidak melihatnya lagi. Dia tidak ceroboh &mdash; dia benar-benar tidak bisa melihat apa yang sudah tidak ada di depannya. AI hanya sebaik informasi yang ada di jendelanya saat ini.
+        Kalau jatahnya habis, pesan-pesan paling lama jatuh dari tepi. Kamu sebut restriksi dietmu di pesan ketiga? Di pesan kelima belas AI mungkin sudah nggak bisa melihatnya. Dia bukan ceroboh &mdash; dia memang nggak bisa melihat apa yang sudah nggak ada di depannya. AI hanya sebagus informasi yang saat ini ada di dalam jendelanya.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Makanya pengguna AI terbaik tidak cuma menulis prompt bagus &mdash; mereka mengelola apa yang <em>masuk</em> ke jendela. Rangkum secara berkala supaya detail penting tetap terlihat. Taruh yang penting di depan. Mulai baru saat topik berubah. Pakai format terstruktur supaya AI bisa memproses konteksmu dengan efisien. <strong>Context engineering adalah prompt engineering yang baru.</strong>
+        Makanya pengguna AI terbaik nggak cuma nulis prompt yang bagus &mdash; mereka mengelola apa yang <em>masuk</em> ke jendela. Buat ringkasan berkala supaya detail penting tetap terlihat. Taruh yang penting di depan. Mulai percakapan baru kalau topiknya berubah. Pakai format terstruktur supaya AI bisa membaca konteksmu dengan efisien. <strong>Context engineering adalah prompt engineering versi evolusi.</strong>
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Poin penting</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Insight utama</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Menulis prompt yang bagus adalah langkah pertama. Menentukan informasi apa yang ditaruh di depan AI &mdash; dan bagaimana menyusunnya &mdash; di situlah leverage sesungguhnya. Prompt terbaik di dunia akan gagal kalau konteksnya salah.
+          Menulis prompt yang bagus itu langkah pertama. Memutuskan informasi apa yang diletakkan di depan AI &mdash; dan bagaimana menyusunnya &mdash; di situlah kekuatan sesungguhnya. Prompt terbaik di dunia akan gagal kalau konteksnya salah.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Saksikan context window terisi, meluap, dan melupakan &mdash; secara real time.
+        Lihat context window terisi, meluap, dan melupakan &mdash; secara real time.
       </p>
     </FadeInBlock>
   </section>
@@ -111,7 +114,91 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Akhirnya paham kenapa AI 'lupa' hal-hal di tengah percakapan. Itu bukan memori — itu context window. Kursus ini menjelaskannya dengan sangat jelas lewat demo langsung." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Strategi Mengelola Konteks
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Sekarang kamu paham jendelanya, ini cara mengelolanya seperti pro. Teknik-teknik ini yang membedakan orang yang "pakai AI" dari orang yang dapat hasil luar biasa.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">Rangkum sambil jalan</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Setiap 5-10 pesan, minta AI menulis rekap singkat keputusan dan detail penting. Lalu tempel ringkasan itu di pesan berikutnya. Ini "mereset" konteks dengan informasi terpenting di depan.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">Taruh yang penting di awal</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Letakkan informasi paling kritis di awal pesanmu, bukan terkubur di akhir. AI lebih memperhatikan apa yang datang pertama dan terakhir &mdash; bagian tengah bisa terlewat, terutama di prompt yang panjang.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">Mulai baru secara strategis</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Jangan takut mulai percakapan baru kalau topiknya berubah signifikan. Bawa ringkasan keputusan, bukan seluruh riwayat. Konteks bersih sering lebih baik daripada yang berantakan.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">Eksplisit soal apa yang harus diingat</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"Penting: pengguna ini vegetarian. Jangan lupa." Kedengarannya konyol, tapi ampuh. Pengingat eksplisit jadi jangkar yang lebih diperhatikan AI.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">Pakai format terstruktur</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Daftar berpoin, judul, dan label yang jelas membantu AI membaca konteksmu lebih efisien. Prompt yang terstruktur rapi nilainya dua kali lipat dibanding tembok teks tanpa format.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Akhirnya paham kenapa AI 'lupa' hal-hal di tengah percakapan. Bukan memori — ini context window. Kursus ini menjelaskannya dengan jelas banget lewat demo langsung." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -123,7 +210,7 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Sejauh ini kita bekerja dengan chatbot. Selanjutnya, kita zoom out &mdash; ratusan tool AI ada di luar jendela chat, dan mengenal lanskapnya mengubah apa yang kamu pikir mungkin dilakukan.
+        Kamu sudah belajar fundamentalnya &mdash; prompting, bertanya, dan konteks. Selanjutnya: cheat sheet power prompt untuk kamu bawa.
       </p>
     </FadeInBlock>
   </section>

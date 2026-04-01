@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="gu">
@@ -22,7 +24,7 @@ const chapter = chapters[3];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          અધ્યાય ચાર
+          પ્રકરણ ચાર
         </p>
       </FadeInBlock>
 
@@ -31,13 +33,13 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI નું<br />Landscape
+          AI નો<br />નકશો
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          દરેક AI tool ની field guide<br />જે તું અત્યારે જ use કરી શકે.
+          દરેક AI tool ની field guide<br />જે તું અત્યારે વાપરી શકે.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           LAST UPDATED MARCH 2026
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        મોટાભાગના લોકો "AI" કહે ત્યારે ChatGPT ને mean કરે. "Internet" કહીને Google mean કરવા જેવું છે. અત્યારે, સેંકડો AI tools છે જે તું today use કરી શકે — tools જે sentence થી photorealistic images generate કરે, full songs compose કરે, કે research topic ના દરેક academic paper વાંચીને ત્રણ paragraphs માં consensus summarize કરે. આ chapter તારો terrain નો map છે.
+        જ્યારે મોટાભાગના લોકો "AI" કહે, ત્યારે એમનો મતલબ ChatGPT હોય. એ "internet" કહીને Google ના મતલબ જેવું છે. અત્યારે, સેંકડો AI tools છે જે તું આજે વાપરી શકે — tools જે એક sentence માંથી photorealistic images બનાવે, full songs compose કરે, અથવા તારા research topic ના દરેક academic paper વાંચીને ત્રણ paragraphs માં consensus summarize કરે. આ chapter તારો terrain નો map છે.
       </p>
     </FadeInBlock>
   </section>
@@ -72,20 +74,20 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Musical instruments ની જેમ વિચાર. Piano અને drum kit બંને "instruments" છે, પણ pianist ને beat નાખવાનું ન કહે. AI tools same way છે — image generation માટે built tool code માટેના tool થી fundamentally different છે. તને મળનાર દરેક tool આ આઠ families માંથી એકમાં fit થાય.
+        Musical instruments ની જેમ વિચાર. Piano અને drum kit બંને "instruments" છે, પણ તું pianist ને beat નાખવાનું ન કહે. AI tools પણ એવા જ — image generation માટે બનેલું tool code માટેના tool થી fundamentally અલગ છે. જે પણ tool તને મળે, એ આ આઠ families માંથી કોઈ એકમાં fit થાય.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text જાય, images આવે. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
-        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'Real image થી start કરીને transform કર. Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text કે stills થી video clips generate કર. Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt થી full songs, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
-        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'AI જે internet વાંચે. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'Agents જે web navigate કરે human ની જેમ. Arc, Operator, Claude Computer Use.' },
-        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'AI જે code write, edit, debug કરે. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'General-purpose conversational AI: ChatGPT, Claude, Gemini.' },
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text અંદર જાય, images બહાર આવે. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'Real image થી શરૂ કર અને transform કર. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text અથવા stills માંથી video clips generate કર. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'Prompt માંથી full songs, voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'AI જે તારા માટે internet વાંચે. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'Agents જે web ને માણસ ની જેમ navigate કરે. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'AI જે code લખે, edit કરે, અને debug કરે. Claude Code, Cursor, Antigravity, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'General-purpose conversational AI જે તું પહેલેથી ઓળખે છે: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>મુખ્ય સમજ</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>મુખ્ય વાત</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          જે 10 AI tools surface level પર જાણે એ consistently outperform કરશે એને જે one tool deeply જાણે. Professional carpenter ને favorite tool ન હોય — <em>દરેક task માટે</em> favorite tool હોય.
+          જે માણસ 10 AI tools ને surface level પર જાણે, એ consistently એ માણસ કરતાં better perform કરે જે એક tool ને ઊંડાણથી જાણે. Professional carpenter ને favourite tool નથી હોતું — <em>દરેક task માટે</em> favourite tool હોય.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Full catalog explore કર. કોઈ પણ tool click કરીને જાણ શું કરે.
+        Full catalog explore કર. કોઈ પણ tool પર click કરીને જાણ કે એ શું કરે.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI tools ધાર્યા કરતાં ઘણા વધુ છે. આ interactive guide 8 families of tools — image gen, video, music, research, coding — map કરે, દરેકના examples સાથે." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="મને ખબર જ નહોતી કે આટલા બધા AI tools છે. આ interactive guide 8 families ને map કરે — image gen, video, music, research, coding — દરેકના examples સાથે." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Landscape દર month shift થાય. પણ categories stable છે tools ન હોય ત્યારે પણ — અને <em>એ</em> map યાદ રાખવા જેવો છે.
+        Landscape દર મહિને બદલાય. પણ categories stable છે ભલે tools ન હોય — અને <em>એ</em> map યાદ રાખવા જેવો છે.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        અત્યાર સુધી tools ફક્ત respond કરે. જો <em>જાતે actions લઈ શકે</em> તો? Tool થી agent — આ leap બધું બદલી નાખે.
+        અત્યાર સુધી, આ tools ફક્ત તને respond કરે છે. શું થાય જો એ <em>પોતાની મેળે actions લઈ શકે</em>? Tool થી agent સુધીનો આ leap — બધું બદલી નાખે.
       </p>
     </FadeInBlock>
   </section>

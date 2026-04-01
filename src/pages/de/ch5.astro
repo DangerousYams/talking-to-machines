@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +24,7 @@ const chapter = chapters[4];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel fünf
+          Kapitel Fünf
         </p>
       </FadeInBlock>
 
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Der Sprung von "Fragen beantworten"<br />zu "Aktionen ausführen."
+          Der Sprung von &bdquo;Fragen beantworten&ldquo;<br />zu &bdquo;Aktionen ausführen.&ldquo;
         </p>
       </FadeInBlock>
     </div>
@@ -69,13 +71,13 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Wenn du KI Werkzeuge gibst, überreichst du ihr einen Werkzeugkasten und sagst: <em>"Hier sind Dinge, die du tun kannst. Du entscheidest, wann du sie einsetzt."</em> Sie kann das Web durchsuchen, Code ausführen, Dateien lesen, APIs aufrufen. Die KI ist nicht schlauer geworden -- sie ist <strong>vernetzt</strong> worden. Und das wirft eine Frage auf, die nichts mit Technologie zu tun hat und alles mit dir: Wie viel soll die KI alleine machen, bevor sie bei dir nachfragt?
+        Wenn du KI Werkzeuge gibst, überreichst du ihr einen Werkzeugkasten und sagst: <em>&bdquo;Hier sind Dinge, die du tun kannst. Du entscheidest, wann du sie einsetzt.&ldquo;</em> Sie kann das Web durchsuchen, Code ausführen, Dateien lesen, APIs aufrufen. Die KI ist nicht schlauer geworden &mdash; sie ist <strong>vernetzt</strong> worden. Und das wirft eine Frage auf, die nichts mit Technologie zu tun hat und alles mit dir: Wie viel soll die KI alleine machen, bevor sie bei dir nachfragt?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        Die Antwort hängt von drei Dingen ab. <strong>Risiko</strong> -- was ist das Schlimmste, was passieren könnte? <strong>Umkehrbarkeit</strong> -- kann man es rückgängig machen? Und <strong>Vertrauen</strong> -- wie gut kennst du dieses Tool? Ein Taschenrechner, den du hundertmal benutzt hast, verdient mehr Freiheit als ein brandneues Plugin, das du noch nie getestet hast.
+        Die Antwort hängt von drei Dingen ab. <strong>Risiko</strong> &mdash; was ist das Schlimmste, was passieren könnte? <strong>Umkehrbarkeit</strong> &mdash; kann man es rückgängig machen? Und <strong>Vertrauen</strong> &mdash; wie gut kennst du dieses Tool? Ein Taschenrechner, den du hundertmal benutzt hast, verdient mehr Freiheit als ein brandneues Plugin, das du noch nie getestet hast.
       </p>
     </FadeInBlock>
 
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Lerne über KI-Tool-Nutzung und Function Calling auf die praxisnaheste Art und Weise. Dieser Kurs lässt dich tatsächlich Dinge bauen und testen, statt nur darüber zu lesen." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Werkzeuge verwandeln KI von einem Berater in einen Assistenten -- von jemandem, der dir sagt, was zu tun ist, zu jemandem, der es tatsächlich tut.
+        Werkzeuge verwandeln KI von einem Berater in einen Assistenten &mdash; von jemandem, der dir sagt, was zu tun ist, zu jemandem, der es tatsächlich tut.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Du hast der KI Hände gegeben. Als Nächstes verdrahten wir diese Werkzeuge zu etwas, das eigenständig ein Ziel verfolgen kann -- planen, ausführen, Fehler beheben. Zeit, Agenten zu bauen.
+        Du hast der KI Hände gegeben. Als Nächstes verdrahten wir diese Werkzeuge zu etwas, das eigenständig ein Ziel verfolgen kann &mdash; planen, ausführen, Fehler beheben. Zeit, Agenten zu bauen.
       </p>
     </FadeInBlock>
   </section>

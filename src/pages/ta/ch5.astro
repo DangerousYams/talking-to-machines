@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,13 +33,13 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          கருவிகளைக்<br />கொடு
+          Tools<br />கொடு
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "கேள்விக்கு பதிலளிப்பது" என்பதிலிருந்து<br />"செயல் எடுப்பது" என்பதற்கான பாய்ச்சல்.
+          "கேள்விகளுக்கு பதில் சொல்" என்பதிலிருந்து<br />"செயல்படு" என்பதற்கான பாய்ச்சல்.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        இதுவரை நீ AI யுடன் நடத்திய ஒவ்வொரு interaction-உம் ஒரே pattern-ஐ follow செய்கிறது. நீ ஏதாவது type செய்கிறாய். AI திருப்பி type செய்கிறது. மிகவும் sophisticated autocomplete. ஆனால் AI <em>செய்ய</em> முடியுமென்றால் என்ன? வானிலையைப் பற்றி சொல்வது மட்டுமல்ல, forecast-ஐ check செய்ய முடியுமென்றால்? Code எழுதுவது மட்டுமல்ல, அதை run செய்ய முடியுமென்றால்? என்ன Google செய்ய வேண்டுமென்று suggest செய்வது மட்டுமல்ல, web-ஐ தேடி கண்டுபிடித்ததை எடுத்துவர முடியுமென்றால்?
+        இதுவரை, நீ AI யுடன் செய்த ஒவ்வொரு interaction-உம் ஒரே pattern-ஐ பின்பற்றுகிறது. நீ ஏதாவது type செய்கிறாய். AI ஏதாவது type செய்து பதில் சொல்கிறது. மிகவும் sophisticated ஒரு autocomplete. ஆனால் AI <em>ஏதாவது செய்ய</em> முடிந்தால்? வானிலை பற்றி சொல்வது மட்டுமில்ல, forecast-ஐ check செய்தால்? Code எழுதுவது மட்டுமில்ல, அதை run செய்தால்? Google-ல் என்ன search செய்ய வேண்டும் என்று suggest செய்வது மட்டுமில்ல, தானே web-ல் search செய்து கண்டுபிடித்ததை திருப்பி கொண்டு வந்தால்?
       </p>
     </FadeInBlock>
   </section>
@@ -63,19 +65,19 @@ const chapter = chapters[4];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        நம்பிக்கை கேள்வி
+        நம்பிக்கையின் கேள்வி
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        AI க்கு tools கொடுக்கும்போது, ஒரு toolbox கொடுத்து சொல்கிறாய்: <em>"இதோ நீ செய்யக்கூடிய விஷயங்கள். எப்போது பயன்படுத்துவது என்று நீயே முடிவு செய்."</em> Web search செய்யலாம், code run செய்யலாம், files படிக்கலாம், APIs call செய்யலாம். AI smart-ஆகவில்லை &mdash; <strong>connected</strong> ஆனது. இது technology-உடன் எந்த சம்பந்தமும் இல்லாத, உன்னுடன் மட்டுமே சம்பந்தப்பட்ட ஒரு கேள்வியை எழுப்புகிறது: உன்னிடம் check செய்வதற்கு முன் AI எவ்வளவு தானாகவே செய்ய வேண்டும்?
+        நீ AI க்கு tools கொடுக்கும்போது, ஒரு toolbox கொடுத்து இப்படி சொல்கிறாய்: <em>"இதெல்லாம் நீ செய்யக்கூடிய விஷயங்கள். எப்போது பயன்படுத்த வேண்டும் என்று நீயே முடிவு செய்."</em> Web search, code run, files read, APIs call செய்யலாம். AI smart ஆகவில்லை — <strong>connected</strong> ஆனது. அது technology-உடன் சம்பந்தமில்லாத, உன்னுடன் சம்பந்தப்பட்ட ஒரு கேள்வியை எழுப்புகிறது: உன்னிடம் கேட்காமல் AI எவ்வளவு தானாக செய்ய வேண்டும்?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        பதில் மூன்று விஷயங்களைப் பொறுத்தது. <strong>Stakes</strong> &mdash; மிக மோசமாக என்ன நடக்கலாம்? <strong>Reversibility</strong> &mdash; undo செய்ய முடியுமா? <strong>Trust</strong> &mdash; இந்த tool-ஐ எவ்வளவு நன்றாக தெரியும்? நூறு முறை பயன்படுத்திய calculator-க்கு, ஒருபோதும் test செய்யாத புதிய plugin-ஐ விட அதிக சுதந்திரம் கொடுக்கலாம்.
+        பதில் மூன்று விஷயங்களை சார்ந்தது. <strong>Stakes</strong> — மிக மோசமான விளைவு என்ன? <strong>Reversibility</strong> — undo செய்ய முடியுமா? <strong>Trust</strong> — இந்த tool-ஐ எவ்வளவு நன்கு அறிவாய்? நூறு முறை பயன்படுத்திய calculator, நீ இதுவரை test செய்யாத புதிய plugin-ஐ விட அதிக சுதந்திரம் பெற தகுதியானது.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[4];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          எல்லாம் அல்லது ஒன்றுமில்லை என்பதல்ல. சிறந்த AI workflows குறைந்த stakes, reversible tasks-ல் சுதந்திரம் கொடுக்கும், அதே நேரத்தில் அதிக stakes, irreversible tasks-ல் மனிதர்களை loop-ல் வைக்கும். அந்த boundary-ஐ design செய்வது உன் வேலை.
+          எல்லாம் அல்லது ஒன்றுமில்லை என்று இல்லை. சிறந்த AI workflows, low-stakes, reversible tasks-ல் சுதந்திரம் கொடுத்து, high-stakes, irreversible tasks-ல் மனிதர்களை loop-ல் வைக்கின்றன. உன் வேலை அந்த எல்லையை design செய்வது.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        நீ எங்கே கோடு வரைவாய்? உன் சொந்த autonomy levels-ஐ set செய்துபார்.
+        நீ எங்கே கோடு வரைவாய்? உன் சொந்த autonomy levels-ஐ நிர்ணயி.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Learning about AI tool use and function calling in the most hands-on way possible. This course lets you actually build and test things, not just read about them." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Tools AI யை advisor-இலிருந்து assistant-ஆக மாற்றுகின்றன &mdash; என்ன செய்ய வேண்டுமென்று சொல்பவனிலிருந்து, உண்மையில் செய்பவனாக.
+        Tools AI யை ஆலோசகரிடமிருந்து உதவியாளராக மாற்றுகின்றன — என்ன செய்ய வேண்டும் என்று சொல்பவரிடமிருந்து, உண்மையில் செய்பவராக.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        நீ AI க்கு கைகள் கொடுத்துவிட்டாய். அடுத்தது, அந்த tools-ஐ ஒன்றாக இணைத்து &mdash; தானாகவே ஒரு இலக்கை தொடரும், திட்டமிடும், execute செய்யும், தவறுகளிலிருந்து மீளும் ஒன்றை build செய்கிறோம். Agents build செய்யும் நேரம்.
+        AI க்கு கைகள் கொடுத்தாய். அடுத்தது, அந்த tools-ஐ ஒரு இலக்கை தானாக pursue செய்யக்கூடிய ஒன்றாக wire செய்கிறோம் — plan செய்வது, execute செய்வது, தவறுகளிலிருந்து recover ஆவது. Agents build செய்ய நேரம்.
       </p>
     </FadeInBlock>
   </section>

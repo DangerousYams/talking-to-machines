@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Construis quelque<br />chose de reel
+          Construis quelque<br />chose de r&eacute;el
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Le savoir sans creation, c'est de la culture generale.<br />Il est temps de livrer.
+          Le savoir sans cr&eacute;ation, c'est de la culture g&eacute;n&eacute;rale.<br />Il est temps de livrer.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Tu y es. En dix chapitres, tu es passe de « aide-moi avec ma dissertation » a l'ingenierie du contexte, la construction d'agents et le debuggage d'hallucinations. Tu en sais plus sur l'IA que la plupart des adultes. Mais voici la verite qui derange : <strong>rien de tout ca n'a d'importance tant que tu ne construis pas quelque chose.</strong> Lire sur l'IA, c'est comme lire sur la natation — tu peux etudier chaque technique de nage, mais tant que tu ne plonges pas, tu ne <em>sais</em> rien. Tu sais juste des <em>choses a propos de</em>.
+        Tu y es. En dix chapitres, tu es pass&eacute; de &laquo;&nbsp;aide-moi avec ma dissertation&nbsp;&raquo; &agrave; l'ing&eacute;nierie du contexte, la construction d'agents, l'apprentissage du vocabulaire du logiciel, la ma&icirc;trise de la boucle de construction, et le d&eacute;veloppement du go&ucirc;t. Mais voici la v&eacute;rit&eacute; qui d&eacute;range : <strong>rien de tout &ccedil;a n'a d'importance tant que tu ne construis pas quelque chose.</strong> Lire sur l'IA, c'est comme lire sur la natation &mdash; tu peux &eacute;tudier chaque technique de nage, mais tant que tu ne plonges pas, tu ne <em>sais</em> rien. Tu sais juste des choses <em>&agrave; propos de</em>.
       </p>
     </FadeInBlock>
   </section>
@@ -66,21 +67,21 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Avant d'ecrire ton premier prompt, il y a un coup de maitre que la plupart des debutants ratent : <strong>donne a ton outil IA un fichier d'instructions permanent.</strong> Au lieu de re-expliquer ton projet a chaque session, tu l'ecris une fois et ton IA le lit automatiquement. Claude Code lit <code>CLAUDE.md</code>. Cursor lit <code>.cursorrules</code>. GitHub Copilot lit <code>.github/copilot-instructions.md</code>. Meme concept, noms de fichiers differents. C'est l'ingenierie du contexte du chapitre 3 — appliquee au niveau du projet.
+        Avant d'&eacute;crire ton premier prompt, il y a un coup de ma&icirc;tre que la plupart des d&eacute;butants ratent : <strong>donne &agrave; ton outil IA un fichier d'instructions permanent.</strong> Au lieu de r&eacute;expliquer ton projet &agrave; chaque session, tu l'&eacute;cris une fois et ton IA le lit automatiquement. Claude Code lit <code>CLAUDE.md</code>. Cursor lit <code>.cursorrules</code>. GitHub Copilot lit <code>.github/copilot-instructions.md</code>. M&ecirc;me concept, noms de fichiers diff&eacute;rents. C'est le context engineering du chapitre 3 &mdash; appliqu&eacute; au niveau du projet.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Un bon fichier d'instructions repond a trois questions : que construis-tu, quelles sont les regles, et a quoi ressemble le « bien fait » ? Reussis ca et chaque conversation avec ton IA demarre dix etapes en avance. Delimite ton projet assez petit pour le finir — un hack de week-end termine vaut mieux qu'un chef-d'oeuvre abandonne.
+        Un bon fichier d'instructions r&eacute;pond &agrave; trois questions : que construis-tu, quelles sont les r&egrave;gles, et &agrave; quoi ressemble le &laquo;&nbsp;bien fait&nbsp;&raquo;&nbsp;? R&eacute;ussis &ccedil;a et chaque conversation avec ton IA d&eacute;marre dix &eacute;tapes en avance. D&eacute;limite ton projet assez petit pour le finir &mdash; un hack de week-end termin&eacute; vaut mieux qu'un chef-d'&oelig;uvre abandonn&eacute;.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Idee cle</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Id&eacute;e cl&eacute;</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Un bon fichier d'instructions projet fait la difference entre une IA qui t'aide et une IA qui te <em>comprend</em>. Ecris-le une fois, profites-en a chaque session.
+          Un bon fichier d'instructions projet fait la diff&eacute;rence entre une IA qui t'aide et une IA qui te <em>comprend</em>. &Eacute;cris-le une fois, profites-en &agrave; chaque session.
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Construis ton fichier d'instructions projet ici meme. Remplis les sections et exporte-le pour l'outil IA de ton choix.
+        Construis ton fichier d'instructions projet ici m&ecirc;me. Remplis les sections et exporte-le pour l'outil IA de ton choix.
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Les outils ne construisent pas. Les gens avec des outils construisent. Et tu as la meilleure boite a outils a laquelle ta generation ait jamais eu acces.
+        Les outils ne construisent pas. Les gens avec des outils construisent. Et tu as la meilleure bo&icirc;te &agrave; outils &agrave; laquelle ta g&eacute;n&eacute;ration ait jamais eu acc&egrave;s.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        Il y a onze chapitres, tu tapais « aide-moi avec ma dissertation » en esperant que ca marche. Maintenant tu concois du contexte, tu crees des agents, tu verifies les resultats et tu apportes du jugement a chaque etape. Le cours est termine. Le vrai apprentissage commence maintenant — va creer quelque chose que toi seul penserais a faire.
+        Il y a onze chapitres, tu tapais &laquo;&nbsp;aide-moi avec ma dissertation&nbsp;&raquo; en esp&eacute;rant le meilleur. Maintenant tu con&ccedil;ois du contexte, tu cr&eacute;es des agents, tu parles le langage du logiciel, tu it&egrave;res avec confiance, et tu apportes du go&ucirc;t &agrave; tout ce que tu cr&eacute;es. Le cours est termin&eacute;. Le vrai apprentissage commence maintenant &mdash; va cr&eacute;er quelque chose que toi seul penserais &agrave; faire.
       </p>
     </FadeInBlock>
 

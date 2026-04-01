@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI தவறாகச்<br />சொல்லும்போது
+          Build<br />Loop
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Amateurs-ஐ pros-இலிருந்து<br />பிரிக்கும் verification பழக்கங்கள்.
+          குறைபாட்டை எதிர்பார். செம்மையை ரசி.<br />மூன்றாவது version-ல்தான் magic நடக்கும்.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        உனக்கு flawless essay எழுத உதவிய அதே AI, அதே confidence-உடன், Napoleon Waterloo போரில் வென்றார் என்றும் சொல்லலாம். தயங்காது. தடுமாறாது. முழுமையாக fabricate செய்யப்பட்ட "fact"-ஐ மற்ற எல்லாவற்றுக்கும் பயன்படுத்தும் அதே authoritative tone-ல் சொல்லும். AI யுடன் வேலை செய்வதின் மையத்தில் இருக்கும் paradox இது: <strong>அதை useful ஆக்கும் அதே fluency, அதை dangerous ஆகவும் ஆக்குகிறது.</strong>
+        AI யுடன் build செய்யும்போது மிகவும் common தவறு bad prompt அல்ல. Bad expectation. ஒரு நீண்ட description type செய்து, enter அடித்து, finished product எதிர்பார்ப்பாய். வேலை செய்யாது. ஒருபோதும் வேலை செய்யாது. AI யுடன் amazing விஷயங்கள் build செய்பவர்களுக்கு ஒரு secret தெரியும்: <strong>முதல் version எப்போதும் தவறு.</strong> மூன்றாவது version நல்லது. ஐந்தாவது அருமை. ஒன்றிலிருந்து ஐந்துக்கு போகும் process? அதுதான் உண்மையான skill.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        ஒவ்வொரு artist-உம் iterate செய்கிறார். ஒவ்வொரு architect-உம் revise செய்கிறார். ஒவ்வொரு filmmaker-உம் multiple takes shoot செய்கிறார். AI யுடன் build செய்வதும் வேறு இல்லை. Loop-ஐ enjoy செய்பவர்கள் &mdash; resent செய்யாதவர்கள் &mdash; தான் சிறந்த விஷயங்கள் build செய்கிறார்கள்.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        நம்பகத்தோற்றம் உண்மை அல்ல
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Specify, Generate, Verify
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI models database-இலிருந்து facts retrieve செய்வதில்லை. அடுத்த most likely word-ஐ predict செய்கின்றன. Real விஷயம் பற்றி கேட்டால், training data சரியான தகவலை நோக்கி guide செய்கிறது. இல்லாத ஒன்று பற்றி கேட்டால், model "எனக்கு தெரியாது" சொல்வதில்லை. சரியான பதில் <em>எப்படி இருக்கும்</em> என்பதை generate செய்கிறது &mdash; பெயர்கள், தேதிகள், citations எல்லாம் சேர்த்து. எல்லாம் fabricated.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Coding agent-உடன் ஒவ்வொரு productive session-உம் அதே rhythm follow செய்கிறது. என்ன வேண்டும் என்று <strong>Specify</strong> செய் &mdash; concrete ஆக, examples கொடு, "done" எப்படி இருக்கும் என்று describe செய். Agent <strong>generate</strong> செய்ய விடு. பிறகு <strong>verify</strong> செய்: வேலை செய்கிறதா? சரியாக தெரிகிறதா? நீ கேட்டதை செய்கிறதா? இல்லையென்றால், இன்னும் precisely specify செய். இதுதான் loop. Failure-ன் அறிகுறி அல்ல. இதுதான் process.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        AI எவ்வளவு confident-ஆக sound ஆகிறது என்பதற்கும் எவ்வளவு accurate ஆக இருக்கிறது என்பதற்கும் எந்த correlation-உம் இல்லை. தவறான பதிலும் சரியான பதிலும் வெளியிலிருந்து ஒரே மாதிரி தெரியும். "சரியா தெரியுது" test-க்கு மதிப்பில்லை. உன் ஒரே defense &mdash; verification.
+        Power move &mdash; build ஆரம்பிக்கும் முன் உன் <strong>acceptance criteria</strong> எழுதுவது. "Click செய்தால் button green ஆக வேண்டும்." "Page refresh செய்தாலும் list இருக்க வேண்டும்." "@ இல்லாத emails-ஐ signup form reject செய்ய வேண்டும்." இந்த plain-English descriptions of "done" உன் evaluation framework ஆகின்றன. ஏதாவது தவறாக இருந்தால், உன் criteria-ஐ agent-கிட்ட paste செய்து "இது match ஆகவில்லை" என்று சொல். Agent <em>உன்</em> standards-க்கு எதிராக test செய்ய முடியும்.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Stuck ஆகும்போது என்ன செய்வது
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Agent ஏதோ broken generate செய்தது. இப்போது என்ன? ஐந்து strategies, முதலில் முயற்சிக்க வேண்டிய order-ல்:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Symptom describe செய், diagnosis அல்ல</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Click செய்தா button respond செய்யவில்லை" என்பது "onClick handler broken-ஆ இருக்கும்" என்பதை விட better.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Error message-ஐ அப்படியே share செய்</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Exact error-ஐ copy-paste செய். Agent-க்கு நீ கொடுக்கக்கூடிய மிக useful விஷயம் இது.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Agent-கிட்ட என்ன செய்தது என்று explain செய்யச் சொல்</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"நீ என்ன change செய்தாய், ஏன் என்று explain செய்." புரிந்துகொள்வதே பெரும்பாலும் issue-ஐ reveal செய்யும்.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. வேறு approach கேள்</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"அந்த approach வேலை செய்யவில்லை. இதை முற்றிலும் வேறு விதமாக solve செய்ய முடியுமா?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. கற்றுக்கொண்டவற்றுடன் புதிதாக ஆரம்பி</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">சில நேரங்களில் புதிய conversation, குழப்பமான ஒன்றை debug செய்வதை விட வேகமாக இருக்கும். முக்கிய முடிவுகளை உன்னுடன் எடுத்துச்செல்.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tests guardrails ஆக</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI க்கு truth என்ற concept இல்லை. <em>Plausibility</em> என்ற concept இருக்கிறது. Pattern-க்கு fit ஆகும் text generate செய்கிறது &mdash; அந்த text reality-க்கு match ஆகிறதா இல்லையா என்பது வேறு கதை.
+          Agent-கிட்ட automated tests எழுதச் சொல்லலாம் &mdash; plain English-ல். "Signup form-ல் @ இல்லாத emails-ஐ reject செய்கிறதா என்று test எழுது." Agent test-ஐயும் அதை pass செய்யும் code-ஐயும் எழுதும். ஒருபோதும் test எழுதாத ஒருவர் direct செய்யும் test-driven development. ஒரு bug test-ல் catch ஆனால், அது மறுபடி வர முடியாது.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        உன் detector-ஐ test செய்துபார். AI claims-ல் எது real, எது fabricated என்று சொல்ல முடியுமா?
+        Skill-ஐ practice செய். இந்த bugs-ஐ coding agent-கிட்ட எப்படி describe செய்வாய்?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Every AI user needs this chapter. It teaches you exactly how AI hallucinates, why it agrees with wrong answers, and how to catch it. Super practical." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="This chapter on building with AI coding agents is gold. The 5 debugging strategies alone are worth it — describe symptoms, share errors, ask for explanations." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI யிலிருந்து அதிக value பெறுபவர்கள் &mdash; எப்போது trust செய்ய வேண்டும், எப்போது verify செய்ய வேண்டும் என்று exactly கற்றுக்கொண்டவர்கள்.
+        முதல் version எப்போதும் தவறு. மூன்றாவது நல்லது. ஐந்தாவது அருமை. Loop-ஐ enjoy செய்.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AI எப்போது தவறு என்று தெரிவது ஒரு பெரிய கேள்விக்கு வழிவகுக்கிறது: அது <em>ஒருபோதும்</em> செய்ய முடியாதது என்ன? அடுத்தது, பிடிவாதமாக, அழகாக மனிதனாகவே இருக்கும் skills-ஐ explore செய்வோம் &mdash; ஏன் அவை முன்னெப்போதையும் விட முக்கியம் என்பதையும்.
+        Iterate செய்ய முடிகிறது. Debug செய்ய முடிகிறது. ஆனால் நீ build செய்வது உண்மையில் <em>நல்லதா</em> என்று எப்படி தெரியும்? Functional மட்டும் அல்ல &mdash; நல்லது. அதற்கு AI கொடுக்க முடியாத ஒன்று வேண்டும்: taste. அதுதான் அடுத்தது.
       </p>
     </FadeInBlock>
   </section>

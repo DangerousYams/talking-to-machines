@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Çoğu insan "yapay zeka" dediğinde ChatGPT'yi kasteder. Bu, "internet" deyip Google demek gibi. Şu anda bugün kullanabileceğin yüzlerce yapay zeka aracı var — bir cümleden fotogerçekçi görseller üreten, komple şarkılar besteleyen veya araştırma konunla ilgili her akademik makaleyi okuyup konsensüsü üç paragrafta özetleyen araçlar. Bu bölüm, arazinin haritası.
+        Çoğu insan "yapay zeka" dediğinde ChatGPT'yi kastediyor. Bu, "internet" deyip Google'ı kastetmek gibi bir şey. Şu anda bugün kullanabileceğin yüzlerce yapay zeka aracı var — bir cümleden fotorealistik görseller üreten, komple şarkılar besteleyen ya da araştırma konundaki tüm akademik makaleleri okuyup üç paragrafta konsensüsü özetleyen araçlar. Bu bölüm, arazinin haritası.
       </p>
     </FadeInBlock>
   </section>
@@ -72,20 +74,20 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Bunu müzik aletleri gibi düşün. Piyano ve bateri ikisi de "enstrüman" ama bir piyanistten ritim tutmasını istemezsin. Yapay zeka araçları da aynı — görsel üretimi için yapılmış bir araç, kod için yapılandan temelden farklı. Karşılaşacağın her araç bu sekiz aileden birine dahil.
+        Müzik aletleri gibi düşün. Piyano ve bateri ikisi de "enstrüman" ama bir piyanistten ritim tutmasını istemezsin. Yapay zeka araçları da aynı — görsel üretmek için yapılmış bir araç, kod için yapılmış olandan temelden farklı. Karşılaşacağın her araç bu sekiz aileden birine giriyor.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Görsel Üreticiler', color: '#E94560', text: 'Metin girer, görsel çıkar. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '1', name: 'Görsel Üreticiler', color: '#E94560', text: 'Metin giriyor, görsel çıkıyor. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
         { icon: '2', name: 'Görsel Editörler', color: '#F5A623', text: 'Gerçek bir görselle başla ve dönüştür. Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'Video Üreticiler', color: '#7B61FF', text: 'Metin veya sabit görsellerden video klipler üret. Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: 'Müzik ve Ses', color: '#16C79A', text: 'Bir prompt\'tan komple şarkılar, ses klonlama, ses efektleri. Suno, Udio, ElevenLabs.' },
-        { icon: '5', name: 'Araştırma Ajanları', color: '#0EA5E9', text: 'Senin için interneti okuyan yapay zeka. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'Yapay Zeka Tarayıcıları', color: '#6B7280', text: 'İnsan gibi web\'de dolaşan ajanlar. Arc, Operator, Claude Computer Use.' },
+        { icon: '3', name: 'Video Yaratıcıları', color: '#7B61FF', text: 'Metin veya durağan görsellerden video klipleri üret. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Müzik ve Ses', color: '#16C79A', text: 'Bir prompt\'tan komple şarkı, ses klonlama, ses efektleri. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Araştırma Ajanları', color: '#0EA5E9', text: 'İnterneti senin için okuyan yapay zeka. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'Yapay Zeka Tarayıcıları', color: '#6B7280', text: 'Web\'de insan gibi gezinen ajanlar. Arc, Operator, Claude Computer Use.' },
         { icon: '7', name: 'Kodlama Araçları', color: '#E94560', text: 'Kod yazan, düzenleyen ve hata ayıklayan yapay zeka. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Sohbet Botları ve Asistanlar', color: '#0F3460', text: 'Zaten bildiğin genel amaçlı sohbet yapay zekası: ChatGPT, Claude, Gemini.' },
+        { icon: '8', name: 'Sohbet Botları ve Asistanlar', color: '#0F3460', text: 'Zaten tanıdığın genel amaçlı konuşma yapay zekaları: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Temel fikir</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          10 yapay zeka aracını yüzeysel olarak bilen biri, tek bir aracı derinlemesine bileni sürekli geçer. Profesyonel bir marangoz favori aletini seçmez — <em>her görev için</em> favori bir aleti vardır.
+          10 yapay zeka aracını yüzeysel olarak tanıyan biri, tek bir aracı derinlemesine bilen birini sürekli olarak geçer. Profesyonel bir marangozun favori aracı yoktur — <em>her iş için</em> favori aracı vardır.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Tüm kataloğu keşfet. Ne yaptığını öğrenmek için herhangi bir araca tıkla.
+        Tam kataloğu keşfet. Ne yaptığını öğrenmek için herhangi bir araca tıkla.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Sandığımdan çok daha fazla yapay zeka aracı varmış. Bu interaktif rehber 8 araç ailesini haritalandırıyor — görsel üretimi, video, müzik, araştırma, kodlama — her birinden örneklerle." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Sandığından çok daha fazla yapay zeka aracı varmış. Bu interaktif rehber 8 araç ailesini haritalandırıyor — görsel üretimi, video, müzik, araştırma, kodlama — her birinden örneklerle." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Sahne her ay değişiyor. Ama kategoriler araçlar değişse bile sabit kalıyor — ve ezberlemeye değer harita <em>bu</em>.
+        Arazi her ay değişiyor. Ama kategoriler, araçlar değişse bile sabit kalıyor — ve ezberlenmeye değer harita <em>o</em>.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Şimdiye kadar bu araçlar sadece sana yanıt verdi. Ya kendi başlarına <em>harekete geçselerdi</em>? Araçtan ajana geçiş — bu her şeyi değiştiriyor.
+        Şimdiye kadar bu araçlar sadece sana cevap veriyordu. Ya <em>kendi başlarına harekete geçebilseler</em>? Araçtan ajana geçiş budur — ve her şeyi değiştirir.
       </p>
     </FadeInBlock>
   </section>

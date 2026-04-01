@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          AI 不是忘了&mdash;&mdash;它本来<br />就没记住过。
+          AI 不是在遗忘 &mdash;<br />它从来就没在记忆。
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        每次你给 AI 发消息，它都会从头读一遍你的<em>整个对话</em>&mdash;&mdash;你发的每条消息、它给的每个回答&mdash;&mdash;然后生成回复，接着全忘了。下一轮，同样的事情重来。整个对话记录再次被喂进去。它是世界上最勤奋但最健忘的读者：每次都读得很仔细，但每个回合都从零开始。
+        每次你给 AI 发消息，它都会从头到尾重新阅读你的<em>整段对话</em> &mdash; 你发过的每条消息、它给过的每个回复 &mdash; 生成一个回答，然后把一切全部忘掉。下一轮，同样的事情再来一次。整段对话记录被重新输入。它是世界上最认真但最健忘的读者：每次都完完整整地读，每次都从零开始。
       </p>
     </FadeInBlock>
   </section>
@@ -63,33 +66,33 @@ const chapter = chapters[2];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        窗口有边界
+        窗口是有边界的
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI 每轮重新读的那份对话记录存在一个叫做<strong>上下文窗口</strong>的地方&mdash;&mdash;用 <strong>token</strong>（大约每四分之三个英文单词对应一个 token）来衡量大小。Claude 的窗口能容纳大约 200,000 个 token&mdash;&mdash;相当于一本500页的书。听起来很大，但你发的每条消息、收到的每个回答、以及每条隐藏的系统指令，都在消耗同一个预算。填满的速度比你想的快得多。
+        AI 每轮重新读取的那份对话记录，存放在一个叫做<strong>上下文窗口</strong>的东西里 &mdash; 用<strong>token</strong>（大约每个 token 等于四分之三个英文单词）来衡量。Claude 的窗口能容纳大约 200,000 个 token &mdash; 相当于一本500页的书。听起来很大，但你发的每条消息、收到的每个回复、每条隐藏的系统指令，都从同一份预算里扣。它填满的速度比你想象的快得多。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        当预算用完，最早的消息就从边缘掉落了。你在第三条消息里提到了饮食禁忌？到第十五条的时候，AI 可能已经看不到了。它不是粗心&mdash;&mdash;它是真的看不到已经不在面前的东西了。AI 的好坏完全取决于当前窗口里的信息。
+        当预算用完，最早的消息就会从边缘掉出去。你在第三条消息里提到的饮食禁忌？到了第十五条消息时，AI 可能已经看不到了。它不是粗心 &mdash; 它真的看不到已经不在眼前的东西了。AI 只和当前窗口里的信息一样好。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        这就是为什么最厉害的 AI 用户不只是写好提示词&mdash;&mdash;他们管理放<em>进</em>窗口的内容。定期总结，让关键细节始终可见。把重要的放前面。话题转变时重新开始。用结构化格式帮助 AI 高效解析你的上下文。<strong>上下文工程是新的提示词工程。</strong>
+        这就是为什么最厉害的 AI 用户不仅仅写好提示词 &mdash; 他们管理进入窗口的<em>内容</em>。定期做总结，让关键细节保持可见。把重要的信息放在前面。话题转换时开一个新对话。用结构化格式让 AI 更高效地解析你的上下文。<strong>上下文工程是新时代的提示词工程。</strong>
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.25}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          写好提示词是第一步。决定把什么信息放在 AI 面前&mdash;&mdash;以及如何组织&mdash;&mdash;才是真正的杠杆所在。再好的提示词，如果上下文不对，也会失败。
+          写好提示词只是第一步。决定把什么信息放到 AI 面前 &mdash; 以及如何组织这些信息 &mdash; 才是真正的杠杆所在。再好的提示词，如果上下文不对，也会失败。
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        实时观看上下文窗口如何填满、溢出和遗忘。
+        实时观看上下文窗口如何被填满、溢出、然后遗忘。
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="终于理解了为什么 AI 会在对话中途'忘记'东西。不是记忆问题——是上下文窗口。这门课用实时演示讲得太清楚了。" client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        管理上下文的策略
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        现在你理解了窗口的原理，接下来学习如何像高手一样管理它。这些技巧是"用 AI"和"用 AI 做出超凡成果"之间的分水岭。
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">边聊边总结</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">每隔5-10条消息，让 AI 写一份关键决策和细节的简短回顾。然后把这份总结粘贴到下一条消息里。这会用最重要的信息"重置"上下文。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">重要的放前面</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">把最关键的信息放在消息开头，不要埋在末尾。AI 对开头和结尾的内容关注度更高 &mdash; 中间部分容易被忽略，尤其是在长提示词中。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">策略性地重新开始</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">话题大幅转换时，别怕开一个新对话。带上之前决策的总结，而不是完整的对话历史。干净的上下文往往比杂乱的更好用。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">明确告诉它该记住什么</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"重要：用户是素食者。请勿忘记。"听起来很傻，但确实有效。明确的提醒就像锚点，AI 会赋予更高的权重。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">使用结构化格式</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">列表、标题和清晰的标签能帮助 AI 更高效地解析你的上下文。一份组织良好的提示词，其价值是同等 token 量的散文的两倍。</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="终于理解了为什么 AI 在对话中途会'忘记'事情。不是记忆问题——是上下文窗口。这门课程用实时演示讲得太清楚了。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        你看到了白板。你感受到了窗口的边界。这会改变你和 AI 的每一次对话。
+        现在你看到白板了。你感受到了窗口的边界。这会改变你和 AI 的每一次对话。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        到目前为止我们一直在和聊天机器人打交道。接下来，我们拉远视角&mdash;&mdash;聊天窗口之外还有数百种 AI 工具，了解这个版图会改变你对"什么是可能的"的认知。
+        你已经学会了基础 &mdash; 提示词、提问和上下文。下一章：你的高能提示词速查表，随时带在身边。
       </p>
     </FadeInBlock>
   </section>

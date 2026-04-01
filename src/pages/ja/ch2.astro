@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,7 +33,7 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          質問の<br />アート
+          聞く技術
         </h1>
       </FadeInBlock>
 
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        ほとんどの人がAIを自動販売機のように使っている。プロンプトを入れて、答えを受け取る。でも最高の結果が生まれるのは、命令じゃなく<em>会話</em>からだ。プロンプトを打ち込む人とプロンプトを作り込む人の違いは、2,400年前から偉大な思想家たちを駆動してきたのと同じ違いだ——正しい質問をすること。
+        ほとんどの人はAIを自動販売機のように使う。プロンプトを入れて、答えを受け取る。でも最高の結果は、命令からじゃなく<em>対話</em>から生まれる。プロンプトをただ打ち込む人と、練り上げる人の違い。それは2,400年前から偉大な思想家たちの原動力になってきたのと同じもの、つまり正しい問いを立てる力だ。
       </p>
     </FadeInBlock>
   </section>
@@ -63,19 +65,19 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        ソクラテス式フリップ
+        ソクラテスの反転
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        ソクラテスは質問に直接答えなかった。<em>もっと</em>質問して、生徒が自分でより深い理解に到達するまで問い続けた。AIにも同じトリックが使えるけど、逆転させるんだ——答えを求めるんじゃなくて、AIに<em>君を</em>インタビューさせる。「誕生日パーティーを企画して」と打ったとき、答えを大きく変える何十もの情報が抜けている。AIは知らない——でも聞ける。
+        ソクラテスは質問に直接答えなかった。生徒がより深い理解にたどり着くまで、<em>もっと</em>質問を重ねた。このテクニックをAIにも使える。ただし逆向きに。答えを求めるかわりに、AIに<em>君を</em>インタビューさせるのだ。「誕生日パーティーを企画して」と打ち込んだとき、答えを大きく左右する情報が何十個も抜けている。AIはそれを知らない。でも聞くことはできる。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        このテクニック1つ——質問する側を逆転させる——で、AIは回答マシンから<strong>思考パートナー</strong>に変わる。AIに探り、明確にし、挑ませよう。5回のやり取りの後のアウトプットは、一発で出したものとは比べものにならない。
+        このたったひとつのテクニック、つまり質問する側を入れ替えるだけで、AIは回答マシンから<strong>思考パートナー</strong>に変わる。AIに探り、確認し、問い返す許可を与えよう。5回のやり取りを経た出力は、一発で出した命令の結果とは別物になる。
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[1];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AIをうまく使う人は、そのトピックの専門家じゃない——質問の専門家だ。そして最もパワフルな質問は：「答える前に、何を知っておく必要がある？」
+          最高のAIユーザーは、テーマの専門家じゃない。質問の専門家だ。そして最も強力な質問はこれだ。「答える前に、何を知っておく必要がある？」
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        やってみよう。目標を述べて、AIが立場を逆転させるのを見てみよう。
+        自分で試してみよう。目標を伝えると、AIが立場を逆転させるのを見届けてほしい。
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="このAIコースでプロンプティングの考え方がひっくり返った。AIに指示するんじゃなく、まずAIにインタビューさせるんだ。結果が全然違う。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="このAIコースでプロンプトの考え方が変わった。AIに指示するんじゃなく、まず自分をインタビューさせる。結果が全然違う。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AIに何を考えるか指示するのをやめよう。一緒に考える余地を与えよう。
+        AIに何を考えるか指示するのをやめよう。一緒に考える余白を与えよう。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        ここまで学んだすべてのテクニックは、同じ見えない壁にぶつかる——<em>コンテキストウィンドウ</em>だ。次はそれをこじ開けて、AIが実際に何を見ているのかを理解しよう。
+        でもここまで学んだテクニックは、すべて同じ見えない壁にぶつかる。<em>コンテキストウィンドウ</em>だ。次はそれをこじ開けて、AIが実際に何を見ているのかを理解しよう。
       </p>
     </FadeInBlock>
   </section>

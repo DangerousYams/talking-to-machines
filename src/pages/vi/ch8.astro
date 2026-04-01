@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Điều phối<br />sự phức tạp
+          Nói ngôn ngữ<br />xây dựng
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Quản lý AI trong các dự án lớn hơn<br />bất kỳ context window nào.
+          Từ vựng của việc xây dựng &mdash;<br />không phải code, chỉ là danh từ và động từ.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Đây là khoảnh khắc mà mọi người mới đầy tham vọng đều gặp phải: bạn yêu cầu AI xây thứ gì đó thật sự — một game hoàn chỉnh, một website có backend, một bài nghiên cứu có trích dẫn — và mọi thứ sụp đổ. Không phải vì AI không đủ thông minh. Mà vì dự án quá lớn cho một cuộc trò chuyện đơn lẻ. Bạn paste một bức tường yêu cầu vào và hai mươi phút sau nhận ra nó quên một nửa những gì bạn yêu cầu.
+        Bạn sắp ngồi xuống với một coding agent và xây thứ gì đó. Nó sẽ dùng những từ như "deploy," "endpoint," "component," và "schema." Nếu những từ đó mờ mịt với bạn, bạn sẽ cảm thấy lạc lõng &mdash; không phải vì bạn không thể xây, mà vì bạn không thể <em>chỉ đạo</em>. Chương này cho bạn chiếc nhẫn giải mã. Không phải học code. Mà là <strong>nói ngôn ngữ</strong> của việc xây dựng.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Đây không phải vấn đề của AI. Đây là vấn đề <strong>điều phối</strong>. Và học cách giải quyết nó là sự khác biệt giữa người dùng AI cho tác vụ lẻ tẻ và người dùng nó để xây thứ thật sự.
+        Nghĩ như lái xe vậy. Bạn không cần hiểu động cơ đốt trong, tỉ số truyền, hay áp suất dầu phanh. Bạn cần biết: chân ga, phanh, vô-lăng, gương. Từ vựng của việc <em>điều khiển</em>, không phải cách vận hành.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Nghệ thuật đóng gói context
+        Stack: Chiếc nhẫn giải mã
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Dự án phức tạp phá vỡ cách tiếp cận một-prompt. Context tràn, sự chú ý phân tán, lỗi chồng lỗi. Giải pháp không phải prompt tốt hơn — mà là <strong>phân rã</strong>. Chia dự án thành các tác vụ tập trung, rồi cho mỗi tác vụ, chọn kỹ context mà AI thực sự cần. Quá ít thì AI sẽ hallucinate. Quá nhiều thì nó mất tập trung. Điểm ngọt là sự chính xác phẫu thuật.
+        Mọi app &mdash; từ Instagram đến một to-do list đơn giản &mdash; đều được xây từ bốn lớp. Developer gọi đây là "the stack." Đây là toàn bộ, giải mã hết:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Hãy nghĩ như xếp vali. Bạn không thể mang cả tủ quần áo. Bạn cần nghĩ về nơi bạn đến (tác vụ), thứ bạn sẽ cần (thông tin liên quan), và thứ bạn có thể bỏ lại (mọi thứ khác). Mỗi cuộc trò chuyện nhận được đúng context nó cần — không hơn, không kém.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">Thứ người dùng thấy và chạm vào. Nút bấm, chữ, hình ảnh, animation. Phòng ăn của nhà hàng.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">Logic phía sau hậu trường. Xử lý request, kiểm tra mật khẩu, gửi email. Nhà bếp.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Database</p>
+          <p style="margin: 0; line-height: 1.6;">Nơi app nhớ mọi thứ. Tài khoản người dùng, bài đăng, cài đặt. Kho thực phẩm và sổ công thức.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">Cách nó lên internet. Hosting, tên miền, đưa lên sóng. Mở cửa nhà hàng.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Chỉ vậy thôi. Mọi app bạn từng dùng đều là tổ hợp nào đó của bốn lớp này. Khi coding agent nói "tôi sẽ set up backend," nghĩa là "tôi sẽ viết logic hậu trường." Khi nó nói "deploy thôi," nghĩa là "đưa cái này lên internet." Bạn không cần biết các lớp này <em>hoạt động như thế nào</em>. Bạn cần biết <em>rằng</em> chúng tồn tại và dùng để làm gì.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Agent là gia sư của bạn
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Đây là điều không ai nói cho bạn: <strong>coding agent cũng là giáo viên của bạn.</strong> Không biết "npm" là gì? Hỏi. Không hiểu error message? Paste vào và nói "giải thích cái này như mình không phải developer." Muốn biết tại sao agent chọn React thay vì thứ khác? Hỏi. Nó sẽ giải thích bằng ngôn ngữ đơn giản, từng bước một, bao nhiêu lần bạn cần cũng được.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Điểm mấu chốt</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Năm phút đầu tiên</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Chất lượng tài liệu chuyển giao quyết định chất lượng mọi thứ được xây dựng phía sau. Một schema rõ ràng luôn thắng một mô tả mơ hồ. Rác vào, rác ra — xuyên suốt các cuộc trò chuyện.
+          Mở công cụ coding. Mô tả dự án bằng ngôn ngữ bình thường: "Mình muốn xây một workout tracker, log bài tập và xem tiến trình theo thời gian." Agent sẽ hỏi câu hỏi làm rõ, đề xuất stack, và bắt đầu xây. Việc đầu tiên của bạn là <em>trả lời câu hỏi của nó</em> và <em>xem nó tạo ra cái gì</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Đóng gói một chiếc vali context. Bạn có thể nhét vừa thứ quan trọng mà không bị tràn không?
+        Khám phá bốn lớp của web app. Click để học từ vựng &mdash; rồi tự test mình.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Phần khó nhất của AI không phải prompting — mà là điều phối dự án phức tạp xuyên nhiều cuộc trò chuyện. Khóa học này cuối cùng cũng giải thích cách làm." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Chương này giải thích tech stack mà không có dòng code nào. Frontend, backend, database, deployment — cuối cùng cũng hiểu. Ước gì đọc cái này mấy năm trước." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Dự án phức tạp không đáng sợ. Chúng chỉ là một chuỗi cuộc trò chuyện tập trung được kết nối bởi tài liệu chuyển giao rõ ràng.
+        Bạn không cần biết động cơ hoạt động thế nào. Bạn cần biết cách lái.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tiếp theo: biết khi nào AI <em>sai</em>. Hallucination, xu nịnh, và thói quen kiểm chứng giữ bạn trung thực.
+        Bạn biết các từ rồi. Bạn có ý tưởng. Giờ là lúc ngồi xuống với coding agent và thực sự xây. Tiếp theo: nghệ thuật của build loop &mdash; lặp lại, đánh giá, và làm gì khi mọi thứ hỏng.
       </p>
     </FadeInBlock>
   </section>

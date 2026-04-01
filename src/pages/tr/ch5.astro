@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -31,13 +33,13 @@ const chapter = chapters[4];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Ona Araçlar<br />Ver
+          Ona Araç<br />Ver
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          "Soruları yanıtla"dan<br />"harekete geç"e sıçrama.
+          "Soruları yanıtla"dan<br />"harekete geç"e sıçrayış.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0; --drop-cap-color: #F5A623;">
-        Şimdiye kadar yaptığın her yapay zeka etkileşimi aynı kalıbı izledi. Sen bir şey yazıyorsun. Yapay zeka bir şey yazıyor. Gerçekten gelişmiş bir otomatik tamamlama. Ama ya yapay zeka bir şeyler <em>yapabilseydi</em>? Sadece hava durumundan bahsetmek değil, tahmini kontrol etmek. Sadece kod yazmak değil, çalıştırmak. Sadece ne arayacağını önermek değil, web'i kendisi arayıp bulduğunu getirmek.
+        Şimdiye kadar yaptığın her yapay zeka etkileşimi aynı kalıba uyuyordu. Sen bir şey yazıyorsun. Yapay zeka bir şey yazıyor. Çok sofistike bir otomatik tamamlama. Ama ya yapay zeka bir şeyler <em>yapabilseydi</em>? Sadece hava durumunu anlatmak değil, hava tahminini kontrol etmek. Sadece kod yazmak değil, onu çalıştırmak. Sadece ne arayacağını önermek değil, internette kendisi arayıp bulduklarını geri getirmek.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Yapay zekaya araçlar verdiğinde, ona bir alet çantası uzatıp diyorsun ki: <em>"İşte yapabileceğin şeyler. Ne zaman kullanacağına sen karar ver."</em> Web'i arayabilir, kod çalıştırabilir, dosya okuyabilir, API'leri çağırabilir. Yapay zeka daha akıllı olmadı — <strong>bağlandı</strong>. Ve bu, teknolojiyle değil seninle ilgili bir soruyu doğurur: yapay zeka sana danışmadan önce ne kadarını kendi başına yapmalı?
+        Yapay zekaya araçlar verdiğinde, ona bir alet çantası uzatıp şunu diyorsun: <em>"İşte yapabileceklerin. Ne zaman kullanacağına sen karar ver."</em> Web'de arama yapabilir, kod çalıştırabilir, dosya okuyabilir, API çağırabilir. Yapay zeka daha akıllı olmadı — <strong>bağlantı kurdu</strong>. Ve bu, teknolojiyle hiçbir ilgisi olmayan ama tamamen seninle ilgili bir soruyu gün yüzüne çıkarıyor: yapay zeka seninle kontrol etmeden ne kadar iş yapmalı?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        Cevap üç şeye bağlı. <strong>Risk</strong> — en kötü ne olabilir? <strong>Geri alınabilirlik</strong> — geri alabilir misin? Ve <strong>güven</strong> — bu aracı ne kadar iyi tanıyorsun? Yüz kere kullandığın bir hesap makinesi, hiç test etmediğin yepyeni bir eklentiden daha fazla özgürlüğü hak eder.
+        Cevap üç şeye bağlıdır. <strong>Risk</strong> — olabilecek en kötü şey ne? <strong>Geri alınabilirlik</strong> — geri alabilir misin? Ve <strong>güven</strong> — bu aracı ne kadar iyi tanıyorsun? Yüz kere kullandığın bir hesap makinesi, hiç test etmediğin yepyeni bir eklentiden daha fazla özgürlüğü hak eder.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Temel fikir</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Ya hep ya hiç değil. En iyi yapay zeka iş akışları, düşük riskli ve geri alınabilir görevlerde özgürlük tanırken, yüksek riskli ve geri alınamaz işlerde insanı döngüde tutar. Senin görevin sınırı tasarlamak.
+          Ya hep ya hiç değil. En iyi yapay zeka iş akışları, düşük riskli ve geri alınabilir görevlerde özgürlük verirken, yüksek riskli ve geri alınamaz olanlarda insanı döngünün içinde tutar. Senin işin sınırı tasarlamak.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[4];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Sınırı nereye çizerdin? Kendi otonomi seviyelerini belirle.
+        Sen sınırı nereye çizerdin? Kendi otonomi seviyelerini belirle.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Yapay zeka araç kullanımı ve fonksiyon çağırma hakkında en uygulamalı şekilde öğreniyorum. Bu kurs sadece okutmuyor, gerçekten inşa ettirip test ettiriyor." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Yapay zeka araç kullanımı ve fonksiyon çağırmayı en uygulamalı şekilde öğreniyorum. Bu kurs sadece okumanı değil, gerçekten bir şeyler inşa etmeni ve test etmeni sağlıyor." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Araçlar yapay zekayı bir danışmandan asistana dönüştürür — sana ne yapacağını söyleyenden, gerçekten yapana.
+        Araçlar yapay zekayı bir danışmandan asistana dönüştürür — ne yapman gerektiğini söyleyen birinden, gerçekten yapan birine.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Yapay zekaya eller verdin. Sırada bu araçları kendi başına bir hedef peşinde koşabilecek bir şeye bağlıyoruz — planlayan, uygulayan, hatalardan kurtulan. Ajan inşa etme zamanı.
+        Yapay zekaya eller verdin. Sırada, o araçları kendi başına bir hedef peşinde koşturabilen bir şeye dönüştürüyoruz — planlayan, yürüten, hatalardan toparlanabilen. Ajan inşa etme zamanı.
       </p>
     </FadeInBlock>
   </section>

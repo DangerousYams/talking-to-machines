@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -19,7 +20,7 @@ const chapter = chapters[10];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          On Birinci Bölüm
+          On Birinci B&#246;l&#252;m
         </p>
       </FadeInBlock>
 
@@ -28,13 +29,13 @@ const chapter = chapters[10];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Gerçek Bir Şey<br />İnşa Et
+          Ger&#231;ek Bir &#350;ey<br />&#304;n&#351;a Et
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Yaratma olmadan bilgi ansiklopedi bilgisidir.<br />Yayınlama zamanı.
+          Yaratma olmadan bilgi trivyadır.<br />Yayınlama zamanı.
         </p>
       </FadeInBlock>
     </div>
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Başardın. On bölüm boyunca "makaleme yardım et"ten bağlam mühendisliğine, ajan inşa etmeye ve halüsinasyonları ayıklamaya kadar geldin. Yapay zeka hakkında çoğu yetişkinden daha fazla şey öğrendin. Ama işte rahatsız edici gerçek: <strong>bir şey inşa edene kadar hiçbiri önemli değil.</strong> Yapay zeka hakkında okumak yüzme hakkında okumak gibidir — her kulaç tekniğini çalışabilirsin ama suya girmeden hiçbirini <em>bilmiyorsun</em>. Sadece onlar <em>hakkında</em> biliyorsun.
+        Ba&#351;ardın. On b&#246;l&#252;m boyunca "makaleme yardım et"ten ba&#287;lam m&#252;hendisli&#287;ine, ajan in&#351;a etmeye, yazılımın kelime hazinesini &#246;&#287;renmeye, in&#351;a d&#246;ng&#252;s&#252;nde ustala&#351;maya ve zevk geli&#351;tirmeye kadar geldin. Ama i&#351;te rahatsız edici ger&#231;ek: <strong>bir &#351;ey in&#351;a edene kadar hi&#231;birinin &#246;nemi yok.</strong> Yapay zeka hakkında okumak y&#252;zme hakkında okumak gibi &mdash; her kula&#231; tekni&#287;ini &#231;alı&#351;abilirsin ama suya girene kadar hi&#231;birini <em>bilmiyorsun</em>. Sadece onlar <em>hakkında</em> bilgi sahibisin.
       </p>
     </FadeInBlock>
   </section>
@@ -66,21 +67,21 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        İlk prompt'unu yazmadan önce, çoğu yeni başlayanın atladığı güçlü bir hamle var: <strong>yapay zeka aracına kalıcı bir talimat dosyası ver.</strong> Her oturumda projeni yeniden açıklamak yerine, bir kere yazarsın ve yapay zekan otomatik olarak okur. Claude Code <code>CLAUDE.md</code> dosyasını okur. Cursor <code>.cursorrules</code> dosyasını okur. GitHub Copilot <code>.github/copilot-instructions.md</code> dosyasını okur. Aynı konsept, farklı dosya adları. Bu, 3. Bölüm'deki bağlam mühendisliğinin proje seviyesinde uygulanması.
+        &#304;lk prompt'unu yazmadan &#246;nce, &#231;o&#287;u yeni ba&#351;layanın atladı&#287;ı g&#252;&#231;l&#252; bir hamle var: <strong>yapay zeka aracına kalıcı bir talimat dosyası ver.</strong> Projeni her oturumda yeniden a&#231;ıklamak yerine, bir kere yazarsın ve yapay zekan otomatik olarak okur. Claude Code <code>CLAUDE.md</code>'yi okur. Cursor <code>.cursorrules</code>'ı okur. GitHub Copilot <code>.github/copilot-instructions.md</code>'yi okur. Aynı konsept, farklı dosya adları. Bu, 3. B&#246;l&#252;m'deki ba&#287;lam m&#252;hendisli&#287;i &mdash; proje seviyesinde uygulanmı&#351; hali.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        İyi bir talimat dosyası üç soruyu yanıtlar: ne inşa ediyorsun, kurallar ne ve "iyi" neye benziyor? Bunları doğru yap ve yapay zekayla her sohbet on adım önden başlar. Projeni bitirebilecek kadar küçük tut — tamamlanmış bir hafta sonu projesi, yarıda kalmış bir başyapıttan her zaman daha iyidir.
+        &#304;yi bir talimat dosyası &#252;&#231; soruyu yanıtlar: ne in&#351;a ediyorsun, kurallar ne ve "iyi" neye benziyor? Bunları do&#287;ru yap ve yapay zekanla her konu&#351;ma on adım ileride ba&#351;lar. Projenin kapsamını bitirebilecek kadar k&#252;&#231;&#252;k tut &mdash; tamamlanmı&#351; bir hafta sonu hack'i, yarım bırakılmı&#351; bir ba&#351;yapıttan her zaman &#252;st&#252;nd&#252;r.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Önemli nokta</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Temel fikir</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          İyi bir proje talimat dosyası, sana yardım eden bir yapay zeka ile seni <em>anlayan</em> bir yapay zeka arasındaki farktır. Bir kere yaz, her oturumda faydasını gör.
+          &#304;yi bir proje talimat dosyası, sana yardım eden bir yapay zekayla seni <em>anlayan</em> bir yapay zeka arasındaki fark. Bir kere yaz, her oturum faydasını g&#246;r.
         </p>
       </div>
     </FadeInBlock>
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Proje talimat dosyanı tam burada oluştur. Bölümleri doldur ve tercih ettiğin yapay zeka aracı için dışarı aktar.
+        Proje talimat dosyanı tam burada olu&#351;tur. B&#246;l&#252;mleri doldur ve tercih etti&#287;in yapay zeka aracı i&#231;in dı&#351;arı aktar.
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Araçlar bir şey inşa etmez. Araçlara sahip insanlar inşa eder. Ve senin neslin şimdiye kadar erişilen en iyi araç setine sahip.
+        Ara&#231;lar bir &#351;ey in&#351;a etmez. Ara&#231;ları olan insanlar in&#351;a eder. Ve senin neslin &#351;imdiye kadar eri&#351;ilen en iyi ara&#231; setine sahip.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        On bir bölüm önce "makaleme yardım et" yazıp en iyisini umuyordun. Şimdi bağlam mühendisliği yapıyor, ajanlar tasarlıyor, çıktıları doğruluyor ve her adıma yargını katıyorsun. Kurs bitti. Gerçek öğrenme şimdi başlıyor — git ve sadece senin aklına gelecek bir şey yap.
+        On bir b&#246;l&#252;m &#246;nce "makaleme yardım et" yazıp en iyisini umuyordun. &#350;imdi ba&#287;lam m&#252;hendisli&#287;i yapıyorsun, ajanlar in&#351;a ediyorsun, yazılımın dilini konu&#351;uyorsun, g&#252;venle tekrarlıyorsun ve yarattı&#287;ın her &#351;eye zevk katıyorsun. Kurs bitti. Ger&#231;ek &#246;&#287;renme &#351;imdi ba&#351;lıyor &mdash; git ve sadece senin d&#252;&#351;&#252;nebilece&#287;i bir &#351;ey yap.
       </p>
     </FadeInBlock>
 

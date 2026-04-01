@@ -37,7 +37,7 @@ const chapter = chapters[0];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          第一稿不会是奇迹。<br />但第三稿可能是。
+          第一稿不会是魔法。<br />但第三稿可能就是了。
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        你一辈子都在跟 AI 说话——每次搜索、每次问 Siri、每次 Netflix 推荐。但对着机器说话和<em>跟</em>机器对话是不一样的。现在，无数人输入一段提示词，得到一个平平无奇的回答，然后想："看来 AI 也没那么聪明嘛。"他们错了。AI 能做到的和大多数人让它做到的之间，有一道巨大的鸿沟。这不是技术问题——这是沟通问题。
+        你其实一辈子都在和 AI 说话——每一次搜索、每一次问 Siri、每一次 Netflix 推荐。但"对着"机器说话和"跟"机器对话是两回事。现在，数百万人随手输入一个提示词，得到一个平庸的回答，然后想："AI 好像也没那么聪明嘛。"他们错了。AI 能做的事和大多数人实际用它做到的事之间，有一道巨大的鸿沟。这不是技术问题——这是沟通问题。
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        五个构建模块
+        五大构建模块
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        秘密在这里：那些从 AI 身上获得惊人结果的人并不比你聪明。他们用了一个公式——五个构建模块，百试百灵。你不需要每次都用上全部五个。但知道它们的存在，就像学会了看穿 Matrix。
+        秘密在这里：那些从 AI 身上获得惊人结果的人，并不比你聪明。他们用的是一套公式——五个构建模块，屡试不爽。你不需要每次都用齐五个，但知道它们的存在，就像学会了看穿矩阵。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: '角色', color: '#E94560', text: 'AI 应该扮演谁？辅导老师的讲解方式和教授完全不同。角色决定了一切。' },
-        { letter: 'T', name: '任务', color: '#0F3460', text: '具体要做什么？不要说"帮帮我"，要说"加强我的论点"。一个提示词一个任务。' },
-        { letter: 'F', name: '格式', color: '#7B61FF', text: '回答应该长什么样？"给我3个替代方案，用编号列表。"格式能防止 AI 跑题。' },
-        { letter: 'C', name: '约束', color: '#16C79A', text: '什么不该做？"别用陈词滥调。控制在200字以内。"约束就是护栏，防止糟糕的输出。' },
-        { letter: 'E', name: '示例', color: '#F5A623', text: '展示，而不是描述。一个"好的样子"的示例，胜过一百个字的描述。' },
+        { letter: 'R', name: '角色 (Role)', color: '#E94560', text: '让 AI 扮演谁？导师和教授的讲解方式完全不同。角色决定了一切。' },
+        { letter: 'T', name: '任务 (Task)', color: '#0F3460', text: '具体要做什么？不是"帮帮我"，而是"帮我强化论文的核心论点"。一个提示词只做一件事。' },
+        { letter: 'F', name: '格式 (Format)', color: '#7B61FF', text: '回答应该长什么样？"给我3个方案，用编号列表。"指定格式能避免 AI 废话连篇。' },
+        { letter: 'C', name: '约束 (Constraints)', color: '#16C79A', text: '哪些事不能做？"避免老套表达。控制在200字以内。"设好护栏才能防止烂输出。' },
+        { letter: 'E', name: '示例 (Examples)', color: '#F5A623', text: '展示比描述更有用。一个"好"的例子，胜过一百个字的说明。' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -101,9 +101,9 @@ const chapter = chapters[0];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">关键洞察</p>
+        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">核心洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          不需要每次都用上全部五个。但当 AI 给你一堆垃圾时，看看缺了什么——几乎总是这五个里的某一个。
+          你不需要每次都用齐五个。但当 AI 给你的结果很垃圾时，看看少了哪个——几乎总是这五个中的某一个。
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        理论够了。切换构建模块，实时看 AI 的回答如何变化。
+        理论讲够了。切换构建模块，看 AI 的回答如何实时蜕变。
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="刚发现了好的 AI 提示词的5个构建模块。这个互动课程太棒了——你自己动手构建提示词，实时看它们如何改进。" client:visible />
+  <SharePrompt text="刚刚发现了好的 AI 提示词的5大构建模块。这门互动课程做得太棒了——你自己动手写提示词，然后看着它们一步步变好。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        你已经会和 AI 对话了。你只需要带上意图去说。
+        你已经会和 AI 对话了。你只需要更有意识地去说。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        接下来：那些把简单的一问一答变成真正对话的技巧——让 AI 不只是回答你，而是<em>和你一起思考</em>。
+        下一章：那些能把简单的一问一答变成真正对话的技巧——让 AI 不只是回答你，而是<em>跟你一起思考</em>。
       </p>
     </FadeInBlock>
   </section>

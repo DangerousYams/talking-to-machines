@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        La mayoría de la gente usa la IA como una máquina expendedora. Inserta prompt, recibe respuesta. Pero los mejores resultados vienen de <em>conversaciones</em>, no de comandos. La diferencia entre alguien que escribe un prompt y alguien que lo crea con cuidado es la misma diferencia que ha impulsado a los grandes pensadores durante 2,400 años: hacer las preguntas correctas.
+        La mayoría de la gente usa la IA como una máquina expendedora. Inserta prompt, recibe respuesta. Pero los mejores resultados vienen de <em>conversaciones</em>, no de órdenes. La diferencia entre alguien que escribe un prompt y alguien que lo diseña es la misma diferencia que ha impulsado a los grandes pensadores durante 2.400 años: hacer las preguntas correctas.
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Sócrates nunca respondía una pregunta directamente. Hacía <em>más</em> preguntas hasta que sus estudiantes llegaban a un entendimiento más profundo. Puedes usar el mismo truco con la IA, pero al revés: en lugar de pedir una respuesta, pídele a la IA que te entreviste <em>a ti</em>. Cuando escribes "planifica una fiesta de cumpleaños", estás omitiendo docenas de detalles que cambian masivamente la respuesta. La IA no los sabe — pero puede preguntar.
+        Sócrates nunca respondía una pregunta directamente. Hacía <em>más</em> preguntas hasta que sus alumnos llegaban a una comprensión más profunda. Puedes usar el mismo truco con la IA, pero al revés: en vez de pedir una respuesta, pídele a la IA que te entreviste <em>a ti</em>. Cuando escribes "planifica una fiesta de cumpleaños," estás omitiendo decenas de detalles que cambian radicalmente la respuesta. La IA no los sabe, pero puede preguntar.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Esta sola técnica — cambiar quién hace las preguntas — convierte a la IA de una máquina de respuestas en un <strong>compañero de pensamiento</strong>. Dale permiso de indagar, aclarar y cuestionar. El resultado después de cinco preguntas de ida y vuelta será irreconocible comparado con un comando de un solo intento.
+        Esta única técnica &mdash; invertir quién hace las preguntas &mdash; convierte a la IA de una máquina de respuestas en un <strong>compañero de pensamiento</strong>. Dale permiso para indagar, aclarar y cuestionar. El resultado después de cinco intercambios será irreconocible comparado con un comando de un solo intento.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Los mejores usuarios de IA no son expertos en el tema — son expertos en preguntar. Y la pregunta más poderosa que puedes hacer es: "Antes de responder, ¿qué necesitas saber?"
+          Los mejores usuarios de IA no son expertos en el tema: son expertos en preguntar. Y la pregunta más poderosa que puedes hacer es: "Antes de responder, ¿qué necesitas saber?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Pruébalo tú mismo. Plantea un objetivo — y mira cómo la IA le da la vuelta.
+        Pruébalo tú mismo. Plantea un objetivo y observa cómo la IA te devuelve las preguntas.
       </p>
     </FadeInBlock>
   </section>
@@ -105,7 +107,16 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Este curso de IA cambió por completo cómo pienso sobre los prompts. En lugar de decirle a la IA qué hacer, le pides que te entreviste a TI primero. Los resultados son de otro nivel." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Este curso de IA me cambió la forma de pensar sobre los prompts. En vez de decirle a la IA qué hacer, le pides que te entreviste PRIMERO. Los resultados son de otro nivel." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -117,7 +128,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Pero cada técnica que has aprendido se topa con la misma pared invisible: la <em>ventana de contexto</em>. A continuación, la abrimos de par en par y aprendemos cómo diseñar lo que la IA realmente ve.
+        Pero cada técnica que has aprendido choca con el mismo muro invisible: la <em>ventana de contexto</em>. A continuación, la abrimos y aprendemos a diseñar lo que la IA realmente ve.
       </p>
     </FadeInBlock>
   </section>

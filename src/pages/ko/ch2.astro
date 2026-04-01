@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -31,13 +33,13 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          질문의<br />기술
+          질문하는<br />기술
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          최고의 prompt는 AI가 너한테<br />질문하게 만드는 질문이야.
+          최고의 프롬프트는 AI가<br />너한테 질문하게 만드는 질문이야.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        대부분의 사람들은 AI를 자판기처럼 써. prompt 넣고, 답 받고. 근데 최고의 결과는 <em>대화</em>에서 나와, 명령이 아니라. prompt를 그냥 치는 사람과 정성 들여 만드는 사람의 차이는 2,400년 동안 위대한 사상가들을 만들어 온 바로 그 차이야: 올바른 질문을 하는 것.
+        대부분의 사람들은 AI를 자판기처럼 써. 프롬프트 넣고, 답변 받고, 끝. 하지만 진짜 좋은 결과는 명령이 아니라 <em>대화</em>에서 나와. 프롬프트를 그냥 치는 사람과 정교하게 만드는 사람의 차이는 2,400년 동안 위대한 사상가들을 이끌어온 것과 같아: 올바른 질문을 하는 거야.
       </p>
     </FadeInBlock>
   </section>
@@ -63,19 +65,19 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        소크라테스식 뒤집기
+        소크라테스 뒤집기
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        소크라테스는 질문에 바로 답한 적이 없어. 제자들이 더 깊은 이해에 도달할 때까지 계속 <em>더 많은</em> 질문을 했지. 너도 AI한테 같은 트릭을 쓸 수 있어, 근데 뒤집어서: 답을 요청하는 대신, AI한테 <em>너를</em> 인터뷰하라고 해. "생일 파티 계획해줘"라고 치면, 답을 완전히 바꿀 수 있는 수십 가지 디테일을 빠뜨리는 거야. AI는 그걸 몰라 — 근데 물어볼 수는 있어.
+        소크라테스는 질문에 직접 답한 적이 없어. 학생들이 더 깊은 이해에 도달할 때까지 <em>더 많은</em> 질문을 던졌지. AI한테도 같은 트릭을 쓸 수 있는데, 방향을 뒤집어: 답을 요구하는 대신 AI가 <em>너를</em> 인터뷰하게 해봐. "생일파티 계획해줘"라고 치면 답변에 엄청나게 영향을 미치는 디테일 수십 개를 빠뜨리는 거야. AI는 그걸 모르지만 — 물어볼 수는 있거든.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        이 단 하나의 기술 — 질문하는 쪽을 뒤집는 것 — 이 AI를 답변 기계에서 <strong>사고 파트너</strong>로 바꿔줘. AI한테 탐구하고, 확인하고, 도전할 수 있는 여유를 줘. 다섯 번의 주고받기 후 나오는 결과물은 한 번의 명령으로 나온 것과 비교할 수 없을 거야.
+        이 하나의 기술 — 질문하는 쪽을 뒤바꾸는 것 — 이 AI를 답변 기계에서 <strong>사고 파트너</strong>로 바꿔줘. AI한테 파고들고, 확인하고, 도전할 수 있는 권한을 줘봐. 다섯 번의 주고받기 질문 뒤에 나오는 결과물은 한 번에 딱 시킨 것과 비교가 안 돼.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[1];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 포인트</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI를 가장 잘 쓰는 사람들은 주제의 전문가가 아냐 — 질문의 전문가야. 그리고 네가 할 수 있는 가장 강력한 질문은: "답하기 전에, 뭘 알아야 해?"
+          최고의 AI 사용자는 해당 주제의 전문가가 아니야 — 질문의 전문가지. 그리고 네가 할 수 있는 가장 강력한 질문은 이거야: "답하기 전에, 뭘 알아야 해?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        직접 해봐. 목표를 말해봐 — 그리고 AI가 판을 뒤집는 걸 지켜봐.
+        직접 해봐. 목표를 말하고 — AI가 판을 뒤집는 걸 지켜봐.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="이 AI 코스가 prompting에 대한 내 생각을 완전히 뒤집었어. AI한테 뭘 하라고 하는 대신, 먼저 AI가 너를 인터뷰하게 해. 결과가 완전 달라." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="이 AI 코스가 프롬프팅에 대한 생각을 완전히 바꿔놨어. AI한테 뭘 하라고 시키는 게 아니라, 먼저 너를 인터뷰하게 하는 거야. 결과가 완전 달라." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI한테 뭘 생각하라고 지시하지 마. 너와 함께 생각할 공간을 줘.
+        AI한테 뭘 생각하라고 시키지 마. 너와 함께 생각할 공간을 줘.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        근데 네가 배운 모든 기술은 같은 보이지 않는 벽에 부딪혀: <em>context window</em>. 다음에는 그걸 열어보고 AI가 실제로 보는 것을 설계하는 법을 배워.
+        지금까지 배운 모든 기술은 같은 보이지 않는 벽에 부딪혀: 바로 <em>컨텍스트 윈도우</em>야. 다음 장에서 그걸 열어보고 AI가 실제로 보는 것을 엔지니어링하는 법을 배워보자.
       </p>
     </FadeInBlock>
   </section>

@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import AgentBlueprint from '../../components/widgets/ch6/AgentBlueprint';
-import AgentTakeover from '../../components/breaks/AgentTakeover';
+import AgentArena from '../../components/widgets/ch6/AgentArena';
+import AgentSwarm from '../../components/breaks/AgentSwarm';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[5];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="vi">
@@ -31,7 +34,7 @@ const chapter = chapters[5];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Xây dựng<br />agent
+          Xây dựng<br />Agent
         </h1>
       </FadeInBlock>
 
@@ -57,19 +60,19 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Agent chạy trên một vòng lặp: nhận mục tiêu, lên kế hoạch, thực hiện bằng công cụ, quan sát kết quả, đánh giá tiến độ, điều chỉnh. Chúng không lên kế hoạch một lần rồi chạy mù — agent tốt nhất phục hồi một cách mượt mà khi bước ba gặp sự cố. Nhưng sức mạnh đó có mặt trái: agent không chỉ đưa ra câu trả lời tệ, chúng <em>hành động</em> dựa trên đó, rồi dùng kết quả hỏng để ra quyết định tiếp. Lỗi chồng lỗi.
+        Agent chạy trên một vòng lặp: nhận mục tiêu, lên kế hoạch, thực hiện bằng công cụ, quan sát kết quả, đánh giá tiến độ, điều chỉnh. Chúng không lên kế hoạch một lần rồi chạy mù — agent tốt nhất phục hồi mượt mà khi bước ba gặp sự cố. Nhưng sức mạnh đó có mặt trái: agent không chỉ đưa ra câu trả lời tệ, chúng <em>hành động</em> dựa trên đó, rồi dùng kết quả hỏng để ra quyết định tiếp. Lỗi chồng lỗi.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE AGENT LOOP ═══ -->
+  <!-- ═══ THE ANATOMY OF AN AGENT ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Vòng lặp agent
+        Vòng lặp Agent
       </h2>
     </FadeInBlock>
 
@@ -84,7 +87,7 @@ const chapter = chapters[5];
         { letter: 'G', name: 'Mục tiêu (Goal)', color: '#E94560', text: 'Nhận mục tiêu rõ ràng. "Nghiên cứu sao Hỏa" không phải mục tiêu. "Viết tóm tắt 500 từ về thách thức định cư sao Hỏa, có nguồn" mới là.' },
         { letter: 'P', name: 'Lập kế hoạch (Plan)', color: '#7B61FF', text: 'Chia mục tiêu thành các bước cụ thể. Planner giỏi tạo kế hoạch linh hoạt. Planner tệ tạo script cứng nhắc, vỡ ngay khi gặp bất ngờ.' },
         { letter: 'T', name: 'Thực hiện (Execute)', color: '#0EA5E9', text: 'Chạy mỗi bước bằng công cụ phù hợp — công cụ tìm kiếm, trình thông dịch code, trình đọc file, API. Agent không chỉ nghĩ. Chúng hành động.' },
-        { letter: 'M', name: 'Quan sát (Observe)', color: '#16C79A', text: 'Ghi nhận kết quả và kiểm tra. Không có bộ nhớ, agent có thể lặp đi lặp lại cùng hành động thất bại mãi.' },
+        { letter: 'M', name: 'Quan sát (Observe)', color: '#16C79A', text: 'Ghi nhận kết quả và kiểm tra. Không có bộ nhớ, agent có thể lặp đi lặp lại cùng hành động thất bại mãi mãi.' },
         { letter: 'E', name: 'Đánh giá (Evaluate)', color: '#F5A623', text: 'Cái này có hoạt động không? Mình đã gần mục tiêu hơn chưa? Nếu có vấn đề, điều chỉnh kế hoạch và lặp lại. Đây là thứ phân biệt agent với script.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
@@ -118,19 +121,29 @@ const chapter = chapters[5];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Đến lúc xây một cái. Thiết kế agent của riêng bạn từ đầu.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 50ch; font-family: var(--font-body);">
+        Đến lúc xây một cái. Thiết kế agent xe tăng &mdash; chọn năng lực, phân bổ ngân sách, viết chiến lược &mdash; rồi triển khai vào đấu trường và xem nó chiến đấu tự động.
       </p>
     </FadeInBlock>
   </section>
 
-  <!-- ═══ THE WIDGET ═══ -->
+  <!-- ═══ AGENT ARENA ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <AgentBlueprint client:visible />
+    <AgentArena client:load />
   </section>
+
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Vừa thiết kế agent AI đầu tiên từ đầu. Khóa học này hướng dẫn kiến trúc từng bước với demo trực tiếp. Không hype, chỉ xây thôi." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
@@ -143,7 +156,7 @@ const chapter = chapters[5];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Tiếp theo: bạn sẽ dùng agent thực — agent đọc code, viết thay đổi, chạy test, và tự sửa lỗi. Xin giới thiệu Claude Code.
+        Tiếp theo: bạn sẽ dùng agent thật — agent đọc code, viết thay đổi, chạy test, và tự sửa lỗi. Xin giới thiệu Claude Code.
       </p>
     </FadeInBlock>
   </section>
@@ -151,8 +164,8 @@ const chapter = chapters[5];
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Agent Takeover" client:visible>
-        <AgentTakeover client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Agent Swarm" client:visible>
+        <AgentSwarm client:visible />
       </BreakReveal>
     </div>
   </section>

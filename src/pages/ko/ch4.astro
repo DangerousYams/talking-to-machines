@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -37,7 +39,7 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          지금 당장 쓸 수 있는 모든 AI 도구의<br />현장 가이드.
+          지금 당장 쓸 수 있는 모든<br />AI 도구의 현장 가이드.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
           2026년 3월 기준
@@ -72,7 +74,7 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        악기라고 생각해봐. 피아노와 드럼 세트는 둘 다 "악기"지만, 피아니스트한테 비트를 깔아달라고 하진 않잖아. AI 도구도 마찬가지야 — 이미지 생성용 도구와 코딩용 도구는 근본적으로 달라. 네가 만날 모든 도구는 이 여덟 가지 패밀리 중 하나에 들어가.
+        악기라고 생각해봐. 피아노와 드럼은 둘 다 "악기"지만, 피아니스트한테 비트를 깔아달라고 하진 않잖아. AI 도구도 마찬가지야 — 이미지 생성용 도구와 코딩용 도구는 근본적으로 달라. 네가 만날 모든 도구는 이 여덟 가지 패밀리 중 하나에 속해.
       </p>
     </FadeInBlock>
 
@@ -81,7 +83,7 @@ const chapter = chapters[3];
         { icon: '1', name: '이미지 생성', color: '#E94560', text: '텍스트를 넣으면 이미지가 나와. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
         { icon: '2', name: '이미지 편집', color: '#F5A623', text: '실제 이미지에서 시작해서 변형해. Photoshop AI, Magnific, Clipdrop.' },
         { icon: '3', name: '비디오 생성', color: '#7B61FF', text: '텍스트나 정지 이미지에서 비디오 클립을 만들어. Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: '음악 & 오디오', color: '#16C79A', text: 'Prompt로 풀 곡 생성, 목소리 복제, 사운드 이펙트. Suno, Udio, ElevenLabs.' },
+        { icon: '4', name: '음악 & 오디오', color: '#16C79A', text: '프롬프트로 풀 곡 생성, 목소리 복제, 사운드 이펙트. Suno, Udio, ElevenLabs.' },
         { icon: '5', name: '리서치 에이전트', color: '#0EA5E9', text: '인터넷을 대신 읽어주는 AI. Perplexity, Elicit, Consensus, NotebookLM.' },
         { icon: '6', name: 'AI 브라우저', color: '#6B7280', text: '사람처럼 웹을 탐색하는 에이전트. Arc, Operator, Claude Computer Use.' },
         { icon: '7', name: '코딩 도구', color: '#E94560', text: '코드를 쓰고, 편집하고, 디버깅하는 AI. Claude Code, Cursor, Antigravity, Copilot.' },
@@ -109,7 +111,7 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 포인트</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          10가지 AI 도구를 얕게 아는 사람이 하나를 깊게 아는 사람보다 지속적으로 더 나은 결과를 내. 프로 목수는 좋아하는 도구가 하나 있는 게 아냐 — <em>각 작업마다</em> 좋아하는 도구가 있어.
+          10가지 AI 도구를 얕게 아는 사람이 하나를 깊게 아는 사람보다 꾸준히 더 나은 결과를 내. 프로 목수는 좋아하는 도구가 하나 있는 게 아니야 — <em>각 작업마다</em> 좋아하는 도구가 있어.
         </p>
       </div>
     </FadeInBlock>
@@ -131,13 +133,22 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AI 도구가 생각보다 훨씬 많았어. 이 인터랙티브 가이드가 이미지 생성, 비디오, 음악, 리서치, 코딩 등 8가지 도구 패밀리를 예시와 함께 정리해줘." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI 도구가 생각보다 훨씬 많았어. 이 인터랙티브 가이드가 이미지 생성, 비디오, 음악, 리서치, 코딩 등 8가지 패밀리를 예시와 함께 정리해줘." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        지형은 매달 바뀌어. 근데 카테고리는 도구가 바뀌어도 안정적이야 — 그리고 <em>그게</em> 외울 가치 있는 지도야.
+        지형은 매달 바뀌어. 하지만 카테고리는 도구가 바뀌어도 안정적이야 — 그리고 <em>그게</em> 외울 가치 있는 지도야.
       </div>
     </FadeInBlock>
 

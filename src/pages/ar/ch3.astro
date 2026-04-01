@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -37,7 +40,7 @@ const chapter = chapters[2];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          الذكاء الاصطناعي لا ينسى &mdash; هو لم يكن<br />يتذكر من الأساس.
+          الذكاء الاصطناعي لا ينسى &mdash; هو لم<br />يكن يتذكر أصلًا.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        في كل مرة ترسل رسالة للذكاء الاصطناعي، يقرأ <em>محادثتكما كاملة</em> من الصفر &mdash; كل رسالة أرسلتها، كل إجابة أعطاها &mdash; يولّد ردًا، ثم ينسى كل شيء. في المرة التالية، نفس الشيء. النص الكامل يُعاد تغذيته مجددًا. إنه القارئ الأكثر اجتهادًا لكن المصاب بفقدان الذاكرة: شامل تمامًا في كل مرة، يبدأ من الصفر في كل دورة.
+        كل مرة ترسل رسالة للذكاء الاصطناعي، يقرأ <em>المحادثة كاملة</em> من الصفر &mdash; كل رسالة أرسلتها، كل رد أعطاه &mdash; ثم يُنتج ردًا، وينسى كل شيء. في الجولة التالية، نفس الشيء. النص الكامل يُدخل من جديد. إنه أكثر قارئ في العالم اجتهادًا لكنه فاقد للذاكرة: شامل تمامًا في كل مرة، يبدأ من الصفر في كل جولة.
       </p>
     </FadeInBlock>
   </section>
@@ -63,25 +66,25 @@ const chapter = chapters[2];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        للنافذة حدود
+        النافذة لها حدود
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        ذلك النص الذي يعيد الذكاء الاصطناعي قراءته في كل دورة؟ يعيش داخل شيء يسمى <strong>نافذة السياق</strong> &mdash; تُقاس بـ<strong>الرموز</strong> (تقريبًا رمز واحد لكل ثلاثة أرباع كلمة). نافذة سياق Claude تتسع لنحو 200,000 رمز &mdash; كتاب من 500 صفحة. يبدو ضخمًا، لكن كل رسالة ترسلها، كل إجابة تستقبلها، وكل تعليمة نظام مخفية تستهلك من نفس الميزانية. تمتلئ أسرع مما تعتقد.
+        ذلك النص الذي يعيد الذكاء الاصطناعي قراءته كل جولة؟ يعيش داخل شيء يُسمى <strong>نافذة السياق</strong> &mdash; تُقاس بـ<strong>الرموز</strong> (تقريبًا رمز واحد لكل ثلاثة أرباع كلمة). نافذة Claude تتسع لحوالي 200,000 رمز &mdash; كتاب من 500 صفحة. يبدو ضخمًا، لكن كل رسالة ترسلها، كل رد تتلقاه، وكل تعليمات نظام مخفية تأكل من نفس الميزانية. تمتلئ أسرع مما تتوقع.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        عندما تنفد الميزانية، أقدم الرسائل تسقط من الحافة. ذكرت قيودك الغذائية في الرسالة الثالثة؟ بحلول الرسالة الخامسة عشرة قد لا يراها الذكاء الاصطناعي بعد الآن. ليس مهملاً &mdash; إنه حرفيًا لا يستطيع رؤية ما لم يعد أمامه. الذكاء الاصطناعي جيد فقط بقدر المعلومات الموجودة حاليًا في نافذته.
+        عندما تنفد الميزانية، أقدم الرسائل تسقط من الحافة. ذكرت قيودك الغذائية في الرسالة الثالثة؟ بحلول الرسالة الخامسة عشرة قد لا يراها الذكاء الاصطناعي. ليس لأنه مهمل &mdash; هو حرفيًا لا يستطيع رؤية ما لم يعد أمامه. الذكاء الاصطناعي جيد بقدر المعلومات الموجودة حاليًا في نافذته.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        لهذا السبب أفضل مستخدمي الذكاء الاصطناعي لا يكتبون توجيهات جيدة فحسب &mdash; بل يديرون ما يدخل <em>في</em> النافذة. لخّص بشكل دوري حتى تبقى التفاصيل المهمة مرئية. ضع الأهم في المقدمة. ابدأ من جديد عندما يتغير الموضوع. استخدم تنسيقات منظمة ليتمكن الذكاء الاصطناعي من تحليل سياقك بكفاءة. <strong>هندسة السياق هي هندسة التوجيهات الجديدة.</strong>
+        لهذا السبب أفضل مستخدمي الذكاء الاصطناعي لا يكتفون بكتابة أوامر جيدة &mdash; بل يديرون ما يدخل <em>في</em> النافذة. لخّص بشكل دوري حتى تبقى التفاصيل المهمة مرئية. ضع الأهم في المقدمة. ابدأ من جديد عند تغيّر الموضوع. استخدم تنسيقات منظمة ليتمكن الذكاء الاصطناعي من تحليل سياقك بكفاءة. <strong>هندسة السياق هي هندسة الأوامر الجديدة.</strong>
       </p>
     </FadeInBlock>
 
@@ -89,7 +92,7 @@ const chapter = chapters[2];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>فكرة أساسية</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          كتابة توجيه جيد هي الخطوة الأولى. تحديد المعلومات التي تضعها أمام الذكاء الاصطناعي &mdash; وكيفية تنظيمها &mdash; هو المكان الذي توجد فيه الرافعة الحقيقية. أفضل توجيه في العالم يفشل إذا كان السياق خاطئًا.
+          كتابة أمر ممتاز هي الخطوة الأولى. تحديد أي معلومات تضعها أمام الذكاء الاصطناعي &mdash; وكيف تنظمها &mdash; هو المكان الذي يكمن فيه التأثير الحقيقي. أفضل أمر في العالم يفشل إذا كان السياق خاطئًا.
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +102,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        شاهد نافذة السياق تمتلئ، وتفيض، وتنسى &mdash; في الوقت الحقيقي.
+        شاهد نافذة السياق تمتلئ وتفيض وتنسى &mdash; في الوقت الحقيقي.
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +114,103 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        استراتيجيات إدارة السياق
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        الآن بعد أن فهمت النافذة، إليك كيف تديرها كالمحترفين. هذه هي التقنيات التي تفصل من "يستخدم الذكاء الاصطناعي" عمّن يحصل على نتائج استثنائية منه.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">لخّص أثناء التقدم</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">كل 5-10 رسائل، اطلب من الذكاء الاصطناعي كتابة ملخص مختصر للقرارات والتفاصيل الرئيسية. ثم الصق هذا الملخص في رسالتك التالية. هذا "يُعيد ضبط" السياق بأهم المعلومات في المقدمة.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">ضع الأهم في المقدمة</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">ضع المعلومات الأكثر أهمية في بداية رسالتك، لا مدفونة في النهاية. الذكاء الاصطناعي ينتبه أكثر لما يأتي أولًا وأخيرًا &mdash; المنتصف قد يضيع، خاصة في الأوامر الطويلة.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">ابدأ من جديد بذكاء</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">لا تتردد في بدء محادثة جديدة عندما يتغير الموضوع بشكل كبير. انقل ملخصًا لما قررته، لا التاريخ الكامل. سياق نظيف غالبًا أفضل من سياق مزدحم.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">كن صريحًا بشأن ما يجب تذكره</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">"مهم: المستخدم نباتي. لا تنسَ هذا." يبدو سخيفًا، لكنه ينفع. التذكيرات الصريحة تعمل كمراسي يعطيها الذكاء الاصطناعي وزنًا أكبر.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">استخدم تنسيقات منظمة</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">القوائم النقطية والعناوين والتسميات الواضحة تساعد الذكاء الاصطناعي على تحليل سياقك بكفاءة أعلى. أمر منظم جيدًا يساوي ضعف عدد رموزه مقارنة بجدار من النص.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Finally understand why AI 'forgets' things mid-conversation. It's not memory — it's a context window. This course explains it so clearly with live demos." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        أنت ترى السبورة الآن. تشعر بحدود النافذة. هذا يغير كل محادثة تخوضها مع الذكاء الاصطناعي.
+        الآن ترى السبورة. تشعر بحدود النافذة. هذا يغيّر كل محادثة تجريها مع الذكاء الاصطناعي.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        حتى الآن كنا نعمل مع روبوتات المحادثة. تاليًا، نبتعد قليلاً &mdash; مئات أدوات الذكاء الاصطناعي موجودة خارج نافذة المحادثة، ومعرفة المشهد تغيّر ما تعتقد أنه ممكن.
+        تعلمت الأساسيات &mdash; صياغة الأوامر، وطرح الأسئلة، وإدارة السياق. التالي: ورقة الغش الخاصة بك من أوامر القوة لتأخذها معك.
       </p>
     </FadeInBlock>
   </section>

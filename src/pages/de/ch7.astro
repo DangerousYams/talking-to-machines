@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +24,7 @@ const chapter = chapters[6];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel sieben
+          Kapitel Sieben
         </p>
       </FadeInBlock>
 
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Claude Code<br />meistern
+          Jeder kann<br />das bauen
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Dein KI-Pair-Programmer, vom ersten<br />Befehl bis zu eigenen Skills.
+          Du brauchst kein Programmierer zu sein.<br />Du brauchst eine Idee.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Es gibt einen Moment, den jeder Coder kennt. Du öffnest ein Terminal, tippst eine Anfrage in natürlicher Sprache und siehst zu, wie eine KI deine Dateien liest, deine Architektur versteht, Code über mehrere Dateien schreibt, ihn ausführt, einen Fehler findet, den Fehler behebt und ihn erneut ausführt -- alles, ohne dass du eine einzige Zeile anfasst. Claude Code ist keine Autovervollständigung. Es ist ein <em>agentisches</em> Coding-Tool, das dein gesamtes Projekt sieht, Änderungen über Dateien hinweg vornimmt, Shell-Befehle ausführt und an seinen eigenen Fehlern iteriert.
+        Eine Lehrerin in Ohio hat an einem Wochenende eine Bewertungs-App gebaut. Ein Musiker hat einen Setlist-Optimierer gebaut, der Songs nach Energie und Tonart sortiert. Ein Oberstufenschüler hat ein Debattier-Vorbereitungstool gebaut, das Gegenargumente zu jeder Resolution generiert. Keiner von ihnen ist Programmierer. Keiner hat einen Programmierkurs belegt. Sie haben beschrieben, was sie wollten, und ein Coding-Agent hat es gebaut.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        Das Tool ist allerdings nur so gut wie der Mensch, der es steuert. Claude Code kann tausend Zeilen perfekten Code in Sekunden schreiben -- oder tausend Zeilen plausibel aussehenden Müll. Der Unterschied bist du.
+        Das ist der Durchbruch, den niemand kommen sah. Nicht dass Programmierer schneller wurden &mdash; sondern dass <strong>Nicht-Programmierer überhaupt Software bauen können.</strong> Genauso wie Tabellenkalkulationen die Datenanalyse demokratisiert haben und Canva das Grafikdesign, demokratisieren KI-Coding-Agenten die Softwareentwicklung selbst.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Spezifizieren, Generieren, Verifizieren
+        Die Personal-Software-Revolution
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Wenn du Claude Code eine Aufgabe gibst, läuft eine Agenten-Schleife: Codebase lesen, planen was zu ändern ist, die Änderungen schreiben, den Code ausführen, reparieren was kaputtgegangen ist. Es durchläuft diese Schleife vielleicht drei-, fünf-, zehnmal -- alles in Sekunden. Dein Job ist nicht mehr, jede Zeile zu schreiben. Dein Job ist, <strong>zu spezifizieren</strong>, was gebaut werden soll, die KI es <strong>generieren</strong> zu lassen und dann <strong>zu verifizieren</strong>, dass es wirklich stimmt. Die meisten Anfänger überspringen den letzten Schritt. Sie sehen Code erscheinen, er sieht vernünftig aus, und sie machen weiter. Sei nicht diese Person. Generierter Code ist ein erster Entwurf. Deine Überprüfung ist das Edit, das ihn veröffentlichungsreif macht.
+        Hier ist die Idee, die alles verändert: <strong>Personal Software.</strong> Tools, die für ein Publikum von einer Person gebaut werden &mdash; dich. Keine Marktforschung, kein Businessplan, kein Risikokapital. Nur ein Problem, das du hast, und ein Tool, das es löst. Vor KI bedeutete Personal Software, programmieren zu lernen, was Monate oder Jahre dauert. Jetzt dauert es einen Nachmittag. Die Kosten fürs Bauen sind auf fast null gesunken &mdash; das bedeutet, das Einzige, was zählt, ist eine Idee, die es wert ist, gebaut zu werden.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Die Geheimwaffe ist die <code>CLAUDE.md</code>-Datei -- leg sie in dein Projekt-Stammverzeichnis und Claude Code liest sie zu Beginn jeder Sitzung. Dein Tech-Stack, Namenskonventionen, Stilregeln, Testerwartungen -- alles einmal festgehalten, damit du dich nie wiederholen musst. Es ist Context Engineering angewandt auf Coding.
+        Die Tools, die das möglich machen, heißen <strong>Coding-Agenten</strong>. Claude Code, Cursor, Antigravity, Replit &mdash; sie sind KI-Tools, die dein gesamtes Projekt lesen können, Code über mehrere Dateien schreiben, ihn ausführen, auf einen Fehler stoßen, den Fehler beheben und ihn erneut ausführen. Alles, ohne dass du eine einzige Zeile Code anfasst. Sie sind keine Autovervollständigung. Sie sind KI-Kollaboratoren, die deine Beschreibungen in funktionierende Software verwandeln.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Das Ziel ist nicht, jede Zeile zu schreiben -- sondern jede Zeile zu verstehen.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Die Rolle des Regisseurs</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Wenn du den Code, den Claude generiert, nicht lesen kannst, kannst du ihn nicht überprüfen. Die besten Claude Code-Nutzer sind nicht die, die am meisten Code generieren -- sondern die, die die besten Fragen stellen und die subtilsten Bugs fangen.
+          Du schreibst nicht den Code. Du <strong>führst Regie</strong>. Dein Job ist es, festzulegen, was gebaut wird, das Ergebnis zu bewerten und zu iterieren, bis es stimmt. Der Agent übernimmt die technische Umsetzung. Stell dir vor, du bist ein Filmregisseur &mdash; du bedienst nicht die Kamera, aber ohne deine Vision entsteht nichts.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Dein Agent weiß alles, was du nicht weißt
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        &bdquo;Aber ich weiß nicht, was eine Datenbank ist.&ldquo; Gute Nachricht: Musst du auch nicht. Dein Coding-Agent ist auch dein Tutor. Frag ihn alles. &bdquo;Was ist eine React-Komponente?&ldquo; Er erklärt es. &bdquo;Wie bringe ich das ins Internet?&ldquo; Er führt dich Schritt für Schritt durch. &bdquo;Was bedeutet diese Fehlermeldung?&ldquo; Er übersetzt den Fachjargon in verständliche Sprache.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Das ist das Sicherheitsnetz, das alles andere möglich macht. Du musst kein technisches Vokabular auswendig lernen &mdash; du musst wissen, dass es <em>existiert</em>, damit du danach fragen kannst. Der Agent füllt jede Lücke. Es ist, als hättest du einen geduldigen, unermüdlichen Experten neben dir sitzen, der dich nie für eine Anfängerfrage verurteilt.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Das Skill-Paradox</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          Du brauchst genug Wissen, um das Ergebnis zu <em>bewerten</em>, nicht um jede Zeile zu schreiben. Ein Filmregisseur muss nicht wissen, wie man eine Kamera baut &mdash; aber er muss wissen, ob die Aufnahme gut aussieht. Genauso hier: Du musst wissen, ob die App funktioniert, nicht wie der Code funktioniert.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Sieh die Schleife in Aktion. Tipp eine Anfrage und beobachte Claude Code bei der Arbeit.
+        Schau dir an, was Nicht-Programmierer gebaut haben &mdash; und stell dir dann dein eigenes Projekt vor.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Dieses Kapitel über Claude Code ist wild -- einer KI dabei zugesehen, wie sie ein Problem durchdenkt, Code schreibt und sich selbst debuggt. Die Zukunft des Codings ist da." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Dieses Kapitel hat mich überzeugt, dass wirklich jeder mit KI Software bauen kann. Nicht auf eine wolkige Art &mdash; es zeigt genau, wie Nicht-Programmierer echte Tools bauen." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code schreibt keinen Code für dich -- es schreibt Code mit dir.
+        Die Kosten, Software zu bauen, sind auf null gesunken. Das Einzige, was bleibt, ist eine Idee, die es wert ist, gebaut zu werden.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Eine Unterhaltung kann eine Aufgabe bewältigen. Aber echte Projekte haben Dutzende. Als Nächstes: Wie du große Ambitionen in Stücke zerlegst, die KI tatsächlich ausführen kann.
+        Du hast die Idee. Aber bevor du einen Coding-Agenten öffnest, musst du seine Sprache sprechen. Nicht Code &mdash; nur das Vokabular des Bauens. Das kommt als Nächstes.
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="zh">
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        大多数人把 AI 当自动售货机用。投入提示词，收到答案。但最好的结果来自<em>对话</em>，而不是命令。随便打一段提示词和精心设计一段提示词之间的区别，跟 2400 年来驱动伟大思想家的秘诀一样：问对问题。
+        大多数人用 AI 就像用自动售货机。投入提示词，接收答案。但最好的结果来自<em>对话</em>，而不是命令。随手打个提示词和精心构建一个提示词之间的差距，和2400年来驱动伟大思想家的那种差距是一样的：问对问题。
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        苏格拉底翻转
+        苏格拉底式反转
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        苏格拉底从不直接回答问题。他会反问<em>更多</em>问题，直到学生自己得出更深层的理解。你可以对 AI 用同样的方法，只是反过来：不要向 AI 要答案，让 AI 来采访<em>你</em>。当你输入"帮我策划一个生日派对"，你省略了几十个会极大影响答案的细节。AI 不知道——但它可以问。
+        苏格拉底从来不直接回答问题。他会问<em>更多</em>问题，直到学生自己抵达更深的理解。你也可以用同样的技巧对付 AI，只不过反过来：不要向 AI 要答案，而是让 AI 来采访<em>你</em>。当你输入"策划一个生日派对"时，你漏掉了几十个会彻底改变答案的细节。AI 不知道这些——但它可以问。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        就这一个技巧——翻转提问的角色——就能把 AI 从答案机器变成<strong>思考伙伴</strong>。给它探索、澄清和挑战的权限。经过五次来回提问后的输出，跟一次性命令相比会判若两人。
+        这一招——翻转提问者的角色——能把 AI 从一台回答机变成一个<strong>思考伙伴</strong>。给它探索、澄清、挑战的空间。五轮问答之后的输出，和一句话命令得到的结果相比，简直判若两人。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>关键洞察</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>核心洞察</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          最厉害的 AI 用户不一定是某个话题的专家——他们是提问的专家。而你能问的最有力的一个问题是："在你回答之前，你需要知道什么？"
+          最厉害的 AI 用户不是某个领域的专家——他们是提问的专家。而你能问出的最强大的问题是："在你回答之前，你还需要知道什么？"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        自己试试。说出一个目标——然后看 AI 反转局面。
+        自己试试。说出一个目标——然后看 AI 如何反转剧本。
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="这门 AI 课程彻底改变了我对提示词的看法。不是告诉 AI 该做什么，而是让它先采访你。效果天差地别。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="这门 AI 课程彻底改变了我对提示词的理解。不是告诉 AI 做什么，而是让它先来采访你。效果天差地别。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        别告诉 AI 该怎么想。给它空间，让它跟你一起想。
+        别再告诉 AI 该怎么想了。给它空间，让它跟你一起想。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        但你学到的每个技巧都会撞上同一面隐形的墙：<em>上下文窗口</em>。接下来，我们把它打开，学习如何管理 AI 真正看到的东西。
+        但你学到的每一个技巧，都会撞上同一堵看不见的墙：<em>上下文窗口</em>。下一章，我们打开它，学习如何操控 AI 真正"看到"的东西。
       </p>
     </FadeInBlock>
   </section>

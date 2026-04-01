@@ -9,8 +9,10 @@ import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[9];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -31,13 +33,13 @@ const chapter = chapters[9];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          İnsan<br />Avantajı
+          Zevk Ürünün<br />Kendisidir
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Yapay zekanın yerini alamayacağı &mdash;<br />ve 10 kat kolaylaştırdığı şeyler.
+          Yapay zeka seçenekler üretiyor. Doğru olanı<br />sen seçiyorsun. Beceri bu.
         </p>
       </FadeInBlock>
     </div>
@@ -51,41 +53,71 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Her yeni yapay zeka yeteneği çıktığında aynı başlık belirir: <em>"Yapay zeka [şu mesleğin] yerini alacak mı?"</em> Yanlış soru. Yapay zeka insanların yerini almaz. <strong>Görevlerin</strong> yerini alır. Ve herhangi bir işe — herhangi bir kariyere, herhangi bir yaratıcı uğraşa — yakından baktığında bir karışım bulursun: bazı görevleri yapay zeka harika yapar, bazılarına yardımcı olur ve bazıları inatla, güzellikle insana ait kalır.
+        Yapay zeka otuz saniyede bir web sitesi üretebilir. Çoğu aynı görünüyor: yuvarlak köşeler, gradient arka planlar, jenerik hero bölümleri, yer tutucu stok ifadeler. Bu <strong>yapay zeka çöp çıktısı</strong> — kimse zevk kullanmadığında ortaya çıkan varsayılan çıktı. Teknik olarak çalışıyor. Estetik olarak unutulabilir. Ve yapay zekanın verdiğini daha iyisini zorlamadan kabul ettiğinde aldığın şey bu.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Panzehir daha fazla prompt yazmak değil. Standartların olması. İyinin neye benzediğini bilmek. Ve yapay zekaya doğru tahminde bulunmasını ummak yerine ne istediğini göstermek.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Meslekler Yok Olmaz — Şekil Değiştirir
+        Tarifler Yerine Referanslar
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        ATM'ler geldiğinde herkes banka memurlarının yok olacağını tahmin etmişti. Bunun yerine sayıları <em>arttı</em> — çünkü ATM'ler şube açmayı ucuzlattı ve memurun işi nakit saymaktan ilişki kurmaya kaydı. Yapay zeka aynı şeyi yapıyor, ama daha hızlı ve tüm sektörlerde aynı anda. İş unvanı aynı kalıyor. İş <em>tanımı</em> kökten değişiyor.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Modern ve temiz görünsün" demek yapay zekaya neredeyse hiçbir şey söylemiyor. "stripe.com gibi görünsün — minimal, bol boşluk, tek vurgu rengi, büyük kalın başlıklar" her şeyi söylüyor. <strong>Referanslar her zaman tariflerden üstündür.</strong> Bir ekran görüntüsü bin kelimelik prompt'a bedeldir. Sevdiğin şeylerin örneklerini topla — web siteleri, uygulamalar, tasarımlar — ve ajana ver. "Bu düzeni istiyorum ama şu renklerle." "Bu tipografiyi ama bir panoya uygulayarak."
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Veri girişi mi? Yapay zeka halleder. İlk taslaklar mı? Şaşırtıcı derecede iyi. Ama <em>neyi inşa edeceğini seçmek</em>, <em>kriz anında ortamı okumak</em>, <em>verinin ne anlama geldiğine karar vermek</em> — bunlar yapay zekanın temelden yoksun olduğu yargı, empati ve vizyon gerektirir.
+      <p class="text-lg leading-[1.85] mb-14">
+        Zevk doğuştan gelmiyor. Maruziyet artı yargıdır. Harika şeylere bakarak ve <em>neden</em> harika olduklarını anlayarak geliştirirsin. Ne kadar çok referans toplarsan, gözün o kadar keskinleşir. Ve gözün ne kadar keskinse, ajana verdiğin talimatlar o kadar iyi olur.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Üç değerlendirme merceği</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Mesele "insanlar vs. yapay zeka" değil. Mesele <strong>yapay zekalı insanlar vs. yapay zekasız insanlar</strong>. Yapay zeka araçlarıyla çalışmayı öğrenen insanlar işlerini kaybetmez — işlerini daha hızlı, daha iyi ve daha önce sahip olmadıkları yeteneklerle yapar.
+          Ajanın inşa ettiğini üç mercekten değerlendir. <strong>Görsel:</strong> referanslarım gibi mi görünüyor? <strong>Fonksiyonel:</strong> belirttiğim şeyi yapıyor mu? <strong>Kullanıcı:</strong> bunu gerçekten kullanmak ister miyim? Bunlardan herhangi birine cevap hayırsa, tekrarla. Bu mercekleri uygulamak için kodu okumana gerek yok.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        İnsan Avantajı
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Yapay zeka seçenekler üretiyor. Doğru olanı sen seçiyorsun. O yargı — zevk, empati, vizyon — senin avantajın. Yapay zeka bir dakikada on logo varyantı üretebilir. Ama markan için hangisinin <em>doğru hissettirdiğini</em> sadece sen bilirsin. Yapay zeka bir açılış sayfasının on versiyonunu yazabilir. Ama kitlenle hangisinin rezonans yaratacağını sadece sen bilirsin. Kıt olan beceri üretim değil. <strong>Kürasyon</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Yapay zekanın temelden yapamadığı şeyler: <em>ne</em> inşa edileceğini seçmek. <em>Kimin</em> için olduğuna karar vermek. <em>Neden</em> önemli olduğunu belirlemek. Yaratıcı vizyonu koymak. Odayı okumak. Nedenini dile getiremeseniz bile bir şeyin "yanlış" olduğunu bilmek. Bunlar yapay zekadaki hatalar değil — insan olmanın özellikleri. Ve üretimin bedava olduğu bir dünyada, her zamankinden daha değerli.
+      </p>
     </FadeInBlock>
   </section>
 
@@ -93,7 +125,7 @@ const chapter = chapters[9];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Aşağıdan bir kariyer seç ve yapay zekanın onu içeriden nasıl dönüştürdüğünü gör. Tek bir görev bile tamamen yok olmuyor.
+        Bu seçenekleri en iyiden en kötüye sırala. Sonra uzmanların nasıl puanladığını &mdash; ve nedenini gör.
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +137,28 @@ const chapter = chapters[9];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Bu kurs yapay zekayı ne abartıyor ne de işler konusunda korku yaratıyor. Hangi becerilerin insanda kaldığını ve hangilerinin güçlendirildiğini tam olarak haritalandırıyor. Ferahlatıcı derecede dürüst." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="'Yapay zeka seçenekler üretiyor. Doğru olanı sen seçiyorsun.' Zevk, referanslar ve insan avantajı üzerine bu bölüm, yapay zekayla inşa etmenin en önemli dersi." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Yapay zeka seçenekler üretir. Doğru olanı sen seçersin. O yargı — zevk, empati, vizyon, temel ilkeler — senin avantajın.
+        Üretimin bedava olduğu bir dünyada, önemli olan tek şey zevk.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Bir bölüm kaldı. Artık teori yok. Öğrendiğin her şeyi birleştirip gerçek bir şey inşa etme zamanı &mdash; sadece senin aklına gelecek bir şey.
+        Bir bölüm kaldı. Artık teori yok. Öğrendiğin her şeyi birleştirip gerçek bir şey inşa etme zamanı &mdash; sadece senin düşünebileceği bir şey.
       </p>
     </FadeInBlock>
   </section>

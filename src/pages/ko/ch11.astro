@@ -8,6 +8,7 @@ import Divider from '../../components/ui/Divider';
 import ProjectInstructionsBuilder from '../../components/widgets/ch11/ProjectInstructionsBuilder';
 
 const chapter = chapters[10];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -48,7 +49,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        해냈어. 열 개의 챕터를 거치면서 "에세이 도와줘"에서 context engineering, 에이전트 구축, hallucination 디버깅까지 왔어. 대부분의 어른보다 AI에 대해 더 많이 배웠어. 근데 불편한 진실이 있어: <strong>뭔가를 만들기 전까지는 아무 의미 없어.</strong> AI에 대해 읽는 건 수영에 대해 읽는 거랑 같아 — 모든 스트로크 기술을 공부할 수 있지만, 물에 들어가기 전까지는 아무것도 <em>아는</em> 게 아냐. 그냥 <em>그것에 대해</em> 아는 거야.
+        해냈어. 열 개의 챕터를 거치면서 "에세이 도와줘"에서 컨텍스트 엔지니어링, 에이전트 구축, 소프트웨어의 어휘 학습, 빌드 루프 마스터, 안목 기르기까지 왔어. 근데 불편한 진실이 있어: <strong>뭔가를 만들기 전까지는 아무 의미 없어.</strong> AI에 대해 읽는 건 수영에 대해 읽는 거랑 같아 &mdash; 모든 영법 기술을 공부할 수 있지만, 물에 들어가기 전까지는 아무것도 <em>아는</em> 게 아니야. 그냥 <em>그것에 대해</em> 아는 거야.
       </p>
     </FadeInBlock>
   </section>
@@ -66,13 +67,13 @@ const chapter = chapters[10];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        첫 번째 prompt를 쓰기 전에, 대부분의 초보자가 건너뛰는 파워 무브가 있어: <strong>AI 도구에 영구 지시 파일을 줘.</strong> 매 세션마다 프로젝트를 다시 설명하는 대신, 한 번 쓰면 AI가 자동으로 읽어. Claude Code는 <code>CLAUDE.md</code>를 읽어. Cursor는 <code>.cursorrules</code>를 읽어. GitHub Copilot은 <code>.github/copilot-instructions.md</code>를 읽어. 같은 개념, 다른 파일명. 이건 3장의 context engineering을 프로젝트 레벨에 적용한 거야.
+        첫 번째 프롬프트를 쓰기 전에, 대부분의 초보자가 건너뛰는 파워 무브가 있어: <strong>AI 도구에 영구 지시 파일을 줘.</strong> 매 세션마다 프로젝트를 다시 설명하는 대신, 한 번 쓰면 AI가 자동으로 읽어. Claude Code는 <code>CLAUDE.md</code>를 읽어. Cursor는 <code>.cursorrules</code>를 읽어. GitHub Copilot은 <code>.github/copilot-instructions.md</code>를 읽어. 같은 개념, 다른 파일명. 3장의 컨텍스트 엔지니어링을 프로젝트 레벨에 적용한 거야.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        좋은 지시 파일은 세 가지 질문에 답해: 뭘 만들고 있는지, 규칙이 뭔지, "좋은" 게 어떤 건지? 이걸 잘 작성하면 AI와의 모든 대화가 열 발자국 앞서 시작해. 프로젝트 범위를 끝낼 수 있을 만큼 작게 잡아 — 완성한 주말 프로젝트가 포기한 걸작보다 항상 나아.
+        좋은 지시 파일은 세 가지 질문에 답해: 뭘 만들고 있는지, 규칙이 뭔지, "좋은" 게 어떤 건지. 이걸 잘 쓰면 AI와의 모든 대화가 열 발자국 앞서 시작해. 프로젝트 범위를 끝낼 수 있을 만큼 작게 잡아 — 완성한 주말 프로젝트가 포기한 걸작보다 항상 나아.
       </p>
     </FadeInBlock>
 
@@ -90,7 +91,7 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        바로 여기서 프로젝트 지시 파일을 만들어봐. 섹션을 채우고 네 AI 도구에 맞게 내보내.
+        바로 여기서 프로젝트 지시 파일을 만들어봐. 섹션을 채우고 네가 쓰는 AI 도구에 맞게 내보내.
       </p>
     </FadeInBlock>
   </section>
@@ -106,13 +107,13 @@ const chapter = chapters[10];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        도구가 뭔가를 만드는 게 아냐. 도구를 가진 사람이 만드는 거야. 그리고 너한테는 네 세대가 가져본 최고의 도구가 있어.
+        도구가 뭔가를 만드는 게 아니야. 도구를 가진 사람이 만드는 거야. 그리고 너한테는 네 세대가 가져본 최고의 도구가 있어.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto mb-8" style="max-width: 55ch;">
-        열한 챕터 전에, 너는 "에세이 도와줘"라고 치고 최선을 바랐어. 이제 너는 context를 설계하고, 에이전트를 만들고, 결과물을 검증하고, 매 단계에 판단력을 가져와. 코스는 끝났어. 진짜 배움은 이제 시작이야 — 가서 오직 네가 생각해낼 수 있는 것을 만들어.
+        열한 챕터 전에 "에세이 도와줘"라고 치고 최선을 바랐어. 이제 너는 컨텍스트를 설계하고, 에이전트를 만들고, 소프트웨어의 언어를 말하고, 자신 있게 반복하고, 만드는 모든 것에 안목을 불어넣어. 코스는 끝났어. 진짜 배움은 이제 시작이야 &mdash; 가서 오직 네가 떠올릴 수 있는 걸 만들어.
       </p>
     </FadeInBlock>
 

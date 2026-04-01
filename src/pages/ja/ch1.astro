@@ -31,13 +31,13 @@ const chapter = chapters[0];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          もう君は<br />AIと話せている
+          君はもう<br />AI語を話している
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          最初の一発目は魔法にはならない。<br />でも、3回目ならなるかもしれない。
+          最初の一発で魔法は起きない。<br />でも三回目なら、起きるかもしれない。
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        君はずっとAIと話してきた——検索のたびに、Siriへの質問のたびに、Netflixのおすすめが出るたびに。でも、機械<em>に</em>話しかけるのと、機械<em>と</em>話すのは違う。今、何百万人もの人がプロンプトを打ち込んで、微妙なレスポンスを受け取って、こう思っている：「やっぱりAIってそこまで賢くないんだな」。それは間違いだ。AIにできることと、ほとんどの人がAIにやらせていることのギャップは巨大だ。しかもそれはテクノロジーの問題じゃない——コミュニケーションの問題だ。
+        君はずっとAIと話してきた。検索するたび、Siriに聞くたび、Netflixがおすすめを出すたび。でも、機械に向かって話<em>しかける</em>のと、機械<em>と</em>話すのは別物だ。いま何百万人もの人がプロンプトを打ち込み、いまいちな答えをもらって、「やっぱAIって大したことないな」と思っている。それは間違いだ。AIにできることと、ほとんどの人が引き出しているものの差は巨大だ。そしてそれはテクノロジーの問題じゃない。コミュニケーションの問題だ。
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        5つのビルディングブロック
+        5つの構成要素
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        秘密を教えよう。AIからすごい結果を引き出す人は、君より頭がいいわけじゃない。公式を使っているだけだ——毎回使える5つのビルディングブロック。いつも5つ全部必要なわけじゃない。でもこれらの存在を知ることは、マトリックスの見え方が変わるようなものだ。
+        秘密を教えよう。AIからすごい結果を引き出している人たちは、君より頭がいいわけじゃない。彼らは「型」を使っている。毎回必ず効く、5つの構成要素だ。全部を毎回使う必要はない。でもその存在を知れば、マトリックスの世界が見えてくる。
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role', color: '#E94560', text: 'AIに何になってもらう？チューターと教授では説明の仕方が全然違う。役割がすべてを決める。' },
-        { letter: 'T', name: 'Task', color: '#0F3460', text: '正確に何をすべきか？「手伝って」じゃなくて「テーゼを強化して」。1つのプロンプトに1つのタスク。' },
-        { letter: 'F', name: 'Format', color: '#7B61FF', text: 'レスポンスはどんな形？「3つの代替案を番号付きリストで」。フォーマットが冗長を防ぐ。' },
-        { letter: 'C', name: 'Constraints', color: '#16C79A', text: '何をしてはいけないか？「陳腐な表現を避けて。200語以内で」。ガードレールが悪い出力を防ぐ。' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: '説明するより見せる。「良い」ものの例を1つ見せれば、100語の説明に匹敵する。' },
+        { letter: 'R', name: '役割（ロール）', color: '#E94560', text: 'AIに何者になってもらうか？ 家庭教師と大学教授では説明の仕方が変わる。役割がすべてを決める。' },
+        { letter: 'T', name: 'タスク', color: '#0F3460', text: '具体的に何をしてほしいか？「手伝って」じゃなく「論文の主張を強化して」。1プロンプトに1タスク。' },
+        { letter: 'F', name: 'フォーマット', color: '#7B61FF', text: '回答はどんな形がいい？「3つの代案を番号付きリストで」。フォーマットを指定すれば、ダラダラした回答を防げる。' },
+        { letter: 'C', name: '制約', color: '#16C79A', text: '何をしちゃダメか？「決まり文句は避けて。200語以内で」。ガードレールが残念な出力を防ぐ。' },
+        { letter: 'E', name: '例', color: '#F5A623', text: '言葉で説明するより、見せるほうが早い。「こんな感じ」という例をひとつ示すだけで、説明100語分の価値がある。' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -103,7 +103,7 @@ const chapter = chapters[0];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">重要なポイント</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          毎回5つ全部必要なわけじゃない。でもAIがひどい結果を返してきたとき、何が足りないか見てみよう——ほぼ必ずこの5つのどれかだ。
+          毎回5つ全部は要らない。でもAIの出力がイマイチなとき、何が足りないか見てみよう。ほぼ間違いなく、この5つのどれかだ。
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        理論はここまで。ビルディングブロックをトグルして、AIのレスポンスがリアルタイムで変わるのを見てみよう。
+        理論はここまで。構成要素をトグルして、AIの回答がリアルタイムで変わるのを見てみよう。
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="良いAIプロンプトの5つのビルディングブロックを発見した。このインタラクティブなコースは本当にすごい——自分でプロンプトを組み立てて、改善される様子をリアルタイムで見られる。" client:visible />
+  <SharePrompt text="AIプロンプトの5つの型を知った。このコース、やばい。自分でプロンプト組んで、リアルタイムで良くなっていくの見れる。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        もう君はAIの言葉を話せている。あとは意図を持って話すだけだ。
+        君はすでにAIと話せる。あとは、意図を持って話すだけだ。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        次は、シンプルなやり取りを本当の対話に変えるテクニック——AIがただ答えるんじゃなく、<em>一緒に考えてくれる</em>ようになる方法だ。
+        次は、シンプルなやり取りを本当の対話に変えるテクニック。AIがただ答えるだけじゃなく、<em>一緒に考えてくれる</em>ようになる。
       </p>
     </FadeInBlock>
   </section>

@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="bn">
@@ -31,13 +33,13 @@ const chapter = chapters[1];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          জিজ্ঞেস করার<br />শিল্প
+          জিজ্ঞাসার<br />শিল্প
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          সেরা প্রম্পট হলো সেই প্রশ্ন যেটা<br />AI-কে তোমাকে প্রশ্ন করতে বাধ্য করে।
+          সেরা প্রম্পট হলো এমন একটা প্রশ্ন<br />যা AI-কে তোমাকে প্রশ্ন করতে বাধ্য করে।
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        বেশিরভাগ মানুষ AI-কে ভেন্ডিং মেশিনের মতো ব্যবহার করে। প্রম্পট ঢোকাও, উত্তর বেরোয়। কিন্তু সেরা ফলাফল আসে <em>কথোপকথন</em> থেকে, কমান্ড থেকে না। যে পার্থক্য একজন প্রম্পট টাইপ করা মানুষ আর একজন প্রম্পট ক্র্যাফট করা মানুষের মধ্যে — সেটা সেই একই পার্থক্য যা ২,৪০০ বছর ধরে মহান চিন্তাবিদদের শক্তি জুগিয়ে আসছে: সঠিক প্রশ্ন জিজ্ঞেস করা।
+        বেশিরভাগ মানুষ AI-কে ভেন্ডিং মেশিনের মতো ব্যবহার করে। প্রম্পট ঢোকাও, উত্তর বের করো। কিন্তু সেরা ফলাফল আসে <em>কথোপকথন</em> থেকে, আদেশ থেকে না। যে কেউ একটা প্রম্পট টাইপ করে আর যে কেউ সেটা সাজিয়ে-গুছিয়ে তৈরি করে — এই দুয়ের পার্থক্যটা সেই একই পার্থক্য যা ২,৪০০ বছর ধরে মহান চিন্তাবিদদের শক্তি দিয়ে আসছে: সঠিক প্রশ্ন জিজ্ঞাসা করা।
       </p>
     </FadeInBlock>
   </section>
@@ -69,21 +71,21 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        সক্রেটিস কখনো সরাসরি উত্তর দিতেন না। তিনি <em>আরো</em> প্রশ্ন করতেন যতক্ষণ না তাঁর ছাত্ররা নিজেরাই গভীর উপলব্ধিতে পৌঁছাত। তুমি AI-এর সাথে একই কৌশল ব্যবহার করতে পারো, কিন্তু উল্টো করে: উত্তর চাওয়ার বদলে, AI-কে বলো তোমাকে <em>ইন্টারভিউ</em> করতে। তুমি যখন টাইপ করো "একটা জন্মদিনের পার্টি প্ল্যান করো," তুমি এমন ডজনখানেক ডিটেইল বাদ দিচ্ছ যা উত্তরটাকে আমূল বদলে দেয়। AI জানে না — কিন্তু সে জিজ্ঞেস করতে পারে।
+        সক্রেটিস কখনো সরাসরি উত্তর দিতেন না। উনি আরো <em>বেশি</em> প্রশ্ন করতেন যতক্ষণ না ছাত্ররা গভীর বোঝাপড়ায় পৌঁছাতো। তুমিও AI-এর সাথে একই কৌশল ব্যবহার করতে পারো, কিন্তু উল্টোভাবে: উত্তর চাওয়ার বদলে, AI-কে বলো <em>তোমাকে</em> ইন্টারভিউ করতে। যখন তুমি লেখো "একটা জন্মদিনের পার্টি প্ল্যান করো," তুমি এমন অনেক ডিটেইল বাদ দিচ্ছো যেগুলো উত্তরটাকে আমূল বদলে দেয়। AI সেগুলো জানে না — কিন্তু জিজ্ঞেস করতে পারে।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        এই একটা টেকনিক — কে প্রশ্ন করবে সেটা উল্টে দেওয়া — AI-কে উত্তর দেওয়ার মেশিন থেকে একজন <strong>চিন্তার সঙ্গী</strong>-তে রূপান্তরিত করে। তাকে খোঁচা দেওয়ার, স্পষ্ট করার, আর চ্যালেঞ্জ করার অনুমতি দাও। পাঁচটা আদান-প্রদানের পর আউটপুট, একটা সিঙ্গেল-শট কমান্ডের তুলনায় চেনাই যাবে না।
+        এই একটা টেকনিক — কে প্রশ্ন করবে সেটা উল্টে দেওয়া — AI-কে উত্তর দেওয়ার মেশিন থেকে একজন <strong>চিন্তার সঙ্গী</strong>-তে রূপান্তরিত করে। ওকে অনুমতি দাও খুঁটিয়ে জিজ্ঞেস করতে, স্পষ্ট করতে, আর চ্যালেঞ্জ করতে। পাঁচটা প্রশ্নোত্তর পর্বের পরের আউটপুট একবারে দেওয়া একটা কমান্ডের তুলনায় চিনতেই পারবে না।
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল বিষয়</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>মূল শিক্ষা</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          সেরা AI ব্যবহারকারীরা বিষয়ের এক্সপার্ট না — তারা জিজ্ঞেস করার এক্সপার্ট। আর সবচেয়ে শক্তিশালী প্রশ্ন যা তুমি করতে পারো সেটা হলো: "উত্তর দেওয়ার আগে, তোমার কি জানা দরকার?"
+          সেরা AI ব্যবহারকারীরা বিষয়ের বিশেষজ্ঞ না — তারা প্রশ্ন করার বিশেষজ্ঞ। আর সবচেয়ে শক্তিশালী প্রশ্ন হলো: "উত্তর দেওয়ার আগে, তোমার কী কী জানা দরকার?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        নিজে চেষ্টা করো। একটা লক্ষ্য বলো — আর দেখো AI কিভাবে স্ক্রিপ্ট উল্টে দেয়।
+        নিজে চেষ্টা করো। একটা লক্ষ্য বলো — আর দেখো AI কীভাবে স্ক্রিপ্ট উল্টে দেয়।
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +107,28 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="এই AI কোর্সটা আমার প্রম্পটিং নিয়ে চিন্তার ধরনই বদলে দিল। AI-কে কি করতে হবে বলার বদলে, তুমি তাকে বলো আগে তোমাকে ইন্টারভিউ করতে। ফলাফল রাত-দিন।" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="এই AI কোর্সটা প্রম্পটিং সম্পর্কে আমার চিন্তাভাবনাই বদলে দিলো। AI-কে কী করতে হবে বলার বদলে, ওকে আগে তোমাকে ইন্টারভিউ করতে বলো। ফলাফলে আকাশ-পাতাল তফাৎ।" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI-কে কি ভাবতে হবে বলা বন্ধ করো। তাকে তোমার সাথে ভাবার জায়গা দাও।
+        AI-কে কী ভাবতে হবে বলা বন্ধ করো। তোমার সাথে ভাবার জায়গা দাও।
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        কিন্তু তুমি যতগুলো টেকনিক শিখেছ সবগুলো একই অদৃশ্য দেয়ালে গিয়ে ঠেকে: <em>কনটেক্সট উইন্ডো</em>। পরের পর্বে, আমরা সেটা ভেঙে খুলব আর শিখব AI আসলে কি দেখে সেটা কিভাবে ইঞ্জিনিয়ার করতে হয়।
+        কিন্তু তুমি যত টেকনিকই শিখো, সবাই একই অদৃশ্য দেয়ালে ধাক্কা খায়: <em>কনটেক্সট উইন্ডো</em>। এরপর, আমরা সেটা খুলে দেখবো আর শিখবো AI আসলে কী দেখতে পায়।
       </p>
     </FadeInBlock>
   </section>

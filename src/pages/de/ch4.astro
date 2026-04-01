@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +24,7 @@ const chapter = chapters[3];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel vier
+          Kapitel Vier
         </p>
       </FadeInBlock>
 
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Wenn die meisten Leute "KI" sagen, meinen sie ChatGPT. Das ist, als würde man "das Internet" sagen und Google meinen. Gerade jetzt gibt es hunderte KI-Tools, die du heute nutzen kannst -- Tools, die fotorealistische Bilder aus einem Satz generieren, ganze Songs komponieren oder jedes akademische Paper zu deinem Forschungsthema lesen und den Konsens in drei Absätzen zusammenfassen. Dieses Kapitel ist deine Landkarte des Terrains.
+        Wenn die meisten Leute &bdquo;KI&ldquo; sagen, meinen sie ChatGPT. Das ist, als würde man &bdquo;das Internet&ldquo; sagen und Google meinen. Gerade jetzt gibt es Hunderte KI-Tools, die du heute nutzen kannst &mdash; Tools, die fotorealistische Bilder aus einem Satz generieren, ganze Songs komponieren oder jedes akademische Paper zu deinem Forschungsthema lesen und den Konsens in drei Absätzen zusammenfassen. Dieses Kapitel ist deine Landkarte des Terrains.
       </p>
     </FadeInBlock>
   </section>
@@ -72,7 +74,7 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Stell es dir wie Musikinstrumente vor. Ein Klavier und ein Schlagzeug sind beide "Instrumente", aber du würdest keinen Pianisten bitten, einen Beat zu legen. KI-Tools sind genauso -- ein Tool für Bildgenerierung ist grundlegend anders als eins für Code. Jedes Tool, dem du begegnest, gehört zu einer dieser acht Familien.
+        Stell es dir wie Musikinstrumente vor. Ein Klavier und ein Schlagzeug sind beide &bdquo;Instrumente&ldquo;, aber du würdest keinen Pianisten bitten, einen Beat zu legen. KI-Tools sind genauso &mdash; ein Tool für Bildgenerierung ist grundlegend anders als eines für Code. Jedes Tool, dem du begegnest, gehört zu einer dieser acht Familien.
       </p>
     </FadeInBlock>
 
@@ -109,7 +111,7 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Wer 10 KI-Tools oberflächlich kennt, wird dauerhaft besser abschneiden als jemand, der ein einziges Tool in der Tiefe kennt. Ein professioneller Handwerker hat kein Lieblingswerkzeug -- er hat ein Lieblingswerkzeug <em>für jede Aufgabe</em>.
+          Wer 10 KI-Tools oberflächlich kennt, wird dauerhaft besser abschneiden als jemand, der ein einziges Tool in der Tiefe kennt. Ein professioneller Handwerker hat kein Lieblingswerkzeug &mdash; er hat ein Lieblingswerkzeug <em>für jede Aufgabe</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Es gibt viel mehr KI-Tools als mir bewusst war. Dieser interaktive Guide zeigt 8 Familien von Tools -- Bildgenerierung, Video, Musik, Recherche, Coding -- mit Beispielen für jede." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Es gibt viel mehr KI-Tools als mir bewusst war. Dieser interaktive Guide zeigt 8 Familien von Tools &mdash; Bildgenerierung, Video, Musik, Recherche, Coding &mdash; mit Beispielen für jede." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Die Landschaft verändert sich jeden Monat. Aber die Kategorien sind stabil, auch wenn die Tools es nicht sind -- und <em>das</em> ist die Karte, die es sich zu merken lohnt.
+        Die Landschaft verändert sich jeden Monat. Aber die Kategorien sind stabil, auch wenn die Tools es nicht sind &mdash; und <em>das</em> ist die Karte, die es sich zu merken lohnt.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Bisher reagieren diese Tools nur auf dich. Was wäre, wenn sie <em>selbstständig handeln</em> könnten? Das ist der Sprung vom Tool zum Agenten -- und er verändert alles.
+        Bisher reagieren diese Tools nur auf dich. Was wäre, wenn sie <em>selbstständig handeln</em> könnten? Das ist der Sprung vom Tool zum Agenten &mdash; und er verändert alles.
       </p>
     </FadeInBlock>
   </section>

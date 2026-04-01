@@ -31,13 +31,13 @@ const chapter = chapters[0];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          너는 이미<br />AI를 말하고 있어
+          너는 이미<br />AI와 대화하고 있어
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          첫 번째 초안은 마법이 아냐.<br />하지만 세 번째는 될 수도 있어.
+          첫 번째 초안은 마법이 아니야.<br />하지만 세 번째는 마법일 수도 있어.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +51,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        너는 평생 AI한테 말해왔어 — 검색창에 뭔가를 칠 때마다, Siri한테 질문할 때마다, Netflix 추천을 받을 때마다. 근데 기계<em>한테</em> 말하는 거랑 기계<em>와</em> 대화하는 건 다른 거야. 지금 수백만 명이 prompt를 입력하고, 별로인 답을 받고, 이렇게 생각해: "AI가 그렇게 똑똑하지 않나 봐." 틀렸어. AI가 할 수 있는 것과 대부분의 사람들이 실제로 시키는 것 사이의 간극은 어마어마해. 그리고 이건 기술 문제가 아니야 — 소통 문제야.
+        사실 너는 평생 AI랑 대화해왔어 — 검색할 때마다, Siri한테 물어볼 때마다, Netflix가 뭘 추천해줄 때마다. 근데 기계한테 말을 <em>걸기만</em> 하는 거랑 기계<em>와</em> 소통하는 건 완전히 다른 이야기야. 지금 이 순간에도 수백만 명이 프롬프트를 입력하고, 별로인 답변을 받고는 "AI가 별거 아니네" 하고 생각해. 틀렸어. AI가 할 수 있는 것과 대부분의 사람들이 AI한테 받아내는 것 사이에는 엄청난 격차가 있거든. 이건 기술 문제가 아니야 — 소통의 문제야.
       </p>
     </FadeInBlock>
   </section>
@@ -63,23 +63,23 @@ const chapter = chapters[0];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        다섯 가지 Building Blocks
+        다섯 가지 구성 요소
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        비밀을 알려줄게: AI에서 끝내주는 결과를 뽑아내는 사람들이 너보다 더 똑똑한 게 아냐. 그 사람들은 공식을 써 — 매번 통하는 다섯 가지 building blocks. 항상 다섯 개 다 필요한 건 아냐. 근데 이게 존재한다는 걸 아는 건 매트릭스를 볼 줄 아는 거랑 같아.
+        비밀 하나 알려줄게: AI로 놀라운 결과를 뽑아내는 사람들이 너보다 똑똑한 게 아니야. 그 사람들은 공식을 쓰거든 — 매번 통하는 다섯 가지 구성 요소. 항상 다섯 개 다 필요한 건 아니야. 하지만 이게 존재한다는 걸 아는 것만으로도 매트릭스의 코드가 보이기 시작해.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { letter: 'R', name: 'Role', color: '#E94560', text: 'AI가 누구여야 해? 튜터는 교수와 다르게 설명해. Role이 모든 걸 결정해.' },
-        { letter: 'T', name: 'Task', color: '#0F3460', text: '정확히 뭘 하라는 건데? "도와줘"가 아니라 "내 논지를 강화해줘." prompt 하나에 task 하나.' },
-        { letter: 'F', name: 'Format', color: '#7B61FF', text: '답이 어떻게 생겼으면 돼? "대안 3개를 번호 목록으로 줘." Format이 횡설수설을 막아줘.' },
-        { letter: 'C', name: 'Constraints', color: '#16C79A', text: '뭘 하면 안 돼? "진부한 표현 쓰지 마. 200단어 이내로 해." 가드레일이 나쁜 결과물을 막아줘.' },
-        { letter: 'E', name: 'Examples', color: '#F5A623', text: '말로 하지 말고 보여줘. "좋은" 게 어떤 건지 예시 하나가 설명 백 마디의 가치가 있어.' },
+        { letter: 'R', name: '역할 (Role)', color: '#E94560', text: 'AI가 누구여야 해? 튜터와 교수는 설명하는 방식이 달라. 역할이 모든 걸 바꿔.' },
+        { letter: 'T', name: '과제 (Task)', color: '#0F3460', text: '정확히 뭘 해야 해? "도와줘"가 아니라 "내 논지를 더 강하게 만들어줘." 프롬프트당 과제 하나.' },
+        { letter: 'F', name: '형식 (Format)', color: '#7B61FF', text: '답변이 어떤 모양이어야 해? "3가지 대안을 번호 리스트로 줘." 형식을 정하면 횡설수설을 막아줘.' },
+        { letter: 'C', name: '제약 (Constraints)', color: '#16C79A', text: '뭘 하면 안 돼? "진부한 표현 피해. 200자 이내로." 가드레일이 나쁜 결과물을 막아줘.' },
+        { letter: 'E', name: '예시 (Examples)', color: '#F5A623', text: '말로 설명하지 말고 보여줘. "좋은 것"의 예시 하나가 설명 백 마디보다 낫거든.' },
       ].map((block, i) => (
         <FadeInBlock client:visible delay={i * 0.08}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -103,7 +103,7 @@ const chapter = chapters[0];
       <div class="insight-box">
         <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">핵심 포인트</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          매번 다섯 개 다 필요한 건 아냐. 근데 AI가 쓰레기 같은 답을 줄 때, 뭐가 빠졌는지 봐 — 거의 항상 이 다섯 개 중 하나야.
+          매번 다섯 개 다 쓸 필요는 없어. 하지만 AI가 쓰레기 같은 답을 내놓으면 뭐가 빠졌는지 확인해봐 — 거의 항상 이 다섯 중 하나야.
         </p>
       </div>
     </FadeInBlock>
@@ -113,7 +113,7 @@ const chapter = chapters[0];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        이론은 충분해. Building blocks를 켜보고 AI 응답이 실시간으로 바뀌는 걸 지켜봐.
+        이론은 충분해. 구성 요소를 토글하면서 AI 응답이 실시간으로 바뀌는 걸 직접 봐봐.
       </p>
     </FadeInBlock>
   </section>
@@ -125,19 +125,19 @@ const chapter = chapters[0];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="좋은 AI prompt의 5가지 building blocks를 방금 발견했어. 이 인터랙티브 코스 진짜 잘 만들었다 — 직접 prompt를 만들면서 실시간으로 개선되는 걸 볼 수 있어." client:visible />
+  <SharePrompt text="AI 프롬프트의 5가지 구성 요소를 방금 알게 됐어. 이 인터랙티브 코스 진짜 잘 만들었다 — 직접 프롬프트를 만들면서 개선되는 걸 실시간으로 볼 수 있어." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        너는 이미 AI를 말하고 있어. 이제 의도를 갖고 말하기만 하면 돼.
+        너는 이미 AI와 대화할 줄 알아. 이제 의도를 담아서 말하면 돼.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        다음: 단순한 주고받기를 진짜 대화로 바꾸는 기술 — AI가 그냥 대답하는 게 아니라, 너와 <em>함께 생각하는</em> 대화.
+        다음 장: 단순한 주고받기를 진짜 대화로 바꾸는 기술 — AI가 그냥 답하는 게 아니라 <em>너와 함께 생각하는</em> 법.
       </p>
     </FadeInBlock>
   </section>

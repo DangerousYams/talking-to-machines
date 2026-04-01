@@ -6,11 +6,14 @@ import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
 import ContextWindowViz from '../../components/widgets/ch3/ContextWindowViz';
+import ForgettingExperiment from '../../components/widgets/ch3/ForgettingExperiment';
 import VibeCheck from '../../components/breaks/VibeCheck';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[2];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +25,7 @@ const chapter = chapters[2];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel drei
+          Kapitel Drei
         </p>
       </FadeInBlock>
 
@@ -51,7 +54,7 @@ const chapter = chapters[2];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Jedes Mal, wenn du einer KI eine Nachricht schickst, liest sie deine <em>gesamte Unterhaltung</em> von Grund auf neu &mdash; jede Nachricht, die du geschickt hast, jede Antwort, die sie gegeben hat &mdash; generiert eine Antwort und vergisst dann alles. Nächste Runde, dasselbe Spiel. Das komplette Transkript wird erneut eingespeist. Sie ist die fleißigste, aber vergesslichste Leserin der Welt: jedes Mal vollständig gründlich, jede Runde bei null startend.
+        Jedes Mal, wenn du einer KI eine Nachricht schickst, liest sie deine <em>gesamte Unterhaltung</em> von Grund auf neu &mdash; jede Nachricht, die du geschickt hast, jede Antwort, die sie gegeben hat &mdash; generiert eine Antwort und vergisst dann alles. Nächste Runde, dasselbe Spiel. Das komplette Transkript wird erneut eingespeist. Sie ist die fleißigste, aber vergesslichste Leserin der Welt: jedes Mal vollständig gründlich, jede Runde bei null.
       </p>
     </FadeInBlock>
   </section>
@@ -75,13 +78,13 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-10">
-        Wenn das Budget aufgebraucht ist, fallen die ältesten Nachrichten über den Rand. Du hast deine Lebensmittelunverträglichkeiten in Nachricht drei erwähnt? Ab Nachricht fünfzehn sieht die KI sie vielleicht nicht mehr. Sie ist nicht nachlässig &mdash; sie kann buchstäblich nicht sehen, was nicht mehr vor ihr liegt. Die KI ist nur so gut wie die Informationen, die sich gerade in ihrem Fenster befinden.
+        Wenn das Budget aufgebraucht ist, fallen die ältesten Nachrichten über den Rand. Du hast deine Ernährungspräferenzen in Nachricht drei erwähnt? Ab Nachricht fünfzehn sieht die KI sie vielleicht nicht mehr. Sie ist nicht nachlässig &mdash; sie kann buchstäblich nicht sehen, was nicht mehr vor ihr liegt. Die KI ist nur so gut wie die Informationen, die sich gerade in ihrem Fenster befinden.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Deshalb schreiben die besten KI-Nutzer nicht nur gute Prompts &mdash; sie managen, was <em>ins</em> Fenster kommt. Regelmäßig zusammenfassen, damit wichtige Details sichtbar bleiben. Das Wichtigste nach vorne packen. Neu starten, wenn das Thema wechselt. Strukturierte Formate verwenden, damit die KI deinen Kontext effizient verarbeiten kann. <strong>Context Engineering ist das neue Prompt Engineering.</strong>
+        Deshalb schreiben die besten KI-Nutzer nicht nur gute Prompts &mdash; sie managen, was <em>ins</em> Fenster kommt. Regelmäßig zusammenfassen, damit wichtige Details sichtbar bleiben. Das Wichtigste nach vorne. Neu starten, wenn das Thema wechselt. Strukturierte Formate verwenden, damit die KI den Kontext effizient verarbeiten kann. <strong>Context Engineering ist das neue Prompt Engineering.</strong>
       </p>
     </FadeInBlock>
 
@@ -111,7 +114,91 @@ const chapter = chapters[2];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Endlich verstanden, warum KI mitten im Gespräch Dinge 'vergisst'. Es ist kein Gedächtnis -- es ist ein Kontextfenster. Dieser Kurs erklärt es super klar mit Live-Demos." client:visible />
+  <!-- ═══ CONTEXT ENGINEERING STRATEGIES ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Strategien für das Kontext-Management
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14">
+        Jetzt, wo du das Fenster verstehst, hier die Profitipps. Das sind die Techniken, die Leute, die &bdquo;KI nutzen&ldquo;, von denen trennen, die damit außergewöhnliche Ergebnisse erzielen.
+      </p>
+    </FadeInBlock>
+
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+      <FadeInBlock client:visible delay={0.16}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #7B61FF;">1</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #7B61FF; margin: 0 0 0.35rem; line-height: 1.3;">Fasse laufend zusammen</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Bitte die KI alle 5-10 Nachrichten, eine kurze Zusammenfassung der wichtigsten Entscheidungen und Details zu schreiben. Dann füge diese Zusammenfassung in deine nächste Nachricht ein. Das &bdquo;setzt&ldquo; den Kontext mit den wichtigsten Infos ganz oben zurück.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.24}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #16C79A;">2</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #16C79A; margin: 0 0 0.35rem; line-height: 1.3;">Das Wichtigste nach vorne</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Setze die wichtigsten Informationen an den Anfang deiner Nachricht, nicht ans Ende. KI achtet stärker auf Anfang und Ende &mdash; die Mitte kann untergehen, besonders bei langen Prompts.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.32}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #0EA5E9;">3</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #0EA5E9; margin: 0 0 0.35rem; line-height: 1.3;">Strategisch neu starten</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Hab keine Angst, ein neues Gespräch zu beginnen, wenn sich das Thema deutlich ändert. Nimm eine Zusammenfassung deiner Entscheidungen mit, nicht den ganzen Verlauf. Ein sauberer Kontext ist oft besser als ein überladener.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.40}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #F5A623;">4</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #F5A623; margin: 0 0 0.35rem; line-height: 1.3;">Sage explizit, was wichtig ist</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">&bdquo;Wichtig: Der Nutzer ist Vegetarier. Das nicht vergessen.&ldquo; Klingt albern, aber es funktioniert. Explizite Erinnerungen wirken als Anker, die die KI stärker gewichtet.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.48}>
+        <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+          <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: white; background: #E94560;">5</div>
+          <div style="flex: 1;">
+            <p style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: #E94560; margin: 0 0 0.35rem; line-height: 1.3;">Nutze strukturierte Formate</p>
+            <p style="font-size: 1rem; line-height: 1.75; color: var(--color-deep); opacity: 0.75; margin: 0;">Aufzählungen, Überschriften und klare Beschriftungen helfen der KI, deinen Kontext effizienter zu verarbeiten. Ein gut organisierter Prompt ist doppelt so viel wert wie eine Textwand gleicher Tokenlänge.</p>
+          </div>
+        </div>
+      </FadeInBlock>
+    </div>
+  </section>
+
+  <!-- ═══ THE FORGETTING EXPERIMENT ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <ForgettingExperiment client:visible />
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Endlich verstanden, warum KI mitten im Gespräch Dinge 'vergisst'. Es ist kein Gedächtnis &mdash; es ist ein Kontextfenster. Dieser Kurs erklärt es super klar mit Live-Demos." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -123,7 +210,7 @@ const chapter = chapters[2];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Bisher haben wir mit Chatbots gearbeitet. Als Nächstes zoomen wir raus &mdash; hunderte KI-Tools existieren jenseits des Chatfensters, und die Landschaft zu kennen verändert, was du für möglich hältst.
+        Du hast die Grundlagen gelernt &mdash; Prompting, Fragen stellen und Kontext. Als Nächstes: dein Spickzettel mit Power-Prompts zum Mitnehmen.
       </p>
     </FadeInBlock>
   </section>

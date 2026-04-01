@@ -9,8 +9,10 @@ import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[6];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ar">
@@ -31,13 +33,13 @@ const chapter = chapters[6];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          إتقان<br />Claude Code
+          أي شخص يستطيع<br />بناء هذا
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          شريكك البرمجي بالذكاء الاصطناعي، من أول<br />أمر إلى المهارات المخصصة.
+          لا تحتاج أن تكون مبرمجًا.<br />تحتاج فكرة.
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,78 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        هناك لحظة يتذكرها كل مبرمج. تفتح الطرفية، تكتب طلبًا بلغة طبيعية، وتشاهد الذكاء الاصطناعي يقرأ ملفاتك، ويفهم بنية مشروعك، ويكتب كودًا عبر ملفات متعددة، ويشغله، ويصطدم بخطأ، ويصلح الخطأ، ويشغله مرة أخرى — كل ذلك بدون أن تلمس سطرًا واحدًا. Claude Code ليس إكمالاً تلقائيًا. إنه أداة برمجة <em>وكيلية</em> ترى مشروعك بالكامل، وتجري تعديلات عبر الملفات، وتنفذ أوامر الشِل، وتكرر على أخطائها.
+        معلمة في أوهايو بنت تطبيق تصحيح في عطلة نهاية الأسبوع. موسيقي بنى أداة لتنظيم قائمة الأغاني حسب الطاقة والمقام. طالب ثانوي بنى أداة تحضير للمناظرات تولّد حججًا مضادة لأي قرار. لا أحد منهم مبرمج. لا أحد منهم أخذ دورة برمجة. وصفوا ما يريدون، ووكيل البرمجة بناه.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        لكن الأداة لا تكون أفضل من الإنسان الذي يوجهها. Claude Code يستطيع كتابة ألف سطر من الكود المثالي في ثوانٍ — أو ألف سطر من الهراء الذي يبدو مقنعًا. الفرق هو أنت.
+        هذا هو الاختراق الذي لم يتوقعه أحد. ليس أن المبرمجين أصبحوا أسرع &mdash; بل أن <strong>غير المبرمجين يستطيعون بناء برمجيات أصلًا.</strong> بنفس الطريقة التي جعلت فيها جداول البيانات تحليل البيانات متاحًا للجميع، وCanva أتاحت التصميم، وكلاء البرمجة بالذكاء الاصطناعي يجعلون تطوير البرمجيات متاحًا للجميع.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        حدد، ولّد، تحقق
+        ثورة البرمجيات الشخصية
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        عندما تعطي Claude Code مهمة، يشغّل حلقة الوكيل: اقرأ قاعدة الكود، خطط التعديلات، اكتب التغييرات، شغّل الكود، أصلح ما انكسر. قد يمر بهذه الحلقة ثلاث، خمس، عشر مرات — كلها في ثوانٍ. وظيفتك لم تعد كتابة كل سطر. بل أن <strong>تحدد</strong> ما تبنيه، وتدع الذكاء الاصطناعي <strong>يولّده</strong>، ثم <strong>تتحقق</strong> من صحته فعلاً. معظم المبتدئين يتخطون الخطوة الأخيرة. يرون كودًا يظهر، يبدو معقولاً، ويمضون قدمًا. لا تكن ذلك الشخص. الكود المولّد هو مسودة أولى. تحققك هو التحرير الذي يجعلها قابلة للنشر.
+        إليك الفكرة التي تغيّر كل شيء: <strong>البرمجيات الشخصية.</strong> أدوات مبنية لجمهور من شخص واحد &mdash; أنت. لا بحوث سوق، لا خطة عمل، لا تمويل استثماري. مجرد مشكلة عندك وأداة تحلها. قبل الذكاء الاصطناعي، بناء برمجيات شخصية كان يعني تعلم البرمجة، وهذا يستغرق أشهرًا أو سنوات. الآن يستغرق ظهيرة واحدة. تكلفة البناء انخفضت لتقترب من الصفر &mdash; وهذا يعني أن الشيء الوحيد المهم هو أن يكون عندك فكرة تستحق البناء.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        السلاح السري هو ملف <code>CLAUDE.md</code> — ضعه في جذر مشروعك و Claude Code يقرأه في بداية كل جلسة. تقنياتك، واتفاقيات التسمية، وقواعد الأسلوب، ومتطلبات الاختبار — كلها مُشفّرة مرة واحدة حتى لا تكررها أبدًا. إنها هندسة السياق مطبقة على البرمجة.
+        الأدوات التي تجعل هذا ممكنًا تُسمى <strong>وكلاء البرمجة</strong>. Claude Code، Cursor، Antigravity، Replit &mdash; هي أدوات ذكاء اصطناعي تستطيع قراءة مشروعك بالكامل، وكتابة كود عبر ملفات متعددة، وتشغيله، والاصطدام بخطأ، وإصلاح الخطأ، وتشغيله مجددًا. كل ذلك بدون أن تلمس سطرًا واحدًا من الكود. ليست إكمالًا تلقائيًا. إنها متعاونون بالذكاء الاصطناعي يحوّلون وصفك إلى برنامج يعمل.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>الهدف ليس أن تكتب كل سطر — بل أن تفهم كل سطر.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>دور المخرج</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          إذا لم تستطع قراءة الكود الذي يولده Claude، لا تستطيع التحقق منه. أفضل مستخدمي Claude Code ليسوا من يولّدون أكبر كمية من الكود — إنهم من يطرحون أفضل الأسئلة ويلتقطون أدق الأخطاء.
+          أنت لا تكتب الكود. أنت <strong>تُخرج</strong>. وظيفتك أن تحدد ما تبنيه، وتقيّم النتيجة، وتكرر حتى تصبح صحيحة. الوكيل يتولى التنفيذ التقني. فكر في نفسك كمخرج سينمائي &mdash; أنت لا تشغّل الكاميرا، لكن لا شيء يُصنع بدون رؤيتك.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        وكيلك يعرف كل ما لا تعرفه
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "لكنني لا أعرف ما هي قاعدة البيانات." أخبار جيدة: لا تحتاج أن تعرف. وكيل البرمجة هو أيضًا معلمك. اسأله أي شيء. "ما هو مكون React؟" سيشرح. "كيف أنشر هذا على الإنترنت؟" سيأخذك خطوة بخطوة. "ماذا يعني هذا الخطأ؟" سيترجم المصطلحات إلى لغة بسيطة.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        هذه هي شبكة الأمان التي تجعل كل شيء آخر ممكنًا. لا تحتاج أن تحفظ المصطلحات التقنية &mdash; تحتاج أن تعرف أنها <em>موجودة</em> لتتمكن من السؤال عنها. الوكيل يملأ كل فجوة. مثل أن يكون عندك خبير صبور لا يتعب يجلس بجانبك ولا يحكم عليك أبدًا لطرح سؤال بسيط.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>مفارقة المهارة</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          تحتاج معرفة كافية لـ<em>تقييم</em> النتيجة، لا لكتابة كل سطر. مخرج الفيلم لا يحتاج أن يعرف كيف يبني كاميرا &mdash; لكنه يحتاج أن يعرف إذا كانت اللقطة جيدة. نفس الشيء هنا: تحتاج أن تعرف إذا كان التطبيق يعمل، لا كيف يعمل الكود.
         </p>
       </div>
     </FadeInBlock>
@@ -99,31 +134,40 @@ const chapter = chapters[6];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        شاهد الحلقة وهي تعمل. اكتب طلبًا وراقب Claude Code يعمل.
+        تصفح ما بناه غير المبرمجين &mdash; ثم تخيّل مشروعك الخاص.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
     <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="This chapter on Claude Code is wild — watched an AI pair programmer think through a problem, write code, and debug itself. The future of coding is here." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="This chapter just convinced me that anyone can build software with AI. Not in a hand-wavy way — it shows exactly how non-coders are building real tools." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code لا يكتب كودًا من أجلك — بل يكتبه معك.
+        تكلفة بناء البرمجيات انخفضت للصفر. الشيء الوحيد المتبقي هو امتلاك فكرة تستحق البناء.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        محادثة واحدة تتعامل مع مهمة واحدة. لكن المشاريع الحقيقية فيها عشرات. تاليًا: كيف تقسم الطموحات الكبيرة إلى قطع يستطيع الذكاء الاصطناعي تنفيذها فعلاً.
+        عندك الفكرة. لكن قبل أن تفتح وكيل برمجة، تحتاج أن تتحدث لغته. ليس الكود &mdash; فقط مفردات البناء. هذا التالي.
       </p>
     </FadeInBlock>
   </section>

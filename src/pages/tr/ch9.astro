@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="tr">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Yapay Zeka<br />Yanıldığında
+          İnşa<br />Döngüsü
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Amatörleri profesyonellerden ayıran<br />doğrulama alışkanlıkları.
+          Kusursuzluk bekleme. İyileştirmenin tadını çıkar.<br />Sihir üçüncü versiyonda başlar.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Az önce kusursuz bir makale yazmana yardımcı olan yapay zeka, aynı güvenle Napolyon'un Waterloo Savaşı'nı kazandığını da söyleyebilir. Tereddüt etmez. Kekelenmez. Tamamen uydurulmuş bir "gerçeği" her şey için kullandığı aynı otoriter tonla belirtir. Bu, yapay zekayla çalışmanın paradoksudur: <strong>onu kullanışlı yapan aynı akıcılık, onu tehlikeli de yapar.</strong>
+        Yapay zekayla inşa ederken en yaygın hata kötü prompt değil. Kötü beklenti. Uzun bir tanım yazıyorsun, enter'a basıyorsun ve bitmiş bir ürün bekliyorsun. İşe yaramıyor. Hiçbir zaman işe yaramıyor. Yapay zekayla muhteşem şeyler inşa eden insanlar bir sır biliyor: <strong>ilk versiyon her zaman yanlıştır.</strong> Üçüncü versiyon iyidir. Beşincisi harika. Ve birden beşe ulaşma süreci? Asıl beceri o.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Her sanatçı tekrar eder. Her mimar revize eder. Her filmci birden fazla çekim yapar. Yapay zekayla inşa etmek bundan farklı değil. Döngünün tadını çıkaran — onu küçümsemeyen — insanlar en iyi şeyleri inşa eder.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        İnandırıcılık Gerçek Değildir
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Belirt, Üret, Doğrula
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        Yapay zeka modelleri gerçekleri bir veritabanından çekmez. Bir sonraki en olası kelimeyi tahmin ederler. Gerçek bir şey hakkında sorduğunda, eğitim verileri onları doğru bilgiye yönlendirir. Var olmayan bir şey hakkında sorduğunda ise model "bilmiyorum" demez. Doğru bir cevabın nasıl <em>görüneceğini</em> üretir — isimler, tarihler ve kaynaklarla birlikte. Hepsi uydurma.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Bir kodlama ajanıyla her verimli oturum aynı ritmi takip eder. Ne istediğini <strong>belirt</strong> — somut ol, örnekler ver, "bitmiş"in neye benzediğini tarif et. Ajanın <strong>üretmesine</strong> izin ver. Sonra <strong>doğrula</strong>: çalışıyor mu? Doğru görünüyor mu? İstediğini yapıyor mu? Değilse, daha kesin bir şekilde tekrar belirt. Döngü bu. Başarısızlık belirtisi değil. Sürecin ta kendisi.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Yapay zekanın ne kadar güvenli konuştuğu ile ne kadar doğru olduğu arasında hiçbir korelasyon yoktur. Yanlış bir cevap ile doğru bir cevap dışarıdan bakıldığında aynı görünür. Doğruluğu tona, detaya ya da yapay zekanın kaç tane belirli sayı eklediğine bakarak değerlendiremezsin. "Doğru görünüyor" testi işe yaramaz. Tek savunman doğrulamadır.
+        Güçlü hamle, inşa etmeye başlamadan önce <strong>kabul kriterlerini</strong> yazmak. "Buton tıklandığında yeşile dönmeli." "Liste sayfayı yenileyince kaybolmamalı." "Kayıt formu @ işareti olmayan e-postaları reddetmeli." Bu sade dildeki "bitmiş" tanımları değerlendirme çerçeven oluyor. Bir şey yanlışsa, kriterlerini ajana geri yapıştırıp "bu uymuyor" diyorsun. Ajan <em>senin</em> standartlarına göre test edebilir.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Tıkandığında Ne Yapacaksın
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        Ajan bozuk bir şey üretti. Şimdi ne olacak? Beş strateji, önce denenmesi gereken sıraya göre:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Teşhisini değil, belirtiyi tarif et</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Tıkladığımda buton tepki vermiyor" ifadesi, "onClick handler'ın bozuk olduğunu düşünüyorum"dan daha iyidir.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Hata mesajını olduğu gibi paylaş</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Tam hatayı kopyala-yapıştır. Ajana verebileceğin en faydalı tek şey bu.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Ajandan ne yaptığını açıklamasını iste</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Az önce ne değiştirdiğini ve neden yaptığını bana adım adım anlat." Anlamak genellikle sorunu ortaya çıkarır.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. Farklı bir yaklaşım iste</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Bu yaklaşım işe yaramıyor. Bunu tamamen farklı bir şekilde çözmeyi deneyebilir misin?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. Öğrenilen derslerle sıfırdan başla</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Bazen yeni bir konuşma, dolanmış birini hata ayıklamaktan daha hızlıdır. Temel kararları yanında getir.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Önemli nokta</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Korkuluk olarak testler</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Yapay zekanın bir gerçeklik kavramı yok. Bir <em>inandırıcılık</em> kavramı var. Kalıba uyan metin üretir — o metin gerçekliğe karşılık gelse de gelmese de.
+          Ajandan sade bir dille otomatik testler yazmasını isteyebilirsin. "Kayıt formunun @ işareti olmayan e-postaları reddettiğini doğrulayan bir test yaz." Ajan hem testi <em>hem de</em> onu geçen kodu yazar. Bu, hiç test yazmamış birinin yönettiği test odaklı geliştirme. Bir bug bir kez test tarafından yakalandığında, bir daha geri gelemez.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Dedektörünü test et. Hangi yapay zeka iddialarının gerçek, hangilerinin uydurma olduğunu ayırt edebilecek misin?
+        Becerini pratik et. Bu bug'ları bir kodlama ajanına nasıl tarif ederdin?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Her yapay zeka kullanıcısının bu bölüme ihtiyacı var. Yapay zekanın tam olarak nasıl halüsinasyon gördüğünü, yanlış cevaplara neden katıldığını ve nasıl yakalanacağını öğretiyor. Süper pratik." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Yapay zeka kodlama ajanlarıyla inşa etme üzerine bu bölüm altın değerinde. 5 hata ayıklama stratejisi tek başına yeter — belirtileri tarif et, hataları paylaş, açıklama iste." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Yapay zekadan en çok değer alan insanlar, ona tam olarak ne zaman güveneceklerini ve ne zaman doğrulayacaklarını öğrenmiş olanlardır.
+        İlk versiyon her zaman yanlıştır. Üçüncüsü iyidir. Beşincisi harika. Döngünün tadını çıkar.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Yapay zekanın ne zaman yanıldığını bilmek daha büyük bir soruya götürür: <em>hiç</em> ne yapamaz? Sırada, inatla ve güzellikle insana ait kalan becerileri keşfediyoruz — ve neden her zamankinden daha önemli olduklarını.
+        Tekrarlayabilirsin. Hata ayıklayabilirsin. Ama inşa ettiğin şeyin gerçekten <em>iyi</em> olduğunu nasıl bileceksin? Sadece çalışan değil — iyi. Bunun için yapay zekanın sana veremeyeceği bir şey gerekiyor: zevk. Sıradaki bu.
       </p>
     </FadeInBlock>
   </section>

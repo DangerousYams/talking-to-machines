@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ta">
@@ -31,16 +33,16 @@ const chapter = chapters[3];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI<br />உலகம்
+          AI<br />நிலப்பரப்பு
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          நீ இப்பவே பயன்படுத்தக்கூடிய<br />ஒவ்வொரு AI tool-க்கும் வழிகாட்டி.
+          இப்போது நீ உண்மையில் பயன்படுத்தக்கூடிய<br />ஒவ்வொரு AI tool-க்குமான வழிகாட்டி.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
-          கடைசியாக புதுப்பிக்கப்பட்டது மார்ச் 2026
+          LAST UPDATED MARCH 2026
         </p>
       </FadeInBlock>
     </div>
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        பெரும்பாலான மக்கள் "AI" என்று சொல்லும்போது ChatGPT தான் நினைவுக்கு வரும். "இணையம்" என்று சொல்லி Google மட்டும் குறிப்பிடுவது போன்றது. இப்போது நீ இன்றே பயன்படுத்தக்கூடிய நூற்றுக்கணக்கான AI tools இருக்கின்றன &mdash; ஒரு வாக்கியத்திலிருந்து photorealistic படங்கள் உருவாக்கும் tools, முழு பாடல்கள் இயற்றும் tools, உன் research topic பற்றிய ஒவ்வொரு academic paper-ஐயும் படித்து consensus-ஐ மூன்று paragraphs-ல் summarize செய்யும் tools. இந்த chapter உன் நிலப்பரப்பின் வரைபடம்.
+        பெரும்பாலான மக்கள் "AI" என்றால் ChatGPT என்று நினைக்கிறார்கள். அது "internet" என்றால் Google என்று சொல்வது போன்றது. இப்போது, நீ இன்றே பயன்படுத்தக்கூடிய நூற்றுக்கணக்கான AI tools இருக்கின்றன — ஒரு வாக்கியத்திலிருந்து உண்மை போன்ற படங்களை உருவாக்குபவை, முழு பாடல்களை compose செய்பவை, உன் research topic பற்றிய எல்லா academic papers-ஐயும் படித்து மூன்று paragraphs-ல் consensus-ஐ summarize செய்பவை. இந்த அத்தியாயம் உன் நிலப்பரப்பு வரைபடம்.
       </p>
     </FadeInBlock>
   </section>
@@ -72,20 +74,20 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        இசைக்கருவிகளைப் பற்றி யோசி. Piano-வும் drum kit-உம் இரண்டும் "instruments" தான், ஆனால் pianist-கிட்ட beat போடச் சொல்ல மாட்டாய். AI tools-உம் அதே மாதிரி &mdash; image generation-க்காக build ஆன tool, code-க்காக build ஆனதிலிருந்து அடிப்படையில் வேறு. நீ சந்திக்கும் ஒவ்வொரு tool-உம் இந்த எட்டு குடும்பங்களில் ஒன்றில் fit ஆகும்.
+        இசைக் கருவிகள் போல நினைத்துக்கொள். Piano வும் drum kit-உம் இரண்டும் "கருவிகள்" தான், ஆனால் ஒரு pianist-இடம் beat போடச் சொல்ல மாட்டாய் இல்லையா? AI tools-உம் அப்படித்தான் — image generation-க்காக உருவாக்கப்பட்ட tool, code-க்காக உருவாக்கப்பட்டதிலிருந்து அடிப்படையிலேயே வேறுபட்டது. நீ சந்திக்கும் ஒவ்வொரு tool-உம் இந்த எட்டு குடும்பங்களில் ஒன்றில் பொருந்தும்.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'படம் உருவாக்குபவை', color: '#E94560', text: 'Text உள்ளே, images வெளியே. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
-        { icon: '2', name: 'படம் திருத்துபவை', color: '#F5A623', text: 'உண்மையான படத்தை வைத்து transform செய்யும். Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'வீடியோ உருவாக்குபவை', color: '#7B61FF', text: 'Text அல்லது stills-இலிருந்து video clips generate செய்யும். Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: 'இசை & ஆடியோ', color: '#16C79A', text: 'Prompt-இலிருந்து முழு பாடல்கள், voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
-        { icon: '5', name: 'ஆராய்ச்சி முகவர்கள்', color: '#0EA5E9', text: 'உனக்காக internet படிக்கும் AI. Perplexity, Elicit, Consensus, NotebookLM.' },
-        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'மனிதனைப் போல web-ல் navigate செய்யும் agents. Arc, Operator, Claude Computer Use.' },
-        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code எழுதி, edit செய்து, debug செய்யும் AI. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Chatbots & உதவியாளர்கள்', color: '#0F3460', text: 'நீ ஏற்கனவே அறிந்த general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
+        { icon: '1', name: 'Image Generators', color: '#E94560', text: 'Text போகிறது, images வருகின்றன. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: 'Image Editors', color: '#F5A623', text: 'ஒரு real image-லிருந்து ஆரம்பித்து அதை மாற்று. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Video Creators', color: '#7B61FF', text: 'Text அல்லது stills-லிருந்து video clips generate செய்பவை. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Music & Audio', color: '#16C79A', text: 'ஒரு prompt-லிருந்து முழு பாடல்கள், voice cloning, sound effects. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Research Agents', color: '#0EA5E9', text: 'உனக்காக internet-ஐ படிக்கும் AI. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '6', name: 'AI Browsers', color: '#6B7280', text: 'மனிதன் போல் web-ஐ navigate செய்யும் agents. Arc, Operator, Claude Computer Use.' },
+        { icon: '7', name: 'Coding Tools', color: '#E94560', text: 'Code எழுதும், edit செய்யும், debug செய்யும் AI. Claude Code, Cursor, Antigravity, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'நீ ஏற்கனவே தெரிந்த general-purpose conversational AI: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -109,7 +111,7 @@ const chapter = chapters[3];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>முக்கிய கருத்து</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          10 AI tools-ஐ மேலோட்டமாக தெரிந்த ஒருவன், ஒரே tool-ஐ ஆழமாக தெரிந்த ஒருவனை தொடர்ந்து விஞ்சுவான். ஒரு professional carpenter-க்கு பிடித்த tool இல்லை &mdash; <em>ஒவ்வொரு வேலைக்கும்</em> பிடித்த tool இருக்கும்.
+          10 AI tools-ஐ surface level-ல் தெரிந்தவன், ஒரு tool-ஐ ஆழமாக தெரிந்தவனை விட consistently சிறப்பாக செயல்படுவான். ஒரு professional carpenter-க்கு பிடித்த tool ஒன்று இல்லை — <em>ஒவ்வொரு task-க்கும்</em> ஒரு பிடித்த tool இருக்கும்.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        முழு catalog-ஐ explore செய். என்ன செய்கிறது என்று தெரிய எந்த tool-ஐயும் click செய்.
+        முழு catalog-ஐ explore செய். எந்த tool-ஐயும் click செய்து அது என்ன செய்கிறது என்று தெரிந்துகொள்.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="There are way more AI tools than I realized. This interactive guide maps out 8 families of tools — image gen, video, music, research, coding — with examples of each." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Landscape ஒவ்வொரு மாதமும் மாறுகிறது. ஆனால் tools மாறினாலும் categories நிலையானவை &mdash; <em>அது</em> தான் மனப்பாடம் செய்ய வேண்டிய வரைபடம்.
+        நிலப்பரப்பு ஒவ்வொரு மாதமும் மாறுகிறது. ஆனால் tools மாறினாலும் categories நிலையானவை — <em>அது</em>தான் மனப்பாடம் செய்ய வேண்டிய வரைபடம்.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        இதுவரை இந்த tools உனக்கு பதிலளிக்கின்றன மட்டுமே. அவை <em>தாங்களாகவே action எடுக்க</em> முடிந்தால் என்ன? Tool-இலிருந்து agent-க்கு மாறும் பாய்ச்சல் அதுதான் &mdash; அது எல்லாவற்றையும் மாற்றுகிறது.
+        இதுவரை, இந்த tools உனக்கு பதில் மட்டும் சொன்னன. அவை <em>தானாகவே செயல்பட</em> முடிந்தால்? அதுதான் tool-லிருந்து agent-க்கான பாய்ச்சல் — எல்லாவற்றையும் மாற்றுகிறது.
       </p>
     </FadeInBlock>
   </section>

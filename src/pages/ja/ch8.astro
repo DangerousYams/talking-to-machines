@@ -9,8 +9,10 @@ import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[7];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ja">
@@ -31,13 +33,13 @@ const chapter = chapters[7];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          複雑さを<br />オーケストレーションする
+          言葉を<br />覚えよう
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          コンテキストウィンドウより大きな<br />プロジェクトでAIを管理する。
+          ものを作るための語彙 &mdash;<br />コードじゃなく、名詞と動詞だけ。
         </p>
       </FadeInBlock>
     </div>
@@ -51,45 +53,84 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        野心的な初心者が必ずぶつかる瞬間がある：AIに本格的なもの &mdash; フルゲーム、バックエンド付きのWebサイト、引用付きの研究論文 &mdash; を作らせようとして、全部崩壊する。AIが十分に賢くないからじゃない。プロジェクトが1回の会話には大きすぎるからだ。要件の壁をペーストして、20分後に気づく &mdash; 頼んだことの半分を忘れている。
+        コーディングエージェントと一緒に何かを作ろうとしている。エージェントは「デプロイ」「エンドポイント」「コンポーネント」「スキーマ」といった言葉を使ってくる。これらの言葉が不透明だと、迷子になる。作れないからじゃなく、<em>ディレクション</em>できないからだ。この章はそのデコーダーリングを渡す。コーディングの方法じゃない。ものを作るための<strong>言葉の話し方</strong>だ。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        これはAIの問題じゃない。<strong>オーケストレーションの問題</strong>だ。これを解決する方法を学ぶことが、AIを単発のタスクに使う人と、本物を作る人の違いだ。
+        車の運転で考えてみよう。内燃エンジンもトランスミッション比もブレーキ液の圧力も理解する必要はない。知るべきなのは、アクセル、ブレーキ、ハンドル、ミラー。実装じゃなく<em>操縦</em>の語彙だ。
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        コンテキストパッキングの技術
+        スタック：デコーダーリング
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        複雑なプロジェクトはワンプロンプトアプローチを壊す。コンテキストが溢れ、注意力が希薄化し、エラーが連鎖する。解決策はより良いプロンプトじゃない &mdash; <strong>分解</strong>だ。プロジェクトを集中したタスクに分割し、各タスクごとにAIが本当に必要とするコンテキストを慎重に選ぶ。少なすぎるとハルシネーションする。多すぎると焦点がぼやける。スイートスポットは外科手術のような精密さだ。
+        すべてのアプリ、Instagramからシンプルなタスクリストまで、4つのレイヤーから構成されている。開発者はこれを「スタック」と呼ぶ。全体像を解説しよう。
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        スーツケース詰めのようなものだ。クローゼット全部は持っていけない。行き先（タスク）、必要なもの（関連情報）、置いていけるもの（それ以外すべて）を考える。各会話にはちょうど必要なコンテキストだけ &mdash; それ以上でもそれ以下でもなく。
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">フロントエンド</p>
+          <p style="margin: 0; line-height: 1.6;">人が見て触れるもの。ボタン、テキスト、画像、アニメーション。レストランで言えばダイニングルーム。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">バックエンド</p>
+          <p style="margin: 0; line-height: 1.6;">裏側のロジック。リクエストを処理し、パスワードを確認し、メールを送る。キッチンだ。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">データベース</p>
+          <p style="margin: 0; line-height: 1.6;">アプリが物事を記憶する場所。ユーザーアカウント、投稿、設定。パントリーとレシピブックだ。</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">デプロイメント</p>
+          <p style="margin: 0; line-height: 1.6;">インターネット上に置く方法。ホスティング、ドメイン、公開。レストランの扉を開けることだ。</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        以上。今まで使ったすべてのアプリは、この4つのレイヤーの組み合わせだ。コーディングエージェントが「バックエンドをセットアップする」と言ったら、「裏側のロジックを書く」という意味だ。「デプロイしよう」と言ったら、「インターネット上に置こう」という意味だ。これらのレイヤーが<em>どう</em>動くかを知る必要はない。<em>存在する</em>ことと、何のためのものかを知っていればいい。
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        エージェントは家庭教師でもある
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        誰も教えてくれないことがある。<strong>コーディングエージェントは同時に君の先生でもある。</strong>「npm」の意味がわからない？ 聞けばいい。エラーメッセージが理解できない？ 貼り付けて「開発者じゃない人にわかるように説明して」と言えばいい。エージェントがなぜReactを選んだか知りたい？ 聞けばいい。わかりやすい言葉で、ステップごとに、何度でも説明してくれる。
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">重要なポイント</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>最初の5分</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          ハンドオフ成果物の品質が、その下流に構築されるすべての品質を決める。明快なスキーマは曖昧な説明に毎回勝つ。ゴミを入れればゴミが出る &mdash; 会話をまたいで。
+          コーディングツールを開こう。プロジェクトを普通の言葉で説明する。「エクササイズを記録して、進捗を確認できるワークアウトトラッカーを作りたい。」エージェントは確認の質問をし、スタックを提案し、構築を始める。君の最初の仕事は、<em>エージェントの質問に答え</em>、<em>何が作られているか見守る</em>ことだ。
         </p>
       </div>
     </FadeInBlock>
@@ -99,7 +140,7 @@ const chapter = chapters[7];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        コンテキストのスーツケースを詰めよう。溢れさせずに大事なものを入れられるかな？
+        ウェブアプリの4つのレイヤーを探索しよう。クリックして語彙を学び、テストしてみよう。
       </p>
     </FadeInBlock>
   </section>
@@ -111,19 +152,28 @@ const chapter = chapters[7];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="AIの一番難しいところはプロンプティングじゃない &mdash; 複数の会話にまたがる複雑なプロジェクトのオーケストレーションだ。このコースがやっとその方法を教えてくれる。" client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="この章はコードなしで技術スタックを説明してくれる。フロントエンド、バックエンド、データベース、デプロイメント。やっと理解できた。もっと早く読みたかった。" client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        複雑なプロジェクトは怖くない。明快な成果物で繋がれた、一連の集中した会話にすぎない。
+        エンジンの仕組みを知る必要はない。運転の仕方を知っていればいい。
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        次は、AIが<em>間違っている</em>ときを知ること。ハルシネーション、おべっか、そして正直さを保つ検証の習慣だ。
+        言葉を知った。アイデアもある。さあ、コーディングエージェントと一緒に実際に作る番だ。次は、ビルドループの技術 &mdash; イテレーション、評価、壊れたときにどうするか。
       </p>
     </FadeInBlock>
   </section>

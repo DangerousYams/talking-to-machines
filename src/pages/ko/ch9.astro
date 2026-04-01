@@ -9,8 +9,10 @@ import DebugDetective from '../../components/widgets/ch9/DebugDetective';
 import EvalFramework from '../../components/breaks/EvalFramework';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[8];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="ko">
@@ -31,13 +33,13 @@ const chapter = chapters[8];
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          AI가<br />틀릴 때
+          빌드<br />루프
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          아마추어와 프로를 가르는<br />검증 습관.
+          불완전함을 예상해. 개선을 즐겨.<br />세 번째 버전에서 마법이 일어나.
         </p>
       </FadeInBlock>
     </div>
@@ -51,39 +53,88 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        방금 완벽한 에세이를 써준 AI가 같은 자신감으로 나폴레옹이 워털루 전투에서 이겼다고 말할 수 있어. 망설이지도 않아. 더듬거리지도 않아. 완전히 지어낸 "사실"을 다른 모든 것과 똑같은 권위 있는 톤으로 말해. 이게 AI와 일하는 것의 핵심에 있는 역설이야: <strong>AI를 유용하게 만드는 바로 그 유창함이 위험하게도 만들어.</strong>
+        AI로 만들 때 가장 흔한 실수는 나쁜 프롬프트가 아니야. 나쁜 기대치야. 긴 설명을 한 번 입력하고, 엔터를 누르고, 완성품을 기대해. 안 돼. 절대 안 돼. 대단한 것을 만드는 사람들은 비밀을 알아: <strong>첫 번째 버전은 항상 잘못돼.</strong> 세 번째 버전이 괜찮아. 다섯 번째가 훌륭해. 그리고 1에서 5까지 가는 과정? 그게 진짜 스킬이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        모든 아티스트가 반복해. 모든 건축가가 수정해. 모든 영화감독이 여러 테이크를 찍어. AI로 만드는 것도 다르지 않아. 루프를 즐기는 사람이 &mdash; 원망하지 않는 사람이 &mdash; 최고의 것을 만들어.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        그럴듯함은 진실이 아냐
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        명세, 생성, 검증
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI 모델은 데이터베이스에서 사실을 가져오지 않아. 다음에 올 가장 가능성 높은 단어를 예측해. 실제로 존재하는 것에 대해 물으면, 학습 데이터가 정확한 정보 쪽으로 안내해. 존재하지 않는 것에 대해 물으면, 모델은 "모르겠어"라고 하지 않아. 정확한 답이 <em>어떻게 생겼을지</em>를 생성해 — 이름, 날짜, 인용까지 완벽하게. 전부 지어낸 거야.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        코딩 에이전트와의 모든 생산적인 세션은 같은 리듬을 따라. 원하는 걸 <strong>명세</strong>해 &mdash; 구체적으로, 예시를 주고, "완료"가 어떻게 생겼는지 설명해. 에이전트가 <strong>생성</strong>하게 해. 그다음 <strong>검증</strong>: 작동해? 괜찮아 보여? 요청한 대로 해? 아니면 다시 더 정확하게 명세해. 그게 루프야. 실패의 신호가 아니야. 프로세스야.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        AI가 얼마나 자신감 있게 들리느냐와 실제로 얼마나 정확하느냐 사이에는 아무런 상관관계가 없어. 틀린 답과 맞는 답은 겉에서 보면 똑같아 보여. 톤이나, 디테일이나, AI가 포함한 구체적인 숫자로 정확도를 판단할 수 없어. "그럴듯하게 들리니까" 테스트는 쓸모없어. 네 유일한 방어는 검증이야.
+        파워 무브는 만들기 전에 <strong>인수 기준</strong>을 쓰는 거야. "버튼을 클릭하면 초록색으로 변해야 해." "페이지를 새로고침해도 리스트가 유지돼야 해." "가입 양식이 @ 없는 이메일을 거부해야 해." 이 쉬운 말 설명이 네 평가 프레임워크가 돼. 뭔가 잘못되면 기준을 에이전트한테 다시 붙여넣고 "이거 안 맞아"라고 해. 에이전트가 <em>네</em> 기준에 맞춰 테스트할 수 있어.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        막혔을 때 어떻게 할까
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        에이전트가 망가진 걸 만들었어. 이제 뭐해? 다섯 가지 전략, 먼저 시도할 순서대로:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. 진단이 아니라 증상을 설명해</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"클릭해도 버튼이 반응 안 해"가 "onClick 핸들러가 깨진 것 같아"보다 나아.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. 에러 메시지를 그대로 공유해</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">정확한 에러를 복사-붙여넣기. 에이전트한테 줄 수 있는 가장 유용한 것이야.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. 에이전트한테 뭘 했는지 설명해달라고 해</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"방금 뭘 바꿨고 왜 바꿨는지 설명해줘." 이해하면 문제가 드러나는 경우가 많아.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. 다른 접근법을 요청해</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"그 방법은 안 돼. 완전히 다른 방식으로 해결할 수 있어?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. 배운 것을 가지고 새로 시작해</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">가끔은 새 대화가 꼬인 걸 디버깅하는 것보다 빨라. 핵심 결정 사항만 가져가.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>핵심 포인트</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>가드레일로서의 테스트</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI에게는 진실이라는 개념이 없어. <em>그럴듯함</em>이라는 개념이 있을 뿐이야. 패턴에 맞는 텍스트를 생성해 — 그 텍스트가 현실에 부합하든 말든.
+          에이전트한테 자동화된 테스트를 쓰라고 할 수 있어 &mdash; 쉬운 말로. "가입 양식이 @ 없는 이메일을 거부하는지 확인하는 테스트 써줘." 에이전트가 테스트 <em>그리고</em> 그걸 통과하는 코드를 둘 다 써. 테스트를 한 번도 안 써본 사람이 하는 테스트 주도 개발이야. 한번 테스트에 잡힌 버그는 절대 다시 돌아올 수 없어.
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +144,7 @@ const chapter = chapters[8];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        네 감지기를 테스트해봐. AI의 주장 중 어떤 게 진짜이고 어떤 게 지어낸 건지 구분할 수 있어?
+        스킬을 연습해봐. 이 버그들을 코딩 에이전트한테 어떻게 설명할래?
       </p>
     </FadeInBlock>
   </section>
@@ -105,19 +156,28 @@ const chapter = chapters[8];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="모든 AI 사용자가 이 챕터를 읽어야 해. AI가 정확히 어떻게 hallucination하는지, 왜 틀린 답에 동의하는지, 어떻게 잡는지 알려줘. 엄청 실용적." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="AI 코딩 에이전트로 만드는 법에 대한 이 챕터 진짜 좋아. 5가지 디버깅 전략만으로도 충분히 가치 있어 — 증상을 설명하고, 에러를 공유하고, 설명을 요청해." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI에서 가장 큰 가치를 얻는 사람들은 정확히 언제 신뢰하고 언제 검증해야 하는지를 배운 사람들이야.
+        첫 번째 버전은 항상 잘못돼. 세 번째가 괜찮아. 다섯 번째가 훌륭해. 루프를 즐겨.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        AI가 언제 틀리는지 아는 것은 더 큰 질문으로 이어져: AI가 <em>절대</em> 못하는 건 뭐야? 다음에는 완고하게, 아름답게 인간적인 스킬들을 탐구해 — 그리고 왜 그 어느 때보다 중요한지.
+        반복할 수 있어. 디버깅할 수 있어. 근데 만들고 있는 게 실제로 <em>좋은</em>지 어떻게 알아? 그냥 작동하는 게 아니라 &mdash; 좋은. 그건 AI가 줄 수 없는 게 필요해: 안목. 그게 다음이야.
       </p>
     </FadeInBlock>
   </section>

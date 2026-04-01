@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="de">
@@ -22,7 +24,7 @@ const chapter = chapters[1];
     <div class="max-w-[680px] mx-auto text-center relative z-10">
       <FadeInBlock client:visible>
         <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
-          Kapitel zwei
+          Kapitel Zwei
         </p>
       </FadeInBlock>
 
@@ -69,13 +71,13 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Sokrates hat nie eine Frage direkt beantwortet. Er stellte <em>weitere</em> Fragen, bis seine Schüler zu tieferem Verständnis gelangten. Du kannst denselben Trick mit KI nutzen, nur umgedreht: Statt nach einer Antwort zu fragen, bitte die KI, <em>dich</em> zu interviewen. Wenn du "plane eine Geburtstagsfeier" tippst, lässt du dutzende Details weg, die die Antwort massiv verändern. Die KI kennt sie nicht -- aber sie kann danach fragen.
+        Sokrates hat nie eine Frage direkt beantwortet. Er stellte <em>weitere</em> Fragen, bis seine Schüler zu tieferem Verständnis gelangten. Du kannst denselben Trick mit KI nutzen, nur umgedreht: Statt nach einer Antwort zu fragen, bitte die KI, <em>dich</em> zu interviewen. Wenn du &bdquo;plane eine Geburtstagsfeier&ldquo; tippst, lässt du Dutzende Details weg, die die Antwort massiv verändern. Die KI kennt sie nicht &mdash; aber sie kann danach fragen.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        Diese eine Technik -- umdrehen, wer die Fragen stellt -- verwandelt die KI von einer Antwortmaschine in einen <strong>Denkpartner</strong>. Gib ihr die Erlaubnis, nachzufragen, zu klären und herauszufordern. Das Ergebnis nach fünf Rückfragen wird im Vergleich zu einem Einzelbefehl nicht wiederzuerkennen sein.
+        Diese eine Technik &mdash; umdrehen, wer die Fragen stellt &mdash; verwandelt die KI von einer Antwortmaschine in einen <strong>Denkpartner</strong>. Gib ihr die Erlaubnis, nachzufragen, zu klären und herauszufordern. Das Ergebnis nach fünf Rückfragen wird im Vergleich zu einem Einzelbefehl nicht wiederzuerkennen sein.
       </p>
     </FadeInBlock>
 
@@ -83,7 +85,7 @@ const chapter = chapters[1];
       <div class="insight-box">
         <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Wichtige Erkenntnis</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Die besten KI-Nutzer sind keine Experten auf dem Gebiet -- sie sind Experten im Fragen stellen. Und die mächtigste Frage, die du stellen kannst, ist: "Bevor du antwortest, was musst du wissen?"
+          Die besten KI-Nutzer sind keine Experten auf dem Gebiet &mdash; sie sind Experten im Fragen stellen. Und die mächtigste Frage, die du stellen kannst, ist: &bdquo;Bevor du antwortest, was musst du wissen?&ldquo;
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Probier es selbst. Nenne ein Ziel -- und sieh zu, wie die KI den Spieß umdreht.
+        Probier es selbst. Nenne ein Ziel &mdash; und sieh zu, wie die KI den Spieß umdreht.
       </p>
     </FadeInBlock>
   </section>
@@ -105,6 +107,15 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
   <SharePrompt text="Dieser KI-Kurs hat mein Denken über Prompts komplett umgekrempelt. Statt der KI zu sagen, was sie tun soll, bittest du sie, erst DICH zu interviewen. Die Ergebnisse sind wie Tag und Nacht." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->

@@ -9,8 +9,10 @@ import TrustThermometer from '../../components/widgets/ch5/TrustThermometer';
 import WouldYouLetIt from '../../components/breaks/WouldYouLetIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[4];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="es">
@@ -37,7 +39,7 @@ const chapter = chapters[4];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          El salto de "responder preguntas"<br />a "tomar acciones".
+          El salto de "responder preguntas"<br />a "tomar acciones."
         </p>
       </FadeInBlock>
     </div>
@@ -69,21 +71,21 @@ const chapter = chapters[4];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Cuando le das herramientas a la IA, le entregas una caja de herramientas y le dices: <em>"Aquí hay cosas que puedes hacer. Tú decides cuándo usarlas."</em> Puede buscar en la web, ejecutar código, leer archivos, llamar APIs. La IA no se volvió más inteligente — se <strong>conectó</strong>. Y eso plantea una pregunta que no tiene nada que ver con tecnología y todo que ver contigo: ¿cuánto debería hacer la IA por su cuenta antes de consultarte?
+        Cuando le das herramientas a la IA, le entregas una caja de herramientas y le dices: <em>"Aquí hay cosas que puedes hacer. Tú decides cuándo usarlas."</em> Puede buscar en la web, ejecutar código, leer archivos, llamar APIs. La IA no se volvió más inteligente: se <strong>conectó</strong>. Y eso plantea una pregunta que no tiene nada que ver con tecnología y todo que ver contigo: ¿cuánto debería hacer la IA por su cuenta antes de consultarte?
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.15}>
       <p class="text-lg leading-[1.85] mb-14">
-        La respuesta depende de tres cosas. <strong>Riesgo</strong> — ¿qué es lo peor que podría pasar? <strong>Reversibilidad</strong> — ¿puedes deshacerlo? Y <strong>confianza</strong> — ¿qué tan bien conoces esta herramienta? Una calculadora que has usado cien veces merece más libertad que un plugin nuevo que nunca has probado.
+        La respuesta depende de tres cosas. <strong>Riesgo</strong>: ¿qué es lo peor que podría pasar? <strong>Reversibilidad</strong>: ¿puedes deshacerlo? Y <strong>confianza</strong>: ¿qué tan bien conoces esta herramienta? Una calculadora que has usado cien veces merece más libertad que un plugin nuevo que nunca has probado.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Punto clave</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idea clave</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          No es todo o nada. Los mejores flujos de trabajo con IA dan libertad en tareas de bajo riesgo y reversibles, mientras mantienen a los humanos en el ciclo para tareas de alto riesgo e irreversibles. Tu trabajo es diseñar esa frontera.
+          No es todo o nada. Los mejores flujos de trabajo con IA dan libertad en tareas de bajo riesgo y reversibles, mientras mantienen a los humanos en el ciclo para las de alto riesgo e irreversibles. Tu trabajo es diseñar esa frontera.
         </p>
       </div>
     </FadeInBlock>
@@ -105,19 +107,28 @@ const chapter = chapters[4];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Aprendiendo sobre el uso de herramientas de IA y llamadas de funciones de la manera más práctica posible. Este curso te deja construir y probar cosas de verdad, no solo leer sobre ellas." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Aprendiendo sobre el uso de herramientas de IA y llamadas a funciones de la forma más práctica posible. Este curso te deja construir y probar cosas de verdad, no solo leer sobre ellas." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Las herramientas convierten a la IA de asesora en asistente — de alguien que te dice qué hacer, a alguien que realmente lo hace.
+        Las herramientas convierten a la IA de asesora en asistente: de alguien que te dice qué hacer a alguien que realmente lo hace.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Le diste manos a la IA. Ahora conectamos esas herramientas en algo que puede perseguir un objetivo por su cuenta — planificando, ejecutando, recuperándose de errores. Es hora de construir agentes.
+        Le diste manos a la IA. Ahora conectamos esas herramientas en algo que puede perseguir un objetivo por su cuenta: planificando, ejecutando, recuperándose de errores. Es hora de construir agentes.
       </p>
     </FadeInBlock>
   </section>

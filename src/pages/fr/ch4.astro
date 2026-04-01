@@ -9,8 +9,10 @@ import ToolWall from '../../components/widgets/ch4/ToolWall';
 import DreamProject from '../../components/breaks/DreamProject';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[3];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="fr">
@@ -37,10 +39,10 @@ const chapter = chapters[3];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Un guide de terrain de chaque outil IA<br />que tu peux utiliser maintenant.
+          Un guide de terrain de tous les outils IA<br />que tu peux utiliser d&egrave;s maintenant.
         </p>
         <p class="mt-6" style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(26,26,46,0.3);">
-          DERNIERE MISE A JOUR MARS 2026
+          DERNI&Egrave;RE MISE &Agrave; JOUR MARS 2026
         </p>
       </FadeInBlock>
     </div>
@@ -54,7 +56,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Quand la plupart des gens disent « IA », ils pensent ChatGPT. C'est comme dire « internet » et penser Google. En ce moment, il existe des centaines d'outils IA que tu peux utiliser aujourd'hui — des outils qui generent des images photorealistes a partir d'une phrase, composent des chansons completes, ou lisent tous les articles scientifiques sur ton sujet de recherche et resument le consensus en trois paragraphes. Ce chapitre est ta carte du terrain.
+        Quand la plupart des gens disent &laquo;&nbsp;IA&nbsp;&raquo;, ils pensent &agrave; ChatGPT. C'est comme dire &laquo;&nbsp;internet&nbsp;&raquo; en pensant &agrave; Google. En ce moment, il existe des centaines d'outils IA utilisables aujourd'hui &mdash; des outils qui g&eacute;n&egrave;rent des images photor&eacute;alistes &agrave; partir d'une phrase, composent des chansons compl&egrave;tes, ou lisent tous les articles scientifiques sur ton sujet de recherche et r&eacute;sument le consensus en trois paragraphes. Ce chapitre est ta carte du terrain.
       </p>
     </FadeInBlock>
   </section>
@@ -72,20 +74,20 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Pense aux instruments de musique. Un piano et une batterie sont tous les deux des « instruments », mais tu ne demanderais pas a un pianiste de poser un rythme. Les outils IA, c'est pareil — un outil concu pour la generation d'images est fondamentalement different d'un outil concu pour le code. Chaque outil que tu croiseras entre dans l'une de ces huit familles.
+        Pense aux instruments de musique. Un piano et une batterie sont tous les deux des &laquo;&nbsp;instruments&nbsp;&raquo;, mais tu ne demanderais pas &agrave; un pianiste de faire un beat. Les outils IA, c'est pareil &mdash; un outil con&ccedil;u pour la g&eacute;n&eacute;ration d'images est fondamentalement diff&eacute;rent d'un outil con&ccedil;u pour le code. Chaque outil que tu croiseras appartient &agrave; l'une de ces huit familles.
       </p>
     </FadeInBlock>
 
     <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
       {[
-        { icon: '1', name: 'Generateurs d\'images', color: '#E94560', text: 'Du texte entre, des images sortent. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
-        { icon: '2', name: 'Editeurs d\'images', color: '#F5A623', text: 'Pars d\'une image reelle et transforme-la. Photoshop AI, Magnific, Clipdrop.' },
-        { icon: '3', name: 'Createurs video', color: '#7B61FF', text: 'Genere des clips video a partir de texte ou d\'images fixes. Sora, Runway, Kling, Pika.' },
-        { icon: '4', name: 'Musique et audio', color: '#16C79A', text: 'Des chansons completes a partir d\'un prompt, clonage vocal, effets sonores. Suno, Udio, ElevenLabs.' },
-        { icon: '5', name: 'Agents de recherche', color: '#0EA5E9', text: 'L\'IA qui lit internet a ta place. Perplexity, Elicit, Consensus, NotebookLM.' },
+        { icon: '1', name: 'G\u00e9n\u00e9rateurs d\u2019images', color: '#E94560', text: 'Du texte entre, des images sortent. Midjourney, DALL-E 3, Stable Diffusion, Flux, Ideogram.' },
+        { icon: '2', name: '\u00c9diteurs d\u2019images', color: '#F5A623', text: 'Pars d\u2019une vraie image et transforme-la. Photoshop AI, Magnific, Clipdrop.' },
+        { icon: '3', name: 'Cr\u00e9ateurs vid\u00e9o', color: '#7B61FF', text: 'G\u00e9n\u00e8re des clips vid\u00e9o \u00e0 partir de texte ou de photos. Sora, Runway, Kling, Pika.' },
+        { icon: '4', name: 'Musique & Audio', color: '#16C79A', text: 'Des chansons compl\u00e8tes \u00e0 partir d\u2019un prompt, clonage vocal, effets sonores. Suno, Udio, ElevenLabs.' },
+        { icon: '5', name: 'Agents de recherche', color: '#0EA5E9', text: 'L\u2019IA qui lit internet \u00e0 ta place. Perplexity, Elicit, Consensus, NotebookLM.' },
         { icon: '6', name: 'Navigateurs IA', color: '#6B7280', text: 'Des agents qui naviguent sur le web comme un humain. Arc, Operator, Claude Computer Use.' },
-        { icon: '7', name: 'Outils de code', color: '#E94560', text: 'L\'IA qui ecrit, edite et debogue du code. Claude Code, Cursor, Antigravity, Copilot.' },
-        { icon: '8', name: 'Chatbots et assistants', color: '#0F3460', text: 'L\'IA conversationnelle generaliste que tu connais deja : ChatGPT, Claude, Gemini.' },
+        { icon: '7', name: 'Outils de code', color: '#E94560', text: 'L\u2019IA qui \u00e9crit, modifie et d\u00e9bugue du code. Claude Code, Cursor, Antigravity, Copilot.' },
+        { icon: '8', name: 'Chatbots & Assistants', color: '#0F3460', text: 'L\u2019IA conversationnelle polyvalente que tu connais d\u00e9j\u00e0\u00a0: ChatGPT, Claude, Gemini.' },
       ].map((family, i) => (
         <FadeInBlock client:visible delay={i * 0.06}>
           <div style={`display: flex; gap: 1.5rem; align-items: flex-start;`}>
@@ -107,9 +109,9 @@ const chapter = chapters[3];
 
     <FadeInBlock client:visible delay={0.5}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Idee cle</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Id&eacute;e cl&eacute;</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          Quelqu'un qui connait 10 outils IA en surface surpassera systematiquement quelqu'un qui connait un seul outil en profondeur. Un menuisier professionnel n'a pas un outil favori — il a un outil favori <em>pour chaque tache</em>.
+          Quelqu'un qui conna&icirc;t 10 outils IA en surface battra syst&eacute;matiquement quelqu'un qui ma&icirc;trise un seul outil en profondeur. Un menuisier pro n'a pas un outil pr&eacute;f&eacute;r&eacute; &mdash; il a un outil pr&eacute;f&eacute;r&eacute; <em>pour chaque t&acirc;che</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -119,7 +121,7 @@ const chapter = chapters[3];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        Explore le catalogue complet. Clique sur n'importe quel outil pour decouvrir ce qu'il fait.
+        Explore le catalogue complet. Clique sur n'importe quel outil pour d&eacute;couvrir ce qu'il fait.
       </p>
     </FadeInBlock>
   </section>
@@ -131,19 +133,28 @@ const chapter = chapters[3];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="Il y a bien plus d'outils IA que je ne le pensais. Ce guide interactif repertorie 8 familles d'outils — generation d'images, video, musique, recherche, code — avec des exemples de chacune." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="Il y a bien plus d'outils IA que je ne le pensais. Ce guide interactif cartographie 8 familles d'outils \u2014 image, vid\u00e9o, musique, recherche, code \u2014 avec des exemples pour chacune." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Le paysage change chaque mois. Mais les categories restent stables meme quand les outils ne le sont pas — et <em>ca</em>, c'est la carte qui vaut la peine d'etre memorisee.
+        Le paysage change chaque mois. Mais les cat&eacute;gories restent stables m&ecirc;me quand les outils &eacute;voluent &mdash; et <em>c'est</em> la carte qui vaut la peine d'&ecirc;tre m&eacute;moris&eacute;e.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Jusqu'ici, ces outils ne font que te repondre. Et s'ils pouvaient <em>agir par eux-memes</em> ? C'est le saut de l'outil a l'agent — et ca change tout.
+        Jusqu'ici, ces outils ne font que te r&eacute;pondre. Et s'ils pouvaient <em>agir par eux-m&ecirc;mes</em>&nbsp;? C'est le saut de l'outil &agrave; l'agent &mdash; et &ccedil;a change tout.
       </p>
     </FadeInBlock>
   </section>

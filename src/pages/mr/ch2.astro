@@ -9,8 +9,10 @@ import FlipTheScript from '../../components/widgets/ch2/FlipTheScript';
 import SocraticSmackdown from '../../components/breaks/SocraticSmackdown';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
+import ForYouCard from '../../components/ui/ForYouCard';
 
 const chapter = chapters[1];
+const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
 ---
 
 <ChapterLayout chapter={chapter} locale="mr">
@@ -37,7 +39,7 @@ const chapter = chapters[1];
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          सर्वात चांगला prompt तोच आहे<br />जो AI ला तुला प्रश्न विचारायला लावतो.
+          सर्वात चांगला prompt तो आहे<br />जो AI ला तुला प्रश्न विचारायला लावतो.
         </p>
       </FadeInBlock>
     </div>
@@ -51,7 +53,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        बहुतेक लोक AI ला vending machine सारखं वापरतात. Prompt टाक, answer मिळव. पण सर्वात चांगले results <em>conversations</em> मधून येतात, commands मधून नाही. जो prompt टाइप करतो आणि जो prompt craft करतो यातला फरक — तोच फरक 2,400 वर्षांपासून महान विचारवंतांना शक्ती देतोय: योग्य प्रश्न विचारणं.
+        बहुतेक लोक AI ला vending machine सारखं वापरतात. Prompt टाक, answer मिळव. पण सर्वात चांगले results <em>conversations</em> मधून येतात, commands मधून नाही. जो फक्त prompt टाइप करतो आणि जो prompt तयार करतो — या दोघांमधला फरक तोच आहे जो 2,400 वर्षांपासून महान विचारवंतांना शक्ती देत आला आहे: योग्य प्रश्न विचारणं.
       </p>
     </FadeInBlock>
   </section>
@@ -63,27 +65,27 @@ const chapter = chapters[1];
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        The Socratic Flip
+        Socratic Flip
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Socrates ने कधीच प्रश्नाचं थेट उत्तर दिलं नाही. त्याने <em>अजून</em> प्रश्न विचारले जोपर्यंत विद्यार्थ्यांना खोल समज आली नाही. तू AI सोबत हीच trick वापरू शकतोस, पण उलट: उत्तर मागण्याऐवजी, AI ला सांग की <em>तुला</em> interview कर. जेव्हा तू "birthday party plan कर" टाइप करतोस, तेव्हा तू डझनभर details सोडतोस जे उत्तर पूर्णपणे बदलतात. AI ला ते माहीत नाहीत — पण तो विचारू शकतो.
+        Socrates कधीच थेट उत्तर देत नव्हता. तो आणखी प्रश्न विचारत राहायचा जोपर्यंत त्याच्या विद्यार्थ्यांना खोलवर समजत नाही. तू AI सोबत हीच trick वापरू शकतोस, पण उलट: उत्तर मागण्याऐवजी, AI ला <em>तुला</em> interview करायला सांग. जेव्हा तू "birthday party plan कर" टाइप करतोस, तेव्हा डझनभर details सोडतोस जे answer पूर्णपणे बदलतात. AI ला ते माहीत नसतात — पण तो विचारू शकतो.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        ही एक technique — कोण प्रश्न विचारतो हे flip करणं — AI ला answer machine मधून <strong>thinking partner</strong> मध्ये बदलते. त्याला probe करायला, clarify करायला आणि challenge करायला permission दे. पाच back-and-forth प्रश्नांनंतरचं output एका single-shot command च्या तुलनेत ओळखताच येणार नाही.
+        ही एकच technique — कोण प्रश्न विचारतो हे उलटवणं — AI ला answer machine मधून <strong>thinking partner</strong> मध्ये बदलते. त्याला probe करायला, clarify करायला आणि challenge करायला परवानगी दे. पाच back-and-forth प्रश्नांनंतर मिळणारा output single-shot command च्या तुलनेत ओळखता येणार नाही.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>मुख्य मुद्दा</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          सर्वात चांगले AI users topic चे experts नसतात — ते विचारण्याचे experts असतात. आणि सर्वात powerful प्रश्न जो तू विचारू शकतोस तो हा: "उत्तर देण्यापूर्वी, तुला काय माहीत असणं गरजेचं आहे?"
+          सर्वात चांगले AI users विषयाचे experts नसतात — ते विचारण्याचे experts असतात. आणि तू विचारू शकतोस असा सर्वात powerful प्रश्न आहे: "उत्तर देण्याआधी, तुला काय माहीत हवं?"
         </p>
       </div>
     </FadeInBlock>
@@ -93,7 +95,7 @@ const chapter = chapters[1];
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
-        स्वतः try कर. एक goal सांग — आणि AI script flip करताना बघ.
+        स्वतः try कर. एक goal सांग — आणि AI कसा script flip करतो ते बघ.
       </p>
     </FadeInBlock>
   </section>
@@ -105,7 +107,16 @@ const chapter = chapters[1];
 
   <Divider accent={chapter.accent} client:load />
 
-  <SharePrompt text="या AI course ने prompting बद्दलचा माझा विचार पूर्णपणे बदलला. AI ला काय करायचं सांगण्याऐवजी, तू त्याला आधी तुला interview करायला सांगतोस. Results day and night आहेत." client:visible />
+  <div class="py-8">
+    <ForYouCard
+      chapterSlug={chapter.slug}
+      chapterTitle={chapter.title}
+      chapterConcepts={conceptsSummary}
+      accentColor={chapter.accent}
+      client:load
+    />
+  </div>
+  <SharePrompt text="या AI course ने prompting बद्दलचा माझा विचार पूर्ण बदलला. AI ला काय करायचं सांगण्याऐवजी, तू त्याला आधी तुला interview करायला सांगतोस. Results एकदम वेगळे येतात." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
@@ -117,7 +128,7 @@ const chapter = chapters[1];
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        पण तू शिकलेली प्रत्येक technique एकाच अदृश्य भिंतीला धडकते: <em>context window</em>. पुढे, आपण ते उघडतो आणि शिकतो की AI ला खरोखर काय दिसतं ते कसं engineer करायचं.
+        पण तू शिकलेली प्रत्येक technique एकाच अदृश्य भिंतीवर अडतेः <em>context window</em>. पुढे, आपण ते उघडतो आणि AI ला खरंच काय दिसतं ते शिकतो.
       </p>
     </FadeInBlock>
   </section>
