@@ -5,7 +5,7 @@ import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
-import TerminalPlayground from '../components/widgets/ch7/TerminalPlayground';
+import WhatWouldYouBuild from '../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../components/breaks/ShipIt';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
@@ -33,13 +33,13 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Mastering<br />Claude Code
+          Anyone Can<br />Build This
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Your AI pair programmer, from first<br />command to custom Skills.
+          You don't need to be a programmer.<br />You need an idea.
         </p>
       </FadeInBlock>
     </div>
@@ -53,45 +53,78 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        There's a moment every coder remembers. You open a terminal, type a natural-language request, and watch an AI read your files, understand your architecture, write code across multiple files, run it, hit an error, fix the error, and run it again — all without you touching a single line. Claude Code isn't autocomplete. It's an <em>agentic</em> coding tool that sees your entire project, makes changes across files, executes shell commands, and iterates on its own mistakes.
+        A teacher in Ohio built a grading app over a weekend. A musician built a setlist optimizer that arranges songs by energy and key. A high school junior built a debate prep tool that generates counterarguments for any resolution. None of them are programmers. None of them took a coding class. They described what they wanted, and a coding agent built it.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        The tool is only as good as the human steering it, though. Claude Code can write a thousand lines of perfect code in seconds — or a thousand lines of plausible-looking garbage. The difference is you.
+        This is the unlock nobody saw coming. Not that coders got faster &mdash; but that <strong>non-coders can build software at all.</strong> The same way spreadsheets democratized data analysis and Canva democratized graphic design, AI coding agents are democratizing software development itself.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ THE LOOP ═══ -->
+  <!-- ═══ PERSONAL SOFTWARE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Specify, Generate, Verify
+        The Personal Software Revolution
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        When you give Claude Code a task, it runs an agent loop: read the codebase, plan what to change, write the edits, run the code, fix whatever broke. It might cycle through that loop three, five, ten times — all in seconds. Your job isn't to write every line anymore. It's to <strong>specify</strong> what to build, let the AI <strong>generate</strong> it, and then <strong>verify</strong> that it's actually right. Most beginners skip that last step. They see code appear, it looks reasonable, and they move on. Don't be that person. Generated code is a first draft. Your verification is the edit that makes it publishable.
+        Here's the idea that changes everything: <strong>personal software.</strong> Tools built for an audience of one &mdash; you. No market research, no business plan, no venture funding. Just a problem you have and a tool that solves it. Before AI, building personal software meant learning to code, which takes months or years. Now it takes an afternoon. The cost of building just dropped to almost zero &mdash; which means the only thing that matters is having an idea worth building.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        The secret weapon is the <code>CLAUDE.md</code> file — drop it in your project root and Claude Code reads it at the start of every session. Your tech stack, naming conventions, style rules, testing expectations — all encoded once so you never repeat yourself. It's context engineering applied to coding.
+        The tools that make this possible are called <strong>coding agents</strong>. Claude Code, Cursor, Antigravity, Replit &mdash; they're AI tools that can read your entire project, write code across multiple files, run it, hit an error, fix the error, and run it again. All without you touching a single line of code. They're not autocomplete. They're AI collaborators that turn your descriptions into working software.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The goal isn't to write every line — it's to understand every line.</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The director's role</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          If you can't read the code Claude generates, you can't verify it. The best Claude Code users aren't the ones who generate the most code — they're the ones who ask the best questions and catch the subtlest bugs.
+          You don't write the code. You <strong>direct</strong>. Your job is to specify what to build, evaluate the output, and iterate until it's right. The agent handles the technical execution. Think of yourself as a film director &mdash; you don't operate the camera, but nothing gets made without your vision.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS GUIDE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Your Agent Knows Everything You Don't
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "But I don't know what a database is." Good news: you don't need to. Your coding agent is also your tutor. Ask it anything. "What's a React component?" It'll explain. "How do I deploy this to the internet?" It'll walk you through step by step. "What does this error mean?" It'll translate the jargon into plain English.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        This is the safety net that makes everything else possible. You don't need to memorize technical vocabulary &mdash; you need to know it <em>exists</em> so you can ask about it. The agent fills in every gap. It's like having a patient, tireless expert sitting next to you who never judges you for asking a basic question.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The skill paradox</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          You need enough knowledge to <em>evaluate</em> the output, not to write every line. A film director doesn't need to know how to build a camera &mdash; but they need to know if the shot looks right. Same here: you need to know if the app works, not how the code works.
         </p>
       </div>
     </FadeInBlock>
@@ -100,15 +133,15 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        See the loop in action. Type a request and watch Claude Code work.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
+        Browse what non-coders have built &mdash; then imagine your own.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
-  <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <TerminalPlayground client:visible />
+  <section id="what-would-you-build" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
@@ -122,19 +155,19 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
       client:load
     />
   </div>
-  <SharePrompt text="This chapter on Claude Code is wild — watched an AI pair programmer think through a problem, write code, and debug itself. The future of coding is here." client:visible />
+  <SharePrompt text="This chapter just convinced me that anyone can build software with AI. Not in a hand-wavy way — it shows exactly how non-coders are building real tools." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        Claude Code isn't writing code for you — it's writing code with you.
+        The cost of building software just dropped to zero. The only thing left is having an idea worth building.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        One conversation can handle one task. But real projects have dozens. Next: how to break big ambitions into pieces AI can actually execute.
+        You have the idea. But before you open a coding agent, you need to speak its language. Not code &mdash; just the vocabulary of building. That's next.
       </p>
     </FadeInBlock>
   </section>

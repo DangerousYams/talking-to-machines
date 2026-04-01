@@ -5,8 +5,8 @@ import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
-import FactOrFabrication from '../components/widgets/ch9/FactOrFabrication';
-import SweetTalker from '../components/breaks/SweetTalker';
+import DebugDetective from '../components/widgets/ch9/DebugDetective';
+import EvalFramework from '../components/breaks/EvalFramework';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
 import ForYouCard from '../components/ui/ForYouCard';
@@ -33,13 +33,13 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          When AI Gets<br />It Wrong
+          The Build<br />Loop
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          The verification habits that separate<br />amateurs from pros.
+          Expect imperfection. Enjoy refinement.<br />The third version is where the magic happens.
         </p>
       </FadeInBlock>
     </div>
@@ -53,39 +53,88 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        The AI that just helped you write a flawless essay can also, with equal confidence, tell you that Napoleon won the Battle of Waterloo. It won't hesitate. It won't stammer. It will state a completely fabricated "fact" in the same authoritative tone it uses for everything else. This is the paradox at the heart of working with AI: <strong>the same fluency that makes it useful makes it dangerous.</strong>
+        The most common mistake when building with AI isn't a bad prompt. It's a bad expectation. You type one long description, hit enter, and expect a finished product. It doesn't work. It never works. The people who build amazing things with AI know a secret: <strong>the first version is always wrong.</strong> The third version is good. The fifth is great. And the process of getting from one to five? That's the actual skill.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        Every artist iterates. Every architect revises. Every filmmaker shoots multiple takes. Building with AI is no different. The people who enjoy the loop &mdash; not resent it &mdash; are the ones who build the best things.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONCEPT: HALLUCINATION ═══ -->
+  <!-- ═══ THE LOOP ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
-      <h2 class="mb-8" style="font-family: var(--font-heading); letter-spacing: -0.02em;">
-        Plausibility Is Not Truth
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        Specify, Generate, Verify
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        AI models don't retrieve facts from a database. They predict the next most likely word. When you ask about something real, training data guides them toward correct information. When you ask about something that doesn't exist, the model doesn't say "I don't know." It generates what a correct answer <em>would look like</em> — complete with names, dates, and citations. All fabricated.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Every productive session with a coding agent follows the same rhythm. <strong>Specify</strong> what you want &mdash; be concrete, give examples, describe what "done" looks like. Let the agent <strong>generate</strong> it. Then <strong>verify</strong>: does it work? Does it look right? Does it do what you asked? If not, you specify again, more precisely. That's the loop. It's not a sign of failure. It's the process.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
       <p class="text-lg leading-[1.85] mb-14">
-        There is no correlation between how confident AI sounds and how accurate it actually is. A wrong answer and a right answer look identical from the outside. You can't judge accuracy by tone, by detail, or by how many specific numbers the AI includes. The "it sounds right" test is worthless. Your only defense is verification.
+        The power move is writing your <strong>acceptance criteria</strong> before you start building. "The button should turn green when clicked." "The list should persist when I refresh the page." "The signup form should reject emails without an @ symbol." These plain-English descriptions of "done" become your evaluation framework. When something's wrong, you paste your criteria back to the agent and say "this doesn't match." The agent can test against <em>your</em> standards.
       </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ WHEN STUCK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        What to Do When You're Stuck
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
+        The agent generated something broken. Now what? Five strategies, in order of what to try first:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">1. Describe the symptom, not your diagnosis</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"The button doesn't respond when I click it" beats "I think the onClick handler is broken."</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">2. Share the error message verbatim</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Copy-paste the exact error. It's the single most useful thing you can give the agent.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">3. Ask the agent to explain what it did</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Walk me through what you just changed and why." Understanding often reveals the issue.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(245,166,35,0.04); border-radius: 8px; border: 1px solid rgba(245,166,35,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #F5A623;">4. Ask for a different approach</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"That approach isn't working. Can you try solving this a completely different way?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">5. Start fresh with lessons learned</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Sometimes a new conversation is faster than debugging a tangled one. Bring the key decisions with you.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Tests as guardrails</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          AI doesn't have a concept of truth. It has a concept of <em>plausibility</em>. It generates text that fits the pattern — whether or not that text corresponds to reality.
+          You can ask the agent to write automated tests &mdash; in plain English. "Write a test that verifies the signup form rejects emails without an @ symbol." The agent writes the test <em>and</em> the code that passes it. This is test-driven development, directed by someone who's never written a test. Once a bug is caught by a test, it can never come back.
         </p>
       </div>
     </FadeInBlock>
@@ -94,15 +143,15 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Test your detector. Can you tell which AI claims are real and which are fabricated?
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
+        Practice the skill. How would you describe these bugs to a coding agent?
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <FactOrFabrication client:visible />
+    <DebugDetective client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
@@ -116,19 +165,19 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
       client:load
     />
   </div>
-  <SharePrompt text="Every AI user needs this chapter. It teaches you exactly how AI hallucinates, why it agrees with wrong answers, and how to catch it. Super practical." client:visible />
+  <SharePrompt text="This chapter on building with AI coding agents is gold. The 5 debugging strategies alone are worth it — describe symptoms, share errors, ask for explanations." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        The people who get the most value from AI are the ones who've learned exactly when to trust it and when to verify.
+        The first version is always wrong. The third is good. The fifth is great. Enjoy the loop.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Knowing when AI is wrong leads to a bigger question: what can it <em>never</em> do? Next, we explore the skills that stay stubbornly, beautifully human — and why they matter more than ever.
+        You can iterate. You can debug. But how do you know if what you're building is actually <em>good</em>? Not just functional &mdash; good. That takes something AI can't give you: taste. That's next.
       </p>
     </FadeInBlock>
   </section>
@@ -136,8 +185,8 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ BREAK ═══ -->
   <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(233,69,96,0.06) 15%, rgba(233,69,96,0.06) 85%, var(--color-cream) 100%);">
     <div class="max-w-[900px] mx-auto">
-      <BreakReveal accentColor="#E94560" toolName="Sweet Talker" client:visible>
-        <SweetTalker client:visible />
+      <BreakReveal accentColor="#E94560" toolName="Eval Framework" client:visible>
+        <EvalFramework client:visible />
       </BreakReveal>
     </div>
   </section>

@@ -21,15 +21,26 @@ interface Props {
 }
 
 const { chapter, locale = 'en' } = Astro.props;
-const prev = chapters.find((c) => c.number === chapter.number - 1);
+const rawPrev = chapters.find((c) => c.number === chapter.number - 1);
 const rawNext = chapters.find((c) => c.number === chapter.number + 1);
-// Playbook interludes: ch3 → playbook instead of ch4
-const playbooks: Record<number, { slug: string; title: string }> = {
+// Interludes: ch3 → playbook → ch4, ch6 → field-guide → ch7
+const nextInterludes: Record<number, { slug: string; title: string }> = {
   3: { slug: 'playbook', title: 'The Playbook' },
   6: { slug: 'field-guide', title: 'The Field Guide' },
+  11: { slug: 'absolutely-youre-right', title: '"Absolutely, You\'re Right!"' },
 };
-const interlude = locale === 'en' ? playbooks[chapter.number] : undefined;
-const next = interlude ? { ...rawNext, slug: interlude.slug, title: interlude.title, number: chapter.number } as typeof rawNext : rawNext;
+const prevInterludes: Record<number, { slug: string; title: string }> = {
+  4: { slug: 'playbook', title: 'The Playbook' },
+  7: { slug: 'field-guide', title: 'The Field Guide' },
+};
+const nextInterlude = locale === 'en' ? nextInterludes[chapter.number] : undefined;
+const next = nextInterlude
+  ? { slug: nextInterlude.slug, title: nextInterlude.title, number: chapter.number, hook: '', accent: chapter.accent, concepts: [] } as Chapter
+  : rawNext;
+const prevInterlude = locale === 'en' ? prevInterludes[chapter.number] : undefined;
+const prev = prevInterlude && rawPrev
+  ? { ...rawPrev, slug: prevInterlude.slug, title: prevInterlude.title, number: chapter.number } as typeof rawPrev
+  : rawPrev;
 const needsPaywall = chapter.number > 1 && locale === 'en';
 const hasBeats = chapter.beats && chapter.beats.length > 0;
 const textDir = getDir(locale);

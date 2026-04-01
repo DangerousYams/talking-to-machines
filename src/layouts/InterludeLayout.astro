@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import ScrollProgress from '../components/scroll/ScrollProgress';
+import ChapterDrawer from '../components/ui/ChapterDrawer';
+import LanguageSelector from '../components/ui/LanguageSelector.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  accent: string;
+  slug: string;
+}
+
+const { title, description, accent, slug } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={`${title} — Talking to Machines`} />
+    <meta property="og:description" content={description} />
+    <title>{title} — Talking to Machines</title>
+  </head>
+  <body class="bg-cream text-deep min-h-screen">
+    <ScrollProgress color={accent} client:load />
+
+    <!-- Floating header — same as chapters, no listen/beats/counter -->
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <ChapterDrawer currentSlug={slug} accentColor={accent} locale="en" client:load />
+            <a
+              href="/"
+              class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+              style="font-family: var(--font-heading); font-weight: 500;"
+            >
+              Talking to Machines
+            </a>
+          </div>
+          <div class="flex items-center gap-3">
+            <LanguageSelector currentLocale="en" chapterSlug={slug} />
+            <span
+              class="text-[11px] tracking-[0.08em] uppercase text-subtle/50"
+              style={`font-family: var(--font-mono); color: ${accent}; opacity: 0.6;`}
+            >
+              Bonus
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-12">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6">
+      <div class="max-w-[680px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-4 opacity-30">
+          <div class="w-8 h-px bg-deep"></div>
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0l4 4-4 4L0 4z" fill="currentColor"/></svg>
+          <div class="w-8 h-px bg-deep"></div>
+        </div>
+        <a href="/" class="text-[13px] text-subtle/60 no-underline hover:text-deep transition-colors" style="font-family: var(--font-body);">Talking to Machines</a>
+      </div>
+    </footer>
+    <Analytics />
+  </body>
+</html>

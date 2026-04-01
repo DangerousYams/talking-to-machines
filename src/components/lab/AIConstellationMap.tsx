@@ -98,7 +98,7 @@ const CLUSTERS: Cluster[] = [
       { name: 'Claude Code', ox: 0.0,   oy: -0.3,  twinkleOffset: 0.5,  twinkleSpeed: 1.1  },
       { name: 'Cursor',      ox: -0.4,  oy: 0.05,  twinkleOffset: 1.9,  twinkleSpeed: 0.8  },
       { name: 'Copilot',     ox: 0.38,  oy: 0.0,   twinkleOffset: 3.2,  twinkleSpeed: 1.0  },
-      { name: 'Windsurf',    ox: -0.15, oy: 0.4,   twinkleOffset: 4.4,  twinkleSpeed: 1.25 },
+      { name: 'Antigravity', ox: -0.15, oy: 0.4,   twinkleOffset: 4.4,  twinkleSpeed: 1.25 },
       { name: 'Replit',      ox: 0.25,  oy: 0.38,  twinkleOffset: 5.7,  twinkleSpeed: 0.9  },
     ],
   },

@@ -1,97 +1,95 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useAuth } from '../../../hooks/useAuth';
-import { streamChat, type ChatMessage } from '../../../lib/claude';
+import { streamChat } from '../../../lib/claude';
 import UnlockModal from '../../ui/UnlockModal';
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-type Phase = 'learn' | 'interview' | 'output';
-type ToolId = 'claude' | 'cursor' | 'copilot' | 'windsurf';
+type ToolId = 'claude' | 'cursor' | 'copilot' | 'antigravity';
+type Phase = 'input' | 'generating' | 'editor';
 
-interface InterviewAnswer {
-  question: string;
-  answer: string;
+interface Section {
+  id: string;
+  label: string;
   chapterRef: string;
+  chapterColor: string;
+  placeholder: string;
+  content: string;
+  isAugmenting: boolean;
+  wasAugmented: boolean;
 }
 
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+const ACCENT = '#16C79A';
+
 const TOOLS: { id: ToolId; name: string; filename: string; desc: string }[] = [
-  { id: 'claude', name: 'Claude Code', filename: 'CLAUDE.md', desc: 'Placed at the root of your project. Claude Code reads it automatically every conversation.' },
-  { id: 'cursor', name: 'Cursor', filename: '.cursorrules', desc: 'Placed at the root of your project. Cursor loads these rules as context for every AI interaction.' },
-  { id: 'copilot', name: 'GitHub Copilot', filename: '.github/copilot-instructions.md', desc: 'Lives in the .github folder. Copilot uses these instructions for code suggestions and chat.' },
-  { id: 'windsurf', name: 'Windsurf', filename: '.windsurfrules', desc: 'Placed at the root of your project. Windsurf reads these rules for all AI-assisted coding.' },
+  { id: 'claude', name: 'Claude Code', filename: 'CLAUDE.md', desc: 'Claude Code reads it automatically every conversation.' },
+  { id: 'cursor', name: 'Cursor', filename: '.cursorrules', desc: 'Cursor loads these rules as context for every AI interaction.' },
+  { id: 'copilot', name: 'GitHub Copilot', filename: '.github/copilot-instructions.md', desc: 'Copilot uses these instructions for code suggestions and chat.' },
+  { id: 'antigravity', name: 'Antigravity', filename: '.antigravityrules', desc: 'Antigravity reads these rules for all AI-assisted coding.' },
 ];
 
 const FILENAME_MAP: Record<ToolId, string> = {
   claude: 'CLAUDE.md',
   cursor: '.cursorrules',
   copilot: 'copilot-instructions.md',
-  windsurf: '.windsurfrules',
+  antigravity: '.antigravityrules',
 };
 
-const QUESTION_MAP: { chapterRef: string; label: string }[] = [
-  { chapterRef: 'Ch 1', label: 'Project overview' },
-  { chapterRef: 'Ch 1-2', label: 'AI role' },
-  { chapterRef: 'Ch 3', label: 'Context & knowledge' },
-  { chapterRef: 'Ch 5', label: 'Tools & APIs' },
-  { chapterRef: 'Ch 6', label: 'Workflow' },
-  { chapterRef: 'Ch 9', label: 'Constraints & guardrails' },
-  { chapterRef: 'Ch 10', label: 'Human decisions' },
+const SECTION_DEFS: Omit<Section, 'content' | 'isAugmenting' | 'wasAugmented'>[] = [
+  { id: 'overview', label: 'Project Overview', chapterRef: 'Ch 7', chapterColor: '#7B61FF', placeholder: 'What the project does and who it\'s for...' },
+  { id: 'stack', label: 'Stack & Setup', chapterRef: 'Ch 8', chapterColor: '#0F3460', placeholder: 'Technologies, frameworks, and setup notes...' },
+  { id: 'role', label: 'AI Role', chapterRef: 'Ch 1-2', chapterColor: '#E94560', placeholder: 'How the AI should behave on this project...' },
+  { id: 'references', label: 'Style & References', chapterRef: 'Ch 10', chapterColor: '#16C79A', placeholder: 'Design references, quality bar, visual style...' },
+  { id: 'workflow', label: 'Build Workflow', chapterRef: 'Ch 9', chapterColor: '#E94560', placeholder: 'How a productive build session should flow...' },
+  { id: 'rules', label: 'Rules & Guardrails', chapterRef: 'Ch 9', chapterColor: '#F5A623', placeholder: 'What the AI should never do...' },
+  { id: 'human', label: 'Human Decisions', chapterRef: 'Ch 10', chapterColor: '#16C79A', placeholder: 'Decisions that stay with you, the human...' },
 ];
 
 // ---------------------------------------------------------------------------
-// Example annotated CLAUDE.md
+// System prompts
 // ---------------------------------------------------------------------------
-const EXAMPLE_SECTIONS: { label: string; chapter: string; color: string; content: string }[] = [
-  { label: 'Project Overview', chapter: 'Ch 1', color: '#E94560', content: '# Pixel Quest\nA 2D platformer game built with Phaser.js. Retro pixel art style, 10 levels, boss fights. Target audience: casual gamers.' },
-  { label: 'AI Role', chapter: 'Ch 1-2', color: '#0F3460', content: '## Role\nYou are a game development partner. Think like a senior game dev who writes clean, performant code and cares about player experience.' },
-  { label: 'Context', chapter: 'Ch 3', color: '#7B61FF', content: '## Context\n- Stack: Phaser 3, TypeScript, Vite\n- Art: 16x16 pixel sprites (Aseprite)\n- Audio: BFXR for SFX, Beepbox for music\n- Physics: Arcade physics (not Matter.js)' },
-  { label: 'Tools', chapter: 'Ch 5', color: '#F5A623', content: '## Tools\n- Use Phaser\'s built-in tilemap loader\n- Sprite animations via Phaser.Animations\n- No external physics libraries' },
-  { label: 'Workflow', chapter: 'Ch 6', color: '#0EA5E9', content: '## Workflow\n1. Implement game mechanic in isolation\n2. Write a test scene to verify\n3. Integrate into main game\n4. Playtest for 2 minutes before moving on' },
-  { label: 'Guardrails', chapter: 'Ch 9', color: '#E94560', content: '## Rules\n- Never modify the asset pipeline\n- Always use TypeScript strict mode\n- No console.log in committed code\n- Keep each scene under 200 lines' },
-  { label: 'Human Decisions', chapter: 'Ch 10', color: '#16C79A', content: '## Human Only\n- Level design and difficulty curve\n- Art direction and color palette\n- Game feel (jump height, speed, knockback)\n- What\'s fun — always defer to the designer' },
-];
+const GENERATE_PROMPT = `You are an expert at writing project instruction files (like CLAUDE.md or .cursorrules) for AI coding tools. Given a one-line project description, generate a comprehensive instruction file broken into 7 sections.
 
-// ---------------------------------------------------------------------------
-// System prompt
-// ---------------------------------------------------------------------------
-const SYSTEM_PROMPT = `You are an expert AI project setup assistant helping a student create a project instruction file (like CLAUDE.md or .cursorrules) for their project. This student just completed an 11-chapter AI course called "Talking to Machines."
+You MUST respond with ONLY valid JSON in this exact format, no other text:
+{
+  "overview": "2-4 sentences: what this project is, who it's for, core goals",
+  "stack": "Bullet points: suggested technologies, frameworks, and setup. Choose appropriate modern tools for the project type. Include language, framework, styling, database if needed, and deployment.",
+  "role": "2-3 sentences: how the AI should behave — what kind of collaborator it should be, tone, priorities",
+  "references": "Bullet points: design style suggestions, reference sites/apps to emulate, quality standards. Be specific — name real sites or styles.",
+  "workflow": "Numbered steps: how a productive build session should flow. Include specify, generate, verify steps. Include acceptance criteria patterns.",
+  "rules": "Bullet points: things the AI must never do, quality rules, forbidden patterns. Be specific and practical.",
+  "human": "Bullet points: decisions that should always be made by the human, not the AI. Things like scope, design direction, user experience calls."
+}
 
-You will conduct a structured interview with exactly 7 questions. Ask ONE question at a time. After each answer, acknowledge it in one short sentence (reference which course chapter the concept comes from), then ask the next question.
+Rules:
+- Be specific and actionable, not generic
+- Suggest a real, practical stack appropriate for the project
+- The references section should name real websites or apps as design inspiration
+- The workflow should reflect iterative building (not waterfall)
+- Rules should include at least one testing/verification requirement
+- Keep each section concise but useful — quality over length
+- Do NOT use markdown formatting inside the JSON values (no #, **, etc.) — just plain text with \\n for newlines
+- ONLY output the JSON object, nothing else`;
 
-The 7 questions, in order:
+function makeAugmentPrompt(sectionId: string, sectionLabel: string): string {
+  return `You are improving one section of a project instruction file (like CLAUDE.md). The user will provide the current content of the "${sectionLabel}" section and optionally some guidance on how to improve it.
 
-1. "What are you building? Describe your project in a few sentences — what it does and who it's for."
-   (Prompt clarity — Chapter 1)
+Your job: rewrite and improve the section. Make it more specific, more actionable, and more useful. Add detail where it's thin. Remove anything generic.
 
-2. "What role should the AI play when working on this project? Is it a coding partner, a writing collaborator, a research assistant, a creative director — or something else?"
-   (Role assignment — Chapters 1-2)
-
-3. "What background knowledge or context does the AI need? Think: tech stack, domain knowledge, existing code, style preferences, reference materials."
-   (Context engineering — Chapter 3)
-
-4. "What tools, APIs, libraries, or external services are involved? List anything the AI should know how to work with."
-   (Tool use — Chapter 5)
-
-5. "Describe the typical workflow. When you sit down to work on this project with AI, what does a productive session look like? What steps happen in what order?"
-   (Agent architecture — Chapter 6)
-
-6. "What should the AI NEVER do? What are the quality standards, forbidden patterns, or safety rules?"
-   (Guardrails — Chapter 9)
-
-7. "What decisions should always stay with you — the human? What should the AI defer to you on?"
-   (The human edge — Chapter 10)
-
-After the 7th answer, say "I have everything I need." Then generate a complete project instruction file in markdown. The file should:
-- Start with a project title and one-line description
-- Have clearly labeled sections
-- Use bullet points for lists
-- Be specific and actionable (not generic advice)
-- Be 200-400 words
-- Be formatted inside a markdown code block (triple backticks)
-
-Keep your tone warm, encouraging, and concise. You're talking to a teenager who just finished learning about AI.`;
+Rules:
+- Return ONLY the improved section content as plain text
+- Use \\n for newlines, bullet points with "- " prefix for lists, numbered lists with "1. " prefix
+- Do NOT use markdown headers (#) — the section header is handled separately
+- Do NOT wrap in quotes or code blocks
+- Keep the same approximate length or slightly longer — don't pad with fluff
+- Be specific: name real tools, real patterns, real constraints
+- ONLY output the improved section text, nothing else`;
+}
 
 // ---------------------------------------------------------------------------
 // Component
@@ -100,482 +98,250 @@ export default function ProjectInstructionsBuilder() {
   const isMobile = useIsMobile();
   const { isPaid } = useAuth();
 
-  // Phase
-  const [phase, setPhase] = useState<Phase>('learn');
+  const [phase, setPhase] = useState<Phase>('input');
   const [selectedTool, setSelectedTool] = useState<ToolId>('claude');
-
-  // Interview state
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [currentResponse, setCurrentResponse] = useState('');
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<InterviewAnswer[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [projectIdea, setProjectIdea] = useState('');
+  const [sections, setSections] = useState<Section[]>([]);
   const [error, setError] = useState('');
-  const controllerRef = useRef<AbortController | null>(null);
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  // Output state
-  const [generatedFile, setGeneratedFile] = useState('');
   const [copied, setCopied] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [augmentInput, setAugmentInput] = useState<Record<string, string>>({});
 
-  // Auto-scroll chat
+  const controllerRef = useRef<AbortController | null>(null);
+
+  // Load saved idea from ch7's WhatWouldYouBuild widget
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, currentResponse]);
-
-  // Extract code block from AI response
-  const extractCodeBlock = useCallback((text: string): string | null => {
-    const match = text.match(/```(?:markdown|md)?\n?([\s\S]*?)```/);
-    return match ? match[1].trim() : null;
+    try {
+      const saved = localStorage.getItem('ttm_my_project_idea');
+      if (saved && !projectIdea) setProjectIdea(saved);
+    } catch { /* ignore */ }
   }, []);
 
-  // Send a message and stream the response
-  const sendMessage = useCallback((userText: string) => {
-    const userMsg: ChatMessage = { role: 'user', content: userText };
-    const newMessages = [...messages, userMsg];
-
-    // Guard: if we've already collected 8+ answers, force the AI to produce final output
-    if (questionIndex >= 8) {
-      const forceMsg: ChatMessage = {
-        role: 'user',
-        content: userText + '\n\n[System note: You have asked enough questions. Do NOT ask any more questions. Say "I have everything I need." and generate the final project instruction file now.]',
-      };
-      newMessages[newMessages.length - 1] = forceMsg;
-    }
-
-    setMessages(newMessages);
-    setCurrentResponse('');
-    setIsStreaming(true);
+  // ─── Generate all sections from one-liner ───
+  const handleGenerate = useCallback(() => {
+    if (!projectIdea.trim() || !isPaid) return;
+    setPhase('generating');
     setError('');
 
     let accumulated = '';
 
     controllerRef.current = streamChat({
-      messages: newMessages,
-      systemPrompt: SYSTEM_PROMPT,
-      maxTokens: 1024,
+      messages: [{ role: 'user', content: `Project: ${projectIdea.trim()}` }],
+      systemPrompt: GENERATE_PROMPT,
+      maxTokens: 2048,
       source: 'project-builder',
       skipPersona: true,
-      onChunk: (text) => {
-        accumulated += text;
-        setCurrentResponse(accumulated);
-      },
+      onChunk: (text) => { accumulated += text; },
       onDone: () => {
-        const assistantMsg: ChatMessage = { role: 'assistant', content: accumulated };
-        setMessages((prev) => [...prev, assistantMsg]);
-        setCurrentResponse('');
-        setIsStreaming(false);
-
-        // Check if this response contains the final code block
-        const codeBlock = extractCodeBlock(accumulated);
-        if (codeBlock) {
-          setGeneratedFile(codeBlock);
-          setPhase('output');
-        } else {
-          // Advance question index
-          setQuestionIndex((prev) => prev + 1);
+        try {
+          const jsonMatch = accumulated.match(/\{[\s\S]*\}/);
+          if (!jsonMatch) throw new Error('No JSON found');
+          const parsed = JSON.parse(jsonMatch[0]);
+          const newSections: Section[] = SECTION_DEFS.map((def) => ({
+            ...def,
+            content: (parsed[def.id] || def.placeholder).replace(/\\n/g, '\n'),
+            isAugmenting: false,
+            wasAugmented: false,
+          }));
+          setSections(newSections);
+          setPhase('editor');
+          setExpandedSection('overview');
+        } catch (e) {
+          setError('Failed to parse response. Try again.');
+          setPhase('input');
         }
       },
       onError: (err) => {
-        setIsStreaming(false);
         setError(err);
+        setPhase('input');
       },
     });
-  }, [messages, extractCodeBlock]);
+  }, [projectIdea, isPaid]);
 
-  // Start the interview
-  const startInterview = useCallback(() => {
-    if (!isPaid) return;
-    setPhase('interview');
-    // Send initial message to get first question
-    sendMessage('I want to create a project instruction file for my AI coding tool. Please interview me to build one.');
-  }, [isPaid, sendMessage]);
+  // ─── Augment a single section ───
+  const handleAugment = useCallback((sectionId: string) => {
+    const section = sections.find((s) => s.id === sectionId);
+    if (!section) return;
 
-  // Handle user submitting an answer
-  const handleSubmit = useCallback(() => {
-    const text = inputValue.trim();
-    if (!text || isStreaming) return;
+    const guidance = augmentInput[sectionId]?.trim();
 
-    // Track the answer
-    if (questionIndex > 0 && questionIndex <= QUESTION_MAP.length) {
-      const qMap = QUESTION_MAP[questionIndex - 1];
-      // Find the question text from the last assistant message
-      const lastAssistant = messages.filter((m) => m.role === 'assistant').pop();
-      setAnswers((prev) => [
-        ...prev,
-        {
-          question: lastAssistant?.content?.split('\n')[0] || qMap.label,
-          answer: text,
-          chapterRef: qMap.chapterRef,
-        },
-      ]);
+    setSections((prev) => prev.map((s) =>
+      s.id === sectionId ? { ...s, isAugmenting: true } : s
+    ));
+
+    let accumulated = '';
+    const userContent = guidance
+      ? `Current content:\n${section.content}\n\nImprovement guidance: ${guidance}`
+      : `Current content:\n${section.content}\n\nPlease improve this section — make it more specific and actionable.`;
+
+    streamChat({
+      messages: [{ role: 'user', content: userContent }],
+      systemPrompt: makeAugmentPrompt(section.id, section.label),
+      maxTokens: 1024,
+      source: 'project-builder',
+      skipPersona: true,
+      onChunk: (text) => { accumulated += text; },
+      onDone: () => {
+        const cleaned = accumulated.replace(/^["'`\s]+|["'`\s]+$/g, '').replace(/\\n/g, '\n');
+        setSections((prev) => prev.map((s) =>
+          s.id === sectionId ? { ...s, content: cleaned, isAugmenting: false, wasAugmented: true } : s
+        ));
+        setAugmentInput((prev) => ({ ...prev, [sectionId]: '' }));
+      },
+      onError: () => {
+        setSections((prev) => prev.map((s) =>
+          s.id === sectionId ? { ...s, isAugmenting: false } : s
+        ));
+      },
+    });
+  }, [sections, augmentInput]);
+
+  // ─── Build final markdown ───
+  const buildMarkdown = useCallback((): string => {
+    const lines: string[] = [];
+    const overviewSection = sections.find((s) => s.id === 'overview');
+    const firstLine = overviewSection?.content.split('\n')[0] || projectIdea;
+    lines.push(`# ${projectIdea}`);
+    lines.push('');
+    lines.push(overviewSection?.content || '');
+    lines.push('');
+
+    const sectionHeaders: Record<string, string> = {
+      stack: '## Stack & Setup',
+      role: '## AI Role',
+      references: '## Style & References',
+      workflow: '## Build Workflow',
+      rules: '## Rules & Guardrails',
+      human: '## Human Decisions',
+    };
+
+    for (const s of sections) {
+      if (s.id === 'overview') continue;
+      lines.push(sectionHeaders[s.id] || `## ${s.label}`);
+      lines.push('');
+      lines.push(s.content);
+      lines.push('');
     }
+    return lines.join('\n').trim();
+  }, [sections, projectIdea]);
 
-    sendMessage(text);
-    setInputValue('');
-  }, [inputValue, isStreaming, questionIndex, messages, sendMessage]);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  // Copy to clipboard
+  // ─── Copy / Download ───
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(generatedFile).then(() => {
+    navigator.clipboard.writeText(buildMarkdown()).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
-  }, [generatedFile]);
+  }, [buildMarkdown]);
 
-  // Download file
   const handleDownload = useCallback(() => {
     const filename = FILENAME_MAP[selectedTool];
-    const blob = new Blob([generatedFile], { type: 'text/markdown' });
+    const blob = new Blob([buildMarkdown()], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
-  }, [generatedFile, selectedTool]);
+  }, [buildMarkdown, selectedTool]);
 
-  // Shared styles
-  const accentColor = '#16C79A';
+  // ─── Reset ───
+  const handleReset = useCallback(() => {
+    controllerRef.current?.abort();
+    setPhase('input');
+    setSections([]);
+    setError('');
+    setExpandedSection(null);
+    setAugmentInput({});
+  }, []);
+
   const pad = isMobile ? '0.75rem' : '1.5rem 2rem';
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER
+  // ═══════════════════════════════════════════════════════════════════════════
   return (
     <div className="widget-container">
-      {/* Header */}
+      <style>{`
+        @keyframes pib-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @keyframes pib-spin { to { transform: rotate(360deg); } }
+        @keyframes pib-slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 800px; } }
+      `}</style>
+
+      {/* ─── HEADER ─── */}
       <div style={{ padding: isMobile ? '0.5rem 0.75rem' : '1.5rem 2rem 0', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingBottom: isMobile ? '0.5rem' : '1.25rem' }}>
-          <div style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, borderRadius: 8, background: `linear-gradient(135deg, ${accentColor}, ${accentColor}80)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <div style={{
+            width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, borderRadius: 8,
+            background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT}80)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+            </svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Project Instructions Builder</h3>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
+              Project Instructions Builder
+            </h3>
             {!isMobile && (
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Create a CLAUDE.md (or .cursorrules, etc.) for your project</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
+                Describe your project. Get a ready-to-use instruction file.
+              </p>
             )}
-          </div>
-          {/* Phase indicator */}
-          <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
-            {(['learn', 'interview', 'output'] as Phase[]).map((p, i) => (
-              <div
-                key={p}
-                style={{
-                  width: phase === p ? 18 : 6, height: 6, borderRadius: 3,
-                  background: phase === p ? accentColor : i < ['learn', 'interview', 'output'].indexOf(phase) ? `${accentColor}60` : 'rgba(26,26,46,0.1)',
-                  transition: 'all 0.3s',
-                }}
-              />
-            ))}
           </div>
         </div>
       </div>
 
-      {/* ─── PHASE: LEARN ─── */}
-      {phase === 'learn' && (
+      {/* ═══ PHASE: INPUT ═══ */}
+      {phase === 'input' && (
         <div style={{ padding: pad }}>
-          {/* Intro */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', lineHeight: 1.75, color: '#1A1A2E', margin: '0 0 1rem' }}>
-              Every major AI coding tool lets you write a <strong>project instruction file</strong> — a persistent document that tells the AI who it is, what you're building, and how to help. Write it once, and every future conversation starts smarter.
-            </p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', lineHeight: 1.75, color: '#1A1A2E', margin: 0 }}>
-              Same concept, different filenames:
-            </p>
-          </div>
-
-          {/* Tool tabs */}
-          <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6, marginBottom: '1.25rem' }}>
-            {TOOLS.map((tool) => (
-              <button
-                key={tool.id}
-                onClick={() => setSelectedTool(tool.id)}
-                style={{
-                  padding: '6px 12px', borderRadius: 100, border: '1px solid',
-                  cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
-                  fontWeight: 600, letterSpacing: '0.03em', transition: 'all 0.2s',
-                  background: selectedTool === tool.id ? `${accentColor}12` : 'transparent',
-                  borderColor: selectedTool === tool.id ? `${accentColor}40` : 'rgba(26,26,46,0.1)',
-                  color: selectedTool === tool.id ? accentColor : '#6B7280',
-                }}
-              >
-                {tool.filename}
-              </button>
-            ))}
-          </div>
-
-          {/* Selected tool description */}
-          <div style={{
-            background: 'rgba(26,26,46,0.02)', borderRadius: 10, padding: '0.75rem 1rem',
-            marginBottom: '1.5rem', border: '1px solid rgba(26,26,46,0.04)',
-          }}>
-            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: '#1A1A2E', margin: '0 0 4px' }}>
-              {TOOLS.find((t) => t.id === selectedTool)?.name}
-            </p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
-              {TOOLS.find((t) => t.id === selectedTool)?.desc}
-            </p>
-          </div>
-
-          {/* Annotated example */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>
-              Example: A game project
-            </p>
-            <div style={{
-              background: '#1A1A2E', borderRadius: 10, padding: isMobile ? '0.75rem' : '1.25rem',
-              overflow: 'hidden',
-            }}>
-              {EXAMPLE_SECTIONS.map((section, i) => (
-                <div key={i} style={{ marginBottom: i < EXAMPLE_SECTIONS.length - 1 ? 12 : 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <span style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700,
-                      color: section.color, background: `${section.color}20`,
-                      padding: '1px 6px', borderRadius: 100, letterSpacing: '0.05em',
-                    }}>
-                      {section.chapter}
-                    </span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#6B7280' }}>
-                      {section.label}
-                    </span>
-                  </div>
-                  <pre style={{
-                    fontFamily: 'var(--font-mono)', fontSize: '0.7rem', lineHeight: 1.6,
-                    color: '#E2E8F0', margin: 0, whiteSpace: 'pre-wrap' as const,
-                    borderLeft: `2px solid ${section.color}40`, paddingLeft: 10,
-                  }}>
-                    {section.content}
-                  </pre>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', lineHeight: 1.6, color: '#6B7280', margin: '0 0 1rem' }}>
-            This file encodes everything you learned in this course — prompting, context, tools, workflows, guardrails — into a single document your AI reads every time. Let's build yours.
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', lineHeight: 1.75, color: '#1A1A2E', margin: '0 0 1rem' }}>
+            Describe your project in one line. We'll generate a complete instruction file with all the right sections — then you can edit and improve each one.
           </p>
 
-          {!isPaid ? (
-            <UnlockModal feature="Project Instructions Builder" accentColor={accentColor} />
-          ) : (
-            <button
-              onClick={startInterview}
+          {/* Project idea input */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 6 }}>
+              Your project
+            </label>
+            <textarea
+              value={projectIdea}
+              onChange={(e) => setProjectIdea(e.target.value)}
+              placeholder="A flashcard app that quizzes me on my class notes using spaced repetition..."
+              rows={isMobile ? 2 : 2}
               style={{
-                width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none',
-                cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.85rem',
-                fontWeight: 600, letterSpacing: '0.04em', background: accentColor,
-                color: 'white', transition: 'all 0.25s',
+                width: '100%', padding: '0.75rem 1rem', fontFamily: 'var(--font-body)',
+                fontSize: '0.95rem', lineHeight: 1.6, background: '#FEFDFB',
+                border: `1.5px solid rgba(26,26,46,0.1)`, borderRadius: 10,
+                resize: 'none' as const, outline: 'none', color: '#1A1A2E',
+                boxSizing: 'border-box' as const,
+                transition: 'border-color 0.2s',
               }}
-            >
-              Build My Project Instructions
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* ─── PHASE: INTERVIEW ─── */}
-      {phase === 'interview' && (
-        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const, minHeight: isMobile ? 'auto' : 420 }}>
-          {/* Chat column */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' as const, borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)' }}>
-            {/* Progress bar */}
-            <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(26,26,46,0.04)', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, color: '#6B7280', letterSpacing: '0.06em' }}>
-                QUESTION {Math.min(questionIndex, 7)} / 7
-              </span>
-              <div style={{ flex: 1, height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
-                <div style={{
-                  height: '100%', borderRadius: 2, transition: 'width 0.5s ease',
-                  width: `${(Math.min(questionIndex, 7) / 7) * 100}%`,
-                  background: `linear-gradient(90deg, ${accentColor}, #0EA5E9)`,
-                }} />
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div style={{
-              flex: 1, overflowY: 'auto' as const, padding: isMobile ? '0.75rem' : '1rem 1.25rem',
-              maxHeight: isMobile ? 300 : 340,
-            }}>
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  style={{
-                    marginBottom: 12,
-                    display: 'flex',
-                    justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                  }}
-                >
-                  <div style={{
-                    maxWidth: '85%', padding: '0.6rem 0.9rem', borderRadius: 12,
-                    background: msg.role === 'user' ? `${accentColor}10` : 'rgba(26,26,46,0.03)',
-                    border: `1px solid ${msg.role === 'user' ? `${accentColor}20` : 'rgba(26,26,46,0.06)'}`,
-                  }}>
-                    {msg.role === 'assistant' && i === 0 ? null : (
-                      <p style={{
-                        fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65,
-                        color: '#1A1A2E', margin: 0, whiteSpace: 'pre-wrap' as const,
-                      }}>
-                        {/* Hide the initial trigger message */}
-                        {msg.role === 'user' && i === 0 ? null : msg.content}
-                      </p>
-                    )}
-                    {msg.role === 'assistant' && (
-                      <p style={{
-                        fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65,
-                        color: '#1A1A2E', margin: 0, whiteSpace: 'pre-wrap' as const,
-                      }}>
-                        {msg.content}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-
-              {/* Streaming response */}
-              {currentResponse && (
-                <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'flex-start' }}>
-                  <div style={{
-                    maxWidth: '85%', padding: '0.6rem 0.9rem', borderRadius: 12,
-                    background: 'rgba(26,26,46,0.03)', border: '1px solid rgba(26,26,46,0.06)',
-                  }}>
-                    <p style={{
-                      fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65,
-                      color: '#1A1A2E', margin: 0, whiteSpace: 'pre-wrap' as const,
-                    }}>
-                      {currentResponse}
-                      <span style={{ display: 'inline-block', width: 2, height: '1em', background: accentColor, marginLeft: 2, animation: 'pulse 1s infinite' }} />
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              <div ref={chatEndRef} />
-            </div>
-
-            {/* Input */}
-            {questionIndex <= 7 && (
-              <div style={{ padding: '0.75rem', borderTop: '1px solid rgba(26,26,46,0.06)', display: 'flex', gap: 8 }}>
-                <textarea
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Type your answer..."
-                  rows={2}
-                  style={{
-                    flex: 1, padding: '0.6rem 0.75rem', fontFamily: 'var(--font-body)',
-                    fontSize: '0.85rem', lineHeight: 1.5, background: '#FEFDFB',
-                    border: '1px solid rgba(26,26,46,0.08)', borderRadius: 8,
-                    resize: 'none' as const, outline: 'none', color: '#1A1A2E',
-                  }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = `${accentColor}40`; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
-                />
-                <button
-                  onClick={handleSubmit}
-                  disabled={!inputValue.trim() || isStreaming}
-                  style={{
-                    padding: '0 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                    background: !inputValue.trim() || isStreaming ? 'rgba(26,26,46,0.06)' : accentColor,
-                    color: !inputValue.trim() || isStreaming ? '#6B7280' : 'white',
-                    fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
-                    alignSelf: 'flex-end', height: 36, flexShrink: 0,
-                  }}
-                >
-                  {isStreaming ? '...' : 'Send'}
-                </button>
-              </div>
-            )}
-
-            {error && (
-              <div style={{ padding: '0.5rem 0.75rem' }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#E94560', margin: 0 }}>
-                  {error}
-                  <button
-                    onClick={() => { setError(''); sendMessage(messages[messages.length - 1]?.content || ''); }}
-                    style={{
-                      marginLeft: 8, padding: '2px 8px', borderRadius: 4, border: '1px solid #E9456030',
-                      background: 'transparent', color: '#E94560', cursor: 'pointer',
-                      fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
-                    }}
-                  >
-                    Retry
-                  </button>
-                </p>
-              </div>
-            )}
+              onFocus={(e) => { e.currentTarget.style.borderColor = `${ACCENT}60`; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'; }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); }
+              }}
+            />
           </div>
 
-          {/* Progress sidebar (desktop only) */}
-          {!isMobile && (
-            <div style={{ width: 220, padding: '1rem', background: 'rgba(26,26,46,0.015)', flexShrink: 0 }}>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', margin: '0 0 10px' }}>
-                Progress
-              </p>
-              {QUESTION_MAP.map((q, i) => {
-                const isDone = i < answers.length;
-                const isCurrent = i === questionIndex - 1;
-                return (
-                  <div
-                    key={i}
-                    style={{
-                      display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 10,
-                      opacity: isDone ? 1 : isCurrent ? 0.8 : 0.4,
-                    }}
-                  >
-                    <div style={{
-                      width: 16, height: 16, borderRadius: '50%', flexShrink: 0, marginTop: 2,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: isDone ? `${accentColor}15` : 'rgba(26,26,46,0.06)',
-                      border: `1.5px solid ${isDone ? accentColor : 'rgba(26,26,46,0.12)'}`,
-                      color: accentColor, fontSize: '0.55rem', fontWeight: 700,
-                    }}>
-                      {isDone ? '\u2713' : ''}
-                    </div>
-                    <div>
-                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', fontWeight: 600, color: '#1A1A2E', margin: 0 }}>
-                        {q.label}
-                      </p>
-                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: accentColor, margin: 0, opacity: 0.7 }}>
-                        {q.chapterRef}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ─── PHASE: OUTPUT ─── */}
-      {phase === 'output' && (
-        <div style={{ padding: pad }}>
           {/* Tool selector */}
-          <div style={{ marginBottom: '1rem' }}>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', margin: '0 0 8px' }}>
-              Download as
-            </p>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 6 }}>
+              Generate for
+            </label>
             <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
               {TOOLS.map((tool) => (
                 <button
                   key={tool.id}
                   onClick={() => setSelectedTool(tool.id)}
                   style={{
-                    padding: '5px 10px', borderRadius: 100, border: '1px solid',
-                    cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
-                    fontWeight: 600, transition: 'all 0.2s',
-                    background: selectedTool === tool.id ? `${accentColor}12` : 'transparent',
-                    borderColor: selectedTool === tool.id ? `${accentColor}40` : 'rgba(26,26,46,0.1)',
-                    color: selectedTool === tool.id ? accentColor : '#6B7280',
+                    padding: '6px 12px', borderRadius: 100, border: '1px solid',
+                    cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
+                    fontWeight: 600, letterSpacing: '0.03em', transition: 'all 0.2s',
+                    background: selectedTool === tool.id ? `${ACCENT}12` : 'transparent',
+                    borderColor: selectedTool === tool.id ? `${ACCENT}40` : 'rgba(26,26,46,0.1)',
+                    color: selectedTool === tool.id ? ACCENT : '#6B7280',
                   }}
                 >
                   {tool.filename}
@@ -584,78 +350,265 @@ export default function ProjectInstructionsBuilder() {
             </div>
           </div>
 
-          {/* File display */}
-          <div style={{
-            background: '#1A1A2E', borderRadius: 10, overflow: 'hidden', marginBottom: '1rem',
-          }}>
-            {/* Filename bar */}
-            <div style={{
-              padding: '0.5rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.06)',
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#A0AEC0' }}>
-                {FILENAME_MAP[selectedTool]}
-              </span>
-              <div style={{ display: 'flex', gap: 6 }}>
-                <button
-                  onClick={handleCopy}
+          {/* Section preview */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>
+              Sections we'll generate
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
+              {SECTION_DEFS.map((def) => (
+                <span
+                  key={def.id}
                   style={{
-                    padding: '3px 10px', borderRadius: 4, border: '1px solid rgba(255,255,255,0.1)',
-                    background: 'transparent', color: copied ? accentColor : '#A0AEC0',
-                    cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                    padding: '4px 10px', borderRadius: 100, fontSize: '0.7rem',
+                    fontFamily: 'var(--font-mono)', fontWeight: 600, letterSpacing: '0.03em',
+                    color: def.chapterColor, background: `${def.chapterColor}10`,
+                    border: `1px solid ${def.chapterColor}20`,
                   }}
                 >
-                  {copied ? 'Copied!' : 'Copy'}
-                </button>
-                <button
-                  onClick={handleDownload}
-                  style={{
-                    padding: '3px 10px', borderRadius: 4, border: 'none',
-                    background: accentColor, color: 'white',
-                    cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
-                  }}
-                >
-                  Download
-                </button>
-              </div>
+                  {def.label}
+                </span>
+              ))}
             </div>
-            {/* Content */}
-            <pre style={{
-              padding: isMobile ? '0.75rem' : '1.25rem', margin: 0,
-              fontFamily: 'var(--font-mono)', fontSize: '0.72rem', lineHeight: 1.7,
-              color: '#E2E8F0', whiteSpace: 'pre-wrap' as const,
-              maxHeight: 400, overflowY: 'auto' as const,
-            }}>
-              {generatedFile}
-            </pre>
           </div>
 
-          {/* Actions */}
-          <div style={{ display: 'flex', gap: 8 }}>
+          {error && (
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#E94560', marginBottom: '1rem' }}>{error}</p>
+          )}
+
+          {!isPaid ? (
+            <UnlockModal feature="Project Instructions Builder" accentColor={ACCENT} />
+          ) : (
             <button
-              onClick={() => {
-                setPhase('learn');
-                setMessages([]);
-                setAnswers([]);
-                setQuestionIndex(0);
-                setGeneratedFile('');
-                setInputValue('');
-                setCurrentResponse('');
-              }}
+              onClick={handleGenerate}
+              disabled={!projectIdea.trim()}
               style={{
-                flex: 1, padding: '12px 16px', borderRadius: 8, cursor: 'pointer',
+                width: '100%', padding: '14px 20px', borderRadius: 10, border: 'none',
+                cursor: projectIdea.trim() ? 'pointer' : 'default',
+                fontFamily: 'var(--font-mono)', fontSize: '0.85rem',
+                fontWeight: 600, letterSpacing: '0.04em',
+                background: projectIdea.trim() ? ACCENT : 'rgba(26,26,46,0.08)',
+                color: projectIdea.trim() ? 'white' : '#6B7280',
+                transition: 'all 0.25s',
+              }}
+            >
+              Generate My Instruction File
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* ═══ PHASE: GENERATING ═══ */}
+      {phase === 'generating' && (
+        <div style={{ padding: pad, textAlign: 'center' as const, minHeight: 200, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+          <div style={{
+            width: 36, height: 36, border: `3px solid ${ACCENT}20`, borderTop: `3px solid ${ACCENT}`,
+            borderRadius: '50%', animation: 'pib-spin 0.8s linear infinite',
+          }} />
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
+            Generating your instruction file...
+          </p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, maxWidth: 320, textWrap: 'balance' as any }}>
+            Building 7 sections from your project description
+          </p>
+        </div>
+      )}
+
+      {/* ═══ PHASE: EDITOR ═══ */}
+      {phase === 'editor' && (
+        <div>
+          {/* Project name bar */}
+          <div style={{
+            padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 2rem',
+            borderBottom: '1px solid rgba(26,26,46,0.06)',
+            background: 'rgba(26,26,46,0.015)',
+            display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' as const,
+          }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#6B7280', letterSpacing: '0.06em' }}>
+              {FILENAME_MAP[selectedTool]}
+            </span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#1A1A2E', fontStyle: 'italic' }}>
+              — {projectIdea.length > 60 ? projectIdea.slice(0, 60) + '...' : projectIdea}
+            </span>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 6, flexShrink: 0 }}>
+              <button
+                onClick={handleCopy}
+                style={{
+                  padding: '4px 10px', borderRadius: 6, border: '1px solid rgba(26,26,46,0.1)',
+                  background: 'transparent', cursor: 'pointer',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                  color: copied ? ACCENT : '#6B7280', transition: 'all 0.2s',
+                }}
+              >
+                {copied ? 'Copied!' : 'Copy all'}
+              </button>
+              <button
+                onClick={handleDownload}
+                style={{
+                  padding: '4px 10px', borderRadius: 6, border: 'none',
+                  background: ACCENT, color: 'white', cursor: 'pointer',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
+                }}
+              >
+                Download
+              </button>
+            </div>
+          </div>
+
+          {/* Section cards */}
+          <div style={{ padding: isMobile ? '0.5rem' : '1rem 1.5rem' }}>
+            {sections.map((section) => {
+              const isExpanded = expandedSection === section.id;
+              return (
+                <div
+                  key={section.id}
+                  style={{
+                    marginBottom: 8, borderRadius: 10, overflow: 'hidden',
+                    border: `1px solid ${isExpanded ? `${section.chapterColor}30` : 'rgba(26,26,46,0.06)'}`,
+                    transition: 'border-color 0.2s',
+                  }}
+                >
+                  {/* Section header — always visible */}
+                  <button
+                    onClick={() => setExpandedSection(isExpanded ? null : section.id)}
+                    style={{
+                      width: '100%', padding: isMobile ? '0.6rem 0.75rem' : '0.75rem 1.25rem',
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      border: 'none', cursor: 'pointer', textAlign: 'left' as const,
+                      background: isExpanded ? `${section.chapterColor}06` : 'transparent',
+                      transition: 'background 0.2s',
+                    }}
+                  >
+                    {/* Chapter badge */}
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700,
+                      color: section.chapterColor, background: `${section.chapterColor}15`,
+                      padding: '2px 6px', borderRadius: 100, letterSpacing: '0.05em', flexShrink: 0,
+                    }}>
+                      {section.chapterRef}
+                    </span>
+                    {/* Label */}
+                    <span style={{
+                      fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
+                      color: '#1A1A2E', flex: 1,
+                    }}>
+                      {section.label}
+                    </span>
+                    {/* Augmented badge */}
+                    {section.wasAugmented && (
+                      <span style={{
+                        fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
+                        color: ACCENT, background: `${ACCENT}10`, padding: '2px 6px',
+                        borderRadius: 100, letterSpacing: '0.04em',
+                      }}>
+                        improved
+                      </span>
+                    )}
+                    {/* Augmenting spinner */}
+                    {section.isAugmenting && (
+                      <div style={{
+                        width: 14, height: 14, border: `2px solid ${section.chapterColor}30`,
+                        borderTop: `2px solid ${section.chapterColor}`,
+                        borderRadius: '50%', animation: 'pib-spin 0.8s linear infinite', flexShrink: 0,
+                      }} />
+                    )}
+                    {/* Expand chevron */}
+                    <svg
+                      width="14" height="14" viewBox="0 0 16 16" fill="none"
+                      style={{ flexShrink: 0, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
+                    >
+                      <path d="M4 6l4 4 4-4" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+
+                  {/* Expanded content */}
+                  {isExpanded && (
+                    <div style={{ padding: isMobile ? '0 0.75rem 0.75rem' : '0 1.25rem 1.25rem' }}>
+                      {/* Editable textarea */}
+                      <textarea
+                        value={section.content}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSections((prev) => prev.map((s) =>
+                            s.id === section.id ? { ...s, content: val } : s
+                          ));
+                        }}
+                        rows={Math.max(3, section.content.split('\n').length + 1)}
+                        style={{
+                          width: '100%', padding: '0.75rem', fontFamily: 'var(--font-mono)',
+                          fontSize: '0.78rem', lineHeight: 1.7, background: '#FEFDFB',
+                          border: '1px solid rgba(26,26,46,0.08)', borderRadius: 8,
+                          resize: 'vertical' as const, outline: 'none', color: '#1A1A2E',
+                          boxSizing: 'border-box' as const, marginBottom: '0.5rem',
+                          transition: 'border-color 0.2s',
+                        }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = `${section.chapterColor}40`; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.08)'; }}
+                      />
+
+                      {/* Augment controls */}
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
+                        <div style={{ flex: 1 }}>
+                          <input
+                            type="text"
+                            value={augmentInput[section.id] || ''}
+                            onChange={(e) => setAugmentInput((prev) => ({ ...prev, [section.id]: e.target.value }))}
+                            placeholder="Tell AI how to improve this section..."
+                            style={{
+                              width: '100%', padding: '6px 10px', fontFamily: 'var(--font-body)',
+                              fontSize: '0.78rem', background: 'transparent',
+                              border: '1px solid rgba(26,26,46,0.08)', borderRadius: 6,
+                              outline: 'none', color: '#1A1A2E', boxSizing: 'border-box' as const,
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && augmentInput[section.id]?.trim()) { e.preventDefault(); handleAugment(section.id); }
+                            }}
+                          />
+                        </div>
+                        <button
+                          onClick={() => handleAugment(section.id)}
+                          disabled={section.isAugmenting || !augmentInput[section.id]?.trim()}
+                          style={{
+                            padding: '6px 14px', borderRadius: 6,
+                            cursor: (section.isAugmenting || !augmentInput[section.id]?.trim()) ? 'default' : 'pointer',
+                            fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
+                            background: (section.isAugmenting || !augmentInput[section.id]?.trim()) ? 'rgba(26,26,46,0.04)' : `${section.chapterColor}12`,
+                            color: (section.isAugmenting || !augmentInput[section.id]?.trim()) ? '#6B728060' : section.chapterColor,
+                            transition: 'all 0.2s', flexShrink: 0, letterSpacing: '0.03em',
+                            border: `1px solid ${(section.isAugmenting || !augmentInput[section.id]?.trim()) ? 'rgba(26,26,46,0.06)' : `${section.chapterColor}25`}`,
+                          }}
+                        >
+                          {section.isAugmenting ? 'Improving...' : 'Improve with AI'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Footer actions */}
+          <div style={{
+            padding: isMobile ? '0.5rem 0.75rem' : '0.75rem 2rem',
+            borderTop: '1px solid rgba(26,26,46,0.06)',
+            display: 'flex', gap: 8, alignItems: 'center',
+          }}>
+            <button
+              onClick={handleReset}
+              style={{
+                padding: '8px 16px', borderRadius: 8, cursor: 'pointer',
                 border: '1px solid rgba(26,26,46,0.1)', background: 'transparent',
-                fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 600,
+                fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
                 color: '#6B7280',
               }}
             >
               Start Over
             </button>
+            <span style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#6B7280', textAlign: 'right' as const }}>
+              Drop this file in your project root
+            </span>
           </div>
-
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280', marginTop: 12, lineHeight: 1.5, textAlign: 'center' as const }}>
-            Drop this file in your project root. Your AI tool will read it automatically.
-          </p>
         </div>
       )}
     </div>

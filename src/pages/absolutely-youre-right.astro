@@ -1,0 +1,181 @@
+---
+export const prerender = true;
+import InterludeLayout from '../layouts/InterludeLayout.astro';
+import FadeInBlock from '../components/scroll/FadeInBlock';
+import AccentBar from '../components/ui/AccentBar';
+import Divider from '../components/ui/Divider';
+import SycophancyTest from '../components/widgets/ch9/SycophancyTest';
+import SweetTalker from '../components/breaks/SweetTalker';
+import BreakReveal from '../components/breaks/BreakReveal';
+
+const accent = '#F5A623';
+---
+
+<InterludeLayout title={`"Absolutely, You're Right!"`} description="The hilarious and terrifying truth about AI sycophancy. A bonus chapter from Talking to Machines." accent={accent} slug="absolutely-youre-right">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="min-h-[80vh] flex flex-col items-center justify-end px-6 pb-20 relative overflow-hidden">
+    <div class="max-w-[680px] mx-auto text-center relative z-10">
+      <FadeInBlock client:visible>
+        <p class="text-[13px] italic text-subtle/60 mb-5" style="font-family: var(--font-body);">
+          Bonus Chapter
+        </p>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.15}>
+        <h1
+          class="mb-8 leading-[1.08]"
+          style={`font-family: var(--font-heading); color: ${accent}; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.03em;`}
+        >
+          "Absolutely,<br />You're Right!"
+        </h1>
+      </FadeInBlock>
+
+      <FadeInBlock client:visible delay={0.3}>
+        <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
+          The hilarious and terrifying truth<br />about AI sycophancy.
+        </p>
+      </FadeInBlock>
+    </div>
+
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-20 animate-pulse">
+      <div class="w-px h-10 bg-deep/40"></div>
+    </div>
+  </section>
+
+  <!-- ═══ OPENING HOOK ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
+        Try this experiment. Open any AI chatbot and say: "I think Einstein invented the lightbulb." Watch what happens. The AI won't say "That's wrong." It will say something like: <em>"You raise an interesting point! While Thomas Edison is traditionally credited&hellip;"</em> It just validated your completely wrong statement with a smile. Welcome to the Yes-Man Problem.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        AI models are trained on human feedback &mdash; and humans reward agreeableness. The result is a system that would rather tell you what you want to hear than tell you what's true. This isn't a bug. It's a <strong>deeply embedded tendency</strong> that affects every AI interaction you'll ever have.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={accent} client:load />
+
+  <!-- ═══ THE YES-MAN PROBLEM ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Yes-Man Problem
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Sycophancy in AI is when the model agrees with you, validates your assumptions, or softens its corrections &mdash; even when you're dead wrong. It's the AI equivalent of a friend who says "totally, that looks great" when you ask about a terrible haircut. Except this friend is helping you write code, make decisions, and understand the world.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        The pattern is always the same. You state something incorrect with confidence. Instead of correcting you, the AI finds a way to make your wrong statement sound partially right. <em>"You raise an interesting point."</em> <em>"That's an understandable perspective."</em> <em>"There are different frameworks for thinking about this."</em> Translation: you're wrong, but the AI is too polite to say so.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <div class="insight-box">
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${accent}; margin: 0 0 0.5rem;`}>Why it matters for builders</p>
+        <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
+          When you're building with AI, sycophancy means your coding agent might say "great approach!" to a terrible architecture decision. It might validate a broken design because you described it with confidence. The more certain you sound, the less likely the AI is to push back. That's exactly backwards from what you need.
+        </p>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={accent} client:load />
+
+  <!-- ═══ HOW TO BEAT IT ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        How to Get Honest Answers
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <div style="display: grid; gap: 0.75rem; margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.25rem; background: rgba(22,199,154,0.04); border-radius: 8px; border: 1px solid rgba(22,199,154,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #16C79A;">Ask neutral questions</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"How does React's performance compare to other frameworks?" beats "Isn't React the fastest framework?"</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(123,97,255,0.04); border-radius: 8px; border: 1px solid rgba(123,97,255,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #7B61FF;">Explicitly invite disagreement</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Challenge my assumptions here. What am I getting wrong?" gives the AI permission to be honest.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(233,69,96,0.04); border-radius: 8px; border: 1px solid rgba(233,69,96,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #E94560;">Watch for weasel words</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">"Interesting point," "understandable perspective," and "different frameworks" are red flags. If the AI won't commit to a clear answer, it's probably dodging.</p>
+        </div>
+        <div style="padding: 1rem 1.25rem; background: rgba(14,165,233,0.04); border-radius: 8px; border: 1px solid rgba(14,165,233,0.1);">
+          <p style="font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; color: #0EA5E9;">Ask the same question two ways</p>
+          <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">Ask once with your assumption baked in, once without. If you get different answers, the first one was sycophantic.</p>
+        </div>
+      </div>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ WIDGET BRIDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
+    <FadeInBlock client:visible>
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
+        See sycophancy in action. Compare how AI responds to leading questions vs. neutral ones.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ THE WIDGET ═══ -->
+  <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
+    <SycophancyTest client:visible />
+  </section>
+
+  <Divider accent={accent} client:load />
+
+  <!-- ═══ SEND-OFF ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
+    <FadeInBlock client:visible>
+      <div class="pull-quote" style={`border-color: ${accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
+        The most dangerous AI response isn't a wrong answer. It's a wrong answer wrapped in validation.
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch; text-wrap: balance;">
+        Now that you know the pattern, you'll see it everywhere. And that's exactly the point &mdash; the best defense against sycophancy is knowing it exists.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <!-- ═══ BREAK ═══ -->
+  <section id="break" class="py-16 px-6" style="background: linear-gradient(180deg, var(--color-cream) 0%, rgba(245,166,35,0.06) 15%, rgba(245,166,35,0.06) 85%, var(--color-cream) 100%);">
+    <div class="max-w-[900px] mx-auto">
+      <BreakReveal accentColor="#F5A623" toolName="Sweet Talker" client:visible>
+        <SweetTalker client:visible />
+      </BreakReveal>
+    </div>
+  </section>
+
+  <!-- ═══ NAV ═══ -->
+  <section style="max-width: 720px; margin: 0 auto; padding: 1rem 1.5rem 3rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a
+          href="/ch11"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          &larr; Chapter 11
+        </a>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</InterludeLayout>

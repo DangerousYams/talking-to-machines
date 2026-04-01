@@ -5,7 +5,7 @@ import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
-import ContextPacking from '../components/widgets/ch8/ContextPacking';
+import StackDecoder from '../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../components/breaks/ComplexityScore';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
@@ -33,13 +33,13 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          Orchestrating<br />Complexity
+          Speaking<br />the Language
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          Managing AI across projects bigger<br />than any context window.
+          The vocabulary of building &mdash;<br />not code, just the nouns and verbs.
         </p>
       </FadeInBlock>
     </div>
@@ -53,45 +53,84 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Here is the moment every ambitious beginner hits: you ask AI to build something real — a full game, a website with a backend, a research paper with citations — and the whole thing falls apart. Not because the AI isn't smart enough. Because the project is too big for a single conversation. You paste in a wall of requirements and twenty minutes later realize it forgot half of what you asked for.
+        You're about to sit down with a coding agent and build something. It's going to use words like "deploy," "endpoint," "component," and "schema." If those words are opaque, you'll feel lost &mdash; not because you can't build, but because you can't <em>direct</em>. This chapter gives you the decoder ring. Not how to code. How to <strong>speak the language</strong> of building.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mt-8">
-        This isn't an AI problem. It's an <strong>orchestration problem</strong>. And learning to solve it is the difference between someone who uses AI for one-off tasks and someone who uses it to build real things.
+        Think of it like driving a car. You don't need to understand combustion engines, transmission ratios, or brake fluid pressure. You need to know: gas pedal, brake, steering wheel, mirrors. The vocabulary of <em>direction</em>, not implementation.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ CONTEXT PACKING ═══ -->
+  <!-- ═══ THE STACK ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        The Art of Context Packing
+        The Stack: A Decoder Ring
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
-        Complex projects break the one-prompt approach. Context overflows, attention dilutes, errors compound. The fix isn't a better prompt — it's <strong>decomposition</strong>. Break the project into focused tasks, then for each task, carefully choose what context the AI actually needs. Too little and it hallucinates. Too much and it loses focus. The sweet spot is surgical precision.
+        Every app &mdash; from Instagram to a simple to-do list &mdash; is built from four layers. Developers call this "the stack." Here's the whole thing, demystified:
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-14">
-        Think of it like packing a suitcase. You can't bring your entire closet. You need to think about where you're going (the task), what you'll need (relevant information), and what you can leave behind (everything else). Each conversation gets exactly the context it needs — no more, no less.
-      </p>
+      <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #7B61FF; background: rgba(123,97,255,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #7B61FF;">Frontend</p>
+          <p style="margin: 0; line-height: 1.6;">What people see and touch. Buttons, text, images, animations. The dining room of a restaurant.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #0F3460; background: rgba(15,52,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #0F3460;">Backend</p>
+          <p style="margin: 0; line-height: 1.6;">The logic behind the scenes. Processes requests, checks passwords, sends emails. The kitchen.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #16C79A; background: rgba(22,199,154,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #16C79A;">Database</p>
+          <p style="margin: 0; line-height: 1.6;">Where your app remembers things. User accounts, posts, settings. The pantry and recipe book.</p>
+        </div>
+        <div style="padding: 1.25rem 1.5rem; border-left: 4px solid #E94560; background: rgba(233,69,96,0.04); border-radius: 0 8px 8px 0;">
+          <p style="font-family: var(--font-heading); font-weight: 700; margin: 0 0 0.25rem; color: #E94560;">Deployment</p>
+          <p style="margin: 0; line-height: 1.6;">How it gets on the internet. Hosting, domains, going live. Opening the restaurant doors.</p>
+        </div>
+      </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
+      <p class="text-lg leading-[1.85] mb-14">
+        That's it. Every app you've ever used is some combination of those four layers. When your coding agent says "I'll set up the backend," it means "I'll write the behind-the-scenes logic." When it says "let's deploy," it means "let's put this on the internet." You don't need to know <em>how</em> any of these layers work. You need to know <em>that</em> they exist and what they're for.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ THE AGENT AS TUTOR ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Agent as Tutor
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        Here's the part nobody tells you: <strong>the coding agent is also your teacher.</strong> Don't know what "npm" means? Ask. Confused by an error message? Paste it in and say "explain this like I'm not a developer." Want to know why the agent chose React over something else? Ask. It'll explain its reasoning in plain English, step by step, as many times as you need.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
       <div class="insight-box">
-        <p style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--color-amber); margin: 0 0 0.5rem;">Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Your first five minutes</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          The quality of your handoff artifact determines the quality of everything built downstream. A crisp schema beats a vague description every time. Garbage in, garbage out — across conversations.
+          Open your coding tool. Describe your project in plain English: "I want to build a workout tracker where I log my exercises and see my progress over time." The agent will ask clarifying questions, suggest a stack, and start building. Your first job is to <em>answer its questions</em> and <em>watch what it creates</em>.
         </p>
       </div>
     </FadeInBlock>
@@ -100,15 +139,15 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Pack a context suitcase. Can you fit what matters without overflowing?
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
+        Explore the four layers of a web app. Click to learn the vocabulary &mdash; then test yourself.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <ContextPacking client:visible />
+    <StackDecoder client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
@@ -122,19 +161,19 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
       client:load
     />
   </div>
-  <SharePrompt text="The hardest part of AI isn't prompting — it's orchestrating complex projects across multiple conversations. This course finally explains how." client:visible />
+  <SharePrompt text="This chapter explains the tech stack without any code. Frontend, backend, database, deployment — finally makes sense. Wish I'd read this years ago." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style="border-color: var(--color-navy); max-width: 50ch; margin: 0 auto 2rem;">
-        Complex projects aren't scary. They're just a series of focused conversations connected by crisp artifacts.
+        You don't need to know how the engine works. You need to know how to drive.
       </div>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
       <p class="text-lg leading-[1.85] text-center mx-auto" style="max-width: 55ch;">
-        Next up: knowing when AI is <em>wrong</em>. Hallucinations, sycophancy, and the verification habits that keep you honest.
+        You know the words. You have the idea. Now it's time to sit down with your coding agent and actually build. Next: the art of the build loop &mdash; iteration, evaluation, and what to do when things break.
       </p>
     </FadeInBlock>
   </section>

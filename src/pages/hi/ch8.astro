@@ -5,7 +5,7 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import ContextPacking from '../../components/widgets/ch8/ContextPacking';
+import StackDecoder from '../../components/widgets/ch8/StackDecoder';
 import ComplexityScore from '../../components/breaks/ComplexityScore';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
@@ -98,7 +98,7 @@ const chapter = chapters[7];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
         Context suitcase pack करो। क्या तुम overflow के बिना जो matter करता है fit कर सकते हो?
       </p>
     </FadeInBlock>
@@ -106,7 +106,7 @@ const chapter = chapters[7];
 
   <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <ContextPacking client:visible />
+    <StackDecoder client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />

@@ -5,7 +5,7 @@ import { chapters } from '../data/chapters';
 import FadeInBlock from '../components/scroll/FadeInBlock';
 import AccentBar from '../components/ui/AccentBar';
 import Divider from '../components/ui/Divider';
-import JobTransformer from '../components/widgets/ch10/JobTransformer';
+import TasteTest from '../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../components/breaks/IrreplaceableYou';
 import BreakReveal from '../components/breaks/BreakReveal';
 import SharePrompt from '../components/ui/SharePrompt';
@@ -33,13 +33,13 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
           class="mb-8 leading-[1.08]"
           style={`font-family: var(--font-heading); color: ${chapter.accent}; font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em;`}
         >
-          The Human<br />Edge
+          Taste is<br />the Product
         </h1>
       </FadeInBlock>
 
       <FadeInBlock client:visible delay={0.3}>
         <p class="text-lg md:text-xl italic text-deep/40 leading-relaxed max-w-sm mx-auto" style="font-family: var(--font-body);">
-          What AI can't replace &mdash;<br />and what it makes 10x easier.
+          AI generates options. You choose<br />the right one. That's the skill.
         </p>
       </FadeInBlock>
     </div>
@@ -53,56 +53,86 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-24 pb-16">
     <FadeInBlock client:visible>
       <p class="text-lg leading-[1.85] drop-cap" style="margin: 0;">
-        Every time a new AI capability drops, the same headline appears: <em>"Will AI replace [insert job]?"</em> It's the wrong question. AI doesn't replace humans. It replaces <strong>tasks</strong>. And when you zoom in on any job — any career, any creative pursuit — you find a mix: some tasks AI handles brilliantly, some it assists with, and some that remain stubbornly, beautifully human.
+        AI can generate a website in thirty seconds. Most of them look the same: rounded corners, gradient backgrounds, generic hero sections, placeholder stock phrases. This is <strong>AI slop</strong> &mdash; the default output when nobody exercises taste. It's technically functional. It's aesthetically forgettable. And it's what you get when you accept whatever the AI gives you without pushing for something better.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mt-8">
+        The antidote isn't more prompting. It's having standards. Knowing what good looks like. And showing the AI what you want instead of hoping it guesses right.
       </p>
     </FadeInBlock>
   </section>
 
   <Divider accent={chapter.accent} client:load />
 
-  <!-- ═══ JOBS SHAPE-SHIFT ═══ -->
+  <!-- ═══ REFERENCES ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
     <FadeInBlock client:visible>
       <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
       <h2 class="mb-8" style="font-family: var(--font-heading);">
-        Jobs Don't Disappear — They Shape-Shift
+        References Over Descriptions
       </h2>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.1}>
-      <p class="text-lg leading-[1.85] mb-10" style="margin-top: 0;">
-        When ATMs arrived, everyone predicted bank tellers would vanish. Instead, their numbers <em>increased</em> — because ATMs made branches cheaper to open, and the teller's job shifted from counting cash to building relationships. AI is doing the same thing, but faster and across every industry at once. The job title stays the same. The job <em>description</em> changes dramatically.
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        "Make it look modern and clean" tells the AI almost nothing. "Make it look like stripe.com &mdash; minimal, lots of whitespace, one accent color, big bold headings" tells it everything. <strong>References beat descriptions every time.</strong> A screenshot is worth a thousand words of prompting. Collect examples of things you love &mdash; websites, apps, designs &mdash; and feed them to the agent. "I want this layout but with these colors." "This typography but applied to a dashboard."
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.2}>
-      <p class="text-lg leading-[1.85] mb-10">
-        Data entry? AI handles that. First drafts? Shockingly good. But <em>choosing what to build</em>, <em>reading the room in a crisis</em>, <em>deciding what the data means</em> — those require judgment, empathy, and vision that AI fundamentally lacks.
+      <p class="text-lg leading-[1.85] mb-14">
+        Taste isn't innate. It's exposure plus judgment. You develop it by looking at great things and understanding <em>why</em> they're great. The more references you collect, the sharper your eye becomes. And the sharper your eye, the better your instructions to the agent.
       </p>
     </FadeInBlock>
 
     <FadeInBlock client:visible delay={0.3}>
       <div class="insight-box">
-        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>Key insight</p>
+        <p style={`font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: ${chapter.accent}; margin: 0 0 0.5rem;`}>The three evaluation lenses</p>
         <p style="font-size: 1rem; line-height: 1.75; margin: 0;">
-          It's not "humans vs. AI." It's <strong>humans with AI vs. humans without AI</strong>. The people who learn to work <em>with</em> AI tools don't lose their jobs — they do their jobs faster, better, and with capabilities they didn't have before.
+          Judge what the agent builds through three lenses. <strong>Visual:</strong> does it look like my references? <strong>Functional:</strong> does it do what I specified? <strong>User:</strong> would I actually want to use this? If the answer to any of these is no, iterate. You don't need to read the code to apply these lenses.
         </p>
       </div>
+    </FadeInBlock>
+  </section>
+
+  <Divider accent={chapter.accent} client:load />
+
+  <!-- ═══ HUMAN EDGE ═══ -->
+  <section class="max-w-[680px] mx-auto px-6 md:px-10 py-16">
+    <FadeInBlock client:visible>
+      <AccentBar color={chapter.accent} className="w-16 mb-10" client:visible />
+      <h2 class="mb-8" style="font-family: var(--font-heading);">
+        The Human Edge
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p class="text-lg leading-[1.85] mb-14" style="margin-top: 0;">
+        AI generates options. You choose the right one. That judgment &mdash; taste, empathy, vision &mdash; is your edge. AI can produce ten logo variants in a minute. But only you know which one <em>feels</em> right for your brand. AI can draft ten versions of a landing page. But only you know which one will resonate with your audience. The scarce skill isn't generation. It's <strong>curation</strong>.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p class="text-lg leading-[1.85] mb-14">
+        What AI fundamentally can't do: choose <em>what</em> to build. Decide <em>who</em> it's for. Determine <em>why</em> it matters. Set the creative vision. Read the room. Know when something is "off" even though you can't articulate why. These aren't bugs in AI &mdash; they're features of being human. And in a world where generation is free, they're more valuable than ever.
+      </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
-        Pick a career below and see exactly how AI transforms it from the inside. Not a single task disappears entirely.
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
+        Rank these options from best to worst. Then see how the experts scored them &mdash; and why.
       </p>
     </FadeInBlock>
   </section>
 
   <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <JobTransformer client:visible />
+    <TasteTest client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />
@@ -116,13 +146,13 @@ const conceptsSummary = chapter.concepts.map(c => c.name).join(', ');
       client:load
     />
   </div>
-  <SharePrompt text="This course doesn't hype AI or fear-monger about jobs. It maps exactly which skills stay human and which get augmented. Refreshingly honest." client:visible />
+  <SharePrompt text="'AI generates options. You choose the right one.' This chapter on taste, references, and the human edge is the most important lesson in building with AI." client:visible />
 
   <!-- ═══ SEND-OFF ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 py-24">
     <FadeInBlock client:visible>
       <div class="pull-quote" style={`border-color: ${chapter.accent}; max-width: 50ch; margin: 0 auto 2rem;`}>
-        AI generates options. You choose the right one. That judgment — taste, empathy, vision, first principles — is your edge.
+        In a world where generation is free, taste is the only thing that matters.
       </div>
     </FadeInBlock>
 

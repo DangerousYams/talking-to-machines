@@ -5,7 +5,7 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import TerminalPlayground from '../../components/widgets/ch7/TerminalPlayground';
+import WhatWouldYouBuild from '../../components/widgets/ch7/WhatWouldYouBuild';
 import ShipIt from '../../components/breaks/ShipIt';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
@@ -98,7 +98,7 @@ const chapter = chapters[6];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
         Lihat loop-nya beraksi. Ketik permintaan dan saksikan Claude Code bekerja.
       </p>
     </FadeInBlock>
@@ -106,7 +106,7 @@ const chapter = chapters[6];
 
   <!-- ═══ THE WIDGET ═══ -->
   <section id="terminal-playground" class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <TerminalPlayground client:visible />
+    <WhatWouldYouBuild client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />

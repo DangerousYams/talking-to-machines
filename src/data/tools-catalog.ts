@@ -67,6 +67,16 @@ export const toolsCatalog: Tool[] = [
     zeroBudget: true,
   },
 
+  {
+    name: 'Luma Uni-1',
+    category: 'image-gen',
+    categories: ['image-gen', 'image-edit'],
+    desc: 'Reasoning-first image model — thinks before it renders, #1 for editing',
+    pricing: 'freemium',
+    detail: 'The first image model that reasons through intent before generating pixels. An autoregressive transformer over a shared language-image token space — it understands what you mean, not just what you typed. #1 human-preference Elo for editing & reference-based generation, beating Nano Banana 2 and GPT Image 1.5. Temporal, causal, and spatial reasoning lets it make edits that require actual understanding (not just surface swaps). 76+ art styles, multi-turn refinement. ~$0.09/image at 2K — 10-30% cheaper than competitors. Free tier via Dream Machine.',
+    zeroBudget: true,
+  },
+
   // ═══ IMAGE EDITING ═══
   {
     name: 'Photoroom',

@@ -102,8 +102,8 @@ import { chapters } from '../data/chapters';
 
       {[
         { label: 'Part I', title: 'The Fundamentals', color: 'var(--color-accent-red)', chapters: chapters.slice(0, 3), playbook: { slug: 'playbook', title: 'The Playbook', hook: '9 power prompts to take with you' } },
-        { label: 'Part II', title: 'The Toolkit', color: 'var(--color-sky)', chapters: chapters.slice(3, 7), playbook: { slug: 'field-guide', title: 'The Field Guide', hook: 'Prompt recipes for every tool type' } },
-        { label: 'Part III', title: 'The Craft', color: 'var(--color-teal)', chapters: chapters.slice(7, 11) },
+        { label: 'Part II', title: 'The Toolkit', color: 'var(--color-sky)', chapters: chapters.slice(3, 6), playbook: { slug: 'field-guide', title: 'The Field Guide', hook: 'Prompt recipes for every tool type' } },
+        { label: 'Part III', title: 'The Builder\'s Path', color: 'var(--color-teal)', chapters: chapters.slice(6, 11) },
       ].map((part) => (
         <div class="mb-16">
           <div class="mb-6 flex items-baseline gap-4">
@@ -173,6 +173,29 @@ import { chapters } from '../data/chapters';
           )}
         </div>
       ))}
+
+      <!-- Bonus chapter -->
+      <a
+        href="/absolutely-youre-right"
+        class="group flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-200 hover:bg-deep/[0.02] mb-12"
+        style="text-decoration: none; border: 1px dashed rgba(245,166,35,0.2);"
+      >
+        <span class="text-[12px] font-semibold flex-shrink-0 w-6 text-right" style="font-family: var(--font-mono); color: var(--color-amber); opacity: 0.6;">
+          &#9733;
+        </span>
+        <span class="text-[17px] md:text-[18px] font-bold leading-tight" style="font-family: var(--font-heading); color: var(--color-amber);">
+          "Absolutely, You're Right!"
+        </span>
+        <span class="text-[15px] text-deep/45 leading-snug hidden md:inline" style="font-family: var(--font-body); font-style: italic;">
+          The hilarious truth about AI sycophancy
+        </span>
+        <svg
+          width="14" height="14" viewBox="0 0 16 16" fill="none"
+          class="flex-shrink-0 opacity-0 -translate-x-2 transition-all duration-200 group-hover:opacity-30 group-hover:translate-x-0 ml-auto"
+        >
+          <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
 
       <!-- Toolbox + Course links -->
       <div class="flex flex-col sm:flex-row gap-4 mt-8">

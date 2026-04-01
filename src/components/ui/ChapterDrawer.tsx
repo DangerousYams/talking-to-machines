@@ -240,7 +240,7 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                           borderRadius: 8,
                           textDecoration: 'none',
                           background: currentSlug === 'playbook' ? '#16C79A0A' : 'transparent',
-                          borderLeft: '2px dashed #16C79A30',
+                          borderLeft: '2px dashed #16C79A60',
                           transition: 'background 0.15s ease',
                         }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(22,199,154,0.04)'; }}
@@ -258,10 +258,48 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         <span style={{
                           fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                           fontWeight: currentSlug === 'playbook' ? 600 : 400,
-                          color: currentSlug === 'playbook' ? '#16C79A' : '#16C79A90',
-                          lineHeight: 1.3, fontStyle: 'italic',
+                          color: currentSlug === 'playbook' ? '#16C79A' : '#16C79A',
+                          lineHeight: 1.3, fontStyle: 'italic', fontWeight: 500,
                         }}>
                           The Playbook
+                        </span>
+                      </a>
+                    )}
+                    {ch.number === 11 && locale === 'en' && (
+                      <a
+                        key="absolutely-youre-right"
+                        href="/absolutely-youre-right"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          padding: '7px 10px',
+                          margin: '2px 0',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          background: currentSlug === 'absolutely-youre-right' ? '#F5A6230A' : 'transparent',
+                          borderLeft: '2px dashed #F5A62360',
+                          transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(245,166,35,0.04)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'absolutely-youre-right' ? '#F5A6230A' : 'transparent'; }}
+                      >
+                        <span style={{
+                          width: 22, height: 22, borderRadius: '50%',
+                          background: currentSlug === 'absolutely-youre-right' ? '#F5A623' : 'rgba(245,166,35,0.1)',
+                          color: currentSlug === 'absolutely-youre-right' ? '#fff' : '#F5A623',
+                          fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                        }}>
+                          &#9733;
+                        </span>
+                        <span style={{
+                          fontFamily: 'var(--font-body)', fontSize: '0.78rem',
+                          fontWeight: currentSlug === 'absolutely-youre-right' ? 600 : 400,
+                          color: currentSlug === 'absolutely-youre-right' ? '#F5A623' : '#F5A623',
+                          lineHeight: 1.3, fontStyle: 'italic', fontWeight: 500,
+                        }}>
+                          "Absolutely, You're Right!"
                         </span>
                       </a>
                     )}
@@ -278,7 +316,7 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                           borderRadius: 8,
                           textDecoration: 'none',
                           background: currentSlug === 'field-guide' ? '#F5A6230A' : 'transparent',
-                          borderLeft: '2px dashed #F5A62330',
+                          borderLeft: '2px dashed #F5A62360',
                           transition: 'background 0.15s ease',
                         }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(245,166,35,0.04)'; }}
@@ -296,8 +334,8 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         <span style={{
                           fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                           fontWeight: currentSlug === 'field-guide' ? 600 : 400,
-                          color: currentSlug === 'field-guide' ? '#F5A623' : '#F5A62390',
-                          lineHeight: 1.3, fontStyle: 'italic',
+                          color: currentSlug === 'field-guide' ? '#F5A623' : '#F5A623',
+                          lineHeight: 1.3, fontStyle: 'italic', fontWeight: 500,
                         }}>
                           The Field Guide
                         </span>

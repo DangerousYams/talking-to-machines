@@ -5,7 +5,7 @@ import { chapters } from '../../data/chapters';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
 import AccentBar from '../../components/ui/AccentBar';
 import Divider from '../../components/ui/Divider';
-import JobTransformer from '../../components/widgets/ch10/JobTransformer';
+import TasteTest from '../../components/widgets/ch10/TasteTest';
 import IrreplaceableYou from '../../components/breaks/IrreplaceableYou';
 import BreakReveal from '../../components/breaks/BreakReveal';
 import SharePrompt from '../../components/ui/SharePrompt';
@@ -92,7 +92,7 @@ const chapter = chapters[9];
   <!-- ═══ WIDGET BRIDGE ═══ -->
   <section class="max-w-[680px] mx-auto px-6 md:px-10 pt-4 pb-8">
     <FadeInBlock client:visible>
-      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="max-width: 45ch; font-family: var(--font-body);">
+      <p class="text-lg leading-[1.85] text-center mx-auto italic text-deep/50" style="font-family: var(--font-body); text-wrap: balance;">
         Wähle unten einen Beruf und sieh genau, wie KI ihn von innen heraus transformiert. Keine einzige Aufgabe verschwindet ganz.
       </p>
     </FadeInBlock>
@@ -100,7 +100,7 @@ const chapter = chapters[9];
 
   <!-- ═══ THE WIDGET ═══ -->
   <section class="max-w-[900px] mx-auto px-6 md:px-10 py-8">
-    <JobTransformer client:visible />
+    <TasteTest client:visible />
   </section>
 
   <Divider accent={chapter.accent} client:load />

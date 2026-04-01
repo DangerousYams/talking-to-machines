@@ -270,6 +270,45 @@ const TOOLS: ToolConfig[] = [
   },
 ];
 
+// ═══════════════════════════════════════════════
+// TOOL RECOMMENDATIONS PER CATEGORY
+// ═══════════════════════════════════════════════
+
+interface ToolLink { name: string; url: string; note: string; free?: boolean }
+
+const TOOL_RECS: Record<ToolType, ToolLink[]> = {
+  image: [
+    { name: 'Midjourney', url: 'https://www.midjourney.com', note: 'Best artistic quality' },
+    { name: 'Gemini (Nano Banana 2)', url: 'https://gemini.google.com', note: 'Free tier, best text in images', free: true },
+    { name: 'Luma Uni-1', url: 'https://lumalabs.ai/dream-machine', note: 'Reasoning-first, #1 for edits', free: true },
+  ],
+  video: [
+    { name: 'Seedance (Dreamina)', url: 'https://dreamina.capcut.com', note: 'Best motion & consistency', free: true },
+    { name: 'Luma Dream Machine', url: 'https://lumalabs.ai/dream-machine', note: 'Cinematic HDR, start/end frames', free: true },
+    { name: 'Kling', url: 'https://klingai.com', note: 'Longest clips, generous free tier', free: true },
+  ],
+  music: [
+    { name: 'Suno', url: 'https://suno.com', note: 'Full songs with vocals from text', free: true },
+    { name: 'Udio', url: 'https://www.udio.com', note: 'High-fidelity audio', free: true },
+  ],
+  code: [
+    { name: 'Claude Code', url: 'https://claude.ai/code', note: 'Terminal agent — reads, writes, runs code' },
+    { name: 'Cursor', url: 'https://www.cursor.com', note: 'AI code editor with full codebase context', free: true },
+  ],
+  research: [
+    { name: 'Perplexity', url: 'https://www.perplexity.ai', note: 'AI search with cited sources', free: true },
+    { name: 'NotebookLM', url: 'https://notebooklm.google.com', note: 'Grounded in your docs, zero hallucination', free: true },
+  ],
+  writing: [
+    { name: 'Claude', url: 'https://claude.ai', note: 'Best long-form writing quality', free: true },
+    { name: 'Poe', url: 'https://poe.com', note: '200+ models, compare outputs side-by-side', free: true },
+  ],
+  presentation: [
+    { name: 'Genspark', url: 'https://www.genspark.ai', note: 'Generates slides directly', free: true },
+    { name: 'Claude', url: 'https://claude.ai', note: 'Write slide content, then paste into your deck', free: true },
+  ],
+};
+
 const SYS_PROMPT = `You are a prompt engineering expert. Write ready-to-use prompts for AI tools.
 
 Rules:
@@ -513,6 +552,48 @@ export default function PromptFramer() {
                         margin: '0.4rem 0 0', opacity: 0.45, textAlign: 'center' as const }}>
                         Hit Generate for a tailored prompt
                       </p>
+                    )}
+
+                    {/* Tool recommendations — shown after AI generates */}
+                    {live && !isGen && (
+                      <div style={{ marginTop: '0.65rem', padding: '10px 12px', borderRadius: 8,
+                        background: config.color + '06', border: `1px solid ${config.color}15` }}>
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600,
+                          letterSpacing: '0.06em', textTransform: 'uppercase' as const,
+                          color: config.color, margin: '0 0 6px', opacity: 0.7 }}>
+                          Now go use it
+                        </p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                          {TOOL_RECS[config.key]?.map(tool => (
+                            <a key={tool.name} href={tool.url} target="_blank" rel="noopener noreferrer"
+                              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 8px',
+                                borderRadius: 6, background: 'white', border: '1px solid rgba(26,26,46,0.06)',
+                                textDecoration: 'none', transition: 'all 0.15s', cursor: 'pointer' }}
+                              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = config.color + '35'; }}
+                              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(26,26,46,0.06)'; }}>
+                              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 600,
+                                color: 'var(--color-deep)' }}>
+                                {tool.name}
+                              </span>
+                              {tool.free && (
+                                <span style={{ padding: '1px 5px', borderRadius: 100, background: '#16C79A18',
+                                  fontFamily: 'var(--font-mono)', fontSize: '0.52rem', fontWeight: 700,
+                                  color: '#16C79A', letterSpacing: '0.04em' }}>
+                                  FREE
+                                </span>
+                              )}
+                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--color-subtle)',
+                                marginLeft: 'auto', flexShrink: 0 }}>
+                                {tool.note}
+                              </span>
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={config.color}
+                                strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.5 }}>
+                                <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+                              </svg>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
