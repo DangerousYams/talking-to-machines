@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import PracticePlayground from '../components/PracticePlayground';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -15,6 +16,7 @@ import PracticePlayground from '../components/PracticePlayground';
     <title>The Sandbox — Talking to Machines</title>
   </head>
   <body class="bg-cream text-deep min-h-screen">
+    <PaywallGate chapterTitle="The Sandbox" accentColor="#F5A623" client:load />
 
     <!-- ═══ NAV BAR ═══ -->
     <nav style="padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; max-width: 1000px; margin: 0 auto;">

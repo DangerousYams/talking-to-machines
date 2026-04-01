@@ -52,6 +52,11 @@ export async function sendMagicLink(
       }),
     });
 
+    if (!res.ok) {
+      const body = await res.text();
+      console.error(`Resend API error ${res.status}: ${body}`);
+    }
+
     return res.ok;
   } catch (err) {
     console.error('Failed to send magic link:', err);

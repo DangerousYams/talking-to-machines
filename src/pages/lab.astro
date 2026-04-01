@@ -25,6 +25,7 @@ import DecompositionTree from '../components/lab/DecompositionTree';
 import HallucinationDetector from '../components/lab/HallucinationDetector';
 // Ch10 experiments
 import HumanAISpectrum from '../components/lab/HumanAISpectrum';
+import PaywallGate from '../components/ui/PaywallGate';
 
 const experiments = [
   { num: '01', title: 'Prompt Morph', chapter: 'Ch 1', color: 'text-accent-red/60', desc: 'Watch a vague prompt transform into a precise one, building block by building block.', tech: 'CSS transitions with staggered segment reveals. Colors map to the five prompt building blocks.' },
@@ -56,6 +57,7 @@ const experiments = [
     <title>The Lab — Talking to Machines</title>
   </head>
   <body class="bg-cream text-deep min-h-screen">
+    <PaywallGate chapterTitle="The Lab" accentColor="#7B61FF" client:load />
 
     <!-- ═══ HEADER ═══ -->
     <header class="fixed top-0 left-0 right-0 z-40">

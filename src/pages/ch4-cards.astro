@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Ch4CardDeck from '../components/cards/Ch4CardDeck';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import Ch4CardDeck from '../components/cards/Ch4CardDeck';
     <meta name="description" content="A field guide to every AI tool you can actually use right now. Explore image generators, video creators, coding tools, research agents, and learn to chain them together. An interactive, card-based lesson." />
   </head>
   <body class="card-deck-page">
+    <PaywallGate chapterTitle="The AI Landscape" accentColor="#0EA5E9" client:load />
     <Ch4CardDeck client:load />
   </body>
 </html>

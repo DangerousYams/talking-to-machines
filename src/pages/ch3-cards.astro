@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Ch3CardDeck from '../components/cards/Ch3CardDeck';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import Ch3CardDeck from '../components/cards/Ch3CardDeck';
     <meta name="description" content="Understanding context windows, tokens, and system prompts — the invisible architecture behind every AI conversation." />
   </head>
   <body class="card-deck-page">
+    <PaywallGate chapterTitle="Context Engineering" accentColor="#7B61FF" client:load />
     <Ch3CardDeck client:load />
   </body>
 </html>

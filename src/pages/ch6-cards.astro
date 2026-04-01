@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Ch6CardDeck from '../components/cards/Ch6CardDeck';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import Ch6CardDeck from '../components/cards/Ch6CardDeck';
     <meta name="description" content="Design, wire, and deploy AI agents. Learn agent architecture, failure modes, and multi-agent collaboration." />
   </head>
   <body class="card-deck-page">
+    <PaywallGate chapterTitle="Building Agents" accentColor="#E94560" client:load />
     <Ch6CardDeck client:load />
   </body>
 </html>

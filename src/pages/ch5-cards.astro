@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Ch5CardDeck from '../components/cards/Ch5CardDeck';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import Ch5CardDeck from '../components/cards/Ch5CardDeck';
     <meta name="description" content="What happens when AI can take actions, not just generate text. Tool use, function calling, and the autonomy question." />
   </head>
   <body class="card-deck-page">
+    <PaywallGate chapterTitle="Give It Tools" accentColor="#F5A623" client:load />
     <Ch5CardDeck client:load />
   </body>
 </html>

@@ -3,6 +3,7 @@ export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import ToolsCollection from '../components/ToolsCollection';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <!doctype html>
@@ -16,6 +17,7 @@ import ToolsCollection from '../components/ToolsCollection';
     <title>Toolbox — Talking to Machines</title>
   </head>
   <body class="bg-cream text-deep min-h-screen">
+    <PaywallGate chapterTitle="Toolbox" accentColor="#F5A623" client:load />
 
     <!-- Header -->
     <header style="padding: 20px 24px; display: flex; align-items: center; gap: 8px;">

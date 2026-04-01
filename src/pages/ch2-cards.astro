@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Ch2CardDeck from '../components/cards/Ch2CardDeck';
+import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <html lang="en">
@@ -12,6 +13,7 @@ import Ch2CardDeck from '../components/cards/Ch2CardDeck';
     <meta name="description" content="Master advanced prompting techniques: the Socratic flip, few-shot prompting, chain-of-thought, and prompt debugging. An interactive, card-based lesson." />
   </head>
   <body class="card-deck-page">
+    <PaywallGate chapterTitle="The Art of Asking" accentColor="#0F3460" client:load />
     <Ch2CardDeck client:load />
   </body>
 </html>
