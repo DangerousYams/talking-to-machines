@@ -94,7 +94,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // Send email
-  const origin = new URL(request.url).origin;
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || new URL(request.url).host;
+  const proto = request.headers.get('x-forwarded-proto') || 'https';
+  const origin = `${proto}://${host}`;
   await sendMagicLink(normalizedEmail, magicToken, origin);
 
   return successResponse();
