@@ -1,0 +1,550 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import ScrollProgress from '../../components/scroll/ScrollProgress';
+import ChapterDrawer from '../../components/ui/ChapterDrawer';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import { guides } from '../../data/guides';
+import type { Guide } from '../../data/guides';
+
+export function getStaticPaths() {
+  return guides.map((g) => ({
+    params: { slug: g.slug },
+    props: { guide: g },
+  }));
+}
+
+interface Props {
+  guide: Guide;
+}
+
+const { guide } = Astro.props;
+
+// Find prev/next guides
+const idx = guides.findIndex((g) => g.slug === guide.slug);
+const prev = idx > 0 ? guides[idx - 1] : null;
+const next = idx < guides.length - 1 ? guides[idx + 1] : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`${guide.subtitle} — A quick guide from Talking to Machines.`} />
+    <meta property="og:title" content={`${guide.title} — Quick Guide`} />
+    <meta property="og:description" content={guide.subtitle} />
+    <title>{guide.title} — Quick Guide — Talking to Machines</title>
+
+    <style define:vars={{ accent: guide.accent }}>
+      /* ─── Print ─── */
+      @page {
+        size: letter;
+        margin: 0.6in 0.65in;
+      }
+
+      @media print {
+        html, body {
+          font-size: 10pt !important;
+          line-height: 1.5 !important;
+          background: white !important;
+          color: #1A1A2E !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
+        body::before { display: none !important; }
+
+        .no-print, header.site-header, footer.site-footer,
+        .scroll-progress { display: none !important; }
+
+        .print-only { display: block !important; }
+
+        * {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+
+        .guide-page {
+          padding: 0 !important;
+          max-width: none !important;
+          margin: 0 !important;
+        }
+
+        .guide-hero {
+          padding: 0 0 10pt !important;
+          margin-bottom: 12pt !important;
+          border-bottom: 1.5pt solid var(--accent) !important;
+        }
+
+        .guide-hero h1 { font-size: 18pt !important; margin-bottom: 3pt !important; }
+        .guide-hero .guide-subtitle { font-size: 10pt !important; }
+        .guide-number-badge { width: 22pt !important; height: 22pt !important; font-size: 9pt !important; }
+
+        .guide-what { font-size: 10pt !important; padding: 8pt 10pt !important; margin-bottom: 12pt !important; }
+
+        .guide-sections { gap: 10pt !important; }
+
+        .guide-section {
+          break-inside: avoid !important;
+        }
+
+        .guide-section h3 { font-size: 10pt !important; margin-bottom: 4pt !important; padding-bottom: 3pt !important; }
+        .guide-section .section-body { font-size: 9.5pt !important; margin-bottom: 4pt !important; }
+        .guide-section li { font-size: 9.5pt !important; line-height: 1.45 !important; margin-bottom: 2pt !important; }
+        .guide-note, .guide-ai-note { font-size: 9pt !important; padding: 6pt 8pt !important; margin-top: 4pt !important; }
+        .guide-ai-note-label { font-size: 7pt !important; }
+
+        .guide-try-this { padding: 8pt 10pt !important; margin-top: 12pt !important; }
+        .guide-try-this strong { font-size: 8pt !important; }
+        .guide-try-this p { font-size: 9.5pt !important; }
+
+        .print-footer {
+          display: flex !important;
+          margin-top: 14pt !important;
+          padding-top: 8pt !important;
+          font-size: 7.5pt !important;
+        }
+
+        code {
+          font-size: 0.88em !important;
+          padding: 0.5pt 3pt !important;
+          background: rgba(123, 97, 255, 0.08) !important;
+        }
+      }
+
+      /* ─── Screen styles ─── */
+      .guide-page {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 3rem;
+      }
+
+      .guide-hero {
+        text-align: center;
+        padding: 2.5rem 0 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .guide-number-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: white;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+      }
+
+      .guide-category-label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+        opacity: 0.7;
+      }
+
+      .guide-hero h1 {
+        font-family: var(--font-heading);
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+        font-weight: 800;
+        color: var(--color-deep);
+        margin: 0 0 0.4rem;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+
+      .guide-subtitle {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--color-subtle);
+        margin: 0;
+        line-height: 1.5;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .guide-what {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.65;
+        color: var(--color-deep);
+        background: linear-gradient(135deg, rgba(123, 97, 255, 0.04), rgba(14, 165, 233, 0.04));
+        border: 1px solid rgba(26, 26, 46, 0.06);
+        border-radius: 12px;
+        padding: 1.15rem 1.35rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .guide-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .guide-section h3 {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 0 0 0.65rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(26, 26, 46, 0.06);
+        letter-spacing: -0.01em;
+      }
+
+      .section-body {
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        line-height: 1.65;
+        color: var(--color-deep);
+        margin: 0 0 0.75rem;
+        max-width: 60ch;
+      }
+
+      .section-body code {
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        background: rgba(123, 97, 255, 0.08);
+        padding: 1px 6px;
+        border-radius: 4px;
+        color: var(--color-purple);
+      }
+
+      .guide-section ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .guide-section li {
+        position: relative;
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        color: var(--color-deep);
+        padding-left: 1.1rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .guide-section li::before {
+        content: '›';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 0.95em;
+        opacity: 0.6;
+      }
+
+      .guide-section li code, .guide-note code, .guide-ai-note code {
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        background: rgba(123, 97, 255, 0.08);
+        padding: 1px 6px;
+        border-radius: 4px;
+        color: var(--color-purple);
+      }
+
+      /* ─── Note callout ─── */
+      .guide-note {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: var(--color-deep);
+        background: color-mix(in srgb, var(--accent) 4%, var(--color-cream));
+        border: 1px solid color-mix(in srgb, var(--accent) 10%, transparent);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin-top: 0.65rem;
+        opacity: 0.9;
+      }
+
+      /* ─── AI "Claude Code can do this" callout ─── */
+      .guide-ai-note {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: var(--color-deep);
+        background: linear-gradient(135deg, rgba(233, 69, 96, 0.04), rgba(245, 166, 35, 0.04));
+        border: 1px solid rgba(233, 69, 96, 0.12);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin-top: 0.65rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .guide-ai-note::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, var(--color-accent-red), var(--color-amber));
+        border-radius: 3px 0 0 3px;
+      }
+
+      .guide-ai-note-label {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-accent-red);
+        margin-bottom: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* ─── Try This ─── */
+      .guide-try-this {
+        background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 4%, transparent), color-mix(in srgb, var(--accent) 8%, transparent));
+        border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+        border-radius: 12px;
+        padding: 1.15rem 1.35rem;
+        margin-top: 2.5rem;
+      }
+
+      .guide-try-this strong {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.35rem;
+      }
+
+      .guide-try-this p {
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        color: var(--color-deep);
+        margin: 0;
+      }
+
+      /* ─── Actions bar ─── */
+      .guide-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(26, 26, 46, 0.06);
+      }
+
+      .guide-actions a,
+      .guide-actions button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border-radius: 100px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        border: 1px solid rgba(26, 26, 46, 0.12);
+        background: transparent;
+        color: var(--color-deep);
+        min-height: 44px;
+      }
+
+      .guide-actions a:hover,
+      .guide-actions button:hover {
+        border-color: rgba(26, 26, 46, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26, 26, 46, 0.06);
+      }
+
+      .guide-actions .primary {
+        background: var(--accent);
+        color: white;
+        border: none;
+        font-weight: 700;
+      }
+
+      .guide-actions .primary:hover { opacity: 0.9; }
+
+      .print-only { display: none; }
+
+      .print-footer {
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 0.5pt solid rgba(26, 26, 46, 0.15);
+        padding-top: 8pt;
+        font-family: var(--font-mono);
+        color: var(--color-subtle);
+      }
+    </style>
+  </head>
+
+  <body class="bg-cream text-deep min-h-screen">
+    <div class="scroll-progress">
+      <ScrollProgress color={guide.accent} client:load />
+    </div>
+
+    <!-- Site header -->
+    <header class="site-header fixed top-0 left-0 right-0 z-40 transition-all duration-500">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <ChapterDrawer currentSlug={`guides/${guide.slug}`} accentColor={guide.accent} locale="en" client:load />
+            <a
+              href="/"
+              class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+              style="font-family: var(--font-heading); font-weight: 500;"
+            >
+              Talking to Machines
+            </a>
+          </div>
+          <div class="flex items-center gap-3">
+            <a
+              href="/guides"
+              class="text-[11px] tracking-[0.08em] uppercase no-underline text-subtle/50 hover:text-deep transition-colors"
+              style="font-family: var(--font-mono);"
+            >
+              All Guides
+            </a>
+            <span
+              class="text-[11px] tracking-[0.08em] uppercase text-subtle/50"
+              style={`font-family: var(--font-mono); color: ${guide.accent}; opacity: 0.6;`}
+            >
+              Guide {guide.number}
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-12">
+      <div class="guide-page">
+
+        <!-- Hero -->
+        <div class="guide-hero">
+          <FadeInBlock client:visible>
+            <div class="guide-number-badge" style={`background: ${guide.accent};`}>
+              {guide.number}
+            </div>
+            <p class="guide-category-label" style={`color: ${guide.accent};`}>{guide.categoryLabel}</p>
+            <h1>{guide.title}</h1>
+            <p class="guide-subtitle">{guide.subtitle}</p>
+          </FadeInBlock>
+        </div>
+
+        <!-- What it is -->
+        <FadeInBlock client:visible delay={0.1}>
+          <div class="guide-what" set:html={guide.whatItIs} />
+        </FadeInBlock>
+
+        <!-- Sections -->
+        <div class="guide-sections">
+          {guide.sections.map((section, i) => (
+            <FadeInBlock client:visible delay={0.1 + i * 0.04}>
+              <div class="guide-section">
+                <h3>{section.heading}</h3>
+                {section.body && <p class="section-body" set:html={section.body} />}
+                {section.items && (
+                  <ul>
+                    {section.items.map((item) => (
+                      <li set:html={item} />
+                    ))}
+                  </ul>
+                )}
+                {section.note && (
+                  <div class="guide-note" set:html={section.note} />
+                )}
+                {section.aiNote && (
+                  <div class="guide-ai-note">
+                    <div class="guide-ai-note-label">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14v1a4 4 0 0 1-8 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                      Claude Code can do this for you
+                    </div>
+                    <span set:html={section.aiNote} />
+                  </div>
+                )}
+              </div>
+            </FadeInBlock>
+          ))}
+        </div>
+
+        <!-- Try This -->
+        <FadeInBlock client:visible delay={0.3}>
+          <div class="guide-try-this">
+            <strong>Try this now</strong>
+            <p set:html={guide.tryThis} />
+          </div>
+        </FadeInBlock>
+
+        <!-- Print-only footer -->
+        <div class="print-only print-footer">
+          <span>Talking to Machines — Quick Guide #{guide.number}</span>
+          <span>talkingto.machines</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="guide-actions no-print">
+          {prev && (
+            <a href={`/guides/${prev.slug}`}>
+              &larr; Guide {prev.number}
+            </a>
+          )}
+
+          <button onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Save as PDF
+          </button>
+
+          <a href="/guides" class="primary">
+            All Guides
+          </a>
+
+          {next && (
+            <a href={`/guides/${next.slug}`}>
+              Guide {next.number} &rarr;
+            </a>
+          )}
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer py-20 px-6">
+      <div class="max-w-[680px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-4 opacity-30">
+          <div class="w-8 h-px bg-deep"></div>
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0l4 4-4 4L0 4z" fill="currentColor"/></svg>
+          <div class="w-8 h-px bg-deep"></div>
+        </div>
+        <a href="/" class="text-[13px] text-subtle/60 no-underline hover:text-deep transition-colors" style="font-family: var(--font-body);">Talking to Machines</a>
+      </div>
+    </footer>
+    <Analytics />
+  </body>
+</html>

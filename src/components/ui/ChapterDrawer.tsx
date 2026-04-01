@@ -350,7 +350,7 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
             <div style={{ height: 1, background: 'rgba(0,0,0,0.05)', margin: '0 20px' }} />
             <nav style={{ padding: '12px 10px 24px' }}>
               <a
-                href="/course"
+                href="/guides"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -366,8 +366,10 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
               >
-                <span style={{ fontSize: '0.85rem', width: 22, textAlign: 'center' }}>🎓</span>
-                Live Course
+                <span style={{ fontSize: '0.85rem', width: 22, textAlign: 'center' }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /><line x1="9" y1="10" x2="15" y2="10" /></svg>
+                </span>
+                Quick Guides
               </a>
               <a
                 href="/toolbox"

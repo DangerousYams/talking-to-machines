@@ -1,0 +1,396 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import ScrollProgress from '../../components/scroll/ScrollProgress';
+import ChapterDrawer from '../../components/ui/ChapterDrawer';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import { guides, guideCategories } from '../../data/guides';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="10 downloadable quick guides — AI models, Claude Code, Vercel, Supabase, Stripe, and more. No jargon, no assumptions." />
+    <meta property="og:title" content="Quick Guides — Talking to Machines" />
+    <meta property="og:description" content="10 beginner-friendly guides for AI tools and infrastructure. Save as PDF." />
+    <title>Quick Guides — Talking to Machines</title>
+
+    <style>
+      .guides-page {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4rem;
+      }
+
+      .guides-hero {
+        text-align: center;
+        padding: 3.5rem 0 2rem;
+      }
+
+      .guides-hero h1 {
+        font-family: var(--font-heading);
+        font-size: clamp(2.5rem, 8vw, 3.5rem);
+        font-weight: 800;
+        color: var(--color-deep);
+        margin: 0 0 0.75rem;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+      }
+
+      .guides-hero p {
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        color: var(--color-subtle);
+        margin: 0 auto;
+        line-height: 1.6;
+        max-width: 460px;
+      }
+
+      .guides-intro {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 1.25rem;
+      }
+
+      .guides-intro-stat {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        opacity: 0.6;
+      }
+
+      .guides-intro-stat .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      /* ─── Category Groups ─── */
+      .guide-category-group {
+        margin-top: 2.5rem;
+      }
+
+      .guide-category-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .guide-category-bar {
+        width: 3px;
+        height: 20px;
+        border-radius: 2px;
+      }
+
+      .guide-category-title {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--color-deep);
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+
+      .guide-category-count {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--color-subtle);
+        opacity: 0.5;
+        letter-spacing: 0.06em;
+      }
+
+      /* ─── Guide Cards ─── */
+      .guide-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .guide-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.15rem 1.35rem;
+        border-radius: 14px;
+        border: 1px solid rgba(26, 26, 46, 0.07);
+        background: white;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        overflow: hidden;
+      }
+
+      .guide-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        border-radius: 3px 0 0 3px;
+        transition: width 0.3s ease;
+      }
+
+      .guide-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(26, 26, 46, 0.12);
+        box-shadow: 0 8px 30px rgba(26, 26, 46, 0.06);
+      }
+
+      .guide-card:hover::before {
+        width: 4px;
+      }
+
+      .guide-card-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .guide-card-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .guide-card-title {
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--color-deep);
+        margin: 0 0 2px;
+        line-height: 1.25;
+      }
+
+      .guide-card-subtitle {
+        font-family: var(--font-body);
+        font-size: 0.78rem;
+        color: var(--color-subtle);
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      .guide-card-arrow {
+        flex-shrink: 0;
+        color: var(--color-subtle);
+        opacity: 0.3;
+        transition: all 0.3s;
+      }
+
+      .guide-card:hover .guide-card-arrow {
+        opacity: 0.7;
+        transform: translateX(3px);
+      }
+
+      .guide-card-badge {
+        flex-shrink: 0;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 100px;
+        opacity: 0.7;
+      }
+
+      /* ─── Bottom note ─── */
+      .guides-footer-note {
+        text-align: center;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(26, 26, 46, 0.06);
+      }
+
+      .guides-footer-note p {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: var(--color-subtle);
+        margin: 0 auto;
+        max-width: 400px;
+        line-height: 1.55;
+      }
+
+      /* ─── Mobile ─── */
+      @media (max-width: 640px) {
+        .guide-card {
+          padding: 1rem;
+          gap: 0.75rem;
+        }
+
+        .guide-card-badge {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-cream text-deep min-h-screen">
+    <ScrollProgress color="#E94560" client:load />
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
+      <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
+        <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <ChapterDrawer currentSlug="guides" accentColor="#E94560" locale="en" client:load />
+            <a
+              href="/"
+              class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
+              style="font-family: var(--font-heading); font-weight: 500;"
+            >
+              Talking to Machines
+            </a>
+          </div>
+          <span
+            class="text-[11px] tracking-[0.08em] uppercase text-subtle/50"
+            style="font-family: var(--font-mono); color: #E94560; opacity: 0.6;"
+          >
+            Appendix
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-12">
+      <div class="guides-page">
+
+        <!-- Hero -->
+        <div class="guides-hero">
+          <FadeInBlock client:visible>
+            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.25rem;">
+              {['#0EA5E9', '#7B61FF', '#E94560', '#F5A623', '#16C79A'].map((c) => (
+                <div style={`width: 6px; height: 6px; border-radius: 50%; background: ${c}; opacity: 0.5;`}></div>
+              ))}
+            </div>
+          </FadeInBlock>
+
+          <FadeInBlock client:visible delay={0.05}>
+            <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #E94560; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+              Appendix
+            </p>
+          </FadeInBlock>
+
+          <FadeInBlock client:visible delay={0.1}>
+            <h1>Quick Guides</h1>
+          </FadeInBlock>
+
+          <FadeInBlock client:visible delay={0.15}>
+            <p>
+              Beginner-friendly reference guides you can save as PDF.<br />
+              The practical setup stuff the course doesn't cover.
+            </p>
+          </FadeInBlock>
+
+          <FadeInBlock client:visible delay={0.2}>
+            <div class="guides-intro">
+              {guideCategories.map((cat) => (
+                <span class="guides-intro-stat">
+                  <span class="dot" style={`background: ${cat.accent};`}></span>
+                  {cat.label}
+                </span>
+              ))}
+            </div>
+          </FadeInBlock>
+        </div>
+
+        <!-- Guide categories + cards -->
+        {guideCategories.map((cat, catIdx) => {
+          const catGuides = guides.filter((g) => g.category === cat.key);
+          return (
+            <FadeInBlock client:visible delay={0.15 + catIdx * 0.08}>
+              <div class="guide-category-group">
+                <div class="guide-category-header">
+                  <div class="guide-category-bar" style={`background: ${cat.accent};`}></div>
+                  <h2 class="guide-category-title">{cat.label}</h2>
+                  <span class="guide-category-count">{catGuides.length} guides</span>
+                </div>
+
+                <div class="guide-cards">
+                  {catGuides.map((guide) => (
+                    <a href={`/guides/${guide.slug}`} class="guide-card" style={`--card-accent: ${guide.accent};`}>
+                      <div style={`position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: ${guide.accent}; border-radius: 3px 0 0 3px;`}></div>
+                      <div class="guide-card-number" style={`background: ${guide.accent};`}>
+                        {guide.number}
+                      </div>
+                      <div class="guide-card-content">
+                        <h3 class="guide-card-title">{guide.title}</h3>
+                        <p class="guide-card-subtitle">{guide.subtitle}</p>
+                      </div>
+                      <span class="guide-card-badge" style={`background: ${guide.accent}10; color: ${guide.accent};`}>
+                        PDF
+                      </span>
+                      <svg class="guide-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </FadeInBlock>
+          );
+        })}
+
+        <!-- Footer note -->
+        <FadeInBlock client:visible delay={0.4}>
+          <div class="guides-footer-note">
+            <p style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-subtle); opacity: 0.5; margin-bottom: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;">
+              How to save
+            </p>
+            <p>
+              Open any guide and click <strong>Save as PDF</strong>.<br />
+              No jargon, no assumed knowledge — just clear steps.
+            </p>
+          </div>
+        </FadeInBlock>
+
+        <!-- Back to course -->
+        <div style="display: flex; justify-content: center; margin-top: 2.5rem;">
+          <FadeInBlock client:visible delay={0.45}>
+            <a
+              href="/"
+              style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px; transition: all 0.3s;"
+            >
+              &larr; Back to Course
+            </a>
+          </FadeInBlock>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6">
+      <div class="max-w-[680px] mx-auto text-center">
+        <div class="flex items-center justify-center gap-3 mb-4 opacity-30">
+          <div class="w-8 h-px bg-deep"></div>
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 0l4 4-4 4L0 4z" fill="currentColor"/></svg>
+          <div class="w-8 h-px bg-deep"></div>
+        </div>
+        <a href="/" class="text-[13px] text-subtle/60 no-underline hover:text-deep transition-colors" style="font-family: var(--font-body);">Talking to Machines</a>
+      </div>
+    </footer>
+    <Analytics />
+  </body>
+</html>
