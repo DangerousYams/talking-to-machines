@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Beat } from '../../data/chapters';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 
 interface Props {
   beats: Beat[];
@@ -103,9 +104,11 @@ export default function BeatProgress({ beats, accentColor, chapterSlug }: Props)
   const totalBeats = beats.length;
   const progress = totalBeats > 0 ? completedCount / totalBeats : 0;
 
-  // SVG ring dimensions
-  const size = 36;
-  const strokeWidth = 3;
+  const isMobile = useIsMobile();
+
+  // SVG ring dimensions — smaller on mobile to fit header
+  const size = isMobile ? 28 : 36;
+  const strokeWidth = isMobile ? 2.5 : 3;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference * (1 - progress);
@@ -150,7 +153,7 @@ export default function BeatProgress({ beats, accentColor, chapterSlug }: Props)
           alignItems: 'center',
           justifyContent: 'center',
           fontFamily: 'var(--font-mono)',
-          fontSize: '0.55rem',
+          fontSize: isMobile ? '0.45rem' : '0.55rem',
           fontWeight: 700,
           color: completedCount === totalBeats ? accentColor : '#6B7280',
           width: size,

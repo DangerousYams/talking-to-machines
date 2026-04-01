@@ -7,6 +7,7 @@ import ChapterDrawer from '../components/ui/ChapterDrawer';
 import LanguageSelector from '../components/ui/LanguageSelector.astro';
 import PaywallGate from '../components/ui/PaywallGate';
 import QuotaCounter from '../components/ui/QuotaCounter';
+import QuotaBanner from '../components/ui/QuotaBanner';
 import PageViewTracker from '../components/analytics/PageViewTracker';
 import ScrollDepthTracker from '../components/analytics/ScrollDepthTracker';
 import { ListenController } from '../components/chapter/ChapterBeats';
@@ -83,7 +84,7 @@ const isTranslated = locale !== 'en';
               Talking to Machines
             </a>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 md:gap-3">
             <LanguageSelector currentLocale={locale} chapterSlug={chapter.slug} />
             <span class:list={[{ hidden: isTranslated }]}><ListenButton accentColor={chapter.accent} client:load /></span>
             <!-- QuotaCounter removed from header — only shown when user runs out -->
@@ -97,7 +98,7 @@ const isTranslated = locale !== 'en';
                 />
               </span>
             )}
-            <span class="text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
+            <span class="hidden md:inline text-[11px] tracking-[0.08em] uppercase text-subtle/50" style="font-family: var(--font-mono);">
               {chapter.number} / {chapters.length}
             </span>
           </div>
@@ -108,6 +109,8 @@ const isTranslated = locale !== 'en';
     {needsPaywall && (
       <PaywallGate chapterTitle={chapter.title} accentColor={chapter.accent} client:load />
     )}
+
+    <QuotaBanner client:load />
 
     <main class="pt-12">
       <slot />

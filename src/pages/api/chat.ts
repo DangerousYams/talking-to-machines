@@ -22,6 +22,9 @@ const MODEL_MAP: Record<string, string> = {
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
+// Single daily quota for all paid features (shared counter)
+const DAILY_QUOTA = 50;
+
 const MAX_TOKENS_MAP: Record<string, number> = {
   'prompt-roast': 512,
   'block-gen': 200,
@@ -248,7 +251,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (isPaidUser) {
       // Paid users: deduct from daily quota
       const quotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
-      const quota = await checkAndIncrQuota(kv, quotaKey, 30);
+      const quota = await checkAndIncrQuota(kv, quotaKey, DAILY_QUOTA);
       if (!quota.allowed) {
         return jsonResponse(
           { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -281,7 +284,7 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ error: 'This feature requires full access' }, 401);
     }
     const blockQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
-    const quota = await checkAndIncrQuota(kv, blockQuotaKey, 30);
+    const quota = await checkAndIncrQuota(kv, blockQuotaKey, DAILY_QUOTA);
     if (!quota.allowed) {
       return jsonResponse(
         { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -301,7 +304,7 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ error: 'This feature requires full access' }, 401);
     }
     const pbQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
-    const quota = await checkAndIncrQuota(kv, pbQuotaKey, 30);
+    const quota = await checkAndIncrQuota(kv, pbQuotaKey, DAILY_QUOTA);
     if (!quota.allowed) {
       return jsonResponse(
         { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -321,7 +324,7 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ error: 'This feature requires full access' }, 401);
     }
     const agentQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
-    const quota = await checkAndIncrQuota(kv, agentQuotaKey, 60);
+    const quota = await checkAndIncrQuota(kv, agentQuotaKey, DAILY_QUOTA);
     if (!quota.allowed) {
       return jsonResponse(
         { error: 'Daily limit reached. Resets at midnight UTC.' },
@@ -341,7 +344,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const defaultQuotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
-  const quota = await checkAndIncrQuota(kv, defaultQuotaKey, 30);
+  const quota = await checkAndIncrQuota(kv, defaultQuotaKey, DAILY_QUOTA);
   if (!quota.allowed) {
     return jsonResponse(
       { error: 'Daily limit reached. Resets at midnight UTC.' },

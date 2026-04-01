@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
+import { useIsMobile } from '../../../hooks/useMediaQuery';
 
 // ═══════════════════════════════════════════════
 // TYPES
@@ -267,17 +268,17 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
       moveDir = dist > TANK_R * 5 ? 1 : 0;
       wantFire = dist < myRng * 1.2;
       aimTh = 0.4;
-      if (tank.isPlayer) tank.thought = moveDir ? 'Closing distance...' : 'Point blank — engaging!';
+      tank.thought = moveDir ? 'Closing distance...' : 'Point blank — engaging!';
       break;
     case 'defensive':
       if (dist < myRng * 0.45) { wantBody = toFoe + Math.PI; moveDir = 1;
-        if (tank.isPlayer) tank.thought = 'Too close — retreating...';
+        tank.thought = 'Too close — retreating...';
       } else if (dist < myRng * 0.8) {
         wantBody = toFoe + (Math.PI / 2) * (game.frame % 280 < 140 ? 1 : -1);
         moveDir = 1;
-        if (tank.isPlayer) tank.thought = 'Maintaining safe distance...';
+        tank.thought = 'Maintaining safe distance...';
       } else { wantBody = toFoe; moveDir = 0;
-        if (tank.isPlayer) tank.thought = 'Holding position...';
+        tank.thought = 'Holding position...';
       }
       wantFire = dist < myRng;
       aimTh = 0.22;
@@ -285,11 +286,11 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     case 'flanker': {
       const ideal = myRng * 0.6;
       if (dist > ideal * 1.5) { wantBody = toFoe + Math.PI * 0.25;
-        if (tank.isPlayer) tank.thought = 'Approaching at angle...';
+        tank.thought = 'Approaching at angle...';
       } else if (dist < ideal * 0.55) { wantBody = toFoe + Math.PI * 0.75;
-        if (tank.isPlayer) tank.thought = 'Too close — peeling off...';
+        tank.thought = 'Too close — peeling off...';
       } else { wantBody = toFoe + Math.PI / 2;
-        if (tank.isPlayer) tank.thought = 'Circling target...';
+        tank.thought = 'Circling target...';
       }
       moveDir = 1;
       wantFire = dist < myRng;
@@ -299,11 +300,11 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     case 'sniper': {
       const ideal = myRng * 0.78;
       if (dist < ideal * 0.55) { wantBody = toFoe + Math.PI; moveDir = 1;
-        if (tank.isPlayer) tank.thought = 'Too close — pulling back...';
+        tank.thought = 'Too close — pulling back...';
       } else if (dist > ideal * 1.15) { wantBody = toFoe; moveDir = 1;
-        if (tank.isPlayer) tank.thought = 'Moving into range...';
+        tank.thought = 'Moving into range...';
       } else { wantBody = toFoe; moveDir = 0;
-        if (tank.isPlayer) tank.thought = 'In position — lining up shot...';
+        tank.thought = 'In position — lining up shot...';
       }
       wantFire = dist < myRng;
       aimTh = 0.1;
@@ -311,9 +312,9 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     }
     case 'balanced':
       if (hpPct > 0.5) { wantBody = toFoe; moveDir = dist > myRng * 0.35 ? 1 : 0; aimTh = 0.35;
-        if (tank.isPlayer) tank.thought = moveDir ? 'Health good — advancing...' : 'In range — engaging...';
+        tank.thought = moveDir ? 'Health good — advancing...' : 'In range — engaging...';
       } else { wantBody = dist < myRng * 0.45 ? toFoe + Math.PI : toFoe; moveDir = dist < myRng * 0.45 ? 1 : 0; aimTh = 0.2;
-        if (tank.isPlayer) tank.thought = moveDir ? 'Taking damage — falling back...' : 'Playing cautious...';
+        tank.thought = moveDir ? 'Taking damage — falling back...' : 'Playing cautious...';
       }
       wantFire = dist < myRng;
       break;
@@ -326,7 +327,7 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     const side = ((game.frame + (tank.isPlayer ? 0 : 70)) % 220 < 110) ? 1 : -1;
     wantBody = toFoe + (Math.PI * 0.55) * side;
     moveDir = 1;
-    if (tank.isPlayer) tank.thought = 'Close quarters — strafing!';
+    tank.thought = 'Close quarters — strafing!';
   }
 
   // ── Enemy intelligence upgrades ──
@@ -344,12 +345,14 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
           moveDir = 1;
           aimTh = 0.35;
           wantFire = true;
+          tank.thought = 'Shell cracked — going all in!';
         }
         // Smarter retreats: prefer backing toward arena center when fleeing
         if (moveDir === 1 && Math.abs(angleDiff(wantBody, toFoe + Math.PI)) < 0.6) {
           const toCenterX = W / 2 - tank.x, toCenterY = H / 2 - tank.y;
           const toCenter = Math.atan2(toCenterY, toCenterX);
           wantBody = toFoe + Math.PI * 0.7 + angleDiff(toFoe + Math.PI, toCenter) * 0.3;
+          tank.thought = 'Retreating to center...';
         }
         break;
       }
@@ -381,6 +384,7 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
             if (Math.abs(bDiff) < 0.5) {
               wantBody = bAngle + (Math.PI / 2) * (bDiff > 0 ? 1 : -1);
               moveDir = 1;
+              tank.thought = 'Phasing — dodging incoming!';
               break;
             }
           }
@@ -407,6 +411,7 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
           const stepDir = game.frame % 300 < 150 ? 1 : -1;
           wantBody = toFoe + (Math.PI / 2) * stepDir;
           moveDir = 1;
+          tank.thought = 'Repositioning after shot...';
         }
 
         // Bullet dodge (wider detection range)
@@ -421,6 +426,7 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
             if (Math.abs(bDiff) < 0.4) {
               wantBody = bAngle + (Math.PI / 2) * (bDiff > 0 ? 1 : -1);
               moveDir = 1;
+              tank.thought = 'Incoming — sidestepping!';
               break;
             }
           }
@@ -440,7 +446,7 @@ function runAI(tank: TankState, foe: TankState, game: GameState): boolean {
     tank.prevX = tank.x; tank.prevY = tank.y;
   }
   if (tank.stuckFrames > 0) { wantBody = tank.stuckAngle; moveDir = 1; tank.stuckFrames--;
-    if (tank.isPlayer) tank.thought = 'Path blocked — rerouting...';
+    tank.thought = 'Path blocked — rerouting...';
   }
 
   // Rotate body
@@ -997,6 +1003,9 @@ export default function AgentArena() {
   const gameRef = useRef<GameState | null>(null);
   const animRef = useRef(0);
   const previewRef = useRef<HTMLCanvasElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
+  const prevThoughtsRef = useRef({ player: '', enemy: '' });
+  const isMobile = useIsMobile();
   const previewAnimRef = useRef(0);
   const statsRef = useRef(stats);
   const strategyRef = useRef(strategy);
@@ -1026,12 +1035,31 @@ export default function AgentArena() {
     setPhase('battle');
   }, [tankName, stats, strategy, oppIdx]);
 
+  const exitBattle = useCallback(() => {
+    cancelAnimationFrame(animRef.current);
+    gameRef.current = null;
+    setResult(null);
+    setPhase('design');
+  }, []);
+
+  // Lock body scroll during fullscreen battle on mobile
+  useEffect(() => {
+    if (phase === 'battle' && isMobile) {
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = ''; };
+    }
+  }, [phase, isMobile]);
+
   // Battle loop
   useEffect(() => {
     if (phase !== 'battle') return;
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+
+    // Reset brain log
+    prevThoughtsRef.current = { player: '', enemy: '' };
+    if (logRef.current) logRef.current.innerHTML = '';
 
     const dpr = window.devicePixelRatio || 1;
     const resize = () => {
@@ -1056,6 +1084,29 @@ export default function AgentArena() {
         if (g.countdownTimer <= 0) { g.countdown--; g.countdownTimer = 60; }
       } else if (!g.over) {
         stepGame(g);
+        // Track thoughts for brain log
+        const logEl = logRef.current;
+        if (logEl) {
+          const prev = prevThoughtsRef.current;
+          const eName = g.enemy.config.name;
+          const eCol = getEnemyColor(eName);
+          if (g.player.thought && g.player.thought !== prev.player) {
+            prev.player = g.player.thought;
+            const d = document.createElement('div');
+            d.style.cssText = `padding:2px 0;display:flex;align-items:baseline;gap:6px;`;
+            d.innerHTML = `<span style="color:${P_COLOR};opacity:0.5;font-size:0.55rem;flex-shrink:0;">▸ ${(tankName || 'AGENT').toUpperCase()}</span><span style="color:${P_COLOR};opacity:0.85;">${g.player.thought}</span>`;
+            logEl.appendChild(d);
+          }
+          if (g.enemy.thought && g.enemy.thought !== prev.enemy) {
+            prev.enemy = g.enemy.thought;
+            const d = document.createElement('div');
+            d.style.cssText = `padding:2px 0;display:flex;align-items:baseline;gap:6px;`;
+            d.innerHTML = `<span style="color:${eCol};opacity:0.5;font-size:0.55rem;flex-shrink:0;">◂ ${eName.toUpperCase()}</span><span style="color:${eCol};opacity:0.65;">${g.enemy.thought}</span>`;
+            logEl.appendChild(d);
+          }
+          while (logEl.childElementCount > 80) logEl.removeChild(logEl.firstChild!);
+          if (g.frame % 4 === 0) logEl.scrollTop = logEl.scrollHeight;
+        }
       } else {
         g.endTimer--;
         // Keep updating particles during end
@@ -1314,7 +1365,7 @@ export default function AgentArena() {
       {/* Body */}
       <div style={{
         background: '#FEFDFB',
-        padding: '24px 28px 28px',
+        padding: isMobile ? '16px 14px 20px' : '24px 28px 28px',
         backgroundImage: 'radial-gradient(circle, rgba(26,26,46,0.018) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
       }}>
@@ -1339,8 +1390,9 @@ export default function AgentArena() {
         />
       </div>
 
-      {/* Tank Preview (left) + Stats (right) — centered together */}
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', justifyContent: 'center',
+      {/* Tank Preview (left) + Stats (right) — centered together, stacked on mobile */}
+      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' as const : 'row' as const,
+        gap: isMobile ? '0.75rem' : '1.5rem', alignItems: 'center', justifyContent: 'center',
         marginBottom: '1.5rem' }}>
         {/* Tank Preview */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 }}>
@@ -1481,22 +1533,99 @@ export default function AgentArena() {
   );
 
   // ─── BATTLE PHASE ───
-  if (phase === 'battle') return shell(
-    <div ref={containerRef} style={{ maxWidth: W, margin: '0 auto' }}>
-      <canvas ref={canvasRef} style={{ display: 'block', borderRadius: 8, width: '100%' }} />
-    </div>,
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: P_COLOR }}>
-        {tankName || 'Agent'}
-      </span>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
-        VS
-      </span>
-      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: oppColor }}>
-        {OPPONENTS[oppIdx].name}
-      </span>
-    </div>
-  );
+  if (phase === 'battle') {
+    if (isMobile) {
+      return (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: '#1A1A2E',
+          display: 'flex', flexDirection: 'column' as const,
+          touchAction: 'none',
+        }}>
+          {/* Header */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '10px 14px', flexShrink: 0,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 6, height: 6, background: P_COLOR, borderRadius: 2,
+                transform: 'rotate(45deg)', boxShadow: `0 0 6px ${P_COLOR}60` }} />
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 700,
+                letterSpacing: '0.12em', textTransform: 'uppercase' as const,
+                color: 'rgba(255,255,255,0.4)' }}>Arena</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: P_COLOR }}>
+                {tankName || 'Agent'}
+              </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.42rem', color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
+                VS
+              </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: oppColor }}>
+                {OPPONENTS[oppIdx].name}
+              </span>
+            </div>
+            <button onClick={exitBattle} aria-label="Exit battle"
+              style={{
+                width: 32, height: 32, borderRadius: '50%', border: 'none',
+                background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)',
+                fontSize: '0.85rem', cursor: 'pointer', display: 'flex',
+                alignItems: 'center', justifyContent: 'center',
+              }}>
+              ✕
+            </button>
+          </div>
+          {/* Canvas */}
+          <div ref={containerRef} style={{
+            flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '0 4px',
+          }}>
+            <canvas ref={canvasRef} style={{ display: 'block', width: '100%', maxWidth: W, borderRadius: 6 }} />
+          </div>
+          {/* Brain Log */}
+          <div style={{
+            flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' as const,
+            padding: '10px 14px 16px',
+          }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexShrink: 0,
+            }}>
+              <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', fontWeight: 700,
+                letterSpacing: '0.1em', textTransform: 'uppercase' as const,
+                color: 'rgba(255,255,255,0.2)' }}>
+                Battle Log
+              </span>
+            </div>
+            <div ref={logRef} style={{
+              flex: 1, minHeight: 0, overflowY: 'auto' as const,
+              fontFamily: 'var(--font-mono)', fontSize: '0.72rem', lineHeight: 1.7,
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+              padding: '4px 0',
+            }} />
+          </div>
+        </div>
+      );
+    }
+
+    return shell(
+      <div ref={containerRef} style={{ maxWidth: W, margin: '0 auto' }}>
+        <canvas ref={canvasRef} style={{ display: 'block', borderRadius: 8, width: '100%' }} />
+      </div>,
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: P_COLOR }}>
+          {tankName || 'Agent'}
+        </span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
+          VS
+        </span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 700, color: oppColor }}>
+          {OPPONENTS[oppIdx].name}
+        </span>
+      </div>
+    );
+  }
 
   // ─── RESULT PHASE ───
   // Find next unbeaten opponent (or a different one to suggest)

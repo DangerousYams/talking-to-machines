@@ -25,6 +25,7 @@ export interface StreamChatOptions {
 // ---------------------------------------------------------------------------
 type QuotaListener = (remaining: number, limit: number, reset: string) => void;
 const quotaListeners = new Set<QuotaListener>();
+let lastKnownRemaining: number | null = null;
 
 export function onQuotaChange(fn: QuotaListener): () => void {
   quotaListeners.add(fn);
@@ -32,6 +33,7 @@ export function onQuotaChange(fn: QuotaListener): () => void {
 }
 
 function emitQuota(remaining: number, limit: number, reset: string) {
+  lastKnownRemaining = remaining;
   quotaListeners.forEach((fn) => fn(remaining, limit, reset));
 }
 
@@ -56,6 +58,12 @@ function readQuotaHeaders(res: Response) {
 export function streamChat(options: StreamChatOptions): AbortController {
   const { messages, systemPrompt, maxTokens, source, skipPersona, onChunk, onDone, onError, onQuotaUpdate } = options;
   const controller = new AbortController();
+
+  // Short-circuit if we already know quota is exhausted — avoids loading states
+  if (lastKnownRemaining !== null && lastKnownRemaining <= 0) {
+    setTimeout(() => onError('Daily AI limit reached — resets at midnight UTC.'), 0);
+    return controller;
+  }
 
   (async () => {
     try {

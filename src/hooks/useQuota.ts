@@ -9,7 +9,7 @@ interface UseQuotaReturn {
 
 export function useQuota(): UseQuotaReturn {
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [limit, setLimit] = useState(30);
+  const [limit, setLimit] = useState(50);
   const [resetTime, setResetTime] = useState<Date | null>(null);
 
   useEffect(() => {

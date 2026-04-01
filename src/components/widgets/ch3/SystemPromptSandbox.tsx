@@ -104,6 +104,7 @@ export default function SystemPromptSandbox() {
       messages: apiMessages,
       systemPrompt: systemPrompt || undefined,
       maxTokens: 512,
+      source: 'break',
       onChunk: (text) => {
         accumulated += text;
         setStreamingText(accumulated);
