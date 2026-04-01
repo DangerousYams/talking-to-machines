@@ -173,7 +173,7 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
           margin: '0 0 0.5rem',
           lineHeight: 1.2,
         }}>
-          {chapterTitle}
+          Get full access
         </h2>
 
         <p style={{
