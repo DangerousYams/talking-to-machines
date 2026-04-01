@@ -97,6 +97,7 @@ export const POST: APIRoute = async ({ request }) => {
   const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || new URL(request.url).host;
   const proto = request.headers.get('x-forwarded-proto') || 'https';
   const origin = `${proto}://${host}`;
+  console.log('restore-debug', { host, proto, origin, rawUrl: request.url, fwdHost: request.headers.get('x-forwarded-host'), hostHeader: request.headers.get('host') });
   await sendMagicLink(normalizedEmail, magicToken, origin);
 
   return successResponse();
