@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { debugScenarios } from '../../../data/debug-scenarios';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 type Quality = 'best' | 'okay' | 'poor';
 
@@ -18,6 +19,7 @@ const QUALITY_COLORS: Record<Quality, string> = {
   poor: ACCENT,
 };
 
+// These are default labels; will be overridden by translations in components
 const QUALITY_LABELS: Record<Quality, string> = {
   best: 'Best approach',
   okay: 'Okay approach',
@@ -30,11 +32,13 @@ const POINTS: Record<Quality, number> = {
   poor: 1,
 };
 
-function getFeedback(score: number) {
-  if (score >= 13) return 'Bug whisperer. You know exactly how to talk to a coding agent.';
-  if (score >= 10) return 'Solid instincts. You\'ll get fixes fast with a little more specificity.';
-  if (score >= 7) return 'Room to grow. The key insight: describe what you SEE, not what you think is broken.';
-  return 'You\'ll get there! Remember: the agent is the expert. Your job is to describe the problem clearly.';
+// Score feedback function - uses fallback strings, overridden in component with translations
+function getFeedback(score: number, tFn?: (key: string, fallback: string) => string) {
+  const tr = tFn || ((k: string, f: string) => f);
+  if (score >= 13) return tr('scoreBugWhisperer', 'Bug whisperer. You know exactly how to talk to a coding agent.');
+  if (score >= 10) return tr('scoreSolid', 'Solid instincts. You\'ll get fixes fast with a little more specificity.');
+  if (score >= 7) return tr('scoreRoomToGrow', 'Room to grow. The key insight: describe what you SEE, not what you think is broken.');
+  return tr('scoreLearning', 'You\'ll get there! Remember: the agent is the expert. Your job is to describe the problem clearly.');
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -262,7 +266,7 @@ function Mockup({ visual }: { visual: string }) {
    Rounds-to-fix indicator
    ────────────────────────────────────────────────────────────── */
 
-function RoundsIndicator({ rounds }: { rounds: number }) {
+function RoundsIndicator({ rounds, roundsLabel }: { rounds: number; roundsLabel?: string }) {
   const color = rounds <= 1 ? TEAL : rounds <= 3 ? AMBER : ACCENT;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
@@ -270,7 +274,7 @@ function RoundsIndicator({ rounds }: { rounds: number }) {
         fontFamily: 'var(--font-mono)', fontSize: '0.68rem', fontWeight: 600,
         color: SUBTLE, textTransform: 'uppercase' as const, letterSpacing: '0.06em',
       }}>
-        Rounds to fix:
+        {roundsLabel || 'Rounds to fix:'}
       </span>
       <div style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
         {Array.from({ length: rounds }).map((_, i) => (
@@ -294,12 +298,17 @@ function RoundsIndicator({ rounds }: { rounds: number }) {
    Response reveal card
    ────────────────────────────────────────────────────────────── */
 
-function ResponseReveal({ response, isSelected, index }: {
+function ResponseReveal({ response, isSelected, index, qualityLabels, yourChoiceLabel, agentLabel, roundsLabel }: {
   response: { label: string; quality: Quality; message: string; agentReaction: string; rounds: number };
   isSelected: boolean;
   index: number;
+  qualityLabels?: Record<Quality, string>;
+  yourChoiceLabel?: string;
+  agentLabel?: string;
+  roundsLabel?: string;
 }) {
   const color = QUALITY_COLORS[response.quality];
+  const labels = qualityLabels || QUALITY_LABELS;
   return (
     <div style={{
       border: `2px solid ${isSelected ? color : 'rgba(26,26,46,0.08)'}`,
@@ -316,14 +325,14 @@ function ResponseReveal({ response, isSelected, index }: {
           background: `${color}18`, color,
           textTransform: 'uppercase' as const,
         }}>
-          {QUALITY_LABELS[response.quality]}
+          {labels[response.quality]}
         </div>
         {isSelected && (
           <span style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE,
             fontStyle: 'italic',
           }}>
-            Your choice
+            {yourChoiceLabel || 'Your choice'}
           </span>
         )}
       </div>
@@ -352,12 +361,12 @@ function ResponseReveal({ response, isSelected, index }: {
         fontFamily: 'var(--font-body)', fontSize: '0.82rem',
         lineHeight: 1.65, color: SUBTLE,
       }}>
-        <span style={{ fontWeight: 600, color: DEEP }}>Agent:</span>{' '}
+        <span style={{ fontWeight: 600, color: DEEP }}>{agentLabel || 'Agent:'}</span>{' '}
         {response.agentReaction}
       </div>
 
       {/* Rounds indicator */}
-      <RoundsIndicator rounds={response.rounds} />
+      <RoundsIndicator rounds={response.rounds} roundsLabel={roundsLabel} />
     </div>
   );
 }
@@ -394,6 +403,7 @@ function ProgressDots({ current, total, results }: {
    ────────────────────────────────────────────────────────────── */
 
 export default function DebugDetective() {
+  const t = useTranslation('debugDetective');
   const [round, setRound] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -445,6 +455,12 @@ export default function DebugDetective() {
     setMobileGameOverOpen(false);
   };
 
+  const translatedQualityLabels: Record<Quality, string> = {
+    best: t('bestApproach', 'Best approach'),
+    okay: t('okayApproach', 'Okay approach'),
+    poor: t('poorApproach', 'Poor approach'),
+  };
+
   /* ─── Reveal content (shared between desktop inline and mobile BottomSheet) ─── */
   const renderRevealContent = () => (
     <div>
@@ -455,6 +471,10 @@ export default function DebugDetective() {
             response={resp}
             isSelected={i === selectedIndex}
             index={i}
+            qualityLabels={translatedQualityLabels}
+            yourChoiceLabel={t('yourChoice', 'Your choice')}
+            agentLabel={t('agent', 'Agent:')}
+            roundsLabel={t('roundsToFix', 'Rounds to fix:')}
           />
         ))}
       </div>
@@ -470,7 +490,7 @@ export default function DebugDetective() {
           color: ACCENT, letterSpacing: '0.08em', textTransform: 'uppercase' as const,
           marginBottom: 6,
         }}>
-          Lesson
+          {t('lesson', 'Lesson')}
         </div>
         <p style={{
           fontFamily: 'var(--font-body)', fontSize: '0.88rem',
@@ -492,7 +512,7 @@ export default function DebugDetective() {
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          {round + 1 >= totalRounds ? 'See Results' : 'Next Scenario'} &rarr;
+          {round + 1 >= totalRounds ? t('seeResults', 'See Results') : t('nextScenario', 'Next Scenario')} &rarr;
         </button>
       </div>
     </div>
@@ -518,7 +538,7 @@ export default function DebugDetective() {
           letterSpacing: '0.08em', textTransform: 'uppercase' as const,
           marginBottom: '1.25rem',
         }}>
-          Bug communication score: {pct}%
+          {t('bugCommunicationScore', 'Bug communication score')}: {pct}%
         </p>
 
         {/* Round-by-round dots */}
@@ -539,15 +559,14 @@ export default function DebugDetective() {
           color: DEEP, marginBottom: '0.75rem', lineHeight: 1.7,
           maxWidth: '45ch', marginLeft: 'auto', marginRight: 'auto',
         }}>
-          {getFeedback(score)}
+          {getFeedback(score, t)}
         </p>
         <p style={{
           fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.82rem' : '0.88rem',
           color: SUBTLE, marginBottom: '2rem', lineHeight: 1.65,
           maxWidth: '48ch', marginLeft: 'auto', marginRight: 'auto',
         }}>
-          How you describe a bug determines how fast it gets fixed.
-          Be specific, share what you see, and let the agent figure out why.
+          {t('closingWisdom', 'How you describe a bug determines how fast it gets fixed. Be specific, share what you see, and let the agent figure out why.')}
         </p>
 
         <button
@@ -561,7 +580,7 @@ export default function DebugDetective() {
           onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Try Again
+          {t('tryAgain', 'Try Again')}
         </button>
       </div>
     );
@@ -592,7 +611,7 @@ export default function DebugDetective() {
             <span style={{
               fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: TEAL,
             }}>
-              {score} pts
+              {score} {t('pts', 'pts')}
             </span>
           </div>
           <ProgressDots current={round} total={totalRounds} results={roundScores} />
@@ -609,7 +628,7 @@ export default function DebugDetective() {
             letterSpacing: '0.08em', textTransform: 'uppercase' as const,
             color: SUBTLE, marginBottom: '0.5rem', textAlign: 'center' as const,
           }}>
-            Scenario {round + 1} of {totalRounds}
+            {t('scenario', 'Scenario')} {round + 1} {t('of', 'of')} {totalRounds}
           </div>
 
           {/* Scenario title */}
@@ -639,7 +658,7 @@ export default function DebugDetective() {
             letterSpacing: '0.06em', textTransform: 'uppercase' as const,
             color: ACCENT, marginBottom: '0.75rem', textAlign: 'center' as const,
           }}>
-            How would you report this bug?
+            {t('subtitle', 'How would you report this bug?')}
           </div>
 
           {/* Response options */}
@@ -699,7 +718,7 @@ export default function DebugDetective() {
                 color: CREAM, minHeight: 44,
               }}
             >
-              See how the agent reacts &rarr;
+              {t('seeHowAgentReacts', 'See how the agent reacts')} &rarr;
             </button>
           )}
         </div>
@@ -717,7 +736,7 @@ export default function DebugDetective() {
         <BottomSheet
           isOpen={mobileGameOverOpen}
           onClose={() => setMobileGameOverOpen(false)}
-          title="Your Score"
+          title={t('yourScore', 'Your Score')}
         >
           {renderScoreContent()}
         </BottomSheet>
@@ -775,13 +794,13 @@ export default function DebugDetective() {
               fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700,
               margin: 0, lineHeight: 1.3,
             }}>
-              Debug Detective
+              {t('title', 'Debug Detective')}
             </h3>
             <p style={{
               fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: SUBTLE,
               margin: 0, letterSpacing: '0.05em',
             }}>
-              How would you report this bug?
+              {t('subtitle', 'How would you report this bug?')}
             </p>
           </div>
         </div>
@@ -790,7 +809,7 @@ export default function DebugDetective() {
           <span style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.8rem', fontWeight: 700, color: TEAL,
           }}>
-            {score} pts
+            {score} {t('pts', 'pts')}
           </span>
         </div>
       </div>
@@ -854,7 +873,7 @@ export default function DebugDetective() {
               letterSpacing: '0.06em', textTransform: 'uppercase' as const,
               color: ACCENT, marginBottom: '0.75rem',
             }}>
-              Choose your approach
+              {t('chooseYourApproach', 'Choose your approach')}
             </div>
             <div style={{
               display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,

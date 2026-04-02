@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'loading' | 'result';
 
@@ -57,6 +59,8 @@ function getTierForScore(score: number): string {
 }
 
 export default function ShipIt() {
+  const t = useTranslation('shipIt');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [phase, setPhase] = useState<Phase>('input');
   const [idea, setIdea] = useState('');
   const [result, setResult] = useState<ShipResult | null>(null);
@@ -76,7 +80,7 @@ export default function ShipIt() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, bestLine, withAI, withoutAI, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
@@ -96,7 +100,7 @@ export default function ShipIt() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('The VCs were so excited they forgot to write their verdict. Try again!');
+          setError(t('parseError', 'The VCs were so excited they forgot to write their verdict. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -161,10 +165,10 @@ export default function ShipIt() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Ship It
+            {t('title', 'Ship It')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            Pitch your app idea. Get the VC treatment.
+            {t('subtitle', 'Pitch your app idea. Get the VC treatment.')}
           </p>
         </div>
       </div>
@@ -181,13 +185,13 @@ export default function ShipIt() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              Describe your app, game, or website idea in one sentence. The VCs are waiting.
+              {t('inputPrompt', 'Describe your app, game, or website idea in one sentence. The VCs are waiting.')}
             </p>
             <textarea
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`e.g. "A multiplayer game where you debate AI ethics with a chatbot judge"`}
+              placeholder={t('placeholder', 'e.g. "A multiplayer game where you debate AI ethics with a chatbot judge"')}
               style={{
                 width: '100%',
                 minHeight: 80,
@@ -234,9 +238,9 @@ export default function ShipIt() {
                 onMouseEnter={(e) => { if (idea.trim()) e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Pitch It
+                {t('pitchButton', 'Pitch It')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -252,7 +256,7 @@ export default function ShipIt() {
                 <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
               </svg>
             </div>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>The VCs are deliberating...</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('loading', 'The VCs are deliberating...')}</p>
           </div>
         )}
 
@@ -350,7 +354,7 @@ export default function ShipIt() {
                   color: '#7B61FF',
                   margin: '0 0 0.35rem',
                 }}>
-                  With AI
+                  {t('withAI', 'With AI')}
                 </p>
                 <p style={{
                   fontFamily: 'var(--font-heading)',
@@ -381,7 +385,7 @@ export default function ShipIt() {
                   color: '#6B7280',
                   margin: '0 0 0.35rem',
                 }}>
-                  Without AI
+                  {t('withoutAI', 'Without AI')}
                 </p>
                 <p style={{
                   fontFamily: 'var(--font-heading)',
@@ -427,7 +431,7 @@ export default function ShipIt() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Pitch Another Idea
+                {t('pitchAnother', 'Pitch Another Idea')}
               </button>
             </div>
           </div>

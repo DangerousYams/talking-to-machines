@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'loading' | 'result';
 
@@ -65,6 +67,8 @@ function getTierForScore(score: number): string {
 }
 
 export default function DreamProject() {
+  const t = useTranslation('dreamProject');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [phase, setPhase] = useState<Phase>('input');
   const [description, setDescription] = useState('');
   const [result, setResult] = useState<DreamResult | null>(null);
@@ -84,7 +88,7 @@ export default function DreamProject() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, bestLine, tools role descriptions, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
@@ -103,7 +107,7 @@ export default function DreamProject() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('Your dream was so wild it broke the scoring algorithm. Try again!');
+          setError(t('parseError', 'Your dream was so wild it broke the scoring algorithm. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -168,10 +172,10 @@ export default function DreamProject() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Dream Project
+            {t('title', 'Dream Project')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            Describe your wildest creative idea. We'll build the toolkit.
+            {t('subtitle', "Describe your wildest creative idea. We'll build the toolkit.")}
           </p>
         </div>
       </div>
@@ -188,13 +192,13 @@ export default function DreamProject() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              What would you build if you had every AI tool at your fingertips?
+              {t('inputPrompt', 'What would you build if you had every AI tool at your fingertips?')}
             </p>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`e.g. "An animated short film about a robot who learns to paint, with original music and voice acting"`}
+              placeholder={t('placeholder', 'e.g. "An animated short film about a robot who learns to paint, with original music and voice acting"')}
               style={{
                 width: '100%',
                 minHeight: 90,
@@ -239,9 +243,9 @@ export default function DreamProject() {
                   transition: 'all 0.25s',
                 }}
               >
-                Rate My Dream
+                {t('rateButton', 'Rate My Dream')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -254,7 +258,7 @@ export default function DreamProject() {
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
             </div>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Evaluating your ambition...</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('loading', 'Evaluating your ambition...')}</p>
           </div>
         )}
 
@@ -327,7 +331,7 @@ export default function DreamProject() {
                   color: '#6B7280',
                   marginBottom: 12,
                 }}>
-                  Your AI Toolkit
+                  {t('yourAIToolkit', 'Your AI Toolkit')}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 0 }}>
                   {result.tools.map((tool, i) => (
@@ -446,7 +450,7 @@ export default function DreamProject() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Try Another Idea
+                {t('tryAnother', 'Try Another Idea')}
               </button>
             </div>
           </div>

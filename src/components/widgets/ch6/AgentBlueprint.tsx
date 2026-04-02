@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 
 interface Step {
@@ -16,130 +17,44 @@ interface Preset {
   steps: Step[];
 }
 
-const presets: Preset[] = [
-  {
-    goal: 'Research and write a report on Mars colonization',
-    steps: [
-      {
-        label: 'Gather Sources',
-        tool: 'Search',
-        toolIcon: '\uD83D\uDD0D',
-        instruction: 'Search for recent articles, NASA reports, and SpaceX plans on Mars colonization feasibility.',
-        output: 'Found 12 relevant sources: NASA\'s Moon to Mars plan (2024), SpaceX Starship updates, MIT study on radiation shielding, ESA habitat designs. Key themes: life support, radiation, psychological challenges, cost estimates ($100B+).',
-      },
-      {
-        label: 'Analyze Key Themes',
-        tool: 'Analyze',
-        toolIcon: '\uD83D\uDCCA',
-        instruction: 'Identify the 4-5 most important challenges and group sources by theme.',
-        output: 'Identified 5 core challenges: (1) Radiation exposure \u2014 3 sources, (2) Life support & food \u2014 4 sources, (3) Psychological isolation \u2014 2 sources, (4) Transportation cost \u2014 3 sources, (5) Legal/governance frameworks \u2014 2 sources.',
-      },
-      {
-        label: 'Write Draft',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Write a 1-page report covering the 5 challenges, with an intro and conclusion. Cite sources inline.',
-        output: 'Draft complete: "The Case for Mars: Challenges Ahead" \u2014 612 words. Covers all 5 themes with inline citations. Intro frames the timeline (2040s), conclusion weighs optimism vs. realism.',
-      },
-      {
-        label: 'Fact-Check Claims',
-        tool: 'Search',
-        toolIcon: '\uD83D\uDD0D',
-        instruction: 'Verify the 3 most important factual claims in the draft against primary sources.',
-        output: 'Verified: (1) Mars transit time 6-9 months \u2714\uFE0F, (2) Radiation dose 0.67 mSv/day \u2714\uFE0F, (3) Starship cost estimate needed update \u2014 corrected from $2B to $5B per launch based on latest projections.',
-      },
-      {
-        label: 'Polish & Format',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Apply corrections, add section headings, format citations as footnotes, and write a compelling opening line.',
-        output: 'Final report complete: "The Case for Mars: Five Challenges Standing Between Humanity and a Second Home." 648 words, 5 sections, 8 footnotes. Ready for submission.',
-      },
-    ],
-  },
-  {
-    goal: 'Plan a weekend trip to NYC',
-    steps: [
-      {
-        label: 'Research Options',
-        tool: 'Search',
-        toolIcon: '\uD83D\uDD0D',
-        instruction: 'Find top-rated affordable activities, restaurants, and neighborhoods for a weekend in NYC.',
-        output: 'Compiled options: Free \u2014 Central Park, High Line, Brooklyn Bridge, Staten Island Ferry. Budget food \u2014 Joe\'s Pizza, Xi\'an Famous Foods, Los Tacos No. 1. Neighborhoods \u2014 Greenwich Village, Williamsburg, Lower East Side.',
-      },
-      {
-        label: 'Check Logistics',
-        tool: 'Search',
-        toolIcon: '\uD83D\uDD0D',
-        instruction: 'Find transit info, weather forecast for this weekend, and budget hotel options under $150/night.',
-        output: 'Metro: 7-day unlimited $33, weekend weather: 65\u00B0F partly cloudy. Hotels: Pod 51 ($119/night), HI NYC Hostel ($45/night), The Jane ($139/night). All in Manhattan.',
-      },
-      {
-        label: 'Build Itinerary',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Create a Saturday + Sunday itinerary with morning, afternoon, and evening blocks. Balance free and paid activities.',
-        output: 'Saturday: Morning \u2014 High Line + Chelsea Market, Afternoon \u2014 MoMA ($18 student), Evening \u2014 Greenwich Village dinner + Washington Square Park. Sunday: Morning \u2014 Brooklyn Bridge walk + DUMBO, Afternoon \u2014 Williamsburg vintage shops, Evening \u2014 Sunset from Top of the Rock ($40).',
-      },
-      {
-        label: 'Estimate Budget',
-        tool: 'Analyze',
-        toolIcon: '\uD83D\uDCCA',
-        instruction: 'Calculate total estimated cost for the weekend including transit, food, activities, and lodging.',
-        output: 'Budget breakdown: Hotel 2 nights ($238), Metro ($33), Food ($80), MoMA ($18), Top of the Rock ($40), Misc ($30). Total: ~$439. Could cut to $310 by choosing the hostel and skipping Top of the Rock.',
-      },
-      {
-        label: 'Create Packing List',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Generate a concise packing list based on the weather and planned activities.',
-        output: 'Packing list: Comfortable walking shoes, light jacket, phone charger + portable battery, student ID (for discounts), metro card money, small daypack. Outfit for nicer dinner optional. Total: fits in one backpack.',
-      },
-    ],
-  },
-  {
-    goal: 'Create a study guide for a biology exam',
-    steps: [
-      {
-        label: 'Identify Topics',
-        tool: 'Analyze',
-        toolIcon: '\uD83D\uDCCA',
-        instruction: 'Break down the exam topics: cell biology, genetics, evolution, ecology. List key subtopics for each.',
-        output: 'Topic map: Cell Bio (organelles, mitosis/meiosis, cell membrane transport), Genetics (Mendelian inheritance, DNA replication, gene expression), Evolution (natural selection, speciation, evidence), Ecology (food webs, biomes, population dynamics). 14 subtopics total.',
-      },
-      {
-        label: 'Find Weak Areas',
-        tool: 'Analyze',
-        toolIcon: '\uD83D\uDCCA',
-        instruction: 'Based on common exam patterns, rank subtopics by difficulty and likelihood of appearing on the test.',
-        output: 'High priority (hard + likely): meiosis vs. mitosis, gene expression, natural selection mechanisms. Medium: membrane transport, Punnett squares, population dynamics. Lower priority: organelle functions, biome classification \u2014 usually straightforward.',
-      },
-      {
-        label: 'Write Summaries',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Write a concise 3-4 sentence summary for each of the 14 subtopics, focusing on what students typically get wrong.',
-        output: 'Summaries complete for all 14 subtopics. Key corrections embedded: mitosis = 2 identical cells (not 4), mRNA goes TO ribosome (not the other way), natural selection acts on individuals but evolution happens to populations.',
-      },
-      {
-        label: 'Generate Practice Questions',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Create 2 practice questions per high-priority subtopic, with answer explanations.',
-        output: 'Generated 12 practice questions across 6 high-priority subtopics. Mix of multiple choice (8) and short answer (4). Each includes a detailed explanation of the correct answer and why common wrong answers are tempting.',
-      },
-      {
-        label: 'Format Study Guide',
-        tool: 'Write',
-        toolIcon: '\u270D\uFE0F',
-        instruction: 'Compile everything into a clean study guide with sections, visual mnemonics suggestions, and a 2-hour study schedule.',
-        output: 'Study guide complete: 4 sections, 14 summaries, 12 practice questions, 3 mnemonic devices (e.g., "MiTWOsis = TWO identical cells"). Study schedule: 30 min high-priority review, 30 min practice questions, 30 min weak areas, 30 min full review. Formatted and ready to print.',
-      },
-    ],
-  },
-];
+function usePresets(t: (key: string, fallback: string) => string): Preset[] {
+  return [
+    {
+      goal: t('presetGoal1', 'Research and write a report on Mars colonization'),
+      steps: [
+        { label: t('p1Step1Label', 'Gather Sources'), tool: t('p1Step1Tool', 'Search'), toolIcon: '\uD83D\uDD0D', instruction: t('p1Step1Instruction', 'Search for recent articles, NASA reports, and SpaceX plans on Mars colonization feasibility.'), output: t('p1Step1Output', "Found 12 relevant sources: NASA's Moon to Mars plan (2024), SpaceX Starship updates, MIT study on radiation shielding, ESA habitat designs. Key themes: life support, radiation, psychological challenges, cost estimates ($100B+).") },
+        { label: t('p1Step2Label', 'Analyze Key Themes'), tool: t('p1Step2Tool', 'Analyze'), toolIcon: '\uD83D\uDCCA', instruction: t('p1Step2Instruction', 'Identify the 4-5 most important challenges and group sources by theme.'), output: t('p1Step2Output', 'Identified 5 core challenges: (1) Radiation exposure \u2014 3 sources, (2) Life support & food \u2014 4 sources, (3) Psychological isolation \u2014 2 sources, (4) Transportation cost \u2014 3 sources, (5) Legal/governance frameworks \u2014 2 sources.') },
+        { label: t('p1Step3Label', 'Write Draft'), tool: t('p1Step3Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p1Step3Instruction', 'Write a 1-page report covering the 5 challenges, with an intro and conclusion. Cite sources inline.'), output: t('p1Step3Output', 'Draft complete: "The Case for Mars: Challenges Ahead" \u2014 612 words. Covers all 5 themes with inline citations. Intro frames the timeline (2040s), conclusion weighs optimism vs. realism.') },
+        { label: t('p1Step4Label', 'Fact-Check Claims'), tool: t('p1Step4Tool', 'Search'), toolIcon: '\uD83D\uDD0D', instruction: t('p1Step4Instruction', 'Verify the 3 most important factual claims in the draft against primary sources.'), output: t('p1Step4Output', 'Verified: (1) Mars transit time 6-9 months \u2714\uFE0F, (2) Radiation dose 0.67 mSv/day \u2714\uFE0F, (3) Starship cost estimate needed update \u2014 corrected from $2B to $5B per launch based on latest projections.') },
+        { label: t('p1Step5Label', 'Polish & Format'), tool: t('p1Step5Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p1Step5Instruction', 'Apply corrections, add section headings, format citations as footnotes, and write a compelling opening line.'), output: t('p1Step5Output', 'Final report complete: "The Case for Mars: Five Challenges Standing Between Humanity and a Second Home." 648 words, 5 sections, 8 footnotes. Ready for submission.') },
+      ],
+    },
+    {
+      goal: t('presetGoal2', 'Plan a weekend trip to NYC'),
+      steps: [
+        { label: t('p2Step1Label', 'Research Options'), tool: t('p2Step1Tool', 'Search'), toolIcon: '\uD83D\uDD0D', instruction: t('p2Step1Instruction', 'Find top-rated affordable activities, restaurants, and neighborhoods for a weekend in NYC.'), output: t('p2Step1Output', "Compiled options: Free \u2014 Central Park, High Line, Brooklyn Bridge, Staten Island Ferry. Budget food \u2014 Joe's Pizza, Xi'an Famous Foods, Los Tacos No. 1. Neighborhoods \u2014 Greenwich Village, Williamsburg, Lower East Side.") },
+        { label: t('p2Step2Label', 'Check Logistics'), tool: t('p2Step2Tool', 'Search'), toolIcon: '\uD83D\uDD0D', instruction: t('p2Step2Instruction', 'Find transit info, weather forecast for this weekend, and budget hotel options under $150/night.'), output: t('p2Step2Output', 'Metro: 7-day unlimited $33, weekend weather: 65\u00B0F partly cloudy. Hotels: Pod 51 ($119/night), HI NYC Hostel ($45/night), The Jane ($139/night). All in Manhattan.') },
+        { label: t('p2Step3Label', 'Build Itinerary'), tool: t('p2Step3Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p2Step3Instruction', 'Create a Saturday + Sunday itinerary with morning, afternoon, and evening blocks. Balance free and paid activities.'), output: t('p2Step3Output', 'Saturday: Morning \u2014 High Line + Chelsea Market, Afternoon \u2014 MoMA ($18 student), Evening \u2014 Greenwich Village dinner + Washington Square Park. Sunday: Morning \u2014 Brooklyn Bridge walk + DUMBO, Afternoon \u2014 Williamsburg vintage shops, Evening \u2014 Sunset from Top of the Rock ($40).') },
+        { label: t('p2Step4Label', 'Estimate Budget'), tool: t('p2Step4Tool', 'Analyze'), toolIcon: '\uD83D\uDCCA', instruction: t('p2Step4Instruction', 'Calculate total estimated cost for the weekend including transit, food, activities, and lodging.'), output: t('p2Step4Output', 'Budget breakdown: Hotel 2 nights ($238), Metro ($33), Food ($80), MoMA ($18), Top of the Rock ($40), Misc ($30). Total: ~$439. Could cut to $310 by choosing the hostel and skipping Top of the Rock.') },
+        { label: t('p2Step5Label', 'Create Packing List'), tool: t('p2Step5Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p2Step5Instruction', 'Generate a concise packing list based on the weather and planned activities.'), output: t('p2Step5Output', 'Packing list: Comfortable walking shoes, light jacket, phone charger + portable battery, student ID (for discounts), metro card money, small daypack. Outfit for nicer dinner optional. Total: fits in one backpack.') },
+      ],
+    },
+    {
+      goal: t('presetGoal3', 'Create a study guide for a biology exam'),
+      steps: [
+        { label: t('p3Step1Label', 'Identify Topics'), tool: t('p3Step1Tool', 'Analyze'), toolIcon: '\uD83D\uDCCA', instruction: t('p3Step1Instruction', 'Break down the exam topics: cell biology, genetics, evolution, ecology. List key subtopics for each.'), output: t('p3Step1Output', 'Topic map: Cell Bio (organelles, mitosis/meiosis, cell membrane transport), Genetics (Mendelian inheritance, DNA replication, gene expression), Evolution (natural selection, speciation, evidence), Ecology (food webs, biomes, population dynamics). 14 subtopics total.') },
+        { label: t('p3Step2Label', 'Find Weak Areas'), tool: t('p3Step2Tool', 'Analyze'), toolIcon: '\uD83D\uDCCA', instruction: t('p3Step2Instruction', 'Based on common exam patterns, rank subtopics by difficulty and likelihood of appearing on the test.'), output: t('p3Step2Output', 'High priority (hard + likely): meiosis vs. mitosis, gene expression, natural selection mechanisms. Medium: membrane transport, Punnett squares, population dynamics. Lower priority: organelle functions, biome classification \u2014 usually straightforward.') },
+        { label: t('p3Step3Label', 'Write Summaries'), tool: t('p3Step3Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p3Step3Instruction', 'Write a concise 3-4 sentence summary for each of the 14 subtopics, focusing on what students typically get wrong.'), output: t('p3Step3Output', 'Summaries complete for all 14 subtopics. Key corrections embedded: mitosis = 2 identical cells (not 4), mRNA goes TO ribosome (not the other way), natural selection acts on individuals but evolution happens to populations.') },
+        { label: t('p3Step4Label', 'Generate Practice Questions'), tool: t('p3Step4Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p3Step4Instruction', 'Create 2 practice questions per high-priority subtopic, with answer explanations.'), output: t('p3Step4Output', 'Generated 12 practice questions across 6 high-priority subtopics. Mix of multiple choice (8) and short answer (4). Each includes a detailed explanation of the correct answer and why common wrong answers are tempting.') },
+        { label: t('p3Step5Label', 'Format Study Guide'), tool: t('p3Step5Tool', 'Write'), toolIcon: '\u270D\uFE0F', instruction: t('p3Step5Instruction', 'Compile everything into a clean study guide with sections, visual mnemonics suggestions, and a 2-hour study schedule.'), output: t('p3Step5Output', 'Study guide complete: 4 sections, 14 summaries, 12 practice questions, 3 mnemonic devices (e.g., "MiTWOsis = TWO identical cells"). Study schedule: 30 min high-priority review, 30 min practice questions, 30 min weak areas, 30 min full review. Formatted and ready to print.') },
+      ],
+    },
+  ];
+}
 
 export default function AgentBlueprint() {
+  const t = useTranslation('ch6');
+  const presets = usePresets(t);
   const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
   const [customGoal, setCustomGoal] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
@@ -193,7 +108,7 @@ export default function AgentBlueprint() {
     }
   };
 
-  const goalDisplay = activePreset?.goal || customGoal || 'Select a goal to get started';
+  const goalDisplay = activePreset?.goal || customGoal || t('selectGoalEmpty', 'Select a goal to get started');
   const isMobile = useIsMobile();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [sheetStepIndex, setSheetStepIndex] = useState<number | null>(null);
@@ -224,11 +139,11 @@ export default function AgentBlueprint() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-              Agent Blueprint
+              {t('agentBlueprintTitle', 'Agent Blueprint')}
             </h3>
             {!isMobile && (
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-                Pick a goal. Watch an agent plan and execute step by step.
+                {t('agentBlueprintSubtitle', 'Pick a goal. Watch an agent plan and execute step by step.')}
               </p>
             )}
           </div>
@@ -243,7 +158,7 @@ export default function AgentBlueprint() {
             letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
             display: 'block', marginBottom: 10,
           }}>
-            Choose a Goal
+            {t('chooseAGoal', 'Choose a Goal')}
           </span>
         )}
         <div style={{ display: 'flex', flexDirection: isMobile ? 'row' as const : 'row' as const, flexWrap: 'wrap' as const, gap: isMobile ? 6 : 8, overflowX: isMobile ? 'auto' as const : undefined }}>
@@ -286,7 +201,7 @@ export default function AgentBlueprint() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#E94560',
                 display: isMobile ? 'inline' : 'block', marginBottom: isMobile ? 0 : 4, marginRight: isMobile ? 6 : 0,
               }}>
-                GOAL
+                {t('goalLabel', 'GOAL')}
               </span>
               <span style={{
                 fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.8rem' : '1rem', fontWeight: 700, color: '#1A1A2E',
@@ -419,7 +334,7 @@ export default function AgentBlueprint() {
                           color: isCompleted ? '#16C79A' : '#E94560',
                           display: 'block', marginBottom: 6,
                         }}>
-                          {isCompleted ? 'Output' : 'Processing...'}
+                          {isCompleted ? t('outputLabel', 'Output') : t('processingLabel', 'Processing...')}
                         </span>
                         <p style={{
                           fontFamily: 'var(--font-body)', fontSize: '0.82rem',
@@ -451,7 +366,7 @@ export default function AgentBlueprint() {
                 boxShadow: isExecuting ? 'none' : '0 4px 16px rgba(233,69,96,0.25)',
               }}
             >
-              {isExecuting ? 'Reset' : completedSteps.length === steps.length ? 'Run Again' : 'Execute Agent'}
+              {isExecuting ? t('resetButton', 'Reset') : completedSteps.length === steps.length ? t('runAgainButton', 'Run Again') : t('executeAgentButton', 'Execute Agent')}
             </button>
           </div>
         </div>
@@ -465,7 +380,7 @@ export default function AgentBlueprint() {
           padding: '4rem 2rem', textAlign: 'center' as const, color: '#6B7280',
         }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.9rem' : '1rem', margin: 0, textAlign: 'center' as const }}>
-            Select a goal above to see the agent's plan.
+            {t('selectGoalPrompt', "Select a goal above to see the agent's plan.")}
           </p>
         </div>
       )}
@@ -481,12 +396,11 @@ export default function AgentBlueprint() {
             fontFamily: 'var(--font-body)', fontSize: isMobile ? '0.8rem' : '0.85rem',
             fontStyle: 'italic', color: '#1A1A2E', margin: 0,
           }}>
-            <span style={{ fontWeight: 600, color: '#16C79A', fontStyle: 'normal' }}>Agent complete. </span>
+            <span style={{ fontWeight: 600, color: '#16C79A', fontStyle: 'normal' }}>{t('agentCompleteLabel', 'Agent complete. ')}</span>
             {isMobile
-              ? `${steps.length} steps executed. That's the core pattern of every AI agent.`
+              ? `${steps.length} ${t('stepsExecuted', 'steps executed.')} ${t('agentCompleteMobile', "That's the core pattern of every AI agent.")}`
               : <>
-                  {steps.length} steps executed. The agent broke a complex goal into small, tool-using steps &mdash;
-                  each one building on the last. That's the core pattern of every AI agent.
+                  {steps.length} {t('stepsExecuted', 'steps executed.')} {t('agentCompleteDesktop', "The agent broke a complex goal into small, tool-using steps \u2014 each one building on the last. That's the core pattern of every AI agent.")}
                 </>
             }
           </p>
@@ -498,7 +412,7 @@ export default function AgentBlueprint() {
         <BottomSheet
           isOpen={sheetOpen}
           onClose={() => setSheetOpen(false)}
-          title={sheetStepIndex !== null ? `Step ${sheetStepIndex + 1}: ${steps[sheetStepIndex]?.label}` : 'Step Output'}
+          title={sheetStepIndex !== null ? `${t('stepOutputTitle', 'Step Output')} ${sheetStepIndex + 1}: ${steps[sheetStepIndex]?.label}` : t('stepOutputTitle', 'Step Output')}
         >
           {sheetStepIndex !== null && steps[sheetStepIndex] && (
             <div>
@@ -524,7 +438,7 @@ export default function AgentBlueprint() {
                   color: completedSteps.includes(sheetStepIndex) ? '#16C79A' : '#E94560',
                   display: 'block', marginBottom: 6,
                 }}>
-                  {completedSteps.includes(sheetStepIndex) ? 'Output' : 'Processing...'}
+                  {completedSteps.includes(sheetStepIndex) ? t('outputLabel', 'Output') : t('processingLabel', 'Processing...')}
                 </span>
                 <p style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.9rem',

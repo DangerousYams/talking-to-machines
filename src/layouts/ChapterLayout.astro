@@ -22,6 +22,41 @@ interface Props {
 }
 
 const { chapter, locale = 'en' } = Astro.props;
+
+// Load widget/break translations for this locale and chapter
+let widgetTranslations: Record<string, Record<string, string>> = {};
+try {
+  const chapterMod = await import(`../i18n/translations/${locale}/ch${chapter.number}.ts`);
+  Object.assign(widgetTranslations, chapterMod.default || {});
+} catch { /* translations not yet available for this locale/chapter */ }
+try {
+  const breaksMod = await import(`../i18n/translations/${locale}/breaks.ts`);
+  Object.assign(widgetTranslations, breaksMod.default || {});
+} catch { /* breaks translations not yet available */ }
+// English fallback — merge in any keys not already present
+if (locale !== 'en') {
+  try {
+    const enChapterMod = await import(`../i18n/translations/en/ch${chapter.number}.ts`);
+    const enData = enChapterMod.default || {};
+    for (const [ns, strings] of Object.entries(enData) as [string, Record<string, string>][]) {
+      if (!widgetTranslations[ns]) widgetTranslations[ns] = {};
+      for (const [key, val] of Object.entries(strings)) {
+        if (!(key in widgetTranslations[ns])) widgetTranslations[ns][key] = val;
+      }
+    }
+  } catch {}
+  try {
+    const enBreaksMod = await import(`../i18n/translations/en/breaks.ts`);
+    const enData = enBreaksMod.default || {};
+    for (const [ns, strings] of Object.entries(enData) as [string, Record<string, string>][]) {
+      if (!widgetTranslations[ns]) widgetTranslations[ns] = {};
+      for (const [key, val] of Object.entries(strings)) {
+        if (!(key in widgetTranslations[ns])) widgetTranslations[ns][key] = val;
+      }
+    }
+  } catch {}
+}
+
 const rawPrev = chapters.find((c) => c.number === chapter.number - 1);
 const rawNext = chapters.find((c) => c.number === chapter.number + 1);
 // Interludes: ch3 → playbook → ch4, ch6 → field-guide → ch7
@@ -61,6 +96,10 @@ const isTranslated = locale !== 'en';
     <!-- Mobile redirect removed: unified scroll experience on all devices -->
   </head>
   <body class="bg-cream text-deep min-h-screen">
+    <script define:vars={{ __widgetLocale: locale, __widgetTranslations: widgetTranslations }}>
+      window.__WIDGET_LOCALE = __widgetLocale;
+      window.__WIDGET_TRANSLATIONS = __widgetTranslations;
+    </script>
     <ScrollProgress color={chapter.accent} client:load />
     <PageViewTracker variant="scroll" chapter={chapter.slug} client:load />
     <ScrollDepthTracker

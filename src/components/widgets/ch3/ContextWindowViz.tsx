@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
 import { dvhValue } from '../../../lib/css-compat';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 interface Message {
   id: number;
@@ -27,6 +28,7 @@ export default function ContextWindowViz() {
   const [blowingAway, setBlowingAway] = useState<number[]>([]); // ids of messages being animated out
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const t = useTranslation('contextWindowViz');
 
   // Mobile-only state
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -78,12 +80,12 @@ export default function ContextWindowViz() {
             </svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2 }}>The Context Window</h3>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2 }}>{t('title', 'The Context Window')}</h3>
           </div>
           {/* Token counter badge */}
           <div style={{ flexShrink: 0, padding: '3px 8px', borderRadius: 100, background: 'rgba(123,97,255,0.08)', border: '1px solid rgba(123,97,255,0.15)' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, color: '#7B61FF' }}>
-              {totalVisibleTokens} tok
+              {totalVisibleTokens} {t('tokAbbrev', 'tok')}
             </span>
           </div>
         </div>
@@ -103,8 +105,8 @@ export default function ContextWindowViz() {
               borderBottom: '1px solid rgba(123,97,255,0.15)', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>System</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} tok</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>{t('systemLabel', 'System')}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} {t('tokAbbrev', 'tok')}</span>
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', margin: 0, opacity: 0.8, lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>
                 {SYSTEM_PROMPT}
@@ -118,7 +120,7 @@ export default function ContextWindowViz() {
                 borderBottom: '1px dashed rgba(26,26,46,0.08)', textAlign: 'center' as const, flexShrink: 0,
               }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', fontStyle: 'italic' }}>
-                  {droppedCount} message{droppedCount > 1 ? 's' : ''} dropped
+                  {droppedCount} {droppedCount > 1 ? t('messagesDropped', 'messages dropped') : t('messageDropped', 'message dropped')}
                 </span>
               </div>
             )}
@@ -127,7 +129,7 @@ export default function ContextWindowViz() {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '4px 6px' }}>
               {visibleMessages.length === 0 && (
                 <div style={{ textAlign: 'center' as const, padding: '1rem 0.5rem', opacity: 0.3 }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0 }}>Empty -- type below</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0 }}>{t('emptyMobile', 'Empty -- type below')}</p>
                 </div>
               )}
               {visibleMessages.map((msg) => {
@@ -178,7 +180,7 @@ export default function ContextWindowViz() {
                 fontWeight: 600, color: '#7B61FF', letterSpacing: '0.03em',
               }}
             >
-              View all messages ({messages.length}) {droppedCount > 0 ? `-- ${droppedCount} forgotten` : ''}
+              {t('viewAllMessages', 'View all messages')} ({messages.length}) {droppedCount > 0 ? `-- ${droppedCount} ${t('forgotten', 'forgotten')}` : ''}
             </button>
           </div>
         )}
@@ -186,10 +188,10 @@ export default function ContextWindowViz() {
         {/* Compact insight */}
         <div style={{ padding: '8px 12px', flexShrink: 0 }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontStyle: 'italic', color: '#6B7280', margin: 0, lineHeight: 1.4 }}>
-            <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>Insight: </span>
+            <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>{t('insightLabel', 'Insight')}: </span>
             {droppedCount > 0
-              ? `${droppedCount} message${droppedCount > 1 ? 's' : ''} forgotten. Tap a block for details.`
-              : 'System prompt stays pinned. Other messages compete for space.'}
+              ? `${droppedCount} ${droppedCount > 1 ? t('messagesForgottenTap', 'messages forgotten. Tap a block for details.') : t('messageForgottenTap', 'message forgotten. Tap a block for details.')}`
+              : t('insightMobileDefault', 'System prompt stays pinned. Other messages compete for space.')}
           </p>
         </div>
 
@@ -201,7 +203,7 @@ export default function ContextWindowViz() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type a message..."
+              placeholder={t('placeholder', 'Type a message...')}
               style={{
                 flex: 1, padding: '12px 14px', borderRadius: 10,
                 border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
@@ -222,7 +224,7 @@ export default function ContextWindowViz() {
                 letterSpacing: '0.03em', minHeight: 44,
               }}
             >
-              Send
+              {t('send', 'Send')}
             </button>
           </div>
         </div>
@@ -231,7 +233,7 @@ export default function ContextWindowViz() {
         <BottomSheet
           isOpen={sheetOpen}
           onClose={() => { setSheetOpen(false); setSelectedMsg(null); }}
-          title={sheetContent === 'detail' ? 'Message Detail' : 'All Messages'}
+          title={sheetContent === 'detail' ? t('messageDetail', 'Message Detail') : t('allMessages', 'All Messages')}
         >
           {sheetContent === 'detail' && selectedMsg && (
             <div>
@@ -242,14 +244,14 @@ export default function ContextWindowViz() {
               </div>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#7B61FF', fontWeight: 600 }}>
-                  {selectedMsg.tokens} tokens
+                  {selectedMsg.tokens} {t('tokens', 'tokens')}
                 </span>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
-                  Message #{selectedMsg.id}
+                  {t('messageNum', 'Message')} #{selectedMsg.id}
                 </span>
                 {messages.indexOf(selectedMsg) < droppedCount && (
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#E94560', fontWeight: 600 }}>
-                    FORGOTTEN
+                    {t('forgottenLabel', 'FORGOTTEN')}
                   </span>
                 )}
               </div>
@@ -275,9 +277,9 @@ export default function ContextWindowViz() {
                         {msg.text}
                       </p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, marginLeft: 12 }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{msg.tokens} tok</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280' }}>{msg.tokens} {t('tokAbbrev', 'tok')}</span>
                         {isDropped && (
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#E94560', fontWeight: 600 }}>GONE</span>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#E94560', fontWeight: 600 }}>{t('goneLabel', 'GONE')}</span>
                         )}
                       </div>
                     </div>
@@ -286,7 +288,7 @@ export default function ContextWindowViz() {
               })}
               {messages.length === 0 && (
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', fontStyle: 'italic', textAlign: 'center' as const }}>
-                  No messages yet. Start typing above.
+                  {t('noMessagesYet', 'No messages yet. Start typing above.')}
                 </p>
               )}
             </div>
@@ -317,8 +319,8 @@ export default function ContextWindowViz() {
             </svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>The Context Window</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Type messages and watch the window fill up</p>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>{t('title', 'The Context Window')}</h3>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>{t('subtitle', 'Type messages and watch the window fill up')}</p>
           </div>
         </div>
       </div>
@@ -327,7 +329,7 @@ export default function ContextWindowViz() {
         {/* Left: The visual container */}
         <div style={{ padding: '1.5rem', borderRight: '1px solid rgba(26,26,46,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#7B61FF', marginBottom: 12 }}>
-            Context Window
+            {t('contextWindowLabel', 'Context Window')}
           </span>
 
           {/* The glass container */}
@@ -344,8 +346,8 @@ export default function ContextWindowViz() {
               borderBottom: '1px solid rgba(123,97,255,0.15)', flexShrink: 0,
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>System</span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} tok</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#7B61FF', letterSpacing: '0.05em', textTransform: 'uppercase' as const }}>{t('systemLabel', 'System')}</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', opacity: 0.7 }}>{SYSTEM_TOKENS} {t('tokAbbrev', 'tok')}</span>
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#7B61FF', margin: 0, opacity: 0.8, lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const }}>
                 {SYSTEM_PROMPT}
@@ -359,7 +361,7 @@ export default function ContextWindowViz() {
                 <div style={{ position: 'absolute', bottom: 0, left: -3, width: 7, height: 1, background: 'rgba(123,97,255,0.3)' }} />
               </div>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#7B61FF', opacity: 0.6, writingMode: 'vertical-rl' as const, textOrientation: 'mixed' as const, letterSpacing: '0.05em' }}>
-                AI SEES THIS
+                {t('aiSeesThis', 'AI SEES THIS')}
               </span>
             </div>
 
@@ -370,7 +372,7 @@ export default function ContextWindowViz() {
                 borderBottom: '1px dashed rgba(26,26,46,0.08)', textAlign: 'center' as const,
               }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', fontStyle: 'italic' }}>
-                  {droppedCount} message{droppedCount > 1 ? 's' : ''} dropped
+                  {droppedCount} {droppedCount > 1 ? t('messagesDropped', 'messages dropped') : t('messageDropped', 'message dropped')}
                 </span>
               </div>
             )}
@@ -379,7 +381,7 @@ export default function ContextWindowViz() {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '6px' }}>
               {visibleMessages.length === 0 && (
                 <div style={{ textAlign: 'center' as const, padding: '2rem 1rem', opacity: 0.3 }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0 }}>Empty — type a message below</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0 }}>{t('emptyDesktop', 'Empty — type a message below')}</p>
                 </div>
               )}
               {visibleMessages.map((msg, i) => {
@@ -415,11 +417,11 @@ export default function ContextWindowViz() {
           {/* Token counter */}
           <div style={{ marginTop: 12, textAlign: 'center' as const }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
-              Visible: <strong style={{ color: '#7B61FF' }}>{totalVisibleTokens}</strong> tokens
+              {t('visible', 'Visible')}: <strong style={{ color: '#7B61FF' }}>{totalVisibleTokens}</strong> {t('tokens', 'tokens')}
             </span>
             {messages.length > 0 && (
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', display: 'block', marginTop: 2 }}>
-                Total sent: {SYSTEM_TOKENS + messages.reduce((s, m) => s + m.tokens, 0)} tokens
+                {t('totalSent', 'Total sent')}: {SYSTEM_TOKENS + messages.reduce((s, m) => s + m.tokens, 0)} {t('tokens', 'tokens')}
               </span>
             )}
           </div>
@@ -430,11 +432,11 @@ export default function ContextWindowViz() {
           {/* Messages log */}
           <div style={{ flex: 1, padding: '1.25rem 1.5rem', overflowY: 'auto' as const, maxHeight: dvhValue(35) }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 12 }}>
-              Your Messages
+              {t('yourMessages', 'Your Messages')}
             </span>
             {messages.length === 0 && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', fontStyle: 'italic', margin: 0 }}>
-                Start typing messages below. Watch the context window fill up on the left. After a few messages, the oldest ones will blow away — that's the AI "forgetting."
+                {t('instructionText', 'Start typing messages below. Watch the context window fill up on the left. After a few messages, the oldest ones will blow away — that\'s the AI "forgetting."')}
               </p>
             )}
             {messages.map((msg, i) => {
@@ -476,7 +478,7 @@ export default function ContextWindowViz() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type a message..."
+                placeholder={t('placeholder', 'Type a message...')}
                 style={{
                   flex: 1, padding: '10px 14px', borderRadius: 10,
                   border: '1px solid rgba(26,26,46,0.1)', background: '#FEFDFB',
@@ -510,10 +512,10 @@ export default function ContextWindowViz() {
         background: 'linear-gradient(135deg, rgba(123,97,255,0.04), rgba(14,165,233,0.04))',
       }}>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', color: '#1A1A2E', margin: 0 }}>
-          <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>Key insight: </span>
+          <span style={{ fontWeight: 600, color: '#7B61FF', fontStyle: 'normal' }}>{t('keyInsightLabel', 'Key insight')}: </span>
           {droppedCount > 0
-            ? `The AI has "forgotten" ${droppedCount} of your messages. It is not being forgetful -- those messages simply are not in the window anymore. This is why long conversations can lose coherence.`
-            : 'The system prompt stays pinned at the top. Everything else competes for space. Once the window fills up, early messages vanish from the AI\'s view.'}
+            ? t('insightDropped', 'The AI has "forgotten" {count} of your messages. It is not being forgetful -- those messages simply are not in the window anymore. This is why long conversations can lose coherence.').replace('{count}', String(droppedCount))
+            : t('insightDefault', 'The system prompt stays pinned at the top. Everything else competes for space. Once the window fills up, early messages vanish from the AI\'s view.')}
         </p>
       </div>
     </div>

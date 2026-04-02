@@ -4,6 +4,8 @@ import { useStreamingResponse } from '../../../hooks/useStreamingResponse';
 import { streamChat } from '../../../lib/claude';
 import { useAuth } from '../../../hooks/useAuth';
 import UnlockModal from '../../ui/UnlockModal';
+import { useTranslation, getLocale } from '../../../i18n/useTranslation';
+import { languages } from '../../../data/languages';
 
 interface BuildingBlock {
   id: string;
@@ -14,13 +16,13 @@ interface BuildingBlock {
   hint: string;
 }
 
-const blocks: BuildingBlock[] = [
-  { id: 'role', label: 'Role', letter: 'R', color: '#E94560', text: 'You are a legendary sneaker designer who has worked at Nike and Off-White, known for creating hype-worthy limited drops.', hint: 'Assign the AI a specific expert role/persona relevant to the task' },
-  { id: 'task', label: 'Task', letter: 'T', color: '#0F3460', text: 'Design a sneaker concept that would sell out in under 10 minutes. Give it a name, describe the colorway, the key design detail that makes it iconic, and the story behind it.', hint: 'Define the specific task — what exactly should the AI do?' },
-  { id: 'format', label: 'Format', letter: 'F', color: '#7B61FF', text: 'Format the response as: Sneaker name (bold), followed by Colorway, Signature Detail, and The Story — each as a short paragraph.', hint: 'Specify the output format — how many items, what structure, any formatting rules' },
-  { id: 'constraints', label: 'Constraints', letter: 'C', color: '#16C79A', text: 'The design must feel achievable — no sci-fi gimmicks. It should appeal to 16-25 year olds. Avoid anything that\'s already been done by Yeezy or Travis Scott collabs.', hint: 'Add quality constraints — what to avoid, length limits, tone requirements' },
-  { id: 'examples', label: 'Examples', letter: 'E', color: '#F5A623', text: 'For inspiration, here\'s the level of detail I want: "The Nike Air Max 1 worked because Tinker Hatfield saw the Pompidou Centre in Paris and thought: what if you could see the guts of a shoe?" Give me that kind of origin story.', hint: 'Provide an example of the quality/style you want' },
-];
+const blockData = [
+  { id: 'role', labelKey: 'blockRoleLabel', letter: 'R', color: '#E94560', textKey: 'blockRoleText', hintKey: 'blockRoleHint' },
+  { id: 'task', labelKey: 'blockTaskLabel', letter: 'T', color: '#0F3460', textKey: 'blockTaskText', hintKey: 'blockTaskHint' },
+  { id: 'format', labelKey: 'blockFormatLabel', letter: 'F', color: '#7B61FF', textKey: 'blockFormatText', hintKey: 'blockFormatHint' },
+  { id: 'constraints', labelKey: 'blockConstraintsLabel', letter: 'C', color: '#16C79A', textKey: 'blockConstraintsText', hintKey: 'blockConstraintsHint' },
+  { id: 'examples', labelKey: 'blockExamplesLabel', letter: 'E', color: '#F5A623', textKey: 'blockExamplesText', hintKey: 'blockExamplesHint' },
+] as const;
 
 const fallbackResponses: Record<number, string> = {
   0: "Sure! I can help you design a sneaker. Here are some ideas:\n\nYou could try a retro-inspired design with modern materials. Consider using bold colors and unique textures. Think about what makes a sneaker stand out on the shelf.\n\nWould you like me to brainstorm more specific ideas?",
@@ -31,13 +33,34 @@ const fallbackResponses: Record<number, string> = {
   5: "**The Phantom Pulse**\n\n**Colorway:** Midnight black base with an oil-slick iridescent heel panel that shifts between deep purple, emerald, and midnight blue depending on the angle. Matte black everything else — laces, sole, tongue. The restraint is the point — like Dieter Rams designed a Jordan.\n\n**Signature Detail:** The heel panel is made from a recycled ocean plastic composite that creates a unique, unrepeatable swirl pattern on every single pair. No two are identical — your pair is literally one-of-one. A serial number laser-etched into the insole links to a digital certificate. But this isn't about blockchain gimmicks — it's about the fact that the material itself refuses to repeat.\n\n**The Story:** Walking through Tokyo after rain. Oil puddles on asphalt catching neon light — like the Pompidou Centre moment, but for a generation that finds beauty in imperfection, not architecture. An ugly thing made beautiful by angle and light.\n\nThe iridescent heel only reveals itself in motion. Standing still, it's just a clean black shoe. Walking, it comes alive. The tagline: \"Move different.\"\n\nThis sells out because it inverts the hypebeast formula: instead of loud colors demanding attention, it rewards the people who actually look closely. The scarcity isn't artificial — it's built into the material.",
 };
 
-const SYSTEM_PROMPT = 'You are a creative design assistant. Respond to the user\'s prompt naturally. Keep your response concise and vivid.';
+const BASE_SYSTEM_PROMPT = 'You are a creative design assistant. Respond to the user\'s prompt naturally. Keep your response concise and vivid.';
 
 type Mode = 'guided' | 'freeform';
 
 export default function PromptMakeover() {
   const isMobile = useIsMobile();
   const { isPaid } = useAuth();
+  const t = useTranslation('promptMakeover');
+  const locale = getLocale();
+  const languageName = languages.find(l => l.code === locale)?.name || 'English';
+  const SYSTEM_PROMPT = locale === 'en' ? BASE_SYSTEM_PROMPT : `${BASE_SYSTEM_PROMPT}\n\nIMPORTANT: Respond entirely in ${languageName}.`;
+
+  const blocks: BuildingBlock[] = blockData.map(bd => ({
+    id: bd.id,
+    letter: bd.letter,
+    color: bd.color,
+    label: t(bd.labelKey, bd.id === 'role' ? 'Role' : bd.id === 'task' ? 'Task' : bd.id === 'format' ? 'Format' : bd.id === 'constraints' ? 'Constraints' : 'Examples'),
+    text: t(bd.textKey, bd.id === 'role' ? 'You are a legendary sneaker designer who has worked at Nike and Off-White, known for creating hype-worthy limited drops.'
+      : bd.id === 'task' ? 'Design a sneaker concept that would sell out in under 10 minutes. Give it a name, describe the colorway, the key design detail that makes it iconic, and the story behind it.'
+      : bd.id === 'format' ? 'Format the response as: Sneaker name (bold), followed by Colorway, Signature Detail, and The Story — each as a short paragraph.'
+      : bd.id === 'constraints' ? 'The design must feel achievable — no sci-fi gimmicks. It should appeal to 16-25 year olds. Avoid anything that\'s already been done by Yeezy or Travis Scott collabs.'
+      : 'For inspiration, here\'s the level of detail I want: "The Nike Air Max 1 worked because Tinker Hatfield saw the Pompidou Centre in Paris and thought: what if you could see the guts of a shoe?" Give me that kind of origin story.'),
+    hint: t(bd.hintKey, bd.id === 'role' ? 'Assign the AI a specific expert role/persona relevant to the task'
+      : bd.id === 'task' ? 'Define the specific task — what exactly should the AI do?'
+      : bd.id === 'format' ? 'Specify the output format — how many items, what structure, any formatting rules'
+      : bd.id === 'constraints' ? 'Add quality constraints — what to avoid, length limits, tone requirements'
+      : 'Provide an example of the quality/style you want'),
+  }));
   const [active, setActive] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<Mode>('guided');
   const [showUnlockPrompt, setShowUnlockPrompt] = useState(false);
@@ -54,8 +77,9 @@ export default function PromptMakeover() {
   const score = active.size;
 
   // Live AI streaming (only used in freeform mode)
+  const liveSystemPrompt = locale === 'en' ? BASE_SYSTEM_PROMPT : `${BASE_SYSTEM_PROMPT}\n\nIMPORTANT: Respond entirely in ${languageName}.`;
   const { response: liveResponse, isStreaming, error: liveError, sendMessages, abort } =
-    useStreamingResponse({ systemPrompt: SYSTEM_PROMPT, maxTokens: 1024 });
+    useStreamingResponse({ systemPrompt: liveSystemPrompt, maxTokens: 1024 });
 
   // Fallback typewriter effect for guided mode
   const fallbackText = fallbackResponses[score] || fallbackResponses[0];
@@ -93,7 +117,7 @@ export default function PromptMakeover() {
 
   const buildPrompt = () => {
     const parts: { text: string; color: string }[] = [
-      { text: 'Design me a cool sneaker.', color: '#6B7280' },
+      { text: t('basePrompt', 'Design me a cool sneaker.'), color: '#6B7280' },
     ];
     blocks.forEach((b) => {
       if (active.has(b.id)) {
@@ -124,7 +148,7 @@ export default function PromptMakeover() {
     setGeneratingBlock(block.id);
     let generated = '';
 
-    const systemPrompt = `You are a prompt-engineering assistant. The user has written part of an AI prompt and wants to add a "${block.label}" clause to strengthen it.
+    const blockSystemPrompt = `You are a prompt-engineering assistant. The user has written part of an AI prompt and wants to add a "${block.label}" clause to strengthen it.
 
 What "${block.label}" means: ${block.hint}
 
@@ -134,11 +158,11 @@ Rules:
 - Make it specific and relevant to their topic
 - Write it as text they can append directly to their prompt
 - Keep it to 1-2 sentences
-- Do NOT repeat what's already in their prompt`;
+- Do NOT repeat what's already in their prompt${locale !== 'en' ? `\n\nIMPORTANT: Respond entirely in ${languageName}.` : ''}`;
 
     blockAbortRef.current = streamChat({
       messages: [{ role: 'user', content: `Here is my current prompt:\n\n${currentText}\n\nGenerate a "${block.label}" clause I can add to this prompt.` }],
-      systemPrompt,
+      systemPrompt: blockSystemPrompt,
       maxTokens: 200,
       source: 'block-gen',
       onChunk: (text) => { generated += text; },
@@ -185,7 +209,7 @@ Rules:
 
   const renderResponse = () => {
     if (mode === 'freeform' && !liveResponse && !isStreaming) {
-      return <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>Write a prompt and hit send to see a real AI response...</p>;
+      return <p style={{ color: '#6B7280', fontStyle: 'italic', margin: 0 }}>{t('writePromptHint', 'Write a prompt and hit send to see a real AI response...')}</p>;
     }
     return (
       <>
@@ -219,7 +243,7 @@ Rules:
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Prompt Makeover</h3>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>{t('title', 'Prompt Makeover')}</h3>
           </div>
         </div>
 
@@ -274,7 +298,7 @@ Rules:
               {/* Quality meter */}
               <div style={{ marginBottom: isMobile ? 8 : 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 3 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Prompt Quality</span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>{t('promptQuality', 'Prompt Quality')}</span>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700, color: qualityPercent > 60 ? '#16C79A' : qualityPercent > 20 ? '#F5A623' : '#6B7280' }}>{qualityPercent}%</span>
                 </div>
                 <div style={{ height: 3, borderRadius: 2, background: 'rgba(26,26,46,0.06)', overflow: 'hidden' }}>
@@ -324,7 +348,7 @@ Rules:
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(22,199,154,0.25)'; }}
               >
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C79A', flexShrink: 0 }} />
-                Try my own prompt
+                {t('tryOwnPrompt', 'Try my own prompt')}
               </button>
             </div>
           ) : (showUnlockPrompt && !isPaid) ? (
@@ -336,7 +360,7 @@ Rules:
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#16C79A', display: 'flex', alignItems: 'center', gap: 5 }}>
                   <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C79A' }} />
-                  Live AI
+                  {t('liveAI', 'Live AI')}
                 </span>
                 <button
                   onClick={() => handleModeSwitch('guided')}
@@ -350,7 +374,7 @@ Rules:
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.25)'; e.currentTarget.style.color = '#1A1A2E'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.1)'; e.currentTarget.style.color = '#6B7280'; }}
                 >
-                  &larr; Back to guided
+                  &larr; {t('backToGuided', 'Back to guided')}
                 </button>
               </div>
               <textarea
@@ -358,7 +382,7 @@ Rules:
                 value={freeformText}
                 onChange={(e) => setFreeformText(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type any prompt, then click the building blocks below to strengthen it..."
+                placeholder={t('freeformPlaceholder', 'Type any prompt, then click the building blocks below to strengthen it...')}
                 style={{
                   width: '100%', minHeight: isMobile ? 100 : 180, padding: isMobile ? '0.75rem' : '1rem 1.25rem',
                   fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.8rem' : '0.85rem', lineHeight: 1.7,
@@ -380,7 +404,7 @@ Rules:
                       key={block.id}
                       onClick={() => handleGenerateBlock(block)}
                       disabled={isDisabled}
-                      title={!freeformText.trim() ? 'Write something first so AI can tailor this block to your topic' : block.hint}
+                      title={!freeformText.trim() ? t('writeFirstTooltip', 'Write something first so AI can tailor this block to your topic') : block.hint}
                       style={{
                         display: 'flex', alignItems: 'center', gap: isMobile ? 4 : 5,
                         padding: isMobile ? '4px 8px' : '5px 10px', borderRadius: 100, border: '1px solid',
@@ -402,14 +426,14 @@ Rules:
                       }}>
                         {block.letter}
                       </span>
-                      {isLoading ? (isMobile ? '...' : 'Generating...') : isUsed ? `${block.label}${isMobile ? '' : ' \u2713'}` : `+${isMobile ? '' : ' '}${block.label}`}
+                      {isLoading ? (isMobile ? '...' : t('generating', 'Generating...')) : isUsed ? `${block.label}${isMobile ? '' : ' \u2713'}` : `+${isMobile ? '' : ' '}${block.label}`}
                     </button>
                   );
                 })}
               </div>
               {!freeformText.trim() && !isMobile && (
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0', marginTop: 6, lineHeight: 1.4 }}>
-                  Type a prompt first — then click blocks to generate tailored additions
+                  {t('typePromptFirst', 'Type a prompt first — then click blocks to generate tailored additions')}
                 </p>
               )}
 
@@ -428,7 +452,7 @@ Rules:
                     flex: isMobile ? 1 : undefined,
                   }}
                 >
-                  {isStreaming ? 'Generating...' : `Send to Claude${isMobile ? '' : ' \u2192'}`}
+                  {isStreaming ? t('generating', 'Generating...') : `${t('sendToClaude', 'Send to Claude')}${isMobile ? '' : ' \u2192'}`}
                 </button>
                 {liveError && (
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#E94560' }}>
@@ -445,7 +469,7 @@ Rules:
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: '0.75rem' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: isTyping ? '#16C79A' : '#6B7280', transition: 'background 0.3s' }} />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>
-              {isTyping ? 'Generating...' : 'AI Response'}
+              {isTyping ? t('generating', 'Generating...') : t('aiResponse', 'AI Response')}
             </span>
             {mode === 'freeform' && (
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#16C79A', marginLeft: 'auto', background: 'rgba(22,199,154,0.08)', padding: '2px 8px', borderRadius: 100 }}>

@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { streamChat } from '../../../lib/claude';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation, getLocale } from '../../../i18n/useTranslation';
+import { languages } from '../../../data/languages';
 
 interface RoastResult {
   score: number;
@@ -11,7 +13,7 @@ interface RoastResult {
   tips: string[];
 }
 
-const SYSTEM_PROMPT = `You are a brutally funny prompt critic. The user will give you a prompt they've written for an AI. Rate it 0-100 and roast it.
+const BASE_SYSTEM_PROMPT = `You are a brutally funny prompt critic. The user will give you a prompt they've written for an AI. Rate it 0-100 and roast it.
 
 You MUST respond with ONLY valid JSON in this exact format, no other text:
 {
@@ -55,6 +57,10 @@ function getTierForScore(score: number): string {
 
 export default function PromptRoast() {
   const isMobile = useIsMobile();
+  const t = useTranslation('promptRoast');
+  const locale = getLocale();
+  const languageName = languages.find(l => l.code === locale)?.name || 'English';
+  const SYSTEM_PROMPT = locale === 'en' ? BASE_SYSTEM_PROMPT : `${BASE_SYSTEM_PROMPT}\n\nIMPORTANT: Write all string values in the JSON (tier, roast, bestLine, tips) entirely in ${languageName}.`;
   const [prompt, setPrompt] = useState('');
   const [phase, setPhase] = useState<'input' | 'loading' | 'result'>('input');
   const [result, setResult] = useState<RoastResult | null>(null);
@@ -100,7 +106,7 @@ export default function PromptRoast() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('The AI got so roasted by your prompt it forgot how to respond. Try again!');
+          setError(t('parseError', 'The AI got so roasted by your prompt it forgot how to respond. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -150,7 +156,7 @@ export default function PromptRoast() {
           <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg, #E94560, #F5A623)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0 }}>
             <span role="img" aria-label="fire">&#128293;</span>
           </div>
-          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.3, flex: 1 }}>Prompt Roast</h3>
+          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.3, flex: 1 }}>{t('title', 'Prompt Roast')}</h3>
         </div>
       ) : (
         <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(26,26,46,0.06)' }}>
@@ -159,8 +165,8 @@ export default function PromptRoast() {
               <span role="img" aria-label="fire">&#128293;</span>
             </div>
             <div>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>Prompt Roast</h3>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Paste any prompt. Get brutally honest feedback.</p>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>{t('title', 'Prompt Roast')}</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>{t('subtitle', 'Paste any prompt. Get brutally honest feedback.')}</p>
             </div>
           </div>
         </div>
@@ -176,7 +182,7 @@ export default function PromptRoast() {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder='Paste your prompt here... e.g. "write me a story"'
+                placeholder={t('placeholder', 'Paste your prompt here... e.g. "write me a story"')}
                 style={{
                   width: '100%', flex: 1, minHeight: 80, padding: '0.75rem',
                   fontFamily: 'var(--font-mono)', fontSize: '0.82rem', lineHeight: 1.6,
@@ -193,8 +199,8 @@ export default function PromptRoast() {
                   border: '1px solid rgba(233,69,96,0.15)',
                   borderRadius: 8, padding: '0.6rem 0.75rem', marginTop: 8, textAlign: 'center' as const, flexShrink: 0,
                 }}>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.15rem' }}>Daily roasts used up!</p>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0 }}>Unlock full access for unlimited roasts</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.15rem' }}>{t('dailyLimitTitle', 'Daily roasts used up!')}</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0 }}>{t('dailyLimitDesc', 'Unlock full access for unlimited roasts')}</p>
                 </div>
               )}
 
@@ -214,7 +220,7 @@ export default function PromptRoast() {
                   minHeight: 44, marginTop: 8, flexShrink: 0,
                 }}
               >
-                Roast My Prompt
+                {t('roastButton', 'Roast My Prompt')}
               </button>
             </div>
           )}
@@ -223,7 +229,7 @@ export default function PromptRoast() {
           {phase === 'loading' && (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem', animation: 'pulse 1s ease-in-out infinite' }}>&#128293;</div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Analyzing your prompt...</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('analyzing', 'Analyzing your prompt...')}</p>
             </div>
           )}
 
@@ -240,10 +246,10 @@ export default function PromptRoast() {
                     letterSpacing: '0.06em',
                   }}>
                     {result.score > previousScore
-                      ? `+${result.score - previousScore} from last attempt`
+                      ? `+${result.score - previousScore} ${t('fromLastAttempt', 'from last attempt')}`
                       : result.score === previousScore
-                        ? 'Same score \u2014 try a different approach'
-                        : `${result.score - previousScore} from last attempt`}
+                        ? t('sameScore', 'Same score \u2014 try a different approach')
+                        : `${result.score - previousScore} ${t('fromLastAttempt', 'from last attempt')}`}
                   </p>
                 )}
                 <div style={{
@@ -286,12 +292,12 @@ export default function PromptRoast() {
                     background: '#1A1A2E', color: '#FAF8F5', minHeight: 42,
                   }}
                 >
-                  See Tips &amp; Share
+                  {t('seeTipsShare', 'See Tips & Share')}
                 </button>
               </div>
 
               {/* BottomSheet with full roast, bestLine, tips, Roast Another */}
-              <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title="Roast Details">
+              <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={t('roastDetails', 'Roast Details')}>
                 {/* Full roast */}
                 <div style={{
                   background: 'rgba(26,26,46,0.03)', border: '1px solid rgba(26,26,46,0.06)',
@@ -324,7 +330,7 @@ export default function PromptRoast() {
                       letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                       color: '#6B7280', marginBottom: 6,
                     }}>
-                      How to improve
+                      {t('howToImprove', 'How to improve')}
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 6 }}>
                       {result.tips.map((tip, i) => (
@@ -348,7 +354,7 @@ export default function PromptRoast() {
                       color: '#FFFFFF', cursor: 'pointer', minHeight: 44,
                     }}
                   >
-                    Improve &amp; Retry
+                    {t('improveRetry', 'Improve & Retry')}
                   </button>
                   <button
                     onClick={handleReset}
@@ -358,7 +364,7 @@ export default function PromptRoast() {
                       background: 'transparent', color: '#6B7280', cursor: 'pointer', minHeight: 44,
                     }}
                   >
-                    Start Fresh
+                    {t('startFresh', 'Start Fresh')}
                   </button>
                 </div>
               </BottomSheet>
@@ -375,7 +381,7 @@ export default function PromptRoast() {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder='Paste your prompt here... e.g. "write me a story"'
+                placeholder={t('placeholder', 'Paste your prompt here... e.g. "write me a story"')}
                 style={{
                   width: '100%', minHeight: 140, padding: '1rem 1.25rem',
                   fontFamily: 'var(--font-mono)', fontSize: '0.85rem', lineHeight: 1.7,
@@ -392,8 +398,8 @@ export default function PromptRoast() {
                   border: '1px solid rgba(233,69,96,0.15)', borderRadius: 10,
                   padding: '1rem 1.25rem', marginTop: 12, textAlign: 'center' as const,
                 }}>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>Daily roasts used up!</p>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>Unlock full access for unlimited roasts + all chapters</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>{t('dailyLimitTitle', 'Daily roasts used up!')}</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>{t('dailyLimitDescFull', 'Unlock full access for unlimited roasts + all chapters')}</p>
                 </div>
               )}
 
@@ -416,9 +422,9 @@ export default function PromptRoast() {
                   onMouseEnter={(e) => { if (prompt.trim() && !throttled) e.currentTarget.style.transform = 'scale(1.02)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                 >
-                  Roast My Prompt
+                  {t('roastButton', 'Roast My Prompt')}
                 </button>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>Cmd+Enter to roast</span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter to roast')}</span>
               </div>
             </div>
           )}
@@ -427,7 +433,7 @@ export default function PromptRoast() {
           {phase === 'loading' && (
             <div style={{ padding: '3rem 2rem', textAlign: 'center' as const }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem', animation: 'pulse 1s ease-in-out infinite' }}>&#128293;</div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Analyzing your prompt...</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('analyzing', 'Analyzing your prompt...')}</p>
             </div>
           )}
 
@@ -444,10 +450,10 @@ export default function PromptRoast() {
                     letterSpacing: '0.06em',
                   }}>
                     {result.score > previousScore
-                      ? `+${result.score - previousScore} from last attempt`
+                      ? `+${result.score - previousScore} ${t('fromLastAttempt', 'from last attempt')}`
                       : result.score === previousScore
-                        ? 'Same score \u2014 try a different approach'
-                        : `${result.score - previousScore} from last attempt`}
+                        ? t('sameScore', 'Same score \u2014 try a different approach')
+                        : `${result.score - previousScore} ${t('fromLastAttempt', 'from last attempt')}`}
                   </p>
                 )}
                 <div style={{
@@ -524,7 +530,7 @@ export default function PromptRoast() {
                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                 >
-                  Improve &amp; Retry
+                  {t('improveRetry', 'Improve & Retry')}
                 </button>
                 <button
                   onClick={handleReset}
@@ -537,7 +543,7 @@ export default function PromptRoast() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#1A1A2E'; e.currentTarget.style.color = '#1A1A2E'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.15)'; e.currentTarget.style.color = '#6B7280'; }}
                 >
-                  Start Fresh
+                  {t('startFresh', 'Start Fresh')}
                 </button>
               </div>
             </div>

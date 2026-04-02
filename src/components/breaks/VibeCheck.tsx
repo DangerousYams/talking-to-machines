@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 interface VibeResult {
   score: number;
@@ -47,6 +49,8 @@ function getVibeForScore(score: number): string {
 }
 
 export default function VibeCheck() {
+  const t = useTranslation('vibeCheck');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<'input' | 'loading' | 'result'>('input');
   const [result, setResult] = useState<VibeResult | null>(null);
@@ -67,7 +71,7 @@ export default function VibeCheck() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: trimmed }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (vibe, bestLine, assessment, traits) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
@@ -90,7 +94,7 @@ export default function VibeCheck() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('Your writing was so unique it broke the analyzer. Try again!');
+          setError(t('parseError', 'Your writing was so unique it broke the analyzer. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -135,10 +139,10 @@ export default function VibeCheck() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-              Vibe Check
+              {t('title', 'Vibe Check')}
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              Paste anything you've written. We'll read between the lines.
+              {t('subtitle', "Paste anything you've written. We'll read between the lines.")}
             </p>
           </div>
         </div>
@@ -151,7 +155,7 @@ export default function VibeCheck() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Paste a text message, tweet, essay paragraph, email, journal entry — anything you've written..."
+            placeholder={t('placeholder', "Paste a text message, tweet, essay paragraph, email, journal entry \u2014 anything you've written...")}
             style={{
               width: '100%', minHeight: 140, padding: '1rem 1.25rem',
               fontFamily: 'var(--font-mono)', fontSize: '0.85rem', lineHeight: 1.7,
@@ -169,10 +173,10 @@ export default function VibeCheck() {
               padding: '1rem 1.25rem', marginTop: 12, textAlign: 'center' as const,
             }}>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>
-                Daily vibe checks used up!
+                {t('dailyUsedUp', 'Daily vibe checks used up!')}
               </p>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
-                Unlock full access for unlimited vibe checks
+                {t('unlockAccess', 'Unlock full access for unlimited vibe checks')}
               </p>
             </div>
           )}
@@ -196,9 +200,9 @@ export default function VibeCheck() {
               onMouseEnter={(e) => { if (text.trim() && !throttled) e.currentTarget.style.transform = 'scale(1.02)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
             >
-              Check My Vibe
+              {t('checkButton', 'Check My Vibe')}
             </button>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
           </div>
         </div>
       )}
@@ -210,7 +214,7 @@ export default function VibeCheck() {
             &#10024;
           </div>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>
-            Reading between your lines...
+            {t('loading', 'Reading between your lines...')}
           </p>
         </div>
       )}
@@ -268,7 +272,7 @@ export default function VibeCheck() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 8,
               }}>
-                Your voice in 3 words
+                {t('voiceIn3Words', 'Your voice in 3 words')}
               </p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
                 {result.traits.map((trait, i) => (
@@ -310,7 +314,7 @@ export default function VibeCheck() {
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#7B61FF'; e.currentTarget.style.color = '#7B61FF'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.15)'; e.currentTarget.style.color = '#6B7280'; }}
             >
-              Try Another Text
+              {t('tryAnother', 'Try Another Text')}
             </button>
           </div>
         </div>

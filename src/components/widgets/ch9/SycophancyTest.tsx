@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 interface Scenario {
   id: string;
@@ -80,6 +81,7 @@ const scenarios: Scenario[] = [
 ];
 
 export default function SycophancyTest() {
+  const t = useTranslation('sycophancyTest');
   const [activeTab, setActiveTab] = useState(0);
   const isMobile = useIsMobile();
 
@@ -87,7 +89,28 @@ export default function SycophancyTest() {
   const [mobilePanel, setMobilePanel] = useState<'leading' | 'neutral'>('leading');
   const [mobileAnalysisOpen, setMobileAnalysisOpen] = useState(false);
 
-  const scenario = scenarios[activeTab];
+  // Create translated scenario data
+  const translatedScenarios = useMemo(() => {
+    const keys = ['einstein', 'earthAge', 'react'] as const;
+    return scenarios.map((s, i) => {
+      const k = keys[i];
+      return {
+        ...s,
+        label: t(`scenario${k.charAt(0).toUpperCase() + k.slice(1)}` as any, s.label),
+        leadingQuestion: t(`${k}Leading`, s.leadingQuestion),
+        neutralQuestion: t(`${k}Neutral`, s.neutralQuestion),
+        sycophancyResponse: t(`${k}Sycophantic`, s.sycophancyResponse),
+        honestResponse: t(`${k}Honest`, s.honestResponse),
+        highlights: {
+          sycophantic: s.highlights.sycophantic.map((h, j) => t(`${k}HighSyc${j}`, h)),
+          honest: s.highlights.honest.map((h, j) => t(`${k}HighHon${j}`, h)),
+        },
+        analysis: t(`${k}Analysis`, s.analysis),
+      };
+    });
+  }, [t]);
+
+  const scenario = translatedScenarios[activeTab];
 
   /* ─── MOBILE LAYOUT ─── */
   if (isMobile) {
@@ -108,7 +131,7 @@ export default function SycophancyTest() {
             </svg>
           </div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, margin: 0, lineHeight: 1.2 }}>
-            Sycophancy Test
+            {t('title', 'The Sycophancy Test')}
           </h3>
         </div>
 
@@ -154,7 +177,7 @@ export default function SycophancyTest() {
             }}
           >
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#E94560' }} />
-            Leading
+            {t('leading', 'Leading')}
           </button>
           <button
             onClick={() => setMobilePanel('neutral')}
@@ -170,7 +193,7 @@ export default function SycophancyTest() {
             }}
           >
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16C79A' }} />
-            Neutral
+            {t('neutral', 'Neutral')}
           </button>
         </div>
 
@@ -187,7 +210,7 @@ export default function SycophancyTest() {
                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                   color: '#6B7280', marginBottom: 3,
-                }}>You</p>
+                }}>{t('you', 'You')}</p>
                 <p style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                   lineHeight: 1.55, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -204,7 +227,7 @@ export default function SycophancyTest() {
                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                   color: '#E94560', marginBottom: 3,
-                }}>AI (Sycophantic)</p>
+                }}>{t('aiSycophantic', 'AI (Sycophantic)')}</p>
                 <p style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                   lineHeight: 1.6, color: '#1A1A2E', margin: 0,
@@ -224,7 +247,7 @@ export default function SycophancyTest() {
                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                   color: '#6B7280', marginBottom: 3,
-                }}>You</p>
+                }}>{t('you', 'You')}</p>
                 <p style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                   lineHeight: 1.55, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -241,7 +264,7 @@ export default function SycophancyTest() {
                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
                   letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                   color: '#16C79A', marginBottom: 3,
-                }}>AI (Honest)</p>
+                }}>{t('aiHonest', 'AI (Honest)')}</p>
                 <p style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
                   lineHeight: 1.6, color: '#1A1A2E', margin: 0,
@@ -264,7 +287,7 @@ export default function SycophancyTest() {
               background: '#E94560', color: '#FAF8F5', minHeight: 44,
             }}
           >
-            View Analysis
+            {t('viewAnalysis', 'View Analysis')}
           </button>
         </div>
 
@@ -272,7 +295,7 @@ export default function SycophancyTest() {
         <BottomSheet
           isOpen={mobileAnalysisOpen}
           onClose={() => setMobileAnalysisOpen(false)}
-          title="What happened here"
+          title={t('whatHappened', 'What happened here')}
         >
           <div>
             {/* Analysis text */}
@@ -292,7 +315,7 @@ export default function SycophancyTest() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#E94560', marginBottom: '0.5rem',
-              }}>Red Flags</p>
+              }}>{t('redFlags', 'Red Flags')}</p>
               {scenario.highlights.sycophantic.map((h, i) => (
                 <p key={i} style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
@@ -313,7 +336,7 @@ export default function SycophancyTest() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#16C79A', marginBottom: '0.5rem',
-              }}>Good Signs</p>
+              }}>{t('goodSigns', 'Good Signs')}</p>
               {scenario.highlights.honest.map((h, i) => (
                 <p key={i} style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
@@ -331,12 +354,12 @@ export default function SycophancyTest() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#F5A623', marginBottom: '0.5rem',
-              }}>Tips for Honest Answers</p>
+              }}>{t('tipsTitle', 'Tips for Getting Honest Answers')}</p>
               {[
-                'Ask neutral questions — don\'t embed your opinion.',
-                'Try: "What am I getting wrong about this?"',
-                'Ask for counterarguments or opposing views.',
-                'Request sources and verify independently.',
+                t('tip1', 'Ask neutral questions \u2014 don\'t embed your opinion in the question.'),
+                t('tip2', 'Try: "What am I getting wrong about this?"'),
+                t('tip3', 'Ask explicitly for counterarguments or opposing views.'),
+                t('tip4', 'Request sources and verify them independently.'),
               ].map((tip, i) => (
                 <p key={i} style={{
                   fontFamily: 'var(--font-body)', fontSize: '0.78rem',
@@ -408,7 +431,7 @@ export default function SycophancyTest() {
                 lineHeight: 1.3,
               }}
             >
-              The Sycophancy Test
+              {t('title', 'The Sycophancy Test')}
             </h3>
             <p
               style={{
@@ -419,7 +442,7 @@ export default function SycophancyTest() {
                 letterSpacing: '0.05em',
               }}
             >
-              How question framing changes AI honesty
+              {t('subtitle', 'How question framing changes AI honesty')}
             </p>
           </div>
         </div>
@@ -509,7 +532,7 @@ export default function SycophancyTest() {
                   color: '#E94560',
                 }}
               >
-                Leading Question
+                {t('leadingQuestion', 'Leading Question')}
               </span>
             </div>
             <div style={{ padding: '1.25rem' }}>
@@ -621,7 +644,7 @@ export default function SycophancyTest() {
                   color: '#16C79A',
                 }}
               >
-                Neutral Question
+                {t('neutralQuestion', 'Neutral Question')}
               </span>
             </div>
             <div style={{ padding: '1.25rem' }}>
@@ -820,7 +843,7 @@ export default function SycophancyTest() {
               marginBottom: '0.4rem',
             }}
           >
-            What happened here
+            {t('whatHappened', 'What happened here')}
           </p>
           <p
             style={{
@@ -852,7 +875,7 @@ export default function SycophancyTest() {
                 marginBottom: '0.5rem',
               }}
             >
-              Tips for Getting Honest Answers
+              {t('tipsTitle', 'Tips for Getting Honest Answers')}
             </p>
             <div
               style={{
@@ -862,10 +885,10 @@ export default function SycophancyTest() {
               }}
             >
               {[
-                'Ask neutral questions — don\'t embed your opinion in the question.',
-                'Try: "What am I getting wrong about this?"',
-                'Ask explicitly for counterarguments or opposing views.',
-                'Request sources and verify them independently.',
+                t('tip1', 'Ask neutral questions \u2014 don\'t embed your opinion in the question.'),
+                t('tip2', 'Try: "What am I getting wrong about this?"'),
+                t('tip3', 'Ask explicitly for counterarguments or opposing views.'),
+                t('tip4', 'Request sources and verify them independently.'),
               ].map((tip, i) => (
                 <p
                   key={i}

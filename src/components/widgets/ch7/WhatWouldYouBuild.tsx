@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { personalSoftwareGallery, domains, type PersonalSoftwareExample } from '../../../data/personal-software-gallery';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 const ACCENT = '#7B61FF';
 const STORAGE_KEY = 'ttm_my_project_idea';
@@ -147,6 +148,7 @@ function InspirationCard({
 }
 
 export default function WhatWouldYouBuild() {
+  const t = useTranslation('ch7');
   const isMobile = useIsMobile();
   const [activeDomain, setActiveDomain] = useState<string>('all');
   const [sheetExample, setSheetExample] = useState<PersonalSoftwareExample | null>(null);
@@ -243,7 +245,7 @@ export default function WhatWouldYouBuild() {
                   lineHeight: 1.3,
                 }}
               >
-                What Would You Build?
+                {t('whatWouldYouBuildTitle', 'What Would You Build?')}
               </h3>
             </div>
           </div>
@@ -321,7 +323,7 @@ export default function WhatWouldYouBuild() {
                 fontSize: '0.8rem',
               }}
             >
-              No projects in this category yet.
+              {t('noProjectsInCategory', 'No projects in this category yet.')}
             </div>
           )}
 
@@ -403,7 +405,7 @@ export default function WhatWouldYouBuild() {
                   letterSpacing: '0.04em',
                 }}
               >
-                Save idea
+                {t('saveIdea', 'Save idea')}
               </button>
               {saved && (
                 <span
@@ -428,7 +430,7 @@ export default function WhatWouldYouBuild() {
                   >
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
-                  Saved! You'll use this in Chapter 11.
+                  {t('savedConfirmationMobile', "Saved! You'll use this in Chapter 11.")}
                 </span>
               )}
             </div>
@@ -828,7 +830,7 @@ export default function WhatWouldYouBuild() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  Save idea
+                  {t('saveIdea', 'Save idea')}
                 </button>
                 {saved && (
                   <span
@@ -853,7 +855,7 @@ export default function WhatWouldYouBuild() {
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    Idea saved! You'll use this in Chapter 11.
+                    {t('savedConfirmationDesktop', "Idea saved! You'll use this in Chapter 11.")}
                   </span>
                 )}
               </div>
@@ -880,7 +882,7 @@ export default function WhatWouldYouBuild() {
             textWrap: 'balance' as any,
           }}
         >
-          Every one of these was built by someone who started with just an idea.
+          {t('footerInspiration', 'Every one of these was built by someone who started with just an idea.')}
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 interface Scenario {
   action: string;
@@ -130,6 +131,7 @@ function getProfile(choices: (number | null)[]): { type: Profile; title: string;
 
 export default function TrustThermometer() {
   const isMobile = useIsMobile();
+  const t = useTranslation('trustThermometer');
   const [currentScenario, setCurrentScenario] = useState(0);
   const [choices, setChoices] = useState<(number | null)[]>(Array(scenarios.length).fill(null));
   const [showTradeoff, setShowTradeoff] = useState(false);
@@ -139,6 +141,37 @@ export default function TrustThermometer() {
 
   const scenario = scenarios[currentScenario];
   const currentChoice = choices[currentScenario];
+
+  const translatedChoiceLabels = [
+    t('choiceJustDoIt', 'Just do it'),
+    t('choiceAskMeFirst', 'Ask me first'),
+    t('choiceNeverAllow', 'Never allow'),
+  ] as const;
+
+  const translatedScenarioActions = [
+    t('scenario1', "Summarize an article you're reading"),
+    t('scenario2', 'Search the web for information'),
+    t('scenario3', 'Send an email to your teammate about the meeting time change'),
+    t('scenario4', 'Edit a file in your project'),
+    t('scenario5', 'Install a new software package'),
+    t('scenario6', 'Delete old files to free up space'),
+    t('scenario7', 'Make a $50 purchase for a tool subscription'),
+    t('scenario8', 'Post to your social media account'),
+  ];
+
+  const translatedTradeoffs = [
+    { auto: t('scenario1Auto', scenarios[0].tradeoffs.auto), ask: t('scenario1Ask', scenarios[0].tradeoffs.ask), never: t('scenario1Never', scenarios[0].tradeoffs.never) },
+    { auto: t('scenario2Auto', scenarios[1].tradeoffs.auto), ask: t('scenario2Ask', scenarios[1].tradeoffs.ask), never: t('scenario2Never', scenarios[1].tradeoffs.never) },
+    { auto: t('scenario3Auto', scenarios[2].tradeoffs.auto), ask: t('scenario3Ask', scenarios[2].tradeoffs.ask), never: t('scenario3Never', scenarios[2].tradeoffs.never) },
+    { auto: t('scenario4Auto', scenarios[3].tradeoffs.auto), ask: t('scenario4Ask', scenarios[3].tradeoffs.ask), never: t('scenario4Never', scenarios[3].tradeoffs.never) },
+    { auto: t('scenario5Auto', scenarios[4].tradeoffs.auto), ask: t('scenario5Ask', scenarios[4].tradeoffs.ask), never: t('scenario5Never', scenarios[4].tradeoffs.never) },
+    { auto: t('scenario6Auto', scenarios[5].tradeoffs.auto), ask: t('scenario6Ask', scenarios[5].tradeoffs.ask), never: t('scenario6Never', scenarios[5].tradeoffs.never) },
+    { auto: t('scenario7Auto', scenarios[6].tradeoffs.auto), ask: t('scenario7Ask', scenarios[6].tradeoffs.ask), never: t('scenario7Never', scenarios[6].tradeoffs.never) },
+    { auto: t('scenario8Auto', scenarios[7].tradeoffs.auto), ask: t('scenario8Ask', scenarios[7].tradeoffs.ask), never: t('scenario8Never', scenarios[7].tradeoffs.never) },
+  ];
+
+  const currentAction = translatedScenarioActions[currentScenario];
+  const currentTradeoffs = translatedTradeoffs[currentScenario];
 
   const handleChoice = (index: number) => {
     if (showTradeoff) return;
@@ -174,7 +207,16 @@ export default function TrustThermometer() {
     setSheetOpen(false);
   };
 
-  const profile = getProfile(choices);
+  const rawProfile = getProfile(choices);
+  const profile = {
+    ...rawProfile,
+    title: rawProfile.type === 'delegator' ? t('profileDelegator', rawProfile.title)
+      : rawProfile.type === 'collaborator' ? t('profileCollaborator', rawProfile.title)
+      : t('profileSupervisor', rawProfile.title),
+    description: rawProfile.type === 'delegator' ? t('profileDelegatorDesc', rawProfile.description)
+      : rawProfile.type === 'collaborator' ? t('profileCollaboratorDesc', rawProfile.description)
+      : t('profileSupervisorDesc', rawProfile.description),
+  };
 
   const stakesColor = {
     low: '#16C79A',
@@ -209,7 +251,7 @@ export default function TrustThermometer() {
         <div style={{
           display: 'flex', gap: '0.5rem', justifyContent: 'center', marginBottom: '1rem',
         }}>
-          {choiceLabels.map((label, i) => (
+          {translatedChoiceLabels.map((label, i) => (
             <div key={label} style={{
               textAlign: 'center' as const, padding: '0.6rem 0.75rem',
               borderRadius: 10, background: choiceColors[i] + '08',
@@ -242,7 +284,7 @@ export default function TrustThermometer() {
             letterSpacing: '0.06em', textTransform: 'uppercase' as const,
             color: '#6B7280', marginBottom: '0.6rem',
           }}>
-            Your choices vs. the average
+            {t('yourChoicesVsAverage', 'Your choices vs. the average')}
           </p>
           {scenarios.map((s, si) => {
             const userChoice = choices[si];
@@ -253,7 +295,7 @@ export default function TrustThermometer() {
                   color: '#1A1A2E', margin: '0 0 3px', opacity: 0.7,
                   overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const,
                 }}>
-                  {s.action}
+                  {translatedScenarioActions[si]}
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{
@@ -272,7 +314,7 @@ export default function TrustThermometer() {
                       fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
                       color: choiceColors[userChoice], whiteSpace: 'nowrap' as const,
                     }}>
-                      {choiceLabels[userChoice]}
+                      {translatedChoiceLabels[userChoice]}
                     </span>
                   )}
                 </div>
@@ -297,7 +339,7 @@ export default function TrustThermometer() {
             fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.6,
             color: '#1A1A2E', margin: 0, opacity: 0.8, paddingLeft: '4px',
           }}>
-            Your autonomy profile should evolve. As you build trust with AI tools, you may find yourself delegating more. The key is being <em>intentional</em> about where you draw the line.
+            {t('autonomyInsightMobile', 'Your autonomy profile should evolve. As you build trust with AI tools, you may find yourself delegating more. The key is being intentional about where you draw the line.')}
           </p>
         </div>
 
@@ -310,7 +352,7 @@ export default function TrustThermometer() {
               background: '#1A1A2E', color: '#FAF8F5',
             }}
           >
-            Try Again
+            {t('tryAgain', 'Try Again')}
           </button>
         </div>
       </div>
@@ -352,7 +394,7 @@ export default function TrustThermometer() {
             fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
             color: '#1A1A2E', margin: 0, flex: 1,
           }}>
-            Trust Thermometer
+            {t('title', 'Trust Thermometer')}
           </h3>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
             {currentScenario + 1}/{scenarios.length}
@@ -392,7 +434,7 @@ export default function TrustThermometer() {
               padding: '2px 6px', borderRadius: 100,
               border: `1px solid ${stakesColor[scenario.stakes]}20`,
             }}>
-              {scenario.stakes} stakes
+              {t(`stakes${scenario.stakes.charAt(0).toUpperCase() + scenario.stakes.slice(1)}`, `${scenario.stakes} stakes`)}
             </span>
           </div>
 
@@ -402,12 +444,12 @@ export default function TrustThermometer() {
             display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' as const,
             overflow: 'hidden',
           }}>
-            Your AI agent wants to: <span style={{ color: '#F5A623' }}>{scenario.action.toLowerCase()}</span>
+            {t('scenarioPrefix', 'Your AI agent wants to:')} <span style={{ color: '#F5A623' }}>{currentAction.toLowerCase()}</span>
           </p>
 
           {/* Three large tappable buttons — unchosen collapse */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-            {choiceLabels.map((label, i) => {
+            {translatedChoiceLabels.map((label, i) => {
               const isSelected = currentChoice === i;
               const isUnchosen = showTradeoff && !isSelected;
               const icons = [
@@ -464,9 +506,9 @@ export default function TrustThermometer() {
                 fontFamily: 'var(--font-body)', fontSize: '0.78rem', lineHeight: 1.5,
                 color: '#1A1A2E', margin: '0 0 8px', opacity: 0.75,
               }}>
-                {currentChoice === 0 && scenario.tradeoffs.auto}
-                {currentChoice === 1 && scenario.tradeoffs.ask}
-                {currentChoice === 2 && scenario.tradeoffs.never}
+                {currentChoice === 0 && currentTradeoffs.auto}
+                {currentChoice === 1 && currentTradeoffs.ask}
+                {currentChoice === 2 && currentTradeoffs.never}
               </p>
               <div style={{ textAlign: 'right' as const }}>
                 <button
@@ -477,7 +519,7 @@ export default function TrustThermometer() {
                     background: '#1A1A2E', color: '#FAF8F5',
                   }}
                 >
-                  {currentScenario + 1 >= scenarios.length ? 'See Profile' : 'Next'} &rarr;
+                  {currentScenario + 1 >= scenarios.length ? t('seeProfile', 'See Profile') : t('nextScenario', 'Next')} &rarr;
                 </button>
               </div>
             </div>
@@ -488,7 +530,7 @@ export default function TrustThermometer() {
         <BottomSheet
           isOpen={sheetOpen}
           onClose={() => { setSheetOpen(false); }}
-          title="Your Autonomy Profile"
+          title={t('autonomyProfileTitle', 'Your Autonomy Profile')}
         >
           {summaryContent()}
         </BottomSheet>
@@ -520,7 +562,7 @@ export default function TrustThermometer() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-              Your Autonomy Profile
+              {t('autonomyProfileTitle', 'Your Autonomy Profile')}
             </h3>
           </div>
         </div>
@@ -547,7 +589,7 @@ export default function TrustThermometer() {
             display: 'flex', gap: '1rem', justifyContent: 'center',
             marginBottom: '2rem', flexWrap: 'wrap' as const,
           }}>
-            {choiceLabels.map((label, i) => (
+            {translatedChoiceLabels.map((label, i) => (
               <div key={label} style={{
                 textAlign: 'center' as const, padding: '1rem 1.5rem',
                 borderRadius: 12, background: choiceColors[i] + '08',
@@ -581,7 +623,7 @@ export default function TrustThermometer() {
               letterSpacing: '0.08em', textTransform: 'uppercase' as const,
               color: '#6B7280', marginBottom: '1rem',
             }}>
-              Your choices vs. the average
+              {t('yourChoicesVsAverage', 'Your choices vs. the average')}
             </p>
             {scenarios.map((s, si) => {
               const userChoice = choices[si];
@@ -591,7 +633,7 @@ export default function TrustThermometer() {
                     fontFamily: 'var(--font-body)', fontSize: '0.75rem',
                     color: '#1A1A2E', margin: '0 0 4px', opacity: 0.7,
                   }}>
-                    {s.action}
+                    {translatedScenarioActions[si]}
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     {/* Average distribution bar */}
@@ -612,7 +654,7 @@ export default function TrustThermometer() {
                         fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                         color: choiceColors[userChoice], whiteSpace: 'nowrap' as const,
                       }}>
-                        You: {choiceLabels[userChoice]}
+                        {t('youLabel', 'You:')} {translatedChoiceLabels[userChoice]}
                       </span>
                     )}
                   </div>
@@ -622,7 +664,7 @@ export default function TrustThermometer() {
             <div style={{
               display: 'flex', gap: '1rem', marginTop: '1rem', justifyContent: 'center',
             }}>
-              {choiceLabels.map((label, i) => (
+              {translatedChoiceLabels.map((label, i) => (
                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <div style={{ width: 8, height: 8, borderRadius: 2, background: choiceColors[i], opacity: 0.4 }} />
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280' }}>
@@ -650,13 +692,13 @@ export default function TrustThermometer() {
               fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700,
               color: '#F5A623', margin: '0 0 0.5rem',
             }}>
-              There's no right answer
+              {t('noRightAnswer', "There's no right answer")}
             </p>
             <p style={{
               fontFamily: 'var(--font-body)', fontSize: '0.85rem', lineHeight: 1.65,
               color: '#1A1A2E', margin: 0, opacity: 0.8,
             }}>
-              Your autonomy profile should evolve. As you build trust with AI tools and set up better safety nets (version control, spending limits, review workflows), you may find yourself delegating more. The key is being <em>intentional</em> about where you draw the line.
+              {t('autonomyInsight', 'Your autonomy profile should evolve. As you build trust with AI tools and set up better safety nets (version control, spending limits, review workflows), you may find yourself delegating more. The key is being intentional about where you draw the line.')}
             </p>
           </div>
 
@@ -671,7 +713,7 @@ export default function TrustThermometer() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
-              Try Again
+              {t('tryAgain', 'Try Again')}
             </button>
           </div>
         </div>
@@ -699,10 +741,10 @@ export default function TrustThermometer() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-              Trust Thermometer
+              {t('title', 'Trust Thermometer')}
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              How much autonomy would you give?
+              {t('subtitle', 'How much autonomy would you give?')}
             </p>
           </div>
         </div>
@@ -746,7 +788,7 @@ export default function TrustThermometer() {
             padding: '0.25rem 0.6rem', borderRadius: 100,
             border: `1px solid ${stakesColor[scenario.stakes]}20`,
           }}>
-            {scenario.stakes} stakes
+            {t(`stakes${scenario.stakes.charAt(0).toUpperCase() + scenario.stakes.slice(1)}`, `${scenario.stakes} stakes`)}
           </span>
         </div>
 
@@ -761,13 +803,13 @@ export default function TrustThermometer() {
             letterSpacing: '0.06em', textTransform: 'uppercase' as const,
             color: '#6B7280', marginBottom: '0.5rem',
           }}>
-            Scenario
+            {t('scenarioLabel', 'Scenario')}
           </p>
           <p style={{
             fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700,
             color: '#1A1A2E', margin: 0, lineHeight: 1.4,
           }}>
-            Your AI agent wants to: <span style={{ color: '#F5A623' }}>{scenario.action.toLowerCase()}</span>
+            {t('scenarioPrefix', 'Your AI agent wants to:')} <span style={{ color: '#F5A623' }}>{currentAction.toLowerCase()}</span>
           </p>
         </div>
 
@@ -777,7 +819,7 @@ export default function TrustThermometer() {
           marginBottom: '1.5rem',
         }}>
           <style dangerouslySetInnerHTML={{ __html: collapseStyles }} />
-          {choiceLabels.map((label, i) => {
+          {translatedChoiceLabels.map((label, i) => {
             const isSelected = currentChoice === i;
             const isUnchosen = showTradeoff && !isSelected;
             const icons = [
@@ -837,9 +879,9 @@ export default function TrustThermometer() {
                     fontFamily: 'var(--font-body)', fontSize: '0.75rem',
                     color: '#6B7280', margin: '2px 0 0',
                   }}>
-                    {i === 0 && 'Let the AI handle it automatically'}
-                    {i === 1 && 'AI proposes, you approve'}
-                    {i === 2 && 'Off limits for AI'}
+                    {i === 0 && t('choiceJustDoItDesc', 'Let the AI handle it automatically')}
+                    {i === 1 && t('choiceAskMeFirstDesc', 'AI proposes, you approve')}
+                    {i === 2 && t('choiceNeverAllowDesc', 'Off limits for AI')}
                   </p>
                 </div>
               </button>
@@ -853,9 +895,9 @@ export default function TrustThermometer() {
                 fontFamily: 'var(--font-body)', fontSize: '0.88rem', lineHeight: 1.65,
                 color: '#1A1A2E', margin: '0.75rem 0 1rem', opacity: 0.8,
               }}>
-                {currentChoice === 0 && scenario.tradeoffs.auto}
-                {currentChoice === 1 && scenario.tradeoffs.ask}
-                {currentChoice === 2 && scenario.tradeoffs.never}
+                {currentChoice === 0 && currentTradeoffs.auto}
+                {currentChoice === 1 && currentTradeoffs.ask}
+                {currentChoice === 2 && currentTradeoffs.never}
               </p>
 
               {/* What others chose — compact bar */}
@@ -868,7 +910,7 @@ export default function TrustThermometer() {
                   letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                   color: '#6B7280', marginBottom: '0.4rem',
                 }}>
-                  What others chose
+                  {t('whatOthersChose', 'What others chose')}
                 </p>
                 <div style={{ display: 'flex', height: 6, borderRadius: 3, overflow: 'hidden' as const }}>
                   {scenario.averageDistribution.map((pct, pi) => (
@@ -906,7 +948,7 @@ export default function TrustThermometer() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
-              {currentScenario + 1 >= scenarios.length ? 'See Your Profile' : 'Next Scenario'} &rarr;
+              {currentScenario + 1 >= scenarios.length ? t('seeYourProfile', 'See Your Profile') : t('nextScenario', 'Next Scenario')} &rarr;
             </button>
           </div>
         )}

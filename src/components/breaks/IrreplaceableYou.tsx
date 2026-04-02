@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 interface IrreplaceableResult {
   score: number;
@@ -56,6 +58,8 @@ function getTierForScore(score: number): string {
 }
 
 export default function IrreplaceableYou() {
+  const t = useTranslation('irreplaceableYou');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [text, setText] = useState('');
   const [phase, setPhase] = useState<'input' | 'loading' | 'result'>('input');
   const [result, setResult] = useState<IrreplaceableResult | null>(null);
@@ -76,7 +80,7 @@ export default function IrreplaceableYou() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: trimmed }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, canHelp, cantReplace, bestLine, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
@@ -100,7 +104,7 @@ export default function IrreplaceableYou() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('Your uniqueness broke the algorithm. Try again!');
+          setError(t('parseError', 'Your uniqueness broke the algorithm. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -145,10 +149,10 @@ export default function IrreplaceableYou() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-              Irreplaceable You
+              {t('title', 'Irreplaceable You')}
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              Describe yourself. We'll tell you what no AI can touch.
+              {t('subtitle', "Describe yourself. We'll tell you what no AI can touch.")}
             </p>
           </div>
         </div>
@@ -161,7 +165,7 @@ export default function IrreplaceableYou() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="I'm a high school junior who plays basketball, makes beats, and is obsessed with anime"
+            placeholder={t('placeholder', "I'm a high school junior who plays basketball, makes beats, and is obsessed with anime")}
             style={{
               width: '100%', minHeight: 140, padding: '1rem 1.25rem',
               fontFamily: 'var(--font-mono)', fontSize: '0.85rem', lineHeight: 1.7,
@@ -179,10 +183,10 @@ export default function IrreplaceableYou() {
               padding: '1rem 1.25rem', marginTop: 12, textAlign: 'center' as const,
             }}>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontWeight: 600, color: '#1A1A2E', margin: '0 0 0.25rem' }}>
-                Daily checks used up!
+                {t('dailyUsedUp', 'Daily checks used up!')}
               </p>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
-                Unlock full access for unlimited irreplaceability checks
+                {t('unlockAccess', 'Unlock full access for unlimited irreplaceability checks')}
               </p>
             </div>
           )}
@@ -206,9 +210,9 @@ export default function IrreplaceableYou() {
               onMouseEnter={(e) => { if (text.trim() && !throttled) e.currentTarget.style.transform = 'scale(1.02)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
             >
-              Am I Replaceable?
+              {t('checkButton', 'Am I Replaceable?')}
             </button>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
           </div>
         </div>
       )}
@@ -220,7 +224,7 @@ export default function IrreplaceableYou() {
             &#128310;
           </div>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>
-            Evaluating your irreplaceability...
+            {t('loading', 'Evaluating your irreplaceability...')}
           </p>
         </div>
       )}
@@ -282,7 +286,7 @@ export default function IrreplaceableYou() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#16C79A', marginBottom: 10, marginTop: 0,
               }}>
-                AI can help with
+                {t('aiCanHelp', 'AI can help with')}
               </p>
               {result.canHelp.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 8, marginBottom: i < result.canHelp.length - 1 ? 8 : 0 }}>
@@ -310,7 +314,7 @@ export default function IrreplaceableYou() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#F5A623', marginBottom: 10, marginTop: 0,
               }}>
-                Only you can do this
+                {t('onlyYou', 'Only you can do this')}
               </p>
               {result.cantReplace.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 8, marginBottom: i < result.cantReplace.length - 1 ? 8 : 0 }}>
@@ -353,7 +357,7 @@ export default function IrreplaceableYou() {
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#16C79A'; e.currentTarget.style.color = '#16C79A'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.15)'; e.currentTarget.style.color = '#6B7280'; }}
             >
-              Try Again
+              {t('tryAgain', 'Try Again')}
             </button>
           </div>
         </div>

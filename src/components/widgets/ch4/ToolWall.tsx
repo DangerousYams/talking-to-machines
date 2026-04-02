@@ -2,15 +2,16 @@ import { useState, useMemo } from 'react';
 import { toolsCatalog, categoryLabels, categoryColors, type ToolCategory, type Tool } from '../../../data/tools-catalog';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 const allCategories: (ToolCategory | 'all')[] = [
   'all', 'image-gen', 'image-edit', 'video', 'music', 'audio', 'research', 'browser', 'coding', 'aggregator', 'other',
 ];
 
-const pricingColors: Record<string, { bg: string; text: string; label: string }> = {
-  free: { bg: 'rgba(22, 199, 154, 0.1)', text: '#16C79A', label: 'Free' },
-  freemium: { bg: 'rgba(245, 166, 35, 0.1)', text: '#F5A623', label: 'Freemium' },
-  paid: { bg: 'rgba(233, 69, 96, 0.1)', text: '#E94560', label: 'Paid' },
+const pricingColorsBase: Record<string, { bg: string; text: string }> = {
+  free: { bg: 'rgba(22, 199, 154, 0.1)', text: '#16C79A' },
+  freemium: { bg: 'rgba(245, 166, 35, 0.1)', text: '#F5A623' },
+  paid: { bg: 'rgba(233, 69, 96, 0.1)', text: '#E94560' },
 };
 
 const categoryEmojis: Record<string, string> = {
@@ -26,9 +27,9 @@ const categoryEmojis: Record<string, string> = {
   'other': '\u{2728}',
 };
 
-function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpanded: boolean; onToggle: () => void; isMobile: boolean }) {
+function ToolCard({ tool, isExpanded, onToggle, isMobile, t, translatedCategoryLabels, pricingLabels }: { tool: Tool; isExpanded: boolean; onToggle: () => void; isMobile: boolean; t: (key: string, fallback?: string) => string; translatedCategoryLabels: Record<ToolCategory, string>; pricingLabels: Record<string, string> }) {
   const catColor = categoryColors[tool.category];
-  const pricing = pricingColors[tool.pricing];
+  const pricing = { ...pricingColorsBase[tool.pricing], label: pricingLabels[tool.pricing] || tool.pricing };
 
   return (
     <div
@@ -63,7 +64,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
               padding: '2px 8px',
               borderRadius: 4,
             }}>
-              {categoryLabels[cat]}
+              {translatedCategoryLabels[cat]}
             </span>
           );
         })}
@@ -127,7 +128,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
               background: 'rgba(22,199,154,0.06)', border: '1px solid rgba(22,199,154,0.15)',
               display: 'flex', alignItems: 'flex-start', gap: 8,
             }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#16C79A', flexShrink: 0, marginTop: 1 }}>STUDENT</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#16C79A', flexShrink: 0, marginTop: 1 }}>{t('studentLabel', 'STUDENT')}</span>
               <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#1A1A2E', lineHeight: 1.4, opacity: 0.8 }}>{tool.studentDeal}</span>
             </div>
           )}
@@ -146,7 +147,7 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
           color: 'rgba(26,26,46,0.25)',
           letterSpacing: '0.05em',
         }}>
-          {isExpanded ? 'click to collapse' : 'click for details'}
+          {isExpanded ? t('clickToCollapse', 'click to collapse') : t('clickForDetails', 'click for details')}
         </span>
       </div>
     </div>
@@ -155,10 +156,30 @@ function ToolCard({ tool, isExpanded, onToggle, isMobile }: { tool: Tool; isExpa
 
 export default function ToolWall() {
   const isMobile = useIsMobile();
+  const t = useTranslation('toolWall');
   const [activeCategory, setActiveCategory] = useState<ToolCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedTool, setExpandedTool] = useState<string | null>(null);
   const [sheetTool, setSheetTool] = useState<Tool | null>(null);
+
+  const translatedCategoryLabels: Record<ToolCategory, string> = {
+    'image-gen': t('categoryImageGen', 'Image Gen'),
+    'image-edit': t('categoryImageEdit', 'Image Edit'),
+    'video': t('categoryVideo', 'Video'),
+    'music': t('categoryMusic', 'Music'),
+    'audio': t('categoryVoiceAudio', 'Voice & Audio'),
+    'research': t('categoryResearch', 'Research'),
+    'browser': t('categoryBrowsersAgents', 'Browsers & Agents'),
+    'coding': t('categoryCoding', 'Coding'),
+    'aggregator': t('categoryAggregators', 'Aggregators'),
+    'other': t('categoryOther', 'Other'),
+  };
+
+  const pricingLabels: Record<string, string> = {
+    free: t('pricingFree', 'Free'),
+    freemium: t('pricingFreemium', 'Freemium'),
+    paid: t('pricingPaid', 'Paid'),
+  };
 
   const filteredTools = useMemo(() => {
     return toolsCatalog.filter((tool) => {
@@ -198,13 +219,13 @@ export default function ToolWall() {
             fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 700,
             color: '#1A1A2E', margin: 0, flex: 1,
           }}>
-            The Tool Wall
+            {t('title', 'The Tool Wall')}
           </h3>
           <span style={{
             fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
             color: '#6B7280', letterSpacing: '0.04em',
           }}>
-            {toolCount} tools
+            {toolCount} {t('toolsCount', 'tools')}
           </span>
         </div>
 
@@ -212,7 +233,7 @@ export default function ToolWall() {
         <div style={{ padding: '8px 12px 0', flexShrink: 0 }}>
           <input
             type="text"
-            placeholder="Search tools..."
+            placeholder={t('searchPlaceholder', 'Search tools...')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -259,7 +280,7 @@ export default function ToolWall() {
                   whiteSpace: 'nowrap' as const,
                 }}
               >
-                {cat === 'all' ? 'All' : categoryLabels[cat as ToolCategory]}
+                {cat === 'all' ? t('categoryAll', 'All') : translatedCategoryLabels[cat as ToolCategory]}
               </button>
             );
           })}
@@ -272,12 +293,12 @@ export default function ToolWall() {
               textAlign: 'center' as const, padding: '2rem 1rem',
               color: '#6B7280', fontFamily: 'var(--font-body)', fontSize: '0.8rem',
             }}>
-              No tools match your search.
+              {t('noResults', 'No tools match your search.')}
             </div>
           ) : (
             filteredTools.map((tool) => {
               const catColor = categoryColors[tool.category];
-              const pricing = pricingColors[tool.pricing];
+              const pricing = pricingColorsBase[tool.pricing];
               return (
                 <button
                   key={tool.name}
@@ -309,15 +330,15 @@ export default function ToolWall() {
                     color: catColor, background: catColor + '12',
                     padding: '1px 6px', borderRadius: 3, flexShrink: 0,
                   }}>
-                    {categoryLabels[tool.category]}
+                    {translatedCategoryLabels[tool.category]}
                   </span>
                   {/* Pricing badge */}
                   <span style={{
                     fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
-                    color: pricing.text, background: pricing.bg,
+                    color: pricingColorsBase[tool.pricing].text, background: pricingColorsBase[tool.pricing].bg,
                     padding: '1px 5px', borderRadius: 3, flexShrink: 0,
                   }}>
-                    {pricing.label}
+                    {pricingLabels[tool.pricing]}
                   </span>
                   {/* Chevron */}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
@@ -337,7 +358,7 @@ export default function ToolWall() {
         >
           {sheetTool && (() => {
             const catColor = categoryColors[sheetTool.category];
-            const pricing = pricingColors[sheetTool.pricing];
+            const pricing = pricingColorsBase[sheetTool.pricing];
             return (
               <div>
                 {/* Badges */}
@@ -348,15 +369,15 @@ export default function ToolWall() {
                     color: catColor, background: catColor + '12',
                     padding: '2px 8px', borderRadius: 4,
                   }}>
-                    {categoryLabels[sheetTool.category]}
+                    {translatedCategoryLabels[sheetTool.category]}
                   </span>
                   <span style={{
                     fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                     letterSpacing: '0.06em', textTransform: 'uppercase' as const,
-                    color: pricing.text, background: pricing.bg,
+                    color: pricingColorsBase[sheetTool.pricing].text, background: pricingColorsBase[sheetTool.pricing].bg,
                     padding: '2px 8px', borderRadius: 4,
                   }}>
-                    {pricing.label}
+                    {pricingLabels[sheetTool.pricing]}
                   </span>
                 </div>
 
@@ -380,7 +401,7 @@ export default function ToolWall() {
                       letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                       color: catColor, marginBottom: '0.35rem',
                     }}>
-                      Details
+                      {t('detailsLabel', 'Details')}
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-body)', fontSize: '0.82rem',
@@ -403,7 +424,7 @@ export default function ToolWall() {
                       letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                       color: catColor, marginBottom: '0.35rem',
                     }}>
-                      Example
+                      {t('exampleLabel', 'Example')}
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-body)', fontSize: '0.82rem',
@@ -441,10 +462,10 @@ export default function ToolWall() {
           </div>
           <div>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
-              The Tool Wall
+              {t('title', 'The Tool Wall')}
             </h3>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-              {toolCount} tools across {Object.keys(categoryLabels).length} categories
+              {toolCount} {t('toolsCount', 'tools')} across {Object.keys(categoryLabels).length} {t('toolsAcrossCategories', 'categories')}
             </p>
           </div>
         </div>
@@ -455,7 +476,7 @@ export default function ToolWall() {
         <div style={{ marginBottom: '1rem' }}>
           <input
             type="text"
-            placeholder="Search tools..."
+            placeholder={t('searchPlaceholder', 'Search tools...')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -511,7 +532,7 @@ export default function ToolWall() {
                   whiteSpace: 'nowrap' as const,
                 }}
               >
-                {cat === 'all' ? 'All' : categoryLabels[cat as ToolCategory]}
+                {cat === 'all' ? t('categoryAll', 'All') : translatedCategoryLabels[cat as ToolCategory]}
               </button>
             );
           })}
@@ -526,7 +547,7 @@ export default function ToolWall() {
             fontFamily: 'var(--font-body)',
             fontSize: '0.9rem',
           }}>
-            No tools match your search. Try a different term.
+            {t('noResultsDesktop', 'No tools match your search. Try a different term.')}
           </div>
         ) : (
           <div style={{
@@ -542,6 +563,9 @@ export default function ToolWall() {
                   setExpandedTool(expandedTool === tool.name ? null : tool.name)
                 }
                 isMobile={false}
+                t={t}
+                translatedCategoryLabels={translatedCategoryLabels}
+                pricingLabels={pricingLabels}
               />
             ))}
           </div>
@@ -561,7 +585,7 @@ export default function ToolWall() {
           letterSpacing: '0.05em',
           margin: 0,
         }}>
-          This landscape changes fast. New tools appear every week.
+          {t('footerHint', 'This landscape changes fast. New tools appear every week.')}
         </p>
       </div>
     </div>

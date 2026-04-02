@@ -3,6 +3,8 @@ import { useIsMobile } from '../../../hooks/useMediaQuery';
 import { useAuth } from '../../../hooks/useAuth';
 import { streamChat } from '../../../lib/claude';
 import UnlockModal from '../../ui/UnlockModal';
+import { useTranslation, getLocale } from '../../../i18n/useTranslation';
+import { languages } from '../../../data/languages';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -76,6 +78,8 @@ Rules:
 - Do NOT use markdown formatting inside the JSON values (no #, **, etc.) — just plain text with \\n for newlines
 - ONLY output the JSON object, nothing else`;
 
+const BASE_AUGMENT_PROMPT_PREFIX = `You are improving one section of a project instruction file (like CLAUDE.md). The user will provide the current content of the`;
+
 function makeAugmentPrompt(sectionId: string, sectionLabel: string): string {
   return `You are improving one section of a project instruction file (like CLAUDE.md). The user will provide the current content of the "${sectionLabel}" section and optionally some guidance on how to improve it.
 
@@ -97,6 +101,9 @@ Rules:
 export default function ProjectInstructionsBuilder() {
   const isMobile = useIsMobile();
   const { isPaid } = useAuth();
+  const t = useTranslation('projectInstructionsBuilder');
+  const locale = getLocale();
+  const languageName = languages.find(l => l.code === locale)?.name || 'English';
 
   const [phase, setPhase] = useState<Phase>('input');
   const [selectedTool, setSelectedTool] = useState<ToolId>('claude');
@@ -281,11 +288,11 @@ export default function ProjectInstructionsBuilder() {
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: isMobile ? '0.95rem' : '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>
-              Project Instructions Builder
+              {t('title', 'Project Instructions Builder')}
             </h3>
             {!isMobile && (
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-                Describe your project. Get a ready-to-use instruction file.
+                {t('subtitle', 'Describe your project. Get a ready-to-use instruction file.')}
               </p>
             )}
           </div>
@@ -296,13 +303,13 @@ export default function ProjectInstructionsBuilder() {
       {phase === 'input' && (
         <div style={{ padding: pad }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', lineHeight: 1.75, color: '#1A1A2E', margin: '0 0 1rem' }}>
-            Describe your project in one line. We'll generate a complete instruction file with all the right sections — then you can edit and improve each one.
+            {t('describeProject', "Describe your project in one line. We'll generate a complete instruction file with all the right sections \u2014 then you can edit and improve each one.")}
           </p>
 
           {/* Project idea input */}
           <div style={{ marginBottom: '1.25rem' }}>
             <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 6 }}>
-              Your project
+              {t('yourProject', 'Your project')}
             </label>
             <textarea
               value={projectIdea}
@@ -328,7 +335,7 @@ export default function ProjectInstructionsBuilder() {
           {/* Tool selector */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', display: 'block', marginBottom: 6 }}>
-              Generate for
+              {t('generateFor', 'Generate for')}
             </label>
             <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
               {TOOLS.map((tool) => (
@@ -353,7 +360,7 @@ export default function ProjectInstructionsBuilder() {
           {/* Section preview */}
           <div style={{ marginBottom: '1.5rem' }}>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 8 }}>
-              Sections we'll generate
+              {t('sectionsWeGenerate', "Sections we'll generate")}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 6 }}>
               {SECTION_DEFS.map((def) => (
@@ -392,7 +399,7 @@ export default function ProjectInstructionsBuilder() {
                 transition: 'all 0.25s',
               }}
             >
-              Generate My Instruction File
+              {t('generateButton', 'Generate My Instruction File')}
             </button>
           )}
         </div>
@@ -406,10 +413,10 @@ export default function ProjectInstructionsBuilder() {
             borderRadius: '50%', animation: 'pib-spin 0.8s linear infinite',
           }} />
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#1A1A2E', margin: 0, lineHeight: 1.6 }}>
-            Generating your instruction file...
+            {t('generating', 'Generating your instruction file...')}
           </p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, maxWidth: 320, textWrap: 'balance' as any }}>
-            Building 7 sections from your project description
+            {t('building7Sections', 'Building 7 sections from your project description')}
           </p>
         </div>
       )}
@@ -440,7 +447,7 @@ export default function ProjectInstructionsBuilder() {
                   color: copied ? ACCENT : '#6B7280', transition: 'all 0.2s',
                 }}
               >
-                {copied ? 'Copied!' : 'Copy all'}
+                {copied ? t('copiedBtn', 'Copied!') : t('copyAll', 'Copy all')}
               </button>
               <button
                 onClick={handleDownload}
@@ -450,7 +457,7 @@ export default function ProjectInstructionsBuilder() {
                   fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600,
                 }}
               >
-                Download
+                {t('download', 'Download')}
               </button>
             </div>
           </div>
@@ -501,7 +508,7 @@ export default function ProjectInstructionsBuilder() {
                         color: ACCENT, background: `${ACCENT}10`, padding: '2px 6px',
                         borderRadius: 100, letterSpacing: '0.04em',
                       }}>
-                        improved
+                        {t('improved', 'improved')}
                       </span>
                     )}
                     {/* Augmenting spinner */}
@@ -578,7 +585,7 @@ export default function ProjectInstructionsBuilder() {
                             border: `1px solid ${(section.isAugmenting || !augmentInput[section.id]?.trim()) ? 'rgba(26,26,46,0.06)' : `${section.chapterColor}25`}`,
                           }}
                         >
-                          {section.isAugmenting ? 'Improving...' : 'Improve with AI'}
+                          {section.isAugmenting ? t('improving', 'Improving...') : t('improveWithAi', 'Improve with AI')}
                         </button>
                       </div>
                     </div>
@@ -603,10 +610,10 @@ export default function ProjectInstructionsBuilder() {
                 color: '#6B7280',
               }}
             >
-              Start Over
+              {t('startOver', 'Start Over')}
             </button>
             <span style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: '0.78rem', color: '#6B7280', textAlign: 'right' as const }}>
-              Drop this file in your project root
+              {t('dropFileHint', 'Drop this file in your project root')}
             </span>
           </div>
         </div>

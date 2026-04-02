@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'responding' | 'evaluating' | 'result';
 
@@ -60,6 +62,8 @@ function getTierForScore(score: number): string {
 }
 
 export default function SweetTalker() {
+  const t = useTranslation('sweetTalker');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [phase, setPhase] = useState<Phase>('input');
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState('');
@@ -80,7 +84,7 @@ export default function SweetTalker() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: RESPONSE_PROMPT,
+      systemPrompt: RESPONSE_PROMPT + `\n\nIMPORTANT: Respond entirely in ${langName}.`,
       maxTokens: 256,
       source: 'break',
       onChunk: (chunk) => {
@@ -113,7 +117,7 @@ export default function SweetTalker() {
           content: `Question: ${userQuestion}\n\nAI Response: ${aiResponse}\n\nEvaluate this response for sycophancy.`,
         },
       ],
-      systemPrompt: EVALUATION_PROMPT,
+      systemPrompt: EVALUATION_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, bestLine, assessment, redFlags, greenFlags) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 512,
       source: 'break',
       onChunk: (chunk) => {
@@ -133,7 +137,7 @@ export default function SweetTalker() {
           setEvaluation(parsed);
           setPhase('result');
         } catch {
-          setError('The sycophancy detector short-circuited. Try again!');
+          setError(t('parseError', 'The sycophancy detector short-circuited. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -199,10 +203,10 @@ export default function SweetTalker() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Sweet Talker
+            {t('title', 'Sweet Talker')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            Ask a trick question. See if the AI caves or pushes back.
+            {t('subtitle', 'Ask a trick question. See if the AI caves or pushes back.')}
           </p>
         </div>
       </div>
@@ -219,13 +223,13 @@ export default function SweetTalker() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              Ask a question where you sneak in a wrong assumption.
+              {t('inputPrompt', 'Ask a question where you sneak in a wrong assumption.')}
             </p>
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`e.g. "Isn't it true that goldfish only have a 3-second memory?"`}
+              placeholder={t('placeholder', 'e.g. "Isn\'t it true that goldfish only have a 3-second memory?"')}
               style={{
                 width: '100%',
                 minHeight: 80,
@@ -270,9 +274,9 @@ export default function SweetTalker() {
                   transition: 'all 0.25s',
                 }}
               >
-                Test the AI
+                {t('testButton', 'Test the AI')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -291,7 +295,7 @@ export default function SweetTalker() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 4,
-              }}>Your trick question</p>
+              }}>{t('yourTrickQuestion', 'Your trick question')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.88rem',
                 lineHeight: 1.6, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -338,7 +342,7 @@ export default function SweetTalker() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 4,
-              }}>Your trick question</p>
+              }}>{t('yourTrickQuestion', 'Your trick question')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.85rem',
                 lineHeight: 1.55, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -357,7 +361,7 @@ export default function SweetTalker() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#F5A623', marginBottom: 4,
-              }}>AI Response</p>
+              }}>{t('aiResponse', 'AI Response')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.9rem',
                 lineHeight: 1.65, color: '#1A1A2E', margin: 0,
@@ -372,7 +376,7 @@ export default function SweetTalker() {
                   <circle cx="12" cy="12" r="3" />
                 </svg>
               </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Analyzing for sycophancy...</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('analyzing', 'Analyzing for sycophancy...')}</p>
             </div>
           </div>
         )}
@@ -411,7 +415,7 @@ export default function SweetTalker() {
                 color: '#B0B0B0',
                 margin: 0,
               }}>
-                sycophancy level
+                {t('sycophancyLevel', 'sycophancy level')}
               </p>
             </div>
 
@@ -455,7 +459,7 @@ export default function SweetTalker() {
                     fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
                     letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                     color: '#E94560', marginBottom: 8,
-                  }}>Red Flags</p>
+                  }}>{t('redFlags', 'Red Flags')}</p>
                   {evaluation.redFlags.map((flag, i) => (
                     <div key={i} style={{
                       display: 'flex', gap: 8, alignItems: 'flex-start',
@@ -486,7 +490,7 @@ export default function SweetTalker() {
                     fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
                     letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                     color: '#16C79A', marginBottom: 8,
-                  }}>Green Flags</p>
+                  }}>{t('greenFlags', 'Green Flags')}</p>
                   {evaluation.greenFlags.map((flag, i) => (
                     <div key={i} style={{
                       display: 'flex', gap: 8, alignItems: 'flex-start',
@@ -534,13 +538,13 @@ export default function SweetTalker() {
               fontSize: '0.82rem',
             }}>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 6 }}>
-                The exchange
+                {t('theExchange', 'The exchange')}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', color: '#1A1A2E', margin: '0 0 8px', lineHeight: 1.5, fontStyle: 'italic' }}>
-                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>You:</strong> {question}
+                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>{t('you', 'You:')}</strong> {question}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', color: '#F5A623', margin: 0, lineHeight: 1.5 }}>
-                <strong>AI:</strong> {response}
+                <strong>{t('ai', 'AI:')}</strong> {response}
               </p>
             </div>
 
@@ -575,7 +579,7 @@ export default function SweetTalker() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Try Another Trick
+                {t('tryAnotherTrick', 'Try Another Trick')}
               </button>
             </div>
           </div>

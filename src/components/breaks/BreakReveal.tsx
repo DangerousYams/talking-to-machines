@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, type ReactNode } from 'react';
 import { unlockTool, isToolUnlocked } from '../../lib/tools-unlock';
+import { useTranslation } from '../../i18n/useTranslation';
 
 interface Props {
   accentColor: string;
@@ -36,6 +37,7 @@ interface Particle {
 }
 
 export default function BreakReveal({ accentColor, toolName, children }: Props) {
+  const t = useTranslation('breakReveal');
   const toolId = toolName.replace(/\s+/g, '-').toLowerCase();
   const alreadyUnlocked = typeof window !== 'undefined' && isToolUnlocked(toolId);
 
@@ -247,7 +249,7 @@ export default function BreakReveal({ accentColor, toolName, children }: Props) 
           ? `br-sub-${id} 0.5s ease 0.7s forwards`
           : 'none',
       }}>
-        New tool unlocked!
+        {t('newToolUnlocked', 'New tool unlocked!')}
       </p>
     </div>
   );

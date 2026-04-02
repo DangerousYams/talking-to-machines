@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import { useAuth } from '../../hooks/useAuth';
 import UnlockModal from '../ui/UnlockModal';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'loading' | 'result';
 
@@ -41,6 +43,8 @@ const ACCENT = '#E94560';
 const COLORS = ['#16C79A', '#7B61FF', '#0EA5E9', '#F5A623', '#E94560', '#0F3460', '#16C79A'];
 
 export default function EvalFramework() {
+  const t = useTranslation('evalFramework');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const { isPaid } = useAuth();
   const [phase, setPhase] = useState<Phase>('input');
   const [project, setProject] = useState('');
@@ -70,7 +74,7 @@ export default function EvalFramework() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (bestLine, criteria, firstTest, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 500,
       source: 'break',
       onChunk: (chunk) => { accumulated += chunk; },
@@ -87,7 +91,7 @@ export default function EvalFramework() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('Something went wrong parsing the response. Try again!');
+          setError(t('parseError', 'Something went wrong parsing the response. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -140,10 +144,10 @@ export default function EvalFramework() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Eval Framework
+            {t('title', 'Eval Framework')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            Describe your project. Get a verification checklist.
+            {t('subtitle', 'Describe your project. Get a verification checklist.')}
           </p>
         </div>
       </div>
@@ -154,13 +158,13 @@ export default function EvalFramework() {
         {phase === 'input' && (
           <div style={{ animation: 'ef-fadeIn 0.3s ease both' }}>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', color: '#1A1A2E', margin: '0 0 1rem', lineHeight: 1.6 }}>
-              Describe your project and we'll build you a verification checklist — the questions to ask and the first test to write.
+              {t('inputPrompt', "Describe your project and we'll build you a verification checklist \u2014 the questions to ask and the first test to write.")}
             </p>
             <textarea
               value={project}
               onChange={(e) => setProject(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="A flashcard app that quizzes me on my class notes..."
+              placeholder={t('placeholder', 'A flashcard app that quizzes me on my class notes...')}
               style={{
                 width: '100%', minHeight: 80, padding: '0.85rem 1rem',
                 fontFamily: 'var(--font-body)', fontSize: '0.9rem', lineHeight: 1.6,
@@ -190,9 +194,9 @@ export default function EvalFramework() {
                   minHeight: 44, transition: 'all 0.25s',
                 }}
               >
-                Generate My Eval Framework
+                {t('generateButton', 'Generate My Eval Framework')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
 
             {showUnlock && !isPaid && (
@@ -212,7 +216,7 @@ export default function EvalFramework() {
                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
               </svg>
             </div>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Building your verification checklist...</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('loading', 'Building your verification checklist...')}</p>
           </div>
         )}
 
@@ -243,7 +247,7 @@ export default function EvalFramework() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: ACCENT, margin: '0 0 0.75rem',
               }}>
-                Your Verification Checklist
+                {t('checklistTitle', 'Your Verification Checklist')}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8 }}>
                 {result.criteria.map((criterion, i) => (
@@ -281,7 +285,7 @@ export default function EvalFramework() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#7B61FF', margin: '0 0 0.5rem',
               }}>
-                First Test to Write
+                {t('firstTestTitle', 'First Test to Write')}
               </p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.9rem',
@@ -293,7 +297,7 @@ export default function EvalFramework() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
                 color: '#6B7280', margin: 0, fontStyle: 'italic',
               }}>
-                Tell your coding agent this in plain English — it'll write the test for you.
+                {t('firstTestHint', "Tell your coding agent this in plain English \u2014 it'll write the test for you.")}
               </p>
             </div>
 
@@ -307,7 +311,7 @@ export default function EvalFramework() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', margin: '0 0 0.5rem',
               }}>
-                Watch Out For
+                {t('watchOutFor', 'Watch Out For')}
               </p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.9rem',
@@ -328,7 +332,7 @@ export default function EvalFramework() {
                   color: '#FFFFFF', cursor: 'pointer', transition: 'all 0.25s', minHeight: 44,
                 }}
               >
-                Try Another Project
+                {t('tryAnother', 'Try Another Project')}
               </button>
             </div>
           </div>

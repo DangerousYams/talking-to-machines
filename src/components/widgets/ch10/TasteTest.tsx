@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 const ACCENT = '#16C79A';
 
@@ -67,8 +68,52 @@ export default function TasteTest() {
   const [score, setScore] = useState<number | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const isMobile = useIsMobile();
+  const t = useTranslation('tasteTest');
 
-  const domain = domains[activeDomain];
+  const translatedDomains: Domain[] = useMemo(() => [
+    {
+      name: t('domainLogoDesign', 'Logo Design'),
+      brief: t('briefLogo', domains[0].brief),
+      variations: [
+        { ...domains[0].variations[0], content: t('logoV1', domains[0].variations[0].content), expertReason: t('logoV1Reason', domains[0].variations[0].expertReason) },
+        { ...domains[0].variations[1], content: t('logoV2', domains[0].variations[1].content), expertReason: t('logoV2Reason', domains[0].variations[1].expertReason) },
+        { ...domains[0].variations[2], content: t('logoV3', domains[0].variations[2].content), expertReason: t('logoV3Reason', domains[0].variations[2].expertReason) },
+        { ...domains[0].variations[3], content: t('logoV4', domains[0].variations[3].content), expertReason: t('logoV4Reason', domains[0].variations[3].expertReason) },
+      ],
+    },
+    {
+      name: t('domainEssayIntro', 'Essay Introduction'),
+      brief: t('briefEssay', domains[1].brief),
+      variations: [
+        { ...domains[1].variations[0], content: t('essayV1', domains[1].variations[0].content), expertReason: t('essayV1Reason', domains[1].variations[0].expertReason) },
+        { ...domains[1].variations[1], content: t('essayV2', domains[1].variations[1].content), expertReason: t('essayV2Reason', domains[1].variations[1].expertReason) },
+        { ...domains[1].variations[2], content: t('essayV3', domains[1].variations[2].content), expertReason: t('essayV3Reason', domains[1].variations[2].expertReason) },
+        { ...domains[1].variations[3], content: t('essayV4', domains[1].variations[3].content), expertReason: t('essayV4Reason', domains[1].variations[3].expertReason) },
+      ],
+    },
+    {
+      name: t('domainAppUI', 'App UI Concept'),
+      brief: t('briefApp', domains[2].brief),
+      variations: [
+        { ...domains[2].variations[0], content: t('appV1', domains[2].variations[0].content), expertReason: t('appV1Reason', domains[2].variations[0].expertReason) },
+        { ...domains[2].variations[1], content: t('appV2', domains[2].variations[1].content), expertReason: t('appV2Reason', domains[2].variations[1].expertReason) },
+        { ...domains[2].variations[2], content: t('appV3', domains[2].variations[2].content), expertReason: t('appV3Reason', domains[2].variations[2].expertReason) },
+        { ...domains[2].variations[3], content: t('appV4', domains[2].variations[3].content), expertReason: t('appV4Reason', domains[2].variations[3].expertReason) },
+      ],
+    },
+    {
+      name: t('domainTagline', 'Business Tagline'),
+      brief: t('briefTagline', domains[3].brief),
+      variations: [
+        { ...domains[3].variations[0], content: t('taglineV1', domains[3].variations[0].content), expertReason: t('taglineV1Reason', domains[3].variations[0].expertReason) },
+        { ...domains[3].variations[1], content: t('taglineV2', domains[3].variations[1].content), expertReason: t('taglineV2Reason', domains[3].variations[1].expertReason) },
+        { ...domains[3].variations[2], content: t('taglineV3', domains[3].variations[2].content), expertReason: t('taglineV3Reason', domains[3].variations[2].expertReason) },
+        { ...domains[3].variations[3], content: t('taglineV4', domains[3].variations[3].content), expertReason: t('taglineV4Reason', domains[3].variations[3].expertReason) },
+      ],
+    },
+  ], [t]);
+
+  const domain = translatedDomains[activeDomain];
   const allRanked = Object.keys(rankings).length === domain.variations.length;
 
   const handleRank = (variationId: number) => {
@@ -135,8 +180,8 @@ export default function TasteTest() {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
             </div>
             <div>
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Taste Test</h3>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Rank options, compare with experts</p>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>{t('title', 'Taste Test')}</h3>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>{t('subtitleMobile', 'Rank options, compare with experts')}</p>
             </div>
           </div>
         </div>
@@ -179,7 +224,7 @@ export default function TasteTest() {
             fontFamily: 'var(--font-body)', fontSize: '0.75rem', color: '#6B7280', margin: '0.4rem 0',
             overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           }}>
-            <strong style={{ color: '#1A1A2E' }}>Brief:</strong> {domain.brief}
+            <strong style={{ color: '#1A1A2E' }}>{t('brief', 'Brief')}:</strong> {domain.brief}
           </p>
         </div>
 
@@ -233,7 +278,7 @@ export default function TasteTest() {
         <div style={{ padding: '0.75rem 1rem', flexShrink: 0, borderTop: '1px solid rgba(26,26,46,0.06)' }}>
           {!revealed && !allRanked && (
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.72rem', color: '#6B7280', margin: 0, textAlign: 'center' }}>
-              Tap each option in order: 1 = best, {domain.variations.length} = worst. Tap again to undo.
+              {t('instructionsMobile', 'Tap each option in order: 1 = best, {count} = worst. Tap again to undo.').replace('{count}', String(domain.variations.length))}
             </p>
           )}
           {allRanked && !revealed && (
@@ -246,7 +291,7 @@ export default function TasteTest() {
                 boxShadow: `0 4px 16px ${ACCENT}40`, width: '100%', minHeight: 44,
               }}
             >
-              Compare with Experts
+              {t('compareWithExperts', 'Compare with Experts')}
             </button>
           )}
           {revealed && (
@@ -259,7 +304,7 @@ export default function TasteTest() {
                   border: 'none', borderRadius: 10, padding: '12px 0', cursor: 'pointer', minHeight: 44,
                 }}
               >
-                View Results ({score}%)
+                {t('viewResults', 'View Results ({score}%)').replace('{score}', String(score))}
               </button>
               <button
                 onClick={() => switchDomain(activeDomain)}
@@ -269,14 +314,14 @@ export default function TasteTest() {
                   borderRadius: 10, padding: '12px 16px', cursor: 'pointer', minHeight: 44,
                 }}
               >
-                Reset
+                {t('resetBtn', 'Reset')}
               </button>
             </div>
           )}
         </div>
 
         {/* BottomSheet for expert results */}
-        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={`Taste Alignment: ${score}%`}>
+        <BottomSheet isOpen={sheetOpen} onClose={() => setSheetOpen(false)} title={t('tasteAlignmentTitle', 'Taste Alignment: {score}%').replace('{score}', String(score))}>
           {/* Score */}
           <div style={{
             textAlign: 'center', padding: '0.75rem', marginBottom: '1rem',
@@ -285,9 +330,9 @@ export default function TasteTest() {
           }}>
             <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: '#6B7280', marginTop: 6, marginBottom: 0 }}>
-              {(score ?? 0) >= 80 ? "Your taste is razor-sharp." :
-               (score ?? 0) >= 50 ? "Solid instincts. Disagreements in middle ranks are normal." :
-               "You see things differently. Understanding WHY helps sharpen your eye."}
+              {(score ?? 0) >= 80 ? t('scoreHighMobile', "Your taste is razor-sharp.") :
+               (score ?? 0) >= 50 ? t('scoreMidMobile', "Solid instincts. Disagreements in middle ranks are normal.") :
+               t('scoreLowMobile', "You see things differently. Understanding WHY helps sharpen your eye.")}
             </p>
           </div>
 
@@ -306,17 +351,17 @@ export default function TasteTest() {
                       fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 700,
                       color: getRankBadgeColor(v.expertRank), letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                     }}>
-                      Expert #{v.expertRank}
+                      {t('expertHash', 'Expert #{rank}').replace('{rank}', String(v.expertRank))}
                     </span>
                     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: '#6B7280' }}>
-                      You ranked #{userRank}
+                      {t('youRanked', 'You ranked #{rank}').replace('{rank}', String(userRank))}
                     </span>
                     {userRank === v.expertRank && (
                       <span style={{
                         fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 600,
                         color: ACCENT, background: `${ACCENT}12`, padding: '1px 5px', borderRadius: 3,
                       }}>
-                        Match!
+                        {t('match', 'Match!')}
                       </span>
                     )}
                   </div>
@@ -335,9 +380,9 @@ export default function TasteTest() {
             border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden',
           }}>
             <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
-            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.4rem' }}>Key insight</p>
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.4rem' }}>{t('keyInsight', 'Key insight')}</p>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.6, color: '#1A1A2E', margin: 0 }}>
-              <strong>Taste is the skill.</strong> AI generates options. <em>You</em> choose the right one. That judgment is irreplaceable.
+              {t('keyInsightTextMobile', 'Taste is the skill. AI generates options. You choose the right one. That judgment is irreplaceable.')}
             </p>
           </div>
 
@@ -350,7 +395,7 @@ export default function TasteTest() {
                 borderRadius: 8, padding: '8px 20px', cursor: 'pointer', minHeight: 44,
               }}
             >
-              Try again
+              {t('tryAgain', 'Try again')}
             </button>
           </div>
         </BottomSheet>
@@ -368,8 +413,8 @@ export default function TasteTest() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
           </div>
           <div>
-            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>Taste Test</h3>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>Rank AI-generated options &mdash; see if your taste matches the experts</p>
+            <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, color: '#1A1A2E', margin: 0, lineHeight: 1.3 }}>{t('title', 'Taste Test')}</h3>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>{t('subtitleDesktop', 'Rank AI-generated options \u2014 see if your taste matches the experts')}</p>
           </div>
         </div>
       </div>
@@ -407,13 +452,13 @@ export default function TasteTest() {
           background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.06)',
           marginBottom: '1.25rem',
         }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>Brief: </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280' }}>{t('brief', 'Brief')}: </span>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: '#1A1A2E' }}>{domain.brief}</span>
         </div>
 
         {/* Instructions */}
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.82rem', color: '#6B7280', marginBottom: '1rem' }}>
-          {revealed ? 'Expert rankings revealed. Compare with yours below.' : 'Click each option in order of quality: 1 = best, 4 = worst. Click again to undo.'}
+          {revealed ? t('instructionsRevealed', 'Expert rankings revealed. Compare with yours below.') : t('instructionsRanking', 'Click each option in order of quality: 1 = best, 4 = worst. Click again to undo.')}
         </p>
 
         {/* Variations */}
@@ -466,14 +511,14 @@ export default function TasteTest() {
                         fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 700,
                         color: getRankBadgeColor(v.expertRank), letterSpacing: '0.06em', textTransform: 'uppercase' as const,
                       }}>
-                        Expert rank: #{v.expertRank}
+                        {t('expertRank', 'Expert rank: #{rank}').replace('{rank}', String(v.expertRank))}
                       </span>
                       {userRank === v.expertRank && (
                         <span style={{
                           fontFamily: 'var(--font-mono)', fontSize: '0.75rem', fontWeight: 600,
                           color: ACCENT, background: `${ACCENT}12`, padding: '2px 6px', borderRadius: 4,
                         }}>
-                          Match!
+                          {t('match', 'Match!')}
                         </span>
                       )}
                     </div>
@@ -499,7 +544,7 @@ export default function TasteTest() {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              Compare with Experts
+              {t('compareWithExperts', 'Compare with Experts')}
             </button>
           </div>
         )}
@@ -511,12 +556,12 @@ export default function TasteTest() {
               background: `linear-gradient(135deg, ${ACCENT}08, #0F346008)`,
               border: `1px solid ${ACCENT}20`, marginBottom: '1.25rem',
             }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>Taste alignment</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>{t('tasteAlignment', 'Taste alignment')}</div>
               <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{score}%</div>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: '#6B7280', marginTop: 8 }}>
-                {(score ?? 0) >= 80 ? "Your taste is razor-sharp. You see what the experts see." :
-                 (score ?? 0) >= 50 ? "Solid instincts. Disagreements in the middle ranks are normal \u2014 taste is subjective at the margins." :
-                 "Interesting \u2014 you see things differently than the panel. That's not wrong. But understanding WHY experts disagree helps sharpen your eye."}
+                {(score ?? 0) >= 80 ? t('scoreHigh', "Your taste is razor-sharp. You see what the experts see.") :
+                 (score ?? 0) >= 50 ? t('scoreMid', "Solid instincts. Disagreements in the middle ranks are normal \u2014 taste is subjective at the margins.") :
+                 t('scoreLow', "Interesting \u2014 you see things differently than the panel. That's not wrong. But understanding WHY experts disagree helps sharpen your eye.")}
               </p>
             </div>
 
@@ -526,9 +571,9 @@ export default function TasteTest() {
               border: `1px solid ${ACCENT}15`, position: 'relative', overflow: 'hidden',
             }}>
               <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: `linear-gradient(to bottom, ${ACCENT}, #F5A623)`, borderRadius: '3px 0 0 3px' }} />
-              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.5rem' }}>Key insight</p>
+              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.85rem', fontWeight: 700, color: ACCENT, margin: '0 0 0.5rem' }}>{t('keyInsight', 'Key insight')}</p>
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', lineHeight: 1.7, color: '#1A1A2E', margin: 0 }}>
-                <strong>Taste is the skill.</strong> AI generates options. <em>You</em> choose the right one. That judgment &mdash; knowing why option A is better than option B &mdash; is irreplaceable.
+                {t('keyInsightText', 'Taste is the skill. AI generates options. You choose the right one. That judgment \u2014 knowing why option A is better than option B \u2014 is irreplaceable.')}
               </p>
             </div>
 
@@ -544,7 +589,7 @@ export default function TasteTest() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = ACCENT; e.currentTarget.style.color = ACCENT; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(26,26,46,0.12)'; e.currentTarget.style.color = '#6B7280'; }}
               >
-                Try again
+                {t('tryAgain', 'Try again')}
               </button>
             </div>
           </>

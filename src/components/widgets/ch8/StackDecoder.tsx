@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { stackLayers, quizItems } from '../../../data/stack-vocabulary';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
 import BottomSheet from '../../cards/BottomSheet';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 const ACCENT = '#0F3460';
 
@@ -9,6 +10,7 @@ type Mode = 'explore' | 'quiz';
 
 /** Renders the detail content for a given layer (shared between desktop expand and mobile BottomSheet). */
 function LayerDetail({ layer }: { layer: typeof stackLayers[number] }) {
+  const t = useTranslation('stackDecoder');
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       {/* Description */}
@@ -45,7 +47,7 @@ function LayerDetail({ layer }: { layer: typeof stackLayers[number] }) {
           <div style={{
             width: 5, height: 5, borderRadius: '50%', background: layer.color,
           }} />
-          Nouns (the things)
+          {t('nounsLabel', 'Nouns (the things)')}
         </div>
         <div style={{
           display: 'grid',
@@ -100,7 +102,7 @@ function LayerDetail({ layer }: { layer: typeof stackLayers[number] }) {
           <div style={{
             width: 5, height: 5, borderRadius: '50%', background: layer.color,
           }} />
-          Verbs (the actions)
+          {t('verbsLabel', 'Verbs (the actions)')}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
           {layer.verbs.map((verb) => (
@@ -130,6 +132,7 @@ function LayerDetail({ layer }: { layer: typeof stackLayers[number] }) {
 
 
 export default function StackDecoder() {
+  const t = useTranslation('stackDecoder');
   const isMobile = useIsMobile();
 
   // --- Explore state ---
@@ -221,10 +224,10 @@ export default function StackDecoder() {
   // Score feedback
   const getScoreFeedback = (score: number, total: number) => {
     const pct = Math.round((score / total) * 100);
-    if (pct >= 90) return "Outstanding. You speak stack fluently.";
-    if (pct >= 75) return "Strong showing. You know where things live in the stack.";
-    if (pct >= 50) return "Getting there. A few layers tripped you up, but that's what practice is for.";
-    return "The stack is still a bit fuzzy. Try exploring each layer again, then come back.";
+    if (pct >= 90) return t('scoreFeedbackExcellent', "Outstanding. You speak stack fluently.");
+    if (pct >= 75) return t('scoreFeedbackGood', "Strong showing. You know where things live in the stack.");
+    if (pct >= 50) return t('scoreFeedbackOkay', "Getting there. A few layers tripped you up, but that's what practice is for.");
+    return t('scoreFeedbackPoor', "The stack is still a bit fuzzy. Try exploring each layer again, then come back.");
   };
 
   // =====================================================================
@@ -254,7 +257,7 @@ export default function StackDecoder() {
               color: '#6B7280', letterSpacing: '0.08em',
               textTransform: 'uppercase' as const, marginBottom: '1.5rem',
             }}>
-              Accuracy: {pct}%
+              {t('accuracy', 'Accuracy')}: {pct}%
             </p>
             {/* Result dots */}
             <div style={{
@@ -288,7 +291,7 @@ export default function StackDecoder() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                Try Again
+                {t('tryAgain', 'Try Again')}
               </button>
               <button
                 onClick={switchToExplore}
@@ -302,7 +305,7 @@ export default function StackDecoder() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                Back to Explore
+                {t('backToExplore', 'Back to Explore')}
               </button>
             </div>
           </div>
@@ -336,7 +339,7 @@ export default function StackDecoder() {
               <span style={{
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700, color: '#16C79A',
               }}>
-                {quizScore} pts
+                {quizScore} {t('pts', 'pts')}
               </span>
             </div>
             <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -362,7 +365,7 @@ export default function StackDecoder() {
               letterSpacing: '0.08em', textTransform: 'uppercase' as const,
               color: '#6B7280', marginBottom: '0.6rem', textAlign: 'center' as const,
             }}>
-              Round {quizIndex + 1} of {totalQuizRounds}
+              {t('round', 'Round')} {quizIndex + 1} {t('of', 'of')} {totalQuizRounds}
             </div>
             <div style={{
               background: 'rgba(26,26,46,0.025)', border: '1px solid rgba(26,26,46,0.06)',
@@ -442,7 +445,7 @@ export default function StackDecoder() {
                   minHeight: 44,
                 }}
               >
-                {quizIsCorrect ? 'Correct!' : 'Not quite.'} View explanation
+                {quizIsCorrect ? t('correct', 'Correct!') : t('notQuite', 'Not quite.')} {t('viewExplanation', 'View explanation')}
               </button>
             </div>
           )}
@@ -451,7 +454,7 @@ export default function StackDecoder() {
           <BottomSheet
             isOpen={mobileQuizExplanationOpen}
             onClose={() => setMobileQuizExplanationOpen(false)}
-            title={quizIsCorrect ? 'Correct!' : 'Not quite.'}
+            title={quizIsCorrect ? t('correct', 'Correct!') : t('notQuite', 'Not quite.')}
           >
             <div>
               <div style={{
@@ -485,7 +488,7 @@ export default function StackDecoder() {
                   background: '#1A1A2E', color: '#FAF8F5', minHeight: 44,
                 }}
               >
-                {quizIndex + 1 >= totalQuizRounds ? 'See Results' : 'Next Round'} &rarr;
+                {quizIndex + 1 >= totalQuizRounds ? t('seeResults', 'See Results') : t('nextRound', 'Next Round')} &rarr;
               </button>
             </div>
           </BottomSheet>
@@ -494,7 +497,7 @@ export default function StackDecoder() {
           <BottomSheet
             isOpen={mobileQuizDoneOpen}
             onClose={() => setMobileQuizDoneOpen(false)}
-            title="Final Score"
+            title={t('finalScore', 'Final Score')}
           >
             <div style={{ textAlign: 'center' as const }}>
               <div style={{
@@ -510,7 +513,7 @@ export default function StackDecoder() {
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 marginBottom: '1rem',
               }}>
-                Accuracy: {pct}%
+                {t('accuracy', 'Accuracy')}: {pct}%
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginBottom: '1rem' }}>
                 {quizResults.map((correct, i) => (
@@ -536,7 +539,7 @@ export default function StackDecoder() {
                     background: '#1A1A2E', color: '#FAF8F5', minHeight: 44,
                   }}
                 >
-                  Try Again
+                  {t('tryAgain', 'Try Again')}
                 </button>
                 <button
                   onClick={() => { setMobileQuizDoneOpen(false); switchToExplore(); }}
@@ -547,7 +550,7 @@ export default function StackDecoder() {
                     background: 'transparent', color: '#1A1A2E', minHeight: 44,
                   }}
                 >
-                  Back to Explore
+                  {t('backToExplore', 'Back to Explore')}
                 </button>
               </div>
             </div>
@@ -589,13 +592,13 @@ export default function StackDecoder() {
                 fontFamily: 'var(--font-heading)', fontSize: '1.1rem',
                 fontWeight: 700, margin: 0, lineHeight: 1.3,
               }}>
-                Stack Quiz
+                {t('stackQuiz', 'Stack Quiz')}
               </h3>
               <p style={{
                 fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
                 color: '#6B7280', margin: 0, letterSpacing: '0.05em',
               }}>
-                Where does this belong?
+                {t('quizSubtitle', 'Where does this belong?')}
               </p>
             </div>
           </div>
@@ -615,7 +618,7 @@ export default function StackDecoder() {
               fontFamily: 'var(--font-mono)', fontSize: '0.8rem',
               fontWeight: 700, color: '#16C79A',
             }}>
-              {quizScore} pts
+              {quizScore} {t('pts', 'pts')}
             </span>
           </div>
         </div>
@@ -650,7 +653,7 @@ export default function StackDecoder() {
                 width: 6, height: 6, borderRadius: '50%', background: ACCENT,
                 animation: !quizAnswered ? 'sd-pulse 2s infinite' : 'none',
               }} />
-              Which layer?
+              {t('whichLayer', 'Which layer?')}
             </div>
             <p style={{
               fontFamily: 'var(--font-body)', fontSize: '1.1rem',
@@ -762,10 +765,10 @@ export default function StackDecoder() {
                   fontWeight: 700, color: quizIsCorrect ? '#16C79A' : '#E94560',
                   marginBottom: 6,
                 }}>
-                  {quizIsCorrect ? 'Correct!' : 'Not quite.'}
+                  {quizIsCorrect ? t('correct', 'Correct!') : t('notQuite', 'Not quite.')}
                   {!quizIsCorrect && correctLayer && (
                     <span style={{ color: '#6B7280', fontWeight: 400, fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
-                      {' '}That's {correctLayer.emoji} {correctLayer.name}.
+                      {' '}{t('thats', "That's")} {correctLayer.emoji} {correctLayer.name}.
                     </span>
                   )}
                 </p>
@@ -790,7 +793,7 @@ export default function StackDecoder() {
                   onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                   onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                 >
-                  {quizIndex + 1 >= totalQuizRounds ? 'See Results' : 'Next Round'} &rarr;
+                  {quizIndex + 1 >= totalQuizRounds ? t('seeResults', 'See Results') : t('nextRound', 'Next Round')} &rarr;
                 </button>
               </div>
             </>
@@ -835,13 +838,13 @@ export default function StackDecoder() {
               fontFamily: 'var(--font-heading)', fontSize: isMobile ? '1rem' : '1.1rem',
               fontWeight: 700, margin: 0, lineHeight: 1.3,
             }}>
-              The Stack Decoder
+              {t('title', 'The Stack Decoder')}
             </h3>
             <p style={{
               fontFamily: 'var(--font-mono)', fontSize: isMobile ? '0.65rem' : '0.75rem',
               color: '#6B7280', margin: 0, letterSpacing: '0.05em',
             }}>
-              Click a layer to explore its vocabulary
+              {t('subtitle', 'Click a layer to explore its vocabulary')}
             </p>
           </div>
         </div>
@@ -975,7 +978,7 @@ export default function StackDecoder() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            Try the quiz &rarr;
+            {t('tryTheQuiz', 'Try the quiz')} &rarr;
           </button>
         </div>
       </div>

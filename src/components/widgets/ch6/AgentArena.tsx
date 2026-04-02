@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
 import { useIsMobile } from '../../../hooks/useMediaQuery';
+import { useTranslation } from '../../../i18n/useTranslation';
 
 // ═══════════════════════════════════════════════
 // TYPES
@@ -988,6 +989,7 @@ function getInsight(won: boolean, pStrat: Strategy, eStrat: Strategy, eName: str
 type Stats = { armor: number; speed: number; power: number; rate: number; range: number };
 
 export default function AgentArena() {
+  const t = useTranslation('ch6');
   const [phase, setPhase] = useState<Phase>('design');
   const [stats, setStats] = useState<Stats>({ armor: 2, speed: 2, power: 2, rate: 2, range: 2 });
   const [strategy, setStrategy] = useState<Strategy>('aggressive');
@@ -1344,7 +1346,7 @@ export default function AgentArena() {
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
             letterSpacing: '0.12em', textTransform: 'uppercase' as const,
             color: 'rgba(255,255,255,0.45)' }}>
-            Agent Arena
+            {t('agentArenaLabel', 'Agent Arena')}
           </span>
         </div>
         {headerCenter && <div style={{ flex: 1, textAlign: 'center' as const }}>{headerCenter}</div>}
@@ -1380,7 +1382,7 @@ export default function AgentArena() {
       {/* Name */}
       <div style={{ maxWidth: 420, margin: '0 auto 1.25rem' }}>
         <input type="text" value={tankName} onChange={e => setTankName(e.target.value)}
-          placeholder="Name your agent..." maxLength={12}
+          placeholder={t('nameYourAgent', 'Name your agent...')} maxLength={12}
           style={{ width: '100%', padding: '8px 14px', borderRadius: 8,
             border: '1px solid rgba(26,26,46,0.08)', background: '#FEFDFB',
             fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: '#1A1A2E', outline: 'none',
@@ -1406,7 +1408,7 @@ export default function AgentArena() {
             margin: '0 0 0.5rem', gap: 10 }}>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
               textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: 0 }}>
-              Capabilities
+              {t('capabilities', 'Capabilities')}
             </p>
             <div style={{ padding: '3px 10px', borderRadius: 100,
               background: remaining > 0 ? 'rgba(22,199,154,0.08)' : remaining === 0 ? 'rgba(26,26,46,0.04)' : 'rgba(233,69,96,0.08)',
@@ -1414,7 +1416,7 @@ export default function AgentArena() {
               fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 700,
               color: remaining > 0 ? '#16C79A' : remaining === 0 ? '#6B7280' : '#E94560',
               whiteSpace: 'nowrap' as const }}>
-              {remaining} pts left
+              {remaining} {t('ptsLeft', 'pts left')}
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
@@ -1452,7 +1454,7 @@ export default function AgentArena() {
         <div style={{ marginBottom: '1.25rem' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
             textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
-            Strategy <span style={{ opacity: 0.5, fontWeight: 400, letterSpacing: 0, textTransform: 'none' as const }}>(system prompt)</span>
+            {t('strategyLabel', 'Strategy')} <span style={{ opacity: 0.5, fontWeight: 400, letterSpacing: 0, textTransform: 'none' as const }}>{t('systemPromptLabel', '(system prompt)')}</span>
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: 5, marginBottom: 8 }}>
             {STRATEGIES.map(s => (
@@ -1479,7 +1481,7 @@ export default function AgentArena() {
         <div style={{ marginBottom: '1.5rem' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 600, letterSpacing: '0.1em',
             textTransform: 'uppercase' as const, color: 'var(--color-subtle)', margin: '0 0 0.5rem' }}>
-            Opponent
+            {t('opponentLabel', 'Opponent')}
           </p>
           <div style={{ display: 'flex', gap: 4 }}>
             {OPPONENTS.map((opp, i) => {
@@ -1514,7 +1516,7 @@ export default function AgentArena() {
               background: '#1A1A2E', color: 'white',
               fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 700,
               cursor: 'pointer', transition: 'all 0.2s' }}>
-            Deploy to Arena
+            {t('deployToArena', 'Deploy to Arena')}
           </button>
         </div>
       </div>
@@ -1523,7 +1525,7 @@ export default function AgentArena() {
       {wins.some(Boolean) && (
         <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-subtle)',
           margin: '0.75rem 0 0', opacity: 0.5, textAlign: 'center' as const }}>
-          {wins.filter(Boolean).length}/{OPPONENTS.length} defeated
+          {wins.filter(Boolean).length}/{OPPONENTS.length} {t('defeated', 'defeated')}
         </p>
       )}
     </div>,
@@ -1594,7 +1596,7 @@ export default function AgentArena() {
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.5rem', fontWeight: 700,
                 letterSpacing: '0.1em', textTransform: 'uppercase' as const,
                 color: 'rgba(255,255,255,0.2)' }}>
-                Battle Log
+                {t('battleLog', 'Battle Log')}
               </span>
             </div>
             <div ref={logRef} style={{
@@ -1649,7 +1651,7 @@ export default function AgentArena() {
 
       <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', fontWeight: 800,
         color: result?.won ? '#16C79A' : '#E94560', margin: '0 0 0.35rem' }}>
-        {result?.won ? 'Victory' : 'Defeated'}
+        {result?.won ? t('victoryLabel', 'Victory') : t('defeatedLabel', 'Defeated')}
       </h3>
 
       <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: 'var(--color-deep)',
@@ -1664,7 +1666,7 @@ export default function AgentArena() {
         background: 'rgba(26,26,46,0.02)', border: '1px solid rgba(26,26,46,0.05)', textAlign: 'left' as const }}>
         <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.08em',
           textTransform: 'uppercase' as const, color: stratDef.color, margin: '0 0 0.2rem' }}>
-          Agent Insight
+          {t('agentInsight', 'Agent Insight')}
         </p>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8rem', color: 'var(--color-deep)',
           margin: 0, lineHeight: 1.6, opacity: 0.6 }}>
@@ -1679,7 +1681,7 @@ export default function AgentArena() {
             border: '1px solid rgba(26,26,46,0.1)', background: 'transparent',
             fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 600,
             color: '#1A1A2E', cursor: 'pointer' }}>
-          Retry
+          {t('retryButton', 'Retry')}
         </button>
         {result?.won && trySuggestion !== -1 && (
           <button onClick={() => { setOppIdx(trySuggestion); setPhase('design'); }}
@@ -1695,7 +1697,7 @@ export default function AgentArena() {
             background: '#1A1A2E', color: 'white',
             fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
             cursor: 'pointer' }}>
-          Redesign
+          {t('redesignButton', 'Redesign')}
         </button>
       </div>
 
@@ -1704,7 +1706,7 @@ export default function AgentArena() {
         <div style={{ marginTop: '1.25rem' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--color-subtle)',
             margin: '0 0 0.5rem', opacity: 0.5 }}>
-            {wins.filter(Boolean).length}/{OPPONENTS.length} opponents defeated
+            {wins.filter(Boolean).length}/{OPPONENTS.length} {t('opponentsDefeated', 'opponents defeated')}
           </p>
           <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
             {OPPONENTS.map((opp, i) => (
@@ -1733,7 +1735,7 @@ export default function AgentArena() {
     <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', fontWeight: 600,
       letterSpacing: '0.08em', textTransform: 'uppercase' as const,
       color: result?.won ? '#16C79A' : 'rgba(255,255,255,0.3)' }}>
-      {result?.won ? 'Victory' : 'Defeated'}
+      {result?.won ? t('victoryLabel', 'Victory') : t('defeatedLabel', 'Defeated')}
     </span>
   );
 }

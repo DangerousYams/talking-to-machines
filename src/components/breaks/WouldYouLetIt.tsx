@@ -1,24 +1,33 @@
 import { useState } from 'react';
+import { useTranslation } from '../../i18n/useTranslation';
 
 type Choice = 'just-do-it' | 'ask-first' | 'never-allow' | null;
 
 interface Scenario {
-  situation: string;
-  insight: string;
+  situationKey: string;
+  situationFallback: string;
+  insightKey: string;
+  insightFallback: string;
 }
 
 const scenarios: Scenario[] = [
   {
-    situation: "Your AI agent wants to reply to a group chat message with 'sounds good, I'll be there at 7'",
-    insight: "Messaging on your behalf seems harmless, but tone and context matter. What if 'sounds good' is wrong for the situation?",
+    situationKey: 'scenario1',
+    situationFallback: "Your AI agent wants to reply to a group chat message with 'sounds good, I'll be there at 7'",
+    insightKey: 'insight1',
+    insightFallback: "Messaging on your behalf seems harmless, but tone and context matter. What if 'sounds good' is wrong for the situation?",
   },
   {
-    situation: "Your AI agent wants to submit your completed homework assignment to Google Classroom",
-    insight: "The homework is done, but did you actually review it? Submitting means you're vouching for the work.",
+    situationKey: 'scenario2',
+    situationFallback: "Your AI agent wants to submit your completed homework assignment to Google Classroom",
+    insightKey: 'insight2',
+    insightFallback: "The homework is done, but did you actually review it? Submitting means you're vouching for the work.",
   },
   {
-    situation: "Your AI agent wants to post a photo to your Instagram story with a caption it wrote",
-    insight: "Social media is your personal brand. An AI can draft, but you should own what goes out with your name on it.",
+    situationKey: 'scenario3',
+    situationFallback: "Your AI agent wants to post a photo to your Instagram story with a caption it wrote",
+    insightKey: 'insight3',
+    insightFallback: "Social media is your personal brand. An AI can draft, but you should own what goes out with your name on it.",
   },
 ];
 
@@ -28,7 +37,7 @@ type Profile = {
   color: string;
 };
 
-function getProfile(choices: Choice[]): Profile {
+function getProfile(choices: Choice[], t: (key: string, fallback: string) => string): Profile {
   const counts = { 'just-do-it': 0, 'ask-first': 0, 'never-allow': 0 };
   choices.forEach((c) => {
     if (c) counts[c]++;
@@ -36,39 +45,41 @@ function getProfile(choices: Choice[]): Profile {
 
   if (counts['just-do-it'] >= 2) {
     return {
-      label: 'The Delegator',
-      description: 'You trust fast, but watch for edge cases.',
+      label: t('profileDelegator', 'The Delegator'),
+      description: t('profileDelegatorDesc', 'You trust fast, but watch for edge cases.'),
       color: '#16C79A',
     };
   }
   if (counts['ask-first'] >= 2) {
     return {
-      label: 'The Collaborator',
-      description: 'Balanced and thoughtful.',
+      label: t('profileCollaborator', 'The Collaborator'),
+      description: t('profileCollaboratorDesc', 'Balanced and thoughtful.'),
       color: '#F5A623',
     };
   }
   if (counts['never-allow'] >= 2) {
     return {
-      label: 'The Guardian',
-      description: 'You keep tight control.',
+      label: t('profileGuardian', 'The Guardian'),
+      description: t('profileGuardianDesc', 'You keep tight control.'),
       color: '#E94560',
     };
   }
   return {
-    label: 'The Pragmatist',
-    description: 'It depends on the stakes.',
+    label: t('profilePragmatist', 'The Pragmatist'),
+    description: t('profilePragmatistDesc', 'It depends on the stakes.'),
     color: '#7B61FF',
   };
 }
 
-const choiceOptions = [
-  { key: 'just-do-it' as const, label: 'Just do it', color: '#16C79A' },
-  { key: 'ask-first' as const, label: 'Ask me first', color: '#F5A623' },
-  { key: 'never-allow' as const, label: 'Never allow', color: '#E94560' },
+const choiceOptionsDef = [
+  { key: 'just-do-it' as const, labelKey: 'justDoIt', labelFallback: 'Just do it', color: '#16C79A' },
+  { key: 'ask-first' as const, labelKey: 'askMeFirst', labelFallback: 'Ask me first', color: '#F5A623' },
+  { key: 'never-allow' as const, labelKey: 'neverAllow', labelFallback: 'Never allow', color: '#E94560' },
 ];
 
 export default function WouldYouLetIt() {
+  const t = useTranslation('wouldYouLetIt');
+  const choiceOptions = choiceOptionsDef.map(o => ({ ...o, label: t(o.labelKey, o.labelFallback) }));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [choices, setChoices] = useState<Choice[]>([null, null, null]);
   const [showInsight, setShowInsight] = useState(false);
@@ -102,7 +113,7 @@ export default function WouldYouLetIt() {
 
   // Final profile screen
   if (done) {
-    const profile = getProfile(choices);
+    const profile = getProfile(choices, t);
     return (
       <div className="widget-container">
         <div style={{ padding: '2.5rem 2rem', textAlign: 'center' as const }}>
@@ -118,7 +129,7 @@ export default function WouldYouLetIt() {
               marginBottom: '0.75rem',
             }}
           >
-            Your autonomy profile
+            {t('yourAutonomyProfile', 'Your autonomy profile')}
           </div>
           <div
             style={{
@@ -192,7 +203,7 @@ export default function WouldYouLetIt() {
                       lineHeight: 1.4,
                     }}
                   >
-                    {i + 1}. {s.situation.length > 60 ? s.situation.slice(0, 60) + '...' : s.situation}
+                    {i + 1}. {(() => { const text = t(s.situationKey, s.situationFallback); return text.length > 60 ? text.slice(0, 60) + '...' : text; })()}
                   </span>
                   <span
                     style={{
@@ -228,7 +239,7 @@ export default function WouldYouLetIt() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            Play Again
+            {t('playAgain', 'Play Again')}
           </button>
         </div>
 
@@ -283,7 +294,7 @@ export default function WouldYouLetIt() {
                 color: '#1A1A2E',
               }}
             >
-              Would You Let It?
+              {t('title', 'Would You Let It?')}
             </h3>
           </div>
         </div>
@@ -322,7 +333,7 @@ export default function WouldYouLetIt() {
             marginBottom: '0.75rem',
           }}
         >
-          Scenario {currentIndex + 1} of {scenarios.length}
+          {t('scenarioOf', 'Scenario {current} of {total}').replace('{current}', String(currentIndex + 1)).replace('{total}', String(scenarios.length))}
         </div>
 
         {/* Scenario card */}
@@ -365,7 +376,7 @@ export default function WouldYouLetIt() {
                 animation: !showInsight ? 'wyli-pulse 2s infinite' : 'none',
               }}
             />
-            AI Agent Request
+            {t('aiAgentRequest', 'AI Agent Request')}
           </div>
           <p
             style={{
@@ -376,7 +387,7 @@ export default function WouldYouLetIt() {
               margin: 0,
             }}
           >
-            {scenario.situation}
+            {t(scenario.situationKey, scenario.situationFallback)}
           </p>
         </div>
 
@@ -443,7 +454,7 @@ export default function WouldYouLetIt() {
                 animation: 'wyli-popIn 0.3s ease both',
               }}
             >
-              You chose: {chosenOpt?.label}
+              {t('youChose', 'You chose: {choice}').replace('{choice}', chosenOpt?.label || '')}
             </div>
 
             {/* Insight box */}
@@ -466,7 +477,7 @@ export default function WouldYouLetIt() {
                   margin: 0,
                 }}
               >
-                {scenario.insight}
+                {t(scenario.insightKey, scenario.insightFallback)}
               </p>
             </div>
 
@@ -490,7 +501,7 @@ export default function WouldYouLetIt() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                {currentIndex + 1 >= scenarios.length ? 'See Your Profile' : 'Next Scenario'} &rarr;
+                {currentIndex + 1 >= scenarios.length ? t('seeYourProfile', 'See Your Profile') : t('nextScenario', 'Next Scenario')} &rarr;
               </button>
             </div>
           </>

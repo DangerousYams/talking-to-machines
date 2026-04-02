@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'loading' | 'result';
 
@@ -63,6 +65,8 @@ function getTierForScore(score: number): string {
 }
 
 export default function ComplexityScore() {
+  const t = useTranslation('complexityScore');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
   const [phase, setPhase] = useState<Phase>('input');
   const [description, setDescription] = useState('');
   const [result, setResult] = useState<Result | null>(null);
@@ -81,7 +85,7 @@ export default function ComplexityScore() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: SYSTEM_PROMPT,
+      systemPrompt: SYSTEM_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, breakdown, bestLine, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'break',
       onChunk: (chunk) => {
@@ -101,7 +105,7 @@ export default function ComplexityScore() {
           setResult(parsed);
           setPhase('result');
         } catch {
-          setError('The project was so ambitious it broke our scoring system. Try again!');
+          setError(t('parseError', 'The project was so ambitious it broke our scoring system. Try again!'));
           setPhase('input');
         }
         controllerRef.current = null;
@@ -165,10 +169,10 @@ export default function ComplexityScore() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Complexity Score
+            {t('title', 'Complexity Score')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            Describe your project. We'll tell you what you're really signing up for.
+            {t('subtitle', "Describe your project. We'll tell you what you're really signing up for.")}
           </p>
         </div>
       </div>
@@ -185,13 +189,13 @@ export default function ComplexityScore() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              What are you building? Describe your project and we'll break it down into sub-tasks and rate its complexity.
+              {t('inputPrompt', "What are you building? Describe your project and we'll break it down into sub-tasks and rate its complexity.")}
             </p>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`e.g. "A multiplayer trivia game with real-time scoring, user accounts, and a leaderboard"`}
+              placeholder={t('placeholder', 'e.g. "A multiplayer trivia game with real-time scoring, user accounts, and a leaderboard"')}
               style={{
                 width: '100%',
                 minHeight: 90,
@@ -236,9 +240,9 @@ export default function ComplexityScore() {
                   transition: 'all 0.25s',
                 }}
               >
-                Score My Project
+                {t('scoreButton', 'Score My Project')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -253,7 +257,7 @@ export default function ComplexityScore() {
                 <path d="M6 20v-4" />
               </svg>
             </div>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Decomposing your project...</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('loading', 'Decomposing your project...')}</p>
           </div>
         )}
 
@@ -310,7 +314,7 @@ export default function ComplexityScore() {
                 color: '#6B7280',
                 margin: '0.15rem 0 0',
               }}>
-                total sub-tasks
+                {t('totalSubTasks', 'total sub-tasks')}
               </p>
             </div>
 
@@ -352,7 +356,7 @@ export default function ComplexityScore() {
                 color: '#0F3460',
                 marginBottom: 8,
               }}>
-                Key sub-tasks
+                {t('keySubTasks', 'Key sub-tasks')}
               </p>
               <ol style={{
                 margin: 0,
@@ -390,7 +394,7 @@ export default function ComplexityScore() {
                 color: '#6B7280',
                 marginBottom: 6,
               }}>
-                Reality check
+                {t('realityCheck', 'Reality check')}
               </p>
               <p style={{
                 fontFamily: 'var(--font-body)',
@@ -434,7 +438,7 @@ export default function ComplexityScore() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Try Another Project
+                {t('tryAnother', 'Try Another Project')}
               </button>
             </div>
           </div>

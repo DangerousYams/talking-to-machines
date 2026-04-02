@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { streamChat } from '../../lib/claude';
 import ShareCard from '../ui/ShareCard';
+import { useTranslation, getLocale } from '../../i18n/useTranslation';
+import { languages } from '../../data/languages';
 
 type Phase = 'input' | 'questioning' | 'defending' | 'judging' | 'result';
 
@@ -63,6 +65,15 @@ function getTierForScore(score: number): string {
   return 'Philosopher King';
 }
 
+function getLocalizedTier(score: number, t: (key: string, fallback: string) => string): string {
+  if (score < 20) return t('tierCaveDweller', 'Cave Dweller');
+  if (score < 40) return t('tierSophistInTraining', 'Sophist in Training');
+  if (score < 60) return t('tierAgoraRegular', 'Agora Regular');
+  if (score < 80) return t('tierDialecticDebater', 'Dialectic Debater');
+  if (score < 90) return t('tierGadflysApprentice', "Gadfly's Apprentice");
+  return t('tierPhilosopherKing', 'Philosopher King');
+}
+
 export default function SocraticSmackdown() {
   const [phase, setPhase] = useState<Phase>('input');
   const [opinion, setOpinion] = useState('');
@@ -71,6 +82,8 @@ export default function SocraticSmackdown() {
   const [verdict, setVerdict] = useState<Verdict | null>(null);
   const [error, setError] = useState<string | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
+  const t = useTranslation('socraticSmackdown');
+  const langName = languages.find(l => l.code === getLocale())?.name || 'English';
 
   const handleSubmitOpinion = () => {
     const text = opinion.trim();
@@ -85,7 +98,7 @@ export default function SocraticSmackdown() {
     controllerRef.current?.abort();
     controllerRef.current = streamChat({
       messages: [{ role: 'user', content: text }],
-      systemPrompt: QUESTION_PROMPT,
+      systemPrompt: QUESTION_PROMPT + `\n\nIMPORTANT: Respond entirely in ${langName}.`,
       maxTokens: 150,
       source: 'socratic-smackdown',
       onChunk: (chunk) => {
@@ -120,7 +133,7 @@ export default function SocraticSmackdown() {
         { role: 'assistant', content: question },
         { role: 'user', content: text },
       ],
-      systemPrompt: VERDICT_PROMPT,
+      systemPrompt: VERDICT_PROMPT + `\n\nIMPORTANT: Write all text fields (tier, bestLine, assessment) in ${langName}. The JSON structure and key names must remain in English.`,
       maxTokens: 300,
       source: 'socratic-smackdown',
       onChunk: (chunk) => {
@@ -138,7 +151,7 @@ export default function SocraticSmackdown() {
           setVerdict(parsed);
           setPhase('result');
         } catch {
-          setError('Socrates was so impressed he forgot to score you. Try again!');
+          setError(t('parseError', 'Socrates was so impressed he forgot to score you. Try again!'));
           setPhase('defending');
         }
         controllerRef.current = null;
@@ -206,10 +219,10 @@ export default function SocraticSmackdown() {
         </div>
         <div>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.1rem', fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
-            Socratic Smackdown
+            {t('title', 'Socratic Smackdown')}
           </h3>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#6B7280', margin: 0, letterSpacing: '0.05em' }}>
-            State a hot take. Defend it against Socrates.
+            {t('subtitle', 'State a hot take. Defend it against Socrates.')}
           </p>
         </div>
       </div>
@@ -226,13 +239,13 @@ export default function SocraticSmackdown() {
               margin: '0 0 1rem',
               lineHeight: 1.6,
             }}>
-              Drop your boldest opinion. Socrates will question everything.
+              {t('inputPrompt', 'Drop your boldest opinion. Socrates will question everything.')}
             </p>
             <textarea
               value={opinion}
               onChange={(e) => setOpinion(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={`e.g. "Homework is a waste of time" or "TikTok is better than reading books"`}
+              placeholder={t('placeholder', 'e.g. "Homework is a waste of time" or "TikTok is better than reading books"')}
               style={{
                 width: '100%',
                 minHeight: 80,
@@ -277,9 +290,9 @@ export default function SocraticSmackdown() {
                   transition: 'all 0.25s',
                 }}
               >
-                Challenge Socrates
+                {t('challengeButton', 'Challenge Socrates')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -298,7 +311,7 @@ export default function SocraticSmackdown() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 4,
-              }}>Your hot take</p>
+              }}>{t('yourHotTake', 'Your hot take')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.88rem',
                 lineHeight: 1.6, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -318,7 +331,7 @@ export default function SocraticSmackdown() {
                 color: '#16C79A', marginBottom: 4,
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
-                Socrates
+                {t('socrates', 'Socrates')}
                 <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#16C79A', animation: 'ss-pulse 1s ease-in-out infinite' }} />
               </p>
               <p style={{
@@ -345,7 +358,7 @@ export default function SocraticSmackdown() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#6B7280', marginBottom: 4,
-              }}>Your hot take</p>
+              }}>{t('yourHotTake', 'Your hot take')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.85rem',
                 lineHeight: 1.55, color: '#1A1A2E', margin: 0, fontStyle: 'italic',
@@ -364,7 +377,7 @@ export default function SocraticSmackdown() {
                 fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 600,
                 letterSpacing: '0.08em', textTransform: 'uppercase' as const,
                 color: '#16C79A', marginBottom: 4,
-              }}>Socrates</p>
+              }}>{t('socrates', 'Socrates')}</p>
               <p style={{
                 fontFamily: 'var(--font-body)', fontSize: '0.9rem',
                 lineHeight: 1.65, color: '#1A1A2E', margin: 0,
@@ -376,7 +389,7 @@ export default function SocraticSmackdown() {
               value={defense}
               onChange={(e) => setDefense(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Defend your position..."
+              placeholder={t('defendPlaceholder', 'Defend your position...')}
               autoFocus
               style={{
                 width: '100%',
@@ -422,9 +435,9 @@ export default function SocraticSmackdown() {
                   transition: 'all 0.25s',
                 }}
               >
-                Submit Defense
+                {t('submitDefense', 'Submit Defense')}
               </button>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>Cmd+Enter</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#B0B0B0' }}>{t('cmdEnter', 'Cmd+Enter')}</span>
             </div>
           </div>
         )}
@@ -439,7 +452,7 @@ export default function SocraticSmackdown() {
                 <path d="M12 17h.01" />
               </svg>
             </div>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>Socrates deliberates...</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#6B7280' }}>{t('deliberating', 'Socrates deliberates...')}</p>
           </div>
         )}
 
@@ -469,7 +482,7 @@ export default function SocraticSmackdown() {
                 color: getScoreColor(verdict.score),
                 margin: 0,
               }}>
-                {verdict.tier}
+                {getLocalizedTier(verdict.score, t)}
               </p>
             </div>
 
@@ -522,22 +535,22 @@ export default function SocraticSmackdown() {
               fontSize: '0.82rem',
             }}>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: '#6B7280', marginBottom: 6 }}>
-                The exchange
+                {t('theExchange', 'The exchange')}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', color: '#1A1A2E', margin: '0 0 8px', lineHeight: 1.5, fontStyle: 'italic' }}>
-                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>You:</strong> {opinion}
+                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>{t('you', 'You:')}</strong> {opinion}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', color: '#16C79A', margin: '0 0 8px', lineHeight: 1.5 }}>
-                <strong>Socrates:</strong> {question}
+                <strong>{t('socrates', 'Socrates')}:</strong> {question}
               </p>
               <p style={{ fontFamily: 'var(--font-body)', color: '#1A1A2E', margin: 0, lineHeight: 1.5, fontStyle: 'italic' }}>
-                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>You:</strong> {defense}
+                <strong style={{ fontStyle: 'normal', color: '#6B7280' }}>{t('you', 'You:')}</strong> {defense}
               </p>
             </div>
 
             {/* ShareCard */}
             <ShareCard
-              title={verdict.tier}
+              title={getLocalizedTier(verdict.score, t)}
               metric={`${verdict.score}/100`}
               metricColor={getScoreColor(verdict.score)}
               subtitle={verdict.bestLine}
@@ -566,7 +579,7 @@ export default function SocraticSmackdown() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                Try Another Take
+                {t('tryAnotherTake', 'Try Another Take')}
               </button>
             </div>
           </div>
