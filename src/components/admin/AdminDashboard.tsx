@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import StatCard from './StatCard';
 import PageViewsChart from './PageViewsChart';
-import AbTestPanel from './AbTestPanel';
 import AiCostTable from './AiCostTable';
 import EngagementPanel from './EngagementPanel';
 import AccessCodesPanel from './AccessCodesPanel';
@@ -13,15 +12,8 @@ interface StatsData {
   uniqueSessions: number;
   totalInteractions: number;
   totalAiSpend: number;
-  dailyPageViews: { date: string; count: number; scroll: number; cards: number }[];
+  dailyPageViews: { date: string; count: number }[];
   topChapters: { chapter: string; views: number }[];
-}
-
-interface ExperimentData {
-  id: string;
-  name: string;
-  status: 'active' | 'paused';
-  variants: { name: string; assignments: number; views: number; interactions: number }[];
 }
 
 interface AiCostData {
@@ -41,11 +33,10 @@ interface EngagementData {
     avgPercent: number;
     avgTimeSeconds: number;
     buckets: { pct: number; count: number }[];
-    variants: Record<string, { sessions: number; reachedEnd: number; avgPercent: number }>;
   }[];
 }
 
-type Tab = 'overview' | 'engagement' | 'ab-tests' | 'ai-costs' | 'access-codes';
+type Tab = 'overview' | 'engagement' | 'ai-costs' | 'access-codes';
 
 // --- Auth Gate ---
 
@@ -137,7 +128,6 @@ function AdminDashboardInner() {
 
   const [stats, setStats] = useState<StatsData | null>(null);
   const [engagement, setEngagement] = useState<EngagementData | null>(null);
-  const [experiments, setExperiments] = useState<ExperimentData[]>([]);
   const [aiCosts, setAiCosts] = useState<AiCostData | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -165,18 +155,6 @@ function AdminDashboardInner() {
       setError(err.message);
     }
   }, [dateRange]);
-
-  const fetchExperiments = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/experiments');
-      if (!res.ok) throw new Error(`Experiments fetch failed: ${res.status}`);
-      const data = await res.json();
-      setExperiments(data.experiments ?? []);
-    } catch (err: any) {
-      console.error('Failed to fetch experiments:', err);
-      setError(err.message);
-    }
-  }, []);
 
   const fetchAiCosts = useCallback(async () => {
     try {
@@ -211,9 +189,9 @@ function AdminDashboardInner() {
   const fetchAll = useCallback(async () => {
     setLoading(true);
     setError(null);
-    await Promise.all([fetchStats(), fetchExperiments(), fetchAiCosts(), fetchEngagement()]);
+    await Promise.all([fetchStats(), fetchAiCosts(), fetchEngagement()]);
     setLoading(false);
-  }, [fetchStats, fetchExperiments, fetchAiCosts, fetchEngagement]);
+  }, [fetchStats, fetchAiCosts, fetchEngagement]);
 
   // Initial load + dateRange change
   useEffect(() => {
@@ -236,24 +214,6 @@ function AdminDashboardInner() {
       }
     };
   }, [autoRefresh, fetchAll]);
-
-  // --- Experiment toggle ---
-
-  const handleToggleExperiment = async (id: string, newStatus: 'active' | 'paused') => {
-    try {
-      const res = await fetch(`/api/admin/experiments`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status: newStatus }),
-      });
-      if (!res.ok) throw new Error('Failed to update experiment');
-      setExperiments((prev) =>
-        prev.map((exp) => (exp.id === id ? { ...exp, status: newStatus } : exp))
-      );
-    } catch (err) {
-      console.error('Failed to toggle experiment:', err);
-    }
-  };
 
   // --- Styles ---
 
@@ -316,7 +276,7 @@ function AdminDashboardInner() {
             Talking to Machines — Admin
           </h1>
           <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0 }}>
-            Analytics & experiment management
+            Analytics & management
           </p>
         </div>
 
@@ -384,9 +344,6 @@ function AdminDashboardInner() {
         </button>
         <button onClick={() => setActiveTab('engagement')} style={tabStyle('engagement')}>
           Engagement
-        </button>
-        <button onClick={() => setActiveTab('ab-tests')} style={tabStyle('ab-tests')}>
-          A/B Tests
         </button>
         <button onClick={() => setActiveTab('ai-costs')} style={tabStyle('ai-costs')}>
           AI Costs
@@ -456,34 +413,6 @@ function AdminDashboardInner() {
           {/* Engagement Tab */}
           {activeTab === 'engagement' && (
             <EngagementPanel chapters={engagement?.chapters ?? []} />
-          )}
-
-          {/* A/B Tests Tab */}
-          {activeTab === 'ab-tests' && (
-            <div>
-              {experiments.length === 0 ? (
-                <div
-                  style={{
-                    background: '#1e2240',
-                    borderRadius: '12px',
-                    padding: '40px',
-                    textAlign: 'center',
-                    color: '#6b7280',
-                    fontSize: '0.95rem',
-                  }}
-                >
-                  No experiments configured
-                </div>
-              ) : (
-                experiments.map((exp) => (
-                  <AbTestPanel
-                    key={exp.id}
-                    experiment={exp}
-                    onToggleStatus={handleToggleExperiment}
-                  />
-                ))
-              )}
-            </div>
           )}
 
           {/* AI Costs Tab */}

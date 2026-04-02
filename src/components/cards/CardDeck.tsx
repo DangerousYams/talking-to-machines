@@ -28,14 +28,7 @@ export default function CardDeck({ children, accentColor, chapterSlug }: CardDec
   const childArray = Children.toArray(children).filter(isValidElement);
   const total = childArray.length;
 
-  // Find the index of the first FlippableCard for FTUE coach marks
-  const firstFlippableIndex = childArray.findIndex(
-    (child) =>
-      isValidElement(child) &&
-      typeof child.type !== 'string' &&
-      ((child.type as any)._isFlippable === true ||
-        (child.type as any).displayName === 'FlippableCard'),
-  );
+  const firstFlippableIndex = -1;
 
   // Track page view on mount
   useEffect(() => {

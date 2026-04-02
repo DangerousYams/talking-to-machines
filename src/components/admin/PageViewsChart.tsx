@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 
 interface PageViewsChartProps {
-  data: { date: string; count: number; scroll: number; cards: number }[];
+  data: { date: string; count: number }[];
 }
 
 export default function PageViewsChart({ data }: PageViewsChartProps) {
@@ -13,9 +13,8 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
     x: number;
     y: number;
     date: string;
-    scroll: number;
-    cards: number;
-  }>({ visible: false, x: 0, y: 0, date: '', scroll: 0, cards: 0 });
+    count: number;
+  }>({ visible: false, x: 0, y: 0, date: '', count: 0 });
 
   useEffect(() => {
     if (!svgRef.current || !containerRef.current || !data || data.length === 0) return;
@@ -40,7 +39,7 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
       .range([0, innerWidth])
       .padding(0.3);
 
-    const maxVal = d3.max(data, (d) => d.scroll + d.cards) || 0;
+    const maxVal = d3.max(data, (d) => d.count) || 0;
     const y = d3.scaleLinear().domain([0, maxVal * 1.1]).range([innerHeight, 0]);
 
     // Grid lines
@@ -57,17 +56,17 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
       .attr('stroke', '#374151')
       .attr('stroke-dasharray', '2,2');
 
-    // Stacked bars - scroll portion (bottom)
-    g.selectAll('.bar-scroll')
+    // Bars
+    g.selectAll('.bar')
       .data(data)
       .enter()
       .append('rect')
-      .attr('class', 'bar-scroll')
+      .attr('class', 'bar')
       .attr('x', (d) => x(d.date)!)
-      .attr('y', (d) => y(d.scroll + d.cards))
+      .attr('y', (d) => y(d.count))
       .attr('width', x.bandwidth())
-      .attr('height', (d) => innerHeight - y(d.scroll))
-      .attr('fill', '#0EA5E9')
+      .attr('height', (d) => innerHeight - y(d.count))
+      .attr('fill', '#7B61FF')
       .attr('rx', 3)
       .attr('ry', 3)
       .style('cursor', 'pointer')
@@ -78,54 +77,12 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
           x: event.clientX - rect.left,
           y: event.clientY - rect.top - 10,
           date: d.date,
-          scroll: d.scroll,
-          cards: d.cards,
+          count: d.count,
         });
       })
       .on('mouseleave', () => {
         setTooltip((prev) => ({ ...prev, visible: false }));
       });
-
-    // Stacked bars - cards portion (top)
-    g.selectAll('.bar-cards')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar-cards')
-      .attr('x', (d) => x(d.date)!)
-      .attr('y', (d) => y(d.scroll + d.cards))
-      .attr('width', x.bandwidth())
-      .attr('height', (d) => innerHeight - y(d.cards))
-      .attr('fill', '#E94560')
-      .attr('rx', 3)
-      .attr('ry', 3)
-      .attr('transform', (d) => `translate(0, 0)`)
-      .style('cursor', 'pointer')
-      .on('mouseenter', (event, d) => {
-        const rect = svgRef.current!.getBoundingClientRect();
-        setTooltip({
-          visible: true,
-          x: event.clientX - rect.left,
-          y: event.clientY - rect.top - 10,
-          date: d.date,
-          scroll: d.scroll,
-          cards: d.cards,
-        });
-      })
-      .on('mouseleave', () => {
-        setTooltip((prev) => ({ ...prev, visible: false }));
-      });
-
-    // Re-position stacked bars correctly:
-    // Bottom bar (scroll): from y(scroll) to bottom
-    // Top bar (cards): from y(scroll + cards) to y(scroll)
-    g.selectAll('.bar-scroll')
-      .attr('y', (d: any) => y(d.scroll))
-      .attr('height', (d: any) => innerHeight - y(d.scroll));
-
-    g.selectAll('.bar-cards')
-      .attr('y', (d: any) => y(d.scroll + d.cards))
-      .attr('height', (d: any) => y(d.scroll) - y(d.scroll + d.cards));
 
     // X Axis
     const formatDate = (dateStr: string) => {
@@ -199,44 +156,9 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
         position: 'relative',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-        }}
-      >
-        <h3 style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 600, margin: 0 }}>
-          Daily Page Views
-        </h3>
-        <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#9ca3af' }}>
-            <span
-              style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '2px',
-                background: '#0EA5E9',
-                display: 'inline-block',
-              }}
-            />
-            Scroll
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#9ca3af' }}>
-            <span
-              style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '2px',
-                background: '#E94560',
-                display: 'inline-block',
-              }}
-            />
-            Cards
-          </span>
-        </div>
-      </div>
+      <h3 style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 600, margin: '0 0 16px 0' }}>
+        Daily Page Views
+      </h3>
       <svg ref={svgRef} />
       {tooltip.visible && (
         <div
@@ -263,11 +185,7 @@ export default function PageViewsChart({ data }: PageViewsChartProps) {
               year: 'numeric',
             })}
           </div>
-          <div style={{ color: '#0EA5E9' }}>Scroll: {tooltip.scroll}</div>
-          <div style={{ color: '#E94560' }}>Cards: {tooltip.cards}</div>
-          <div style={{ color: '#9ca3af', marginTop: '2px' }}>
-            Total: {tooltip.scroll + tooltip.cards}
-          </div>
+          <div style={{ color: '#7B61FF' }}>Views: {tooltip.count}</div>
         </div>
       )}
     </div>

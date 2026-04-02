@@ -57,17 +57,13 @@ export const GET: APIRoute = async ({ url }) => {
     const totalAiSpend = aiData.reduce((sum: number, row: any) => sum + (row.cost_usd || 0), 0);
 
     // Daily page views
-    const dailyMap = new Map<string, { count: number; scroll: number; cards: number }>();
+    const dailyMap = new Map<string, number>();
     for (const v of views) {
       const date = v.created_at.slice(0, 10);
-      const entry = dailyMap.get(date) || { count: 0, scroll: 0, cards: 0 };
-      entry.count++;
-      if (v.variant === 'scroll') entry.scroll++;
-      else if (v.variant === 'cards') entry.cards++;
-      dailyMap.set(date, entry);
+      dailyMap.set(date, (dailyMap.get(date) || 0) + 1);
     }
     const dailyPageViews = Array.from(dailyMap.entries())
-      .map(([date, data]) => ({ date, ...data }))
+      .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
     // Top chapters

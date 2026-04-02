@@ -162,7 +162,7 @@ export default function NavDrawer({ isOpen, onClose, accentColor, currentChapter
             return (
               <a
                 key={ch.slug}
-                href={`/${ch.slug}-cards`}
+                href={`/${ch.slug}`}
                 style={{
                   display: 'flex',
                   alignItems: 'center',

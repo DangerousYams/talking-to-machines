@@ -8,7 +8,6 @@ interface ChapterEngagement {
   avgPercent: number;
   avgTimeSeconds: number;
   buckets: { pct: number; count: number }[];
-  variants: Record<string, { sessions: number; reachedEnd: number; avgPercent: number }>;
 }
 
 interface Props {
@@ -167,29 +166,6 @@ export default function EngagementPanel({ chapters }: Props) {
                 <FunnelBar buckets={ch.buckets} sessions={ch.sessions} accentColor={color} />
               </div>
 
-              {/* Variant breakdown */}
-              {Object.keys(ch.variants).length > 0 && (
-                <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
-                  {Object.entries(ch.variants).map(([variant, data]) => (
-                    <div key={variant} style={{
-                      flex: 1,
-                      padding: '8px 10px',
-                      background: 'rgba(255,255,255,0.04)',
-                      borderRadius: '6px',
-                    }}>
-                      <div style={{ color: '#9ca3af', fontSize: '0.65rem', textTransform: 'uppercase', marginBottom: '2px' }}>
-                        {variant}
-                      </div>
-                      <div style={{ color: '#fff', fontSize: '0.8rem', fontWeight: 600 }}>
-                        {data.avgPercent}% avg
-                      </div>
-                      <div style={{ color: '#6b7280', fontSize: '0.7rem' }}>
-                        {data.sessions} sessions, {data.reachedEnd} completed
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           );
         })}
