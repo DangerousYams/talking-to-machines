@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { streamChat } from '../lib/claude';
 import { useAuth } from '../hooks/useAuth';
 import UnlockModal from './ui/UnlockModal';
@@ -358,6 +358,15 @@ export default function PromptFramer() {
   const [values, setValues] = useState<Record<string, Record<string, string>>>({});
   const [aiOutput, setAiOutput] = useState<Record<string, string>>({});
   const [generating, setGenerating] = useState<ToolType | null>(null);
+
+  // Auto-select tool from URL param (e.g. ?tool=music)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tool = params.get('tool');
+    if (tool && TOOLS.some(t => t.key === tool)) {
+      setOpenTool(tool as ToolType);
+    }
+  }, []);
   const [copied, setCopied] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [showUnlock, setShowUnlock] = useState(false);

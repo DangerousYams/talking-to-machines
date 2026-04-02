@@ -3,7 +3,6 @@ export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import ToolsCollection from '../components/ToolsCollection';
-import PaywallGate from '../components/ui/PaywallGate';
 ---
 
 <!doctype html>
@@ -12,12 +11,11 @@ import PaywallGate from '../components/ui/PaywallGate';
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Your collection of AI tools — unlocked by completing chapters in Talking to Machines." />
+    <meta name="description" content="Every interactive tool from Talking to Machines — prompt builders, AI games, quizzes, and more. All in one place." />
     <meta property="og:title" content="Toolbox — Talking to Machines" />
     <title>Toolbox — Talking to Machines</title>
   </head>
   <body class="bg-cream text-deep min-h-screen">
-    <PaywallGate chapterTitle="Toolbox" accentColor="#F5A623" client:load />
 
     <!-- Header -->
     <header style="padding: 20px 24px; display: flex; align-items: center; gap: 8px;">
@@ -35,13 +33,13 @@ import PaywallGate from '../components/ui/PaywallGate';
     <!-- Page title -->
     <section style="text-align: center; padding: 3rem 1.5rem 2.5rem; max-width: 900px; margin: 0 auto;">
       <p style="font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-subtle); opacity: 0.6; margin: 0 0 16px;">
-        Your Collection
+        Everything in One Place
       </p>
       <h1 style="font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--color-deep); margin: 0 0 12px; letter-spacing: -0.02em;">
         Toolbox
       </h1>
       <p style="font-family: var(--font-body); font-size: 1rem; color: var(--color-subtle); margin: 0; line-height: 1.6;">
-        Unlock new tools by completing each chapter's reading.
+        Every interactive tool, prompt builder, game, and quiz from the course.
       </p>
     </section>
 
