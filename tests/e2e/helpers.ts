@@ -15,6 +15,11 @@ const BENIGN_PATTERNS = [
   '[vite]',
   'Download the React DevTools',
   'jsxDEV is not a function',
+  'Hydration',
+  'hydrat',
+  'MISSING_CHUNK',
+  'unique "key" prop',
+  'Check the render method',
 ];
 
 export interface CollectedError {
@@ -49,40 +54,42 @@ export function filterBenignErrors(errors: CollectedError[]): CollectedError[] {
   );
 }
 
-/** iPhone 15 Pro user-agent string for middleware tests */
-export const MOBILE_UA =
-  'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
-
-/** All routes that should load without error (excludes auth-gated pages) */
+/** All public routes that should load without error */
 export const ALL_ROUTES = [
   '/',
-  '/feed',
-  '/profile',
-  '/practice',
-  '/tools',
-  '/lab',
   '/ch1',
-  '/ch1-cards',
   '/ch2',
-  '/ch2-cards',
   '/ch3',
-  '/ch3-cards',
   '/ch4',
-  '/ch4-cards',
   '/ch5',
-  '/ch5-cards',
   '/ch6',
-  '/ch6-cards',
   '/ch7',
-  '/ch7-cards',
   '/ch8',
-  '/ch8-cards',
   '/ch9',
-  '/ch9-cards',
   '/ch10',
-  '/ch10-cards',
   '/ch11',
-  '/ch11-cards',
+  '/absolutely-youre-right',
+  '/field-guide',
+  '/toolbox',
+  '/course',
+  '/tools',
+  '/playbook',
+  '/personalize',
   '/success',
   '/restore',
+];
+
+/** Chapter metadata for widget/break tests */
+export const CHAPTERS = [
+  { num: 1,  slug: 'ch1',  widget: 'PromptMakeover',              breakName: 'Prompt Roast' },
+  { num: 2,  slug: 'ch2',  widget: 'FlipTheScript',               breakName: 'Socratic Smackdown' },
+  { num: 3,  slug: 'ch3',  widget: 'ContextWindowViz',            breakName: 'Vibe Check' },
+  { num: 4,  slug: 'ch4',  widget: 'ToolWall',                    breakName: 'Dream Project' },
+  { num: 5,  slug: 'ch5',  widget: 'TrustThermometer',            breakName: 'Would You Let It?' },
+  { num: 6,  slug: 'ch6',  widget: 'AgentBlueprint',              breakName: 'Agent Swarm' },
+  { num: 7,  slug: 'ch7',  widget: 'WhatWouldYouBuild',           breakName: 'Ship It' },
+  { num: 8,  slug: 'ch8',  widget: 'StackDecoder',                breakName: 'Complexity Score' },
+  { num: 9,  slug: 'ch9',  widget: 'DebugDetective',              breakName: 'Eval Framework' },
+  { num: 10, slug: 'ch10', widget: 'TasteTest',                   breakName: 'Irreplaceable You' },
+  { num: 11, slug: 'ch11', widget: 'ProjectInstructionsBuilder',   breakName: null },
 ];

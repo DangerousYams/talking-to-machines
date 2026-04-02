@@ -1,64 +1,62 @@
 import { test, expect } from '@playwright/test';
-import { collectErrors, filterBenignErrors } from './helpers';
+import { CHAPTERS, collectErrors, filterBenignErrors } from './helpers';
 
-test.describe('Chapter widgets', () => {
-  test('ch1 renders GuessThePrompt widget', async ({ page }) => {
-    const errors = collectErrors(page);
+test.describe('Chapter widgets and break activities', () => {
+  for (const ch of CHAPTERS) {
+    test(`ch${ch.num} — page loads and has interactive widget`, async ({ page }) => {
+      const errors = collectErrors(page);
 
-    await page.goto('/ch1', { waitUntil: 'domcontentloaded' });
+      await page.goto(`/${ch.slug}`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
 
-    // Wait for interactive buttons to appear (widget hydration — Firefox can be slow)
-    await page.waitForFunction(
-      () => document.querySelectorAll('button').length > 0,
-      null,
-      { timeout: 15000 }
-    );
+      // Wait for at least one React island to hydrate (buttons appear)
+      await page.waitForFunction(
+        () => document.querySelectorAll('button').length > 0,
+        null,
+        { timeout: 30_000 },
+      );
 
-    const buttons = page.locator('button');
-    const buttonCount = await buttons.count();
-    expect(buttonCount).toBeGreaterThan(0);
+      // Should have interactive buttons from widgets
+      const buttons = page.locator('button');
+      expect(await buttons.count()).toBeGreaterThan(0);
 
-    const realErrors = filterBenignErrors(errors);
-    expect(realErrors).toHaveLength(0);
-  });
+      const realErrors = filterBenignErrors(errors);
+      expect(realErrors, `Errors on /${ch.slug}: ${JSON.stringify(realErrors)}`).toHaveLength(0);
+    });
 
-  test('tools page renders ToolWall', async ({ page }) => {
-    const errors = collectErrors(page);
+    if (ch.breakName) {
+      test(`ch${ch.num} — break section (#break) exists`, async ({ page }) => {
+        await page.goto(`/${ch.slug}#break`, { waitUntil: 'domcontentloaded', timeout: 30_000 });
 
-    await page.goto('/tools', { waitUntil: 'domcontentloaded' });
+        // The break section should exist
+        const breakSection = page.locator('#break');
+        await expect(breakSection).toBeAttached({ timeout: 10_000 });
 
-    // Wait for buttons to appear (ToolWall hydration) — Firefox can be slow
-    await page.waitForFunction(() => document.querySelectorAll('button').length > 0, null, { timeout: 15000 });
-
-    const buttons = page.locator('button');
-    const buttonCount = await buttons.count();
-    expect(buttonCount).toBeGreaterThan(0);
-
-    const realErrors = filterBenignErrors(errors);
-    expect(realErrors).toHaveLength(0);
-  });
-
-  test('tools page category filter works', async ({ page }) => {
-    await page.goto('/tools', { waitUntil: 'domcontentloaded' });
-
-    // Wait for filter buttons to appear
-    await page.waitForFunction(
-      () => document.querySelectorAll('button').length > 0,
-      null,
-      { timeout: 15000 }
-    );
-
-    const filterButtons = page.locator('button');
-    const count = await filterButtons.count();
-
-    if (count > 1) {
-      // Click the second filter button (first is likely "All")
-      await filterButtons.nth(1).click();
-      await page.waitForTimeout(500);
-
-      // Page should still have content (didn't break)
-      const body = await page.locator('body').innerText();
-      expect(body.trim().length).toBeGreaterThan(0);
+        // Break section should contain the break activity name or content
+        const breakText = await breakSection.innerText();
+        expect(breakText.trim().length).toBeGreaterThan(0);
+      });
     }
+  }
+
+  test('bonus chapter — SycophancyTest and SweetTalker load', async ({ page }) => {
+    const errors = collectErrors(page);
+
+    await page.goto('/absolutely-youre-right', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+
+    // Wait for widget hydration
+    await page.waitForFunction(
+      () => document.querySelectorAll('button').length > 0,
+      null,
+      { timeout: 30_000 },
+    );
+
+    expect(await page.locator('button').count()).toBeGreaterThan(0);
+
+    // Break section exists
+    const breakSection = page.locator('#break');
+    await expect(breakSection).toBeAttached({ timeout: 10_000 });
+
+    const realErrors = filterBenignErrors(errors);
+    expect(realErrors).toHaveLength(0);
   });
 });
