@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: '终端游乐场',
+  terminalSubtitle: '观察Claude Code思考、编写和运行代码',
+  terminalPickTask: '选择一个任务，观察Claude Code如何分解任务、编写代码并验证其是否正常运行。',
+  tryAnotherTask: '试试其他任务',
+  filesLabel: '文件',
+  filesMobileButton: '文件',
+  writeLabel: '编写',
+
+  // Terminal presets
+  presetCountdownLabel: '创建一个React倒计时器',
+  presetCountdownDesc: '构建一个可复用的倒计时组件，带有开始/暂停控制',
+  presetBugLabel: '修复登录Bug',
+  presetBugDesc: '诊断并修复一个损坏的认证流程',
+  presetDarkmodeLabel: '为应用添加深色模式',
+  presetDarkmodeDesc: '实现一个感知系统设置的深色模式切换，支持持久化',
+
+  // Terminal step texts (thinking only - code/commands stay in English)
+  thinkingReadingProject: '正在读取项目结构并理解代码库...',
+  thinkingPlanCountdown: '规划中：创建一个CountdownTimer组件，使用useState和useEffect hooks，包含开始/暂停/重置控制和格式化的时间显示。',
+  successCountdown: 'CountdownTimer组件已创建，包含开始、暂停和重置控制。已在localhost:5173就绪。',
+  thinkingReadingLogin: '正在读取 src/auth/login.ts 和 src/auth/session.ts...',
+  thinkingFoundBug: '找到Bug：登录处理器await了fetchUser()，但在设置session token前从未检查null响应。当API返回401时，代码崩溃。',
+  successBugFix: 'Bug已修复：添加了null检查和对失败API响应的正确错误处理。3个测试全部通过。',
+  thinkingReadingStyles: '正在读取现有样式和组件结构...',
+  thinkingPlanDarkMode: '计划：1) 创建useDarkMode hook，支持localStorage持久化；2) 添加CSS自定义属性用于深色主题；3) 构建切换按钮组件。',
+  successDarkMode: '深色模式已添加，支持系统偏好检测、localStorage持久化和平滑CSS过渡。',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: '技能构建器',
+  skillBuilderSubtitle: '为Claude Code编写可复用的指令',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: '已编辑',
+  validationLabel: '验证',
+  triggerLabel: '触发条件',
+  stepsLabel: '步骤',
+  examplesLabel: '示例',
+  hasClearTrigger: '有明确的触发条件',
+  stepsAreSpecific: '步骤具体明确',
+  includesExamples: '包含示例',
+  testLabel: '测试',
+  testScenarioLabel: '测试场景',
+  userRequestLabel: '用户请求',
+  requestPrefix: '请求：',
+  viewFullOutput: '查看完整输出',
+
+  // Skill templates
+  templateReactComponent: 'React组件生成器',
+  templateTestWriter: '测试编写器',
+  templateDocGenerator: '文档生成器',
+
+  // Test tasks (prompt content - keep English)
+  testTaskReact: 'Create a UserProfile component that shows an avatar, name, and bio',
+  testTaskTest: 'Write tests for utils/formatDate.ts',
+  testTaskDoc: 'Document the auth module',
+
+  // === RefactorRace ===
+  refactorRaceTitle: '重构竞赛',
+  refactorRaceSubtitle: '你 vs. Claude Code——整理这段混乱的函数',
+  refactorRaceIntro: '下面是一个变量名晦涩、没有类型定义、手写冒泡排序的函数。你的任务：把它重构成可读的代码。Claude Code会在你旁边做同样的事。',
+  startRefactoring: '开始重构',
+  yourTurn: '轮到你了',
+  doneButton: '完成',
+  finishedAt: '完成于',
+  claudeCodeLabel: 'Claude Code',
+  imDone: '我完成了',
+  yourCodeTab: '你的代码',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: '你的版本',
+  claudeCodeVersion: 'Claude Code版本（约5.5秒）',
+  readabilityLabel: '可读性',
+  linesOfCode: '代码行数',
+  namingLabel: '命名',
+  youDecide: '你来评判',
+  typesAndComments: '类型 + 注释',
+  linesLabel: '行',
+  yourChoice: '你的选择',
+  descriptiveNames: '描述性命名',
+  youLabel: '你',
+  aiLabel: 'AI',
+  pointNotSpeed: '重点不是谁先完成。',
+  pointNotSpeedBody: 'Claude Code很快，但速度不是关键技能。关键技能是看着两个版本，判断你到底会发布哪一个。你能读懂它吗？它处理了边界情况吗？你的队友凌晨两点能看懂吗？这个判断力只属于你。',
+  pointNotSpeedMobile: '速度不是关键技能。关键是判断你会发布哪个版本。这个判断力只属于你。',
+  compareCode: '对比代码',
+  retryButton: '重试',
+  tryAgain: '再试一次',
+  codeComparison: '代码对比',
+
+  // Metrics (mobile)
+  metricLines: '行数',
+  metricTime: '用时',
+  metricNames: '命名',
+  metricTyped: '类型',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: '你会做什么？',
+  projectsCount: '个项目由像你一样的人构建',
+  noProjectsInCategory: '该分类下暂无项目。',
+  yourTurnHeading: '轮到你了',
+  yourTurnPromptMobile: '你会用个人软件解决什么问题？',
+  yourTurnPromptDesktop: '你生活中有什么问题想用个人软件来解决？描述一下你希望存在的工具。',
+  ideaPlaceholder: '我想做一个应用来...',
+  saveIdea: '保存想法',
+  savedConfirmationMobile: '已保存！你会在第11章用到它。',
+  savedConfirmationDesktop: '想法已保存！你会在第11章用到它。',
+  builderLabel: '创作者',
+  builtBy: '创作者',
+  techStack: '技术栈',
+  timeEstimate: '预估时间：',
+  feasibilityWeekend: '周末就能做完',
+  feasibilityWeek: '一周项目',
+  feasibilityMonth: '需要一个月',
+  footerInspiration: '这里的每一个项目，都是某个人从一个想法开始做出来的。',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: 'Claude Code遵循一个循环：读取代码库 \u2192 规划变更 \u2192 编写代码 \u2192 运行 \u2192 修复错误。CLAUDE.md是塑造每次交互的永久指令集。',
+  skillsKeyFact: '一个技能有三个部分：触发条件（何时激活）、步骤（做什么）、示例（好的输出长什么样）。一个技能定义可以替代数百次重复解释。',
+
+  flipLabelClaudeCode: '为什么有效？Claude Code的思维方式',
+  flipLabelSkills: '为什么有效？构建技能',
+  flipLabelSkillParadox: '为什么有效？技能悖论',
+  backTitleClaudeCode: 'Claude Code的思维方式',
+  backTitleSkills: '构建技能（T-S-E框架）',
+  backTitleSkillParadox: '技能悖论',
+
+  // ClaudeCode Back
+  ccBackIntro: 'Claude Code不是一个写代码的聊天机器人。它是一个智能循环——一个读取、规划、编写、运行和修复的系统，不断循环直到任务完成。',
+  ccReadName: '读取',
+  ccReadText: '扫描你的文件，理解你的架构，读取CLAUDE.md获取项目规则。',
+  ccPlanName: '规划',
+  ccPlanText: '把任务分解成步骤，决定要修改哪些文件以及修改顺序。',
+  ccWriteName: '编写',
+  ccWriteText: '跨多个文件生成代码——不是片段，而是连贯的、相互关联的变更。',
+  ccRunName: '运行',
+  ccRunText: '执行代码，运行测试，检查错误。如果出了问题，回到修复环节。',
+  ccFixName: '修复',
+  ccFixText: '读取错误信息，诊断原因，编写补丁，然后再次运行。自动完成。',
+  ccBackNote: '它看到的是你的整个项目——不只是你正在编辑的文件。CLAUDE.md是你项目的"宪法"：塑造每次交互的永久指令。把它想象成你代码库的系统提示词。',
+
+  // Skills Back
+  skillsBackIntro: '技能是一套可复用的指令集——一个配方，告诉Claude Code如何处理某一类任务。每个技能都遵循T-S-E框架：',
+  skillsTriggerName: '触发条件（Trigger）',
+  skillsTriggerText: '这个技能应该在什么时候激活？例如，"当被要求创建React组件时"',
+  skillsStepsName: '步骤（Steps）',
+  skillsStepsText: '它应该做什么？一个按顺序排列的具体操作编号列表。',
+  skillsExamplesName: '示例（Examples）',
+  skillsExamplesText: '好的输出长什么样？具体的输入/输出配对来锚定质量标准。',
+  skillsTemplatesLabel: '预加载的模板，可作为起点：',
+  skillsBackFooter: '一个技能定义可以替代数百次重复解释。写一次，永远可用。',
+
+  // Skill Paradox Back
+  paradoxIntro: '这是一个没人提醒你的悖论：AI让编程更快，但并不消除理解代码的必要性。',
+  paradoxQuote: '工具的好坏取决于使用它的人。如果你读不懂Claude生成的代码，你就分辨不出能正常运行的代码和看起来像那么回事的废话。',
+  paradoxWorkflowLabel: '基本工作流程：',
+  paradoxSpecify: '明确需求。',
+  paradoxSpecifyDesc: '对你想要的东西做到严格清晰。模糊是大敌。',
+  paradoxGenerate: '生成代码。',
+  paradoxGenerateDesc: '让Claude Code来打字。它处理模板代码、语法和接线。',
+  paradoxVerify: '验证结果。',
+  paradoxVerifyDesc: '阅读、测试并评判结果。这是你的知识最重要的地方。',
+  paradoxMiddle: '你需要的是足够的知识来评估输出，而不是自己写每一行。这就是技能悖论——AI降低了产出代码的门槛，但提高了评判代码的门槛。',
+  paradoxClosing: '在AI编程工具中如鱼得水的人，不是打字最少的人。而是那些对"什么需要存在"想得最清楚——并且能判断输出是否正确的人。',
+  },
+};
+
+export default translations;

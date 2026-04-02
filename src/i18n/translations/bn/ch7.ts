@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'টার্মিনাল প্লেগ্রাউন্ড',
+  terminalSubtitle: 'দেখুন Claude Code কীভাবে ভাবে, লেখে, আর চালায়',
+  terminalPickTask: 'একটি কাজ বেছে নিন এবং দেখুন Claude Code কীভাবে সেটা ভাগ করে, কোড লেখে, আর যাচাই করে।',
+  tryAnotherTask: 'অন্য কাজ চেষ্টা করুন',
+  filesLabel: 'ফাইল',
+  filesMobileButton: 'ফাইল',
+  writeLabel: 'লেখা',
+
+  // Terminal presets
+  presetCountdownLabel: 'একটি React কাউন্টডাউন টাইমার তৈরি করুন',
+  presetCountdownDesc: 'স্টার্ট/পজ কন্ট্রোলসহ একটি পুনর্ব্যবহারযোগ্য কাউন্টডাউন কম্পোনেন্ট তৈরি করুন',
+  presetBugLabel: 'লগইন বাগ ঠিক করুন',
+  presetBugDesc: 'একটি ভাঙা অথেনটিকেশন ফ্লো ডায়াগনোস ও ঠিক করুন',
+  presetDarkmodeLabel: 'অ্যাপে ডার্ক মোড যোগ করুন',
+  presetDarkmodeDesc: 'সিস্টেম-সচেতন ডার্ক মোড টগল তৈরি করুন যা সেটিং মনে রাখে',
+
+  // Terminal step texts (thinking only - code/commands stay in English)
+  thinkingReadingProject: 'প্রজেক্ট স্ট্রাকচার পড়ছে এবং কোডবেস বুঝছে...',
+  thinkingPlanCountdown: 'পরিকল্পনা: useState ও useEffect হুকস, স্টার্ট/পজ/রিসেট কন্ট্রোল, এবং ফরম্যাটেড টাইম ডিসপ্লেসহ একটি CountdownTimer কম্পোনেন্ট তৈরি।',
+  successCountdown: 'CountdownTimer কম্পোনেন্ট তৈরি হয়েছে স্টার্ট, পজ, রিসেট কন্ট্রোলসহ। localhost:5173-এ প্রস্তুত।',
+  thinkingReadingLogin: 'src/auth/login.ts এবং src/auth/session.ts পড়ছে...',
+  thinkingFoundBug: 'বাগ পাওয়া গেছে: লগইন হ্যান্ডলার fetchUser() await করে কিন্তু সেশন টোকেন সেট করার আগে null রেসপন্স চেক করে না। API 401 রিটার্ন করলে কোড ক্র্যাশ করে।',
+  successBugFix: 'বাগ ঠিক হয়েছে: ব্যর্থ API রেসপন্সের জন্য null চেক এবং সঠিক এরর হ্যান্ডলিং যোগ করা হয়েছে। ৩টি টেস্টই পাস করছে।',
+  thinkingReadingStyles: 'বিদ্যমান স্টাইল এবং কম্পোনেন্ট স্ট্রাকচার পড়ছে...',
+  thinkingPlanDarkMode: 'পরিকল্পনা: ১) localStorage পার্সিস্টেন্সসহ useDarkMode হুক তৈরি, ২) ডার্ক থিমের জন্য CSS কাস্টম প্রপার্টি যোগ, ৩) টগল বাটন কম্পোনেন্ট তৈরি।',
+  successDarkMode: 'ডার্ক মোড যোগ হয়েছে সিস্টেম প্রেফারেন্স ডিটেকশন, localStorage পার্সিস্টেন্স, এবং মসৃণ CSS ট্রানজিশনসহ।',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'স্কিল বিল্ডার',
+  skillBuilderSubtitle: 'Claude Code-এর জন্য পুনর্ব্যবহারযোগ্য নির্দেশনা লিখুন',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'সম্পাদিত',
+  validationLabel: 'যাচাই',
+  triggerLabel: 'ট্রিগার',
+  stepsLabel: 'ধাপ',
+  examplesLabel: 'উদাহরণ',
+  hasClearTrigger: 'স্পষ্ট ট্রিগার আছে',
+  stepsAreSpecific: 'ধাপগুলো নির্দিষ্ট',
+  includesExamples: 'উদাহরণ অন্তর্ভুক্ত',
+  testLabel: 'পরীক্ষা',
+  testScenarioLabel: 'পরীক্ষার দৃশ্যকল্প',
+  userRequestLabel: 'ব্যবহারকারীর অনুরোধ',
+  requestPrefix: 'অনুরোধ:',
+  viewFullOutput: 'সম্পূর্ণ আউটপুট দেখুন',
+
+  // Skill templates
+  templateReactComponent: 'React কম্পোনেন্ট জেনারেটর',
+  templateTestWriter: 'টেস্ট রাইটার',
+  templateDocGenerator: 'ডকুমেন্টেশন জেনারেটর',
+
+  // Test tasks (prompt content stays in English)
+  testTaskReact: 'Create a UserProfile component that shows an avatar, name, and bio',
+  testTaskTest: 'Write tests for utils/formatDate.ts',
+  testTaskDoc: 'Document the auth module',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'রিফ্যাক্টর রেস',
+  refactorRaceSubtitle: 'আপনি বনাম Claude Code -- এই এলোমেলো ফাংশন পরিষ্কার করুন',
+  refactorRaceIntro: 'নিচে একটি ফাংশন আছে দুর্বোধ্য ভেরিয়েবল নাম, কোনো টাইপ নেই, এবং হাতে লেখা বাবল সর্ট। আপনার কাজ: এটিকে পড়ার যোগ্য করে তুলুন। Claude Code পাশে একই কাজ করবে।',
+  startRefactoring: 'রিফ্যাক্টরিং শুরু',
+  yourTurn: 'আপনার পালা',
+  doneButton: 'সম্পন্ন',
+  finishedAt: 'শেষ হয়েছে',
+  claudeCodeLabel: 'Claude Code',
+  imDone: "আমার হয়ে গেছে",
+  yourCodeTab: 'আপনার কোড',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'আপনার সংস্করণ',
+  claudeCodeVersion: 'Claude Code সংস্করণ (~৫.৫ সেকেন্ড)',
+  readabilityLabel: 'পড়ার যোগ্যতা',
+  linesOfCode: 'কোডের লাইন',
+  namingLabel: 'নামকরণ',
+  youDecide: 'আপনি সিদ্ধান্ত নিন',
+  typesAndComments: 'টাইপ + কমেন্ট',
+  linesLabel: 'লাইন',
+  yourChoice: 'আপনার পছন্দ',
+  descriptiveNames: 'বর্ণনামূলক নাম',
+  youLabel: 'আপনি',
+  aiLabel: 'AI',
+  pointNotSpeed: 'মূল কথা কে আগে শেষ করে তা নয়।',
+  pointNotSpeedBody: "Claude Code দ্রুত, কিন্তু গতি দক্ষতা নয়। দক্ষতা হলো দুটো সংস্করণ দেখে বিচার করা কোনটা আপনি আসলে শিপ করবেন। পড়া যায়? এজ কেস সামলায়? রাত ২টায় আপনার টিমমেট বুঝবে? এই বিচার শুধু আপনার।",
+  pointNotSpeedMobile: 'গতি দক্ষতা নয়। দক্ষতা হলো কোন সংস্করণ শিপ করবেন তা বিচার করা। এই বিচার শুধু আপনার।',
+  compareCode: 'কোড তুলনা করুন',
+  retryButton: 'পুনরায় চেষ্টা',
+  tryAgain: 'আবার চেষ্টা',
+  codeComparison: 'কোড তুলনা',
+
+  // Metrics (mobile)
+  metricLines: 'লাইন',
+  metricTime: 'সময়',
+  metricNames: 'নাম',
+  metricTyped: 'টাইপ',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'আপনি কী তৈরি করবেন?',
+  projectsCount: 'আপনার মতো মানুষদের তৈরি প্রজেক্ট',
+  noProjectsInCategory: 'এই ক্যাটেগরিতে এখনো কোনো প্রজেক্ট নেই।',
+  yourTurnHeading: 'আপনার পালা',
+  yourTurnPromptMobile: 'ব্যক্তিগত সফটওয়্যার দিয়ে কোন সমস্যা সমাধান করবেন?',
+  yourTurnPromptDesktop: 'আপনার জীবনে কোন সমস্যা ব্যক্তিগত সফটওয়্যার দিয়ে সমাধান করবেন? যে টুলটি আপনি চান সেটা বর্ণনা করুন।',
+  ideaPlaceholder: "আমি এমন একটি অ্যাপ তৈরি করব যা...",
+  saveIdea: 'আইডিয়া সেভ করুন',
+  savedConfirmationMobile: "সেভ হয়েছে! চ্যাপ্টার ১১-এ এটি ব্যবহার করবেন।",
+  savedConfirmationDesktop: "আইডিয়া সেভ হয়েছে! চ্যাপ্টার ১১-এ এটি ব্যবহার করবেন।",
+  builderLabel: 'নির্মাতা',
+  builtBy: 'নির্মাতা',
+  techStack: 'টেক স্ট্যাক',
+  timeEstimate: 'আনুমানিক সময়:',
+  feasibilityWeekend: 'সপ্তাহান্তের বিল্ড',
+  feasibilityWeek: 'এক সপ্তাহের প্রজেক্ট',
+  feasibilityMonth: 'এক মাসের বিল্ড',
+  footerInspiration: 'এগুলোর প্রতিটি এমন কেউ তৈরি করেছে যে শুধু একটি আইডিয়া নিয়ে শুরু করেছিল।',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: "Claude Code একটি লুপ অনুসরণ করে: কোডবেস পড়ে \u2192 পরিবর্তন পরিকল্পনা করে \u2192 কোড লেখে \u2192 চালায় \u2192 ত্রুটি ঠিক করে। CLAUDE.md হলো স্থায়ী নির্দেশনা সেট যা প্রতিটি ইন্টারঅ্যাকশন গঠন করে।",
+  skillsKeyFact: "একটি স্কিলের তিনটি অংশ: ট্রিগার (কখন সক্রিয় হবে), ধাপ (কী করবে), উদাহরণ (ভালো আউটপুট কেমন)। একটি স্কিল সংজ্ঞা শত শত পুনরাবৃত্ত ব্যাখ্যার বদলে কাজ করে।",
+
+  flipLabelClaudeCode: 'এটা কেন কাজ করল? Claude Code কীভাবে ভাবে',
+  flipLabelSkills: 'এটা কেন কাজ করল? স্কিল তৈরি',
+  flipLabelSkillParadox: 'এটা কেন কাজ করল? স্কিল প্যারাডক্স',
+  backTitleClaudeCode: 'Claude Code কীভাবে ভাবে',
+  backTitleSkills: 'স্কিল তৈরি (T-S-E ফ্রেমওয়ার্ক)',
+  backTitleSkillParadox: 'স্কিল প্যারাডক্স',
+
+  // ClaudeCode Back
+  ccBackIntro: "Claude Code কোড লেখা চ্যাটবট নয়। এটি একটি এজেন্টিক লুপ — একটি সিস্টেম যা পড়ে, পরিকল্পনা করে, লেখে, চালায়, এবং ঠিক করে, কাজ শেষ না হওয়া পর্যন্ত চক্রাকারে চলে।",
+  ccReadName: 'পড়া',
+  ccReadText: 'আপনার ফাইল স্ক্যান করে, আর্কিটেকচার বোঝে, প্রজেক্ট নিয়মের জন্য CLAUDE.md পড়ে।',
+  ccPlanName: 'পরিকল্পনা',
+  ccPlanText: 'কাজকে ধাপে ভাগ করে, কোন ফাইলে কী ক্রমে পরিবর্তন করবে তা ঠিক করে।',
+  ccWriteName: 'লেখা',
+  ccWriteText: 'একাধিক ফাইল জুড়ে কোড তৈরি করে — টুকরো নয়, সুসংগত, সংযুক্ত পরিবর্তন।',
+  ccRunName: 'চালানো',
+  ccRunText: 'কোড এক্সিকিউট করে, টেস্ট চালায়, ত্রুটি চেক করে। কিছু ভাঙলে ঠিক করতে ফিরে যায়।',
+  ccFixName: 'ঠিক করা',
+  ccFixText: 'এরর পড়ে, কারণ নির্ণয় করে, প্যাচ লেখে, আবার চালায়। স্বয়ংক্রিয়ভাবে।',
+  ccBackNote: "এটি আপনার পুরো প্রজেক্ট দেখে — শুধু যে ফাইল এডিট করছেন তা নয়। আর CLAUDE.md হলো আপনার প্রজেক্টের সংবিধান: স্থায়ী নির্দেশনা যা প্রতিটি ইন্টারঅ্যাকশন গঠন করে। এটিকে আপনার কোডবেসের সিস্টেম প্রম্পট ভাবুন।",
+
+  // Skills Back
+  skillsBackIntro: "একটি স্কিল হলো পুনর্ব্যবহারযোগ্য নির্দেশনা সেট — একটি রেসিপি যা Claude Code-কে বলে কীভাবে একটি শ্রেণির কাজ সামলাতে হবে। প্রতিটি স্কিল T-S-E ফ্রেমওয়ার্ক অনুসরণ করে:",
+  skillsTriggerName: 'ট্রিগার',
+  skillsTriggerText: 'কখন এই স্কিল সক্রিয় হবে? যেমন, "যখন React কম্পোনেন্ট তৈরি করতে বলা হয়"',
+  skillsStepsName: 'ধাপ',
+  skillsStepsText: 'কী করবে? ক্রমানুসারে নির্দিষ্ট অ্যাকশনের একটি নম্বরযুক্ত তালিকা।',
+  skillsExamplesName: 'উদাহরণ',
+  skillsExamplesText: 'ভালো আউটপুট কেমন দেখতে? গুণমান নিশ্চিত করার জন্য সুনির্দিষ্ট ইনপুট/আউটপুট জোড়া।',
+  skillsTemplatesLabel: 'শুরু করার জন্য প্রি-লোডেড টেমপ্লেট:',
+  skillsBackFooter: 'একটি স্কিল সংজ্ঞা শত শত পুনরাবৃত্ত ব্যাখ্যার বদলে কাজ করে। একবার লিখুন, চিরকাল ব্যবহার করুন।',
+
+  // Skill Paradox Back
+  paradoxIntro: "একটি প্যারাডক্স আছে যা কেউ আগে বলে না: AI কোডিং দ্রুত করে, কিন্তু কোড বোঝার প্রয়োজন দূর করে না।",
+  paradoxQuote: "টুল ততটাই ভালো যতটা ভালো মানুষ এটি চালাচ্ছে। Claude যা তৈরি করে তা পড়তে না পারলে, কার্যকর কোড আর যুক্তিসঙ্গত দেখতে আবর্জনার মধ্যে পার্থক্য করতে পারবেন না।",
+  paradoxWorkflowLabel: 'মৌলিক কর্মপ্রবাহ:',
+  paradoxSpecify: 'নির্দিষ্ট করুন।',
+  paradoxSpecifyDesc: 'আপনি কী চান তা নির্মমভাবে পরিষ্কার বলুন। অস্পষ্টতা শত্রু।',
+  paradoxGenerate: 'তৈরি করান।',
+  paradoxGenerateDesc: 'Claude Code-কে টাইপ করতে দিন। বয়লারপ্লেট, সিনট্যাক্স, ওয়্যারিং সব সামলায়।',
+  paradoxVerify: 'যাচাই করুন।',
+  paradoxVerifyDesc: 'পড়ুন, পরীক্ষা করুন, বিচার করুন। এখানেই আপনার জ্ঞান সবচেয়ে বেশি গুরুত্বপূর্ণ।',
+  paradoxMiddle: "আউটপুট মূল্যায়ন করার মতো যথেষ্ট জ্ঞান দরকার, প্রতিটি লাইন লেখার মতো নয়। এটাই স্কিল প্যারাডক্স — AI কোড তৈরির মেঝে নামায়, কিন্তু বিচারের মান বাড়ায়।",
+  paradoxClosing: "AI কোডিং টুলে সফল মানুষেরা কম টাইপ করে না। তারা সবচেয়ে পরিষ্কারভাবে ভাবে কী তৈরি করা দরকার — এবং আউটপুট ঠিক হলে বুঝতে পারে।",
+  },
+};
+
+export default translations;

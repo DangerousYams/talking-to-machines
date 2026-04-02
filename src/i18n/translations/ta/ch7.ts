@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'டெர்மினல் விளையாட்டுத்திடல்',
+  terminalSubtitle: 'Claude Code சிந்திப்பதையும், எழுதுவதையும், இயக்குவதையும் பாருங்கள்',
+  terminalPickTask: 'ஒரு பணியைத் தேர்வு செய்து Claude Code அதை எப்படிப் பிரிக்கிறது, கோடை எழுதுகிறது, அது வேலை செய்கிறதா என்று சரிபார்க்கிறது என்பதைப் பாருங்கள்.',
+  tryAnotherTask: 'வேறொரு பணியை முயற்சிக்கவும்',
+  filesLabel: 'கோப்புகள்',
+  filesMobileButton: 'கோப்புகள்',
+  writeLabel: 'எழுது',
+
+  // Terminal presets
+  presetCountdownLabel: 'React காட்டன்டவுன் டைமர் உருவாக்கு',
+  presetCountdownDesc: 'தொடக்கம்/இடைநிறுத்தம் கட்டுப்பாடுகளுடன் மறுபயன்பாட்டு காட்டன்டவுன் கூறு உருவாக்கு',
+  presetBugLabel: 'உள்நுழைவு பிழையைச் சரிசெய்',
+  presetBugDesc: 'உடைந்த அங்கீகார நடைமுறையை கண்டறிந்து சரிசெய்',
+  presetDarkmodeLabel: 'டார்க் மோடு சேர்',
+  presetDarkmodeDesc: 'சிஸ்டம்-உணர்ந்த டார்க் மோடு மாற்றியை நிலைத்தன்மையுடன் செயல்படுத்து',
+
+  // Terminal step texts (thinking only - code/commands stay in English)
+  thinkingReadingProject: 'திட்ட கட்டமைப்பைப் படித்து, கோட்பேஸை புரிந்துகொள்கிறது...',
+  thinkingPlanCountdown: 'திட்டமிடுகிறது: useState மற்றும் useEffect hooks, start/pause/reset கட்டுப்பாடுகள், மற்றும் வடிவமைக்கப்பட்ட நேர காட்சியுடன் CountdownTimer கூறு உருவாக்க.',
+  successCountdown: 'CountdownTimer கூறு தொடக்கம், இடைநிறுத்தம், மீட்டமைப்பு கட்டுப்பாடுகளுடன் உருவாக்கப்பட்டது. localhost:5173-ல் தயார்.',
+  thinkingReadingLogin: 'src/auth/login.ts மற்றும் src/auth/session.ts படிக்கிறது...',
+  thinkingFoundBug: 'பிழை கண்டுபிடிக்கப்பட்டது: login handler fetchUser()-ஐ await செய்கிறது ஆனால் session token அமைக்கும் முன் null பதிலை சரிபார்க்கவில்லை. API 401 திருப்பும்போது, கோட் செயலிழக்கிறது.',
+  successBugFix: 'பிழை சரிசெய்யப்பட்டது: தோல்வியுற்ற API பதில்களுக்கு null சரிபார்ப்பும் சரியான பிழை கையாளுதலும் சேர்க்கப்பட்டது. 3 சோதனைகளும் வெற்றி.',
+  thinkingReadingStyles: 'தற்போதுள்ள ஸ்டைல்கள் மற்றும் கூறு கட்டமைப்பைப் படிக்கிறது...',
+  thinkingPlanDarkMode: 'திட்டம்: 1) localStorage நிலைத்தன்மையுடன் useDarkMode hook உருவாக்கு, 2) டார்க் தீமுக்கு CSS custom properties சேர், 3) மாற்று பொத்தான் கூறு உருவாக்கு.',
+  successDarkMode: 'சிஸ்டம் விருப்ப கண்டறிதல், localStorage நிலைத்தன்மை, மற்றும் மென்மையான CSS மாற்றங்களுடன் டார்க் மோடு சேர்க்கப்பட்டது.',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'திறன் உருவாக்கி',
+  skillBuilderSubtitle: 'Claude Code-க்கு மறுபயன்பாட்டு வழிமுறைகளை எழுதுங்கள்',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'திருத்தப்பட்டது',
+  validationLabel: 'சரிபார்ப்பு',
+  triggerLabel: 'தூண்டுதல்',
+  stepsLabel: 'படிகள்',
+  examplesLabel: 'எடுத்துக்காட்டுகள்',
+  hasClearTrigger: 'தெளிவான தூண்டுதல் உள்ளது',
+  stepsAreSpecific: 'படிகள் குறிப்பிட்டவை',
+  includesExamples: 'எடுத்துக்காட்டுகள் உள்ளன',
+  testLabel: 'சோதனை',
+  testScenarioLabel: 'சோதனைக் காட்சி',
+  userRequestLabel: 'பயனர் கோரிக்கை',
+  requestPrefix: 'கோரிக்கை:',
+  viewFullOutput: 'முழு வெளியீட்டைப் பார்',
+
+  // Skill templates
+  templateReactComponent: 'React கூறு ஜெனரேட்டர்',
+  templateTestWriter: 'சோதனை எழுத்தாளர்',
+  templateDocGenerator: 'ஆவண ஜெனரேட்டர்',
+
+  // Test tasks (prompt content - stays in English)
+  testTaskReact: 'Create a UserProfile component that shows an avatar, name, and bio',
+  testTaskTest: 'Write tests for utils/formatDate.ts',
+  testTaskDoc: 'Document the auth module',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'ரீஃபேக்டர் ரேஸ்',
+  refactorRaceSubtitle: 'நீங்கள் vs. Claude Code -- இந்த குழப்பமான ஃபங்ஷனை சுத்தம் செய்யுங்கள்',
+  refactorRaceIntro: 'கீழே புரிபடாத மாறி பெயர்கள், வகைகள் இல்லாத, கைமுறை bubble sort உள்ள ஒரு ஃபங்ஷன். உங்கள் வேலை: இதை படிக்கக்கூடியதாக மாற்றுங்கள். Claude Code உங்கள் பக்கத்தில் அதையே செய்யும்.',
+  startRefactoring: 'ரீஃபேக்டரிங் தொடங்கு',
+  yourTurn: 'உங்கள் முறை',
+  doneButton: 'முடிந்தது',
+  finishedAt: 'முடிந்த நேரம்',
+  claudeCodeLabel: 'Claude Code',
+  imDone: "முடிந்தது",
+  yourCodeTab: 'உங்கள் கோட்',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'உங்கள் பதிப்பு',
+  claudeCodeVersion: 'Claude Code பதிப்பு (~5.5s)',
+  readabilityLabel: 'படிக்கும் தன்மை',
+  linesOfCode: 'கோட் வரிகள்',
+  namingLabel: 'பெயரிடுதல்',
+  youDecide: 'நீங்கள் முடிவு செய்யுங்கள்',
+  typesAndComments: 'வகைகள் + கருத்துகள்',
+  linesLabel: 'வரிகள்',
+  yourChoice: 'உங்கள் தேர்வு',
+  descriptiveNames: 'விவரமான பெயர்கள்',
+  youLabel: 'நீங்கள்',
+  aiLabel: 'AI',
+  pointNotSpeed: 'யார் முதலில் முடிக்கிறார்கள் என்பது முக்கியமல்ல.',
+  pointNotSpeedBody: "Claude Code வேகமானது, ஆனால் வேகம் திறமை அல்ல. இரண்டு பதிப்புகளையும் பார்த்து, எதை நீங்கள் உண்மையில் வெளியிடுவீர்கள் என்று தீர்மானிப்பதுதான் திறமை. படிக்க முடிகிறதா? எட்ஜ் கேஸ்களை கையாளுகிறதா? உங்கள் டீம்மேட் இரவு 2 மணிக்கு இதைப் புரிந்துகொள்வாரா? அந்தத் தீர்ப்பு உங்களுடையது மட்டுமே.",
+  pointNotSpeedMobile: 'வேகம் திறமை அல்ல. எந்த பதிப்பை வெளியிடுவீர்கள் என்று தீர்மானிப்பதுதான் திறமை. அந்தத் தீர்ப்பு உங்களுடையது மட்டுமே.',
+  compareCode: 'கோட்டை ஒப்பிடு',
+  retryButton: 'மீண்டும் முயற்சி',
+  tryAgain: 'மீண்டும் முயற்சி',
+  codeComparison: 'கோட் ஒப்பீடு',
+
+  // Metrics (mobile)
+  metricLines: 'வரிகள்',
+  metricTime: 'நேரம்',
+  metricNames: 'பெயர்கள்',
+  metricTyped: 'தட்டச்சு',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'நீங்கள் என்ன உருவாக்குவீர்கள்?',
+  projectsCount: 'உங்களைப் போன்றவர்கள் உருவாக்கிய திட்டங்கள்',
+  noProjectsInCategory: 'இந்த வகையில் இன்னும் திட்டங்கள் இல்லை.',
+  yourTurnHeading: 'உங்கள் முறை',
+  yourTurnPromptMobile: 'தனிப்பட்ட மென்பொருள் மூலம் என்ன பிரச்சனையைத் தீர்ப்பீர்கள்?',
+  yourTurnPromptDesktop: 'உங்கள் வாழ்க்கையில் தனிப்பட்ட மென்பொருள் மூலம் என்ன பிரச்சனையைத் தீர்ப்பீர்கள்? நீங்கள் விரும்பும் கருவியை விவரியுங்கள்.',
+  ideaPlaceholder: "நான் ஒரு ஆப்பை உருவாக்குவேன்...",
+  saveIdea: 'யோசனையைச் சேமி',
+  savedConfirmationMobile: "சேமிக்கப்பட்டது! இதை அத்தியாயம் 11-ல் பயன்படுத்துவீர்கள்.",
+  savedConfirmationDesktop: "யோசனை சேமிக்கப்பட்டது! இதை அத்தியாயம் 11-ல் பயன்படுத்துவீர்கள்.",
+  builderLabel: 'உருவாக்குபவர்',
+  builtBy: 'உருவாக்கியவர்',
+  techStack: 'தொழில்நுட்ப அடுக்கு',
+  timeEstimate: 'நேர மதிப்பீடு:',
+  feasibilityWeekend: 'வார இறுதி திட்டம்',
+  feasibilityWeek: 'ஒரு வார திட்டம்',
+  feasibilityMonth: 'ஒரு மாத திட்டம்',
+  footerInspiration: 'இவை ஒவ்வொன்றும் ஒரு யோசனையுடன் தொடங்கிய ஒருவரால் உருவாக்கப்பட்டது.',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: "Claude Code ஒரு சுழற்சியைப் பின்பற்றுகிறது: உங்கள் கோட்பேஸை படி → மாற்றங்களைத் திட்டமிடு → கோட் எழுது → இயக்கு → பிழைகளைச் சரிசெய். CLAUDE.md ஒவ்வொரு தொடர்பையும் வடிவமைக்கும் நிலையான வழிமுறை.",
+  skillsKeyFact: "ஒரு திறனுக்கு மூன்று பகுதிகள்: தூண்டுதல் (எப்போது செயல்பட), படிகள் (என்ன செய்ய), எடுத்துக்காட்டுகள் (நல்ல வெளியீடு எப்படி இருக்கும்). ஒரு திறன் வரையறை நூற்றுக்கணக்கான மீண்டும் மீண்டும் விளக்குவதை மாற்றுகிறது.",
+
+  flipLabelClaudeCode: 'இது ஏன் செயல்பட்டது? Claude Code எப்படிச் சிந்திக்கிறது',
+  flipLabelSkills: 'இது ஏன் செயல்பட்டது? திறன்களை உருவாக்குதல்',
+  flipLabelSkillParadox: 'இது ஏன் செயல்பட்டது? திறன் முரண்பாடு',
+  backTitleClaudeCode: 'Claude Code எப்படிச் சிந்திக்கிறது',
+  backTitleSkills: 'திறன்களை உருவாக்குதல் (T-S-E கட்டமைப்பு)',
+  backTitleSkillParadox: 'திறன் முரண்பாடு',
+
+  // ClaudeCode Back
+  ccBackIntro: "Claude Code கோட் எழுதும் சாட்பாட் அல்ல. இது ஒரு ஏஜென்டிக் லூப் — படிக்கும், திட்டமிடும், எழுதும், இயக்கும், சரிசெய்யும் அமைப்பு, பணி முடியும் வரை சுழலும்.",
+  ccReadName: 'படி',
+  ccReadText: 'உங்கள் கோப்புகளை ஸ்கேன் செய்கிறது, உங்கள் கட்டமைப்பைப் புரிந்துகொள்கிறது, திட்ட விதிகளுக்காக CLAUDE.md-ஐ படிக்கிறது.',
+  ccPlanName: 'திட்டமிடு',
+  ccPlanText: 'பணியை படிகளாகப் பிரிக்கிறது, எந்த கோப்புகளை எந்த வரிசையில் தொட வேண்டும் என்று முடிவு செய்கிறது.',
+  ccWriteName: 'எழுது',
+  ccWriteText: 'பல கோப்புகளில் கோட் உருவாக்குகிறது — துண்டுகள் அல்ல, ஒத்திசைவான, இணைக்கப்பட்ட மாற்றங்கள்.',
+  ccRunName: 'இயக்கு',
+  ccRunText: 'கோடை இயக்குகிறது, சோதனைகளை நடத்துகிறது, பிழைகளைச் சரிபார்க்கிறது. ஏதாவது உடைந்தால், சரிசெய்ய மீண்டும் திரும்புகிறது.',
+  ccFixName: 'சரிசெய்',
+  ccFixText: 'பிழையைப் படிக்கிறது, காரணத்தைக் கண்டறிகிறது, பேட்ச் எழுதுகிறது, மீண்டும் இயக்குகிறது. தானாகவே.',
+  ccBackNote: "இது உங்கள் முழு திட்டத்தையும் பார்க்கிறது — நீங்கள் திருத்தும் கோப்பை மட்டும் அல்ல. CLAUDE.md உங்கள் திட்டத்தின் அரசியலமைப்பு: ஒவ்வொரு தொடர்பையும் வடிவமைக்கும் நிலையான வழிமுறைகள். இதை உங்கள் கோட்பேஸின் சிஸ்டம் ப்ராம்ப்ட்டாக நினையுங்கள்.",
+
+  // Skills Back
+  skillsBackIntro: "ஒரு திறன் என்பது மறுபயன்பாட்டு வழிமுறைத் தொகுப்பு — ஒரு வகையான பணியை எப்படிக் கையாள்வது என்று Claude Code-க்கு சொல்லும் செய்முறை. ஒவ்வொரு திறனும் T-S-E கட்டமைப்பைப் பின்பற்றுகிறது:",
+  skillsTriggerName: 'தூண்டுதல்',
+  skillsTriggerText: 'இந்த திறன் எப்போது செயல்பட வேண்டும்? எ.கா., "React கூறு உருவாக்கச் சொல்லும்போது"',
+  skillsStepsName: 'படிகள்',
+  skillsStepsText: 'என்ன செய்ய வேண்டும்? வரிசையில் குறிப்பிட்ட செயல்களின் எண்ணிட்ட பட்டியல்.',
+  skillsExamplesName: 'எடுத்துக்காட்டுகள்',
+  skillsExamplesText: 'நல்ல வெளியீடு எப்படி இருக்கும்? தரத்தை நங்கூரமிடும் உறுதியான உள்ளீடு/வெளியீடு ஜோடிகள்.',
+  skillsTemplatesLabel: 'தொடங்க முன்னமைக்கப்பட்ட வார்ப்புருக்கள்:',
+  skillsBackFooter: 'ஒரு திறன் வரையறை நூற்றுக்கணக்கான மீண்டும் மீண்டும் விளக்குவதை மாற்றுகிறது. ஒருமுறை எழுதுங்கள், எப்போதும் பயன்படுத்துங்கள்.',
+
+  // Skill Paradox Back
+  paradoxIntro: "யாரும் எச்சரிக்காத முரண்பாடு இது: AI கோடிங்கை வேகமாக்குகிறது, ஆனால் கோடைப் புரிந்துகொள்ள வேண்டிய அவசியத்தை அகற்றுவதில்லை.",
+  paradoxQuote: "கருவி அதை வழிநடத்தும் மனிதனைப் போலவே நல்லது. Claude உருவாக்குவதைப் படிக்க முடியாவிட்டால், வேலை செய்யும் கோடுக்கும் நம்பகமாகத் தெரியும் முட்டாள்தனத்துக்கும் உள்ள வேறுபாட்டை சொல்ல இயலாது.",
+  paradoxWorkflowLabel: 'அடிப்படை பணிநடை:',
+  paradoxSpecify: 'குறிப்பிடு.',
+  paradoxSpecifyDesc: 'நீங்கள் என்ன விரும்புகிறீர்கள் என்பதில் கடுமையாகத் தெளிவாக இருங்கள். தெளிவின்மையே எதிரி.',
+  paradoxGenerate: 'உருவாக்கு.',
+  paradoxGenerateDesc: 'Claude Code-ஐ தட்டச்சு செய்ய விடுங்கள். போயிலர்பிளேட், சிண்டாக்ஸ், வயரிங் ஆகியவற்றை அது கையாளும்.',
+  paradoxVerify: 'சரிபார்.',
+  paradoxVerifyDesc: 'முடிவைப் படியுங்கள், சோதியுங்கள், தீர்மானியுங்கள். உங்கள் அறிவு மிகவும் முக்கியமான இடம் இதுதான்.',
+  paradoxMiddle: "ஒவ்வொரு வரியையும் எழுத அல்ல, வெளியீட்டை மதிப்பீடு செய்ய போதுமான அறிவு உங்களுக்குத் தேவை. இதுதான் திறன் முரண்பாடு — AI கோட் உருவாக்கும் தளத்தை குறைக்கிறது, ஆனால் அதை தீர்மானிக்கும் தரத்தை உயர்த்துகிறது.",
+  paradoxClosing: "AI கோடிங் கருவிகளுடன் சிறப்பாக செயல்படுபவர்கள் குறைவாக தட்டச்சு செய்பவர்கள் அல்ல. என்ன இருக்க வேண்டும் என்பதை மிகத் தெளிவாக சிந்திப்பவர்கள் — மற்றும் வெளியீடு சரியானதா என்று சொல்லக்கூடியவர்கள்.",
+  },
+};
+
+export default translations;

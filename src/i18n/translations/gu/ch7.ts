@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'ટર્મિનલ પ્લેગ્રાઉન્ડ',
+  terminalSubtitle: 'Claude Code ને વિચારતો, લખતો અને ચલાવતો જુઓ',
+  terminalPickTask: 'એક કાર્ય પસંદ કરો અને જુઓ Claude Code કેવી રીતે તોડે, કોડ લખે, અને ચકાસે કે કામ કરે છે.',
+  tryAnotherTask: 'બીજું કાર્ય અજમાવો',
+  filesLabel: 'FILES',
+  filesMobileButton: 'ફાઇલ્સ',
+  writeLabel: 'WRITE',
+
+  // Terminal presets
+  presetCountdownLabel: 'React countdown timer બનાવો',
+  presetCountdownDesc: 'Start/pause controls સાથે reusable countdown component',
+  presetBugLabel: 'Login bug ઠીક કરો',
+  presetBugDesc: 'તૂટેલા authentication flow નું નિદાન અને ઠીક કરો',
+  presetDarkmodeLabel: 'App માં dark mode ઉમેરો',
+  presetDarkmodeDesc: 'Persistence સાથે system-aware dark mode toggle',
+
+  // Terminal step texts (thinking text — translated; code/commands stay in English)
+  thinkingReadingProject: 'પ્રોજેક્ટ સ્ટ્રક્ચર વાંચી રહ્યું છે અને કોડબેઝ સમજી રહ્યું છે...',
+  thinkingPlanCountdown: 'આયોજન: useState અને useEffect hooks, start/pause/reset controls, અને formatted time display સાથે CountdownTimer component બનાવવો.',
+  successCountdown: 'CountdownTimer component start, pause, અને reset controls સાથે તૈયાર. localhost:5173 પર રેડી.',
+  thinkingReadingLogin: 'src/auth/login.ts અને src/auth/session.ts વાંચી રહ્યું છે...',
+  thinkingFoundBug: 'Bug મળ્યો: login handler fetchUser() ને await કરે છે પણ session token સેટ કરતા પહેલાં null response ચકાસતો નથી. જ્યારે API 401 આપે, ત્યારે કોડ crash થાય છે.',
+  successBugFix: 'Bug ઠીક: નિષ્ફળ API responses માટે null check અને યોગ્ય error handling ઉમેર્યું. ત્રણેય ટેસ્ટ પાસ.',
+  thinkingReadingStyles: 'હાલની styles અને component structure વાંચી રહ્યું છે...',
+  thinkingPlanDarkMode: 'પ્લાન: 1) localStorage persistence સાથે useDarkMode hook બનાવો, 2) Dark theme માટે CSS custom properties ઉમેરો, 3) Toggle button component બિલ્ડ કરો.',
+  successDarkMode: 'Dark mode ઉમેર્યો: system preference detection, localStorage persistence, અને smooth CSS transitions સાથે.',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'સ્કિલ બિલ્ડર',
+  skillBuilderSubtitle: 'Claude Code માટે reusable instructions લખો',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'એડિટ કર્યું',
+  validationLabel: 'વેલિડેશન',
+  triggerLabel: 'ટ્રિગર',
+  stepsLabel: 'પગલાં',
+  examplesLabel: 'ઉદાહરણો',
+  hasClearTrigger: 'સ્પષ્ટ ટ્રિગર છે',
+  stepsAreSpecific: 'પગલાં ચોક્કસ છે',
+  includesExamples: 'ઉદાહરણો સામેલ છે',
+  testLabel: 'ટેસ્ટ',
+  testScenarioLabel: 'ટેસ્ટ સિનેરિયો',
+  userRequestLabel: 'વપરાશકર્તાની વિનંતી',
+  requestPrefix: 'વિનંતી:',
+  viewFullOutput: 'સંપૂર્ણ આઉટપુટ જુઓ',
+
+  // Skill templates
+  templateReactComponent: 'React Component Generator',
+  templateTestWriter: 'Test Writer',
+  templateDocGenerator: 'Documentation Generator',
+
+  // Test tasks (prompt content — stays in English)
+  testTaskReact: 'Create a UserProfile component that shows an avatar, name, and bio',
+  testTaskTest: 'Write tests for utils/formatDate.ts',
+  testTaskDoc: 'Document the auth module',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'રિફેક્ટર રેસ',
+  refactorRaceSubtitle: 'તમે vs. Claude Code — આ ગડબડ ફંક્શન સાફ કરો',
+  refactorRaceIntro: 'નીચે એક ફંક્શન છે જેમાં ગૂઢ variable names, ટાઇપ્સ નથી, અને હાથથી લખેલો bubble sort છે. તમારું કામ: એને વાંચી શકાય તેવું રિફેક્ટર કરો. Claude Code પણ એ જ કરશે તમારી બાજુમાં.',
+  startRefactoring: 'રિફેક્ટરિંગ શરૂ',
+  yourTurn: 'તમારો વારો',
+  doneButton: 'પૂર્ણ',
+  finishedAt: 'આ સમયે પૂર્ણ',
+  claudeCodeLabel: 'Claude Code',
+  imDone: "હું પૂરો",
+  yourCodeTab: 'તમારો કોડ',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'તમારું વર્ઝન',
+  claudeCodeVersion: 'Claude Code વર્ઝન (~5.5s)',
+  readabilityLabel: 'વાંચનક્ષમતા',
+  linesOfCode: 'કોડની લાઇન',
+  namingLabel: 'નેમિંગ',
+  youDecide: 'તમે નક્કી કરો',
+  typesAndComments: 'Types + comments',
+  linesLabel: 'લાઇન',
+  yourChoice: 'તમારી પસંદગી',
+  descriptiveNames: 'વર્ણનાત્મક નામો',
+  youLabel: 'તમે',
+  aiLabel: 'AI',
+  pointNotSpeed: 'મુદ્દો એ નથી કે કોણ પહેલાં પૂરું કરે.',
+  pointNotSpeedBody: "Claude Code ઝડપી છે, પણ ઝડપ એ skill નથી. Skill એ છે કે બંને versions જોઈને નક્કી કરો કયું ખરેખર ship કરશો. વાંચી શકો છો? Edge cases handle થયા છે? તમારો ટીમમેટ રાત્રે 2 વાગે સમજી શકશે? એ નિર્ણય ફક્ત તમારો છે.",
+  pointNotSpeedMobile: 'ઝડપ એ skill નથી. Skill એ છે કે કયું version ship કરશો એ નક્કી કરવું. એ નિર્ણય ફક્ત તમારો છે.',
+  compareCode: 'કોડ સરખાવો',
+  retryButton: 'ફરી પ્રયાસ',
+  tryAgain: 'ફરી અજમાવો',
+  codeComparison: 'કોડ સરખામણી',
+
+  // Metrics (mobile)
+  metricLines: 'લાઇન',
+  metricTime: 'સમય',
+  metricNames: 'નામો',
+  metricTyped: 'ટાઇપ્ડ',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'તમે શું બનાવશો?',
+  projectsCount: 'તમારા જેવા લોકોએ બનાવેલા પ્રોજેક્ટ્સ',
+  noProjectsInCategory: 'આ કેટેગરીમાં હજુ કોઈ પ્રોજેક્ટ નથી.',
+  yourTurnHeading: 'તમારો વારો',
+  yourTurnPromptMobile: 'Personal software થી કયો પ્રશ્ન ઉકેલશો?',
+  yourTurnPromptDesktop: 'તમારા જીવનમાં personal software વડે કયો પ્રશ્ન ઉકેલશો? તમે ઇચ્છો છો એ ટૂલ વર્ણવો.',
+  ideaPlaceholder: "હું એક app બનાવીશ જે...",
+  saveIdea: 'આઇડિયા સાચવો',
+  savedConfirmationMobile: "સાચવ્યો! Chapter 11 માં વાપરશો.",
+  savedConfirmationDesktop: "આઇડિયા સાચવ્યો! Chapter 11 માં વાપરશો.",
+  builderLabel: 'બિલ્ડર',
+  builtBy: 'બનાવનાર',
+  techStack: 'ટેક સ્ટેક',
+  timeEstimate: 'સમય અંદાજ:',
+  feasibilityWeekend: 'વીકેન્ડ બિલ્ડ',
+  feasibilityWeek: 'એક અઠવાડિયાનો પ્રોજેક્ટ',
+  feasibilityMonth: 'મહિના ભરનો બિલ્ડ',
+  footerInspiration: 'આમાંનો દરેક પ્રોજેક્ટ ફક્ત એક આઇડિયાથી શરૂ કરનાર વ્યક્તિએ બનાવ્યો.',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: "Claude Code એક loop ફોલો કરે છે: કોડબેઝ વાંચો \u2192 ફેરફારો પ્લાન કરો \u2192 કોડ લખો \u2192 ચલાવો \u2192 ભૂલો ઠીક કરો. CLAUDE.md કાયમી instruction set છે જે દરેક interaction ઘડે છે.",
+  skillsKeyFact: "Skill ના ત્રણ ભાગ છે: Trigger (ક્યારે સક્રિય થવું), Steps (શું કરવું), Examples (સારું કેવું દેખાય). એક skill definition સેંકડો વારંવારના ખુલાસાઓનું સ્થાન લે છે.",
+
+  flipLabelClaudeCode: 'આ કેમ કામ કર્યું? Claude Code કેવી રીતે વિચારે છે',
+  flipLabelSkills: 'આ કેમ કામ કર્યું? Skills બનાવવી',
+  flipLabelSkillParadox: 'આ કેમ કામ કર્યું? Skill Paradox',
+  backTitleClaudeCode: 'Claude Code કેવી રીતે વિચારે છે',
+  backTitleSkills: 'Skills બનાવવી (T-S-E Framework)',
+  backTitleSkillParadox: 'Skill Paradox',
+
+  // ClaudeCode Back
+  ccBackIntro: "Claude Code કોડ લખતો chatbot નથી. એ agentic loop છે — એક સિસ્ટમ જે વાંચે, પ્લાન કરે, લખે, ચલાવે, અને ઠીક કરે, કાર્ય પૂરું થાય ત્યાં સુધી ચક્ર ચાલે.",
+  ccReadName: 'વાંચો',
+  ccReadText: 'તમારી ફાઇલ્સ સ્કેન કરે, architecture સમજે, project rules માટે CLAUDE.md વાંચે.',
+  ccPlanName: 'પ્લાન',
+  ccPlanText: 'કાર્યને પગલાંમાં તોડે, નક્કી કરે કઈ ફાઇલો ટચ કરવી અને કયા ક્રમમાં.',
+  ccWriteName: 'લખો',
+  ccWriteText: 'એકથી વધુ ફાઇલોમાં કોડ generate કરે — snippets નહીં, સુસંગત, જોડાયેલા ફેરફારો.',
+  ccRunName: 'ચલાવો',
+  ccRunText: 'કોડ execute કરે, tests ચલાવે, errors ચકાસે. કંઈ તૂટે, તો ઠીક કરવા પાછો ફરે.',
+  ccFixName: 'ઠીક કરો',
+  ccFixText: 'Error વાંચે, કારણ ઓળખે, patch લખે, અને ફરી ચલાવે. આપોઆપ.',
+  ccBackNote: "એ તમારો આખો project જુએ છે — ફક્ત તમે edit કરી રહ્યા છો એ ફાઇલ નહીં. અને CLAUDE.md તમારા project નું બંધારણ છે: કાયમી instructions જે દરેક interaction ઘડે. એને તમારા codebase નો system prompt સમજો.",
+
+  // Skills Back
+  skillsBackIntro: "Skill એ reusable instruction set છે — એક recipe જે Claude Code ને ચોક્કસ કેટેગરીનું કાર્ય કેવી રીતે handle કરવું એ બરાબર જણાવે. દરેક skill T-S-E framework ફોલો કરે:",
+  skillsTriggerName: 'Trigger',
+  skillsTriggerText: 'આ skill ક્યારે activate થવી જોઈએ? દા.ત., "when asked to create a React component"',
+  skillsStepsName: 'Steps',
+  skillsStepsText: 'શું કરવું? ચોક્કસ ક્રિયાઓની ક્રમાંકિત યાદી.',
+  skillsExamplesName: 'Examples',
+  skillsExamplesText: 'સારું output કેવું દેખાય? ગુણવત્તા anchoring માટે concrete input/output pairs.',
+  skillsTemplatesLabel: 'શરૂ કરવા માટે પ્રી-લોડેડ templates:',
+  skillsBackFooter: 'એક skill definition સેંકડો વારંવારના ખુલાસાઓનું સ્થાન લે. એકવાર લખો, કાયમ વાપરો.',
+
+  // Skill Paradox Back
+  paradoxIntro: "એક paradox છે જેની કોઈ ચેતવણી નથી આપતું: AI coding ઝડપી બનાવે, પણ કોડ સમજવાની જરૂરિયાત ખતમ નથી કરતું.",
+  paradoxQuote: "ટૂલ એટલું જ સારું છે જેટલો એને ચલાવનાર માણસ. જો તમે Claude જે generate કરે એ વાંચી ન શકો, તો working code અને સારું લાગતું nonsense વચ્ચેનો ફરક ન પારખી શકો.",
+  paradoxWorkflowLabel: 'મૂળભૂત workflow:',
+  paradoxSpecify: 'સ્પષ્ટ કરો.',
+  paradoxSpecifyDesc: 'તમે શું ઇચ્છો છો એ નિર્દયતાથી સ્પષ્ટ રહો. અસ્પષ્ટતા દુશ્મન છે.',
+  paradoxGenerate: 'Generate કરો.',
+  paradoxGenerateDesc: 'Claude Code ને typing કરવા દો. Boilerplate, syntax, wiring — એ handle કરે.',
+  paradoxVerify: 'ચકાસો.',
+  paradoxVerifyDesc: 'વાંચો, ટેસ્ટ કરો, અને પરિણામનું મૂલ્યાંકન કરો. અહીં તમારું જ્ઞાન સૌથી વધુ મહત્વનું છે.',
+  paradoxMiddle: "Output evaluate કરવા માટે પૂરતું જ્ઞાન જોઈએ, દરેક line લખવા માટે નહીં. આ skill paradox છે — AI કોડ produce કરવાનું floor ઘટાડે, પણ judge કરવાનું bar વધારે.",
+  paradoxClosing: "AI coding tools સાથે જે લોકો ફૂલેફાલે છે એ ઓછામાં ઓછું type કરનારા નથી. એ તે છે જે સૌથી સ્પષ્ટ રીતે વિચારે છે કે શું હોવું જોઈએ — અને output ખરું છે ત્યારે ઓળખી શકે.",
+  },
+};
+
+export default translations;

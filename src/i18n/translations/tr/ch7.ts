@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'Terminal Oyun Alanı',
+  terminalSubtitle: 'Claude Code\'un düşünmesini, yazmasını ve çalıştırmasını izleyin',
+  terminalPickTask: 'Bir görev seçin ve Claude Code\'un onu nasıl parçalara ayırdığını, kodu nasıl yazdığını ve çalıştığını nasıl doğruladığını izleyin.',
+  tryAnotherTask: 'Başka bir görev dene',
+  filesLabel: 'DOSYALAR',
+  filesMobileButton: 'Dosyalar',
+  writeLabel: 'YAZ',
+
+  // Terminal presets
+  presetCountdownLabel: 'React geri sayım sayacı oluştur',
+  presetCountdownDesc: 'Başlat/duraklat kontrolleriyle yeniden kullanılabilir bir geri sayım bileşeni oluştur',
+  presetBugLabel: 'Giriş hatasını düzelt',
+  presetBugDesc: 'Bozuk bir kimlik doğrulama akışını teşhis et ve düzelt',
+  presetDarkmodeLabel: 'Uygulamaya karanlık mod ekle',
+  presetDarkmodeDesc: 'Kalıcılıkla sistem duyarlı bir karanlık mod düğmesi uygula',
+
+  // Terminal step texts (thinking only - code/commands stay in English)
+  thinkingReadingProject: 'Proje yapısı okunuyor ve kod tabanı anlaşılıyor...',
+  thinkingPlanCountdown: 'Plan: useState ve useEffect hook\'ları, başlat/duraklat/sıfırla kontrolleri ve biçimlendirilmiş zaman gösterimiyle CountdownTimer bileşeni oluştur.',
+  successCountdown: 'CountdownTimer bileşeni başlat, duraklat ve sıfırla kontrolleriyle oluşturuldu. localhost:5173\'te hazır.',
+  thinkingReadingLogin: 'src/auth/login.ts ve src/auth/session.ts okunuyor...',
+  thinkingFoundBug: 'Hata bulundu: giriş işleyicisi fetchUser() bekliyor ama oturum tokenını ayarlamadan önce boş yanıtı hiç kontrol etmiyor. API 401 döndürdüğünde kod çöküyor.',
+  successBugFix: 'Hata düzeltildi: Başarısız API yanıtları için boş kontrolü ve uygun hata yönetimi eklendi. 3 testin hepsi geçiyor.',
+  thinkingReadingStyles: 'Mevcut stiller ve bileşen yapısı okunuyor...',
+  thinkingPlanDarkMode: 'Plan: 1) localStorage kalıcılığıyla useDarkMode hook\'u oluştur, 2) Karanlık tema için CSS özel değişkenleri ekle, 3) Geçiş düğmesi bileşeni oluştur.',
+  successDarkMode: 'Karanlık mod, sistem tercihi algılama, localStorage kalıcılığı ve yumuşak CSS geçişleriyle eklendi.',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'Beceri Oluşturucu',
+  skillBuilderSubtitle: 'Claude Code için yeniden kullanılabilir talimatlar yazın',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'düzenlendi',
+  validationLabel: 'Doğrulama',
+  triggerLabel: 'Tetikleyici',
+  stepsLabel: 'Adımlar',
+  examplesLabel: 'Örnekler',
+  hasClearTrigger: 'Net tetikleyicisi var',
+  stepsAreSpecific: 'Adımlar spesifik',
+  includesExamples: 'Örnekler içeriyor',
+  testLabel: 'Test',
+  testScenarioLabel: 'Test Senaryosu',
+  userRequestLabel: 'Kullanıcı İsteği',
+  requestPrefix: 'İstek:',
+  viewFullOutput: 'Tam çıktıyı gör',
+
+  // Skill templates
+  templateReactComponent: 'React Bileşen Üretici',
+  templateTestWriter: 'Test Yazıcı',
+  templateDocGenerator: 'Dokümantasyon Üretici',
+
+  // Test tasks
+  testTaskReact: 'Avatar, ad ve biyografi gösteren bir UserProfile bileşeni oluştur',
+  testTaskTest: 'utils/formatDate.ts için testler yaz',
+  testTaskDoc: 'Auth modülünü belgele',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'Yeniden Düzenleme Yarışı',
+  refactorRaceSubtitle: 'Sen vs. Claude Code — bu karmaşık fonksiyonu temizle',
+  refactorRaceIntro: 'Aşağıda kriptik değişken adları, tür tanımı olmayan ve elle yazılmış bir bubble sort içeren bir fonksiyon var. Göreviniz: onu okunabilir hale getirin. Claude Code da yanınızda aynı şeyi yapıyor olacak.',
+  startRefactoring: 'Yeniden Düzenlemeye Başla',
+  yourTurn: 'Senin Sıran',
+  doneButton: 'Bitti',
+  finishedAt: 'Bitiş zamanı',
+  claudeCodeLabel: 'Claude Code',
+  imDone: 'Bitti',
+  yourCodeTab: 'Senin Kodun',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'Senin Versiyonun',
+  claudeCodeVersion: 'Claude Code Versiyonu (~5.5sn)',
+  readabilityLabel: 'Okunabilirlik',
+  linesOfCode: 'Satır Sayısı',
+  namingLabel: 'İsimlendirme',
+  youDecide: 'Sen karar ver',
+  typesAndComments: 'Türler + yorumlar',
+  linesLabel: 'satır',
+  yourChoice: 'Senin seçimin',
+  descriptiveNames: 'Açıklayıcı isimler',
+  youLabel: 'Sen',
+  aiLabel: 'AI',
+  pointNotSpeed: 'Mesele kimin önce bitirdiği değil.',
+  pointNotSpeedBody: 'Claude Code hızlı, ama hız beceri değil. Beceri, her iki versiyona bakıp hangisini gerçekten yayına alacağınıza karar vermektir. Okuyabiliyor musunuz? Uç durumları ele alıyor mu? Takım arkadaşınız gece 2\'de anlayabilir mi? Bu yargı sadece sizin.',
+  pointNotSpeedMobile: 'Hız beceri değil. Beceri, hangi versiyonu yayına alacağınıza karar vermektir. Bu yargı sadece sizin.',
+  compareCode: 'Kodları Karşılaştır',
+  retryButton: 'Tekrar Dene',
+  tryAgain: 'Tekrar Dene',
+  codeComparison: 'Kod Karşılaştırması',
+
+  // Metrics (mobile)
+  metricLines: 'Satır',
+  metricTime: 'Süre',
+  metricNames: 'İsimler',
+  metricTyped: 'Yazılan',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'Ne İnşa Ederdiniz?',
+  projectsCount: 'sizin gibi insanlar tarafından oluşturulmuş proje',
+  noProjectsInCategory: 'Bu kategoride henüz proje yok.',
+  yourTurnHeading: 'Sıra sizde',
+  yourTurnPromptMobile: 'Kişisel yazılımla hangi sorunu çözerdiniz?',
+  yourTurnPromptDesktop: 'Hayatınızdaki hangi sorunu kişisel yazılımla çözerdiniz? Var olmasını istediğiniz aracı tanımlayın.',
+  ideaPlaceholder: 'Şöyle bir uygulama yapardım...',
+  saveIdea: 'Fikri kaydet',
+  savedConfirmationMobile: 'Kaydedildi! Bölüm 11\'de kullanacaksınız.',
+  savedConfirmationDesktop: 'Fikir kaydedildi! Bölüm 11\'de kullanacaksınız.',
+  builderLabel: 'Geliştirici',
+  builtBy: 'Yapan',
+  techStack: 'Teknoloji Yığını',
+  timeEstimate: 'Süre tahmini:',
+  feasibilityWeekend: 'Hafta sonu projesi',
+  feasibilityWeek: 'Bir haftalık proje',
+  feasibilityMonth: 'Aylık proje',
+  footerInspiration: 'Bunların her biri, sadece bir fikirle başlayan biri tarafından yapıldı.',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: 'Claude Code bir döngü izler: Kod tabanını oku \u2192 Değişiklikleri planla \u2192 Kod yaz \u2192 Çalıştır \u2192 Hataları düzelt. CLAUDE.md, her etkileşimi şekillendiren kalıcı talimat setidir.',
+  skillsKeyFact: 'Bir becerinin üç parçası vardır: Tetikleyici (ne zaman etkinleşir), Adımlar (ne yapılır), Örnekler (iyi çıktı nasıl görünür). Bir beceri tanımı, yüzlerce tekrarlanan açıklamanın yerini alır.',
+
+  flipLabelClaudeCode: 'Bu neden işe yaradı? Claude Code Nasıl Düşünür',
+  flipLabelSkills: 'Bu neden işe yaradı? Beceri Oluşturma',
+  flipLabelSkillParadox: 'Bu neden işe yaradı? Beceri Paradoksu',
+  backTitleClaudeCode: 'Claude Code Nasıl Düşünür',
+  backTitleSkills: 'Beceri Oluşturma (T-A-Ö Çerçevesi)',
+  backTitleSkillParadox: 'Beceri Paradoksu',
+
+  // ClaudeCode Back
+  ccBackIntro: 'Claude Code, kod yazan bir sohbet botu değil. Ajantik bir döngü — okuyan, planlayan, yazan, çalıştıran ve düzelten, görev bitene kadar dönen bir sistem.',
+  ccReadName: 'Oku',
+  ccReadText: 'Dosyalarınızı tarar, mimarinizi anlar, proje kuralları için CLAUDE.md\'yi okur.',
+  ccPlanName: 'Planla',
+  ccPlanText: 'Görevi adımlara böler, hangi dosyalara hangi sırayla dokunulacağına karar verir.',
+  ccWriteName: 'Yaz',
+  ccWriteText: 'Birden fazla dosyada kod üretir — parçacıklar değil, tutarlı, bağlantılı değişiklikler.',
+  ccRunName: 'Çalıştır',
+  ccRunText: 'Kodu çalıştırır, testleri koşar, hataları kontrol eder. Bir şey bozulursa, düzeltmek için geri döner.',
+  ccFixName: 'Düzelt',
+  ccFixText: 'Hatayı okur, nedenini teşhis eder, yama yazar ve tekrar çalıştırır. Otomatik olarak.',
+  ccBackNote: 'Tüm projenizi görür — sadece düzenlediğiniz dosyayı değil. Ve CLAUDE.md projenizin anayasasıdır: her etkileşimi şekillendiren kalıcı talimatlar. Kod tabanınız için sistem promptu olarak düşünün.',
+
+  // Skills Back
+  skillsBackIntro: 'Bir beceri, yeniden kullanılabilir bir talimat seti — Claude Code\'a bir görev kategorisini tam olarak nasıl ele alacağını söyleyen bir tarif. Her beceri T-A-Ö çerçevesini izler:',
+  skillsTriggerName: 'Tetikleyici',
+  skillsTriggerText: 'Bu beceri ne zaman etkinleşmeli? örn., "bir React bileşeni oluşturması istendiğinde"',
+  skillsStepsName: 'Adımlar',
+  skillsStepsText: 'Ne yapmalı? Sıralı, spesifik eylemlerin numaralı listesi.',
+  skillsExamplesName: 'Örnekler',
+  skillsExamplesText: 'İyi çıktı nasıl görünür? Kaliteyi sabitleyen somut girdi/çıktı çiftleri.',
+  skillsTemplatesLabel: 'Başlangıç için hazır şablonlar:',
+  skillsBackFooter: 'Bir beceri tanımı, yüzlerce tekrarlanan açıklamanın yerini alır. Bir kez yazın, sonsuza kadar kullanın.',
+
+  // Skill Paradox Back
+  paradoxIntro: 'İşte kimsenin sizi uyarmadığı paradoks: AI kodlamayı hızlandırır, ama kodu anlama ihtiyacını ortadan kaldırmaz.',
+  paradoxQuote: 'Araç ancak onu yönlendiren insan kadar iyidir. Claude\'un ürettiğini okuyamıyorsanız, çalışan kod ile inandırıcı görünen saçmalık arasındaki farkı anlayamazsınız.',
+  paradoxWorkflowLabel: 'Temel iş akışı:',
+  paradoxSpecify: 'Belirle.',
+  paradoxSpecifyDesc: 'Ne istediğiniz konusunda acımasızca net olun. Belirsizlik düşmandır.',
+  paradoxGenerate: 'Üret.',
+  paradoxGenerateDesc: 'Yazmayı Claude Code\'a bırakın. Şablon kodunu, sözdizimini, bağlantıları o halleder.',
+  paradoxVerify: 'Doğrula.',
+  paradoxVerifyDesc: 'Sonucu okuyun, test edin ve değerlendirin. Bilginizin en çok önemli olduğu yer burası.',
+  paradoxMiddle: 'Çıktıyı değerlendirmeye yetecek kadar bilgiye ihtiyacınız var, her satırı yazmaya değil. Beceri paradoksu bu — AI kod üretme tabanını düşürür, ama onu değerlendirme çıtasını yükseltir.',
+  paradoxClosing: 'AI kodlama araçlarıyla başarılı olanlar en az yazanlar değil. Neyin var olması gerektiği hakkında en net düşünenler — ve çıktının doğru olduğunu söyleyebilenler.',
+  },
+};
+
+export default translations;

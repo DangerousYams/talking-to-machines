@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'ಟರ್ಮಿನಲ್ ಪ್ಲೇಗ್ರೌಂಡ್',
+  terminalSubtitle: 'Claude Code ಯೋಚಿಸುವ, ಬರೆಯುವ ಮತ್ತು ಓಡಿಸುವುದನ್ನು ನೋಡಿ',
+  terminalPickTask: 'ಒಂದು ಕಾರ್ಯ ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು Claude Code ಅದನ್ನು ವಿಭಜಿಸುವ, ಕೋಡ್ ಬರೆಯುವ ಮತ್ತು ಅದು ಕೆಲಸ ಮಾಡುತ್ತದೆಯೇ ಪರಿಶೀಲಿಸುವುದನ್ನು ನೋಡಿ.',
+  tryAnotherTask: 'ಬೇರೆ ಕಾರ್ಯ ಪ್ರಯತ್ನಿಸಿ',
+  filesLabel: 'ಫೈಲ್‌ಗಳು',
+  filesMobileButton: 'ಫೈಲ್‌ಗಳು',
+  writeLabel: 'ಬರೆಯಿರಿ',
+
+  // Terminal presets
+  presetCountdownLabel: 'React ಕೌಂಟ್‌ಡೌನ್ ಟೈಮರ್ ರಚಿಸಿ',
+  presetCountdownDesc: 'ಸ್ಟಾರ್ಟ್/ಪಾಸ್ ನಿಯಂತ್ರಣಗಳೊಂದಿಗೆ ಮರುಬಳಕೆ ಮಾಡಬಹುದಾದ ಕೌಂಟ್‌ಡೌನ್ ಕಾಂಪೊನೆಂಟ್ ನಿರ್ಮಿಸಿ',
+  presetBugLabel: 'ಲಾಗಿನ್ ಬಗ್ ಸರಿಪಡಿಸಿ',
+  presetBugDesc: 'ಮುರಿದ ದೃಢೀಕರಣ ಹರಿವನ್ನು ಪತ್ತೆಹಚ್ಚಿ ಸರಿಪಡಿಸಿ',
+  presetDarkmodeLabel: 'ಆ್ಯಪ್‌ಗೆ ಡಾರ್ಕ್ ಮೋಡ್ ಸೇರಿಸಿ',
+  presetDarkmodeDesc: 'ಸಿಸ್ಟಮ್-ಅರಿವಿನ ಡಾರ್ಕ್ ಮೋಡ್ ಟಾಗಲ್ ಅನ್ನು ಶಾಶ್ವತ ಸಂಗ್ರಹಣೆಯೊಂದಿಗೆ ಅನುಷ್ಠಾನಿಸಿ',
+
+  // Terminal step texts (thinking only — code/commands stay in English)
+  thinkingReadingProject: 'ಪ್ರಾಜೆಕ್ಟ್ ರಚನೆ ಓದುತ್ತಿದೆ ಮತ್ತು ಕೋಡ್‌ಬೇಸ್ ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತಿದೆ...',
+  thinkingPlanCountdown: 'ಯೋಜನೆ: useState ಮತ್ತು useEffect hooks, start/pause/reset ನಿಯಂತ್ರಣಗಳು ಮತ್ತು ಫಾರ್ಮ್ಯಾಟ್ ಮಾಡಿದ ಸಮಯ ಪ್ರದರ್ಶನದೊಂದಿಗೆ CountdownTimer ಕಾಂಪೊನೆಂಟ್ ರಚಿಸಿ.',
+  successCountdown: 'CountdownTimer ಕಾಂಪೊನೆಂಟ್ start, pause ಮತ್ತು reset ನಿಯಂತ್ರಣಗಳೊಂದಿಗೆ ರಚಿಸಲಾಗಿದೆ. localhost:5173 ನಲ್ಲಿ ಸಿದ್ಧವಿದೆ.',
+  thinkingReadingLogin: 'src/auth/login.ts ಮತ್ತು src/auth/session.ts ಓದುತ್ತಿದೆ...',
+  thinkingFoundBug: 'ಬಗ್ ಸಿಕ್ಕಿತು: ಲಾಗಿನ್ ಹ್ಯಾಂಡ್ಲರ್ fetchUser() ಅನ್ನು await ಮಾಡುತ್ತದೆ ಆದರೆ ಸೆಷನ್ ಟೋಕನ್ ಹೊಂದಿಸುವ ಮೊದಲು null ಪ್ರತಿಕ್ರಿಯೆ ಪರಿಶೀಲಿಸುವುದಿಲ್ಲ. API 401 ಹಿಂತಿರುಗಿಸಿದಾಗ, ಕೋಡ್ ಕ್ರ್ಯಾಶ್ ಆಗುತ್ತದೆ.',
+  successBugFix: 'ಬಗ್ ಸರಿಪಡಿಸಲಾಗಿದೆ: ವಿಫಲ API ಪ್ರತಿಕ್ರಿಯೆಗಳಿಗೆ null ಪರಿಶೀಲನೆ ಮತ್ತು ಸರಿಯಾದ ದೋಷ ನಿರ್ವಹಣೆ ಸೇರಿಸಲಾಗಿದೆ. ಎಲ್ಲ 3 ಪರೀಕ್ಷೆಗಳು ಪಾಸ್ ಆಗುತ್ತಿವೆ.',
+  thinkingReadingStyles: 'ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಸ್ಟೈಲ್‌ಗಳು ಮತ್ತು ಕಾಂಪೊನೆಂಟ್ ರಚನೆ ಓದುತ್ತಿದೆ...',
+  thinkingPlanDarkMode: 'ಯೋಜನೆ: 1) localStorage ಶಾಶ್ವತತೆಯೊಂದಿಗೆ useDarkMode ಹುಕ್ ರಚಿಸಿ, 2) ಡಾರ್ಕ್ ಥೀಮ್‌ಗೆ CSS ಕಸ್ಟಮ್ ಪ್ರಾಪರ್ಟೀಸ್ ಸೇರಿಸಿ, 3) ಟಾಗಲ್ ಬಟನ್ ಕಾಂಪೊನೆಂಟ್ ನಿರ್ಮಿಸಿ.',
+  successDarkMode: 'ಸಿಸ್ಟಮ್ ಆದ್ಯತೆ ಪತ್ತೆ, localStorage ಶಾಶ್ವತತೆ, ಮತ್ತು ನಯವಾದ CSS ಪರಿವರ್ತನೆಗಳೊಂದಿಗೆ ಡಾರ್ಕ್ ಮೋಡ್ ಸೇರಿಸಲಾಗಿದೆ.',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'ಸ್ಕಿಲ್ ಬಿಲ್ಡರ್',
+  skillBuilderSubtitle: 'Claude Code ಗೆ ಮರುಬಳಕೆ ಮಾಡಬಹುದಾದ ಸೂಚನೆಗಳನ್ನು ಬರೆಯಿರಿ',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'ಎಡಿಟ್ ಮಾಡಲಾಗಿದೆ',
+  validationLabel: 'ಮೌಲ್ಯೀಕರಣ',
+  triggerLabel: 'ಟ್ರಿಗರ್',
+  stepsLabel: 'ಹಂತಗಳು',
+  examplesLabel: 'ಉದಾಹರಣೆಗಳು',
+  hasClearTrigger: 'ಸ್ಪಷ್ಟ ಟ್ರಿಗರ್ ಇದೆ',
+  stepsAreSpecific: 'ಹಂತಗಳು ನಿರ್ದಿಷ್ಟವಾಗಿವೆ',
+  includesExamples: 'ಉದಾಹರಣೆಗಳನ್ನು ಒಳಗೊಂಡಿದೆ',
+  testLabel: 'ಪರೀಕ್ಷೆ',
+  testScenarioLabel: 'ಪರೀಕ್ಷಾ ಸನ್ನಿವೇಶ',
+  userRequestLabel: 'ಬಳಕೆದಾರ ವಿನಂತಿ',
+  requestPrefix: 'ವಿನಂತಿ:',
+  viewFullOutput: 'ಸಂಪೂರ್ಣ ಔಟ್‌ಪುಟ್ ನೋಡಿ',
+
+  // Skill templates
+  templateReactComponent: 'React ಕಾಂಪೊನೆಂಟ್ ಜನರೇಟರ್',
+  templateTestWriter: 'ಟೆಸ್ಟ್ ರೈಟರ್',
+  templateDocGenerator: 'ಡಾಕ್ಯುಮೆಂಟೇಶನ್ ಜನರೇಟರ್',
+
+  // Test tasks (these are prompts — keep in English)
+  testTaskReact: 'Create a UserProfile component that shows an avatar, name, and bio',
+  testTaskTest: 'Write tests for utils/formatDate.ts',
+  testTaskDoc: 'Document the auth module',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'ರಿಫ್ಯಾಕ್ಟರ್ ರೇಸ್',
+  refactorRaceSubtitle: 'ನೀವು vs. Claude Code — ಈ ಅಸ್ತವ್ಯಸ್ತ ಫಂಕ್ಷನ್ ಅನ್ನು ಶುಚಿಗೊಳಿಸಿ',
+  refactorRaceIntro: 'ಕೆಳಗೆ ಗೂಢ ವೇರಿಯೇಬಲ್ ಹೆಸರುಗಳು, ಟೈಪ್‌ಗಳಿಲ್ಲದ ಮತ್ತು ಕೈಯಿಂದ ಬರೆದ ಬಬಲ್ ಸಾರ್ಟ್ ಇರುವ ಫಂಕ್ಷನ್ ಇದೆ. ನಿಮ್ಮ ಕೆಲಸ: ಅದನ್ನು ಓದಬಹುದಾದಂತೆ ರಿಫ್ಯಾಕ್ಟರ್ ಮಾಡಿ. Claude Code ನಿಮ್ಮ ಪಕ್ಕದಲ್ಲಿ ಅದೇ ಕೆಲಸ ಮಾಡುತ್ತಿರುತ್ತದೆ.',
+  startRefactoring: 'ರಿಫ್ಯಾಕ್ಟರಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ',
+  yourTurn: 'ನಿಮ್ಮ ಸರದಿ',
+  doneButton: 'ಮುಗಿಯಿತು',
+  finishedAt: 'ಪೂರ್ಣಗೊಂಡ ಸಮಯ',
+  claudeCodeLabel: 'Claude Code',
+  imDone: 'ನಾನು ಮುಗಿಸಿದೆ',
+  yourCodeTab: 'ನಿಮ್ಮ ಕೋಡ್',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'ನಿಮ್ಮ ಆವೃತ್ತಿ',
+  claudeCodeVersion: 'Claude Code ಆವೃತ್ತಿ (~5.5s)',
+  readabilityLabel: 'ಓದುವಿಕೆ',
+  linesOfCode: 'ಕೋಡ್ ಸಾಲುಗಳು',
+  namingLabel: 'ಹೆಸರಿಡುವಿಕೆ',
+  youDecide: 'ನೀವು ನಿರ್ಧರಿಸಿ',
+  typesAndComments: 'ಟೈಪ್‌ಗಳು + ಕಾಮೆಂಟ್‌ಗಳು',
+  linesLabel: 'ಸಾಲುಗಳು',
+  yourChoice: 'ನಿಮ್ಮ ಆಯ್ಕೆ',
+  descriptiveNames: 'ವಿವರಣಾತ್ಮಕ ಹೆಸರುಗಳು',
+  youLabel: 'ನೀವು',
+  aiLabel: 'AI',
+  pointNotSpeed: 'ಯಾರು ಮೊದಲು ಮುಗಿಸುತ್ತಾರೆ ಎಂಬುದು ಮುಖ್ಯವಲ್ಲ.',
+  pointNotSpeedBody: 'Claude Code ವೇಗವಾಗಿದೆ, ಆದರೆ ವೇಗ ಕೌಶಲ್ಯ ಅಲ್ಲ. ಕೌಶಲ್ಯ ಎಂದರೆ ಎರಡೂ ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ ಯಾವುದನ್ನು ನಿಜವಾಗಿ ಶಿಪ್ ಮಾಡುತ್ತೀರಿ ಎಂದು ತೀರ್ಮಾನಿಸುವುದು. ನೀವು ಓದಬಹುದೇ? ಎಡ್ಜ್ ಕೇಸ್‌ಗಳನ್ನು ನಿಭಾಯಿಸುತ್ತದೆಯೇ? ನಿಮ್ಮ ಸಹೋದ್ಯೋಗಿ ರಾತ್ರಿ 2 ಗಂಟೆಗೆ ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತಾರೆಯೇ? ಆ ತೀರ್ಪು ನಿಮ್ಮದು ಮಾತ್ರ.',
+  pointNotSpeedMobile: 'ವೇಗ ಕೌಶಲ್ಯ ಅಲ್ಲ. ಕೌಶಲ್ಯ ಎಂದರೆ ಯಾವ ಆವೃತ್ತಿ ಶಿಪ್ ಮಾಡುತ್ತೀರಿ ಎಂದು ತೀರ್ಮಾನಿಸುವುದು. ಆ ತೀರ್ಪು ನಿಮ್ಮದು ಮಾತ್ರ.',
+  compareCode: 'ಕೋಡ್ ಹೋಲಿಸಿ',
+  retryButton: 'ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ',
+  tryAgain: 'ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ',
+  codeComparison: 'ಕೋಡ್ ಹೋಲಿಕೆ',
+
+  // Metrics (mobile)
+  metricLines: 'ಸಾಲುಗಳು',
+  metricTime: 'ಸಮಯ',
+  metricNames: 'ಹೆಸರುಗಳು',
+  metricTyped: 'ಟೈಪ್ ಮಾಡಿದ',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'ನೀವು ಏನು ನಿರ್ಮಿಸುತ್ತೀರಿ?',
+  projectsCount: 'ನಿಮ್ಮಂತಹ ಜನರು ನಿರ್ಮಿಸಿದ ಪ್ರಾಜೆಕ್ಟ್‌ಗಳು',
+  noProjectsInCategory: 'ಈ ವಿಭಾಗದಲ್ಲಿ ಇನ್ನೂ ಪ್ರಾಜೆಕ್ಟ್‌ಗಳಿಲ್ಲ.',
+  yourTurnHeading: 'ನಿಮ್ಮ ಸರದಿ',
+  yourTurnPromptMobile: 'ವೈಯಕ್ತಿಕ ಸಾಫ್ಟ್‌ವೇರ್‌ನೊಂದಿಗೆ ಯಾವ ಸಮಸ್ಯೆ ಪರಿಹರಿಸುತ್ತೀರಿ?',
+  yourTurnPromptDesktop: 'ನಿಮ್ಮ ಜೀವನದಲ್ಲಿ ಯಾವ ಸಮಸ್ಯೆಯನ್ನು ವೈಯಕ್ತಿಕ ಸಾಫ್ಟ್‌ವೇರ್‌ನೊಂದಿಗೆ ಪರಿಹರಿಸುತ್ತೀರಿ? ನಿಮಗೆ ಬೇಕಾದ ಪರಿಕರ ವಿವರಿಸಿ.',
+  ideaPlaceholder: 'ನಾನು ಒಂದು ಆ್ಯಪ್ ನಿರ್ಮಿಸುತ್ತೇನೆ ಅದು...',
+  saveIdea: 'ಐಡಿಯಾ ಸೇವ್ ಮಾಡಿ',
+  savedConfirmationMobile: 'ಸೇವ್ ಆಯಿತು! ಅಧ್ಯಾಯ 11 ರಲ್ಲಿ ಇದನ್ನು ಬಳಸುತ್ತೀರಿ.',
+  savedConfirmationDesktop: 'ಐಡಿಯಾ ಸೇವ್ ಆಯಿತು! ಅಧ್ಯಾಯ 11 ರಲ್ಲಿ ಇದನ್ನು ಬಳಸುತ್ತೀರಿ.',
+  builderLabel: 'ಬಿಲ್ಡರ್',
+  builtBy: 'ನಿರ್ಮಿಸಿದವರು',
+  techStack: 'ಟೆಕ್ ಸ್ಟ್ಯಾಕ್',
+  timeEstimate: 'ಸಮಯದ ಅಂದಾಜು:',
+  feasibilityWeekend: 'ವಾರಾಂತ್ಯದ ಬಿಲ್ಡ್',
+  feasibilityWeek: 'ಒಂದು ವಾರದ ಪ್ರಾಜೆಕ್ಟ್',
+  feasibilityMonth: 'ಒಂದು ತಿಂಗಳ ಬಿಲ್ಡ್',
+  footerInspiration: 'ಇವೆಲ್ಲವನ್ನೂ ಕೇವಲ ಒಂದು ಐಡಿಯಾದಿಂದ ಶುರು ಮಾಡಿದ ಯಾರೋ ಒಬ್ಬರು ನಿರ್ಮಿಸಿದ್ದಾರೆ.',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: 'Claude Code ಒಂದು ಲೂಪ್ ಅನುಸರಿಸುತ್ತದೆ: ನಿಮ್ಮ ಕೋಡ್‌ಬೇಸ್ ಓದಿ \u2192 ಬದಲಾವಣೆಗಳು ಯೋಜಿಸಿ \u2192 ಕೋಡ್ ಬರೆಯಿರಿ \u2192 ಓಡಿಸಿ \u2192 ದೋಷಗಳನ್ನು ಸರಿಪಡಿಸಿ. CLAUDE.md ಪ್ರತಿ ಇಂಟರ್‌ಆ್ಯಕ್ಷನ್ ರೂಪಿಸುವ ಶಾಶ್ವತ ಸೂಚನಾ ಸೆಟ್.',
+  skillsKeyFact: 'ಸ್ಕಿಲ್‌ಗೆ ಮೂರು ಭಾಗಗಳಿವೆ: ಟ್ರಿಗರ್ (ಯಾವಾಗ ಸಕ್ರಿಯಗೊಳ್ಳಬೇಕು), ಹಂತಗಳು (ಏನು ಮಾಡಬೇಕು), ಉದಾಹರಣೆಗಳು (ಉತ್ತಮ ಫಲಿತಾಂಶ ಹೇಗಿರುತ್ತದೆ). ಒಂದು ಸ್ಕಿಲ್ ವ್ಯಾಖ್ಯಾನ ನೂರಾರು ಪುನರಾವರ್ತಿತ ವಿವರಣೆಗಳನ್ನು ಬದಲಾಯಿಸುತ್ತದೆ.',
+
+  flipLabelClaudeCode: 'ಅದು ಏಕೆ ಕೆಲಸ ಮಾಡಿತು? Claude Code ಹೇಗೆ ಯೋಚಿಸುತ್ತದೆ',
+  flipLabelSkills: 'ಅದು ಏಕೆ ಕೆಲಸ ಮಾಡಿತು? ಸ್ಕಿಲ್‌ಗಳನ್ನು ನಿರ್ಮಿಸುವುದು',
+  flipLabelSkillParadox: 'ಅದು ಏಕೆ ಕೆಲಸ ಮಾಡಿತು? ಸ್ಕಿಲ್ ಪ್ಯಾರಡಾಕ್ಸ್',
+  backTitleClaudeCode: 'Claude Code ಹೇಗೆ ಯೋಚಿಸುತ್ತದೆ',
+  backTitleSkills: 'ಸ್ಕಿಲ್‌ಗಳನ್ನು ನಿರ್ಮಿಸುವುದು (T-S-E ಫ್ರೇಮ್‌ವರ್ಕ್)',
+  backTitleSkillParadox: 'ಸ್ಕಿಲ್ ಪ್ಯಾರಡಾಕ್ಸ್',
+
+  // ClaudeCode Back
+  ccBackIntro: 'Claude Code ಕೋಡ್ ಬರೆಯುವ ಚಾಟ್‌ಬಾಟ್ ಅಲ್ಲ. ಅದು ಏಜೆಂಟಿಕ್ ಲೂಪ್ — ಓದುವ, ಯೋಜಿಸುವ, ಬರೆಯುವ, ಓಡಿಸುವ ಮತ್ತು ಸರಿಪಡಿಸುವ ವ್ಯವಸ್ಥೆ, ಕಾರ್ಯ ಮುಗಿಯುವವರೆಗೆ ಸುತ್ತುವ.',
+  ccReadName: 'ಓದಿ',
+  ccReadText: 'ನಿಮ್ಮ ಫೈಲ್‌ಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡುತ್ತದೆ, ನಿಮ್ಮ ವಾಸ್ತುಶಿಲ್ಪ ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತದೆ, ಪ್ರಾಜೆಕ್ಟ್ ನಿಯಮಗಳಿಗಾಗಿ CLAUDE.md ಓದುತ್ತದೆ.',
+  ccPlanName: 'ಯೋಜಿಸಿ',
+  ccPlanText: 'ಕಾರ್ಯವನ್ನು ಹಂತಗಳಾಗಿ ವಿಭಜಿಸುತ್ತದೆ, ಯಾವ ಫೈಲ್‌ಗಳನ್ನು ಮುಟ್ಟಬೇಕು ಮತ್ತು ಯಾವ ಕ್ರಮದಲ್ಲಿ ಎಂದು ನಿರ್ಧರಿಸುತ್ತದೆ.',
+  ccWriteName: 'ಬರೆಯಿರಿ',
+  ccWriteText: 'ಹಲವು ಫೈಲ್‌ಗಳಲ್ಲಿ ಕೋಡ್ ಉತ್ಪಾದಿಸುತ್ತದೆ — ತುಣುಕುಗಳಲ್ಲ, ಸುಸಂಗತ, ಸಂಪರ್ಕಿತ ಬದಲಾವಣೆಗಳು.',
+  ccRunName: 'ಓಡಿಸಿ',
+  ccRunText: 'ಕೋಡ್ ಕಾರ್ಯಗತಗೊಳಿಸುತ್ತದೆ, ಪರೀಕ್ಷೆಗಳನ್ನು ಓಡಿಸುತ್ತದೆ, ದೋಷಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ. ಏನಾದರೂ ಮುರಿದರೆ, ಸರಿಪಡಿಸಲು ಹಿಂದೆ ಲೂಪ್ ಮಾಡುತ್ತದೆ.',
+  ccFixName: 'ಸರಿಪಡಿಸಿ',
+  ccFixText: 'ದೋಷ ಓದುತ್ತದೆ, ಕಾರಣ ಪತ್ತೆಹಚ್ಚುತ್ತದೆ, ಪ್ಯಾಚ್ ಬರೆಯುತ್ತದೆ, ಮತ್ತು ಮತ್ತೆ ಓಡಿಸುತ್ತದೆ. ಸ್ವಯಂಚಾಲಿತವಾಗಿ.',
+  ccBackNote: 'ಅದು ನಿಮ್ಮ ಸಂಪೂರ್ಣ ಪ್ರಾಜೆಕ್ಟ್ ನೋಡುತ್ತದೆ — ನೀವು ಎಡಿಟ್ ಮಾಡುತ್ತಿರುವ ಫೈಲ್ ಮಾತ್ರ ಅಲ್ಲ. ಮತ್ತು CLAUDE.md ನಿಮ್ಮ ಪ್ರಾಜೆಕ್ಟ್‌ನ ಸಂವಿಧಾನ: ಪ್ರತಿ ಇಂಟರ್‌ಆ್ಯಕ್ಷನ್ ರೂಪಿಸುವ ಶಾಶ್ವತ ಸೂಚನೆಗಳು. ಅದನ್ನು ನಿಮ್ಮ ಕೋಡ್‌ಬೇಸ್‌ಗೆ ಸಿಸ್ಟಮ್ ಪ್ರಾಂಪ್ಟ್ ಎಂದು ಯೋಚಿಸಿ.',
+
+  // Skills Back
+  skillsBackIntro: 'ಸ್ಕಿಲ್ ಎಂದರೆ ಮರುಬಳಕೆ ಮಾಡಬಹುದಾದ ಸೂಚನಾ ಸೆಟ್ — Claude Code ಗೆ ಒಂದು ವಿಧದ ಕಾರ್ಯವನ್ನು ಹೇಗೆ ನಿಭಾಯಿಸಬೇಕೆಂದು ನಿಖರವಾಗಿ ಹೇಳುವ ಪಾಕವಿಧಾನ. ಪ್ರತಿ ಸ್ಕಿಲ್ T-S-E ಫ್ರೇಮ್‌ವರ್ಕ್ ಅನುಸರಿಸುತ್ತದೆ:',
+  skillsTriggerName: 'ಟ್ರಿಗರ್',
+  skillsTriggerText: 'ಈ ಸ್ಕಿಲ್ ಯಾವಾಗ ಸಕ್ರಿಯಗೊಳ್ಳಬೇಕು? ಉದಾ. "React ಕಾಂಪೊನೆಂಟ್ ರಚಿಸಲು ಕೇಳಿದಾಗ"',
+  skillsStepsName: 'ಹಂತಗಳು',
+  skillsStepsText: 'ಏನು ಮಾಡಬೇಕು? ನಿರ್ದಿಷ್ಟ ಕ್ರಿಯೆಗಳ ಸಂಖ್ಯಾ ಪಟ್ಟಿ, ಕ್ರಮದಲ್ಲಿ.',
+  skillsExamplesName: 'ಉದಾಹರಣೆಗಳು',
+  skillsExamplesText: 'ಉತ್ತಮ ಔಟ್‌ಪುಟ್ ಹೇಗಿರುತ್ತದೆ? ಗುಣಮಟ್ಟವನ್ನು ಆಂಕರ್ ಮಾಡುವ ಕಾಂಕ್ರೀಟ್ ಇನ್‌ಪುಟ್/ಔಟ್‌ಪುಟ್ ಜೋಡಿಗಳು.',
+  skillsTemplatesLabel: 'ಪ್ರಾರಂಭಿಸಲು ಪೂರ್ವ-ಲೋಡ್ ಟೆಂಪ್ಲೇಟ್‌ಗಳು:',
+  skillsBackFooter: 'ಒಂದು ಸ್ಕಿಲ್ ವ್ಯಾಖ್ಯಾನ ನೂರಾರು ಪುನರಾವರ್ತಿತ ವಿವರಣೆಗಳನ್ನು ಬದಲಾಯಿಸುತ್ತದೆ. ಒಮ್ಮೆ ಬರೆಯಿರಿ, ಶಾಶ್ವತವಾಗಿ ಬಳಸಿ.',
+
+  // Skill Paradox Back
+  paradoxIntro: 'ಯಾರೂ ಹೇಳದ ಪ್ಯಾರಡಾಕ್ಸ್ ಇಲ್ಲಿದೆ: AI ಕೋಡಿಂಗ್ ವೇಗಗೊಳಿಸುತ್ತದೆ, ಆದರೆ ಕೋಡ್ ಅರ್ಥಮಾಡಿಕೊಳ್ಳುವ ಅಗತ್ಯವನ್ನು ನಿವಾರಿಸುವುದಿಲ್ಲ.',
+  paradoxQuote: 'ಪರಿಕರ ಅದನ್ನು ಚಲಾಯಿಸುವ ಮನುಷ್ಯನಷ್ಟೇ ಒಳ್ಳೆಯದು. Claude ಉತ್ಪಾದಿಸಿದ್ದನ್ನು ಓದಲಾಗದಿದ್ದರೆ, ಕೆಲಸ ಮಾಡುವ ಕೋಡ್ ಮತ್ತು ನಂಬಿಕಾರ್ಹವಾಗಿ ಕಾಣುವ ಅಸಂಬದ್ಧದ ನಡುವಿನ ವ್ಯತ್ಯಾಸ ಗುರುತಿಸಲಾಗುವುದಿಲ್ಲ.',
+  paradoxWorkflowLabel: 'ಮೂಲಭೂತ ಕಾರ್ಯಪ್ರವಾಹ:',
+  paradoxSpecify: 'ನಿರ್ದಿಷ್ಟಪಡಿಸಿ.',
+  paradoxSpecifyDesc: 'ನಿಮಗೆ ಏನು ಬೇಕು ಎಂಬುದರ ಬಗ್ಗೆ ನಿಷ್ಕರುಣವಾಗಿ ಸ್ಪಷ್ಟವಾಗಿರಿ. ಅಸ್ಪಷ್ಟತೆ ಶತ್ರು.',
+  paradoxGenerate: 'ಉತ್ಪಾದಿಸಿ.',
+  paradoxGenerateDesc: 'Claude Code ಟೈಪ್ ಮಾಡಲಿ. ಬಾಯ್ಲರ್‌ಪ್ಲೇಟ್, ಸಿಂಟ್ಯಾಕ್ಸ್, ವೈರಿಂಗ್ ಅದು ನಿಭಾಯಿಸುತ್ತದೆ.',
+  paradoxVerify: 'ಪರಿಶೀಲಿಸಿ.',
+  paradoxVerifyDesc: 'ಓದಿ, ಪರೀಕ್ಷಿಸಿ, ಫಲಿತಾಂಶವನ್ನು ಮೌಲ್ಯಮಾಪನ ಮಾಡಿ. ನಿಮ್ಮ ಜ್ಞಾನ ಅತ್ಯಂತ ಹೆಚ್ಚು ಮುಖ್ಯವಾಗುವುದು ಇಲ್ಲಿ.',
+  paradoxMiddle: 'ಪ್ರತಿ ಸಾಲನ್ನು ಬರೆಯಲು ಅಲ್ಲ, ಔಟ್‌ಪುಟ್ ಮೌಲ್ಯಮಾಪನ ಮಾಡಲು ಸಾಕಷ್ಟು ಜ್ಞಾನ ಬೇಕು. ಅದೇ ಸ್ಕಿಲ್ ಪ್ಯಾರಡಾಕ್ಸ್ — AI ಕೋಡ್ ಉತ್ಪಾದಿಸುವ ಮಹಡಿಯನ್ನು ಕಡಿಮೆ ಮಾಡುತ್ತದೆ, ಆದರೆ ಅದನ್ನು ಮೌಲ್ಯಮಾಪನ ಮಾಡುವ ಮಟ್ಟವನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ.',
+  paradoxClosing: 'AI ಕೋಡಿಂಗ್ ಪರಿಕರಗಳೊಂದಿಗೆ ಯಶಸ್ವಿಯಾಗುವವರು ಕನಿಷ್ಠ ಟೈಪ್ ಮಾಡುವವರಲ್ಲ. ಏನು ಅಸ್ತಿತ್ವದಲ್ಲಿರಬೇಕು ಎಂಬುದರ ಬಗ್ಗೆ ಅತ್ಯಂತ ಸ್ಪಷ್ಟವಾಗಿ ಯೋಚಿಸುವವರು — ಮತ್ತು ಔಟ್‌ಪುಟ್ ಸರಿಯಾಗಿದ್ದಾಗ ಹೇಳಬಲ್ಲವರು.',
+  },
+};
+
+export default translations;

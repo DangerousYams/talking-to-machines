@@ -1,0 +1,170 @@
+const translations: Record<string, Record<string, string>> = {
+  ch7: {
+  // === TerminalPlayground ===
+  terminalTitle: 'Sân Chơi Terminal',
+  terminalSubtitle: 'Xem Claude Code suy nghĩ, viết và chạy',
+  terminalPickTask: 'Chọn một nhiệm vụ và xem cách Claude Code phân tích, viết code và kiểm tra kết quả.',
+  tryAnotherTask: 'Thử nhiệm vụ khác',
+  filesLabel: 'TỆP',
+  filesMobileButton: 'Tệp',
+  writeLabel: 'VIẾT',
+
+  // Terminal presets
+  presetCountdownLabel: 'Tạo bộ đếm ngược React',
+  presetCountdownDesc: 'Xây component đếm ngược tái sử dụng với điều khiển bắt đầu/tạm dừng',
+  presetBugLabel: 'Sửa lỗi đăng nhập',
+  presetBugDesc: 'Chẩn đoán và sửa luồng xác thực bị hỏng',
+  presetDarkmodeLabel: 'Thêm chế độ tối cho ứng dụng',
+  presetDarkmodeDesc: 'Triển khai nút chuyển chế độ tối theo hệ thống với lưu trữ',
+
+  // Terminal step texts (thinking only - code/commands stay in English)
+  thinkingReadingProject: 'Đang đọc cấu trúc dự án và tìm hiểu codebase...',
+  thinkingPlanCountdown: 'Lập kế hoạch: Tạo component CountdownTimer với hook useState và useEffect, điều khiển bắt đầu/tạm dừng/đặt lại, và hiển thị thời gian đã định dạng.',
+  successCountdown: 'Component CountdownTimer đã tạo với điều khiển bắt đầu, tạm dừng và đặt lại. Sẵn sàng tại localhost:5173.',
+  thinkingReadingLogin: 'Đang đọc src/auth/login.ts và src/auth/session.ts...',
+  thinkingFoundBug: 'Tìm thấy lỗi: handler đăng nhập await fetchUser() nhưng không kiểm tra phản hồi null trước khi đặt session token. Khi API trả về 401, code bị crash.',
+  successBugFix: 'Đã sửa lỗi: Thêm kiểm tra null và xử lý lỗi phù hợp cho phản hồi API thất bại. Cả 3 test đều pass.',
+  thinkingReadingStyles: 'Đang đọc style hiện tại và cấu trúc component...',
+  thinkingPlanDarkMode: 'Kế hoạch: 1) Tạo hook useDarkMode với lưu trữ localStorage, 2) Thêm CSS custom properties cho theme tối, 3) Xây component nút chuyển.',
+  successDarkMode: 'Đã thêm chế độ tối với nhận diện tùy chọn hệ thống, lưu trữ localStorage, và hiệu ứng chuyển CSS mượt mà.',
+
+  // === SkillBuilder ===
+  skillBuilderTitle: 'Xây Dựng Skill',
+  skillBuilderSubtitle: 'Viết hướng dẫn tái sử dụng cho Claude Code',
+  claudeMdLabel: 'CLAUDE.md',
+  editedLabel: 'đã sửa',
+  validationLabel: 'Xác Nhận',
+  triggerLabel: 'Kích Hoạt',
+  stepsLabel: 'Các Bước',
+  examplesLabel: 'Ví Dụ',
+  hasClearTrigger: 'Có điều kiện kích hoạt rõ ràng',
+  stepsAreSpecific: 'Các bước cụ thể',
+  includesExamples: 'Có ví dụ',
+  testLabel: 'Thử',
+  testScenarioLabel: 'Kịch Bản Thử',
+  userRequestLabel: 'Yêu Cầu Người Dùng',
+  requestPrefix: 'Yêu cầu:',
+  viewFullOutput: 'Xem toàn bộ đầu ra',
+
+  // Skill templates
+  templateReactComponent: 'Tạo Component React',
+  templateTestWriter: 'Viết Test',
+  templateDocGenerator: 'Tạo Tài Liệu',
+
+  // Test tasks
+  testTaskReact: 'Tạo component UserProfile hiển thị avatar, tên và tiểu sử',
+  testTaskTest: 'Viết test cho utils/formatDate.ts',
+  testTaskDoc: 'Viết tài liệu cho module auth',
+
+  // === RefactorRace ===
+  refactorRaceTitle: 'Cuộc Đua Tái Cấu Trúc',
+  refactorRaceSubtitle: 'Bạn vs. Claude Code -- dọn dẹp hàm lộn xộn này',
+  refactorRaceIntro: 'Bên dưới là hàm với tên biến khó hiểu, không có kiểu dữ liệu, và bubble sort viết tay. Nhiệm vụ của bạn: tái cấu trúc thành thứ dễ đọc. Claude Code sẽ làm cùng việc bên cạnh bạn.',
+  startRefactoring: 'Bắt Đầu Tái Cấu Trúc',
+  yourTurn: 'Lượt Bạn',
+  doneButton: 'Xong',
+  finishedAt: 'Hoàn thành lúc',
+  claudeCodeLabel: 'Claude Code',
+  imDone: 'Tôi Xong',
+  yourCodeTab: 'Code Của Bạn',
+  aiTab: 'AI',
+
+  // Done phase
+  yourVersion: 'Phiên Bản Của Bạn',
+  claudeCodeVersion: 'Phiên Bản Claude Code (~5.5s)',
+  readabilityLabel: 'Dễ Đọc',
+  linesOfCode: 'Số Dòng Code',
+  namingLabel: 'Đặt Tên',
+  youDecide: 'Bạn quyết định',
+  typesAndComments: 'Kiểu dữ liệu + chú thích',
+  linesLabel: 'dòng',
+  yourChoice: 'Lựa chọn của bạn',
+  descriptiveNames: 'Tên mô tả',
+  youLabel: 'Bạn',
+  aiLabel: 'AI',
+  pointNotSpeed: 'Vấn đề không phải ai xong trước.',
+  pointNotSpeedBody: 'Claude Code nhanh, nhưng tốc độ không phải kỹ năng. Kỹ năng là nhìn cả hai phiên bản và đánh giá cái nào bạn thực sự muốn ship. Bạn có đọc được không? Có xử lý edge case không? Đồng đội có hiểu lúc 2 giờ sáng không? Phán đoán đó là của riêng bạn.',
+  pointNotSpeedMobile: 'Tốc độ không phải kỹ năng. Kỹ năng là đánh giá phiên bản nào bạn muốn ship. Phán đoán đó là của riêng bạn.',
+  compareCode: 'So Sánh Code',
+  retryButton: 'Thử Lại',
+  tryAgain: 'Thử Lại',
+  codeComparison: 'So Sánh Code',
+
+  // Metrics (mobile)
+  metricLines: 'Dòng',
+  metricTime: 'Thời gian',
+  metricNames: 'Tên',
+  metricTyped: 'Đánh máy',
+
+  // === WhatWouldYouBuild ===
+  whatWouldYouBuildTitle: 'Bạn Sẽ Xây Gì?',
+  projectsCount: 'dự án được xây bởi những người như bạn',
+  noProjectsInCategory: 'Chưa có dự án trong danh mục này.',
+  yourTurnHeading: 'Lượt bạn',
+  yourTurnPromptMobile: 'Bạn sẽ giải quyết vấn đề gì bằng phần mềm cá nhân?',
+  yourTurnPromptDesktop: 'Vấn đề nào trong cuộc sống bạn sẽ giải quyết bằng phần mềm cá nhân? Mô tả công cụ bạn ước tồn tại.',
+  ideaPlaceholder: 'Tôi sẽ xây một ứng dụng mà...',
+  saveIdea: 'Lưu ý tưởng',
+  savedConfirmationMobile: 'Đã lưu! Bạn sẽ dùng nó ở Chương 11.',
+  savedConfirmationDesktop: 'Ý tưởng đã lưu! Bạn sẽ dùng nó ở Chương 11.',
+  builderLabel: 'Người xây',
+  builtBy: 'Xây bởi',
+  techStack: 'Công Nghệ',
+  timeEstimate: 'Thời gian ước tính:',
+  feasibilityWeekend: 'Dự án cuối tuần',
+  feasibilityWeek: 'Dự án một tuần',
+  feasibilityMonth: 'Dự án một tháng',
+  footerInspiration: 'Mỗi dự án ở đây đều được xây bởi ai đó bắt đầu chỉ với một ý tưởng.',
+
+  // === Ch7FlipCards ===
+  claudeCodeKeyFact: 'Claude Code theo một vòng lặp: Đọc codebase → Lập kế hoạch → Viết code → Chạy → Sửa lỗi. CLAUDE.md là bộ hướng dẫn cố định định hình mọi tương tác.',
+  skillsKeyFact: 'Một skill có ba phần: Kích Hoạt (khi nào chạy), Các Bước (làm gì), Ví Dụ (kết quả tốt trông như thế nào). Một định nghĩa skill thay thế hàng trăm lần giải thích lặp lại.',
+
+  flipLabelClaudeCode: 'Tại sao hiệu quả? Cách Claude Code Suy Nghĩ',
+  flipLabelSkills: 'Tại sao hiệu quả? Xây Dựng Skills',
+  flipLabelSkillParadox: 'Tại sao hiệu quả? Nghịch Lý Kỹ Năng',
+  backTitleClaudeCode: 'Cách Claude Code Suy Nghĩ',
+  backTitleSkills: 'Xây Dựng Skills (Khung T-S-E)',
+  backTitleSkillParadox: 'Nghịch Lý Kỹ Năng',
+
+  // ClaudeCode Back
+  ccBackIntro: 'Claude Code không phải chatbot viết code. Nó là vòng lặp agent — hệ thống đọc, lập kế hoạch, viết, chạy, và sửa, lặp đi lặp lại cho đến khi hoàn thành.',
+  ccReadName: 'Đọc',
+  ccReadText: 'Quét file, hiểu kiến trúc, đọc CLAUDE.md để biết quy tắc dự án.',
+  ccPlanName: 'Lập kế hoạch',
+  ccPlanText: 'Chia nhiệm vụ thành các bước, quyết định file nào cần sửa và theo thứ tự nào.',
+  ccWriteName: 'Viết',
+  ccWriteText: 'Tạo code qua nhiều file — không phải đoạn rời, mà là thay đổi mạch lạc, liên kết.',
+  ccRunName: 'Chạy',
+  ccRunText: 'Thực thi code, chạy test, kiểm tra lỗi. Nếu có gì hỏng, quay lại sửa.',
+  ccFixName: 'Sửa',
+  ccFixText: 'Đọc lỗi, chẩn đoán nguyên nhân, viết bản vá, và chạy lại. Tự động.',
+  ccBackNote: 'Nó thấy toàn bộ dự án — không chỉ file bạn đang sửa. Và CLAUDE.md là hiến pháp dự án: hướng dẫn cố định định hình mọi tương tác. Hãy nghĩ nó như system prompt cho codebase.',
+
+  // Skills Back
+  skillsBackIntro: 'Skill là bộ hướng dẫn tái sử dụng — công thức cho Claude Code biết chính xác cách xử lý một loại nhiệm vụ. Mỗi skill theo khung T-S-E:',
+  skillsTriggerName: 'Kích Hoạt (Trigger)',
+  skillsTriggerText: 'Skill nên chạy khi nào? Ví dụ: "khi được yêu cầu tạo component React"',
+  skillsStepsName: 'Các Bước (Steps)',
+  skillsStepsText: 'Nên làm gì? Danh sách hành động cụ thể, đánh số, theo thứ tự.',
+  skillsExamplesName: 'Ví Dụ (Examples)',
+  skillsExamplesText: 'Đầu ra tốt trông như thế nào? Cặp đầu vào/đầu ra cụ thể để neo chất lượng.',
+  skillsTemplatesLabel: 'Template có sẵn để bắt đầu:',
+  skillsBackFooter: 'Một định nghĩa skill thay thế hàng trăm lần giải thích lặp lại. Viết một lần, dùng mãi mãi.',
+
+  // Skill Paradox Back
+  paradoxIntro: 'Đây là nghịch lý không ai cảnh báo bạn: AI làm code nhanh hơn, nhưng không loại bỏ nhu cầu hiểu code.',
+  paradoxQuote: 'Công cụ chỉ tốt bằng người điều khiển nó. Nếu bạn không đọc được những gì Claude tạo ra, bạn không phân biệt được code hoạt động với thứ trông có vẻ hợp lý nhưng vô nghĩa.',
+  paradoxWorkflowLabel: 'Quy trình cơ bản:',
+  paradoxSpecify: 'Chỉ định.',
+  paradoxSpecifyDesc: 'Rõ ràng tàn nhẫn về những gì bạn muốn. Mơ hồ là kẻ thù.',
+  paradoxGenerate: 'Tạo.',
+  paradoxGenerateDesc: 'Để Claude Code đánh máy. Nó xử lý boilerplate, cú pháp, kết nối.',
+  paradoxVerify: 'Xác minh.',
+  paradoxVerifyDesc: 'Đọc, test, và đánh giá kết quả. Đây là nơi kiến thức của bạn quan trọng nhất.',
+  paradoxMiddle: 'Bạn cần đủ kiến thức để đánh giá đầu ra, không phải để viết từng dòng. Đó là nghịch lý kỹ năng — AI hạ thấp ngưỡng sản xuất code, nhưng nâng cao tiêu chuẩn đánh giá nó.',
+  paradoxClosing: 'Những người thành công với công cụ code AI không phải là người đánh máy ít nhất. Họ là người suy nghĩ rõ ràng nhất về những gì cần tồn tại — và biết khi nào đầu ra đúng.',
+  },
+};
+
+export default translations;
