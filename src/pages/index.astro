@@ -3,6 +3,7 @@ export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import GtagHead from '../components/analytics/GtagHead.astro';
+import HeadSEO from '../components/seo/HeadSEO.astro';
 import { chapters } from '../data/chapters';
 ---
 
@@ -16,6 +17,12 @@ import { chapters } from '../data/chapters';
     <meta property="og:title" content="Talking to Machines" />
     <meta property="og:description" content="A hands-on guide to AI. Interactive, visual, project-based." />
     <title>Talking to Machines — A Hands-On Guide to AI</title>
+    <HeadSEO
+      title="Talking to Machines — A Hands-On Guide to AI"
+      description="An interactive, visual guide to AI. 11 chapters of scrollytelling, live demos, and hands-on projects. Learn prompt engineering, AI agents, and how to build real projects with AI."
+      path="/"
+      type="course"
+    />
     <GtagHead />
   </head>
   <body class="bg-cream text-deep min-h-screen">
@@ -250,6 +257,165 @@ import { chapters } from '../data/chapters';
       </div>
 
     </section>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- FAQ — structured data for search + LLM discovery   -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <section class="max-w-[680px] mx-auto px-6 md:px-10 pb-32">
+      <div class="flex items-center gap-4 mb-16">
+        <div class="flex-1 h-px bg-deep/15"></div>
+        <p class="text-[11px] tracking-[0.2em] uppercase text-subtle/70" style="font-family: var(--font-mono);">
+          Common Questions
+        </p>
+        <div class="flex-1 h-px bg-deep/15"></div>
+      </div>
+
+      <div class="space-y-10">
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            Who is this for?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Anyone who wants to get genuinely good at using AI. No coding experience required. Whether you're a student, a professional, a creative, or just curious — if you've used ChatGPT a few times and want to go much deeper, this is for you. The curriculum takes you from basic prompting all the way to building real projects with AI coding agents.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            Do I need to know how to code?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            No. Chapters 1–6 are about prompting, AI tools, and agents — no code involved. Chapters 7–11 teach you to build software using AI coding agents like Claude Code and Cursor, where you describe what you want in plain English and the AI writes the code. You learn to direct, not to program.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            What makes this different from other AI courses?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Three things. First, it's interactive — every chapter has live AI-powered widgets where you practice immediately, not just read. Second, it's honest — there's a whole chapter on when AI gets it wrong, and we don't oversell what it can do. Third, it's designed — this isn't a wall of text. It's a crafted reading experience with scroll-driven visuals and narrative storytelling.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            How much does it cost?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Chapter 1 is completely free. Full access to all 11 chapters, interactive tools, and future content is a one-time payment of $29 — no subscriptions, no upsells.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            What AI tools does this cover?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            The curriculum covers prompt engineering techniques that work across all AI models, plus specific tools including Claude, ChatGPT, Midjourney, DALL-E, Stable Diffusion, Suno, Perplexity, Claude Code, Cursor, and 30+ more across image generation, video, music, research, and coding categories.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            How long does it take to complete?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Each chapter takes about 20–40 minutes of reading and interaction. The full curriculum is roughly 6–8 hours at a comfortable pace, but you can go at your own speed. Chapter 11 includes a multi-week capstone project.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            Is this available in other languages?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Yes. All 11 chapters are available in 19 languages including Hindi, Spanish, Portuguese, Arabic, French, Indonesian, Japanese, Korean, German, Chinese, and more.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-[17px] font-bold text-deep mb-2" style="font-family: var(--font-heading);">
+            Will I actually be able to build things after this?
+          </h3>
+          <p class="text-[15px] text-deep/70 leading-relaxed" style="font-family: var(--font-body);">
+            Yes — that's the point. By Chapter 11 you'll have built a real project: a game, an interactive story, a research tool, a web app, or an AI agent. The curriculum teaches you to use AI coding agents to build functional software, even with zero prior coding experience.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Who is Talking to Machines for?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Anyone who wants to get genuinely good at using AI. No coding experience required. Whether you\'re a student, a professional, a creative, or just curious — if you\'ve used ChatGPT a few times and want to go much deeper, this is for you.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do I need to know how to code to take this AI course?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. Chapters 1–6 cover prompting, AI tools, and agents with no code. Chapters 7–11 teach you to build software using AI coding agents like Claude Code and Cursor, where you describe what you want in plain English and the AI writes the code.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What makes Talking to Machines different from other AI courses?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'It\'s interactive (live AI-powered practice widgets in every chapter), honest (covers AI limitations and failures, not just hype), and designed as a crafted editorial experience with scroll-driven visuals, not a wall of text.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How much does the Talking to Machines course cost?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Chapter 1 is completely free. Full access to all 11 chapters, interactive tools, and future content is a one-time payment of $29 — no subscriptions, no upsells.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'What AI tools does this curriculum cover?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Prompt engineering techniques that work across all AI models, plus specific coverage of Claude, ChatGPT, Midjourney, DALL-E, Stable Diffusion, Suno, Perplexity, Claude Code, Cursor, and 30+ more tools across image, video, music, research, and coding categories.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How long does it take to complete the Talking to Machines curriculum?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Each chapter takes about 20–40 minutes. The full curriculum is roughly 6–8 hours at a comfortable pace. Chapter 11 includes a multi-week capstone project.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Is this AI course available in other languages?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. All 11 chapters are available in 19 languages including Hindi, Spanish, Portuguese, Arabic, French, Indonesian, Japanese, Korean, German, Chinese, and more.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Will I be able to build software after completing this course?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. By Chapter 11 you\'ll have built a real project: a game, an interactive story, a research tool, a web app, or an AI agent — using AI coding agents, even with zero prior coding experience.',
+          },
+        },
+      ],
+    })} />
 
     <script>
       const lines = [

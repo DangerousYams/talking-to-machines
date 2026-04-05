@@ -1,0 +1,155 @@
+---
+/**
+ * Reusable SEO head component.
+ * Adds canonical URL, hreflang alternates, twitter card, og:image, and JSON-LD.
+ */
+import { languages } from '../../data/languages';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path without locale prefix, e.g. '/ch1' or '/' */
+  path: string;
+  /** Current locale, defaults to 'en' */
+  locale?: string;
+  /** og:image path relative to site root, e.g. '/og/ch1.png' */
+  ogImage?: string;
+  /** Page type for JSON-LD: 'course' for landing, 'chapter' for chapter pages */
+  type?: 'course' | 'chapter' | 'page';
+  /** Chapter number (for chapter pages) */
+  chapterNumber?: number;
+  /** Chapter concepts (for chapter pages) */
+  concepts?: { name: string; description: string }[];
+}
+
+const {
+  title,
+  description,
+  path,
+  locale = 'en',
+  ogImage,
+  type = 'page',
+  chapterNumber,
+  concepts,
+} = Astro.props;
+
+const site = 'https://talkingtomachines.xyz';
+
+// Canonical URL — always the English version for i18n pages
+const canonicalPath = path === '/' ? '' : path;
+const canonical = locale === 'en'
+  ? `${site}${canonicalPath}`
+  : `${site}/${locale}${canonicalPath}`;
+
+// Hreflang alternates — only for chapter pages that have translations
+const hasTranslations = path.startsWith('/ch');
+const hreflangs = hasTranslations
+  ? languages.map(lang => ({
+      code: lang.code,
+      href: lang.code === 'en'
+        ? `${site}${canonicalPath}`
+        : `${site}/${lang.code}${canonicalPath}`,
+    }))
+  : [];
+
+// OG image — fallback to a default
+const ogImageUrl = ogImage
+  ? `${site}${ogImage}`
+  : `${site}/og/default.png`;
+
+// JSON-LD
+let jsonLd: Record<string, unknown> | null = null;
+
+if (type === 'course') {
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'Talking to Machines',
+    description: 'A comprehensive, interactive guide to AI — from prompting to building agents to shipping real projects.',
+    url: site,
+    provider: {
+      '@type': 'Organization',
+      name: 'Talking to Machines',
+      url: site,
+    },
+    educationalLevel: 'Beginner to Intermediate',
+    teaches: [
+      'AI prompt engineering',
+      'Context window management',
+      'AI tool selection and evaluation',
+      'Building AI agents',
+      'Using AI coding assistants',
+      'AI-assisted software development',
+      'Evaluating AI output quality',
+    ],
+    inLanguage: languages.map(l => l.code),
+    numberOfCredits: 11,
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'online',
+      courseWorkload: 'PT8H',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '29',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      description: 'Chapter 1 free. Full access one-time purchase.',
+    },
+  };
+} else if (type === 'chapter' && chapterNumber) {
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LearningResource',
+    name: title,
+    description,
+    url: canonical,
+    isPartOf: {
+      '@type': 'Course',
+      name: 'Talking to Machines',
+      url: site,
+    },
+    learningResourceType: 'Interactive lesson',
+    educationalLevel: 'Beginner to Intermediate',
+    position: chapterNumber,
+    inLanguage: locale,
+    ...(concepts && concepts.length > 0
+      ? { teaches: concepts.map(c => c.name) }
+      : {}),
+    interactivityType: 'active',
+  };
+}
+---
+
+<!-- Canonical -->
+<link rel="canonical" href={canonical} />
+
+<!-- Hreflang alternates -->
+{hreflangs.map(({ code, href }) => (
+  <link rel="alternate" hreflang={code} href={href} />
+))}
+{hasTranslations && (
+  <link rel="alternate" hreflang="x-default" href={`${site}${canonicalPath}`} />
+)}
+
+<!-- Open Graph image -->
+<meta property="og:type" content={type === 'chapter' ? 'article' : 'website'} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content={locale} />
+<meta property="og:site_name" content="Talking to Machines" />
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Preconnect for fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- JSON-LD structured data -->
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import HeadSEO from '../components/seo/HeadSEO.astro';
 import ToolsCollection from '../components/ToolsCollection';
 ---
 
@@ -14,6 +15,11 @@ import ToolsCollection from '../components/ToolsCollection';
     <meta name="description" content="Every interactive tool from Talking to Machines — prompt builders, AI games, quizzes, and more. All in one place." />
     <meta property="og:title" content="Toolbox — Talking to Machines" />
     <title>Toolbox — Talking to Machines</title>
+    <HeadSEO
+      title="Toolbox — Talking to Machines"
+      description="Every interactive tool from Talking to Machines — prompt builders, AI games, quizzes, and more. All in one place."
+      path="/toolbox"
+    />
   </head>
   <body class="bg-cream text-deep min-h-screen">
 

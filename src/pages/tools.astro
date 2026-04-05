@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import '../styles/global.css';
+import HeadSEO from '../components/seo/HeadSEO.astro';
 import ToolWall from '../components/widgets/ch4/ToolWall';
 import PaywallGate from '../components/ui/PaywallGate';
 ---
@@ -14,6 +15,11 @@ import PaywallGate from '../components/ui/PaywallGate';
     <meta property="og:title" content="AI Tool Directory — Talking to Machines" />
     <meta property="og:description" content="Browse 30+ AI tools across 8 categories. Find the right tool for the job." />
     <title>AI Tool Directory — Talking to Machines</title>
+    <HeadSEO
+      title="AI Tool Directory — Talking to Machines"
+      description="Browse 30+ AI tools across image generation, video, music, research, coding, and more. Filterable, searchable, with details on each."
+      path="/tools"
+    />
   </head>
   <body class="bg-cream text-deep min-h-screen">
     <PaywallGate chapterTitle="AI Tool Directory" accentColor="#0EA5E9" client:load />

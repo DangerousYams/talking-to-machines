@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import HeadSEO from '../../components/seo/HeadSEO.astro';
 import ScrollProgress from '../../components/scroll/ScrollProgress';
 import ChapterDrawer from '../../components/ui/ChapterDrawer';
 import FadeInBlock from '../../components/scroll/FadeInBlock';
@@ -18,6 +19,11 @@ import { guides, guideCategories } from '../../data/guides';
     <meta property="og:title" content="Quick Guides — Talking to Machines" />
     <meta property="og:description" content="10 beginner-friendly guides for AI tools and infrastructure. Save as PDF." />
     <title>Quick Guides — Talking to Machines</title>
+    <HeadSEO
+      title="Quick Guides — Talking to Machines"
+      description="10 downloadable quick guides — AI models, Claude Code, Vercel, Supabase, Stripe, and more. No jargon, no assumptions."
+      path="/guides"
+    />
 
     <style>
       .guides-page {

@@ -3,6 +3,7 @@ export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import GtagHead from '../components/analytics/GtagHead.astro';
+import HeadSEO from '../components/seo/HeadSEO.astro';
 
 // ── Replace these with real URLs ──
 const FORM_URL_WEEKEND = '#register-weekend';
@@ -20,6 +21,11 @@ const FORM_URL_CONSULT = '#register-consult';
     <meta property="og:title" content="Talking to Machines — Live Course" />
     <meta property="og:description" content="Live AI workshops for ages 11+. Prompting, tools, agents — hands-on, on Zoom." />
     <title>Live Course — Talking to Machines</title>
+    <HeadSEO
+      title="Live Course — Talking to Machines"
+      description="Live AI workshops for ages 11+. Learn prompting, creative tools, and agent design — hands-on, from a Pixar veteran. Small cohorts on Zoom."
+      path="/course"
+    />
     <GtagHead />
     <style>
       /* ── Hero cards ── */

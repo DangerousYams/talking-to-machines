@@ -6,6 +6,7 @@ import ChapterDrawer from '../components/ui/ChapterDrawer';
 import LanguageSelector from '../components/ui/LanguageSelector.astro';
 import PaywallGate from '../components/ui/PaywallGate';
 import GtagHead from '../components/analytics/GtagHead.astro';
+import HeadSEO from '../components/seo/HeadSEO.astro';
 
 interface Props {
   title: string;
@@ -27,6 +28,11 @@ const { title, description, accent, slug } = Astro.props;
     <meta property="og:title" content={`${title} — Talking to Machines`} />
     <meta property="og:description" content={description} />
     <title>{title} — Talking to Machines</title>
+    <HeadSEO
+      title={`${title} — Talking to Machines`}
+      description={description}
+      path={`/${slug}`}
+    />
     <GtagHead />
   </head>
   <body class="bg-cream text-deep min-h-screen">
