@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { collectErrors, filterBenignErrors } from './helpers';
+import { collectErrors, filterBenignErrors, bypassPaywall } from './helpers';
 
 test.describe('Field Guide (PromptFramer)', () => {
   test('loads and shows tool selector', async ({ page }) => {
@@ -43,6 +43,9 @@ test.describe('Field Guide (PromptFramer)', () => {
 
     await page.goto('/field-guide', { waitUntil: 'domcontentloaded', timeout: 30_000 });
 
+    // Dismiss paywall so buttons are clickable
+    await bypassPaywall(page);
+
     // Wait for PromptFramer to fully hydrate — look for the tool selector area
     await page.waitForFunction(
       () => {
@@ -54,16 +57,17 @@ test.describe('Field Guide (PromptFramer)', () => {
     );
 
     // The tool type selector buttons are the first set of small buttons
-    // Click a few and verify no crashes
+    // Click a few enabled, visible buttons and verify no crashes
     const allButtons = page.locator('button');
     const count = await allButtons.count();
+    let clicked = 0;
 
-    // Click buttons 2-4 (skip first which is already selected)
-    for (let i = 1; i < Math.min(count, 4); i++) {
+    for (let i = 1; i < count && clicked < 3; i++) {
       const btn = allButtons.nth(i);
-      if (await btn.isVisible()) {
+      if (await btn.isVisible() && await btn.isEnabled()) {
         await btn.click();
         await page.waitForTimeout(400);
+        clicked++;
       }
     }
 

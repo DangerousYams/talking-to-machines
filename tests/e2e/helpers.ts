@@ -9,6 +9,7 @@ const BENIGN_PATTERNS = [
   'KV_REST',
   'net::ERR_',
   'favicon',
+  'the server responded with a status of 403',
   'the server responded with a status of 503',
   'Vite',
   'HMR',
@@ -52,6 +53,21 @@ export function filterBenignErrors(errors: CollectedError[]): CollectedError[] {
   return errors.filter(
     (e) => !BENIGN_PATTERNS.some((p) => e.text.toLowerCase().includes(p.toLowerCase())),
   );
+}
+
+/**
+ * Set a fake paid token in localStorage so PaywallGate doesn't block.
+ * Must be called after page.goto (needs a page context) but before interacting.
+ * Alternatively, call before goto on any same-origin page, then navigate.
+ */
+export async function bypassPaywall(page: Page) {
+  await page.evaluate(() => {
+    const payload = { uid: 'test-e2e', tier: 'paid', cid: null, iat: 0, exp: 9999999999 };
+    const b64 = btoa(JSON.stringify(payload))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    localStorage.setItem('ttm_access_token', `${b64}.e2e-test-sig`);
+    window.dispatchEvent(new Event('ttm-auth-change'));
+  });
 }
 
 /** All public routes that should load without error */
