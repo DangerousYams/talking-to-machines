@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { getUtmParams } from '../../lib/utm';
 
 interface UnlockModalProps {
   feature?: string;
@@ -30,6 +31,7 @@ export default function UnlockModal({ feature = 'Live AI', accentColor = '#7B61F
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ utm: getUtmParams() }),
       });
       const text = await res.text();
       let data: { url?: string; error?: string };

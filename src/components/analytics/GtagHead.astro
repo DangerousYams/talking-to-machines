@@ -1,0 +1,19 @@
+---
+// Google Ads gtag.js — drop into <head> of every layout.
+// Requires env vars:
+//   PUBLIC_GOOGLE_ADS_ID            e.g. AW-123456789
+//   PUBLIC_GOOGLE_ADS_CONVERSION_LABEL  e.g. AbCdEfGhIjKlMnOpQr (from your conversion action)
+const adsId = import.meta.env.PUBLIC_GOOGLE_ADS_ID;
+---
+
+{adsId && (
+  <Fragment>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${adsId}`}></script>
+    <script is:inline define:vars={{ adsId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', adsId);
+    </script>
+  </Fragment>
+)}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { trackPageView } from '../../lib/analytics';
+import { captureUtmParams } from '../../lib/utm';
 
 interface PageViewTrackerProps {
   variant: 'scroll' | 'cards';
@@ -8,7 +9,8 @@ interface PageViewTrackerProps {
 
 export default function PageViewTracker({ variant, chapter }: PageViewTrackerProps) {
   useEffect(() => {
-    trackPageView(window.location.pathname, variant, chapter);
+    const utm = captureUtmParams();
+    trackPageView(window.location.pathname, variant, chapter, utm as Record<string, string>);
   }, [variant, chapter]);
 
   return null;

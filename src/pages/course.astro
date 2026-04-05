@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../components/analytics/GtagHead.astro';
 
 // ── Replace these with real URLs ──
 const FORM_URL_WEEKEND = '#register-weekend';
@@ -19,6 +20,7 @@ const FORM_URL_CONSULT = '#register-consult';
     <meta property="og:title" content="Talking to Machines — Live Course" />
     <meta property="og:description" content="Live AI workshops for ages 11+. Prompting, tools, agents — hands-on, on Zoom." />
     <title>Live Course — Talking to Machines</title>
+    <GtagHead />
     <style>
       /* ── Hero cards ── */
       .hero-card {

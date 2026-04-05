@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { getUtmParams } from '../../lib/utm';
+import { trackPaywallShown, trackPaywallCheckoutClicked, trackPaywallConverted } from '../../lib/analytics';
 
 interface PaywallGateProps {
   chapterTitle: string;
   accentColor: string;
+  chapterSlug?: string;
 }
 
-export default function PaywallGate({ chapterTitle, accentColor }: PaywallGateProps) {
+export default function PaywallGate({ chapterTitle, accentColor, chapterSlug }: PaywallGateProps) {
   const { isPaid, unlock } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,19 +27,34 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
   const [codeRedeeming, setCodeRedeeming] = useState(false);
   const [codeError, setCodeError] = useState<string | null>(null);
 
+  const shownTracked = useRef(false);
+
   useEffect(() => { setMounted(true); }, []);
+
+  // Track paywall shown once per mount (after hydration, only if not paid)
+  useEffect(() => {
+    if (mounted && !isPaid && !shownTracked.current) {
+      shownTracked.current = true;
+      const slug = chapterSlug || window.location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'unknown';
+      trackPaywallShown(slug);
+    }
+  }, [mounted, isPaid, chapterSlug]);
 
   // Don't render during SSR or before hydration (no localStorage access)
   if (!mounted) return null;
   if (isPaid) return null;
 
+  const getSlug = () => chapterSlug || window.location.pathname.replace(/^\//, '').replace(/\/$/, '') || 'unknown';
+
   const handleUnlock = async () => {
     setLoading(true);
     setError(null);
+    trackPaywallCheckoutClicked(getSlug());
     try {
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ utm: getUtmParams() }),
       });
       const text = await res.text();
       let data: { url?: string; error?: string };
@@ -91,6 +109,7 @@ export default function PaywallGate({ chapterTitle, accentColor }: PaywallGatePr
       if (!res.ok) throw new Error(data.error || 'Invalid code');
       if (data.token) {
         unlock(data.token);
+        trackPaywallConverted(getSlug(), 'code');
       }
     } catch (err) {
       setCodeError(err instanceof Error ? err.message : 'Invalid code');

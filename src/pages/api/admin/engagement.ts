@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabase';
 export const GET: APIRoute = async ({ url }) => {
   const days = parseInt(url.searchParams.get('days') || '7');
   const since = new Date(Date.now() - days * 86400000).toISOString();
+  const paidFilter = url.searchParams.get('paid'); // 'true', 'false', or null (all)
 
   if (!supabase) {
     return new Response(JSON.stringify({ chapters: [] }), {
@@ -14,11 +15,15 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   try {
-    const { data: rows } = await supabase
+    let query = supabase
       .from('scroll_depth')
       .select('*')
       .gte('created_at', since);
 
+    if (paidFilter === 'true') query = query.eq('is_paid', true);
+    if (paidFilter === 'false') query = query.or('is_paid.eq.false,is_paid.is.null');
+
+    const { data: rows } = await query;
     const records = rows || [];
 
     // Group by chapter
@@ -64,6 +69,26 @@ export const GET: APIRoute = async ({ url }) => {
         }
       }
 
+      // Section-level drop-off: distribution of where sessions stopped (max_section_id)
+      const sectionDropoff = new Map<string, number>();
+      for (const r of chapterRows) {
+        const sectionId = r.max_section_id || `index-${r.max_section_index}`;
+        sectionDropoff.set(sectionId, (sectionDropoff.get(sectionId) || 0) + 1);
+      }
+      const sections = Array.from(sectionDropoff.entries())
+        .map(([sectionId, count]) => ({ sectionId, count, pct: Math.round((count / sessions) * 100) }))
+        .sort((a, b) => b.count - a.count);
+
+      // Paid vs free breakdown
+      const paidRows = chapterRows.filter((r: any) => r.is_paid === true);
+      const freeRows = chapterRows.filter((r: any) => !r.is_paid);
+      const segmentStats = (arr: typeof chapterRows) => ({
+        sessions: arr.length,
+        avgPercent: arr.length > 0 ? Math.round(arr.reduce((s: number, r: any) => s + Number(r.percent_complete), 0) / arr.length) : 0,
+        completionRate: arr.length > 0 ? Math.round((arr.filter((r: any) => r.reached_end).length / arr.length) * 100) : 0,
+        avgTimeSeconds: arr.length > 0 ? Math.round(arr.reduce((s: number, r: any) => s + Number(r.time_on_page_ms || 0), 0) / arr.length / 1000) : 0,
+      });
+
       return {
         slug,
         sessions,
@@ -73,6 +98,11 @@ export const GET: APIRoute = async ({ url }) => {
         avgTimeSeconds: Math.round(avgTimeMs / 1000),
         buckets,
         variants: variantCounts,
+        sections,
+        segments: {
+          paid: segmentStats(paidRows),
+          free: segmentStats(freeRows),
+        },
       };
     }).sort((a, b) => {
       // Sort by chapter number

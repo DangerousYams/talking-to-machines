@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { trackPaywallConverted } from '../../lib/analytics';
 
 type Status = 'loading' | 'success' | 'error' | 'no-session';
 
@@ -46,6 +47,18 @@ export default function SuccessRedeemer() {
 
       unlock(data.token);
       setStatus('success');
+
+      // Track paywall conversion
+      trackPaywallConverted('checkout', 'stripe');
+
+      // Fire Google Ads conversion event
+      const adsId = import.meta.env.PUBLIC_GOOGLE_ADS_ID;
+      const convLabel = import.meta.env.PUBLIC_GOOGLE_ADS_CONVERSION_LABEL;
+      if (adsId && convLabel && typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'conversion', {
+          send_to: `${adsId}/${convLabel}`,
+        });
+      }
 
       // Clean session_id from URL
       window.history.replaceState({}, '', '/success');

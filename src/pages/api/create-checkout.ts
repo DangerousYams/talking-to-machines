@@ -25,16 +25,26 @@ export const POST: APIRoute = async ({ request }) => {
     || import.meta.env.SITE
     || 'http://localhost:4321';
 
+  let utm: Record<string, string> = {};
+  try {
+    const body = await request.json();
+    if (body.utm && typeof body.utm === 'object') utm = body.utm;
+  } catch { /* no body or invalid JSON — fine */ }
+
+  const meta: Record<string, string> = { product: 'ttm-full-access' };
+  if (utm.utm_source) meta.utm_source = utm.utm_source;
+  if (utm.utm_medium) meta.utm_medium = utm.utm_medium;
+  if (utm.utm_campaign) meta.utm_campaign = utm.utm_campaign;
+  if (utm.gclid) meta.gclid = utm.gclid;
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/?canceled=true`,
-      payment_intent_data: {
-        metadata: { product: 'ttm-full-access' },
-      },
-      metadata: { product: 'ttm-full-access' },
+      payment_intent_data: { metadata: meta },
+      metadata: meta,
     });
 
     return new Response(

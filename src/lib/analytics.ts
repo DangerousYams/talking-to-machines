@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { isPaid as checkIsPaid } from './auth';
 
 function getSessionId(): string {
   if (typeof document === 'undefined') return 'ssr';
@@ -46,7 +47,7 @@ async function flush() {
 
 function enqueue(table: string, data: Record<string, unknown>) {
   if (!supabase) return;
-  queue.push({ table, data: { ...data, session_id: getSessionId(), created_at: new Date().toISOString() } });
+  queue.push({ table, data: { ...data, session_id: getSessionId(), is_paid: checkIsPaid() || false, created_at: new Date().toISOString() } });
   if (queue.length >= 10) {
     flush();
   } else {
@@ -55,12 +56,16 @@ function enqueue(table: string, data: Record<string, unknown>) {
   }
 }
 
-export function trackPageView(path: string, variant?: string, chapter?: string) {
+export function trackPageView(path: string, variant?: string, chapter?: string, utm?: Record<string, string>) {
   enqueue('page_views', {
     page_path: path,
     variant: variant || null,
     chapter_slug: chapter || null,
     referrer: typeof document !== 'undefined' ? document.referrer : null,
+    utm_source: utm?.utm_source || null,
+    utm_medium: utm?.utm_medium || null,
+    utm_campaign: utm?.utm_campaign || null,
+    gclid: utm?.gclid || null,
   });
 }
 
@@ -134,6 +139,7 @@ export async function upsertScrollDepth(params: {
         percent_complete: params.percentComplete,
         time_on_page_ms: params.timeOnPageMs,
         reached_end: params.reachedEnd,
+        is_paid: checkIsPaid() || false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
@@ -176,5 +182,30 @@ export function trackAiUsage(chapter: string, widget: string, model: string, inp
     input_tokens: inputTokens,
     output_tokens: outputTokens,
     cost_usd: costUsd,
+  });
+}
+
+export function trackPaywallShown(chapterSlug: string) {
+  enqueue('widget_interactions', {
+    chapter_slug: chapterSlug,
+    widget_name: 'paywall',
+    action: 'shown',
+  });
+}
+
+export function trackPaywallCheckoutClicked(chapterSlug: string) {
+  enqueue('widget_interactions', {
+    chapter_slug: chapterSlug,
+    widget_name: 'paywall',
+    action: 'checkout_clicked',
+  });
+}
+
+export function trackPaywallConverted(chapterSlug: string, method: 'stripe' | 'code' | 'restore') {
+  enqueue('widget_interactions', {
+    chapter_slug: chapterSlug,
+    widget_name: 'paywall',
+    action: 'converted',
+    metadata: { method },
   });
 }

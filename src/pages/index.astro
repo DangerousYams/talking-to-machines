@@ -2,6 +2,7 @@
 export const prerender = true;
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../components/analytics/GtagHead.astro';
 import { chapters } from '../data/chapters';
 ---
 
@@ -15,6 +16,7 @@ import { chapters } from '../data/chapters';
     <meta property="og:title" content="Talking to Machines" />
     <meta property="og:description" content="A hands-on guide to AI. Interactive, visual, project-based." />
     <title>Talking to Machines — A Hands-On Guide to AI</title>
+    <GtagHead />
   </head>
   <body class="bg-cream text-deep min-h-screen">
 

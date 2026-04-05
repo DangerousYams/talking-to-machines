@@ -4,6 +4,9 @@ import PageViewsChart from './PageViewsChart';
 import AiCostTable from './AiCostTable';
 import EngagementPanel from './EngagementPanel';
 import AccessCodesPanel from './AccessCodesPanel';
+import FunnelPanel from './FunnelPanel';
+import PaywallPanel from './PaywallPanel';
+import CorrelationsPanel from './CorrelationsPanel';
 
 // --- Types ---
 
@@ -33,10 +36,60 @@ interface EngagementData {
     avgPercent: number;
     avgTimeSeconds: number;
     buckets: { pct: number; count: number }[];
+    sections?: { sectionId: string; count: number; pct: number }[];
+    segments?: {
+      paid: { sessions: number; avgPercent: number; completionRate: number; avgTimeSeconds: number };
+      free: { sessions: number; avgPercent: number; completionRate: number; avgTimeSeconds: number };
+    };
   }[];
 }
 
-type Tab = 'overview' | 'engagement' | 'ai-costs' | 'access-codes';
+interface FunnelData {
+  totalSessions: number;
+  chapterCounts: { slug: string; sessions: number }[];
+  transitions: { from: string; to: string; count: number }[];
+  journeyDepth: { chapters: number; count: number }[];
+}
+
+interface PaywallData {
+  total: {
+    shown: number;
+    clicked: number;
+    converted: number;
+    clickRate: number;
+    conversionRate: number;
+    methods: Record<string, number>;
+  };
+  byChapter: {
+    slug: string;
+    shown: number;
+    clicked: number;
+    converted: number;
+    clickRate: number;
+    conversionRate: number;
+  }[];
+  daily: { date: string; shown: number; converted: number }[];
+}
+
+interface CorrelationsData {
+  chapters: {
+    slug: string;
+    totalSessions: number;
+    withWidget: { sessions: number; avgPercent: number; avgTimeSeconds: number; completionRate: number };
+    withoutWidget: { sessions: number; avgPercent: number; avgTimeSeconds: number; completionRate: number };
+    perWidget: {
+      widget: string;
+      interactedSessions: number;
+      interactedAvgPercent: number;
+      interactedCompletionRate: number;
+      nonInteractedAvgPercent: number;
+      nonInteractedCompletionRate: number;
+      lift: number;
+    }[];
+  }[];
+}
+
+type Tab = 'overview' | 'engagement' | 'funnel' | 'conversions' | 'correlations' | 'ai-costs' | 'access-codes';
 
 // --- Auth Gate ---
 
@@ -129,6 +182,9 @@ function AdminDashboardInner() {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [engagement, setEngagement] = useState<EngagementData | null>(null);
   const [aiCosts, setAiCosts] = useState<AiCostData | null>(null);
+  const [funnel, setFunnel] = useState<FunnelData | null>(null);
+  const [paywall, setPaywall] = useState<PaywallData | null>(null);
+  const [correlations, setCorrelations] = useState<CorrelationsData | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -186,12 +242,55 @@ function AdminDashboardInner() {
     }
   }, [dateRange]);
 
+  const fetchFunnel = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/funnel?days=${dateRange}`);
+      if (!res.ok) throw new Error(`Funnel fetch failed: ${res.status}`);
+      const data = await res.json();
+      setFunnel(data);
+    } catch (err: any) {
+      console.error('Failed to fetch funnel:', err);
+      setError(err.message);
+    }
+  }, [dateRange]);
+
+  const fetchPaywall = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/paywall?days=${dateRange}`);
+      if (!res.ok) throw new Error(`Paywall fetch failed: ${res.status}`);
+      const data = await res.json();
+      setPaywall(data);
+    } catch (err: any) {
+      console.error('Failed to fetch paywall:', err);
+      setError(err.message);
+    }
+  }, [dateRange]);
+
+  const fetchCorrelations = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/admin/correlations?days=${dateRange}`);
+      if (!res.ok) throw new Error(`Correlations fetch failed: ${res.status}`);
+      const data = await res.json();
+      setCorrelations(data);
+    } catch (err: any) {
+      console.error('Failed to fetch correlations:', err);
+      setError(err.message);
+    }
+  }, [dateRange]);
+
   const fetchAll = useCallback(async () => {
     setLoading(true);
     setError(null);
-    await Promise.all([fetchStats(), fetchAiCosts(), fetchEngagement()]);
+    await Promise.all([
+      fetchStats(),
+      fetchAiCosts(),
+      fetchEngagement(),
+      fetchFunnel(),
+      fetchPaywall(),
+      fetchCorrelations(),
+    ]);
     setLoading(false);
-  }, [fetchStats, fetchAiCosts, fetchEngagement]);
+  }, [fetchStats, fetchAiCosts, fetchEngagement, fetchFunnel, fetchPaywall, fetchCorrelations]);
 
   // Initial load + dateRange change
   useEffect(() => {
@@ -218,15 +317,16 @@ function AdminDashboardInner() {
   // --- Styles ---
 
   const tabStyle = (tab: Tab): React.CSSProperties => ({
-    padding: '8px 20px',
+    padding: '8px 16px',
     borderRadius: '9999px',
     border: 'none',
-    fontSize: '0.85rem',
+    fontSize: '0.8rem',
     fontWeight: 600,
     cursor: 'pointer',
     transition: 'background 0.2s, color 0.2s',
     background: activeTab === tab ? '#7B61FF' : 'transparent',
     color: activeTab === tab ? '#ffffff' : '#9ca3af',
+    whiteSpace: 'nowrap',
   });
 
   const dateButtonStyle = (days: 7 | 30 | 90): React.CSSProperties => ({
@@ -337,6 +437,8 @@ function AdminDashboardInner() {
           borderRadius: '9999px',
           padding: '4px',
           width: 'fit-content',
+          maxWidth: '100%',
+          overflowX: 'auto',
         }}
       >
         <button onClick={() => setActiveTab('overview')} style={tabStyle('overview')}>
@@ -344,6 +446,15 @@ function AdminDashboardInner() {
         </button>
         <button onClick={() => setActiveTab('engagement')} style={tabStyle('engagement')}>
           Engagement
+        </button>
+        <button onClick={() => setActiveTab('funnel')} style={tabStyle('funnel')}>
+          Funnel
+        </button>
+        <button onClick={() => setActiveTab('conversions')} style={tabStyle('conversions')}>
+          Conversions
+        </button>
+        <button onClick={() => setActiveTab('correlations')} style={tabStyle('correlations')}>
+          Correlations
         </button>
         <button onClick={() => setActiveTab('ai-costs')} style={tabStyle('ai-costs')}>
           AI Costs
@@ -413,6 +524,21 @@ function AdminDashboardInner() {
           {/* Engagement Tab */}
           {activeTab === 'engagement' && (
             <EngagementPanel chapters={engagement?.chapters ?? []} />
+          )}
+
+          {/* Funnel Tab */}
+          {activeTab === 'funnel' && (
+            <FunnelPanel data={funnel} />
+          )}
+
+          {/* Conversions Tab */}
+          {activeTab === 'conversions' && (
+            <PaywallPanel data={paywall} />
+          )}
+
+          {/* Correlations Tab */}
+          {activeTab === 'correlations' && (
+            <CorrelationsPanel data={correlations} />
           )}
 
           {/* AI Costs Tab */}

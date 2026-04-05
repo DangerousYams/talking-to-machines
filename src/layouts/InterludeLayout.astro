@@ -5,6 +5,7 @@ import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterDrawer from '../components/ui/ChapterDrawer';
 import LanguageSelector from '../components/ui/LanguageSelector.astro';
 import PaywallGate from '../components/ui/PaywallGate';
+import GtagHead from '../components/analytics/GtagHead.astro';
 
 interface Props {
   title: string;
@@ -26,6 +27,7 @@ const { title, description, accent, slug } = Astro.props;
     <meta property="og:title" content={`${title} — Talking to Machines`} />
     <meta property="og:description" content={description} />
     <title>{title} — Talking to Machines</title>
+    <GtagHead />
   </head>
   <body class="bg-cream text-deep min-h-screen">
     <ScrollProgress color={accent} client:load />

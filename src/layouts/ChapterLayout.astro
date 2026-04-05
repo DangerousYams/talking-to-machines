@@ -10,6 +10,7 @@ import QuotaCounter from '../components/ui/QuotaCounter';
 import QuotaBanner from '../components/ui/QuotaBanner';
 import PageViewTracker from '../components/analytics/PageViewTracker';
 import ScrollDepthTracker from '../components/analytics/ScrollDepthTracker';
+import GtagHead from '../components/analytics/GtagHead.astro';
 import { ListenController } from '../components/chapter/ChapterBeats';
 import ListenButton from '../components/chapter/ListenButton';
 import BeatProgress from '../components/chapter/BeatProgress';
@@ -93,6 +94,7 @@ const isTranslated = locale !== 'en';
     <meta property="og:title" content={`${chapter.title} — Talking to Machines`} />
     <meta property="og:description" content={chapter.hook} />
     <title>Ch {chapter.number}: {chapter.title} — Talking to Machines</title>
+    <GtagHead />
     <!-- Mobile redirect removed: unified scroll experience on all devices -->
   </head>
   <body class="bg-cream text-deep min-h-screen">
@@ -146,7 +148,7 @@ const isTranslated = locale !== 'en';
     </header>
 
     {needsPaywall && (
-      <PaywallGate chapterTitle={chapter.title} accentColor={chapter.accent} client:load />
+      <PaywallGate chapterTitle={chapter.title} accentColor={chapter.accent} chapterSlug={chapter.slug} client:load />
     )}
 
     <QuotaBanner client:load />
