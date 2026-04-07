@@ -1,0 +1,59 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../../components/analytics/GtagHead.astro';
+import CourseIntroDashboard from '../../components/courseintro/CourseIntroDashboard';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Survey Dashboard — Talking to Machines</title>
+    <GtagHead />
+    <style>
+      .dash-page {
+        min-height: 100vh;
+        position: relative;
+      }
+      .dash-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem 1.5rem 0;
+      }
+      .dash-logo {
+        font-family: var(--font-heading);
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--color-deep);
+        opacity: 0.6;
+        text-decoration: none;
+      }
+      .dash-back {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--color-subtle);
+        text-decoration: none;
+        letter-spacing: 0.04em;
+      }
+      .dash-back:hover { color: var(--color-deep); }
+    </style>
+  </head>
+  <body>
+    <div class="dash-page">
+      <header class="dash-header">
+        <a href="/course" class="dash-logo">Talking to Machines</a>
+        <a href="/courseintro" class="dash-back">&larr; View survey</a>
+      </header>
+      <CourseIntroDashboard client:load />
+    </div>
+    <Analytics />
+  </body>
+</html>
