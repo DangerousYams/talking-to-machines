@@ -136,6 +136,8 @@ export default function CourseIntroSurvey() {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && canProceed()) {
+      // Don't hijack Enter in textareas — let users type newlines
+      if ((e.target as HTMLElement).tagName === 'TEXTAREA') return;
       e.preventDefault();
       if (step < TOTAL_STEPS - 1) next();
       else handleSubmit();
