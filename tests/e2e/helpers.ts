@@ -89,7 +89,7 @@ export const ALL_ROUTES = [
   '/toolbox',
   '/course',
   '/tools',
-  '/playbook',
+  '/workshop',
   '/personalize',
   '/success',
   '/restore',

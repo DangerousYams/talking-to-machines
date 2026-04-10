@@ -6,7 +6,7 @@ export interface ChatMessage {
   content: string;
 }
 
-export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge' | 'project-builder' | 'socratic-smackdown' | 'break' | 'personalize';
+export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge' | 'project-builder' | 'socratic-smackdown' | 'break' | 'personalize' | 'workshop';
 
 export interface StreamChatOptions {
   messages: ChatMessage[];

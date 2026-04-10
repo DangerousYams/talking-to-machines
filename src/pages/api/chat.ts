@@ -19,6 +19,7 @@ const MODEL_MAP: Record<string, string> = {
   'agent-arena': 'claude-haiku-4-5-20251001',
   'agent-swarm': 'claude-haiku-4-5-20251001',
   'prompt-framer': 'claude-haiku-4-5-20251001',
+  'workshop': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
@@ -36,6 +37,7 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'agent-arena': 150,
   'agent-swarm': 800,
   'prompt-framer': 400,
+  'workshop': 700,
 };
 
 // ---------------------------------------------------------------------------
