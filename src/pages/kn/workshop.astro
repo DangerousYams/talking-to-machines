@@ -1,0 +1,226 @@
+---
+export const prerender = true;
+import InterludeLayout from '../../layouts/InterludeLayout.astro';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import Divider from '../../components/ui/Divider';
+import UltimatePromptBuilder from '../../components/widgets/workshop/UltimatePromptBuilder';
+---
+
+<InterludeLayout
+  title="The Workshop"
+  description="Prompting ಬಗ್ಗೆ ನೀನು ಕಲಿತಿದ್ದೆಲ್ಲ ಒಂದು conversation ನಲ್ಲಿ. The synthesis."
+  accent="#16C79A"
+  slug="workshop"
+  locale="kn"
+>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 3rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem;">
+        {['#E94560', '#7B61FF', '#0F3460', '#16C79A'].map((c) => (
+          <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; opacity: 0.55;`}></div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+        Chapters 3 ಮತ್ತು 4 ನಡುವೆ
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--color-deep); margin: 0 0 0.75rem; line-height: 1.08; letter-spacing: -0.03em;">
+        The Workshop
+      </h1>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; color: var(--color-subtle); margin: 0; line-height: 1.6; max-width: 440px; margin-left: auto; margin-right: auto; font-style: italic;">
+        ನೀನು ಕಲಿತಿದ್ದೆಲ್ಲ, ಒಂದು conversation ದೂರದಲ್ಲಿ.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 2rem 1.5rem 1rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        One-shotting ನಿಲ್ಲಿಸು.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        ಈ point ಗೆ ನಿನ್ನ ಹತ್ತಿರ toolkit ಇದೆ: building blocks, Socratic method, context engineering, system prompts, tokens.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Practice ನಲ್ಲಿ, ಒಳ್ಳೆಯ results almost never single prompt ನಿಂದ ಬರುತ್ತವೆ. AI ಯಿಂದ ಹೆಚ್ಚು ಪಡೆಯೋವರು ಅದನ್ನು collaborator ಅಂತ treat ಮಾಡ್ತಾರೆ. ನೀನು goal share ಮಾಡ್ತೀಯಾ, model swing ಮಾಡುತ್ತೆ, ನೀನು push back ಮಾಡ್ತೀಯಾ, ಅದು rewrite ಮಾಡುತ್ತೆ, ನೀನು context add ಮಾಡ್ತೀಯಾ, ಅದು ಮತ್ತೆ try ಮಾಡುತ್ತೆ. ನಾಲ್ಕೈದು rounds ನಂತರ answer land ಆಗೋಕೆ start ಆಗುತ್ತೆ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.2rem; line-height: 1.7; color: var(--color-deep); margin: 1.5rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        Prompting ಒಂದು conversation.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        ಪ್ರತಿ technique ಒಂದು move.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.5rem;">
+        Conversation ಒಳಗೆ, ನೀನು ಕಲಿತ ಪ್ರತಿ technique ನೀನು ಮಾಡಬಹುದಾದ move ಆಗುತ್ತೆ:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #E94560; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            <strong>ಐದು building blocks</strong> ನಿಂದ open ಮಾಡು: Role, Task, Format, Constraints, Examples. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Ch1)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #0F3460; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            ನಿನ್ನ goal fuzzy ಇರುವಾಗ, build ಮಾಡೋಕೆ start ಮಾಡೋ ಮೊದಲು AI ಗೆ ನಿನ್ನ interview ಮಾಡೋಕೆ ಬಿಡು. ಅದೇ <strong>Socratic move</strong>. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Ch2)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #7B61FF; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Stakes ಹೆಚ್ಚಿರುವಾಗ, <strong>context ಅನ್ನು carefully pack ಮಾಡು</strong>, ಮತ್ತು ಏನನ್ನು leave out ಮಾಡಬೇಕು ಅಂತ ಅಷ್ಟೇ ಕಷ್ಟಪಟ್ಟು ಯೋಚಿಸು. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Ch3)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #16C79A; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Problem ಗೆ reasoning ಬೇಕಾದಾಗ, model ಗೆ <strong>step by step ಯೋಚಿಸಲು</strong> ಹೇಳು. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(ಇದರ ಬಗ್ಗೆ ಒಂದು ಕ್ಷಣದಲ್ಲಿ ಇನ್ನೂ)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--color-subtle); margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            First draft ಸರಿಯಿಲ್ಲದಾಗ, <strong>iterate ಮಾಡು</strong>. First try ನಲ್ಲಿ ಯಾರೂ nail ಮಾಡೋಲ್ಲ, professionals ಕೂಡ.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0;">
+        ಈ moves ಎಲ್ಲ ಒಂದೇ job ಮಾಡ್ತವೆ: AI ನಿಜವಾಗಿಯೂ useful ಆಗಬಹುದಾದ conversation set up ಮಾಡೋಕೆ ನಿನಗೆ help ಮಾಡ್ತವೆ.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.15rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        ಇನ್ನೊಂದು move
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        Chain of thought, ಸಂಕ್ಷಿಪ್ತವಾಗಿ.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Chain of thought ಅನ್ನೋ famous prompting trick ಇದೆ. ನಿನ್ನ prompt ಗೆ "think step by step" phrase add ಮಾಡ್ತೀಯಾ, ಮತ್ತು hard problems ಮೇಲೆ model ನ accuracy noticeable ಆಗಿ jump ಆಗುತ್ತೆ. Model smarter ಆಗಿಲ್ಲ. ಈಗ ಅದಕ್ಕೆ scratch paper ಇದೆ, ಮತ್ತು ಅದನ್ನು use ಮಾಡ್ತಾ ಇದೆ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Trick ಎಷ್ಟು ಚೆನ್ನಾಗಿ work ಮಾಡ್ತು ಅಂದ್ರೆ researchers ಇದನ್ನು automate ಮಾಡಿದ್ರು. ನೀನು probably ಕೇಳಿರಬಹುದಾದ reasoning models (Claude Extended Thinking, OpenAI o-series, DeepSeek R1) basically chain of thought ನೇ model ನಲ್ಲಿ directly built ಆಗಿವೆ. ಅವು answer ಕೊಡೋ ಮೊದಲು step by step ಯೋಚಿಸುತ್ತವೆ, ನೀನು ask ಮಾಡದೆ.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        ಇದು ಒಂದು good question raise ಮಾಡುತ್ತೆ. Model ತಾನೇ reason ಮಾಡ್ತಿದ್ರೆ, human ಇನ್ನೂ table ಗೆ ಏನು ತರ್ತಾನೆ?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1rem;">
+        Conversation. Chain of thought prove ಮಾಡಿದೆ ಹೆಚ್ಚು thinking better answers ಕೊಡುತ್ತೆ ಅಂತ. ಅದೇ rule ಒಂದು level ಮೇಲೂ holds ಆಗುತ್ತೆ: ಹೆಚ್ಚು back-and-forth turns ಇನ್ನೂ better answers ಕೊಡ್ತವೆ. ತಾನಾಗಿ reason ಮಾಡೋ model useful. ನಿನ್ನೊಂದಿಗೆ reason ಮಾಡೋ model usually real quality ಬರೋ place.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; line-height: 1.7; color: var(--color-deep); margin: 2rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        ಕೆಳಗಿನ workshop ಅದನ್ನು practice ಮಾಡೋ place.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3.5rem auto 2rem; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        ನಿನ್ನ turn
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1rem; letter-spacing: -0.02em;">
+        The Ultimate Prompt Builder.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; color: var(--color-subtle); margin: 0 auto; max-width: 520px;">
+        ಎಡಭಾಗದಲ್ಲಿ recipe ಆಯ್ಕೆ ಮಾಡು, use ಮಾಡಬೇಕಾದ moves on ಮಾಡು, ಮತ್ತು result ನಿಂದ happy ಆಗೋ ವರೆಗೆ AI ಜೊತೆ turn by turn work ಮಾಡು.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section style="margin: 1.5rem auto 3rem; min-height: 620px;">
+    <UltimatePromptBuilder client:only="react" />
+  </section>
+
+  <section class="no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a
+          href="/kn/ch3"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          &larr; Chapter 3
+        </a>
+
+        <a
+          href="/kn/ch4"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: none; background: #16C79A; color: white; min-height: 44px;"
+        >
+          Chapter 4 &rarr;
+        </a>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</InterludeLayout>

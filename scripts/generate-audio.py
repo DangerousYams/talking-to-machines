@@ -33,7 +33,7 @@ import edge_tts
 VOICE = "en-US-AndrewMultilingualNeural"
 DIST_DIR = Path("dist/client")
 AUDIO_DIR = Path("public/audio")
-CHAPTERS = [f"ch{i}" for i in range(1, 12)]
+CHAPTERS = [f"ch{i}" for i in range(1, 12)] + ["workshop"]
 
 
 def extract_paragraphs(html_path: Path) -> list[str]:

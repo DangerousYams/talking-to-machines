@@ -62,21 +62,47 @@ if (locale !== 'en') {
 
 const rawPrev = chapters.find((c) => c.number === chapter.number - 1);
 const rawNext = chapters.find((c) => c.number === chapter.number + 1);
-// Interludes: ch3 → playbook → ch4, ch6 → field-guide → ch7
-const nextInterludes: Record<number, { slug: string; title: string }> = {
-  3: { slug: 'playbook', title: 'The Playbook' },
+// Interludes: ch3 → workshop → ch4, ch6 → field-guide → ch7
+// field-guide + absolutely-youre-right are English-only for now.
+// workshop has translations, so it surfaces in all locales with a localized title.
+const workshopTitles: Record<string, string> = {
+  en: 'The Workshop',
+  es: 'El Workshop',
+  hi: 'The Workshop',
+  fr: 'Le Workshop',
+  de: 'Der Workshop',
+  pt: 'O Workshop',
+  ar: 'الورشة',
+  id: 'The Workshop',
+  bn: 'The Workshop',
+  te: 'The Workshop',
+  ta: 'The Workshop',
+  mr: 'The Workshop',
+  kn: 'The Workshop',
+  gu: 'The Workshop',
+  ja: 'ワークショップ',
+  ko: '더 워크숍',
+  zh: 'Workshop',
+  tr: 'The Workshop',
+  vi: 'The Workshop',
+};
+const localizedWorkshopTitle = workshopTitles[locale] || 'The Workshop';
+const nextInterludes: Record<number, { slug: string; title: string; allLocales?: boolean }> = {
+  3: { slug: 'workshop', title: localizedWorkshopTitle, allLocales: true },
   6: { slug: 'field-guide', title: 'The Field Guide' },
   11: { slug: 'absolutely-youre-right', title: '"Absolutely, You\'re Right!"' },
 };
-const prevInterludes: Record<number, { slug: string; title: string }> = {
-  4: { slug: 'playbook', title: 'The Playbook' },
+const prevInterludes: Record<number, { slug: string; title: string; allLocales?: boolean }> = {
+  4: { slug: 'workshop', title: localizedWorkshopTitle, allLocales: true },
   7: { slug: 'field-guide', title: 'The Field Guide' },
 };
-const nextInterlude = locale === 'en' ? nextInterludes[chapter.number] : undefined;
+const rawNextInterlude = nextInterludes[chapter.number];
+const nextInterlude = rawNextInterlude && (rawNextInterlude.allLocales || locale === 'en') ? rawNextInterlude : undefined;
 const next = nextInterlude
   ? { slug: nextInterlude.slug, title: nextInterlude.title, number: chapter.number, hook: '', accent: chapter.accent, concepts: [] } as Chapter
   : rawNext;
-const prevInterlude = locale === 'en' ? prevInterludes[chapter.number] : undefined;
+const rawPrevInterlude = prevInterludes[chapter.number];
+const prevInterlude = rawPrevInterlude && (rawPrevInterlude.allLocales || locale === 'en') ? rawPrevInterlude : undefined;
 const prev = prevInterlude && rawPrev
   ? { ...rawPrev, slug: prevInterlude.slug, title: prevInterlude.title, number: chapter.number } as typeof rawPrev
   : rawPrev;

@@ -1,0 +1,226 @@
+---
+export const prerender = true;
+import InterludeLayout from '../../layouts/InterludeLayout.astro';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import Divider from '../../components/ui/Divider';
+import UltimatePromptBuilder from '../../components/widgets/workshop/UltimatePromptBuilder';
+---
+
+<InterludeLayout
+  title="Der Workshop"
+  description="Alles, was du über Prompting gelernt hast, in einem einzigen Gespräch. Die Synthese."
+  accent="#16C79A"
+  slug="workshop"
+  locale="de"
+>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 3rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem;">
+        {['#E94560', '#7B61FF', '#0F3460', '#16C79A'].map((c) => (
+          <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; opacity: 0.55;`}></div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+        Zwischen Kapitel 3 und 4
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--color-deep); margin: 0 0 0.75rem; line-height: 1.08; letter-spacing: -0.03em;">
+        Der Workshop
+      </h1>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; color: var(--color-subtle); margin: 0; line-height: 1.6; max-width: 440px; margin-left: auto; margin-right: auto; font-style: italic;">
+        Alles, was du gelernt hast, ein Gespräch entfernt.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 2rem 1.5rem 1rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        Hör auf mit One-Shots.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        An diesem Punkt hast du ein Toolkit: Bausteine, die sokratische Methode, Kontext-Engineering, System Prompts, Tokens.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        In der Praxis kommen gute Ergebnisse fast nie aus einem einzigen Prompt. Die Leute, die am meisten aus KI herausholen, behandeln sie wie einen Kollaborateur. Du teilst ein Ziel, das Modell macht einen Versuch, du hakst nach, es schreibt um, du fügst Kontext hinzu, es versucht es erneut. Nach vier oder fünf Runden beginnt die Antwort zu sitzen.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.2rem; line-height: 1.7; color: var(--color-deep); margin: 1.5rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        Prompting ist ein Gespräch.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        Jede Technik ist ein Move.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.5rem;">
+        In einem Gespräch wird jede Technik, die du gelernt hast, zu einem Move, den du machen kannst:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #E94560; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Öffne mit den <strong>fünf Bausteinen</strong>: Rolle, Aufgabe, Format, Einschränkungen, Beispiele. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Kap. 1)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #0F3460; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Wenn dein Ziel vage ist, lass die KI dich erst interviewen, bevor sie loslegt. Das ist der <strong>sokratische Move</strong>. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Kap. 2)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #7B61FF; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Wenn viel auf dem Spiel steht, <strong>pack den Kontext</strong> sorgfältig und denk genauso hart darüber nach, was weg muss, wie darüber, was rein muss. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(Kap. 3)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #16C79A; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Wenn das Problem Denkarbeit braucht, sag dem Modell, es soll <strong>Schritt für Schritt denken</strong>. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(gleich mehr dazu)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--color-subtle); margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            Wenn der erste Entwurf nicht passt, <strong>iteriere</strong>. Niemand trifft beim ersten Versuch, auch Profis nicht.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0;">
+        All diese Moves machen denselben Job: Sie helfen dir, ein Gespräch aufzusetzen, in dem die KI tatsächlich nützlich sein kann.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.15rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        Ein weiterer Move
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        Chain of Thought, kurz gesagt.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Es gibt einen berühmten Prompting-Trick namens Chain of Thought. Du fügst die Phrase „denke Schritt für Schritt" zu deinem Prompt hinzu, und die Genauigkeit des Modells bei schwierigen Problemen macht einen spürbaren Sprung. Das Modell ist nicht schlauer geworden. Es hat jetzt einfach Schmierpapier und nutzt es.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Der Trick funktionierte so gut, dass Forscher ihn automatisierten. Die Reasoning-Modelle, von denen du wahrscheinlich gehört hast (Claudes Extended Thinking, OpenAIs o-Serie, DeepSeek R1), sind im Grunde Chain of Thought direkt ins Modell eingebaut. Sie denken Schritt für Schritt, bevor sie antworten, ohne dass du fragen musst.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        Was eine gute Frage aufwirft. Wenn das Modell schon von selbst denkt, was bringt der Mensch dann noch ein?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1rem;">
+        Das Gespräch. Chain of Thought hat bewiesen, dass mehr Denken zu besseren Antworten führt. Dieselbe Regel gilt eine Ebene höher: mehr Hin und Her führt zu noch besseren. Ein Modell, das allein denkt, ist nützlich. Ein Modell, das mit dir denkt, ist meistens dort, wo die echte Qualität herkommt.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; line-height: 1.7; color: var(--color-deep); margin: 2rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        Der Workshop unten ist ein Ort, das zu üben.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3.5rem auto 2rem; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        Du bist dran
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1rem; letter-spacing: -0.02em;">
+        Der Ultimate Prompt Builder.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; color: var(--color-subtle); margin: 0 auto; max-width: 520px;">
+        Wähl links ein Rezept, schalte die Moves ein, die du nutzen willst, und arbeite mit der KI Runde für Runde, bis du mit dem Ergebnis zufrieden bist.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section style="margin: 1.5rem auto 3rem; min-height: 620px;">
+    <UltimatePromptBuilder client:only="react" />
+  </section>
+
+  <section class="no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a
+          href="/de/ch3"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          &larr; Kapitel 3
+        </a>
+
+        <a
+          href="/de/ch4"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: none; background: #16C79A; color: white; min-height: 44px;"
+        >
+          Kapitel 4 &rarr;
+        </a>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</InterludeLayout>

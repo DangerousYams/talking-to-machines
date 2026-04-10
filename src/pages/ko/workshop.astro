@@ -1,0 +1,226 @@
+---
+export const prerender = true;
+import InterludeLayout from '../../layouts/InterludeLayout.astro';
+import FadeInBlock from '../../components/scroll/FadeInBlock';
+import Divider from '../../components/ui/Divider';
+import UltimatePromptBuilder from '../../components/widgets/workshop/UltimatePromptBuilder';
+---
+
+<InterludeLayout
+  title="더 워크숍"
+  description="프롬프팅에 대해 네가 배운 모든 것을 한 번의 대화 속에. 그 종합."
+  accent="#16C79A"
+  slug="workshop"
+  locale="ko"
+>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 3rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem;">
+        {['#E94560', '#7B61FF', '#0F3460', '#16C79A'].map((c) => (
+          <div style={`width: 7px; height: 7px; border-radius: 50%; background: ${c}; opacity: 0.55;`}></div>
+        ))}
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-2deg); display: inline-block;">
+        3장과 4장 사이
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <h1 style="font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--color-deep); margin: 0 0 0.75rem; line-height: 1.08; letter-spacing: -0.03em;">
+        더 워크숍
+      </h1>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; color: var(--color-subtle); margin: 0; line-height: 1.6; max-width: 440px; margin-left: auto; margin-right: auto; font-style: italic;">
+        네가 배운 것 전부, 한 번의 대화 거리에.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 2rem 1.5rem 1rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        원샷은 그만.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        여기까지 오면 너에겐 툴킷이 있어: 빌딩 블록, 소크라테스식 방법, 컨텍스트 엔지니어링, 시스템 프롬프트, 토큰.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        실제로는 좋은 결과가 단일 프롬프트에서 나오는 경우는 거의 없어. AI에서 가장 많이 얻어내는 사람들은 AI를 협력자처럼 다뤄. 목표를 공유하면, 모델이 한번 해보고, 네가 밀어붙이고, 모델이 다시 쓰고, 네가 맥락을 더하고, 모델이 다시 시도해. 네다섯 번의 라운드를 거치면 답이 자리 잡기 시작해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.2rem; line-height: 1.7; color: var(--color-deep); margin: 1.5rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        프롬프팅은 대화다.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        모든 테크닉은 무브다.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.5rem;">
+        대화 안에서 네가 배운 각 테크닉은 네가 할 수 있는 무브가 돼:
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #E94560; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            <strong>다섯 빌딩 블록</strong>으로 시작해: 역할, 과제, 형식, 제약, 예시. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(1)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #0F3460; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            목표가 흐릿할 때는 AI가 만들기 전에 너를 먼저 인터뷰하게 해. 그게 <strong>소크라테스식 무브</strong>야. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(2)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #7B61FF; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            판돈이 클 때는 <strong>컨텍스트를 신중하게 꾸려</strong>. 무엇을 넣을지만큼 무엇을 뺄지도 똑같이 고민해. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(3)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: #16C79A; margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            추론이 필요한 문제에서는 모델에게 <strong>단계별로 생각하라고</strong> 말해. <span style="color: var(--color-subtle); font-style: italic; font-size: 0.88rem;">(이건 잠시 뒤에 더)</span>
+          </p>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--color-subtle); margin-top: 10px; flex-shrink: 0;"></span>
+          <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; margin: 0; color: var(--color-deep);">
+            첫 초안이 맞지 않을 때는 <strong>반복해</strong>. 프로도 포함해서 누구도 한 번에 완벽하게는 해내지 못해.
+          </p>
+        </div>
+      </div>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0;">
+        이 모든 무브는 같은 일을 해: AI가 실제로 쓸모 있을 수 있는 대화를 네가 세팅하게 돕는 거.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3rem auto; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.15rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        무브 하나 더
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1.25rem; letter-spacing: -0.02em;">
+        Chain of thought, 짧게.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        chain of thought라는 유명한 프롬프팅 트릭이 있어. 프롬프트에 "단계별로 생각해"라는 문구를 추가하면, 어려운 문제에서의 모델 정확도가 눈에 띄게 뛰어올라. 모델이 더 똑똑해진 건 아니야. 이제 연습장을 갖게 됐고, 그걸 쓰고 있는 거야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.15}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        이 트릭이 너무 잘 먹혀서 연구자들이 자동화했어. 네가 들어봤을 법한 추론 모델들(Claude의 Extended Thinking, OpenAI의 o 시리즈, DeepSeek R1)은 본질적으로 chain of thought가 모델 안에 직접 내장된 거야. 네가 요청하지 않아도 답하기 전에 단계별로 생각해.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.2}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1.25rem;">
+        그러면 좋은 질문이 떠올라. 모델이 이미 스스로 추론한다면 사람은 여전히 무엇을 가져다줄까?
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.25}>
+      <p style="font-family: var(--font-body); font-size: 1.05rem; line-height: 1.85; color: var(--color-deep); margin: 0 0 1rem;">
+        대화. chain of thought는 더 많은 사고가 더 나은 답을 낸다는 걸 증명했어. 같은 규칙이 한 단계 위에도 성립해: 더 많은 주고받기가 더 나은 답을 낳아. 혼자서 추론하는 모델은 유용해. 너와 함께 추론하는 모델은 보통 진짜 품질이 나오는 지점이야.
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.3}>
+      <p style="font-family: var(--font-body); font-size: 1.1rem; line-height: 1.7; color: var(--color-deep); margin: 2rem 0 0; font-style: italic; text-align: center; padding: 1.5rem 0; border-top: 1px solid rgba(22,199,154,0.25); border-bottom: 1px solid rgba(22,199,154,0.25);">
+        아래의 워크숍은 그걸 연습하는 곳이야.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <div style="max-width: 680px; margin: 3.5rem auto 2rem; padding: 0 1.5rem;">
+    <Divider accent="#16C79A" client:load />
+  </div>
+
+  <section class="max-w-[680px]" style="margin: 0 auto; padding: 1rem 1.5rem 2rem; text-align: center;">
+    <FadeInBlock client:visible>
+      <p style="font-family: 'Caveat', cursive; font-size: 1.2rem; font-weight: 600; color: #16C79A; margin: 0 0 0.25rem; transform: rotate(-1.5deg); display: inline-block;">
+        네 차례
+      </p>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.05}>
+      <h2 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 800; color: var(--color-deep); margin: 0 0 1rem; letter-spacing: -0.02em;">
+        The Ultimate Prompt Builder.
+      </h2>
+    </FadeInBlock>
+
+    <FadeInBlock client:visible delay={0.1}>
+      <p style="font-family: var(--font-body); font-size: 1rem; line-height: 1.7; color: var(--color-subtle); margin: 0 auto; max-width: 520px;">
+        왼쪽에서 레시피를 고르고, 쓰고 싶은 무브를 켜고, 결과가 마음에 들 때까지 AI와 한 턴씩 주고받으며 작업해.
+      </p>
+    </FadeInBlock>
+  </section>
+
+  <section style="margin: 1.5rem auto 3rem; min-height: 620px;">
+    <UltimatePromptBuilder client:only="react" />
+  </section>
+
+  <section class="no-print" style="max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem;">
+    <FadeInBlock client:visible>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <a
+          href="/ko/ch3"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: 1px solid rgba(26,26,46,0.12); background: transparent; color: var(--color-deep); min-height: 44px;"
+        >
+          &larr; 장 3
+        </a>
+
+        <a
+          href="/ko/ch4"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.3s; text-decoration: none; border: none; background: #16C79A; color: white; min-height: 44px;"
+        >
+          장 4 &rarr;
+        </a>
+      </div>
+    </FadeInBlock>
+  </section>
+
+</InterludeLayout>

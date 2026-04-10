@@ -226,11 +226,11 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         {ch.title}
                       </span>
                     </a>
-                    {/* Playbook interludes */}
-                    {ch.number === 3 && locale === 'en' && (
+                    {/* Workshop interlude */}
+                    {ch.number === 3 && (
                       <a
-                        key="playbook"
-                        href="/playbook"
+                        key="workshop"
+                        href={locale === 'en' ? '/workshop' : `/${locale}/workshop`}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -239,17 +239,17 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                           margin: '2px 0',
                           borderRadius: 8,
                           textDecoration: 'none',
-                          background: currentSlug === 'playbook' ? '#16C79A0A' : 'transparent',
+                          background: currentSlug === 'workshop' ? '#16C79A0A' : 'transparent',
                           borderLeft: '2px dashed #16C79A60',
                           transition: 'background 0.15s ease',
                         }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(22,199,154,0.04)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'playbook' ? '#16C79A0A' : 'transparent'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'workshop' ? '#16C79A0A' : 'transparent'; }}
                       >
                         <span style={{
                           width: 22, height: 22, borderRadius: '50%',
-                          background: currentSlug === 'playbook' ? '#16C79A' : 'rgba(22,199,154,0.1)',
-                          color: currentSlug === 'playbook' ? '#fff' : '#16C79A',
+                          background: currentSlug === 'workshop' ? '#16C79A' : 'rgba(22,199,154,0.1)',
+                          color: currentSlug === 'workshop' ? '#fff' : '#16C79A',
                           fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700,
                           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                         }}>
@@ -257,11 +257,11 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         </span>
                         <span style={{
                           fontFamily: 'var(--font-body)', fontSize: '0.78rem',
-                          fontWeight: currentSlug === 'playbook' ? 600 : 400,
-                          color: currentSlug === 'playbook' ? '#16C79A' : '#16C79A',
+                          fontWeight: currentSlug === 'workshop' ? 600 : 400,
+                          color: currentSlug === 'workshop' ? '#16C79A' : '#16C79A',
                           lineHeight: 1.3, fontStyle: 'italic', fontWeight: 500,
                         }}>
-                          The Playbook
+                          The Workshop
                         </span>
                       </a>
                     )}

@@ -5,21 +5,50 @@ import ScrollProgress from '../components/scroll/ScrollProgress';
 import ChapterDrawer from '../components/ui/ChapterDrawer';
 import LanguageSelector from '../components/ui/LanguageSelector.astro';
 import PaywallGate from '../components/ui/PaywallGate';
+import QuotaBanner from '../components/ui/QuotaBanner';
 import GtagHead from '../components/analytics/GtagHead.astro';
 import HeadSEO from '../components/seo/HeadSEO.astro';
+import { ListenController } from '../components/chapter/ChapterBeats';
+import ListenButton from '../components/chapter/ListenButton';
+import { getDir } from '../data/languages';
 
 interface Props {
   title: string;
   description: string;
   accent: string;
   slug: string;
+  locale?: string;
 }
 
-const { title, description, accent, slug } = Astro.props;
+const { title, description, accent, slug, locale = 'en' } = Astro.props;
+
+// Load widget translations for this interlude + locale. Interlude i18n files
+// live at src/i18n/translations/{locale}/{slug}.ts (one file per interlude).
+let widgetTranslations: Record<string, Record<string, string>> = {};
+try {
+  const mod = await import(`../i18n/translations/${locale}/${slug}.ts`);
+  Object.assign(widgetTranslations, mod.default || {});
+} catch { /* translations not yet available for this locale/interlude */ }
+// English fallback: merge in any keys not already present
+if (locale !== 'en') {
+  try {
+    const enMod = await import(`../i18n/translations/en/${slug}.ts`);
+    const enData = enMod.default || {};
+    for (const [ns, strings] of Object.entries(enData) as [string, Record<string, string>][]) {
+      if (!widgetTranslations[ns]) widgetTranslations[ns] = {};
+      for (const [key, val] of Object.entries(strings)) {
+        if (!(key in widgetTranslations[ns])) widgetTranslations[ns][key] = val;
+      }
+    }
+  } catch {}
+}
+
+const textDir = getDir(locale);
+const isTranslated = locale !== 'en';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale} dir={textDir}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -32,18 +61,23 @@ const { title, description, accent, slug } = Astro.props;
       title={`${title} — Talking to Machines`}
       description={description}
       path={`/${slug}`}
+      locale={locale}
     />
     <GtagHead />
   </head>
   <body class="bg-cream text-deep min-h-screen">
+    <script define:vars={{ __widgetLocale: locale, __widgetTranslations: widgetTranslations }}>
+      window.__WIDGET_LOCALE = __widgetLocale;
+      window.__WIDGET_TRANSLATIONS = __widgetTranslations;
+    </script>
     <ScrollProgress color={accent} client:load />
 
-    <!-- Floating header — same as chapters, no listen/beats/counter -->
+    <!-- Floating header — same as chapters, no beats/counter -->
     <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-500">
       <div class="bg-cream/90 backdrop-blur-lg border-b border-deep/[0.04]">
         <div class="max-w-[960px] mx-auto px-6 md:px-10 h-12 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <ChapterDrawer currentSlug={slug} accentColor={accent} locale="en" client:load />
+            <ChapterDrawer currentSlug={slug} accentColor={accent} locale={locale} client:load />
             <a
               href="/"
               class="text-[13px] tracking-[0.06em] no-underline text-subtle/70 hover:text-deep transition-colors"
@@ -52,8 +86,9 @@ const { title, description, accent, slug } = Astro.props;
               Talking to Machines
             </a>
           </div>
-          <div class="flex items-center gap-3">
-            <LanguageSelector currentLocale="en" chapterSlug={slug} />
+          <div class="flex items-center gap-2 md:gap-3">
+            <LanguageSelector currentLocale={locale} chapterSlug={slug} />
+            <span class:list={[{ hidden: isTranslated }]}><ListenButton accentColor={accent} client:load /></span>
             <span
               class="text-[11px] tracking-[0.08em] uppercase text-subtle/50"
               style={`font-family: var(--font-mono); color: ${accent}; opacity: 0.6;`}
@@ -66,10 +101,13 @@ const { title, description, accent, slug } = Astro.props;
     </header>
 
     <PaywallGate chapterTitle={title} accentColor={accent} client:load />
+    <QuotaBanner client:load />
 
     <main class="pt-12">
       <slot />
     </main>
+
+    <div class:list={[{ hidden: isTranslated }]}><ListenController accentColor={accent} chapterSlug={slug} client:load /></div>
 
     <!-- Footer -->
     <footer class="py-20 px-6">
