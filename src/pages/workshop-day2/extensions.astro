@@ -70,9 +70,15 @@ const description =
           </li>
         </ol>
 
-        <aside class="hint">
-          <strong>Small tip:</strong> pick Gemini <em>2.5&nbsp;Pro</em>, not Flash. Pro thinks longer
-          and writes cleaner code — worth the extra few seconds on each reply.
+        <aside class="legend" aria-label="Card colour coding">
+          <div class="legend-label">Cards are colour-coded by who they're for</div>
+          <ul class="legend-list">
+            <li><span class="legend-dot legend-amber" aria-hidden="true"></span>Everyone</li>
+            <li><span class="legend-dot legend-navy" aria-hidden="true"></span>Finance &amp; research</li>
+            <li><span class="legend-dot legend-teal" aria-hidden="true"></span>Senior operators</li>
+            <li><span class="legend-dot legend-purple" aria-hidden="true"></span>AI power users</li>
+            <li><span class="legend-dot legend-red" aria-hidden="true"></span>Designers &amp; creatives</li>
+          </ul>
         </aside>
       </div>
     </section>
@@ -463,6 +469,55 @@ const description =
         color: var(--ink-soft);
         line-height: 1.55;
       }
+
+      .legend {
+        margin-top: 3rem;
+        padding: 1.25rem 1.4rem;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 1.75rem;
+      }
+      .legend-label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-right: 0.25rem;
+      }
+      .legend-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.25rem;
+      }
+      .legend-list li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        color: var(--ink-soft);
+        line-height: 1;
+      }
+      .legend-dot {
+        width: 0.72rem;
+        height: 0.72rem;
+        border-radius: 999px;
+        flex: 0 0 auto;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9);
+      }
+      .legend-amber { background: var(--color-amber); }
+      .legend-navy { background: var(--color-navy); }
+      .legend-teal { background: var(--color-teal); }
+      .legend-purple { background: var(--color-purple); }
+      .legend-red { background: var(--color-accent-red); }
 
       /* ─── CATALOG ─── */
       .catalog { padding: 5rem 2rem 6rem; border-bottom: 1px solid var(--rule); }
