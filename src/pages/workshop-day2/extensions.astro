@@ -1,0 +1,765 @@
+---
+import '../../styles/global.css';
+import { extensions } from '../../data/workshop-extensions';
+
+export const prerender = true;
+
+const title = 'Extensions · Day 2 Workshop — Talking to Machines';
+const description =
+  'Thirteen prompts that turn an idea into a working Chrome extension in one afternoon. Paste a prompt into Claude, download the files, load unpacked.';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="ext-page">
+    <!-- ─── HERO ─── -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="overline">Day 2 · Workshop Resource</div>
+        <h1 class="hero-title">
+          Build a Chrome extension<br />
+          <em>in one afternoon.</em>
+        </h1>
+        <p class="hero-sub">
+          Thirteen prompts, each road-tested for the room. Pick one, paste it into Claude,
+          follow the install steps, and a working extension shows up in your browser.
+        </p>
+        <div class="hero-meta">
+          <span class="pill">13 prompts</span>
+          <span class="pill">no setup</span>
+          <span class="pill">works on Claude free tier</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── HOW IT WORKS ─── -->
+    <section class="how">
+      <div class="how-inner">
+        <div class="section-label">How this works</div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">01</span>
+            <div>
+              <h3>Pick a prompt below.</h3>
+              <p>There's one for almost every room in the office. Hit <strong>Copy</strong> on its card.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <div>
+              <h3>Paste it into Claude.</h3>
+              <p>Open a fresh conversation on <a href="https://claude.ai" target="_blank" rel="noreferrer">claude.ai</a>, paste, send. Claude writes all the files and hands you a zip.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <div>
+              <h3>Load it into Chrome.</h3>
+              <p>Unzip the folder. Open <code>chrome://extensions</code>. Flip on Developer mode. Click <strong>Load unpacked</strong>. Done.</p>
+            </div>
+          </li>
+        </ol>
+
+        <aside class="hint">
+          <strong>Hit the free-tier cap?</strong> Don't panic — scroll down for the Google AI Studio
+          fallback. Same prompt, different engine.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ─── EXTENSION CATALOG ─── -->
+    <section class="catalog" id="catalog">
+      <div class="catalog-header">
+        <div class="section-label">The catalog</div>
+        <h2 class="catalog-title">Pick something that solves a real problem you have.</h2>
+        <p class="catalog-sub">
+          Every prompt is a self-contained brief. Copy it verbatim. You can edit it before pasting,
+          but it's designed to work first-try with zero changes.
+        </p>
+      </div>
+
+      <ul class="grid" id="ext-grid">
+        {extensions.map((ext) => (
+          <li class={`card accent-${ext.accent}`} data-slug={ext.slug}>
+            <div class="card-topline">
+              <span class="card-num">{ext.num}</span>
+              <span class="card-audience">{ext.audience}</span>
+            </div>
+            <h3 class="card-title">{ext.title}</h3>
+            <p class="card-tagline">{ext.tagline}</p>
+
+            <div class="card-actions">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-copy
+                data-file={`/workshop-day2/extensions/${ext.slug}.md`}
+                aria-label={`Copy the ${ext.title} prompt to clipboard`}
+              >
+                <span class="btn-label">Copy prompt</span>
+                <span class="btn-label-copied">Copied ✓</span>
+              </button>
+              <button
+                type="button"
+                class="btn btn-ghost"
+                data-toggle-preview
+                aria-expanded="false"
+                aria-label={`Preview the ${ext.title} prompt`}
+              >
+                View
+              </button>
+              <a
+                class="btn btn-ghost"
+                href={`/workshop-day2/extensions/${ext.slug}.md`}
+                download={`${ext.slug}.md`}
+                aria-label={`Download the ${ext.title} prompt as a markdown file`}
+              >
+                Download
+              </a>
+            </div>
+
+            <pre class="card-preview" hidden aria-hidden="true" data-preview></pre>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ─── GOOGLE AI STUDIO ─── -->
+    <section class="guide guide-studio">
+      <div class="guide-inner">
+        <div class="section-label accent-purple-fg">Fallback</div>
+        <h2>If Claude caps you mid-session, open Google AI Studio.</h2>
+        <p class="guide-lede">
+          It's free, it's fast, and it uses Google's Gemini models. The flow is almost identical —
+          you'll just copy each file out of the response by hand instead of getting a zip.
+        </p>
+
+        <ol class="guide-steps">
+          <li>
+            <span class="guide-num">A</span>
+            <div>
+              <h4>Go to <a href="https://aistudio.google.com" target="_blank" rel="noreferrer">aistudio.google.com</a>.</h4>
+              <p>Sign in with any Google account. No credit card, no payment.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">B</span>
+            <div>
+              <h4>Start a new chat prompt.</h4>
+              <p>On the sidebar pick <strong>Chat</strong>. In the model selector on the right, pick <strong>Gemini 2.5 Pro</strong> (or the latest Pro available). Leave other settings default.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">C</span>
+            <div>
+              <h4>Paste the full prompt and send.</h4>
+              <p>Gemini will reply with each file as a labelled code block — <code>manifest.json</code>, <code>popup.html</code>, etc.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">D</span>
+            <div>
+              <h4>Make a folder and save each file.</h4>
+              <p>Create a folder on your desktop. For each code block in the reply, copy its contents into a new file with the exact filename. Keep the names Claude/Gemini used.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">E</span>
+            <div>
+              <h4>Load it into Chrome (next section).</h4>
+              <p>From here, the install steps are the same as the Claude flow.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ─── CHROME DEVELOPER MODE ─── -->
+    <section class="guide guide-chrome">
+      <div class="guide-inner">
+        <div class="section-label accent-sky-fg">Installing the extension</div>
+        <h2>Loading an unpacked extension into Chrome.</h2>
+        <p class="guide-lede">
+          "Developer mode" sounds scary. It is not. It just means you're running code you haven't
+          downloaded from the Chrome Web Store. One toggle, one button, one folder.
+        </p>
+
+        <ol class="guide-steps">
+          <li>
+            <span class="guide-num">1</span>
+            <div>
+              <h4>Get the files onto your machine.</h4>
+              <p>If Claude gave you a zip, download and unzip it to somewhere you'll remember (desktop is fine). If you built the folder by hand from Google AI Studio, skip ahead.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">2</span>
+            <div>
+              <h4>Open <code>chrome://extensions</code>.</h4>
+              <p>Type that into the address bar of a new tab. This is Chrome's built-in extensions page.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">3</span>
+            <div>
+              <h4>Toggle <strong>Developer mode</strong> on.</h4>
+              <p>The switch is in the top-right corner. A row of three buttons appears below — <em>Load unpacked</em>, <em>Pack extension</em>, <em>Update</em>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">4</span>
+            <div>
+              <h4>Click <strong>Load unpacked</strong>.</h4>
+              <p>A folder picker opens. Select the folder that contains <code>manifest.json</code> at its root — not the zip, the unzipped folder.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">5</span>
+            <div>
+              <h4>Pin it to your toolbar.</h4>
+              <p>Click the puzzle-piece icon near the URL bar. Find your extension in the list and click the pin icon beside it.</p>
+            </div>
+          </li>
+          <li>
+            <span class="guide-num">6</span>
+            <div>
+              <h4>Something broken? Send the error back.</h4>
+              <p>Chrome shows a red <em>Errors</em> button on any extension that fails. Click it, copy the full message, paste it back into your Claude or Gemini chat with <strong>"This did not work. Please fix."</strong> — one or two rounds usually does it.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer class="foot">
+      <div class="foot-inner">
+        <div class="foot-mark">Talking to Machines</div>
+        <div class="foot-sub">Day 2 · Extensions · A workshop pack</div>
+        <a class="foot-home" href="/">← Back to the curriculum</a>
+      </div>
+    </footer>
+
+    <!-- ─── CLIENT LOGIC ─── -->
+    <script is:inline>
+      (() => {
+        const cache = new Map();
+
+        async function loadPromptText(url) {
+          if (cache.has(url)) return cache.get(url);
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+          const text = await res.text();
+          cache.set(url, text);
+          return text;
+        }
+
+        // Copy-to-clipboard buttons
+        document.querySelectorAll('[data-copy]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const url = btn.getAttribute('data-file');
+            try {
+              const text = await loadPromptText(url);
+              await navigator.clipboard.writeText(text);
+              btn.classList.add('copied');
+              setTimeout(() => btn.classList.remove('copied'), 1800);
+            } catch (err) {
+              btn.classList.add('failed');
+              btn.setAttribute('aria-label', 'Copy failed — try Download instead');
+              setTimeout(() => btn.classList.remove('failed'), 2400);
+              console.error(err);
+            }
+          });
+        });
+
+        // View / hide prompt preview
+        document.querySelectorAll('[data-toggle-preview]').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const card = btn.closest('.card');
+            if (!card) return;
+            const pre = card.querySelector('[data-preview]');
+            const copyBtn = card.querySelector('[data-copy]');
+            if (!pre || !copyBtn) return;
+
+            const isOpen = !pre.hidden;
+            if (isOpen) {
+              pre.hidden = true;
+              pre.setAttribute('aria-hidden', 'true');
+              btn.setAttribute('aria-expanded', 'false');
+              btn.textContent = 'View';
+              return;
+            }
+
+            btn.textContent = 'Loading…';
+            try {
+              const url = copyBtn.getAttribute('data-file');
+              const text = await loadPromptText(url);
+              pre.textContent = text;
+              pre.hidden = false;
+              pre.setAttribute('aria-hidden', 'false');
+              btn.setAttribute('aria-expanded', 'true');
+              btn.textContent = 'Hide';
+            } catch (err) {
+              btn.textContent = 'View';
+              console.error(err);
+            }
+          });
+        });
+      })();
+    </script>
+
+    <style is:global>
+      :root {
+        --rule: rgba(26, 26, 46, 0.12);
+        --ink: var(--color-deep);
+        --ink-soft: rgba(26, 26, 46, 0.72);
+        --ink-faint: rgba(26, 26, 46, 0.55);
+      }
+
+      .ext-page {
+        background: var(--color-cream);
+        color: var(--ink);
+        min-height: 100vh;
+      }
+
+      /* ─── HERO ─── */
+      .hero {
+        padding: 8rem 2rem 5rem;
+        border-bottom: 1px solid var(--rule);
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 0%, rgba(15, 52, 96, 0.055), transparent 60%),
+          radial-gradient(ellipse 60% 50% at 100% 20%, rgba(245, 166, 35, 0.05), transparent 60%);
+      }
+      .hero-inner {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .overline {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-accent-red);
+        margin-bottom: 1.75rem;
+      }
+      .hero-title {
+        font-family: var(--font-heading);
+        font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+        font-weight: 800;
+        color: var(--color-deep);
+        margin: 0 0 1.75rem;
+        max-width: 16ch;
+      }
+      .hero-title em {
+        font-style: italic;
+        color: var(--color-navy);
+        font-weight: 600;
+      }
+      .hero-sub {
+        font-family: var(--font-body);
+        font-size: 1.22rem;
+        line-height: 1.62;
+        color: var(--ink-soft);
+        max-width: 58ch;
+        margin: 0 0 2.25rem;
+      }
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .pill {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.42rem 0.85rem;
+        border: 1px solid var(--rule);
+        border-radius: 999px;
+        color: var(--ink-faint);
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      /* ─── HOW IT WORKS ─── */
+      .how { padding: 5rem 2rem; border-bottom: 1px solid var(--rule); }
+      .how-inner { max-width: 980px; margin: 0 auto; }
+      .section-label {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-accent-red);
+        margin-bottom: 1.25rem;
+      }
+      .accent-purple-fg { color: var(--color-purple); }
+      .accent-sky-fg { color: var(--color-sky); }
+
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+      }
+      .steps li {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+        align-items: start;
+      }
+      .step-num {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 2.4rem;
+        line-height: 1;
+        color: var(--color-amber);
+        letter-spacing: -0.02em;
+      }
+      .steps h3 {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0.35rem 0 0.5rem;
+        letter-spacing: -0.02em;
+        color: var(--color-navy);
+      }
+      .steps p {
+        font-family: var(--font-body);
+        font-size: 0.98rem;
+        line-height: 1.55;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+      .steps code {
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        background: rgba(123, 97, 255, 0.08);
+        color: var(--color-purple);
+        padding: 0.12em 0.38em;
+        border-radius: 4px;
+      }
+
+      .hint {
+        margin-top: 3rem;
+        padding: 1.25rem 1.4rem;
+        background: rgba(245, 166, 35, 0.08);
+        border: 1px solid rgba(245, 166, 35, 0.28);
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 0.98rem;
+        color: var(--ink-soft);
+        line-height: 1.55;
+      }
+
+      /* ─── CATALOG ─── */
+      .catalog { padding: 5rem 2rem 6rem; border-bottom: 1px solid var(--rule); }
+      .catalog-header { max-width: 980px; margin: 0 auto 3rem; }
+      .catalog-title {
+        font-family: var(--font-heading);
+        font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        margin: 0 0 1rem;
+        color: var(--color-deep);
+      }
+      .catalog-sub {
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        line-height: 1.58;
+        color: var(--ink-soft);
+        max-width: 62ch;
+        margin: 0;
+      }
+
+      .grid {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        max-width: 1240px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.4rem;
+      }
+
+      .card {
+        --accent: var(--color-navy);
+        position: relative;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        padding: 1.6rem 1.6rem 1.4rem;
+        background: rgba(255, 255, 255, 0.65);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 32px -18px rgba(15, 52, 96, 0.28);
+        border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      }
+      .card.accent-amber { --accent: var(--color-amber); }
+      .card.accent-navy { --accent: var(--color-navy); }
+      .card.accent-teal { --accent: var(--color-teal); }
+      .card.accent-purple { --accent: var(--color-purple); }
+      .card.accent-red { --accent: var(--color-accent-red); }
+      .card.accent-sky { --accent: var(--color-sky); }
+
+      .card-topline {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.85rem;
+        border-bottom: 1px dashed var(--rule);
+      }
+      .card-num {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 2.1rem;
+        line-height: 1;
+        color: var(--accent);
+        letter-spacing: -0.03em;
+      }
+      .card-audience {
+        font-family: var(--font-mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        text-align: right;
+        max-width: 60%;
+        line-height: 1.35;
+      }
+      .card-title {
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--color-deep);
+        margin: 0 0 0.55rem;
+        letter-spacing: -0.02em;
+      }
+      .card-tagline {
+        font-family: var(--font-body);
+        font-size: 0.97rem;
+        line-height: 1.52;
+        color: var(--ink-soft);
+        margin: 0 0 1.35rem;
+        flex: 1;
+      }
+
+      .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .btn {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.55rem 0.9rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #ffffff;
+        border-color: var(--accent);
+        position: relative;
+      }
+      .btn-primary:hover {
+        background: color-mix(in srgb, var(--accent) 85%, black);
+      }
+      .btn-primary .btn-label-copied { display: none; }
+      .btn-primary.copied .btn-label { display: none; }
+      .btn-primary.copied .btn-label-copied { display: inline; }
+      .btn-primary.copied {
+        background: #ffffff;
+        color: var(--accent);
+      }
+      .btn-primary.failed .btn-label::before { content: 'Try download · '; }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        border-color: var(--rule);
+      }
+      .btn-ghost:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .card-preview {
+        margin-top: 1.25rem;
+        padding: 1rem 1.1rem;
+        background: #1A1A2E;
+        color: #E6E7EC;
+        border-radius: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        line-height: 1.55;
+        max-height: 360px;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      }
+
+      /* ─── GUIDE (AI Studio + Chrome) ─── */
+      .guide { padding: 5rem 2rem; border-bottom: 1px solid var(--rule); }
+      .guide-studio { background: linear-gradient(180deg, rgba(123, 97, 255, 0.03), transparent 60%); }
+      .guide-chrome { background: linear-gradient(180deg, rgba(14, 165, 233, 0.035), transparent 60%); }
+
+      .guide-inner { max-width: 820px; margin: 0 auto; }
+      .guide h2 {
+        font-family: var(--font-heading);
+        font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--color-deep);
+        margin: 0 0 1rem;
+      }
+      .guide-lede {
+        font-family: var(--font-body);
+        font-size: 1.08rem;
+        line-height: 1.62;
+        color: var(--ink-soft);
+        max-width: 60ch;
+        margin: 0 0 2.5rem;
+      }
+
+      .guide-steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+      }
+      .guide-steps li {
+        display: grid;
+        grid-template-columns: 3.2rem 1fr;
+        gap: 1rem;
+        align-items: start;
+        padding-bottom: 1.6rem;
+        border-bottom: 1px solid var(--rule);
+      }
+      .guide-steps li:last-child { border-bottom: none; padding-bottom: 0; }
+      .guide-num {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: 1.9rem;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--ink-faint);
+      }
+      .guide-studio .guide-num { color: var(--color-purple); }
+      .guide-chrome .guide-num { color: var(--color-sky); }
+      .guide-steps h4 {
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0.15rem 0 0.5rem;
+        letter-spacing: -0.02em;
+        color: var(--color-deep);
+      }
+      .guide-steps p {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.62;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+      .guide-steps code {
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        background: rgba(26, 26, 46, 0.06);
+        color: var(--color-navy);
+        padding: 0.14em 0.42em;
+        border-radius: 4px;
+      }
+      .guide-steps a { color: var(--color-navy); }
+
+      /* ─── FOOTER ─── */
+      .foot { padding: 3.5rem 2rem; }
+      .foot-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 1.25rem;
+        justify-content: space-between;
+      }
+      .foot-mark {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+      }
+      .foot-sub {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+      .foot-home {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-navy);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(15, 52, 96, 0.25);
+      }
+      .foot-home:hover {
+        color: var(--color-accent-red);
+        border-bottom-color: var(--color-accent-red);
+      }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 960px) {
+        .grid { grid-template-columns: repeat(2, 1fr); }
+        .steps { grid-template-columns: 1fr; gap: 1.6rem; }
+      }
+      @media (max-width: 640px) {
+        .hero { padding: 5rem 1.25rem 3.5rem; }
+        .how, .guide, .catalog { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .grid { grid-template-columns: 1fr; gap: 1rem; }
+        .foot { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .guide-steps li { grid-template-columns: 2.4rem 1fr; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card { transition: none; }
+        .card:hover { transform: none; }
+      }
+    </style>
+  </body>
+</html>
