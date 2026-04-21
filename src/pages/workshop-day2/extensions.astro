@@ -6,7 +6,7 @@ export const prerender = true;
 
 const title = 'Extensions · Day 2 Workshop — Talking to Machines';
 const description =
-  'Thirteen prompts that turn an idea into a working Chrome extension in one afternoon. Paste a prompt into Claude, download the files, load unpacked.';
+  'Thirteen prompts that turn an idea into a working Chrome extension in one afternoon. Paste a prompt into Google AI Studio, save the files, load unpacked.';
 ---
 
 <!doctype html>
@@ -31,13 +31,13 @@ const description =
           <em>in one afternoon.</em>
         </h1>
         <p class="hero-sub">
-          Thirteen prompts, each road-tested for the room. Pick one, paste it into Claude,
+          Thirteen prompts, each road-tested for the room. Pick one, paste it into Google AI Studio,
           follow the install steps, and a working extension shows up in your browser.
         </p>
         <div class="hero-meta">
           <span class="pill">13 prompts</span>
           <span class="pill">no setup</span>
-          <span class="pill">works on Claude free tier</span>
+          <span class="pill">free with a Google account</span>
         </div>
       </div>
     </header>
@@ -57,22 +57,22 @@ const description =
           <li>
             <span class="step-num">02</span>
             <div>
-              <h3>Paste it into Claude.</h3>
-              <p>Open a fresh conversation on <a href="https://claude.ai" target="_blank" rel="noreferrer">claude.ai</a>, paste, send. Claude writes all the files and hands you a zip.</p>
+              <h3>Paste it into Google AI Studio.</h3>
+              <p>Open <a href="https://aistudio.google.com" target="_blank" rel="noreferrer">aistudio.google.com</a>, pick <strong>Gemini 2.5 Pro</strong>, paste, send. Gemini returns every file your extension needs.</p>
             </div>
           </li>
           <li>
             <span class="step-num">03</span>
             <div>
               <h3>Load it into Chrome.</h3>
-              <p>Unzip the folder. Open <code>chrome://extensions</code>. Flip on Developer mode. Click <strong>Load unpacked</strong>. Done.</p>
+              <p>Drop the files into a folder. Open <code>chrome://extensions</code>. Flip on Developer mode. Click <strong>Load unpacked</strong>. Done.</p>
             </div>
           </li>
         </ol>
 
         <aside class="hint">
-          <strong>Hit the free-tier cap?</strong> Don't panic — scroll down for the Google AI Studio
-          fallback. Same prompt, different engine.
+          <strong>Small tip:</strong> pick Gemini <em>2.5&nbsp;Pro</em>, not Flash. Pro thinks longer
+          and writes cleaner code — worth the extra few seconds on each reply.
         </aside>
       </div>
     </section>
@@ -137,11 +137,11 @@ const description =
     <!-- ─── GOOGLE AI STUDIO ─── -->
     <section class="guide guide-studio">
       <div class="guide-inner">
-        <div class="section-label accent-purple-fg">Fallback</div>
-        <h2>If Claude caps you mid-session, open Google AI Studio.</h2>
+        <div class="section-label accent-purple-fg">The tool</div>
+        <h2>A short walkthrough of Google AI Studio.</h2>
         <p class="guide-lede">
-          It's free, it's fast, and it uses Google's Gemini models. The flow is almost identical —
-          you'll just copy each file out of the response by hand instead of getting a zip.
+          Google AI Studio is free. It runs Gemini — Google's best models — and it's what we'll use
+          to build every extension in this workshop. Five steps to go from signed-out to sending your first prompt.
         </p>
 
         <ol class="guide-steps">
@@ -170,14 +170,14 @@ const description =
             <span class="guide-num">D</span>
             <div>
               <h4>Make a folder and save each file.</h4>
-              <p>Create a folder on your desktop. For each code block in the reply, copy its contents into a new file with the exact filename. Keep the names Claude/Gemini used.</p>
+              <p>Create a folder on your desktop. For each code block in Gemini's reply, copy its contents into a new file with the exact filename Gemini labelled it.</p>
             </div>
           </li>
           <li>
             <span class="guide-num">E</span>
             <div>
               <h4>Load it into Chrome (next section).</h4>
-              <p>From here, the install steps are the same as the Claude flow.</p>
+              <p>Once every file is saved into a single folder, you're ready to install. Keep reading.</p>
             </div>
           </li>
         </ol>
@@ -198,8 +198,8 @@ const description =
           <li>
             <span class="guide-num">1</span>
             <div>
-              <h4>Get the files onto your machine.</h4>
-              <p>If Claude gave you a zip, download and unzip it to somewhere you'll remember (desktop is fine). If you built the folder by hand from Google AI Studio, skip ahead.</p>
+              <h4>Make a folder for the extension.</h4>
+              <p>Create a new folder somewhere easy to find (the desktop is fine). Save each file Gemini wrote into that folder, keeping the exact filenames — <code>manifest.json</code>, <code>popup.html</code>, and so on.</p>
             </div>
           </li>
           <li>
@@ -220,7 +220,7 @@ const description =
             <span class="guide-num">4</span>
             <div>
               <h4>Click <strong>Load unpacked</strong>.</h4>
-              <p>A folder picker opens. Select the folder that contains <code>manifest.json</code> at its root — not the zip, the unzipped folder.</p>
+              <p>A folder picker opens. Select the folder that contains <code>manifest.json</code> at its root.</p>
             </div>
           </li>
           <li>
@@ -234,7 +234,7 @@ const description =
             <span class="guide-num">6</span>
             <div>
               <h4>Something broken? Send the error back.</h4>
-              <p>Chrome shows a red <em>Errors</em> button on any extension that fails. Click it, copy the full message, paste it back into your Claude or Gemini chat with <strong>"This did not work. Please fix."</strong> — one or two rounds usually does it.</p>
+              <p>Chrome shows a red <em>Errors</em> button on any extension that fails. Click it, copy the full message, paste it back into your Gemini chat with <strong>"This did not work. Please fix."</strong> — one or two rounds usually does it.</p>
             </div>
           </li>
         </ol>
