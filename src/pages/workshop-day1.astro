@@ -1,0 +1,1531 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'welcome', 'about', 'arc', 'day1', 'day2', 'day3', 'ttm',
+  'break-land',
+  'break-approach',
+  'p-rate', 'p-comms', 'p-loop', 'p-tool', 'p-frame', 'p-examples',
+  'p-questions', 'p-recursive', 'p-iteration', 'p-settle',
+  'p-crosscheck', 'p-deslop',
+  'p-human', 'p-sop', 'p-kds', 'p-cheatsheet',
+  'break-research', 'closing'
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Workshop · Day 1 — Talking to Machines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Workshop deck — slide-specific styles
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* Progress rail */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-accent-red);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* Slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      right: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* Keyboard hint (fades after interaction) */
+    .kbd-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      opacity: 0.55;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      background: rgba(26,26,46,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 0 2px;
+    }
+
+    /* ─── Staggered entrance ─── */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+    .deck-slide.is-active .stagger > *:nth-child(7) { transition-delay: 0.7s; }
+    .deck-slide.is-active .stagger > *:nth-child(8) { transition-delay: 0.8s; }
+
+    /* ─── Print / export-to-PDF ─── */
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body {
+        background: var(--color-cream) !important;
+        width: 1600px !important;
+        height: auto !important;
+      }
+      body.card-deck-page::before { display: none !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        scroll-snap-align: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      * { animation: none !important; }
+
+      /* Hide break slides + closing in the PDF export */
+      [data-slide="break-land"],
+      [data-slide="break-approach"],
+      [data-slide="break-research"],
+      [data-slide="closing"] { display: none !important; }
+
+      /* Force the desktop layouts even when Chrome's print viewport
+         reports a width < 1100px and would otherwise collapse grids */
+      .about-grid {
+        grid-template-columns: 1.3fr 1fr !important;
+        gap: 5rem !important;
+        text-align: left !important;
+      }
+      .about-credits li { justify-content: flex-start !important; text-align: left !important; }
+      .about-portrait { width: 320px !important; height: 320px !important; }
+      .arc-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2rem !important; }
+      .demo-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .kds-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .loop-diagram { flex-direction: row !important; gap: 1.5rem !important; }
+      .loop-arrow { transform: none !important; }
+      .deck-slide { padding: 4rem 5rem !important; }
+      .slide-about { padding: 3rem 5rem 14rem !important; }
+    }
+
+    /* ─── Utilities ─── */
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .constellation {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .constellation span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 1 — Welcome — branded wordmark only
+       ══════════════════════════════════════════════════════ */
+    .slide-welcome {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-welcome .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(5rem, 13vw, 11rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+    .slide-welcome .wordmark .talking {
+      display: block;
+      color: var(--color-deep);
+    }
+    .slide-welcome .wordmark .machines {
+      display: block;
+      color: var(--color-accent-red);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 2 — About
+       ══════════════════════════════════════════════════════ */
+    .slide-about {
+      padding: 3rem 5rem 14rem;
+      justify-content: center;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .about-name {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0.5rem 0 0.75rem;
+    }
+    .about-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .about-credits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .about-credits li {
+      display: flex;
+      gap: 14px;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+    }
+    .about-credits li:last-child { border-bottom: none; }
+    .credit-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 0.55rem;
+    }
+    .credit-body strong {
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--color-deep);
+      font-size: 1.02rem;
+    }
+    .credit-body .credit-detail {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .about-portrait {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(15,52,96,0.18),
+        0 0 0 6px var(--color-cream),
+        0 0 0 7px rgba(233,69,96,0.15);
+    }
+    .about-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.15) contrast(1.02);
+    }
+    .about-email {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-navy);
+      margin-top: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .poster-ticker {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    }
+    .poster-track {
+      display: flex;
+      animation: ticker 55s linear infinite;
+      width: max-content;
+      will-change: transform;
+    }
+    /* Use margin-right instead of gap so -50% translation is seamless */
+    .poster-track img {
+      height: 150px;
+      margin-right: 20px;
+      border-radius: 6px;
+      box-shadow: 0 8px 26px rgba(15,52,96,0.18);
+      flex-shrink: 0;
+    }
+    @keyframes ticker {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 3 — Course arc
+       ══════════════════════════════════════════════════════ */
+    .slide-arc { justify-content: center; }
+    .arc-header { text-align: center; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .arc-header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 1rem 0 1rem;
+      line-height: 1.05;
+    }
+    .arc-header .subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-navy);
+    }
+    .arc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .arc-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .arc-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .arc-card.day1::before { background: var(--color-accent-red); }
+    .arc-card.day2::before { background: var(--color-purple); }
+    .arc-card.day3::before { background: var(--color-teal); }
+    .arc-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 3.5rem;
+      line-height: 1;
+      opacity: 0.12;
+      margin: 0 0 0.5rem;
+    }
+    .arc-card.day1 .arc-num { color: var(--color-accent-red); }
+    .arc-card.day2 .arc-num { color: var(--color-purple); }
+    .arc-card.day3 .arc-num { color: var(--color-teal); }
+    .arc-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      margin: 0 0 0.75rem;
+      color: var(--color-deep);
+    }
+    .arc-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDES 4-6 — Day breakdowns
+       ══════════════════════════════════════════════════════ */
+    .slide-day { justify-content: center; }
+    .day-big-num {
+      position: absolute;
+      right: 4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(18rem, 34vw, 32rem);
+      line-height: 1;
+      opacity: 0.07;
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+    .day-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .day-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .day-label .pill {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      background: var(--color-lavender);
+    }
+    .day-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 7.5vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 1.5rem 0 1.5rem;
+    }
+    .day-desc {
+      font-family: var(--font-body);
+      font-size: 1.4rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 2rem;
+      max-width: 56ch;
+    }
+    .day-points {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0 0;
+    }
+    .day-points li {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      line-height: 1.5;
+      padding: 0.5rem 0 0.5rem 2rem;
+      position: relative;
+      color: var(--color-deep);
+    }
+    .day-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      font-weight: 600;
+    }
+
+    /* Day color accents */
+    .slide-day.d1 .day-label .pill { color: var(--color-accent-red); background: rgba(233,69,96,0.1); }
+    .slide-day.d1 .day-big-num { color: var(--color-accent-red); }
+    .slide-day.d1 .day-points li::before { color: var(--color-accent-red); }
+
+    .slide-day.d2 .day-label .pill { color: var(--color-purple); background: rgba(123,97,255,0.1); }
+    .slide-day.d2 .day-big-num { color: var(--color-purple); }
+    .slide-day.d2 .day-points li::before { color: var(--color-purple); }
+
+    .slide-day.d3 .day-label .pill { color: var(--color-teal); background: rgba(22,199,154,0.1); }
+    .slide-day.d3 .day-big-num { color: var(--color-teal); }
+    .slide-day.d3 .day-points li::before { color: var(--color-teal); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 7 — TTM site handoff
+       ══════════════════════════════════════════════════════ */
+    .slide-ttm { justify-content: center; text-align: center; }
+    .ttm-content { max-width: 780px; margin: 0 auto; }
+    .ttm-content h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 1.5rem 0;
+    }
+    .ttm-url {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 2.4rem;
+      color: var(--color-deep);
+      margin: 2rem 0;
+      padding: 0.8rem 2rem;
+      background: var(--color-warm-white);
+      border: 1.5px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      letter-spacing: -0.01em;
+    }
+    .ttm-url .accent { color: var(--color-accent-red); }
+    .ttm-gift {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, rgba(233,69,96,0.08), rgba(245,166,35,0.08));
+      border: 1px solid rgba(233,69,96,0.18);
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--color-navy);
+      margin-top: 1rem;
+    }
+    .ttm-desc {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      max-width: 500px;
+      margin: 0 auto 1rem;
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SECTION BREAK slides
+       ══════════════════════════════════════════════════════ */
+    .slide-break {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .break-label {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.75rem;
+      color: var(--color-accent-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .break-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 10vw, 8rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin: 0;
+      font-style: italic;
+    }
+    .break-title .period { color: var(--color-accent-red); font-style: normal; }
+    .slide-break.break-approach .break-label { color: var(--color-purple); }
+    .slide-break.break-approach .break-title .period { color: var(--color-purple); }
+    .slide-break.break-research .break-label { color: var(--color-sky); }
+    .slide-break.break-research .break-title .period { color: var(--color-sky); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 9 — Demo queue
+       ══════════════════════════════════════════════════════ */
+    .slide-demos { justify-content: center; }
+    .demos-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .demos-head {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .demos-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      margin: 0.75rem 0 0.5rem;
+    }
+    .demos-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .demo-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .demo-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(15,52,96,0.08);
+    }
+    .demo-card .demo-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-subtle);
+      letter-spacing: 0.15em;
+    }
+    .demo-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0.4rem 0 0.4rem;
+      color: var(--color-deep);
+    }
+    .demo-card .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    .demo-card.ours .tag { background: rgba(233,69,96,0.1); color: var(--color-accent-red); }
+    .demo-card.tool .tag { background: rgba(14,165,233,0.1); color: var(--color-sky); }
+    .demo-card p {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PRINCIPLE slides (11-24)
+       ══════════════════════════════════════════════════════ */
+    .slide-principle { justify-content: center; }
+    .principle-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .principle-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1.75rem;
+    }
+    .principle-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      max-width: 22ch;
+    }
+    .principle-title .hl-red { color: var(--color-accent-red); }
+    .principle-title .hl-purple { color: var(--color-purple); }
+    .principle-title .hl-teal { color: var(--color-teal); }
+    .principle-title .hl-amber { color: var(--color-amber); }
+    .principle-title .hl-sky { color: var(--color-sky); }
+    .principle-title .hl-navy { color: var(--color-navy); }
+    .principle-body {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 62ch;
+      margin: 0;
+    }
+    .principle-body em { color: var(--color-navy); }
+    /* override global p max-width on slides */
+    .deck-slide p { max-width: none; }
+
+    /* Caveat annotation overlay */
+    .margin-note {
+      position: absolute;
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.4rem;
+      color: var(--color-accent-red);
+      transform: rotate(-3deg);
+    }
+
+    /* Loop diagram (slide 13) */
+    .loop-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .loop-node {
+      background: var(--color-warm-white);
+      border: 2px solid;
+      border-radius: 100px;
+      padding: 1rem 1.75rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.01em;
+    }
+    .loop-node.n1 { border-color: var(--color-amber); color: var(--color-amber); }
+    .loop-node.n2 { border-color: var(--color-accent-red); color: var(--color-accent-red); }
+    .loop-node.n3 { border-color: var(--color-teal); color: var(--color-teal); }
+    .loop-arrow {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* Know-Do-Show (slide 24) */
+    .kds-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .kds-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      position: relative;
+    }
+    .kds-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2rem;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .kds-card.know h3 { color: var(--color-sky); }
+    .kds-card.do h3 { color: var(--color-accent-red); }
+    .kds-card.show h3 { color: var(--color-amber); }
+    .kds-card .kds-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1rem;
+    }
+    .kds-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0.5rem 0 0;
+    }
+    .kds-egs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1.1rem;
+      padding-top: 0.9rem;
+      border-top: 1px dashed rgba(26,26,46,0.1);
+    }
+    .kds-egs-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-right: 4px;
+      align-self: center;
+    }
+    .kds-eg {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .kds-card.know .kds-eg { color: var(--color-sky); border-color: rgba(14,165,233,0.35); background: rgba(14,165,233,0.06); }
+    .kds-card.do .kds-eg { color: var(--color-accent-red); border-color: rgba(233,69,96,0.35); background: rgba(233,69,96,0.06); }
+    .kds-card.show .kds-eg { color: var(--color-amber); border-color: rgba(245,166,35,0.4); background: rgba(245,166,35,0.07); }
+
+    /* ══════════════════════════════════════════════════════
+       CHEAT SHEET — all principles, one page
+       ══════════════════════════════════════════════════════ */
+    .slide-cheatsheet { justify-content: center; padding: 3rem 4rem; }
+    .cheatsheet-content {
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .cheatsheet-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(26,26,46,0.08);
+      padding-bottom: 1.25rem;
+    }
+    .cheatsheet-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .cheatsheet-title .accent { color: var(--color-accent-red); font-style: italic; }
+    .cheatsheet-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--color-subtle);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .cheatsheet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px 14px;
+    }
+    .cs-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.9rem;
+      min-height: 72px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cs-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(15,52,96,0.06);
+    }
+    .cs-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      line-height: 1;
+      min-width: 2ch;
+    }
+    .cs-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.02rem;
+      line-height: 1.3;
+      color: var(--color-deep);
+    }
+    .cs-title em {
+      font-style: italic;
+      color: var(--color-navy);
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 26 — Closing
+       ══════════════════════════════════════════════════════ */
+    .slide-closing {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .closing-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .closing-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.5rem 0 2rem;
+      max-width: 14ch;
+    }
+    .closing-title .accent { color: var(--color-accent-red); font-style: italic; }
+    .closing-footer {
+      font-family: var(--font-body);
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2rem;
+      font-size: 1.05rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive — keep readable on laptop screens at 1280+
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+      .about-credits li { justify-content: flex-start; text-align: left; }
+      .about-portrait { width: 240px; height: 240px; }
+      .arc-grid, .demo-grid, .kds-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .deck-slide { padding: 3rem 2rem; }
+      .loop-diagram { flex-direction: column; gap: 1rem; }
+      .loop-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>space</kbd> next · <kbd>n</kbd> presenter notes
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Welcome — branded wordmark only ═══ -->
+    <section class="card-deck-card deck-slide slide-welcome" data-slide="welcome">
+      <div class="stagger">
+        <h1 class="wordmark">
+          <span class="talking">Talking to</span>
+          <span class="machines">Machines</span>
+        </h1>
+      </div>
+      <div class="slide-num">01 · Welcome</div>
+    </section>
+
+    <!-- ═══ 02 · About Me ═══ -->
+    <section class="card-deck-card deck-slide slide-about" data-slide="about">
+      <div class="about-grid stagger">
+        <div>
+          <span class="mono-label">About me</span>
+          <h1 class="about-name">Shalin Shodhan</h1>
+          <p class="about-subtitle">20 years in games &amp; film.</p>
+          <ul class="about-credits">
+            <li>
+              <span class="credit-dot" style="background: #E94560;"></span>
+              <div class="credit-body">
+                <strong>Pixar Animation Studios</strong>
+                <span class="credit-detail">6 feature films · 3 Academy Awards</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #7B61FF;"></span>
+              <div class="credit-body">
+                <strong>Electronic Arts — Spore</strong>
+                <span class="credit-detail">BAFTA Award for Technical Achievement</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #16C79A;"></span>
+              <div class="credit-body">
+                <strong>Lumosity</strong>
+                <span class="credit-detail">Principal Game Developer</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #F5A623;"></span>
+              <div class="credit-body">
+                <strong>Masala Games — Founder</strong>
+                <span class="credit-detail">Detective Dotson · Word Mess (#1 in 21 countries)</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #0EA5E9;"></span>
+              <div class="credit-body">
+                <strong>Carnegie Mellon University</strong>
+                <span class="credit-detail">MET — Entertainment Technology</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div class="about-portrait">
+            <img src="/images/shalin.png" alt="Shalin Shodhan" />
+          </div>
+          <div class="about-email">shalin@masalagames.com</div>
+        </div>
+      </div>
+      <div class="poster-ticker">
+        <div class="poster-track">
+          <img src="/images/workshop/dotson_square.png" alt="Detective Dotson" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="Toy Story 3" />
+          <img src="/images/workshop/art_cars2.jpg" alt="Cars 2" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="Monsters University" />
+          <img src="/images/workshop/art_insideout.jpg" alt="Inside Out" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="Finding Dory" />
+          <img src="/images/workshop/spore_cover.webp" alt="Spore" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="Word Mess" />
+          <!-- duplicated for seamless loop -->
+          <img src="/images/workshop/dotson_square.png" alt="" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="" />
+          <img src="/images/workshop/art_cars2.jpg" alt="" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="" />
+          <img src="/images/workshop/art_insideout.jpg" alt="" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="" />
+          <img src="/images/workshop/spore_cover.webp" alt="" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="" />
+        </div>
+      </div>
+      <div class="slide-num">02 · About</div>
+    </section>
+
+    <!-- ═══ 03 · Course arc ═══ -->
+    <section class="card-deck-card deck-slide slide-arc" data-slide="arc">
+      <div class="stagger">
+        <div class="arc-grid">
+          <div class="arc-card day1">
+            <div class="arc-num">01</div>
+            <h3>The Approach</h3>
+            <p>Demos. Mental models. Lay of the land.</p>
+          </div>
+          <div class="arc-card day2">
+            <div class="arc-num">02</div>
+            <h3>Build Something</h3>
+            <p>Agentic coding — on-demand software.</p>
+          </div>
+          <div class="arc-card day3">
+            <div class="arc-num">03</div>
+            <h3>Your 90-Day Plan</h3>
+            <p>The roadmap. Prototype the pieces.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">03 · The arc</div>
+    </section>
+
+    <!-- ═══ 04 · Day 1 ═══ -->
+    <section class="card-deck-card deck-slide slide-day d1" data-slide="day1">
+      <div class="day-big-num">1</div>
+      <div class="day-content stagger">
+        <div class="day-label">
+          <span class="pill">Today</span>
+          <span class="caveat" style="color: var(--color-accent-red); transform: rotate(-2deg); display: inline-block;">you are here</span>
+        </div>
+        <h1 class="day-title">The&nbsp;approach.</h1>
+        <ul class="day-points">
+          <li>Lay of the land — tools &amp; what's possible</li>
+          <li>Mental models for talking to machines</li>
+          <li>Live demos</li>
+        </ul>
+      </div>
+      <div class="slide-num">04 · Day 1</div>
+    </section>
+
+    <!-- ═══ 05 · Day 2 ═══ -->
+    <section class="card-deck-card deck-slide slide-day d2" data-slide="day2">
+      <div class="day-big-num">2</div>
+      <div class="day-content stagger">
+        <div class="day-label">
+          <span class="pill">Day Two</span>
+        </div>
+        <h1 class="day-title">Build something.</h1>
+        <p class="day-desc"><em>On-demand software</em> — the real unlock.</p>
+        <ul class="day-points">
+          <li>The stack — just enough to be dangerous</li>
+          <li>Agentic coding, end to end</li>
+          <li>Leave with something running</li>
+        </ul>
+      </div>
+      <div class="slide-num">05 · Day 2</div>
+    </section>
+
+    <!-- ═══ 06 · Day 3 ═══ -->
+    <section class="card-deck-card deck-slide slide-day d3" data-slide="day3">
+      <div class="day-big-num">3</div>
+      <div class="day-content stagger">
+        <div class="day-label">
+          <span class="pill">The finale</span>
+        </div>
+        <h1 class="day-title">Your 90-day plan.</h1>
+        <p class="day-desc">The ultimate takeaway.</p>
+        <ul class="day-points">
+          <li>Map <em>your</em> business to Know / Do / Show</li>
+          <li>Prototype the highest-leverage pieces</li>
+          <li>Walk out with a plan for Monday</li>
+        </ul>
+      </div>
+      <div class="slide-num">06 · Day 3</div>
+    </section>
+
+    <!-- ═══ 07 · TTM site + free key ═══ -->
+    <section class="card-deck-card deck-slide slide-ttm" data-slide="ttm">
+      <div class="stagger">
+        <div class="ttm-content">
+          <span class="mono-label">Your supplement</span>
+          <h1>Your handy guide in this course.</h1>
+          <p class="ttm-desc">11 chapters · interactive widgets · live AI demos.</p>
+          <div class="ttm-url">
+            talkingtomachines<span class="accent">.xyz</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">07 · The site</div>
+    </section>
+
+    <!-- ═══ 08 · Break — Lay of the land ═══ -->
+    <section class="card-deck-card deck-slide slide-break" data-slide="break-land">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">Time for demos →</span>
+        <h1 class="break-title">Lay of the land<span class="period">.</span></h1>
+        <div class="constellation" style="margin-top: 2rem;">
+          <span style="background: #E94560;"></span>
+          <span style="background: #7B61FF;"></span>
+          <span style="background: #16C79A;"></span>
+          <span style="background: #F5A623;"></span>
+          <span style="background: #0EA5E9;"></span>
+        </div>
+      </div>
+      <div class="slide-num">08 · Break</div>
+    </section>
+
+    <!-- ═══ 09 · Break — The approach ═══ -->
+    <section class="card-deck-card deck-slide slide-break break-approach" data-slide="break-approach">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">Back to slides ←</span>
+        <h1 class="break-title">The approach<span class="period">.</span></h1>
+        <p class="mono-label" style="margin-top: 2rem;">The mental models that actually matter</p>
+      </div>
+      <div class="slide-num">09 · Break</div>
+    </section>
+
+    <!-- ═══ 11 · Rate of improvement ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-rate">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 01 · Rate of improvement</div>
+        <h1 class="principle-title">Learn for the AI of <span class="hl-red">tomorrow</span>.</h1>
+        <p class="principle-body">Build around <em>approach</em>, not tools.</p>
+      </div>
+      <div class="slide-num">10 · Rate</div>
+    </section>
+
+    <!-- ═══ 12 · Not technical, communication ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-comms">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 02 · The real problem</div>
+        <h1 class="principle-title">Getting the most out of AI is <em>not</em> a <span class="hl-purple">technical</span> problem.</h1>
+        <p class="principle-body">It's a <em>communication</em> problem.</p>
+      </div>
+      <div class="slide-num">11 · Communication</div>
+    </section>
+
+    <!-- ═══ 13 · The loop ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-loop">
+      <div class="principle-content stagger" style="text-align: center;">
+        <div class="principle-label">Principle 03 · The core loop</div>
+        <h1 class="principle-title" style="margin: 0 auto 2rem; max-width: none;">Three moves. On repeat.</h1>
+        <div class="loop-diagram">
+          <div class="loop-node n1">Choose</div>
+          <span class="loop-arrow">→</span>
+          <div class="loop-node n2">Communicate</div>
+          <span class="loop-arrow">→</span>
+          <div class="loop-node n3">Evaluate</div>
+        </div>
+      </div>
+      <div class="slide-num">12 · The loop</div>
+    </section>
+
+    <!-- ═══ 14 · Right tool ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-tool">
+      <div class="principle-content stagger">
+        <div class="principle-label">Choose · Principle 04</div>
+        <h1 class="principle-title">Pick the <span class="hl-amber">right</span> AI for the task.</h1>
+        <p class="principle-body">When in doubt — <em>ask AI which AI to use.</em></p>
+      </div>
+      <div class="slide-num">13 · Choose</div>
+    </section>
+
+    <!-- ═══ 15 · Frame conversations ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-frame">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 05</div>
+        <h1 class="principle-title">Don't perfect the prompt. <span class="hl-teal">Frame the conversation.</span></h1>
+        <p class="principle-body">The <em>session</em> is the unit — not the message.</p>
+      </div>
+      <div class="slide-num">14 · Frame</div>
+    </section>
+
+    <!-- ═══ 16 · Examples ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-examples">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 06</div>
+        <h1 class="principle-title">Great <span class="hl-purple">examples</span> beat great instructions.</h1>
+        <p class="principle-body">Show what <em>good</em> looks like. Show what bad looks like.</p>
+      </div>
+      <div class="slide-num">15 · Examples</div>
+    </section>
+
+    <!-- ═══ 17 · Ask AI to ask you ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-questions">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 07</div>
+        <h1 class="principle-title">Ask AI to ask <span class="hl-red">you</span> questions.</h1>
+        <p class="principle-body">Socratic beats one-shot. Every single time.</p>
+      </div>
+      <div class="slide-num">16 · Questions</div>
+    </section>
+
+    <!-- ═══ 18 · Work recursively ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-recursive">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 08 · Recursion</div>
+        <h1 class="principle-title">Ask AI for help <em>with</em> <span class="hl-sky">AI</span>.</h1>
+        <p class="principle-body">Use the machines on each other.</p>
+      </div>
+      <div class="slide-num">17 · Recursive</div>
+    </section>
+
+    <!-- ═══ 19 · Iteration ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-iteration">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 09</div>
+        <h1 class="principle-title">Iteration is <span class="hl-red">everything</span>.</h1>
+        <p class="principle-body">Three to five passes. Every time.</p>
+      </div>
+      <div class="slide-num">18 · Iteration</div>
+    </section>
+
+    <!-- ═══ 20 · Don't settle ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-settle">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 10</div>
+        <h1 class="principle-title">AI wants to give you a <span class="hl-amber">quick win</span>. Don't take it.</h1>
+        <p class="principle-body">Push back. Ask what it's <em>holding back</em>.</p>
+      </div>
+      <div class="slide-num">19 · Don't settle</div>
+    </section>
+
+    <!-- ═══ 21 · Cross-check with another AI ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-crosscheck">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 11</div>
+        <h1 class="principle-title">Never trust <span class="hl-amber">one</span> machine.</h1>
+        <p class="principle-body">Same task. <em>Three</em> models. Compare.</p>
+      </div>
+      <div class="slide-num">20 · Cross-check</div>
+    </section>
+
+    <!-- ═══ 22 · Humanize / deslop ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-deslop">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 12</div>
+        <h1 class="principle-title">Always <span class="hl-teal">humanize</span> the output.</h1>
+        <p class="principle-body">Nothing ships raw. <em>Deslop</em> every time.</p>
+      </div>
+      <div class="slide-num">21 · Deslop</div>
+    </section>
+
+    <!-- ═══ 23 · Human edge ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-human">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 13 · The human edge</div>
+        <h1 class="principle-title">Conviction. Art. Sense. <span class="hl-red">Judgment</span>.</h1>
+        <p class="principle-body">These come from <em>you</em>. Not the machine.</p>
+      </div>
+      <div class="slide-num">22 · Edge</div>
+    </section>
+
+    <!-- ═══ 24 · Sessions → SOP ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-sop">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 14 · The long game</div>
+        <h1 class="principle-title">Your <span class="hl-teal">sessions</span> become your SOP.</h1>
+        <p class="principle-body">The <em>conversations</em> are the corpus. Guard them.</p>
+      </div>
+      <div class="slide-num">23 · SOP</div>
+    </section>
+
+    <!-- ═══ 24 · Know / Do / Show ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-kds">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 15 · A mental model</div>
+        <h1 class="principle-title" style="margin-bottom: 0;">Every AI task is one of three things.</h1>
+        <div class="kds-grid">
+          <div class="kds-card know">
+            <h3>Know</h3>
+            <div class="kds-sub">Information</div>
+            <p>Research · reasoning · brainstorming. Input and output are <em>understanding</em>.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Deep Research</span>
+              <span class="kds-eg">Perplexity</span>
+              <span class="kds-eg">Claude</span>
+            </div>
+          </div>
+          <div class="kds-card do">
+            <h3>Do</h3>
+            <div class="kds-sub">Action</div>
+            <p>Agents · automations · software. Input: <em>intent</em>. Output: a thing happening.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Claude Code</span>
+              <span class="kds-eg">Codex</span>
+              <span class="kds-eg">Antigravity</span>
+            </div>
+          </div>
+          <div class="kds-card show">
+            <h3>Show</h3>
+            <div class="kds-sub">Artifact</div>
+            <p>Decks · sites · apps · videos. Input: a <em>message</em>. Output: something consumable.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">NotebookLM</span>
+              <span class="kds-eg">Nano Banana</span>
+              <span class="kds-eg">Seedance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">24 · Know · Do · Show</div>
+    </section>
+
+    <!-- ═══ 25 · Cheat sheet — all principles, one page ═══ -->
+    <section class="card-deck-card deck-slide slide-cheatsheet" data-slide="p-cheatsheet">
+      <div class="cheatsheet-content stagger">
+        <div class="cheatsheet-header">
+          <h1 class="cheatsheet-title">The <span class="accent">cheat sheet</span>.</h1>
+          <span class="cheatsheet-sub">All 15, one page →</span>
+        </div>
+        <div class="cheatsheet-grid">
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">01</span><span class="cs-title">Learn for the AI of <em>tomorrow</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">02</span><span class="cs-title">Not technical — it's <em>communication</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0F3460;">03</span><span class="cs-title">Choose → Communicate → Evaluate.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">04</span><span class="cs-title">Pick the <em>right</em> AI for the task.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">05</span><span class="cs-title">Frame the conversation, not the prompt.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">06</span><span class="cs-title">Great <em>examples</em> beat great instructions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">07</span><span class="cs-title">Ask AI to ask <em>you</em> questions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">08</span><span class="cs-title">Ask AI for help <em>with</em> AI.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">09</span><span class="cs-title"><em>Iteration</em> is everything. 3–5 passes.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">10</span><span class="cs-title">Don't take the <em>quick win</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">11</span><span class="cs-title">Never trust <em>one</em> machine. Cross-check.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">12</span><span class="cs-title">Always <em>humanize</em>. Deslop everything.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">13</span><span class="cs-title">Conviction. Art. Sense. <em>Judgment</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">14</span><span class="cs-title">Your <em>sessions</em> become your SOP.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">15</span><span class="cs-title">Every task = <em>Know</em> · <em>Do</em> · <em>Show</em>.</span></div>
+        </div>
+      </div>
+      <div class="slide-num">25 · Cheat sheet</div>
+    </section>
+
+    <!-- ═══ 26 · Break — Deep research ═══ -->
+    <section class="card-deck-card deck-slide slide-break break-research" data-slide="break-research">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">One more demo →</span>
+        <h1 class="break-title">Deep research<span class="period">.</span></h1>
+        <p class="mono-label" style="margin-top: 2rem;">Let's find India's best mutual funds. Live.</p>
+      </div>
+      <div class="slide-num">26 · Break</div>
+    </section>
+
+    <!-- ═══ 28 · Closing ═══ -->
+    <section class="card-deck-card deck-slide slide-closing" data-slide="closing">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="closing-label">Day Two →</span>
+        <h1 class="closing-title">The age of <span class="accent">personal software</span> for all.</h1>
+        <p class="principle-body" style="max-width: 580px; text-align: center;">See you on Day Two.</p>
+        <div class="closing-footer">Day 1 · end.</div>
+      </div>
+      <div class="slide-num">27 · Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    // ════════════════════════════════════════════════════════
+    // Deck behavior: keyboard nav + active slide tracking
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      // ─── Presenter sync ───
+      let channel = null;
+      try { channel = new BroadcastChannel('workshop-day1'); } catch (e) {}
+
+      function broadcastSlide(idx) {
+        if (channel) channel.postMessage({ type: 'slide', index: idx });
+      }
+      if (channel) {
+        channel.addEventListener('message', (ev) => {
+          if (ev.data && ev.data.type === 'goto' && typeof ev.data.index === 'number') {
+            goTo(ev.data.index);
+          }
+          if (ev.data && ev.data.type === 'request-state') {
+            broadcastSlide(current);
+          }
+        });
+        // Heartbeat — presenter uses this to know deck is alive
+        setInterval(() => { if (channel) channel.postMessage({ type: 'ping' }); }, 1500);
+      }
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+        broadcastSlide(idx);
+      }
+
+      // IntersectionObserver — most visible slide is "active"
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      // Keyboard nav
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) {
+          kbdHint.classList.add('hidden');
+          hintHidden = true;
+        }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+          case 'n':
+          case 'N':
+            e.preventDefault();
+            window.open('/workshop-day1/presenter', 'presenter', 'width=1100,height=800,menubar=no,toolbar=no,location=no');
+            break;
+        }
+      });
+
+      // Click dots to jump
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      // Click right side of screen to advance, left side to go back
+      document.addEventListener('click', (e) => {
+        // ignore clicks on interactive elements
+        if (e.target.closest('a, button, input, .progress-dot, .demo-card')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      // Initialize
+      updateActive(0);
+    })();
+  </script>
+
+</body>
+</html>
