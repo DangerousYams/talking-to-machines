@@ -303,6 +303,44 @@ export default function ChapterDrawer({ currentSlug, accentColor, locale = 'en' 
                         </span>
                       </a>
                     )}
+                    {ch.number === 11 && locale === 'en' && (
+                      <a
+                        key="playbook"
+                        href="/playbook"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          padding: '7px 10px',
+                          margin: '2px 0',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          background: currentSlug === 'playbook' ? '#7B61FF0A' : 'transparent',
+                          borderLeft: '2px dashed #7B61FF60',
+                          transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(123,97,255,0.04)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = currentSlug === 'playbook' ? '#7B61FF0A' : 'transparent'; }}
+                      >
+                        <span style={{
+                          width: 22, height: 22, borderRadius: '50%',
+                          background: currentSlug === 'playbook' ? '#7B61FF' : 'rgba(123,97,255,0.1)',
+                          color: currentSlug === 'playbook' ? '#fff' : '#7B61FF',
+                          fontFamily: 'var(--font-mono)', fontSize: '0.7rem', fontWeight: 700,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                        }}>
+                          §
+                        </span>
+                        <span style={{
+                          fontFamily: 'var(--font-body)', fontSize: '0.78rem',
+                          color: '#7B61FF',
+                          lineHeight: 1.3, fontStyle: 'italic',
+                          fontWeight: currentSlug === 'playbook' ? 600 : 500,
+                        }}>
+                          The Playbook
+                        </span>
+                      </a>
+                    )}
                     {ch.number === 6 && locale === 'en' && (
                       <a
                         key="field-guide"
