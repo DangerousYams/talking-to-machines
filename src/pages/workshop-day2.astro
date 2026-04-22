@@ -1,0 +1,2421 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'welcome', 'cheatsheet', 'today',
+  'break-land',
+  'big-three',
+  'china', 'local', 'map', 'limits',
+  'break-agents',
+  'agent-def', 'agent-why', 'agent-calls', 'agent-skills', 'agent-skills-how',
+  'agent-future', 'personal-software',
+  'extension-url',
+  'day3-tease',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Workshop · Day 2 — Talking to Machines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Workshop Day 2 — slide-specific styles
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* Progress rail */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-purple);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* Slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      right: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* Keyboard hint */
+    .kbd-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      opacity: 0.55;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      background: rgba(26,26,46,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 0 2px;
+    }
+
+    /* ─── Staggered entrance ─── */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+
+    /* ─── Print / export-to-PDF ─── */
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body {
+        background: var(--color-cream) !important;
+        width: 1600px !important;
+        height: auto !important;
+      }
+      body.card-deck-page::before { display: none !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        scroll-snap-align: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+      * { animation: none !important; }
+
+      [data-slide="break-land"],
+      [data-slide="break-agents"],
+      [data-slide="day3-tease"] { display: none !important; }
+
+      .ai-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .mode-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .notable-grid { grid-template-columns: repeat(4, 1fr) !important; }
+      .china-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .limits-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .auto-grid { grid-template-columns: 1fr 1fr !important; }
+      .local-grid { grid-template-columns: 1fr 1fr !important; }
+      .map-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .loop-diagram-big { flex-direction: row !important; }
+      .calls-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .skills-examples { grid-template-columns: repeat(3, 1fr) !important; }
+      .show-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .arch-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+
+    /* ─── Utilities ─── */
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .constellation { display: inline-flex; gap: 10px; align-items: center; }
+    .constellation span { width: 7px; height: 7px; border-radius: 50%; opacity: 0.6; }
+
+    /* ══════════════════════════════════════════════════════
+       WELCOME — "Day Two" wordmark
+       ══════════════════════════════════════════════════════ */
+    .slide-welcome {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-welcome .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1.5rem;
+    }
+    .slide-welcome .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(5rem, 13vw, 11rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+    .slide-welcome .wordmark .day {
+      display: block;
+      color: var(--color-deep);
+      font-style: italic;
+      font-weight: 500;
+    }
+    .slide-welcome .wordmark .two {
+      display: block;
+      color: var(--color-purple);
+    }
+    .slide-welcome .tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--color-subtle);
+      margin-top: 2rem;
+    }
+    .slide-welcome .tagline strong { color: var(--color-purple); font-weight: 600; font-style: normal; }
+
+    /* ══════════════════════════════════════════════════════
+       CHEAT SHEET (compact replay of Day 1)
+       ══════════════════════════════════════════════════════ */
+    .slide-cheatsheet { justify-content: center; padding: 3rem 4rem; }
+    .cheatsheet-content { max-width: 1440px; margin: 0 auto; width: 100%; }
+    .cheatsheet-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(26,26,46,0.08);
+      padding-bottom: 1.25rem;
+    }
+    .cheatsheet-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0;
+    }
+    .cheatsheet-title .accent { color: var(--color-accent-red); font-style: italic; }
+    .cheatsheet-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--color-subtle);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .cheatsheet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 12px;
+    }
+    .cs-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.85rem;
+      min-height: 64px;
+    }
+    .cs-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      line-height: 1;
+      min-width: 2ch;
+    }
+    .cs-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.96rem;
+      line-height: 1.3;
+      color: var(--color-deep);
+    }
+    .cs-title em { font-style: italic; color: var(--color-navy); font-weight: 600; }
+
+    /* Cheat sheet footer — link to the Playbook */
+    .cheatsheet-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(26,26,46,0.1);
+      flex-wrap: wrap;
+    }
+    .cheatsheet-cta-lead {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--color-purple);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .cheatsheet-cta-link {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--color-purple);
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(123,97,255,0.25);
+      background: rgba(123,97,255,0.05);
+      transition: all 0.2s ease;
+    }
+    .cheatsheet-cta-link:hover {
+      background: rgba(123,97,255,0.12);
+      border-color: rgba(123,97,255,0.4);
+    }
+    .cheatsheet-cta-link .path { color: var(--color-deep); opacity: 0.55; }
+
+    /* ══════════════════════════════════════════════════════
+       TODAY — three-beat agenda
+       ══════════════════════════════════════════════════════ */
+    .slide-today { justify-content: center; }
+    .today-content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .today-head { margin-bottom: 2.5rem; text-align: center; }
+    .today-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.5rem 0 0.5rem;
+    }
+    .today-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.15rem;
+    }
+    .today-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .today-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .today-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .today-card.a::before { background: var(--color-amber); }
+    .today-card.b::before { background: var(--color-accent-red); }
+    .today-card.c::before { background: var(--color-teal); }
+    .today-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.75rem;
+    }
+    .today-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 0 0 0.6rem;
+      letter-spacing: -0.02em;
+    }
+    .today-card.a h3 { color: var(--color-amber); }
+    .today-card.b h3 { color: var(--color-accent-red); }
+    .today-card.c h3 { color: var(--color-teal); }
+    .today-card p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SECTION BREAK slides
+       ══════════════════════════════════════════════════════ */
+    .slide-break { justify-content: center; align-items: center; text-align: center; }
+    .break-label {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.75rem;
+      color: var(--color-purple);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .break-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 10vw, 8rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin: 0;
+      font-style: italic;
+    }
+    .break-title .period { color: var(--color-purple); font-style: normal; }
+    .break-under {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 2rem;
+    }
+    .slide-break.break-agents .break-label { color: var(--color-accent-red); }
+    .slide-break.break-agents .break-title .period { color: var(--color-accent-red); }
+    .slide-break.break-build .break-label { color: var(--color-teal); }
+    .slide-break.break-build .break-title .period { color: var(--color-teal); }
+
+    /* ══════════════════════════════════════════════════════
+       BIG THREE — ChatGPT · Claude · Gemini
+       ══════════════════════════════════════════════════════ */
+    .slide-big-three { justify-content: center; }
+    .bt-content { max-width: 1280px; margin: 0 auto; width: 100%; }
+    .bt-head { text-align: center; margin-bottom: 2.5rem; }
+    .bt-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.5rem 0;
+    }
+    .bt-head h1 em { font-style: italic; color: var(--color-purple); }
+    .bt-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.15rem;
+    }
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .ai-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-card .ai-glyph {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 3rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      opacity: 0.12;
+      position: absolute;
+      right: 1.25rem;
+      top: 1.25rem;
+      user-select: none;
+    }
+    .ai-card .ai-maker {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.5rem;
+    }
+    .ai-card h3 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .ai-card .ai-verdict {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--color-deep);
+      line-height: 1.5;
+      margin: 0 0 1.1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed rgba(26,26,46,0.12);
+    }
+    .ai-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ai-card li {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      padding: 0.25rem 0 0.25rem 1.1rem;
+      position: relative;
+    }
+    .ai-card li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .ai-card.gpt { border-top: 4px solid var(--color-teal); }
+    .ai-card.gpt h3, .ai-card.gpt .ai-glyph, .ai-card.gpt li::before { color: var(--color-teal); }
+    .ai-card.claude { border-top: 4px solid var(--color-amber); }
+    .ai-card.claude h3, .ai-card.claude .ai-glyph, .ai-card.claude li::before { color: var(--color-amber); }
+    .ai-card.gemini { border-top: 4px solid var(--color-sky); }
+    .ai-card.gemini h3, .ai-card.gemini .ai-glyph, .ai-card.gemini li::before { color: var(--color-sky); }
+
+    /* ══════════════════════════════════════════════════════
+       SINGLE-AI deep dive (ChatGPT / Claude / Gemini)
+       ══════════════════════════════════════════════════════ */
+    .slide-verdict { justify-content: center; }
+    .verdict-content { max-width: 1180px; margin: 0 auto; width: 100%; }
+    .verdict-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1rem;
+    }
+    .verdict-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 6vw, 5rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0 0 1.25rem;
+    }
+    .verdict-title em { font-style: italic; }
+    .verdict-sub {
+      font-family: var(--font-body);
+      font-size: 1.45rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      max-width: 60ch;
+      margin: 0 0 2.5rem;
+    }
+    .verdict-sub strong { color: var(--color-deep); font-weight: 700; }
+
+    /* Claude — strengths list */
+    .verdict-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem 2rem;
+      max-width: 900px;
+    }
+    .verdict-list li {
+      list-style: none;
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      padding: 0.5rem 0 0.5rem 1.75rem;
+      position: relative;
+      color: var(--color-deep);
+    }
+    .verdict-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      font-weight: 700;
+    }
+
+    /* Gemini — modes grid */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+      max-width: 1000px;
+    }
+    .mode-chip {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(14,165,233,0.2);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mode-chip .mode-kind {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-sky);
+    }
+    .mode-chip .mode-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .mode-chip .mode-desc {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--color-subtle);
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    /* Color-coded verdict slides */
+    .slide-verdict.gpt .verdict-title em { color: var(--color-teal); }
+    .slide-verdict.claude .verdict-title em { color: var(--color-amber); }
+    .slide-verdict.gemini .verdict-title em { color: var(--color-sky); }
+    .slide-verdict.claude .verdict-list li::before { color: var(--color-amber); }
+
+    /* ChatGPT — quote callout */
+    .gpt-callout {
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-teal);
+      padding: 1.5rem 1.75rem;
+      border-radius: 8px;
+      max-width: 780px;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+    }
+    .gpt-callout .attrib {
+      display: block;
+      margin-top: 0.6rem;
+      font-family: var(--font-mono);
+      font-style: normal;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       CHINA models
+       ══════════════════════════════════════════════════════ */
+    .slide-china { justify-content: center; }
+    .china-head { max-width: 780px; margin: 0 auto 2.5rem; text-align: center; }
+    .china-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .china-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 0.75rem;
+    }
+    .china-head h1 em { font-style: italic; color: var(--color-accent-red); }
+    .china-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .china-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .china-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid var(--color-accent-red);
+      border-radius: 12px;
+      padding: 1.5rem 1.4rem;
+    }
+    .china-card .maker {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.4rem;
+    }
+    .china-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      margin: 0 0 0.6rem;
+      color: var(--color-accent-red);
+      letter-spacing: -0.02em;
+    }
+    .china-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       NOTABLE mentions
+       ══════════════════════════════════════════════════════ */
+    .slide-notable { justify-content: center; }
+    .notable-head { text-align: center; max-width: 780px; margin: 0 auto 2.25rem; }
+    .notable-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      margin: 0.5rem 0;
+    }
+    .notable-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .notable-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .notable-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 10px;
+      padding: 1.1rem 1.15rem;
+    }
+    .notable-card .kind {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .notable-card.k-research .kind { color: var(--color-sky); }
+    .notable-card.k-video .kind { color: var(--color-accent-red); }
+    .notable-card.k-code .kind { color: var(--color-purple); }
+    .notable-card.k-image .kind { color: var(--color-amber); }
+    .notable-card.k-audio .kind { color: var(--color-teal); }
+    .notable-card.k-agent .kind { color: var(--color-navy); }
+    .notable-card h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin: 0 0 0.25rem;
+      letter-spacing: -0.01em;
+    }
+    .notable-card p {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       LOCAL / open-source models — Gemma + LM Studio + Ollama
+       ══════════════════════════════════════════════════════ */
+    .slide-local { justify-content: center; padding: 3rem 4rem; }
+    .local-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .local-head { max-width: 760px; margin: 0 auto 2.25rem; text-align: center; }
+    .local-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .local-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 0.75rem;
+    }
+    .local-head h1 em { font-style: italic; color: var(--color-teal); }
+    .local-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .local-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .local-col {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid var(--color-teal);
+      border-radius: 14px;
+      padding: 1.5rem 1.5rem 1.35rem;
+    }
+    .local-col .col-kind {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin-bottom: 0.85rem;
+    }
+    .local-hero {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed rgba(26,26,46,0.1);
+    }
+    .local-hero .maker {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.3rem;
+    }
+    .local-hero h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.9rem;
+      margin: 0 0 0.6rem;
+      color: var(--color-teal);
+      letter-spacing: -0.02em;
+    }
+    .local-hero p {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .local-also {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .local-also .plus {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--color-teal);
+      margin-right: 6px;
+    }
+    .local-tool {
+      margin-bottom: 0.9rem;
+    }
+    .local-tool:last-child { margin-bottom: 0; }
+    .local-tool .tk {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.25rem;
+    }
+    .local-tool h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin: 0 0 0.3rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .local-tool p {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .local-footnote {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--color-teal);
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MAP of tools — verdict buckets (must use / try once / dangerous)
+       ══════════════════════════════════════════════════════ */
+    .slide-map { justify-content: center; padding: 2.5rem 3.5rem; }
+    .map-content { max-width: 1320px; margin: 0 auto; width: 100%; }
+    .map-head { max-width: 820px; margin: 0 auto 2rem; text-align: center; }
+    .map-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .map-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 0.5rem;
+    }
+    .map-head h1 em { font-style: italic; color: var(--color-purple); }
+    .map-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.05rem;
+    }
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+    .map-col {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid currentColor;
+      border-radius: 14px;
+      padding: 1.35rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .map-col.must-use { color: var(--color-teal); }
+    .map-col.try-once { color: var(--color-amber); }
+    .map-col.dangerous { color: var(--color-accent-red); }
+    .map-col .col-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.2rem;
+    }
+    .map-col .col-label .glyph {
+      display: inline-flex;
+      width: 26px;
+      height: 26px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: currentColor;
+      color: var(--color-warm-white);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .map-col .col-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--color-subtle);
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px dashed rgba(26,26,46,0.1);
+    }
+    .map-col .tools { display: flex; flex-direction: column; gap: 0.7rem; }
+    .map-col .tool-chip h4 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 0 0 0.15rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .map-col .tool-chip p {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0;
+      opacity: 0.82;
+    }
+    .map-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.35rem;
+      color: var(--color-accent-red);
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       AUTONOMY warning — vibe coders + computer-use agents
+       ══════════════════════════════════════════════════════ */
+    .slide-autonomy { justify-content: center; padding: 3rem 4rem; }
+    .auto-content { max-width: 1180px; margin: 0 auto; width: 100%; }
+    .auto-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-accent-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.25rem;
+    }
+    .auto-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin: 0 0 1rem;
+      max-width: 18ch;
+    }
+    .auto-title em { font-style: italic; color: var(--color-accent-red); }
+    .auto-lead {
+      font-family: var(--font-body);
+      font-size: 1.35rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      max-width: 58ch;
+      margin: 0 0 2.25rem;
+    }
+    .auto-lead em { color: var(--color-navy); font-weight: 600; }
+    .auto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .auto-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid var(--color-accent-red);
+      border-radius: 12px;
+      padding: 1.4rem 1.5rem;
+    }
+    .auto-card .kind {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      margin-bottom: 0.35rem;
+    }
+    .auto-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.4rem;
+      margin: 0 0 0.85rem;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+    }
+    .auto-card .names {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 0.85rem;
+    }
+    .auto-card .name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(233,69,96,0.25);
+      color: var(--color-accent-red);
+      background: rgba(233,69,96,0.05);
+    }
+    .auto-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .auto-card p em { color: var(--color-navy); font-weight: 600; }
+    .auto-takeaway {
+      margin-top: 1.75rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1.9rem;
+      color: var(--color-accent-red);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       LIMITS — brutal caps, token economics, how to survive
+       ══════════════════════════════════════════════════════ */
+    .slide-limits { justify-content: center; padding: 3rem 4rem; }
+    .limits-content { max-width: 1240px; margin: 0 auto; width: 100%; }
+    .limits-head { text-align: center; max-width: 820px; margin: 0 auto 2.25rem; }
+    .limits-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .limits-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 0.75rem;
+    }
+    .limits-head h1 em { font-style: italic; color: var(--color-accent-red); }
+    .limits-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .limits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .limits-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid var(--color-purple);
+      border-radius: 14px;
+      padding: 1.6rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .limits-card .tip-num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-purple);
+      margin-bottom: 0.5rem;
+    }
+    .limits-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      margin: 0 0 0.75rem;
+      line-height: 1.2;
+    }
+    .limits-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.5rem;
+    }
+    .limits-card p strong { color: var(--color-accent-red); font-weight: 700; }
+    .limits-card p em { color: var(--color-navy); font-weight: 600; }
+    .limits-card code {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: rgba(123,97,255,0.08);
+      color: var(--color-purple);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .limits-card .figure {
+      margin-top: auto;
+      padding-top: 0.9rem;
+      border-top: 1px dashed rgba(26,26,46,0.1);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--color-purple);
+      letter-spacing: -0.01em;
+    }
+    .limits-card .figure small {
+      display: block;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--color-subtle);
+      margin-top: 2px;
+      letter-spacing: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ARCHITECTS slide — Anushri / Rayon / Nano Banana
+       ══════════════════════════════════════════════════════ */
+    .slide-architects { justify-content: center; padding: 3rem 4rem; }
+    .arch-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .arch-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-amber);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .arch-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0 0 2rem;
+    }
+    .arch-title em { font-style: italic; color: var(--color-amber); }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+    .arch-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .arch-card .kind {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin-bottom: 0.35rem;
+    }
+    .arch-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.7rem;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+    }
+    .arch-card p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 1rem;
+    }
+    .arch-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem;
+    }
+    .arch-card li {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      padding: 0.2rem 0 0.2rem 1.3rem;
+      position: relative;
+    }
+    .arch-card li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--color-amber);
+    }
+    .arch-video {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--color-deep);
+      margin-top: auto;
+      border: 1px solid rgba(26,26,46,0.1);
+    }
+    .arch-video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .arch-video-caption {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 0.6rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       AGENT DEFINITION — the loop diagram
+       ══════════════════════════════════════════════════════ */
+    .slide-agent-def { justify-content: center; }
+    .agent-def-content { max-width: 1300px; margin: 0 auto; width: 100%; text-align: center; }
+    .agent-def-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1rem;
+    }
+    .agent-def-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1rem;
+    }
+    .agent-def-title em { font-style: italic; color: var(--color-accent-red); }
+    .agent-def-formula {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--color-navy);
+      margin: 0 0 3rem;
+      letter-spacing: -0.01em;
+    }
+    .agent-def-formula .plus { color: var(--color-subtle); font-style: normal; margin: 0 0.6rem; }
+    .loop-diagram-big {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .loop-node-big {
+      background: var(--color-warm-white);
+      border: 2px solid;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      min-width: 180px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
+    .loop-node-big .nlabel {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      opacity: 0.75;
+    }
+    .loop-node-big .nbig {
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+    .loop-node-big.n1 { border-color: var(--color-amber); color: var(--color-amber); }
+    .loop-node-big.n2 { border-color: var(--color-accent-red); color: var(--color-accent-red); }
+    .loop-node-big.n3 { border-color: var(--color-teal); color: var(--color-teal); }
+    .loop-node-big.n4 { border-color: var(--color-purple); color: var(--color-purple); }
+    .loop-arrow-big {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+    .loop-footnote {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--color-accent-red);
+      margin-top: 2.5rem;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       AGENT-WHY (simple principle slide)
+       ══════════════════════════════════════════════════════ */
+    .slide-principle { justify-content: center; }
+    .principle-content { max-width: 1240px; margin: 0 auto; width: 100%; }
+    .principle-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1.75rem;
+    }
+    .principle-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      max-width: 22ch;
+    }
+    .principle-title .hl-red { color: var(--color-accent-red); }
+    .principle-title .hl-purple { color: var(--color-purple); }
+    .principle-title .hl-teal { color: var(--color-teal); }
+    .principle-title .hl-amber { color: var(--color-amber); }
+    .principle-title .hl-sky { color: var(--color-sky); }
+    .principle-body {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 62ch;
+      margin: 0;
+    }
+    .principle-body em { color: var(--color-navy); }
+    .deck-slide p { max-width: none; }
+
+    /* ══════════════════════════════════════════════════════
+       AGENT-CALLS — CLIs · MCPs · APIs
+       ══════════════════════════════════════════════════════ */
+    .slide-calls { justify-content: center; }
+    .calls-content { max-width: 1240px; margin: 0 auto; width: 100%; }
+    .calls-head { text-align: center; margin-bottom: 2.5rem; }
+    .calls-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      margin: 0.5rem 0;
+    }
+    .calls-head h1 em { font-style: italic; color: var(--color-purple); }
+    .calls-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .calls-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .calls-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+    }
+    .calls-card.cli { border-top: 3px solid var(--color-purple); }
+    .calls-card.mcp { border-top: 3px solid var(--color-teal); }
+    .calls-card.api { border-top: 3px solid var(--color-navy); }
+    .calls-card .acronym {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.35rem;
+    }
+    .calls-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.7rem;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .calls-card.cli h3 { color: var(--color-purple); }
+    .calls-card.mcp h3 { color: var(--color-teal); }
+    .calls-card.api h3 { color: var(--color-navy); }
+    .calls-card p {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.9rem;
+    }
+    .calls-card .egs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .calls-card .eg {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.15);
+      color: var(--color-deep);
+      background: var(--color-cream);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SKILLS — concept slide + how-to slide
+       ══════════════════════════════════════════════════════ */
+    .slide-skills { justify-content: center; padding: 3rem 4rem; }
+    .skills-content { max-width: 1180px; margin: 0 auto; width: 100%; }
+    .skills-head { max-width: 820px; margin: 0 auto 2rem; text-align: center; }
+    .skills-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .skills-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 1rem;
+    }
+    .skills-head h1 em { font-style: italic; color: var(--color-teal); }
+    .skills-lead {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 720px;
+      margin: 0 auto 1.25rem;
+    }
+    .skills-lead em { color: var(--color-navy); font-weight: 600; }
+    .skills-lead .alien {
+      font-family: 'Caveat', cursive;
+      font-size: 1.05em;
+      color: var(--color-accent-red);
+      font-style: normal;
+      font-weight: 600;
+    }
+    .skills-examples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+      max-width: 1000px;
+      margin: 1.25rem auto 0;
+    }
+    .skill-chip {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(22,199,154,0.2);
+      border-left: 3px solid var(--color-teal);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+    }
+    .skill-chip .role {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin-bottom: 2px;
+    }
+    .skill-chip .name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .skills-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--color-teal);
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    /* Skills — how slide */
+    .slide-skills-how { justify-content: center; padding: 3rem 4rem; }
+    .show-content { max-width: 1260px; margin: 0 auto; width: 100%; }
+    .show-head { max-width: 820px; margin: 0 auto 1.75rem; text-align: center; }
+    .show-head .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .show-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.75rem 0 0.5rem;
+    }
+    .show-head h1 em { font-style: italic; color: var(--color-teal); }
+    .show-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.05rem;
+    }
+    .show-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+    .show-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid currentColor;
+      border-radius: 14px;
+      padding: 1.4rem 1.3rem;
+    }
+    .show-card.find { color: var(--color-teal); }
+    .show-card.care { color: var(--color-accent-red); }
+    .show-card.use { color: var(--color-purple); }
+    .show-card .step {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.4rem;
+    }
+    .show-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.75rem;
+    }
+    .show-card p {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.65rem;
+    }
+    .show-card p:last-child { margin-bottom: 0; }
+    .show-card code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      background: rgba(22,199,154,0.08);
+      color: var(--color-teal);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .show-card.care code { background: rgba(233,69,96,0.08); color: var(--color-accent-red); }
+    .show-card.use code { background: rgba(123,97,255,0.08); color: var(--color-purple); }
+    .show-card .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 0.5rem;
+    }
+    .show-card .pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 100px;
+      border: 1px solid currentColor;
+      color: currentColor;
+      background: rgba(255,255,255,0.5);
+    }
+    .show-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.35rem;
+      color: var(--color-purple);
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       EXTENSION-URL — call to action
+       ══════════════════════════════════════════════════════ */
+    .slide-ext-url { justify-content: center; text-align: center; }
+    .ext-content { max-width: 900px; margin: 0 auto; }
+    .ext-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+    .ext-content h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 1rem 0 1.5rem;
+    }
+    .ext-url {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+      color: var(--color-deep);
+      margin: 1.5rem 0;
+      padding: 1rem 2rem;
+      background: var(--color-warm-white);
+      border: 1.5px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      letter-spacing: -0.01em;
+      box-shadow: 0 8px 28px rgba(15,52,96,0.08);
+    }
+    .ext-url .accent { color: var(--color-teal); }
+    .ext-url .path { color: var(--color-subtle); font-weight: 500; }
+    .ext-desc {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      margin: 0 auto 1rem;
+      max-width: 560px;
+      line-height: 1.55;
+    }
+    .ext-tags {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .ext-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 100px;
+      background: rgba(22,199,154,0.08);
+      color: var(--color-teal);
+      border: 1px solid rgba(22,199,154,0.2);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       DAY 3 TEASE — closing
+       ══════════════════════════════════════════════════════ */
+    .slide-closing { justify-content: center; align-items: center; text-align: center; }
+    .closing-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .closing-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.5rem 0 1.75rem;
+      max-width: 18ch;
+    }
+    .closing-title .accent { color: var(--color-teal); font-style: italic; }
+    .closing-desc {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      color: var(--color-deep);
+      line-height: 1.6;
+      max-width: 620px;
+    }
+    .closing-footer {
+      font-family: var(--font-body);
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive (laptop fallback)
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .deck-slide { padding: 3rem 2rem; }
+      .today-grid, .ai-grid, .china-grid, .calls-grid, .skills-examples, .show-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .notable-grid { grid-template-columns: repeat(2, 1fr); }
+      .mode-grid { grid-template-columns: repeat(2, 1fr); }
+      .limits-grid { grid-template-columns: 1fr; }
+      .auto-grid { grid-template-columns: 1fr; }
+      .local-grid { grid-template-columns: 1fr; }
+      .map-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: 1fr; }
+      .loop-diagram-big { flex-direction: column; gap: 1rem; }
+      .loop-arrow-big { transform: rotate(90deg); }
+      .cheatsheet-grid { grid-template-columns: repeat(2, 1fr); }
+      .verdict-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>space</kbd> next
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Welcome · Day Two ═══ -->
+    <section class="card-deck-card deck-slide slide-welcome" data-slide="welcome">
+      <div class="stagger">
+        <div class="eyebrow">Talking to Machines</div>
+        <h1 class="wordmark">
+          <span class="day">Day</span>
+          <span class="two">Two.</span>
+        </h1>
+        <p class="tagline">The day you <strong>build something</strong>.</p>
+      </div>
+      <div class="slide-num">01 · Welcome</div>
+    </section>
+
+    <!-- ═══ 02 · Cheat sheet ═══ -->
+    <section class="card-deck-card deck-slide slide-cheatsheet" data-slide="cheatsheet">
+      <div class="cheatsheet-content stagger">
+        <div class="cheatsheet-header">
+          <h1 class="cheatsheet-title">The <span class="accent">15</span>, in one glance.</h1>
+          <span class="cheatsheet-sub">from Day 1 →</span>
+        </div>
+        <div class="cheatsheet-grid">
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">01</span><span class="cs-title">Learn for the AI of <em>tomorrow</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">02</span><span class="cs-title">Not technical — it's <em>communication</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0F3460;">03</span><span class="cs-title">Choose → Communicate → Evaluate.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">04</span><span class="cs-title">Pick the <em>right</em> AI for the task.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">05</span><span class="cs-title">Frame the conversation, not the prompt.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">06</span><span class="cs-title">Great <em>examples</em> beat great instructions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">07</span><span class="cs-title">Ask AI to ask <em>you</em> questions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">08</span><span class="cs-title">Ask AI for help <em>with</em> AI.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">09</span><span class="cs-title"><em>Iteration</em> is everything. 3–5 passes.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">10</span><span class="cs-title">Don't take the <em>quick win</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">11</span><span class="cs-title">Never trust <em>one</em> machine. Cross-check.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">12</span><span class="cs-title">Always <em>humanize</em>. Deslop everything.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">13</span><span class="cs-title">Conviction. Art. Sense. <em>Judgment</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">14</span><span class="cs-title">Your <em>sessions</em> become your SOP.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">15</span><span class="cs-title">Every task = <em>Know</em> · <em>Do</em> · <em>Show</em>.</span></div>
+        </div>
+        <div class="cheatsheet-cta">
+          <span class="cheatsheet-cta-lead">Want the 9 actual prompts? →</span>
+          <a class="cheatsheet-cta-link" href="https://talkingtomachines.xyz/playbook" target="_blank" rel="noopener">
+            talkingtomachines.xyz<span class="path">/playbook</span>
+          </a>
+        </div>
+      </div>
+      <div class="slide-num">02 · Cheat sheet</div>
+    </section>
+
+    <!-- ═══ 04 · Today ═══ -->
+    <section class="card-deck-card deck-slide slide-today" data-slide="today">
+      <div class="today-content stagger">
+        <div class="today-grid">
+          <div class="today-card a">
+            <div class="today-num">Beat 01</div>
+            <h3>Lay of the land.</h3>
+            <p>The Big Three. What each is actually for. What to pay for, what to get free.</p>
+          </div>
+          <div class="today-card b">
+            <div class="today-num">Beat 02</div>
+            <h3>Agents changed everything.</h3>
+            <p>An LLM with a goal, in a loop, calling tools. Why that one idea broke everything open.</p>
+          </div>
+          <div class="today-card c">
+            <div class="today-num">Beat 03</div>
+            <h3>We build.</h3>
+            <p>A real Chrome extension. Yours. Installed on your machine by the end of the day.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">03 · Today</div>
+    </section>
+
+    <!-- ═══ 05 · Break — Lay of the land ═══ -->
+    <section class="card-deck-card deck-slide slide-break" data-slide="break-land">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">First — let's get the map right →</span>
+        <h1 class="break-title">Lay of the land<span class="period">.</span></h1>
+        <p class="break-under">Who makes what · who's best at what · what's worth paying for</p>
+      </div>
+      <div class="slide-num">04 · Break</div>
+    </section>
+
+    <!-- ═══ 06 · Big Three intro ═══ -->
+    <section class="card-deck-card deck-slide slide-big-three" data-slide="big-three">
+      <div class="bt-content stagger">
+        <div class="bt-head">
+          <span class="mono-label">The only three that matter — right now</span>
+          <h1>ChatGPT. Claude. <em>Gemini.</em></h1>
+          <p class="sub">All three have their place. Only one is best at each thing.</p>
+        </div>
+        <div class="ai-grid">
+          <div class="ai-card gpt">
+            <span class="ai-glyph">G</span>
+            <div class="ai-maker">OpenAI</div>
+            <h3>ChatGPT</h3>
+            <p class="ai-verdict">The default everyone knows — and the one that's quietly fallen behind for pro work.</p>
+            <ul>
+              <li>Huge install base, sticky brand</li>
+              <li>Good for quick answers, travel, casual writing</li>
+              <li>Falls short on long, structured, serious work</li>
+            </ul>
+          </div>
+          <div class="ai-card claude">
+            <span class="ai-glyph">C</span>
+            <div class="ai-maker">Anthropic</div>
+            <h3>Claude</h3>
+            <p class="ai-verdict">The pro's choice. Best thinking, best writing, best coding partner you can buy.</p>
+            <ul>
+              <li>Coding agents · Claude Code · SDK</li>
+              <li>Long-form composition &amp; planning</li>
+              <li>Serious discussions that hold their shape</li>
+            </ul>
+          </div>
+          <div class="ai-card gemini">
+            <span class="ai-glyph">G</span>
+            <div class="ai-maker">Google DeepMind</div>
+            <h3>Gemini</h3>
+            <p class="ai-verdict">The swiss army knife. More modes than anyone else — video, audio, images, research.</p>
+            <ul>
+              <li>Veo · Nano Banana · NotebookLM</li>
+              <li>The most generous free tier, by far</li>
+              <li>Rapid monthly shipping cadence</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">05 · The Big Three</div>
+    </section>
+
+    <!-- ═══ 06 · China models ═══ -->
+    <section class="card-deck-card deck-slide slide-china" data-slide="china">
+      <div class="stagger">
+        <div class="china-head">
+          <span class="eyebrow">The rest of the world</span>
+          <h1>Then there's <em>China</em>.</h1>
+          <p class="sub">Open, fast, relentless. Worth knowing — even if you don't use them daily.</p>
+        </div>
+        <div class="china-grid">
+          <div class="china-card">
+            <div class="maker">Alibaba · open weights</div>
+            <h3>Qwen</h3>
+            <p>The go-to open family. Shipping in pro-level quality. Runs locally. Strong at code and Chinese-English tasks.</p>
+          </div>
+          <div class="china-card">
+            <div class="maker">DeepSeek · open weights</div>
+            <h3>DeepSeek</h3>
+            <p>The one that shook everyone. Frontier reasoning at a fraction of the cost. V3 and R1 are both serious.</p>
+          </div>
+          <div class="china-card">
+            <div class="maker">Moonshot · open weights</div>
+            <h3>Kimi</h3>
+            <p>Ridiculously long context. Great at reading through whole books and codebases and staying coherent.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">06 · China</div>
+    </section>
+
+    <!-- ═══ 07 · Local / open-source ═══ -->
+    <section class="card-deck-card deck-slide slide-local" data-slide="local">
+      <div class="local-content stagger">
+        <div class="local-head">
+          <span class="eyebrow">Open weights · runs on your machine</span>
+          <h1>You can run AI on your <em>own laptop</em>.</h1>
+          <p class="sub">Private. Free forever. Offline. No rate limits.</p>
+        </div>
+        <div class="local-grid">
+          <div class="local-col">
+            <div class="col-kind">The models</div>
+            <div class="local-hero">
+              <div class="maker">Google · open weights</div>
+              <h3>Gemma</h3>
+              <p>Google's open family. Punches way above its weight — a small, fast model that runs on a MacBook and is shockingly capable.</p>
+            </div>
+            <p class="local-also">
+              <span class="plus">+</span>
+              Qwen, DeepSeek distilled, Llama, Phi. The open ecosystem is exploding.
+            </p>
+          </div>
+          <div class="local-col">
+            <div class="col-kind">The tools</div>
+            <div class="local-tool">
+              <div class="tk">GUI · drag &amp; drop</div>
+              <h4>LM Studio</h4>
+              <p>Desktop app. Browse a catalog of models, one-click download, chat in a clean window. The easiest on-ramp.</p>
+            </div>
+            <div class="local-tool">
+              <div class="tk">CLI · scriptable</div>
+              <h4>Ollama</h4>
+              <p><code style="font-family: var(--font-mono); font-size: 0.82rem; background: rgba(22,199,154,0.08); padding: 1px 6px; border-radius: 4px; color: var(--color-teal);">ollama run gemma</code> — two commands, a model running. Lightweight, fast, scriptable.</p>
+            </div>
+          </div>
+        </div>
+        <span class="local-footnote">more in Day 3 →</span>
+      </div>
+      <div class="slide-num">07 · Local</div>
+    </section>
+
+    <!-- ═══ 08 · The rest of the map ═══ -->
+    <section class="card-deck-card deck-slide slide-map" data-slide="map">
+      <div class="map-content stagger">
+        <div class="map-head">
+          <span class="eyebrow">The rest of the map</span>
+          <h1>Everything else — with an <em>opinion</em>.</h1>
+          <p class="sub">Not all tools are created equal. Here's where each one lands.</p>
+        </div>
+        <div class="map-grid">
+          <div class="map-col must-use">
+            <div class="col-label"><span class="glyph">★</span>Must use</div>
+            <div class="col-sub">Great. Worth your time today.</div>
+            <div class="tools">
+              <div class="tool-chip">
+                <h4>NotebookLM</h4>
+                <p>Free, absurdly good. Feed it sources, get mastery.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>Nano Banana</h4>
+                <p>Google's image gen. <code style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-teal);">gemini.google.com</code> → Create Image. Fast &amp; free.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>Vibe-coding platforms</h4>
+                <p>Emergent · Replit · Lovable. Describe an app, get an app. Real magic.</p>
+              </div>
+            </div>
+          </div>
+          <div class="map-col try-once">
+            <div class="col-label"><span class="glyph">◐</span>Try once</div>
+            <div class="col-sub">See if the workflow suits you.</div>
+            <div class="tools">
+              <div class="tool-chip">
+                <h4>Runway (Seedance 2)</h4>
+                <p>Pro video gen. Seedance 2 inside Runway is legitimately good.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>ElevenLabs</h4>
+                <p>Voice cloning &amp; TTS — industry standard.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>Suno · Udio</h4>
+                <p>Full songs from a text prompt. Uncanny.</p>
+              </div>
+            </div>
+          </div>
+          <div class="map-col dangerous">
+            <div class="col-label"><span class="glyph">!</span>Dangerous / over-hyped</div>
+            <div class="col-sub">Go slow. Know what it's doing.</div>
+            <div class="tools">
+              <div class="tool-chip">
+                <h4>AI browsers</h4>
+                <p>Gemini Deep Research or Claude Research already do the useful parts. Skip these.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>OpenClaw</h4>
+                <p>Autonomous agent — big promises, murky payoff. Check before you trust.</p>
+              </div>
+              <div class="tool-chip">
+                <h4>Perplexity Computer</h4>
+                <p>AI with hands on your screen. Only as trustworthy as your ability to audit it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">08 · The map</div>
+    </section>
+
+    <!-- ═══ 09 · Limits + token economics ═══ -->
+    <section class="card-deck-card deck-slide slide-limits" data-slide="limits">
+      <div class="limits-content stagger">
+        <div class="limits-head">
+          <span class="eyebrow">Tokens · caps · the fine print</span>
+          <h1>Limits are <em>brutal</em>. Learn the cost.</h1>
+          <p class="sub">Every subscription caps you. Claude's the tightest. The trick is knowing what burns tokens — and watching it.</p>
+        </div>
+        <div class="limits-grid">
+          <div class="limits-card">
+            <div class="tip-num">Tip 01 · The math</div>
+            <h3>Words ≠ tokens.</h3>
+            <p>A token is roughly <em>¾ of a word</em>. One long answer can be <strong>1,000+ tokens</strong>. Every message you send — <em>and</em> every message before it in the thread — gets counted again on the next turn.</p>
+            <div class="figure">
+              ~100 words ≈ 130 tokens
+              <small>And the full chat history re-enters on each turn.</small>
+            </div>
+          </div>
+          <div class="limits-card">
+            <div class="tip-num">Tip 02 · Model choice</div>
+            <h3>Not all models are equal.</h3>
+            <p>A reasoning / thinking model can burn <strong>5–10× more tokens</strong> than a cheaper one to answer the same question. <em>Pick the smallest model that does the job.</em> Reach for thinking only when you need the muscle.</p>
+            <div class="figure">
+              Haiku &lt; Sonnet &lt; Opus
+              <small>Thinking mode &gt;&gt; non-thinking for cost.</small>
+            </div>
+          </div>
+          <div class="limits-card">
+            <div class="tip-num">Tip 03 · Watch yourself</div>
+            <h3>Check your usage.</h3>
+            <p>In Claude: <code>Settings → Usage</code>. You can see <em>which conversations</em> burned the most tokens. Spot your expensive habits — long threads that should have started fresh, over-eager thinking mode, endless regeneration.</p>
+            <div class="figure">
+              Measure. Then change behaviour.
+              <small>The cap feels less brutal when you know where it's going.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">09 · Limits</div>
+    </section>
+
+    <!-- ═══ 10 · Break — Agents ═══ -->
+    <section class="card-deck-card deck-slide slide-break break-agents" data-slide="break-agents">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">Now the big one →</span>
+        <h1 class="break-title">Agents changed <em>everything</em><span class="period">.</span></h1>
+        <p class="break-under">One idea. The whole game, rewritten.</p>
+      </div>
+      <div class="slide-num">10 · Break</div>
+    </section>
+
+    <!-- ═══ 15 · Agent definition (the loop) ═══ -->
+    <section class="card-deck-card deck-slide slide-agent-def" data-slide="agent-def">
+      <div class="agent-def-content stagger">
+        <div class="agent-def-eyebrow">So what is an agent, really?</div>
+        <h1 class="agent-def-title">An agent is <em>just</em> this.</h1>
+        <p class="agent-def-formula">LLM <span class="plus">+</span> goal <span class="plus">+</span> loop <span class="plus">+</span> tools</p>
+        <div class="loop-diagram-big">
+          <div class="loop-node-big n1">
+            <div class="nlabel">01 · Read</div>
+            <div class="nbig">Think</div>
+          </div>
+          <span class="loop-arrow-big">→</span>
+          <div class="loop-node-big n2">
+            <div class="nlabel">02 · Pick a tool</div>
+            <div class="nbig">Act</div>
+          </div>
+          <span class="loop-arrow-big">→</span>
+          <div class="loop-node-big n3">
+            <div class="nlabel">03 · Read result</div>
+            <div class="nbig">Observe</div>
+          </div>
+          <span class="loop-arrow-big">↻</span>
+          <div class="loop-node-big n4">
+            <div class="nlabel">04 · Until done</div>
+            <div class="nbig">Repeat</div>
+          </div>
+        </div>
+        <div class="loop-footnote">That's the whole trick.</div>
+      </div>
+      <div class="slide-num">11 · What is an agent</div>
+    </section>
+
+    <!-- ═══ 16 · Why they matter ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="agent-why">
+      <div class="principle-content stagger">
+        <div class="principle-label">Why agents matter</div>
+        <h1 class="principle-title">Once an agent can <span class="hl-purple">code</span>, it can do <em>anything</em>.</h1>
+        <p class="principle-body">Code is the universal tool. Any task a human can describe — an agent can now write the software to do it. <em>That's</em> the unlock.</p>
+      </div>
+      <div class="slide-num">12 · Why</div>
+    </section>
+
+    <!-- ═══ 17 · How agents call tools ═══ -->
+    <section class="card-deck-card deck-slide slide-calls" data-slide="agent-calls">
+      <div class="calls-content stagger">
+        <div class="calls-head">
+          <span class="mono-label">How agents reach into the world</span>
+          <h1>CLIs. <em>MCPs.</em> APIs.</h1>
+          <p class="sub">Three interfaces. Three ways an agent does things beyond just typing.</p>
+        </div>
+        <div class="calls-grid">
+          <div class="calls-card cli">
+            <div class="acronym">Command-Line Interface</div>
+            <h3>CLIs</h3>
+            <p>The agent drives your terminal. Reads files, runs commands, ships code. Exactly like a human engineer would.</p>
+            <div class="egs">
+              <span class="eg">Claude Code</span>
+              <span class="eg">Codex</span>
+              <span class="eg">Gemini CLI</span>
+            </div>
+          </div>
+          <div class="calls-card mcp">
+            <div class="acronym">Model Context Protocol</div>
+            <h3>MCPs</h3>
+            <p>A universal plug. Any app can expose its tools as an MCP server — the agent just plugs in. Notion, Figma, Linear, your own stuff.</p>
+            <div class="egs">
+              <span class="eg">Notion MCP</span>
+              <span class="eg">GitHub MCP</span>
+              <span class="eg">Your-tool MCP</span>
+            </div>
+          </div>
+          <div class="calls-card api">
+            <div class="acronym">Application Programming Interface</div>
+            <h3>APIs</h3>
+            <p>The classic. Any service with an API — the agent can call it. Send email, pull data, trigger a workflow, move money.</p>
+            <div class="egs">
+              <span class="eg">Gmail</span>
+              <span class="eg">Stripe</span>
+              <span class="eg">Anything REST</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">13 · How agents act</div>
+    </section>
+
+    <!-- ═══ 14 · Skills — the concept ═══ -->
+    <section class="card-deck-card deck-slide slide-skills" data-slide="agent-skills">
+      <div class="skills-content stagger">
+        <div class="skills-head">
+          <span class="eyebrow">Capture your SOP · give it to AI</span>
+          <h1>Skills are your <em>SOPs</em> for AI.</h1>
+          <p class="skills-lead">
+            <span class="alien">Remember those movies?</span> The alien taps into TV, the robot plugs into the internet — and in minutes it knows <em>everything it needs</em>. A Skill is that, but for your work: a small document the agent reads before acting. Hand it the way <em>you</em> do the job, and it just knows.
+          </p>
+        </div>
+        <div class="skills-examples">
+          <div class="skill-chip">
+            <div class="role">Finance</div>
+            <div class="name">Investment memo structure</div>
+          </div>
+          <div class="skill-chip">
+            <div class="role">Product</div>
+            <div class="name">Review a PRD</div>
+          </div>
+          <div class="skill-chip">
+            <div class="role">Comms</div>
+            <div class="name">House voice &amp; tone</div>
+          </div>
+          <div class="skill-chip">
+            <div class="role">Exec</div>
+            <div class="name">Monthly board update</div>
+          </div>
+          <div class="skill-chip">
+            <div class="role">VC / Research</div>
+            <div class="name">Due-diligence checklist</div>
+          </div>
+          <div class="skill-chip">
+            <div class="role">Ops / Support</div>
+            <div class="name">Customer reply template</div>
+          </div>
+        </div>
+        <span class="skills-footer">Write it once. Every future agent inherits it.</span>
+      </div>
+      <div class="slide-num">14 · Skills</div>
+    </section>
+
+    <!-- ═══ 15 · Skills — how to find, use, create ═══ -->
+    <section class="card-deck-card deck-slide slide-skills-how" data-slide="agent-skills-how">
+      <div class="show-content stagger">
+        <div class="show-head">
+          <span class="eyebrow">Finding · using · creating</span>
+          <h1>Skills, in <em>practice</em>.</h1>
+          <p class="sub">Where to get them, how to use them, what to watch for.</p>
+        </div>
+        <div class="show-grid">
+          <div class="show-card find">
+            <div class="step">Step 01 · Find</div>
+            <h3>Grab one that exists.</h3>
+            <p>Anthropic publishes a library: <code>anthropic/skills</code> on GitHub. Plus a growing community of shared skills on the web.</p>
+            <div class="pills">
+              <span class="pill">pdf</span>
+              <span class="pill">docx</span>
+              <span class="pill">slide-maker</span>
+              <span class="pill">research</span>
+            </div>
+          </div>
+          <div class="show-card care">
+            <div class="step">Step 02 · Careful</div>
+            <h3>Trust the source.</h3>
+            <p>A Skill can run code and touch your files. Treat installing one like installing any app — <code>read it first</code>, only pull from people you trust, and start with low-stakes tasks.</p>
+          </div>
+          <div class="show-card use">
+            <div class="step">Step 03 · Use &amp; build</div>
+            <h3>Turn it on. Or write your own.</h3>
+            <p>In Claude: <code>Settings → Capabilities → Skills</code>. In Claude Code: drop into <code>.claude/skills/</code>.</p>
+            <p>Claude ships with a <em>Skill Creator</em> skill — ask Claude itself to help you write a Skill for your work.</p>
+          </div>
+        </div>
+        <span class="show-footer">We'll build one together in Day 3.</span>
+      </div>
+      <div class="slide-num">15 · Skills in practice</div>
+    </section>
+
+    <!-- ═══ 16 · Future: agents-to-agents ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="agent-future">
+      <div class="principle-content stagger">
+        <div class="principle-label">Where this is going</div>
+        <h1 class="principle-title"><em>My</em> agents will talk to <span class="hl-purple">your</span> agents.</h1>
+        <p class="principle-body">The next email you write might be drafted by your agent, read by their agent, replied to by theirs, and only surfaced to a human when there's a real decision. The humans stay in the loop — but the loop gets a lot faster.</p>
+      </div>
+      <div class="slide-num">16 · Future</div>
+    </section>
+
+    <!-- ═══ 20 · Personal software ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="personal-software">
+      <div class="principle-content stagger">
+        <div class="principle-label">The real shift</div>
+        <h1 class="principle-title">The age of <span class="hl-red">personal software</span>.</h1>
+        <p class="principle-body">For fifty years, software was made by a few, for the many. That just flipped. You can now describe a tool — in plain English — and <em>have it</em>. Not buy it. Not hire someone. <em>Have it.</em></p>
+      </div>
+      <div class="slide-num">17 · Personal software</div>
+    </section>
+
+    <!-- ═══ 17 · Extension URL ═══ -->
+    <section class="card-deck-card deck-slide slide-ext-url" data-slide="extension-url">
+      <div class="ext-content stagger">
+        <span class="ext-eyebrow">go here on your laptop →</span>
+        <h1>Pick an extension. Build it. Install it.</h1>
+        <div class="ext-url">
+          talkingtomachines.xyz<span class="path">/workshop-day2/extensions</span>
+        </div>
+      </div>
+      <div class="slide-num">18 · Build</div>
+    </section>
+
+    <!-- ═══ 23 · Day 3 tease ═══ -->
+    <section class="card-deck-card deck-slide slide-closing" data-slide="day3-tease">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="closing-label">Day Three →</span>
+        <h1 class="closing-title">Your <span class="accent">90-day plan</span> for what you just saw.</h1>
+        <p class="closing-desc">
+          Tomorrow we take everything from Days 1 &amp; 2 and map it onto <em>your</em> business.
+          Know · Do · Show, one task at a time. You leave with a plan for Monday.
+        </p>
+        <div class="closing-footer">Day 2 · end.</div>
+      </div>
+      <div class="slide-num">19 · See you tomorrow</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    // ════════════════════════════════════════════════════════
+    // Deck behavior: keyboard nav + active slide tracking
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) { kbdHint.classList.add('hidden'); hintHidden = true; }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot, iframe')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+
+</body>
+</html>
