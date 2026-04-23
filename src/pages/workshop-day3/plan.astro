@@ -1,0 +1,439 @@
+---
+import '../../styles/global.css';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export const prerender = true;
+
+const title = 'Build Your 90-Day Plan · Talking to Machines';
+const description =
+  'A prompt that interviews you in 10 questions and turns a generic 13-week AI plan into a personal one — as a printable HTML page.';
+
+// Read the markdown prompt at build time
+const promptPath = path.join(
+  process.cwd(),
+  'public',
+  'workshop-day3',
+  'plan-interviewer.md'
+);
+const raw = fs.readFileSync(promptPath, 'utf-8');
+// Split on the first horizontal rule ('---') to strip the preamble
+const parts = raw.split(/\n---\n/);
+const promptBody = parts.length > 1 ? parts.slice(1).join('\n---\n').trim() : raw.trim();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap"
+    />
+    <style>
+      body {
+        background: var(--color-cream);
+        color: var(--color-deep);
+        font-family: var(--font-body);
+        margin: 0;
+      }
+      .wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 5rem;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--color-subtle);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        margin-bottom: 3rem;
+      }
+      .brand .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-accent-red);
+      }
+      .eyebrow {
+        font-family: 'Caveat', cursive;
+        font-size: 1.5rem;
+        color: var(--color-accent-red);
+        transform: rotate(-1deg);
+        display: inline-block;
+        margin-bottom: 0.5rem;
+      }
+      h1 {
+        font-family: var(--font-heading);
+        font-weight: 800;
+        font-size: clamp(2.5rem, 6vw, 3.75rem);
+        letter-spacing: -0.03em;
+        line-height: 1.02;
+        margin: 0 0 1.25rem;
+        color: var(--color-deep);
+      }
+      h1 em {
+        font-style: italic;
+        color: var(--color-teal);
+      }
+      .lead {
+        font-family: var(--font-body);
+        font-size: 1.2rem;
+        line-height: 1.55;
+        color: var(--color-deep);
+        margin: 0 0 2.5rem;
+        max-width: 62ch;
+      }
+      .lead em {
+        color: var(--color-navy);
+        font-weight: 600;
+      }
+
+      /* Action block */
+      .action {
+        background: var(--color-warm-white);
+        border: 1px solid rgba(26, 26, 46, 0.08);
+        border-top: 3px solid var(--color-teal);
+        border-radius: 14px;
+        padding: 2rem 1.75rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 8px 28px rgba(15, 52, 96, 0.06);
+      }
+      .action-label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-teal);
+        margin-bottom: 0.75rem;
+      }
+      .btn-row {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .btn-copy {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+        color: var(--color-warm-white);
+        background: var(--color-teal);
+        border: 2px solid var(--color-teal);
+        border-radius: 10px;
+        padding: 0.9rem 1.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .btn-copy:hover {
+        background: #0fa87f;
+        border-color: #0fa87f;
+        transform: translateY(-1px);
+      }
+      .btn-copy:active {
+        transform: translateY(0);
+      }
+      .btn-copy.copied {
+        background: var(--color-deep);
+        border-color: var(--color-deep);
+      }
+      .btn-copy .icon {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+      }
+      .btn-secondary {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--color-deep);
+        background: transparent;
+        border: 1.5px solid rgba(26, 26, 46, 0.15);
+        border-radius: 10px;
+        padding: 0.85rem 1.35rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-secondary:hover {
+        border-color: var(--color-navy);
+        color: var(--color-navy);
+      }
+      .btn-secondary .arr {
+        transition: transform 0.2s ease;
+      }
+      .btn-secondary:hover .arr {
+        transform: translateX(3px);
+      }
+      .status {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--color-teal);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        margin-left: 0.5rem;
+      }
+      .status.show {
+        opacity: 1;
+      }
+
+      /* Steps */
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 3rem;
+        counter-reset: step;
+      }
+      .steps li {
+        counter-increment: step;
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        line-height: 1.55;
+        color: var(--color-deep);
+        padding: 0.65rem 0 0.65rem 3rem;
+        position: relative;
+        border-bottom: 1px solid rgba(26, 26, 46, 0.06);
+      }
+      .steps li:last-child {
+        border-bottom: none;
+      }
+      .steps li::before {
+        content: counter(step, decimal-leading-zero);
+        position: absolute;
+        left: 0;
+        top: 0.7rem;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--color-teal);
+        letter-spacing: 0.15em;
+      }
+      .steps li em {
+        font-style: italic;
+        color: var(--color-navy);
+        font-weight: 600;
+      }
+
+      /* Preview */
+      .preview-toggle {
+        background: none;
+        border: none;
+        padding: 0;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+        cursor: pointer;
+        margin-bottom: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .preview-toggle:hover {
+        color: var(--color-deep);
+      }
+      .preview-toggle .caret {
+        transition: transform 0.2s ease;
+      }
+      .preview-toggle[aria-expanded='true'] .caret {
+        transform: rotate(90deg);
+      }
+      .preview {
+        background: var(--color-warm-white);
+        border: 1px solid rgba(26, 26, 46, 0.08);
+        border-radius: 10px;
+        padding: 1.25rem 1.35rem;
+        max-height: 420px;
+        overflow-y: auto;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        line-height: 1.55;
+        color: var(--color-deep);
+        white-space: pre-wrap;
+        word-break: break-word;
+        display: none;
+      }
+      .preview.show {
+        display: block;
+      }
+
+      /* Nudge at bottom */
+      .nudge {
+        margin-top: 3rem;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, rgba(22, 199, 154, 0.06), rgba(245, 166, 35, 0.06));
+        border: 1px dashed rgba(26, 26, 46, 0.15);
+        border-radius: 12px;
+        font-family: 'Caveat', cursive;
+        font-size: 1.35rem;
+        color: var(--color-navy);
+        text-align: center;
+        font-weight: 600;
+      }
+      .nudge em {
+        color: var(--color-accent-red);
+        font-style: italic;
+      }
+
+      .footer {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(26, 26, 46, 0.08);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--color-subtle);
+      }
+      .footer a {
+        color: var(--color-subtle);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(107, 114, 128, 0.3);
+      }
+      .footer a:hover {
+        color: var(--color-deep);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a href="/" class="brand">
+        <span class="dot"></span>
+        <span>Talking to Machines</span>
+      </a>
+
+      <span class="eyebrow">Your turn →</span>
+      <h1>Build <em>your</em> 90-day plan.</h1>
+      <p class="lead">
+        Copy the prompt below, paste it into Claude (or ChatGPT or Gemini). It will interview you in
+        10 quick questions — mostly multiple choice — and turn the generic 13-week plan into <em>your</em>
+        plan, with tasks named for your actual work. You'll get a printable HTML page.
+      </p>
+
+      <div class="action">
+        <div class="action-label">Step 01 · Copy the prompt</div>
+        <div class="btn-row">
+          <button class="btn-copy" id="copy-btn" type="button">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span class="btn-text">Copy prompt</span>
+          </button>
+          <a
+            class="btn-secondary"
+            href="https://claude.ai/new"
+            target="_blank"
+            rel="noopener"
+          >
+            Open Claude <span class="arr">→</span>
+          </a>
+          <span class="status" id="status">copied · paste it into Claude</span>
+        </div>
+      </div>
+
+      <div class="action-label" style="margin-bottom: 0.75rem;">How to use it</div>
+      <ol class="steps">
+        <li>Click <em>Copy prompt</em>, then <em>Open Claude</em> in a new tab.</li>
+        <li>Paste into a new Claude conversation and hit send.</li>
+        <li>Answer the questions — mostly pick a letter. <em>"Type something else"</em> is always an option.</li>
+        <li>Claude shows you a 4-line summary. Confirm or edit.</li>
+        <li>You'll get a complete HTML page — save it, print it, pin it.</li>
+      </ol>
+
+      <button
+        class="preview-toggle"
+        id="preview-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="preview"
+      >
+        <span class="caret">▸</span>
+        <span>See the prompt</span>
+      </button>
+      <pre class="preview" id="preview" set:text={promptBody}></pre>
+
+      <div class="nudge">
+        Do it <em>before you leave the room</em>.<br />
+        Tuesday morning is too late.
+      </div>
+
+      <div class="footer">
+        <a href="/workshop-day3/plan-interviewer.md">raw prompt (.md)</a> ·
+        <a href="/">talkingtomachines.xyz</a>
+      </div>
+    </div>
+
+    <script is:inline define:vars={{ promptBody }}>
+      (function () {
+        const btn = document.getElementById('copy-btn');
+        const status = document.getElementById('status');
+        const btnText = btn.querySelector('.btn-text');
+        const toggle = document.getElementById('preview-toggle');
+        const preview = document.getElementById('preview');
+        const caret = toggle.querySelector('span:last-child');
+
+        async function copy() {
+          try {
+            await navigator.clipboard.writeText(promptBody);
+          } catch (err) {
+            // Fallback: use a hidden textarea
+            const ta = document.createElement('textarea');
+            ta.value = promptBody;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          btn.classList.add('copied');
+          btnText.textContent = 'Copied';
+          status.classList.add('show');
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btnText.textContent = 'Copy prompt';
+            status.classList.remove('show');
+          }, 2400);
+        }
+
+        btn.addEventListener('click', copy);
+
+        toggle.addEventListener('click', () => {
+          const expanded = toggle.getAttribute('aria-expanded') === 'true';
+          toggle.setAttribute('aria-expanded', String(!expanded));
+          preview.classList.toggle('show');
+          caret.textContent = expanded ? 'See the prompt' : 'Hide the prompt';
+        });
+      })();
+    </script>
+  </body>
+</html>
