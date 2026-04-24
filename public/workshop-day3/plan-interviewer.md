@@ -105,24 +105,7 @@ Freeform. Your name, your goal, anything you want me to keep in mind.
 
 ## The HTML plan — format specification
 
-Output a **complete, self-contained HTML document** inside a ` ```html ` code block.
-
-### Hard requirements
-- Inline `<style>` only. No external stylesheets, no JavaScript, no fonts to load.
-- Use system serif (Georgia, "Times New Roman", serif) for headings and body.
-- Use system mono (ui-monospace, "SF Mono", Menlo, monospace) for labels.
-- Color palette:
-  - text: `#1A1A2E`
-  - subtle: `#6B7280`
-  - bg: `#F8F6F3`
-  - card: `#FEFCF9`
-  - Phase 01 accent: `#0EA5E9` (sky)
-  - Phase 02 accent: `#E94560` (accent red)
-  - Phase 03 accent: `#F5A623` (amber)
-  - navy accent: `#0F3460`
-- Works beautifully when I hit Cmd+P. Include `@media print` rules that keep each phase on its own page.
-- Max content width ~ 880px, centered.
-- No emojis anywhere.
+Use the **frontend-design skill** to produce a printable, self-contained HTML page.
 
 ### Content structure
 1. **Header** — my name (if I gave one), my role, today's date, and a one-line thesis for my 90 days (e.g. *"Turn weekly investor memos into a repeatable Skill by Day 30."*)
@@ -130,15 +113,12 @@ Output a **complete, self-contained HTML document** inside a ` ```html ` code bl
 3. **Phase 01 · Weeks 1–4 · Stop one-shotting**
    - 4 week cards (Week 01 → 04)
    - Each card: week number · week title (from generic plan) · **MY specific actions** drawn from my tasks and tools · a "Keep →" carry-forward line where relevant
-   - End-of-month capstone strip naming **my actual deliverable** (e.g. "Run your Tuesday investor-memo through the full Loop").
 4. **Phase 02 · Weeks 5–8 · Sessions become your SOP**
    - 4 week cards, same structure
    - Use the 3 tasks I named (one Know, one Do, one Show). Week 06 should personalize to my most-repeated task. Week 07 should name the Skill I'll build.
-   - Capstone: a real deliverable + recipient, named.
-5. **Phase 03 · Weeks 9–13 · Skills are your software**
+5. **Phase 03 · Weeks 9–13 · Skills are your operating system**
    - 5 week cards
    - Week 10/11/12 should each include an "Explore →" line pointing at a tool that fits my role (e.g. NotebookLM for researchers, Excel-native skills for finance, Nano Banana for creatives).
-   - Capstone: name a specific person I could teach (a teammate, a peer, a friend).
 6. **Footer — "What success feels like"** — 4 short signals personalized to my role and work style.
 
 ### Personalization rules
@@ -194,8 +174,8 @@ Use this as the scaffold. Every action below becomes a **specific** action in my
   - Hand a Skill to a colleague. Watch what breaks.
 - **Month 02 capstone** — Ship one real deliverable to a real recipient — that ran through your Skills.
 
-### Phase 03 · Weeks 9–13 · Skills are your software
-*The new programming. You don't need to code.*
+### Phase 03 · Weeks 9–13 · Skills are your operating system
+*The foundation everything runs on. You don't need to code.*
 
 - **Week 09 · Hunt for Skills**
   - Browse anthropic/skills and the wider ecosystem (skills.sh, community lists).

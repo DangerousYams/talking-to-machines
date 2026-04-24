@@ -8,12 +8,9 @@ const slides = [
   'today',
   'break-skills',
   'skills-deep', 'skills-find',
-  'skills-anthropic', 'skills-research', 'skills-format',
-  'skills-meta', 'skills-creator',
+  'skills-creator',
   'break-plan',
-  'plan-intro',
   'plan-phase-1', 'plan-phase-2', 'plan-phase-3',
-  'plan-success',
   'ramp-case', 'ramp-map',
   'take-home',
 ];
@@ -140,7 +137,6 @@ const slides = [
 
       .recap-tools-grid { grid-template-columns: repeat(4, 1fr) !important; }
       .recap-agents-grid { grid-template-columns: repeat(3, 1fr) !important; }
-      .recap-ext-grid { grid-template-columns: repeat(2, 1fr) !important; }
       .today-grid { grid-template-columns: repeat(3, 1fr) !important; }
       .sk-find-grid { grid-template-columns: repeat(3, 1fr) !important; }
       .sk-cards { grid-template-columns: repeat(3, 1fr) !important; }
@@ -306,194 +302,136 @@ const slides = [
       line-height: 1;
       top: 0.1rem;
     }
-    .rt-col .rt-takeaway {
-      margin-top: auto;
-      padding-top: 0.7rem;
-      border-top: 1px dashed rgba(26,26,46,0.1);
+    .rt-col .rt-line {
+      margin: 0;
       font-family: var(--font-body);
-      font-style: italic;
-      font-size: 0.8rem;
-      color: var(--color-subtle);
-      line-height: 1.4;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-deep);
     }
+    .rt-col .rt-verdicts {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .rt-col .rt-verdicts li {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+    }
+    .rt-col .v-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-right: 0.45rem;
+      vertical-align: 2px;
+      font-weight: 600;
+    }
+    .rt-col .v-tag.must { background: rgba(22,199,154,0.14); color: var(--color-teal); }
+    .rt-col .v-tag.try { background: rgba(245,166,35,0.16); color: var(--color-amber); }
+    .rt-col .v-tag.avoid { background: rgba(233,69,96,0.12); color: var(--color-accent-red); }
 
     /* Recap 2 — agents */
-    .recap-agents-layout {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 2.5rem;
+    .loop-diagram-big {
+      display: flex;
+      justify-content: center;
       align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin: 1.75rem 0 2rem;
     }
-    .recap-agents-left h2 {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: clamp(2rem, 3.8vw, 2.75rem);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin: 0 0 1.25rem;
-      color: var(--color-deep);
-    }
-    .recap-agents-left h2 em { font-style: italic; color: var(--color-accent-red); }
-    .recap-agents-formula {
+    .loop-node-big {
+      background: var(--color-warm-white);
+      border: 2px solid;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      min-width: 150px;
       font-family: var(--font-heading);
       font-weight: 700;
-      font-style: italic;
-      font-size: 1.15rem;
-      color: var(--color-navy);
-      margin: 0 0 1.5rem;
-      letter-spacing: -0.01em;
     }
-    .recap-agents-formula .plus { color: var(--color-subtle); font-style: normal; margin: 0 0.4rem; }
-    .recap-agents-left p {
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: var(--color-deep);
-      margin: 0 0 0.75rem;
-      max-width: none;
+    .loop-node-big .nlabel {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      opacity: 0.75;
     }
-    .recap-agents-left p em { color: var(--color-navy); font-weight: 600; }
+    .loop-node-big .nbig {
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+    .loop-node-big.n1 { border-color: var(--color-amber); color: var(--color-amber); }
+    .loop-node-big.n2 { border-color: var(--color-accent-red); color: var(--color-accent-red); }
+    .loop-node-big.n3 { border-color: var(--color-teal); color: var(--color-teal); }
+    .loop-node-big.n4 { border-color: var(--color-purple); color: var(--color-purple); }
+    .loop-arrow-big {
+      font-family: var(--font-heading);
+      font-size: 1.9rem;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+    .recap-agents-reach {
+      margin-top: 1rem;
+    }
+    .recap-agents-reach .mono-label {
+      margin-bottom: 1rem;
+    }
     .recap-agents-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.7rem;
+      gap: 1rem;
     }
     .recap-agents-pill {
       background: var(--color-warm-white);
       border: 1px solid rgba(26,26,46,0.08);
       border-radius: 10px;
-      padding: 0.7rem 0.85rem;
+      padding: 1rem 1.15rem;
     }
     .recap-agents-pill .k {
       font-family: var(--font-mono);
-      font-size: 0.58rem;
+      font-size: 0.62rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--color-subtle);
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     .recap-agents-pill .v {
       font-family: var(--font-heading);
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.15rem;
       color: var(--color-deep);
       letter-spacing: -0.01em;
     }
     .recap-agents-pill.cli { border-top: 3px solid var(--color-purple); }
     .recap-agents-pill.mcp { border-top: 3px solid var(--color-teal); }
     .recap-agents-pill.api { border-top: 3px solid var(--color-navy); }
-    .recap-agents-bighit {
-      margin-top: 1.5rem;
-      padding: 1.1rem 1.25rem;
-      background: linear-gradient(135deg, rgba(233,69,96,0.06), rgba(123,97,255,0.06));
-      border: 1px dashed rgba(233,69,96,0.3);
-      border-radius: 12px;
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: var(--color-deep);
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-    }
-    .recap-agents-bighit em { color: var(--color-accent-red); font-style: italic; }
 
     /* Recap 3 — extensions */
-    .recap-ext-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 2.5rem;
-      align-items: start;
+    .recap-ext-body {
+      margin-top: 2rem;
+      max-width: 820px;
     }
-    .recap-ext-left h2 {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin: 0 0 1rem;
-    }
-    .recap-ext-left h2 em { font-style: italic; color: var(--color-teal); }
-    .recap-ext-left p.lead {
+    .recap-ext-body p {
       font-family: var(--font-body);
-      font-size: 1rem;
-      line-height: 1.6;
-      color: var(--color-deep);
-      margin: 0 0 1rem;
-    }
-    .recap-ext-left p.lead em { color: var(--color-navy); font-weight: 600; }
-    .recap-ext-criteria {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .recap-ext-criteria li {
-      display: flex;
-      gap: 0.85rem;
-      padding: 0.65rem 0;
-      border-bottom: 1px solid rgba(26,26,46,0.06);
-    }
-    .recap-ext-criteria li:last-child { border-bottom: none; }
-    .recap-ext-criteria .ch {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--color-teal);
-      color: var(--color-warm-white);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
-    .recap-ext-criteria .t {
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      line-height: 1.45;
-      color: var(--color-deep);
-    }
-    .recap-ext-criteria .t strong { font-weight: 700; color: var(--color-navy); }
-    .recap-ext-right .rex-head {
-      font-family: 'Caveat', cursive;
       font-size: 1.35rem;
-      color: var(--color-teal);
-      transform: rotate(-1deg);
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
-    .recap-ext-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.65rem;
-    }
-    .rex-card {
-      background: var(--color-warm-white);
-      border: 1px solid rgba(26,26,46,0.08);
-      border-left: 3px solid var(--color-teal);
-      border-radius: 8px;
-      padding: 0.65rem 0.85rem;
-    }
-    .rex-card .rex-num {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      color: var(--color-subtle);
-    }
-    .rex-card .rex-name {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 0.95rem;
+      line-height: 1.55;
       color: var(--color-deep);
-      letter-spacing: -0.01em;
-      margin-top: 2px;
+      margin: 0 0 1rem;
     }
-    .rex-card .rex-who {
-      font-family: var(--font-body);
+    .recap-ext-body p:last-child { margin-bottom: 0; }
+    .recap-ext-body em {
       font-style: italic;
-      font-size: 0.78rem;
-      color: var(--color-subtle);
-      margin-top: 2px;
+      color: var(--color-teal);
+      font-weight: 600;
     }
 
     /* ══════════════════════════════════════════════════════
@@ -519,8 +457,10 @@ const slides = [
     }
     .today-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
+      max-width: 820px;
+      margin: 0 auto;
     }
     .today-card {
       background: var(--color-warm-white);
@@ -797,6 +737,51 @@ const slides = [
       color: currentColor;
       background: rgba(255,255,255,0.5);
     }
+    .sk-find-pack {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.1);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .sk-find-pack:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(26,26,46,0.06);
+    }
+    .sk-find-pack .sf-pack-tag {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .sk-find-pack .sf-pack-body {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      flex: 1;
+    }
+    .sk-find-pack .sf-pack-body strong {
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+    .sk-find-pack .sf-pack-cta {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--color-teal);
+      flex-shrink: 0;
+    }
 
     /* ══════════════════════════════════════════════════════
        SKILLS SHOWCASE — 3 slides of awesome skills
@@ -993,6 +978,7 @@ const slides = [
        ══════════════════════════════════════════════════════ */
     .slide-sk-creator { justify-content: center; padding: 3rem 4rem; }
     .skc-content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .skc-solo { max-width: 780px; margin: 0 auto; }
     .skc-layout {
       display: grid;
       grid-template-columns: 1fr 0.9fr;
@@ -1024,26 +1010,58 @@ const slides = [
       margin: 0 0 1rem;
     }
     .skc-lead em { color: var(--color-navy); font-weight: 600; }
-    .skc-quote {
-      background: var(--color-warm-white);
-      border-left: 4px solid var(--color-accent-red);
-      padding: 1.25rem 1.5rem;
-      border-radius: 8px;
-      font-family: var(--font-body);
-      font-style: italic;
-      font-size: 1.1rem;
-      line-height: 1.55;
-      color: var(--color-deep);
+    .skc-prompt {
+      background: var(--color-deep);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(233,69,96,0.3);
     }
-    .skc-quote .who {
-      display: block;
-      margin-top: 0.6rem;
+    .skc-prompt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .skc-prompt-tag {
       font-family: var(--font-mono);
-      font-style: normal;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      font-weight: 700;
+    }
+    .skc-copy-btn {
+      font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--color-subtle);
+      color: var(--color-warm-white);
+      background: var(--color-accent-red);
+      border: none;
+      padding: 5px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.15s ease, transform 0.1s ease;
+      position: relative;
+    }
+    .skc-copy-btn:hover { transform: translateY(-1px); }
+    .skc-copy-btn:active { transform: translateY(0); }
+    .skc-copy-btn .skc-copy-done { display: none; }
+    .skc-copy-btn.copied { background: var(--color-teal); }
+    .skc-copy-btn.copied .skc-copy-default { display: none; }
+    .skc-copy-btn.copied .skc-copy-done { display: inline; }
+    .skc-prompt-box {
+      margin: 0;
+      padding: 1.1rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--color-warm-white);
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     .skc-steps {
       list-style: none;
@@ -1310,7 +1328,7 @@ const slides = [
     .week-grid {
       display: grid;
       gap: 0.9rem;
-      flex: 1;
+      align-items: start;
     }
     .week-grid.cols4 { grid-template-columns: repeat(4, 1fr); }
     .week-grid.cols5 { grid-template-columns: repeat(5, 1fr); }
@@ -1349,22 +1367,59 @@ const slides = [
     }
     .week-actions li {
       font-family: var(--font-body);
-      font-size: 0.82rem;
-      line-height: 1.4;
+      font-size: 0.96rem;
+      line-height: 1.5;
       color: var(--color-deep);
-      padding: 0.2rem 0 0.2rem 0.85rem;
+      padding: 0.28rem 0 0.28rem 1rem;
       position: relative;
     }
     .week-actions li::before {
       content: '→';
       position: absolute;
       left: 0;
-      top: 0.2rem;
+      top: 0.3rem;
       color: currentColor;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
     }
     .week-actions li em { color: var(--color-navy); font-weight: 600; }
+    .week-actions li.carry {
+      margin-top: 0.4rem;
+      padding: 0.45rem 0.65rem 0.45rem 0.95rem;
+      border-radius: 6px;
+    }
+    .week-actions li.carry::before {
+      left: 0.45rem;
+      top: 0.55rem;
+    }
+    .week-actions li.carry .ctag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-right: 0.45rem;
+      vertical-align: 2px;
+    }
+    .week-actions li.carry.keep {
+      background: rgba(245,166,35,0.09);
+    }
+    .week-actions li.carry.keep::before { color: var(--color-amber); }
+    .week-actions li.carry.keep .ctag {
+      background: rgba(245,166,35,0.2);
+      color: var(--color-amber);
+    }
+    .week-actions li.carry.explore {
+      background: rgba(123,97,255,0.08);
+    }
+    .week-actions li.carry.explore::before { color: var(--color-purple); }
+    .week-actions li.carry.explore .ctag {
+      background: rgba(123,97,255,0.18);
+      color: var(--color-purple);
+    }
     .week-meta {
       margin-top: auto;
       padding-top: 0.55rem;
@@ -1588,6 +1643,63 @@ const slides = [
     }
     .ramp-receipts .desc strong { color: var(--color-accent-red); font-weight: 700; }
     .ramp-receipts .desc em { color: var(--color-navy); font-weight: 600; }
+
+    .ramp-ladder {
+      margin-top: 1.25rem;
+    }
+    .ramp-ladder .ladder-label {
+      display: block;
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      color: var(--color-accent-red);
+      transform: rotate(-0.5deg);
+      margin-bottom: 0.6rem;
+    }
+    .ladder-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+    }
+    .ladder-rung {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-top: 3px solid currentColor;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: var(--color-subtle);
+    }
+    .ladder-rung.r0 { color: var(--color-subtle); }
+    .ladder-rung.r1 { color: var(--color-teal); }
+    .ladder-rung.r2 { color: var(--color-amber); }
+    .ladder-rung.r3 { color: var(--color-navy); }
+    .ladder-rung .tier {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      font-weight: 700;
+      color: currentColor;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.04);
+      margin-bottom: 0.45rem;
+    }
+    .ladder-rung h5 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+      margin: 0 0 0.3rem;
+      line-height: 1.2;
+    }
+    .ladder-rung p {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--color-subtle);
+      margin: 0;
+    }
 
     .ramp-punchline {
       margin-top: 1.25rem;
@@ -1881,9 +1993,8 @@ const slides = [
     @media (max-width: 1100px) {
       .deck-slide { padding: 3rem 2rem; }
       .recap-tools-grid { grid-template-columns: 1fr 1fr; }
-      .recap-agents-layout, .recap-ext-layout, .skc-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+      .skc-layout { grid-template-columns: 1fr; gap: 1.5rem; }
       .recap-agents-grid { grid-template-columns: 1fr 1fr 1fr; }
-      .recap-ext-grid { grid-template-columns: 1fr; }
       .today-grid, .sk-find-grid, .sk-cards, .meta-grid, .plan-arc, .success-grid, .sd-anatomy {
         grid-template-columns: 1fr; gap: 1rem;
       }
@@ -1928,51 +2039,34 @@ const slides = [
       <div class="recap-content stagger">
         <div class="recap-head">
           <div>
-            <span class="kicker">Yesterday we covered →</span>
+            <span class="kicker">Day 2 →</span>
             <h1>The <em>map</em> of AI — in one glance.</h1>
           </div>
-          <span class="recap-sub">Big Three · open weights · local · what to actually use</span>
         </div>
         <div class="recap-tools-grid">
           <div class="rt-col big3">
             <div class="rt-label">The Big Three</div>
             <h3>ChatGPT · <em>Claude</em> · Gemini</h3>
-            <ul>
-              <li>ChatGPT — default, falling behind on pro work</li>
-              <li>Claude — pro's choice · code · writing</li>
-              <li>Gemini — swiss army knife · most modes</li>
-            </ul>
-            <div class="rt-takeaway">All three have a place. Only one is best at each thing.</div>
+            <p class="rt-line">Claude is the current choice. Gemini is worth a try.</p>
           </div>
           <div class="rt-col china">
             <div class="rt-label">Open weights · China</div>
             <h3>Qwen · <em>DeepSeek</em> · Kimi</h3>
-            <ul>
-              <li>Qwen — strong open family</li>
-              <li>DeepSeek — frontier at fractions of the cost</li>
-              <li>Kimi — absurdly long context</li>
-            </ul>
-            <div class="rt-takeaway">Worth knowing even if you don't use them daily.</div>
+            <p class="rt-line">Frontier quality at a fraction of the cost.</p>
           </div>
           <div class="rt-col local">
             <div class="rt-label">On your own laptop</div>
             <h3><em>Gemma</em> · LM Studio · Ollama</h3>
-            <ul>
-              <li>Gemma — punches above its weight</li>
-              <li>LM Studio — GUI · drag &amp; drop</li>
-              <li>Ollama — <code style="font-family:var(--font-mono);font-size:0.78rem;background:rgba(22,199,154,0.1);padding:1px 5px;border-radius:4px;">ollama run gemma</code></li>
-            </ul>
-            <div class="rt-takeaway">Private. Free forever. Offline. No rate limits.</div>
+            <p class="rt-line">Private. Free forever. Offline. No rate limits.</p>
           </div>
           <div class="rt-col map">
             <div class="rt-label">The rest of the map</div>
             <h3>Must-use · <em>Try</em> · Avoid</h3>
-            <ul>
-              <li>NotebookLM · Nano Banana · Lovable</li>
-              <li>Runway · ElevenLabs · Suno / Udio</li>
-              <li>AI browsers — still over-hyped</li>
+            <ul class="rt-verdicts">
+              <li><span class="v-tag must">Must-use</span> NotebookLM · Nano Banana · Lovable</li>
+              <li><span class="v-tag try">Try</span> Runway · ElevenLabs · Suno / Udio</li>
+              <li><span class="v-tag avoid">Avoid</span> AI browsers</li>
             </ul>
-            <div class="rt-takeaway">Not all tools are created equal. Pick on purpose.</div>
           </div>
         </div>
       </div>
@@ -1984,38 +2078,45 @@ const slides = [
       <div class="recap-content stagger">
         <div class="recap-head">
           <div>
-            <span class="kicker">And then the big one →</span>
-            <h1>Agents changed <em>everything</em>.</h1>
+            <span class="kicker">Day 2 →</span>
+            <h1>An agent is <em>just</em> an LLM in a loop with tools.</h1>
           </div>
-          <span class="recap-sub">LLM + goal + loop + tools · personal software is here</span>
         </div>
-        <div class="recap-agents-layout">
-          <div class="recap-agents-left">
-            <h2>An agent is <em>just</em> an LLM in a loop with tools.</h2>
-            <p class="recap-agents-formula">
-              LLM <span class="plus">+</span> goal <span class="plus">+</span> loop <span class="plus">+</span> tools
-            </p>
-            <p>Think → act → observe → repeat. Until done. Once an agent can <em>code</em>, it can do anything a human can describe.</p>
-            <p>The humans stay in the loop. But the loop gets a lot faster.</p>
+        <div class="loop-diagram-big">
+          <div class="loop-node-big n1">
+            <div class="nlabel">01 · Read</div>
+            <div class="nbig">Think</div>
           </div>
-          <div class="recap-agents-right">
-            <div class="mono-label" style="margin-bottom: 0.85rem;">How they reach the world</div>
-            <div class="recap-agents-grid">
-              <div class="recap-agents-pill cli">
-                <div class="k">Terminal</div>
-                <div class="v">CLIs</div>
-              </div>
-              <div class="recap-agents-pill mcp">
-                <div class="k">Universal plug</div>
-                <div class="v">MCPs</div>
-              </div>
-              <div class="recap-agents-pill api">
-                <div class="k">Any service</div>
-                <div class="v">APIs</div>
-              </div>
+          <span class="loop-arrow-big">→</span>
+          <div class="loop-node-big n2">
+            <div class="nlabel">02 · Pick a tool</div>
+            <div class="nbig">Act</div>
+          </div>
+          <span class="loop-arrow-big">→</span>
+          <div class="loop-node-big n3">
+            <div class="nlabel">03 · Read result</div>
+            <div class="nbig">Observe</div>
+          </div>
+          <span class="loop-arrow-big">↻</span>
+          <div class="loop-node-big n4">
+            <div class="nlabel">04 · Until done</div>
+            <div class="nbig">Repeat</div>
+          </div>
+        </div>
+        <div class="recap-agents-reach">
+          <div class="mono-label">How they reach the world</div>
+          <div class="recap-agents-grid">
+            <div class="recap-agents-pill cli">
+              <div class="k">Terminal</div>
+              <div class="v">CLIs</div>
             </div>
-            <div class="recap-agents-bighit">
-              The age of <em>personal software</em> — describe a tool in plain English, and <em>have it</em>.
+            <div class="recap-agents-pill mcp">
+              <div class="k">Universal plug</div>
+              <div class="v">MCPs</div>
+            </div>
+            <div class="recap-agents-pill api">
+              <div class="k">Any service</div>
+              <div class="v">APIs</div>
             </div>
           </div>
         </div>
@@ -2023,74 +2124,19 @@ const slides = [
       <div class="slide-num">03 · Day 2 recap · agents</div>
     </section>
 
-    <!-- ═══ 04 · Recap — extensions + Mumukshu's question ═══ -->
+    <!-- ═══ 04 · Recap — extensions ═══ -->
     <section class="card-deck-card deck-slide slide-recap" data-slide="recap-extensions">
       <div class="recap-content stagger">
         <div class="recap-head">
           <div>
-            <span class="kicker">And we built something →</span>
-            <h1>A browser extension — your <em>first</em> piece of personal software.</h1>
+            <span class="kicker">Day 2 →</span>
+            <h1>Your <em>first</em> piece of personal software.</h1>
           </div>
-          <span class="recap-sub">answering Mumukshu's question · what makes one actually useful</span>
         </div>
-        <div class="recap-ext-layout">
-          <div class="recap-ext-left">
-            <h2>What makes an extension <em>worth building</em>?</h2>
-            <p class="lead">Not every cool idea is a useful one. The best ones have <em>four things</em> in common.</p>
-            <ul class="recap-ext-criteria">
-              <li>
-                <span class="ch">1</span>
-                <span class="t"><strong>Your</strong> friction — not a generic problem. Something <em>you personally</em> do every week.</span>
-              </li>
-              <li>
-                <span class="ch">2</span>
-                <span class="t"><strong>One</strong> job. Narrow scope. A clear verb: <em>highlight, save, summarise, launch</em>.</span>
-              </li>
-              <li>
-                <span class="ch">3</span>
-                <span class="t"><strong>Private.</strong> Runs on your machine. No server. No data leaving.</span>
-              </li>
-              <li>
-                <span class="ch">4</span>
-                <span class="t"><strong>Invisible</strong> until needed. Triggers when relevant — not a thing you "open".</span>
-              </li>
-            </ul>
-          </div>
-          <div class="recap-ext-right">
-            <span class="rex-head">The ones this room would actually use →</span>
-            <div class="recap-ext-grid">
-              <div class="rex-card">
-                <div class="rex-num">02</div>
-                <div class="rex-name">Jargon Hover</div>
-                <div class="rex-who">finance terms, hover to define</div>
-              </div>
-              <div class="rex-card">
-                <div class="rex-num">04</div>
-                <div class="rex-name">Ticker Peek</div>
-                <div class="rex-who">underline company, see price</div>
-              </div>
-              <div class="rex-card">
-                <div class="rex-num">07</div>
-                <div class="rex-name">Meeting Prep Launcher</div>
-                <div class="rex-who">one click — LinkedIn, News, Wiki</div>
-              </div>
-              <div class="rex-card">
-                <div class="rex-num">10</div>
-                <div class="rex-name">Prompt Pocket</div>
-                <div class="rex-who">your prompts, paste anywhere</div>
-              </div>
-              <div class="rex-card">
-                <div class="rex-num">12</div>
-                <div class="rex-name">Decision Journal</div>
-                <div class="rex-who">one question every morning</div>
-              </div>
-              <div class="rex-card">
-                <div class="rex-num">+</div>
-                <div class="rex-name">Your own.</div>
-                <div class="rex-who">the one you can't stop thinking about</div>
-              </div>
-            </div>
-          </div>
+        <div class="recap-ext-body">
+          <p>We built Chrome extensions.</p>
+          <p>The first attempt had errors. We iterated.</p>
+          <p>And we experienced, first-hand — <em>you don't need to be a developer to make software</em>.</p>
         </div>
       </div>
       <div class="slide-num">04 · Day 2 recap · extensions</div>
@@ -2100,8 +2146,7 @@ const slides = [
     <section class="card-deck-card deck-slide slide-today" data-slide="today">
       <div class="today-content stagger">
         <div class="today-head">
-          <h1>Today — take it all, make it <em>yours</em>.</h1>
-          <p class="sub">Day 1's approach · Day 2's tools · walk out with a 90-day plan.</p>
+          <h1>Let's build on Day&nbsp;1 + Day&nbsp;2 and make a <em>90-day plan</em>.</h1>
         </div>
         <div class="today-grid">
           <div class="today-card a">
@@ -2113,11 +2158,6 @@ const slides = [
             <div class="today-num">Beat 02</div>
             <h3>The 90-day plan.</h3>
             <p>A real plan for your business, your life, your goals. Know · Do · Show — laddered across 90 days.</p>
-          </div>
-          <div class="today-card c">
-            <div class="today-num">Beat 03</div>
-            <h3>Stay leading-edge.</h3>
-            <p>How to keep a finger on the pulse — without chasing every hype cycle. Signal over noise.</p>
           </div>
         </div>
       </div>
@@ -2143,26 +2183,21 @@ const slides = [
           <span class="eq">≈</span>
           <span>Skills are <strong>memory</strong>, <em>distilled</em>. Every lesson worth repeating, pressed into a file any agent can carry.</span>
         </div>
-        <p class="sd-lead">
-          A Skill is a small folder Claude reads <em>only when it's needed</em>. The first line tells Claude when to use it.
-          The rest tells it <em>how you do the job</em> — with examples, templates, even scripts it can run.
-          Hand it the way you work, and it just knows.
-        </p>
         <div class="sd-anatomy">
           <div class="piece">
-            <div class="k">File 01</div>
-            <h4><code>SKILL.md</code></h4>
-            <p>The trigger. "Use this when the user asks about investment memos." Claude skims it on every turn.</p>
+            <div class="k">Part 01</div>
+            <h4>The brief</h4>
+            <p>One line that tells Claude when to step in. <em>"Use me whenever I'm writing an investment memo."</em></p>
           </div>
           <div class="piece">
-            <div class="k">File 02</div>
-            <h4>Instructions · examples</h4>
-            <p>How you do the job. What a <em>good</em> output looks like. What <em>bad</em> looks like. Loaded only when triggered.</p>
+            <div class="k">Part 02</div>
+            <h4>The playbook</h4>
+            <p>How you actually do the work. Your steps, your tone, examples of what <em>good</em> looks like — and what doesn't.</p>
           </div>
           <div class="piece">
-            <div class="k">File 03</div>
-            <h4>Scripts &amp; templates</h4>
-            <p>Optional. Actual code Claude can run — PowerPoint generation, Excel formulas, PDF filling.</p>
+            <div class="k">Part 03</div>
+            <h4>The toolkit</h4>
+            <p>Optional. Templates and shortcuts Claude can reach for — your deck template, your Excel formulas, your boilerplate.</p>
           </div>
         </div>
         <span class="sd-kicker">Write it once. Every future session inherits it.</span>
@@ -2176,7 +2211,6 @@ const slides = [
         <div class="sk-find-head">
           <span class="mono-label">Where they live</span>
           <h1>Finding <em>good</em> skills.</h1>
-          <p class="sub">Official · community · your own. In that order of trust.</p>
         </div>
         <div class="sk-find-grid">
           <div class="sk-find-card official">
@@ -2209,275 +2243,44 @@ const slides = [
             </div>
           </div>
         </div>
+        <a class="sk-find-pack" href="/workshop-day3/meta-skills.zip" download>
+          <span class="sf-pack-tag">Workshop pack</span>
+          <span class="sf-pack-body">A head start — <strong>13 skills to try.</strong> Research, decisions, audio, browsing, prompts, more.</span>
+          <span class="sf-pack-cta">Download&nbsp;↓</span>
+        </a>
       </div>
       <div class="slide-num">08 · Finding skills</div>
-    </section>
-
-    <!-- ═══ 09 · Awesome skills · Anthropic ═══ -->
-    <section class="card-deck-card deck-slide slide-sk-show" data-slide="skills-anthropic">
-      <div class="sk-show-content stagger">
-        <div class="sk-show-head">
-          <div>
-            <span class="mono-label">Awesome skills · 1 of 3</span>
-            <h1>The <em>Anthropic</em> killers.</h1>
-          </div>
-          <span class="kicker">production-grade · free · use today →</span>
-        </div>
-        <div class="sk-cards">
-          <div class="sk-card c-navy">
-            <div class="sk-source">anthropics/skills · finance</div>
-            <h3>Financial Services</h3>
-            <div class="sk-sub">DCF · valuation · investment memos</div>
-            <p>Claude goes from "draft me a memo" to <em>building the model in Excel</em>. Proper assumptions, sensitivity tables, scenario analysis — the way a junior analyst would, without the typos.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">github.com/anthropics/skills/financial-services</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-amber">
-            <div class="sk-source">anthropics/skills · frontend</div>
-            <h3>Frontend Design</h3>
-            <div class="sk-sub">house style · brand-safe UI</div>
-            <p>Turns rough ideas into <em>on-brand</em> web pages. Uses modern design principles. Knows when to use a hero, a card, a grid — without you telling it.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">github.com/anthropics/skills/frontend-design</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-purple">
-            <div class="sk-source">anthropics/skills · office</div>
-            <h3>PPTX · XLSX · DOCX</h3>
-            <div class="sk-sub">the whole office suite</div>
-            <p>Ask for "a client deck on our Q3 results" — get a real <em>.pptx</em> file. Ask for a financial model — get a real <em>.xlsx</em> with formulas. The most underrated skill they ship.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">Built-in · <span class="hi">paid plan</span></span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>File creation<span class="arr">→</span>On</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">09 · Anthropic skills</div>
-    </section>
-
-    <!-- ═══ 10 · Awesome skills · research ═══ -->
-    <section class="card-deck-card deck-slide slide-sk-show" data-slide="skills-research">
-      <div class="sk-show-content stagger">
-        <div class="sk-show-head">
-          <div>
-            <span class="mono-label">Awesome skills · 2 of 3</span>
-            <h1>For <em>sharper</em> research.</h1>
-          </div>
-          <span class="kicker">sense-making at speed →</span>
-        </div>
-        <div class="sk-cards">
-          <div class="sk-card c-sky">
-            <div class="sk-source">community · newsfeed</div>
-            <h3>/last30days</h3>
-            <div class="sk-sub">a monthly digest of what actually mattered</div>
-            <p>Ask Claude "what's happened in AI in the last 30 days that I should know?" — the skill pulls from Reddit, HN, X, Polymarket, and <em>filters for signal</em>. Hype removed.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">plugin · <span class="hi">last30days</span></span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-teal">
-            <div class="sk-source">community · web-search</div>
-            <h3>Deep Research Builder</h3>
-            <div class="sk-sub">multi-step research from one question</div>
-            <p>Turns "what are the top-performing flexi-cap mutual funds this year?" into a real research process. Searches, cross-checks, cites sources. <em>Leaves a paper trail</em> for you.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">search <span class="hi">github "deep research skill"</span></span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-purple">
-            <div class="sk-source">your team · memory</div>
-            <h3>Team Context</h3>
-            <div class="sk-sub">every past decision, queryable</div>
-            <p>A skill that loads your <em>notes, decisions, prior briefs</em> when relevant. No more "remind me what we decided on X in Q2?" — Claude just knows, because you wrote it down.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">build with <span class="hi">Skill Creator</span> · feed your docs</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Projects<span class="arr">→</span>new<span class="arr">→</span>attach docs</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">10 · Research skills</div>
-    </section>
-
-    <!-- ═══ 11 · Awesome skills · formatting + deslop ═══ -->
-    <section class="card-deck-card deck-slide slide-sk-show" data-slide="skills-format">
-      <div class="sk-show-content stagger">
-        <div class="sk-show-head">
-          <div>
-            <span class="mono-label">Awesome skills · 3 of 3</span>
-            <h1>For <em>finished</em> work.</h1>
-          </div>
-          <span class="kicker">nothing ships raw →</span>
-        </div>
-        <div class="sk-cards">
-          <div class="sk-card c-teal">
-            <div class="sk-source">your firm · house style</div>
-            <h3>Deliverable Formatter</h3>
-            <div class="sk-sub">your template, every time</div>
-            <p>Your firm's logo, margins, cover page, footer. The skill ensures <em>every</em> document you send — memo, report, deck — lands looking like yours. No more copy-pasting from old files.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">build with <span class="hi">Skill Creator</span> · upload your template</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-accent-red" style="color: var(--color-accent-red);">
-            <div class="sk-source">day 1 · principle 12</div>
-            <h3>Deslopper</h3>
-            <div class="sk-sub">strip AI tells, restore human voice</div>
-            <p>Removes "Certainly!", "delve", "in conclusion", the em-dash addiction. Rebalances rhythm. Reads like <em>you</em> again. Run it on every draft before it leaves your hands.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">build with <span class="hi">Skill Creator</span> · paste your writing</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-          <div class="sk-card c-amber">
-            <div class="sk-source">for client-facing writing</div>
-            <h3>Plain English Enforcer</h3>
-            <div class="sk-sub">shorten · clarify · cut</div>
-            <p>A skill trained on your favourite writers. Cuts passive voice. Shortens sentences. Kills jargon unless it's earning its place. Makes <em>every</em> email land.</p>
-            <div class="sk-install">
-              <div class="sk-install-row">
-                <span class="sk-install-label">Get</span>
-                <span class="sk-install-val">build with <span class="hi">Skill Creator</span> · feed 3 writers you admire</span>
-              </div>
-              <div class="sk-install-row">
-                <span class="sk-install-label">Use</span>
-                <span class="sk-install-val"><span class="hi">Claude</span><span class="arr">→</span>Settings<span class="arr">→</span>Capabilities<span class="arr">→</span>Add skill</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">11 · Formatting skills</div>
-    </section>
-
-    <!-- ═══ 12 · Meta skills ═══ -->
-    <section class="card-deck-card deck-slide slide-meta" data-slide="skills-meta">
-      <div class="meta-content stagger">
-        <div class="meta-head">
-          <span class="eyebrow">The layer above →</span>
-          <h1>Meta skills — skills that <em>make</em> skills.</h1>
-          <p class="sub">Claude improving Claude. Recursion (Day 1, principle 08) — applied.</p>
-        </div>
-        <div class="meta-grid">
-          <div class="meta-card">
-            <div class="meta-k">Meta · 01</div>
-            <h4>Skill Auditor</h4>
-            <p>Given a skill, checks: is the trigger clear? Are there good/bad examples? Would a new Claude understand it? Scores and suggests edits.</p>
-          </div>
-          <div class="meta-card">
-            <div class="meta-k">Meta · 02</div>
-            <h4>Skill Finder</h4>
-            <p>You describe your week; the skill asks what you do <em>more than once</em> and flags where a skill would save you hours. Turns friction into a backlog.</p>
-          </div>
-          <div class="meta-card">
-            <div class="meta-k">Meta · 03</div>
-            <h4>Skill Updater</h4>
-            <p>Watches how you override the skill's output. When you correct it enough times, the skill proposes an edit to itself. It <em>learns</em> your taste.</p>
-          </div>
-          <div class="meta-card">
-            <div class="meta-k">Meta · 04</div>
-            <h4>Onboarding Skill</h4>
-            <p>New team member gets Claude + your skills on day one. What took a year of shadowing — now a 20-minute setup.</p>
-          </div>
-          <div class="meta-card">
-            <div class="meta-k">Meta · 05</div>
-            <h4>Skill Swap</h4>
-            <p>Share a skill with a peer. They hand it to their Claude. Your way of working, spreading without you being in every meeting.</p>
-          </div>
-          <div class="meta-card">
-            <div class="meta-k">Meta · 06</div>
-            <h4>Skill Creator</h4>
-            <p>The one that starts it all — Claude's own skill for building new skills. We use it in <em>sixty seconds</em>, next slide.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">12 · Meta skills</div>
     </section>
 
     <!-- ═══ 13 · Skill Creator — live build ═══ -->
     <section class="card-deck-card deck-slide slide-sk-creator" data-slide="skills-creator">
       <div class="skc-content stagger">
-        <div class="skc-layout">
-          <div>
-            <span class="skc-eyebrow">Build one with me →</span>
-            <h1 class="skc-title">Ask Claude to make the <em>skill for you</em>.</h1>
-            <p class="skc-lead">
-              The Skill Creator is Anthropic's own skill for <em>writing skills</em>. It asks you the right questions, writes the files, validates the trigger, and installs it. All while you talk in plain English.
-            </p>
-            <div class="skc-quote">
-              "I send an investor update on the last Friday of each month. It's always the same structure — cover, highlights, metrics, one surprise, one ask."
-              <span class="who">— the prompt we'll use live</span>
-            </div>
-          </div>
-          <div>
-            <div class="mono-label" style="margin-bottom: 0.75rem;">What happens next</div>
-            <ol class="skc-steps">
-              <li>Claude <strong>asks you</strong> 5–7 clarifying questions · tone, length, recipients, examples.</li>
-              <li>Writes a <strong><code style="font-family:var(--font-mono);font-size:0.85rem;">SKILL.md</code></strong> with a precise trigger.</li>
-              <li>Generates example outputs · a <em>good one</em> and a <em>bad one</em>.</li>
-              <li>Drops in a <strong>template</strong> of your latest update.</li>
-              <li>Tests the trigger · makes sure it fires when it should.</li>
-              <li>Installs it · <em>every future session</em> inherits the skill.</li>
-            </ol>
+        <div class="skc-solo">
+          <span class="skc-eyebrow">Build one with me →</span>
+          <h1 class="skc-title">Ask Claude to make the <em>skill for you</em>.</h1>
+          <p class="skc-lead">
+            The Skill Creator is Anthropic's own skill for <em>writing skills</em>. It asks you the right questions, writes the files, validates the trigger, and installs it. All while you talk in plain English.
+          </p>
+          <div class="skc-prompt">
+              <div class="skc-prompt-head">
+                <span class="skc-prompt-tag">The prompt →</span>
+                <button class="skc-copy-btn" id="skc-copy-btn" type="button" aria-label="Copy prompt">
+                  <span class="skc-copy-default">Copy</span>
+                  <span class="skc-copy-done">Copied</span>
+                </button>
+              </div>
+              <pre class="skc-prompt-box" id="skc-prompt-text">Use the skill-creator skill to help me build a Skill.
+
+I send an investor update on the last Friday of every month.
+Same structure every time: cover · highlights · metrics ·
+one surprise · one ask.
+
+Interview me about my voice, format, and what "good" looks like.
+Then draft the SKILL.md, a good example, and a template.</pre>
           </div>
         </div>
       </div>
-      <div class="slide-num">13 · Skill creator</div>
+      <div class="slide-num">09 · Skill creator</div>
     </section>
 
     <!-- ═══ 14 · Break — The 90-day plan ═══ -->
@@ -2487,40 +2290,10 @@ const slides = [
         <h1 class="break-title">The 90-day plan<span class="period">.</span></h1>
         <p class="break-under">the ultimate takeaway · a plan for Monday</p>
       </div>
-      <div class="slide-num">14 · Break</div>
+      <div class="slide-num">10 · Break</div>
     </section>
 
-    <!-- ═══ 15 · Plan intro ═══ -->
-    <section class="card-deck-card deck-slide slide-plan-intro" data-slide="plan-intro">
-      <div class="plan-intro-content stagger">
-        <span class="plan-intro-eyebrow">Three phases · thirteen weeks · one arc</span>
-        <h1 class="plan-intro-title">From <em>one-shotting</em> to <em>directing</em>.</h1>
-        <p class="plan-intro-lead">
-          Concepts keep coming back — <em>composed</em> with new ones each phase.
-          The task you run by hand in Week 1 becomes a Skill in Week 7, and part of a library by Week 13.
-        </p>
-        <div class="plan-arc">
-          <div class="plan-arc-stop a">
-            <div class="range">Phase 01 · Weeks 1 → 4</div>
-            <h4>Stop one-shotting.</h4>
-            <p>The Loop — Choose · Communicate · Evaluate — into <em>muscle memory</em>.</p>
-          </div>
-          <div class="plan-arc-stop b">
-            <div class="range">Phase 02 · Weeks 5 → 8</div>
-            <h4>Sessions become SOP.</h4>
-            <p>Your conversations are a corpus. Your corpus becomes <em>Skills</em>.</p>
-          </div>
-          <div class="plan-arc-stop c">
-            <div class="range">Phase 03 · Weeks 9 → 13</div>
-            <h4>Skills are software.</h4>
-            <p>The new programming. Compose, share, <em>teach</em>.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">15 · Plan</div>
-    </section>
-
-    <!-- ═══ 16 · Phase 1 — Stop one-shotting ═══ -->
+    <!-- ═══ 11 · Phase 1 — Stop one-shotting ═══ -->
     <section class="card-deck-card deck-slide slide-phase p1" data-slide="plan-phase-1">
       <div class="phase-content stagger">
         <div class="phase-head">
@@ -2550,10 +2323,8 @@ const slides = [
             <ul class="week-actions">
               <li>Ask AI to <em>interview you</em> before it starts the task.</li>
               <li>Ask AI to <em>rewrite your prompt</em> before you run it.</li>
+              <li class="carry keep"><span class="ctag">Keep</span>cross-check 2+ models</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag keep">Keep →</span><span class="txt">cross-check 2+ models</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2562,10 +2333,8 @@ const slides = [
             <ul class="week-actions">
               <li>Show <em>good and bad examples</em> from your past work.</li>
               <li><em>3–5 passes</em>, minimum. No first answers.</li>
+              <li class="carry keep"><span class="ctag">Keep</span>AI interviews you first</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag keep">Keep →</span><span class="txt">AI interviews you first</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2574,19 +2343,12 @@ const slides = [
             <ul class="week-actions">
               <li>Push back. Ask what AI <em>held back</em>. Ask what would make it better.</li>
               <li><em>Humanize.</em> Deslop every edge.</li>
+              <li class="carry keep"><span class="ctag">Keep</span>examples · iteration · cross-check</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag keep">Keep →</span><span class="txt">examples · iteration · cross-check</span></div>
-            </div>
           </div>
         </div>
-
-        <div class="capstone">
-          <span class="capstone-marker">End of Month 01</span>
-          <p>Take <strong>one recurring task</strong> you do every week. Run it through the full Loop — cross-check, interview, examples, 3–5 passes, deslop. <em>Next week, do it the same way.</em></p>
-        </div>
       </div>
-      <div class="slide-num">16 · Phase 1</div>
+      <div class="slide-num">11 · Phase 1</div>
     </section>
 
     <!-- ═══ 17 · Phase 2 — Sessions become your SOP ═══ -->
@@ -2630,10 +2392,8 @@ const slides = [
             <ul class="week-actions">
               <li><em>Skill Creator</em> turns your SOP into a Skill.</li>
               <li>3–5 passes until it works on <em>3 real inputs</em>.</li>
+              <li class="carry explore"><span class="ctag">Explore</span>one AI tool you've never used, on a real task</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag explore">Explore →</span><span class="txt">one AI tool you've never used, on a real task</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2646,16 +2406,11 @@ const slides = [
             </ul>
           </div>
         </div>
-
-        <div class="capstone">
-          <span class="capstone-marker">End of Month 02</span>
-          <p>Ship <strong>one real deliverable</strong> to a real recipient — that ran through your Skills. <em>Your way of working, now portable.</em></p>
-        </div>
       </div>
-      <div class="slide-num">17 · Phase 2</div>
+      <div class="slide-num">12 · Phase 2</div>
     </section>
 
-    <!-- ═══ 18 · Phase 3 — Skills are your software ═══ -->
+    <!-- ═══ 18 · Phase 3 — Skills are your operating system ═══ -->
     <section class="card-deck-card deck-slide slide-phase p3" data-slide="plan-phase-3">
       <div class="phase-content stagger">
         <div class="phase-head">
@@ -2663,10 +2418,10 @@ const slides = [
             <span class="phase-num">03</span>
             <div>
               <div class="phase-label">Phase 03 · Weeks 9 → 13</div>
-              <h1 class="phase-title">Skills are your <em>software</em>.</h1>
+              <h1 class="phase-title">Skills are your <em>operating system</em>.</h1>
             </div>
           </div>
-          <span class="phase-subhead">The new programming →</span>
+          <span class="phase-subhead">The foundation everything runs on →</span>
         </div>
 
         <div class="week-grid cols5">
@@ -2686,10 +2441,8 @@ const slides = [
             <ul class="week-actions">
               <li>Add <em>two more Skills</em> in the K/D/S categories you haven't covered.</li>
               <li>AI interviews you before the SOP.</li>
+              <li class="carry explore"><span class="ctag">Explore</span>NotebookLM · Nano Banana · Deep Research · Perplexity · local model</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag explore">Explore →</span><span class="txt">NotebookLM · Nano Banana · Deep Research · Perplexity · local model</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2698,10 +2451,8 @@ const slides = [
             <ul class="week-actions">
               <li>Chain <em>3+ Skills</em> end-to-end (<em>Research → Draft → Polish</em>).</li>
               <li>Watch where handoffs break. Tighten inputs and outputs.</li>
+              <li class="carry explore"><span class="ctag">Explore</span>one "must-use" from the Day 2 map you haven't tried</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag explore">Explore →</span><span class="txt">one "must-use" from the Day 2 map you haven't tried</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2710,10 +2461,8 @@ const slides = [
             <ul class="week-actions">
               <li>Build a <em>Skill for building Skills</em> — your taste, baked in.</li>
               <li>Run it on your existing Skills. What gets sharper?</li>
+              <li class="carry explore"><span class="ctag">Explore</span>swap your default chat AI for a week</li>
             </ul>
-            <div class="week-meta">
-              <div class="row"><span class="tag explore">Explore →</span><span class="txt">swap your default chat AI for a week</span></div>
-            </div>
           </div>
 
           <div class="week-card">
@@ -2726,51 +2475,8 @@ const slides = [
             </ul>
           </div>
         </div>
-
-        <div class="capstone">
-          <span class="capstone-marker">End of Month 03</span>
-          <p>Teach <strong>one person</strong> your full setup in 30 minutes. Hand them a Skill to take home. <em>What you built becomes what they build on.</em></p>
-        </div>
       </div>
-      <div class="slide-num">18 · Phase 3</div>
-    </section>
-
-    <!-- ═══ 19 · Success — how do you know it's working ═══ -->
-    <section class="card-deck-card deck-slide slide-success" data-slide="plan-success">
-      <div class="success-content stagger">
-        <div class="success-head">
-          <span class="eyebrow">How do you know →</span>
-          <h1>The plan is <em>working</em> when you feel…</h1>
-          <p>Not measured in outputs. Measured in <em>capacity</em>. In how ready you are for what's next.</p>
-        </div>
-        <div class="success-grid">
-          <div class="success-card c1">
-            <span class="kind">01 · Signal</span>
-            <h4>Ready — not chasing.</h4>
-            <p>You <em>cut through hype</em>, keep a finger on the pulse, and know which shifts matter to you. The next breakthrough lands as a fit, not a fire drill.</p>
-          </div>
-          <div class="success-card c2">
-            <span class="kind">02 · Leverage</span>
-            <h4>Freed from execution.</h4>
-            <p>AI absorbs the grind. You spend more time on the <em>higher-order</em> work — judgment, strategy, taste — that only you can do.</p>
-          </div>
-          <div class="success-card c3">
-            <span class="kind">03 · Compounding</span>
-            <h4>Your AI knows your way.</h4>
-            <p>Memory and skills mean <em>every minute compounds</em>. The AI understands how you work, what good looks like to you, and gets closer each session.</p>
-          </div>
-          <div class="success-card c4">
-            <span class="kind">04 · Parallel</span>
-            <h4>Multi-tool. Multi-mode.</h4>
-            <p>You <em>cross-check across models</em>, run tasks in parallel, and use AI to get unstuck with AI. Your workflow is a relay — not a bottleneck.</p>
-          </div>
-        </div>
-        <div class="success-kds">
-          <span class="k">Know</span> · <span class="d">Do</span> · <span class="s">Show</span> — all three, measurably better.
-          <em>If even one isn't moving, the plan needs a tweak — not the whole engine.</em>
-        </div>
-      </div>
-      <div class="slide-num">19 · Success</div>
+      <div class="slide-num">13 · Phase 3</div>
     </section>
 
     <!-- ═══ 20 · Ramp case study ═══ -->
@@ -2823,12 +2529,33 @@ const slides = [
           </div>
         </div>
 
-        <div class="ramp-punchline">
-          <span class="marker">The punchline →</span>
-          <p>Not a tools rollout. An <em>operating model rewrite</em>. Ramp connected agents to Slack, Datadog, Sentry, CI, GitHub, Snowflake, and evals — then eliminated opt-out. Most companies bolt AI on one workflow. Ramp built the substrate every role plugs into.</p>
+        <div class="ramp-ladder">
+          <span class="ladder-label">The ladder Ramp is measuring everyone on →</span>
+          <div class="ladder-grid">
+            <div class="ladder-rung r0">
+              <span class="tier">L0</span>
+              <h5>Occasional chat.</h5>
+              <p>"I tried ChatGPT once." Nothing sticks.</p>
+            </div>
+            <div class="ladder-rung r1">
+              <span class="tier">L1</span>
+              <h5>Daily basics.</h5>
+              <p>AI a few times a week. Drafts, quick answers.</p>
+            </div>
+            <div class="ladder-rung r2">
+              <span class="tier">L2</span>
+              <h5>Embedded in workflow.</h5>
+              <p>Every role has 3+ AI-assisted tasks. Daily.</p>
+            </div>
+            <div class="ladder-rung r3">
+              <span class="tier">L3</span>
+              <h5>Systems do the work.</h5>
+              <p>Agents run real work. Humans direct.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="slide-num">20 · Ramp case study</div>
+      <div class="slide-num">14 · Ramp case study</div>
     </section>
 
     <!-- ═══ 21 · Ramp mapping — our plan ↔ L0→L3 ═══ -->
@@ -2872,26 +2599,20 @@ const slides = [
           <div class="rampmap-row">
             <div class="rampmap-cell ours">
               <span class="side">Our plan · Phase 03</span>
-              <h4>Skills are <em>software</em>.</h4>
+              <h4>Skills are your <em>operating system</em>.</h4>
               <p class="sub">Install, scale, compose across domains. Meta-skill. Publish, audit, teach.</p>
             </div>
             <div class="rampmap-arrow">=</div>
             <div class="rampmap-cell theirs">
               <span class="side">Ramp · L2 → L3</span>
-              <h4>Autonomous <em>agent systems</em>.</h4>
-              <p class="sub">What <em>Inspect</em> does at company scale — agents that ship 30% of PRs. You're building it for <em>one desk</em>. Same muscle.</p>
+              <h4>Systems that <em>do the work</em>.</h4>
+              <p class="sub">At Ramp: hundreds of agents ship 30% of code, handle incidents, build dashboards. At your desk: composed Skills doing your weekly work, overnight. <em>Same shape, different scale.</em></p>
             </div>
           </div>
         </div>
 
-        <div class="rampmap-close">
-          <p>
-            Ramp made it <em>policy</em>. You get to make it <em>practice</em>.
-            <span class="small">Same ladder, your scale, your pace. Phase 01 starts Monday.</span>
-          </p>
-        </div>
       </div>
-      <div class="slide-num">21 · Ramp × Plan</div>
+      <div class="slide-num">15 · Ramp × Plan</div>
     </section>
 
     <!-- ═══ 22 · Take-home · build your plan ═══ -->
@@ -2929,7 +2650,7 @@ const slides = [
           Do it <em>before you leave the room</em>. Tuesday morning is too late.
         </div>
       </div>
-      <div class="slide-num">22 · Take-home</div>
+      <div class="slide-num">16 · Take-home</div>
     </section>
 
   </div>
@@ -3009,6 +2730,33 @@ const slides = [
       });
 
       updateActive(0);
+
+      // Copy prompt button on Skill Creator slide
+      const copyBtn = document.getElementById('skc-copy-btn');
+      const promptEl = document.getElementById('skc-prompt-text');
+      if (copyBtn && promptEl) {
+        let resetTimer;
+        copyBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const text = promptEl.textContent;
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch (err) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          copyBtn.classList.add('copied');
+          clearTimeout(resetTimer);
+          resetTimer = setTimeout(() => copyBtn.classList.remove('copied'), 2000);
+        });
+      }
     })();
   </script>
 
