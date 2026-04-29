@@ -4,7 +4,15 @@ import { useAuth } from '../hooks/useAuth';
 import { usePersona } from '../hooks/usePersona';
 import { streamChat, type ChatMessage } from '../lib/claude';
 import type { Persona, PersonaSelections } from '../lib/persona';
+import { supabase } from '../lib/supabase';
+import { getCustomerId, isPaid as checkIsPaid } from '../lib/auth';
 import UnlockModal from './ui/UnlockModal';
+
+function getSessionId(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/(?:^|; )ab_session=([^;]*)/);
+  return match ? match[1] : null;
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -130,6 +138,23 @@ Goals: ${goals.join(', ')}${challenge ? `\nSpecific interest: ${challenge}` : ''
 
           save(newPersona);
           setDisplayPersona(newPersona);
+
+          if (supabase) {
+            supabase.from('persona_responses').insert({
+              session_id: getSessionId(),
+              customer_id: getCustomerId(),
+              is_paid: checkIsPaid(),
+              profession,
+              profession_detail: professionDetail || null,
+              ai_experience: aiExperience,
+              goals,
+              challenge: challenge || null,
+              context: parsed.context,
+              keywords: parsed.keywords || [],
+              locale: typeof document !== 'undefined' ? document.documentElement.lang || null : null,
+            }).then(() => {}, () => {});
+          }
+
           // Small delay so user sees the generating animation
           setTimeout(() => goTo('complete'), 600);
         } catch {
