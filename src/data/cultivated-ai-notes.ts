@@ -21,13 +21,9 @@ export const slideOrder = [
   'winners',
   'stages',
   'approach',
-  'priya-approach',
   'distillation',
-  'priya-distillation',
   'compounding',
-  'priya-compounding',
   'simulation',
-  'priya-simulation',
   'programme',
   'bundle',
   'after',
@@ -127,100 +123,63 @@ Bridge: "And that is what we cultivate."`,
   stages: {
     id: 'stages',
     num: 9,
-    title: 'Cultivated AI · five stages',
+    title: 'Cultivated AI · four stages',
     notes: `Introduce the methodology by name. This is the core slide.
-"Cultivated AI. Five stages, in order. Years, not quarters. Cultivation, not deployment."
-Read the stage names out loud, in rhythm: APPROACH. DISTILLATION. COMPOUNDING. SOVEREIGNTY. SIMULATION.
-The first three are taught in the Programme. The last two are graduation engagements.
-Most companies get to Sovereignty. A few reach Simulation. All start with Approach.
+"Cultivated AI. Four stages, in order. Years, not quarters. Cultivation, not deployment."
+Read the stage names out loud, in rhythm: APPROACH. DISTILLATION. COMPOUNDING. SIMULATION.
+The first three are taught in the Programme. Simulation is the graduation engagement.
+All of them start with Approach.
 Bridge: "Let me walk you through what this looks like for one person — Priya, a department head running Procurement."`,
   },
   approach: {
     id: 'approach',
     num: 10,
-    title: 'Stage 1 · Approach',
-    notes: `Stage 1 is the principles install.
-The leader sees what AI is, what it does well, what it does badly, where it's heading.
-Mental models start working.
-By the end of Stage 1, the leader stops chasing tools and starts thinking.
-This is the durability layer. Tools change every quarter. Principles outlive them.`,
-  },
-  'priya-approach': {
-    id: 'priya-approach',
-    num: 11,
-    title: 'Priya · after Approach',
-    notes: `Introduce Priya for the first time. Slow down here — she carries the next nine slides.
-"Priya is a department head running Procurement. Every company has someone like her. Twelve AI tool pitches forwarded to her last month. Her team is anxious. She's smart, but she can't tell what's real."
-After Stage 1, Priya has a frame. She can read any new AI announcement and place it in 30 seconds — what it does, where it fits in her work, where it doesn't.
+    title: 'Stage 1 · Approach (Priya)',
+    notes: `Stage 1 is the principles install. Tools change every quarter; principles outlive them.
+Introduce Priya here. Slow down — she carries the next four slides.
+"Priya is a department head running Procurement. Every company has someone like her. Twelve AI tool pitches forwarded last month. Her team is anxious. She's smart, but she can't tell what's real."
+After Stage 1: she has a working mental model. She can read any AI announcement and place it in 30 seconds — what it does, where it fits in procurement, where it doesn't.
 The artefact: a one-page Procurement AI Frame. Her personal compass.
 Quote to read: "I stopped chasing demos. I started thinking."
-Bridge: "And once she has the frame, she can go to work."`,
+Bridge: "Once she has the frame, she can go to work."`,
   },
   distillation: {
     id: 'distillation',
-    num: 12,
-    title: 'Stage 2 · Distillation',
-    notes: `The leader takes their existing SOPs — the way work already gets done in their role — and distils them into AI playbooks.
-Playbooks teach the model your way of working, not the other way around.
-The technical term is *agentic skills*; we use *playbooks* because the work is business, not engineering.
-By the end of Stage 2, the AI runs the leader's actual work in the leader's actual way.
-Not a generic template. Not a vendor demo. Their work.`,
-  },
-  'priya-distillation': {
-    id: 'priya-distillation',
-    num: 13,
-    title: 'Priya · after Distillation',
-    notes: `"Priya has run her vendor-evaluation SOP two hundred times. The pattern is in her head — risk thresholds, scoring weights, the questions she always asks first."
-In Stage 2 she distils that SOP into an AI playbook. Now the AI runs vendor evaluation in HER way, not a vendor template. Same for contract clause review, RFP drafting, negotiation briefs, supplier risk scans.
+    num: 11,
+    title: 'Stage 2 · Distillation (Priya)',
+    notes: `Stage 2: the leader takes their existing SOPs and distils them into AI playbooks. Playbooks teach the model your way of working, not the other way around. Technical term is agentic skills; we use playbooks because the work is business, not engineering.
+"Priya has run her vendor-evaluation SOP two hundred times. The pattern is in her head — risk thresholds, scoring weights, the questions she always asks first."
+She distils it into an AI playbook that runs procurement HER way. Same for contract clause review, RFP drafting, negotiation briefs, supplier risk scans.
 The artefact: 4-6 working playbooks. Hers. In production.
 Quote to read: "It's still my procurement. Just running on AI."
 Bridge: "And then it gets better — because she isn't the only one building playbooks."`,
   },
   compounding: {
     id: 'compounding',
-    num: 14,
-    title: 'Stage 3 · Compounding',
-    notes: `Stage 3 is what makes the Programme worth paying for.
-Each leader builds playbooks in Stage 2. In Stage 3, the best of those playbooks move from one leader to the rest of the company.
-The leader who built a strong report-making playbook shares it. The team that figured out how to brief partners passes their playbook on.
-Each playbook adopted raises the floor for the next.
-The best of the company becomes the floor of the company.
-That's compounding.`,
-  },
-  'priya-compounding': {
-    id: 'priya-compounding',
-    num: 15,
-    title: 'Priya · after Compounding',
-    notes: `Priya's library doubles, then triples — without her writing a line.
+    num: 12,
+    title: 'Stage 3 · Compounding (Priya)',
+    notes: `Stage 3 is what makes the Programme worth paying for. The best playbooks move from one leader to the rest of the company. Each playbook adopted raises the floor for the next. The best of the company becomes the floor of the company.
+For Priya: her library doubles, then triples — without her writing a line.
 Legal builds a contract-clause comparator. Finance builds a TCO modeller. HR builds a vendor-onboarding checklist. Priya inherits all of them.
 And her own vendor-scorecard playbook spreads to IT and Operations.
 The artefact: a shared playbook library across the cohort. Triple the leverage at zero extra effort.
 Quote to read: "The best of the company is now the floor of my desk."
-Bridge: "This is where companies start pulling away from the pack."`,
+Bridge: "This is where companies start pulling away from the pack. And then there's the deepest unlock."`,
   },
   simulation: {
     id: 'simulation',
-    num: 16,
-    title: 'Stage 4 · Simulation',
-    notes: `The deepest unlock. Most companies will never get here.
-The ones who do are using AI to build synthetic environments where strategy can be rehearsed, teams can be trained against scenarios that don't exist yet, and what-ifs can be explored at speed.
-This is using AI for things competitors cannot do at all.
-Two tiers above licensing.
-We scope this engagement separately, after the Programme.`,
-  },
-  'priya-simulation': {
-    id: 'priya-simulation',
-    num: 17,
-    title: 'Priya · after Simulation',
-    notes: `A $40M three-year supplier negotiation next quarter. The supplier has more leverage than she'd like.
-Priya rehearses the negotiation against an AI-simulated counterparty trained on the supplier's public history. She runs supply-chain shock scenarios across her supplier base. She walks in prepared in ways that weren't possible before AI.
+    num: 13,
+    title: 'Stage 4 · Simulation (Priya)',
+    notes: `The deepest unlock. Most companies will never get here. The ones who do use AI to build synthetic environments where strategy can be rehearsed, teams trained against scenarios that don't exist yet, and what-ifs explored at speed. Two tiers above licensing.
+For Priya: a $40M three-year supplier negotiation next quarter.
+She rehearses against an AI-simulated counterparty trained on the supplier's public history. Runs supply-chain shock scenarios across her supplier base. Walks in prepared in ways that weren't possible before AI.
 The artefact: synthetic environments where the most expensive procurement decisions get rehearsed first.
 Quote to read: "I show up ready for moves I couldn't predict before."
 Bridge: "Now — what does Priya actually walk out of the Programme with?"`,
   },
   programme: {
     id: 'programme',
-    num: 18,
+    num: 14,
     title: 'The Cultivated AI Programme',
     notes: `Now the offer.
 The Cultivated AI Programme delivers Stages 1, 2, and 3.
@@ -231,7 +190,7 @@ Each leader leaves with two artefacts.`,
   },
   bundle: {
     id: 'bundle',
-    num: 19,
+    num: 15,
     title: 'What each leader walks out with',
     notes: `Two artefacts. Both real. This is what Priya walks out with — and so does every leader in the cohort.
 ONE: their personal playbook library — four to six working AI playbooks built from their own SOPs, in production-ready form.
@@ -240,7 +199,7 @@ The discipline is years; the operating cadence is 90 days.`,
   },
   after: {
     id: 'after',
-    num: 20,
+    num: 16,
     title: 'After the Programme',
     notes: `Two optional follow-on engagements. Both scoped after the Programme is complete and the discipline has rooted.
 ONE: 90-Day Advisory — sponsor coaching, day-30 and day-90 reviews, written outcomes summary. For cohorts that want to compound the discipline immediately.
@@ -249,7 +208,7 @@ These are where the partnership deepens. They are where most of the work lives.`
   },
   thesis: {
     id: 'thesis',
-    num: 21,
+    num: 17,
     title: 'Thesis · the closing argument',
     notes: `The closing argument. The line you want them to remember.
 "Resilient pipelines are built by cultivating the approach, not chasing technology."
@@ -258,7 +217,7 @@ Don't explain it. Don't gloss it. Pause after. Then transition to the close.`,
   },
   close: {
     id: 'close',
-    num: 22,
+    num: 18,
     title: 'Close · Grow, don\'t Chase',
     notes: `End where you started. The verb-pair earns more on the second hearing.
 "Cultivated AI. Grow, don't Chase."
