@@ -4,8 +4,7 @@ import '../styles/global.css';
 
 const slides = [
   'cover',
-  'thesis',
-  'about',
+  'positioning',
   'licensing',
   'failures',
   'shift',
@@ -20,9 +19,8 @@ const slides = [
   'simulation',
   'programme',
   'bundle',
-  'price',
   'after',
-  'why-ocre',
+  'thesis',
   'close',
 ];
 ---
@@ -183,16 +181,22 @@ const slides = [
       }
       * { animation: none !important; }
 
-      .stages-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 1.25rem !important; }
+      .stages-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.25rem !important; }
       .failures-grid { grid-template-columns: 1fr 1fr !important; gap: 3rem !important; }
       .shift-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2rem !important; }
+      .winners-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.25rem !important; }
+      .rampcase-content { grid-template-columns: 1.05fr 1fr !important; gap: 3rem !important; }
+      .rampcase-stats { grid-template-columns: 1fr 1fr !important; gap: 1rem !important; }
       .bundle-grid { grid-template-columns: 1fr 1fr !important; gap: 2.5rem !important; }
-      .after-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .after-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.75rem !important; }
       .deck-slide { padding: 4rem 5rem !important; }
     }
 
     /* ─── Utilities ─── */
     .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    /* Override global p max-width (65ch) on slides so paragraphs span their
+       container and text-align:center actually centers within the slide. */
+    .deck-slide p { max-width: none; }
     .mono-label {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -244,7 +248,63 @@ const slides = [
     }
 
     /* ══════════════════════════════════════════════════════
-       SLIDE 02 — Thesis
+       SLIDE 02 — Positioning (Erhart-framework one-liner)
+       ══════════════════════════════════════════════════════ */
+    .slide-positioning { justify-content: center; }
+    .positioning-content {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .positioning-eyebrow {
+      display: block;
+      margin-bottom: 1.75rem;
+    }
+    .positioning-statement {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 4.4vw, 3.55rem);
+      letter-spacing: -0.02em;
+      line-height: 1.32;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .positioning-statement .p-who { color: var(--color-teal); }
+    .positioning-statement .p-what { color: var(--color-amber); }
+    .positioning-statement .p-against { color: var(--color-accent-red); }
+
+    .positioning-key {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.75rem;
+      flex-wrap: wrap;
+    }
+    .positioning-key-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .positioning-key-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .positioning-key-item.who .positioning-key-dot { background: var(--color-teal); }
+    .positioning-key-item.what .positioning-key-dot { background: var(--color-amber); }
+    .positioning-key-item.against .positioning-key-dot { background: var(--color-accent-red); }
+    .positioning-key-item.who .label { color: var(--color-teal); }
+    .positioning-key-item.what .label { color: var(--color-amber); }
+    .positioning-key-item.against .label { color: var(--color-accent-red); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — Thesis
        ══════════════════════════════════════════════════════ */
     .slide-thesis {
       justify-content: center;
@@ -271,7 +331,7 @@ const slides = [
       margin: 0 0 2.5rem;
       color: var(--color-deep);
     }
-    .thesis-headline .pipeline { color: var(--color-amber); font-style: italic; }
+    .thesis-headline em { color: var(--color-amber); font-style: italic; font-weight: 800; }
     .thesis-body {
       font-family: var(--font-body);
       font-size: 1.4rem;
@@ -558,7 +618,244 @@ const slides = [
     .shift-card-text em { color: var(--color-navy); font-style: italic; font-weight: 600; }
 
     /* ══════════════════════════════════════════════════════
-       SLIDE 07 — Discipline introduction
+       SLIDE 06 — What the winners did
+       ══════════════════════════════════════════════════════ */
+    .slide-winners { justify-content: center; }
+    .winners-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .winners-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1.25rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .winners-headline em { color: var(--color-teal); font-style: italic; }
+    .winners-sub {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      text-align: center;
+      max-width: 60ch;
+      margin: 0 auto 2.75rem;
+    }
+    .winners-sub strong { color: var(--color-navy); font-weight: 700; }
+    .winners-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+    .winners-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.6rem 1.5rem;
+      position: relative;
+    }
+    .winners-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--color-teal);
+      border-radius: 12px 12px 0 0;
+    }
+    .winners-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-teal);
+      display: block;
+      margin-bottom: 0.85rem;
+    }
+    .winners-q {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .winners-q em { color: var(--color-amber); font-style: italic; font-weight: 800; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 07 — Ramp case study
+       ══════════════════════════════════════════════════════ */
+    .slide-rampcase { justify-content: center; }
+    .rampcase-content {
+      max-width: 1320px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .rampcase-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin-bottom: 0.85rem;
+    }
+    .rampcase-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1rem;
+      color: var(--color-deep);
+    }
+    .rampcase-name em { color: var(--color-amber); font-style: italic; }
+    .rampcase-tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--color-subtle);
+      margin: 0 0 1.4rem;
+      line-height: 1.5;
+    }
+    .rampcase-quote {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-accent-red);
+      border-radius: 8px;
+      padding: 1.1rem 1.25rem;
+      margin: 0 0 1.4rem;
+    }
+    .rampcase-quote em { color: var(--color-accent-red); font-style: italic; font-weight: 600; }
+    .rampcase-quote cite {
+      display: block;
+      margin-top: 0.65rem;
+      font-family: var(--font-mono);
+      font-style: normal;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .rampcase-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .rampcase-stat {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+    }
+    .rampcase-stat-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--color-amber);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .rampcase-stat-label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--color-subtle);
+      display: block;
+    }
+    .rampcase-stat-label em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    .rampcase-right {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+    }
+    .rampcase-ladder-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-navy);
+      margin-bottom: 0.85rem;
+    }
+    .rampcase-ladder {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .rampcase-ladder .rung {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-left: 4px solid currentColor;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+    .rampcase-ladder .rung.r0 { color: var(--color-subtle); }
+    .rampcase-ladder .rung.r1 { color: var(--color-teal); }
+    .rampcase-ladder .rung.r2 { color: var(--color-amber); }
+    .rampcase-ladder .rung.r3 { color: var(--color-navy); }
+    .rampcase-ladder .tier {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: currentColor;
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.04);
+    }
+    .rampcase-ladder .rung-text h5 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0 0 0.15rem;
+      line-height: 1.2;
+    }
+    .rampcase-ladder .rung-text p {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .rampcase-pull {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0;
+      padding: 0.85rem 1.1rem;
+      background: linear-gradient(90deg, rgba(245,166,35,0.06), rgba(15,52,96,0.04));
+      border: 1px dashed rgba(15,52,96,0.25);
+      border-radius: 10px;
+    }
+    .rampcase-pull em { color: var(--color-accent-red); font-style: italic; font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 08 — Discipline introduction
        ══════════════════════════════════════════════════════ */
     .slide-discipline { justify-content: center; align-items: center; text-align: center; }
     .discipline-eyebrow { margin-bottom: 1.25rem; }
@@ -597,9 +894,13 @@ const slides = [
       text-align: center;
     }
     .stages-headline em { font-style: italic; color: var(--color-amber); }
+    .stages-headline.stages-wordmark {
+      font-size: clamp(3.5rem, 6.5vw, 5.5rem);
+      margin: 0 0 3rem;
+    }
     .stages-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.25rem;
     }
     .stage-card {
@@ -619,8 +920,7 @@ const slides = [
     .stage-card.s1::before { background: var(--color-amber); }
     .stage-card.s2::before { background: var(--color-teal); }
     .stage-card.s3::before { background: var(--color-purple); }
-    .stage-card.s4::before { background: var(--color-navy); }
-    .stage-card.s5::before { background: var(--color-accent-red); }
+    .stage-card.s4::before { background: var(--color-accent-red); }
     .stage-num {
       font-family: var(--font-mono);
       font-size: 0.7rem;
@@ -641,8 +941,7 @@ const slides = [
     .stage-card.s1 .stage-title { color: var(--color-amber); }
     .stage-card.s2 .stage-title { color: var(--color-teal); }
     .stage-card.s3 .stage-title { color: var(--color-purple); }
-    .stage-card.s4 .stage-title { color: var(--color-navy); }
-    .stage-card.s5 .stage-title { color: var(--color-accent-red); }
+    .stage-card.s4 .stage-title { color: var(--color-accent-red); }
     .stage-tag {
       font-family: var(--font-body);
       font-size: 0.92rem;
@@ -686,8 +985,7 @@ const slides = [
     .slide-stage.s1 .stage-big-num { color: var(--color-amber); }
     .slide-stage.s2 .stage-big-num { color: var(--color-teal); }
     .slide-stage.s3 .stage-big-num { color: var(--color-purple); }
-    .slide-stage.s4 .stage-big-num { color: var(--color-navy); }
-    .slide-stage.s5 .stage-big-num { color: var(--color-accent-red); }
+    .slide-stage.s4 .stage-big-num { color: var(--color-accent-red); }
     .stage-content {
       max-width: 900px;
       margin: 0 auto;
@@ -711,8 +1009,7 @@ const slides = [
     .slide-stage.s1 .stage-pill { background: rgba(245,166,35,0.12); color: var(--color-amber); }
     .slide-stage.s2 .stage-pill { background: rgba(22,199,154,0.12); color: var(--color-teal); }
     .slide-stage.s3 .stage-pill { background: rgba(123,97,255,0.12); color: var(--color-purple); }
-    .slide-stage.s4 .stage-pill { background: rgba(15,52,96,0.10); color: var(--color-navy); }
-    .slide-stage.s5 .stage-pill { background: rgba(233,69,96,0.10); color: var(--color-accent-red); }
+    .slide-stage.s4 .stage-pill { background: rgba(233,69,96,0.10); color: var(--color-accent-red); }
     .stage-name {
       font-family: var(--font-heading);
       font-weight: 800;
@@ -725,8 +1022,7 @@ const slides = [
     .slide-stage.s1 .stage-name { color: var(--color-amber); }
     .slide-stage.s2 .stage-name { color: var(--color-teal); }
     .slide-stage.s3 .stage-name { color: var(--color-purple); }
-    .slide-stage.s4 .stage-name { color: var(--color-navy); }
-    .slide-stage.s5 .stage-name { color: var(--color-accent-red); }
+    .slide-stage.s4 .stage-name { color: var(--color-accent-red); }
     .stage-body {
       font-family: var(--font-body);
       font-size: 1.4rem;
@@ -748,11 +1044,116 @@ const slides = [
     .slide-stage.s1 .stage-payoff { color: var(--color-amber); }
     .slide-stage.s2 .stage-payoff { color: var(--color-teal); }
     .slide-stage.s3 .stage-payoff { color: var(--color-purple); }
-    .slide-stage.s4 .stage-payoff { color: var(--color-navy); }
-    .slide-stage.s5 .stage-payoff { color: var(--color-accent-red); }
+    .slide-stage.s4 .stage-payoff { color: var(--color-accent-red); }
 
     /* ══════════════════════════════════════════════════════
-       SLIDES 11, 14 — Example slides (Bajaj, NBIM)
+       PRIYA SLIDES — Manager journey (one per stage)
+       ══════════════════════════════════════════════════════ */
+    .slide-priya { justify-content: center; }
+    .priya-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .priya-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .slide-priya.s1 .priya-eyebrow { color: var(--color-amber); }
+    .slide-priya.s2 .priya-eyebrow { color: var(--color-teal); }
+    .slide-priya.s3 .priya-eyebrow { color: var(--color-purple); }
+    .slide-priya.s4 .priya-eyebrow { color: var(--color-accent-red); }
+
+    .priya-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 1.5rem;
+      color: var(--color-deep);
+    }
+    .priya-headline em { font-style: italic; }
+    .slide-priya.s1 .priya-headline em { color: var(--color-amber); }
+    .slide-priya.s2 .priya-headline em { color: var(--color-teal); }
+    .slide-priya.s3 .priya-headline em { color: var(--color-purple); }
+    .slide-priya.s4 .priya-headline em { color: var(--color-accent-red); }
+
+    .priya-body {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--color-deep);
+      margin: 0 0 1.75rem;
+    }
+    .priya-body em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    .priya-artefact {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.1rem 1.4rem;
+      margin: 0 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .priya-artefact::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      border-radius: 4px 0 0 4px;
+    }
+    .slide-priya.s1 .priya-artefact::before { background: var(--color-amber); }
+    .slide-priya.s2 .priya-artefact::before { background: var(--color-teal); }
+    .slide-priya.s3 .priya-artefact::before { background: var(--color-purple); }
+    .slide-priya.s4 .priya-artefact::before { background: var(--color-accent-red); }
+
+    .priya-artefact-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .priya-artefact-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      line-height: 1.3;
+    }
+    .priya-artefact-name em { font-style: italic; font-weight: 600; }
+    .slide-priya.s1 .priya-artefact-name em { color: var(--color-amber); }
+    .slide-priya.s2 .priya-artefact-name em { color: var(--color-teal); }
+    .slide-priya.s3 .priya-artefact-name em { color: var(--color-purple); }
+    .slide-priya.s4 .priya-artefact-name em { color: var(--color-accent-red); }
+
+    .priya-quote {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      line-height: 1.3;
+      color: var(--color-deep);
+      margin: 0;
+      transform: rotate(-0.4deg);
+      display: inline-block;
+    }
+    .slide-priya.s1 .priya-quote { color: var(--color-amber); }
+    .slide-priya.s2 .priya-quote { color: var(--color-teal); }
+    .slide-priya.s3 .priya-quote { color: var(--color-purple); }
+    .slide-priya.s4 .priya-quote { color: var(--color-accent-red); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 06 — NBIM example slide (also styled below)
        ══════════════════════════════════════════════════════ */
     .slide-example { justify-content: center; }
     .example-content {
@@ -1021,8 +1422,10 @@ const slides = [
     .after-headline em { color: var(--color-amber); font-style: italic; }
     .after-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+      max-width: 900px;
+      margin: 0 auto;
     }
     .after-card {
       background: var(--color-warm-white);
@@ -1074,7 +1477,7 @@ const slides = [
     .after-card .after-body em { color: var(--color-navy); font-style: italic; }
 
     /* ══════════════════════════════════════════════════════
-       SLIDE 20 — Why Ocre (founder credibility)
+       SLIDE 19 — Why this works (founder credibility)
        ══════════════════════════════════════════════════════ */
     .slide-why { justify-content: center; }
     .why-content { max-width: 1100px; margin: 0 auto; width: 100%; }
@@ -1179,12 +1582,14 @@ const slides = [
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
       .about-credits li { justify-content: flex-start; text-align: left; }
       .about-portrait { width: 240px; height: 240px; }
-      .stages-grid { grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+      .stages-grid { grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
       .stage-card { padding: 1rem 0.85rem; }
       .stage-title { font-size: 1.15rem; }
       .stage-tag { font-size: 0.85rem; }
       .failures-grid { grid-template-columns: 1fr; gap: 1.5rem; }
       .shift-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .winners-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .rampcase-content { grid-template-columns: 1fr; gap: 2rem; }
       .programme-spec { grid-template-columns: 1fr; }
       .bundle-grid { grid-template-columns: 1fr; gap: 1.5rem; }
       .after-grid { grid-template-columns: 1fr; gap: 1rem; }
@@ -1215,106 +1620,38 @@ const slides = [
       <div class="stagger">
         <h1 class="wordmark">Cultivated <span class="ai">AI</span></h1>
         <p class="verb-pair"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
-        <p class="firm">A discipline by Ocre Labs</p>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
       <div class="slide-num">01 · Cover</div>
     </section>
 
-    <!-- ═══ 02 · Thesis ═══ -->
-    <section class="card-deck-card deck-slide slide-thesis" data-slide="thesis">
-      <div class="thesis-content stagger">
-        <span class="thesis-eyebrow caveat">The line we want you to remember</span>
-        <h1 class="thesis-headline">AI adoption is a <span class="pipeline">pipeline</span> problem.</h1>
-        <p class="thesis-body">For twenty years Shalin has built the production pipelines behind the world's biggest entertainment products at <em>Pixar, EA, Lumosity, and Masala Games</em>. And what he has learnt is that resilient pipelines are built by cultivating the approach, not chasing technology.</p>
-        <p class="thesis-credit">— Shalin Shodhan · Ocre Labs</p>
+    <!-- ═══ 02 · Positioning ═══ -->
+    <section class="card-deck-card deck-slide slide-positioning" data-slide="positioning">
+      <div class="positioning-content stagger">
+        <h1 class="positioning-statement">We train <span class="p-who">business leaders</span> to <span class="p-what">shape AI adoption</span> in their teams, without depending on <span class="p-against">vendors</span> who don't understand your business.</h1>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">02 · Thesis</div>
+      <div class="slide-num">02 · Positioning</div>
     </section>
 
-    <!-- ═══ 03 · About ═══ -->
-    <section class="card-deck-card deck-slide slide-about" data-slide="about">
-      <div class="about-grid stagger">
-        <div>
-          <span class="mono-label">About me</span>
-          <h1 class="about-name">Shalin Shodhan</h1>
-          <p class="about-subtitle">Twenty years in games &amp; film. Now building Ocre Labs.</p>
-          <ul class="about-credits">
-            <li>
-              <span class="credit-dot" style="background: #E94560;"></span>
-              <div class="credit-body">
-                <strong>Pixar Animation Studios</strong>
-                <span class="credit-detail">6 feature films · 3 Academy Awards</span>
-              </div>
-            </li>
-            <li>
-              <span class="credit-dot" style="background: #7B61FF;"></span>
-              <div class="credit-body">
-                <strong>Electronic Arts — Spore</strong>
-                <span class="credit-detail">BAFTA Award for Technical Achievement</span>
-              </div>
-            </li>
-            <li>
-              <span class="credit-dot" style="background: #16C79A;"></span>
-              <div class="credit-body">
-                <strong>Lumosity</strong>
-                <span class="credit-detail">Principal Game Developer · tens of millions of users</span>
-              </div>
-            </li>
-            <li>
-              <span class="credit-dot" style="background: #F5A623;"></span>
-              <div class="credit-body">
-                <strong>Masala Games — Founder</strong>
-                <span class="credit-detail">Detective Dotson · Word Mess (#1 in 21 countries)</span>
-              </div>
-            </li>
-            <li>
-              <span class="credit-dot" style="background: #0EA5E9;"></span>
-              <div class="credit-body">
-                <strong>Carnegie Mellon University</strong>
-                <span class="credit-detail">MET — Entertainment Technology</span>
-              </div>
-            </li>
-            <li>
-              <span class="credit-dot" style="background: #0F3460;"></span>
-              <div class="credit-body">
-                <strong>Talking to Machines</strong>
-                <span class="credit-detail">Author · the consumer course on AI fluency</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div class="about-portrait">
-            <img src="/images/shalin.png" alt="Shalin Shodhan" />
-          </div>
-          <div class="about-email">shalin@ocrelabs.com</div>
-        </div>
-      </div>
-      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">03 · About</div>
-    </section>
-
-    <!-- ═══ 04 · Licensing isn't adoption ═══ -->
+    <!-- ═══ 03 · Licensing isn't adoption ═══ -->
     <section class="card-deck-card deck-slide slide-licensing" data-slide="licensing">
       <div class="licensing-content stagger">
-        <span class="mono-label licensing-eyebrow">The diagnostic</span>
         <h1 class="licensing-title"><span class="strike">Licensing</span> isn't adoption.</h1>
         <ul class="licensing-beats">
-          <li>Companies are spending heavily on AI tools.</li>
-          <li>The receipts show up as <em>money out</em>, not as work done.</li>
-          <li>Vendors and consultants who don't know your business cannot fix this for you.</li>
+          <li>Companies are spending heavily on AI tools <em>their teams aren't using</em>.</li>
+          <li>Meanwhile, individuals can't get the tools they <em>actually want</em> approved by IT.</li>
+          <li>Critically, there's no plan for the AI advances that landed <em>yesterday</em>, ship <em>today</em>, and arrive <em>six months from now</em>.</li>
         </ul>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">04 · Licensing</div>
+      <div class="slide-num">03 · Licensing</div>
     </section>
 
-    <!-- ═══ 05 · Two failure modes ═══ -->
+    <!-- ═══ 04 · Two failure modes ═══ -->
     <section class="card-deck-card deck-slide slide-failures" data-slide="failures">
       <div class="failures-content stagger">
-        <h1 class="failures-headline">The two failure modes everyone is watching.</h1>
+        <h1 class="failures-headline">The two failure modes happening too often.</h1>
         <div class="failures-grid">
           <div class="failure-card under">
             <div class="failure-mode">Under-adoption</div>
@@ -1332,10 +1669,10 @@ const slides = [
         <p class="failures-summary">Cultivated AI is the path <span class="accent">between</span>.</p>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">05 · Failure modes</div>
+      <div class="slide-num">04 · Failure modes</div>
     </section>
 
-    <!-- ═══ 06 · Ground is moving ═══ -->
+    <!-- ═══ 05 · Ground is moving ═══ -->
     <section class="card-deck-card deck-slide slide-shift" data-slide="shift">
       <div class="shift-content stagger">
         <h1 class="shift-headline">The ground is <em>moving</em> anyway.</h1>
@@ -1355,24 +1692,127 @@ const slides = [
         </div>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">06 · Ground</div>
+      <div class="slide-num">05 · Ground</div>
     </section>
 
-    <!-- ═══ 07 · Discipline introduction ═══ -->
-    <section class="card-deck-card deck-slide slide-discipline" data-slide="discipline">
-      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
-        <span class="mono-label discipline-eyebrow">A staged discipline</span>
-        <h1 class="discipline-name">Cultivated <span class="ai">AI</span></h1>
-        <p class="discipline-tag">Five stages, in order, that take a leader from first principles to AI-built simulations. Years, not quarters.</p>
+    <!-- ═══ 06 · NBIM · the most accountable money is moving ═══ -->
+    <section class="card-deck-card deck-slide slide-example nbim" data-slide="nbim">
+      <div class="example-content stagger">
+        <div>
+          <div class="example-eyebrow">The most accountable money on earth</div>
+          <h2 class="example-name">NBIM.</h2>
+          <p class="example-tagline">Norway's sovereign wealth fund. The world's largest. Public accountability. Fiduciary duty. ~$2.1 trillion AUM.</p>
+          <p class="example-body">This is not a tech company. This is not a startup. This is the most scrutinised pool of money on the planet, and they are <em>all in</em>. If they cannot afford to wait, your business cannot either.</p>
+        </div>
+        <div class="example-stats">
+          <div class="example-stat-card">
+            <p class="example-stat-num">213,000 hrs</p>
+            <p class="example-stat-label">Saved per year. <em>600+ staff using Claude weekly.</em> ~20% productivity gains.</p>
+          </div>
+          <div class="example-stat-card">
+            <p class="example-quote">"If you don't use it, you will never be promoted."</p>
+            <p class="example-quote-attr">— Nicolai Tangen, CEO, NBIM</p>
+          </div>
+        </div>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">07 · Discipline</div>
+      <div class="slide-num">06 · NBIM</div>
     </section>
 
-    <!-- ═══ 08 · Five stages ═══ -->
+    <!-- ═══ 07 · Ramp case study ═══ -->
+    <section class="card-deck-card deck-slide slide-rampcase" data-slide="ramp">
+      <div class="rampcase-content stagger">
+        <div class="rampcase-left">
+          <div class="rampcase-eyebrow">Case study · all in</div>
+          <h2 class="rampcase-name"><em>Ramp.</em></h2>
+          <p class="rampcase-tagline">$22B fintech. ~1,200 people. The CPO published a public mandate.</p>
+          <blockquote class="rampcase-quote">
+            "If you're not using Claude Code this year, no matter your role, you're <em>underperforming</em>. The people still in L0 will most likely <em>not be at the company</em>."
+            <cite>Geoff Charles, CPO · April 2026</cite>
+          </blockquote>
+          <div class="rampcase-stats">
+            <div class="rampcase-stat">
+              <span class="rampcase-stat-num">99.5%</span>
+              <span class="rampcase-stat-label">of <em>~1,200 employees</em> are weekly AI users.</span>
+            </div>
+            <div class="rampcase-stat">
+              <span class="rampcase-stat-num">~30%</span>
+              <span class="rampcase-stat-label">of <em>merged PRs</em> written by their internal coding agent.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rampcase-right">
+          <div class="rampcase-ladder-label">The ladder Ramp measures everyone on</div>
+          <ol class="rampcase-ladder">
+            <li class="rung r0">
+              <span class="tier">L0</span>
+              <div class="rung-text">
+                <h5>Occasional chat.</h5>
+                <p>"Tried it once."</p>
+              </div>
+            </li>
+            <li class="rung r1">
+              <span class="tier">L1</span>
+              <div class="rung-text">
+                <h5>Daily basics.</h5>
+                <p>Drafts. Quick answers.</p>
+              </div>
+            </li>
+            <li class="rung r2">
+              <span class="tier">L2</span>
+              <div class="rung-text">
+                <h5>Embedded in workflow.</h5>
+                <p>3+ AI-assisted tasks daily.</p>
+              </div>
+            </li>
+            <li class="rung r3">
+              <span class="tier">L3</span>
+              <div class="rung-text">
+                <h5>Systems do the work.</h5>
+                <p>Agents run, humans direct.</p>
+              </div>
+            </li>
+          </ol>
+          <p class="rampcase-pull">Ramp didn't license a tool. They built a <em>principle</em>, and held the company to it.</p>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">07 · Ramp</div>
+    </section>
+
+    <!-- ═══ 08 · What the winners did ═══ -->
+    <section class="card-deck-card deck-slide slide-winners" data-slide="winners">
+      <div class="winners-content stagger">
+        <h1 class="winners-headline">The leaders winning learned to <em>think clearly</em>.</h1>
+        <p class="winners-sub">About AI, in the context of <strong>their own</strong> business. With principles that hold up as the tools change.</p>
+        <div class="winners-grid">
+          <div class="winners-card">
+            <span class="winners-num">01</span>
+            <p class="winners-q">What to <em>deploy</em>.</p>
+          </div>
+          <div class="winners-card">
+            <span class="winners-num">02</span>
+            <p class="winners-q">What to <em>ignore</em>.</p>
+          </div>
+          <div class="winners-card">
+            <span class="winners-num">03</span>
+            <p class="winners-q">Where it <em>fits</em>.</p>
+          </div>
+          <div class="winners-card">
+            <span class="winners-num">04</span>
+            <p class="winners-q">Where it <em>doesn't</em>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">08 · The winners</div>
+    </section>
+
+    <!-- ═══ 09 · Cultivated AI · five stages ═══ -->
     <section class="card-deck-card deck-slide slide-stages" data-slide="stages">
       <div class="stages-content stagger">
-        <h1 class="stages-headline">Five stages of <em>Cultivated AI</em>.</h1>
+        <h1 class="stages-headline stages-wordmark">Cultivated <em>AI</em></h1>
         <div class="stages-grid">
           <div class="stage-card s1">
             <div class="stage-num">Stage 1</div>
@@ -1391,26 +1831,16 @@ const slides = [
           </div>
           <div class="stage-card s4">
             <div class="stage-num">Stage 4</div>
-            <h3 class="stage-title">Sovereignty</h3>
-            <p class="stage-tag">AI on your walls, on your data.</p>
-          </div>
-          <div class="stage-card s5">
-            <div class="stage-num">Stage 5</div>
             <h3 class="stage-title">Simulation</h3>
             <p class="stage-tag">Synthetic environments for strategy.</p>
           </div>
         </div>
-        <div class="stages-rule">
-          <span><span class="programme">Stages 1–3</span> · The Programme</span>
-          <span style="opacity:0.4;">·</span>
-          <span><span class="graduation">Stages 4–5</span> · Graduation engagements</span>
-        </div>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">08 · Five stages</div>
+      <div class="slide-num">09 · Cultivated AI</div>
     </section>
 
-    <!-- ═══ 09 · Stage 1 · Approach ═══ -->
+    <!-- ═══ 08 · Stage 1 · Approach ═══ -->
     <section class="card-deck-card deck-slide slide-stage s1" data-slide="approach">
       <div class="stage-big-num">01</div>
       <div class="stage-content stagger">
@@ -1420,10 +1850,26 @@ const slides = [
         <span class="stage-payoff">Tools change every quarter. Principles outlive them.</span>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">09 · Approach</div>
+      <div class="slide-num">10 · Approach</div>
     </section>
 
-    <!-- ═══ 10 · Stage 2 · Distillation ═══ -->
+    <!-- ═══ Priya · after Approach ═══ -->
+    <section class="card-deck-card deck-slide slide-priya s1" data-slide="priya-approach">
+      <div class="priya-content stagger">
+        <div class="priya-eyebrow">Stage 1 · Priya, Head of Procurement</div>
+        <h1 class="priya-headline">She stops chasing demos. She builds a <em>frame</em>.</h1>
+        <p class="priya-body">Twelve AI tool pitches forwarded last month. Her team's anxious. After Stage 1, she has a working mental model. She can read any new AI announcement and place it in 30 seconds: what it does, where it fits in procurement, where it doesn't.</p>
+        <div class="priya-artefact">
+          <span class="priya-artefact-label">Tangible gain</span>
+          <span class="priya-artefact-name">A one-page <em>Procurement AI Frame</em>. Her compass.</span>
+        </div>
+        <blockquote class="priya-quote">"I stopped chasing demos. I started thinking."</blockquote>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">11 · Priya · Approach</div>
+    </section>
+
+    <!-- ═══ Stage 2 · Distillation ═══ -->
     <section class="card-deck-card deck-slide slide-stage s2" data-slide="distillation">
       <div class="stage-big-num">02</div>
       <div class="stage-content stagger">
@@ -1433,34 +1879,26 @@ const slides = [
         <span class="stage-payoff">Your work, in your way. Not a vendor demo.</span>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">10 · Distillation</div>
+      <div class="slide-num">12 · Distillation</div>
     </section>
 
-    <!-- ═══ 11 · Bajaj Finance ═══ -->
-    <section class="card-deck-card deck-slide slide-example bajaj" data-slide="bajaj">
-      <div class="example-content stagger">
-        <div>
-          <div class="example-eyebrow">Distillation in practice</div>
-          <h2 class="example-name">Bajaj Finance.</h2>
-          <p class="example-tagline">An Indian NBFC rebuilding a P&amp;L workflow around AI.</p>
-          <p class="example-body">Bajaj Finance built AI voice agents for loan disbursals on a single, high-revenue workflow. Not a Copilot rollout. Not a tool review. A specific function, rebuilt around AI from the ground up. <em>That's what Distillation looks like at scale.</em> Your peers, in your market, are doing this now.</p>
+    <!-- ═══ Priya · after Distillation ═══ -->
+    <section class="card-deck-card deck-slide slide-priya s2" data-slide="priya-distillation">
+      <div class="priya-content stagger">
+        <div class="priya-eyebrow">Stage 2 · Priya, Head of Procurement</div>
+        <h1 class="priya-headline">Her <em>SOPs</em> become AI playbooks.</h1>
+        <p class="priya-body">Priya has run her vendor-evaluation SOP two hundred times. The pattern is in her head: risk thresholds, scoring weights, the questions she always asks first. In Stage 2 she distils it into an AI playbook that runs procurement <em>her way</em>.</p>
+        <div class="priya-artefact">
+          <span class="priya-artefact-label">Tangible gain</span>
+          <span class="priya-artefact-name">4–6 working playbooks. <em>Vendor Evaluation. Contract Clause Review. RFP Drafter. Negotiation Brief. Supplier Risk Scan.</em></span>
         </div>
-        <div class="example-stats">
-          <div class="example-stat-card">
-            <p class="example-stat-num">₹1,600 cr</p>
-            <p class="example-stat-label">Disbursed through AI voice agents in <em>a single quarter</em> (Q3 FY26).</p>
-          </div>
-          <div class="example-stat-card">
-            <p class="example-stat-num">~1,500</p>
-            <p class="example-stat-label">Calling agents replaced. ~30% cost savings on the workflow.</p>
-          </div>
-        </div>
+        <blockquote class="priya-quote">"It's still my procurement. Just running on AI."</blockquote>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">11 · Bajaj Finance</div>
+      <div class="slide-num">13 · Priya · Distillation</div>
     </section>
 
-    <!-- ═══ 12 · Stage 3 · Compounding ═══ -->
+    <!-- ═══ Stage 3 · Compounding ═══ -->
     <section class="card-deck-card deck-slide slide-stage s3" data-slide="compounding">
       <div class="stage-big-num">03</div>
       <div class="stage-content stagger">
@@ -1470,60 +1908,55 @@ const slides = [
         <span class="stage-payoff">The best of the company becomes the floor of the company.</span>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">12 · Compounding</div>
+      <div class="slide-num">14 · Compounding</div>
     </section>
 
-    <!-- ═══ 13 · Stage 4 · Sovereignty ═══ -->
-    <section class="card-deck-card deck-slide slide-stage s4" data-slide="sovereignty">
+    <!-- ═══ Priya · after Compounding ═══ -->
+    <section class="card-deck-card deck-slide slide-priya s3" data-slide="priya-compounding">
+      <div class="priya-content stagger">
+        <div class="priya-eyebrow">Stage 3 · Priya, Head of Procurement</div>
+        <h1 class="priya-headline">She inherits the <em>cohort's</em> playbooks.</h1>
+        <p class="priya-body">Legal builds a contract-clause comparator. Finance builds a TCO modeller. HR builds a vendor-onboarding checklist. Priya inherits all of them. Her own vendor-scorecard playbook spreads to IT and Operations. <em>She didn't write any of these — but she runs them daily now.</em></p>
+        <div class="priya-artefact">
+          <span class="priya-artefact-label">Tangible gain</span>
+          <span class="priya-artefact-name">A shared playbook library across the cohort. <em>Triple the leverage. Zero extra effort.</em></span>
+        </div>
+        <blockquote class="priya-quote">"The best of the company is now the floor of my desk."</blockquote>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">15 · Priya · Compounding</div>
+    </section>
+
+    <!-- ═══ Stage 4 · Simulation ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s4" data-slide="simulation">
       <div class="stage-big-num">04</div>
       <div class="stage-content stagger">
         <span class="stage-pill">Stage 4</span>
-        <h1 class="stage-name">Sovereignty.</h1>
-        <p class="stage-body">Local AI inside the company's own walls. Fine-tuning on the company's own data. By this stage the company doesn't depend on vendors for its AI direction. <strong>It owns the infrastructure, the data, and the decisions.</strong></p>
-        <span class="stage-payoff">Where the strategic moat actually compounds.</span>
-      </div>
-      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">13 · Sovereignty</div>
-    </section>
-
-    <!-- ═══ 14 · NBIM ═══ -->
-    <section class="card-deck-card deck-slide slide-example nbim" data-slide="nbim">
-      <div class="example-content stagger">
-        <div>
-          <div class="example-eyebrow">Sovereignty in practice</div>
-          <h2 class="example-name">NBIM.</h2>
-          <p class="example-tagline">The world's largest sovereign wealth fund. Public accountability. Fiduciary duty. ~$2.1 trillion AUM.</p>
-          <p class="example-body">A sovereign wealth fund cannot have its data leaking to vendors. So when NBIM went all-in on AI, they went all-in <em>on their terms</em>. That's the bar. That's what Stage 4 looks like at the top of the mountain.</p>
-        </div>
-        <div class="example-stats">
-          <div class="example-stat-card">
-            <p class="example-stat-num">213,000 hrs</p>
-            <p class="example-stat-label">Saved per year. <em>600+ staff using Claude weekly.</em> ~20% productivity gains.</p>
-          </div>
-          <div class="example-stat-card">
-            <p class="example-quote">"If you don't use it, you will never be promoted."</p>
-            <p class="example-quote-attr">— Nicolai Tangen, CEO, NBIM</p>
-          </div>
-        </div>
-      </div>
-      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">14 · NBIM</div>
-    </section>
-
-    <!-- ═══ 15 · Stage 5 · Simulation ═══ -->
-    <section class="card-deck-card deck-slide slide-stage s5" data-slide="simulation">
-      <div class="stage-big-num">05</div>
-      <div class="stage-content stagger">
-        <span class="stage-pill">Stage 5</span>
         <h1 class="stage-name">Simulation.</h1>
         <p class="stage-body">The deepest unlock. Most companies will never get here. The ones who do are using AI to build <em>synthetic environments</em> where strategy can be rehearsed, teams can be trained against scenarios that don't exist yet, and what-ifs can be explored at speed.</p>
         <span class="stage-payoff">Two tiers above licensing. Things competitors cannot do at all.</span>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">15 · Simulation</div>
+      <div class="slide-num">16 · Simulation</div>
     </section>
 
-    <!-- ═══ 16 · The Programme ═══ -->
+    <!-- ═══ Priya · after Simulation ═══ -->
+    <section class="card-deck-card deck-slide slide-priya s4" data-slide="priya-simulation">
+      <div class="priya-content stagger">
+        <div class="priya-eyebrow">Stage 4 · Priya, Head of Procurement</div>
+        <h1 class="priya-headline">She <em>rehearses</em> before she walks in.</h1>
+        <p class="priya-body">A $40M three-year supplier negotiation next quarter. Priya rehearses against an AI-simulated counterparty trained on the supplier's public history. She runs supply-chain shock scenarios across her supplier base. <em>She walks in prepared in ways that weren't possible before AI.</em></p>
+        <div class="priya-artefact">
+          <span class="priya-artefact-label">Tangible gain</span>
+          <span class="priya-artefact-name">Synthetic environments where the most expensive procurement decisions get <em>rehearsed first</em>.</span>
+        </div>
+        <blockquote class="priya-quote">"I show up ready for moves I couldn't predict before."</blockquote>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">17 · Priya · Simulation</div>
+    </section>
+
+    <!-- ═══ The Programme ═══ -->
     <section class="card-deck-card deck-slide slide-programme" data-slide="programme">
       <div class="programme-content stagger">
         <span class="mono-label programme-eyebrow">The flagship engagement</span>
@@ -1533,15 +1966,15 @@ const slides = [
           <li><strong>Cohort</strong>Up to fifteen leaders from the same company.</li>
           <li><strong>Coverage</strong>Stages 1–3: Approach, Distillation, Compounding.</li>
           <li><strong>Delivery</strong>On-site or hybrid. Customised to your sector.</li>
-          <li><strong>Facilitation</strong>Shalin Shodhan (Ocre Labs) leads every session.</li>
+          <li><strong>Facilitation</strong>Shalin Shodhan leads every session.</li>
           <li><strong>Outcome</strong>Each leader leaves with a working playbook library.</li>
         </ul>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">16 · Programme</div>
+      <div class="slide-num">18 · Programme</div>
     </section>
 
-    <!-- ═══ 17 · Bundle (two artefacts) ═══ -->
+    <!-- ═══ 16 · Bundle (two artefacts) ═══ -->
     <section class="card-deck-card deck-slide slide-bundle" data-slide="bundle">
       <div class="bundle-content stagger">
         <h1 class="bundle-headline">Each leader walks out with two artefacts.</h1>
@@ -1561,22 +1994,10 @@ const slides = [
         </div>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">17 · Artefacts</div>
+      <div class="slide-num">19 · Artefacts</div>
     </section>
 
-    <!-- ═══ 18 · Price ═══ -->
-    <section class="card-deck-card deck-slide slide-price" data-slide="price">
-      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
-        <span class="mono-label price-eyebrow">Price · single, flat, no tiers</span>
-        <p class="price-mega"><span class="ru">₹</span>4 lakh</p>
-        <p class="price-tag">per cohort. Up to fifteen leaders.</p>
-        <p class="price-explainer">The Programme is the <em>entry to the discipline</em>, not the destination. We've made it accessible so the question is "when," not "whether." Depth shows up after, in advisory, sovereignty, and simulation.</p>
-      </div>
-      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">18 · Price</div>
-    </section>
-
-    <!-- ═══ 19 · After (optional engagements) ═══ -->
+    <!-- ═══ 17 · After (optional engagements) ═══ -->
     <section class="card-deck-card deck-slide slide-after" data-slide="after">
       <div class="after-content stagger">
         <h1 class="after-headline">After the Programme. <em>Optional.</em></h1>
@@ -1586,52 +2007,35 @@ const slides = [
             <h2 class="after-title">90-Day Advisory</h2>
             <p class="after-body">Sponsor coaching. Day-30 and day-90 reviews. Written outcomes summary. <em>For cohorts that want to compound the discipline immediately.</em></p>
           </div>
-          <div class="after-card sovereignty">
-            <div class="stage-num">Stage 4</div>
-            <h2 class="after-title">Sovereignty</h2>
-            <p class="after-body">Local AI on your walls, on your data. Includes Lockbox. Custom-built per company. <em>Run AI on your own terms.</em></p>
-          </div>
           <div class="after-card simulation">
-            <div class="stage-num">Stage 5</div>
+            <div class="stage-num">Stage 4</div>
             <h2 class="after-title">Simulation</h2>
             <p class="after-body">Custom synthetic environments for strategy, training, and scenario play. <em>Things your competitors cannot do at all.</em></p>
           </div>
         </div>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">19 · After</div>
+      <div class="slide-num">20 · After</div>
     </section>
 
-    <!-- ═══ 20 · Why Ocre Labs ═══ -->
-    <section class="card-deck-card deck-slide slide-why" data-slide="why-ocre">
-      <div class="why-content stagger">
-        <span class="mono-label why-eyebrow">Why Ocre Labs</span>
-        <h1 class="why-headline">The <em>founder</em> thesis.</h1>
-        <p class="why-thesis"><strong>AI adoption is a pipeline problem.</strong> For twenty years Shalin has built the production pipelines behind the world's biggest entertainment products. Films watched the world over. Games played billions of times. <em>What he learnt: resilient pipelines are built by cultivating the approach, not chasing technology.</em></p>
-        <div class="why-badges">
-          <span class="why-badge b1">Pixar · 3 Academy Awards</span>
-          <span class="why-badge b2">EA Spore · BAFTA</span>
-          <span class="why-badge b3">Lumosity</span>
-          <span class="why-badge b4">Masala Games · Founder</span>
-          <span class="why-badge b5">Carnegie Mellon · MET</span>
-          <span class="why-badge b6">Talking to Machines · Author</span>
-        </div>
+    <!-- ═══ 18 · Thesis ═══ -->
+    <section class="card-deck-card deck-slide slide-thesis" data-slide="thesis">
+      <div class="thesis-content stagger">
+        <h1 class="thesis-headline">Resilient pipelines are built by <em>cultivating</em> the approach, not chasing technology.</h1>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">20 · Why Ocre</div>
+      <div class="slide-num">21 · Thesis</div>
     </section>
 
-    <!-- ═══ 21 · Close ═══ -->
+    <!-- ═══ 19 · Close ═══ -->
     <section class="card-deck-card deck-slide slide-close" data-slide="close">
       <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
-        <span class="close-eyebrow">One next step →</span>
         <h1 class="close-wordmark">Cultivated <span class="ai">AI</span></h1>
         <p class="close-verb"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
-        <p class="close-cta">A 30-minute scoping conversation</p>
-        <p class="close-email">shalin@ocrelabs.com</p>
+        <p class="close-email">shalin@masalagames.com</p>
       </div>
       <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
-      <div class="slide-num">21 · Fin</div>
+      <div class="slide-num">22 · Fin</div>
     </section>
 
   </div>

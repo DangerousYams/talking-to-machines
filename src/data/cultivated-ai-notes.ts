@@ -12,25 +12,26 @@ export interface SlideNote {
 
 export const slideOrder = [
   'cover',
-  'thesis',
-  'about',
+  'positioning',
   'licensing',
   'failures',
   'shift',
-  'discipline',
+  'nbim',
+  'ramp',
+  'winners',
   'stages',
   'approach',
+  'priya-approach',
   'distillation',
-  'bajaj',
+  'priya-distillation',
   'compounding',
-  'sovereignty',
-  'nbim',
+  'priya-compounding',
   'simulation',
+  'priya-simulation',
   'programme',
   'bundle',
-  'price',
   'after',
-  'why-ocre',
+  'thesis',
   'close',
 ] as const;
 
@@ -44,33 +45,21 @@ Read the verb-pair aloud: "Grow, don't Chase."
 Pause. Let it land before saying anything else.
 The whole pitch will earn this line.`,
   },
-  thesis: {
-    id: 'thesis',
+  positioning: {
+    id: 'positioning',
     num: 2,
-    title: 'Thesis · AI adoption is a pipeline problem',
-    notes: `This is the one line you want them to remember.
-Say it slowly: "AI adoption is a pipeline problem."
-Then back it with credentials, not the other way around.
-20 years of building production pipelines at Pixar, EA, Lumosity, Masala.
-What I learnt: resilient pipelines come from cultivating the approach, not chasing technology.
-Bridge: that's why we're here today.`,
-  },
-  about: {
-    id: 'about',
-    num: 3,
-    title: 'About — Shalin Shodhan',
-    notes: `Fast bio. Don't linger. The credentials buy you the next 30 minutes; don't burn them dwelling.
-- Pixar, 6 features, 3 Academy Awards
-- EA Spore — BAFTA
-- Lumosity — tens of millions of users
-- Masala Games — Detective Dotson, Word Mess #1 in 21 countries
-- CMU MET — entertainment tech
-Author of Talking to Machines (the consumer course; same philosophy, different wrapper).
-Transition: "Now let me show you the problem we're actually trying to solve."`,
+    title: 'The positioning',
+    notes: `One sentence. Color-coded so the structure lands visually.
+Read the whole sentence once, slowly. Don't break it up.
+Then point at the colored phrases in order:
+- TEAL (audience): "business leaders" — that's who's in this room.
+- AMBER (outcome): "shape AI adoption in their teams" — that's the deliverable.
+- RED (against): "vendors who don't understand your business" — that's what we replace.
+Bridge: "And here's the line we want you to remember."`,
   },
   licensing: {
     id: 'licensing',
-    num: 4,
+    num: 3,
     title: 'Licensing isn\'t adoption',
     notes: `The core diagnostic claim. Say it as a finding, not an opinion.
 - Companies are spending heavily on AI tools.
@@ -80,7 +69,7 @@ This is the problem Cultivated AI exists to solve.`,
   },
   failures: {
     id: 'failures',
-    num: 5,
+    num: 4,
     title: 'The two failure modes',
     notes: `Pair the two stories. They bracket the position.
 LEFT: Microsoft Copilot. Gartner: ~40% of enterprises piloting, only ~5% have scaled it. Tens of millions of seats sold; most of them sit unused. Licensing isn't adoption.
@@ -89,38 +78,66 @@ The point: companies are getting it wrong on both ends. Some buy seats no one us
   },
   shift: {
     id: 'shift',
-    num: 6,
+    num: 5,
     title: 'The ground is moving',
     notes: `The pressure is real. Don't soft-pedal this.
 - Competitors are quietly redesigning around AI.
 - Your buyers and partners are modelling your business better than you can model theirs.
 - The unit economics of your category are shifting under you.
 You can't sit it out. But you also can't license your way into mastery.
-Transition: "So what does the path between actually look like?"`,
+Transition: "And the most accountable money on earth is already moving."`,
   },
-  discipline: {
-    id: 'discipline',
+  nbim: {
+    id: 'nbim',
+    num: 6,
+    title: 'NBIM · the most serious money is moving',
+    notes: `The first proof point. Drop NBIM as the heaviest possible name.
+NBIM: Norway's sovereign wealth fund. The world's largest. ~$2.1 trillion AUM.
+600+ staff using Claude weekly. Estimated 213,000 hours saved per year.
+CEO Nicolai Tangen, on the record: "If you don't use it, you will never be promoted."
+The point: this isn't a tech company. This isn't a startup. This is the most accountable money on earth — public scrutiny, fiduciary duty — and they're all in.
+If they can do it, your business cannot afford to wait.
+Bridge: "But what does smart adoption actually look like? It starts with thinking clearly."`,
+  },
+  ramp: {
+    id: 'ramp',
     num: 7,
-    title: 'Cultivated AI · the discipline',
-    notes: `Introduce the methodology by name.
-Cultivated AI is a five-stage discipline.
-Five stages, in order, that take a leader from first principles to AI-built simulations.
-Years, not quarters. Cultivation, not deployment.
-Now let me walk you through them.`,
+    title: 'Ramp · all in',
+    notes: `The second proof point, paired with NBIM. Ramp is the operational example.
+$22B fintech. ~1,200 people. Their CPO Geoff Charles published their L0→L3 ladder publicly.
+- L0 = occasional chat. L1 = daily basics. L2 = embedded in workflow. L3 = systems do the work.
+The mandate (April 2026): "If you're not using Claude Code this year, no matter your role, you're underperforming. The people still in L0 will most likely not be at the company."
+Two receipts to land:
+- 99.5% of Ramp employees are active weekly AI users — not just engineers.
+- ~30% of merged PRs are written by their internal coding agent.
+The point: Ramp didn't license a tool. They built a *principle* (the ladder) and held the company to it.
+Bridge: "Two very different organisations. NBIM and Ramp. What do they share?"`,
+  },
+  winners: {
+    id: 'winners',
+    num: 8,
+    title: 'What the winners did',
+    notes: `The synthesis. After two concrete proof points (NBIM and Ramp), name the common pattern.
+What they share is not a tool. They learned to *think clearly*.
+About AI, in the context of *their own* business — not generic case studies, not vendor decks.
+With principles that hold up as the tools change. Tools change every quarter; principles survive.
+Walk the four anchors slowly: what to deploy, what to ignore, where it fits, where it doesn't.
+Bridge: "And that is what we cultivate."`,
   },
   stages: {
     id: 'stages',
-    num: 8,
-    title: 'Five stages',
-    notes: `Read them out loud, in rhythm:
-APPROACH. DISTILLATION. COMPOUNDING. SOVEREIGNTY. SIMULATION.
-The first three we teach in the Programme. The last two are graduation engagements.
-Most companies will get to Sovereignty. A few will get to Simulation.
-All of them start with Approach.`,
+    num: 9,
+    title: 'Cultivated AI · five stages',
+    notes: `Introduce the methodology by name. This is the core slide.
+"Cultivated AI. Five stages, in order. Years, not quarters. Cultivation, not deployment."
+Read the stage names out loud, in rhythm: APPROACH. DISTILLATION. COMPOUNDING. SOVEREIGNTY. SIMULATION.
+The first three are taught in the Programme. The last two are graduation engagements.
+Most companies get to Sovereignty. A few reach Simulation. All start with Approach.
+Bridge: "Let me walk you through what this looks like for one person — Priya, a department head running Procurement."`,
   },
   approach: {
     id: 'approach',
-    num: 9,
+    num: 10,
     title: 'Stage 1 · Approach',
     notes: `Stage 1 is the principles install.
 The leader sees what AI is, what it does well, what it does badly, where it's heading.
@@ -128,9 +145,20 @@ Mental models start working.
 By the end of Stage 1, the leader stops chasing tools and starts thinking.
 This is the durability layer. Tools change every quarter. Principles outlive them.`,
   },
+  'priya-approach': {
+    id: 'priya-approach',
+    num: 11,
+    title: 'Priya · after Approach',
+    notes: `Introduce Priya for the first time. Slow down here — she carries the next nine slides.
+"Priya is a department head running Procurement. Every company has someone like her. Twelve AI tool pitches forwarded to her last month. Her team is anxious. She's smart, but she can't tell what's real."
+After Stage 1, Priya has a frame. She can read any new AI announcement and place it in 30 seconds — what it does, where it fits in her work, where it doesn't.
+The artefact: a one-page Procurement AI Frame. Her personal compass.
+Quote to read: "I stopped chasing demos. I started thinking."
+Bridge: "And once she has the frame, she can go to work."`,
+  },
   distillation: {
     id: 'distillation',
-    num: 10,
+    num: 12,
     title: 'Stage 2 · Distillation',
     notes: `The leader takes their existing SOPs — the way work already gets done in their role — and distils them into AI playbooks.
 Playbooks teach the model your way of working, not the other way around.
@@ -138,20 +166,19 @@ The technical term is *agentic skills*; we use *playbooks* because the work is b
 By the end of Stage 2, the AI runs the leader's actual work in the leader's actual way.
 Not a generic template. Not a vendor demo. Their work.`,
   },
-  bajaj: {
-    id: 'bajaj',
-    num: 11,
-    title: 'Bajaj Finance · what real adoption looks like',
-    notes: `This is the anchor example for Stage 2. Use it.
-Bajaj Finance built AI voice agents for loan disbursals.
-In a single quarter (Q3 FY26): ₹1,600 crore disbursed through those agents.
-Roughly 1,500 calling agents replaced. ~30% cost savings.
-The point: this is not "we deployed Copilot." This is a workflow rebuilt around AI on a P&L-relevant function. That's what Distillation looks like at scale.
-Most importantly: this is an Indian NBFC. Your peers, in your market, are doing this now.`,
+  'priya-distillation': {
+    id: 'priya-distillation',
+    num: 13,
+    title: 'Priya · after Distillation',
+    notes: `"Priya has run her vendor-evaluation SOP two hundred times. The pattern is in her head — risk thresholds, scoring weights, the questions she always asks first."
+In Stage 2 she distils that SOP into an AI playbook. Now the AI runs vendor evaluation in HER way, not a vendor template. Same for contract clause review, RFP drafting, negotiation briefs, supplier risk scans.
+The artefact: 4-6 working playbooks. Hers. In production.
+Quote to read: "It's still my procurement. Just running on AI."
+Bridge: "And then it gets better — because she isn't the only one building playbooks."`,
   },
   compounding: {
     id: 'compounding',
-    num: 12,
+    num: 14,
     title: 'Stage 3 · Compounding',
     notes: `Stage 3 is what makes the Programme worth paying for.
 Each leader builds playbooks in Stage 2. In Stage 3, the best of those playbooks move from one leader to the rest of the company.
@@ -160,40 +187,40 @@ Each playbook adopted raises the floor for the next.
 The best of the company becomes the floor of the company.
 That's compounding.`,
   },
-  sovereignty: {
-    id: 'sovereignty',
-    num: 13,
-    title: 'Stage 4 · Sovereignty',
-    notes: `Once the discipline has rooted, the next move is sovereignty.
-Local AI inside the company's own walls. Fine-tuning on the company's own data.
-By this stage the company doesn't depend on vendors for its AI direction.
-It owns the infrastructure. It owns the data. It owns the decisions.
-This is where the strategic moat actually compounds.`,
-  },
-  nbim: {
-    id: 'nbim',
-    num: 14,
-    title: 'NBIM · sovereignty in practice',
-    notes: `Anchor example for Stage 4.
-NBIM: Norway's sovereign wealth fund. The world's largest. ~$2.1 trillion AUM.
-600+ staff using Claude weekly. Estimated 213,000 hours saved per year.
-CEO Nicolai Tangen, on record: "If you don't use it, you will never be promoted."
-Why this matters for Sovereignty: a sovereign wealth fund cannot have its data leaking to vendors. Public accountability. Fiduciary duty. So when they go all-in on AI, they go all-in on their terms.
-That's the bar. That's what Stage 4 looks like at the top of the mountain.`,
+  'priya-compounding': {
+    id: 'priya-compounding',
+    num: 15,
+    title: 'Priya · after Compounding',
+    notes: `Priya's library doubles, then triples — without her writing a line.
+Legal builds a contract-clause comparator. Finance builds a TCO modeller. HR builds a vendor-onboarding checklist. Priya inherits all of them.
+And her own vendor-scorecard playbook spreads to IT and Operations.
+The artefact: a shared playbook library across the cohort. Triple the leverage at zero extra effort.
+Quote to read: "The best of the company is now the floor of my desk."
+Bridge: "This is where companies start pulling away from the pack."`,
   },
   simulation: {
     id: 'simulation',
-    num: 15,
-    title: 'Stage 5 · Simulation',
+    num: 16,
+    title: 'Stage 4 · Simulation',
     notes: `The deepest unlock. Most companies will never get here.
 The ones who do are using AI to build synthetic environments where strategy can be rehearsed, teams can be trained against scenarios that don't exist yet, and what-ifs can be explored at speed.
 This is using AI for things competitors cannot do at all.
 Two tiers above licensing.
-We scope this engagement separately, after Sovereignty has matured.`,
+We scope this engagement separately, after the Programme.`,
+  },
+  'priya-simulation': {
+    id: 'priya-simulation',
+    num: 17,
+    title: 'Priya · after Simulation',
+    notes: `A $40M three-year supplier negotiation next quarter. The supplier has more leverage than she'd like.
+Priya rehearses the negotiation against an AI-simulated counterparty trained on the supplier's public history. She runs supply-chain shock scenarios across her supplier base. She walks in prepared in ways that weren't possible before AI.
+The artefact: synthetic environments where the most expensive procurement decisions get rehearsed first.
+Quote to read: "I show up ready for moves I couldn't predict before."
+Bridge: "Now — what does Priya actually walk out of the Programme with?"`,
   },
   programme: {
     id: 'programme',
-    num: 16,
+    num: 18,
     title: 'The Cultivated AI Programme',
     notes: `Now the offer.
 The Cultivated AI Programme delivers Stages 1, 2, and 3.
@@ -204,45 +231,34 @@ Each leader leaves with two artefacts.`,
   },
   bundle: {
     id: 'bundle',
-    num: 17,
+    num: 19,
     title: 'What each leader walks out with',
-    notes: `Two artefacts. Both real.
+    notes: `Two artefacts. Both real. This is what Priya walks out with — and so does every leader in the cohort.
 ONE: their personal playbook library — four to six working AI playbooks built from their own SOPs, in production-ready form.
 TWO: The 90-Day Cultivated AI Plan — a personalised plan governing what they deepen, share, and extend over the first 90 days of cultivation.
 The discipline is years; the operating cadence is 90 days.`,
   },
-  price: {
-    id: 'price',
-    num: 18,
-    title: 'Price · ₹4 lakh',
-    notes: `Single price. No tiers. No internal SKUs. No surprises.
-₹4 lakh per cohort. Up to fifteen leaders.
-Why this price: because the Programme is the entry to the discipline, not the destination. We've made it accessible so the question is "when," not "whether."
-The depth shows up after — in advisory, in sovereignty, in simulation — and those are scoped separately.`,
-  },
   after: {
     id: 'after',
-    num: 19,
+    num: 20,
     title: 'After the Programme',
-    notes: `Three optional follow-on engagements. All scoped after the Programme is complete and the discipline has rooted.
+    notes: `Two optional follow-on engagements. Both scoped after the Programme is complete and the discipline has rooted.
 ONE: 90-Day Advisory — sponsor coaching, day-30 and day-90 reviews, written outcomes summary. For cohorts that want to compound the discipline immediately.
-TWO: Sovereignty engagement — local AI on your walls, on your data. Includes Lockbox.
-THREE: Simulation engagement — custom synthetic environments for strategy and training.
+TWO: Simulation engagement — custom synthetic environments for strategy and training.
 These are where the partnership deepens. They are where most of the work lives.`,
   },
-  'why-ocre': {
-    id: 'why-ocre',
-    num: 20,
-    title: 'Why Ocre Labs',
-    notes: `Close on credibility. Not as a CV recap; as a proof of the thesis.
-The pedigree (Pixar, EA, Lumosity, Masala, CMU) is the badge.
-The cred is twenty years of building production pipelines behind the world's biggest entertainment products. Films seen the world over. Games played billions of times.
-What I learnt across those gigs: resilient pipelines are built by cultivating the approach, not chasing technology.
-That's the founding insight of Ocre Labs. That's what Cultivated AI teaches.`,
+  thesis: {
+    id: 'thesis',
+    num: 21,
+    title: 'Thesis · the closing argument',
+    notes: `The closing argument. The line you want them to remember.
+"Resilient pipelines are built by cultivating the approach, not chasing technology."
+Say it slowly. Let it sit. You've earned this line.
+Don't explain it. Don't gloss it. Pause after. Then transition to the close.`,
   },
   close: {
     id: 'close',
-    num: 21,
+    num: 22,
     title: 'Close · Grow, don\'t Chase',
     notes: `End where you started. The verb-pair earns more on the second hearing.
 "Cultivated AI. Grow, don't Chase."
