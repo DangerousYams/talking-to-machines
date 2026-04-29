@@ -1,0 +1,549 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import { slideNotes, slideOrder } from '../../data/cultivated-ai-notes';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Presenter · Cultivated AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    html, body { height: 100%; margin: 0; background: #0F0F1A; color: #F8F6F3; overflow: hidden; }
+    body { font-family: var(--font-body); }
+    body::before { display: none; }
+
+    .presenter-shell {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* ─── Top status bar ─── */
+    .status-bar {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .status-left, .status-right { display: flex; gap: 28px; align-items: center; }
+    .status-label { color: rgba(255,255,255,0.4); font-size: 0.7rem; }
+    .status-value { color: #F8F6F3; font-weight: 600; }
+    .sync-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+    }
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6B7280;
+      transition: background 0.3s;
+    }
+    .sync-dot.connected { background: #16C79A; box-shadow: 0 0 10px rgba(22,199,154,0.6); }
+    .timer { font-variant-numeric: tabular-nums; font-size: 1rem; font-weight: 600; color: #F5A623; }
+    .timer-controls button {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .timer-controls button:hover { border-color: rgba(255,255,255,0.35); color: #F8F6F3; }
+
+    /* ─── Main notes panel ─── */
+    .notes-panel {
+      padding: 2.5rem 3rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #F5A623;
+      margin-bottom: 0.75rem;
+    }
+    .slide-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 2rem;
+      color: #F8F6F3;
+    }
+    .slide-title .accent { color: #F5A623; }
+    .notes-body {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      line-height: 1.55;
+      color: rgba(248,246,243,0.88);
+      white-space: pre-wrap;
+      max-width: 60ch;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .notes-body strong { color: #F8F6F3; font-weight: 700; }
+    .notes-body em { color: #F5A623; font-style: normal; font-weight: 600; }
+    .notes-body ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+    .notes-body li { margin: 0.2rem 0; }
+
+    /* ─── My Notes ─── */
+    .mynotes-section {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .mynotes-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+    .mynotes-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #16C79A;
+    }
+    .save-indicator {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: rgba(22,199,154,0.7);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .save-indicator.visible { opacity: 1; }
+    .save-indicator.stale { color: rgba(245,166,35,0.8); }
+    .mynotes-textarea {
+      width: 100%;
+      min-height: 180px;
+      max-height: 40vh;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      color: #F8F6F3;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .mynotes-textarea::placeholder { color: rgba(248,246,243,0.3); font-style: italic; }
+    .mynotes-textarea:focus {
+      border-color: rgba(22,199,154,0.5);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ─── Right column ─── */
+    .right-col {
+      background: rgba(0,0,0,0.2);
+      border-left: 1px solid rgba(255,255,255,0.08);
+      padding: 2rem 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+    }
+    .next-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.5rem 1.5rem;
+    }
+    .next-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.75rem;
+    }
+    .next-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.2;
+      color: #F8F6F3;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.4rem;
+    }
+    .next-snippet {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(248,246,243,0.55);
+      font-style: italic;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .counter-block {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.25rem;
+    }
+    .counter-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.75rem;
+    }
+    .counter-big {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 3rem;
+      line-height: 1;
+      color: #F8F6F3;
+    }
+    .counter-big .denom { color: rgba(255,255,255,0.35); font-weight: 500; }
+    .counter-dots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 0.75rem;
+    }
+    .counter-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.12);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .counter-dot:hover { background: rgba(255,255,255,0.25); }
+    .counter-dot.visited { background: rgba(245,166,35,0.4); }
+    .counter-dot.active {
+      background: #F5A623;
+      box-shadow: 0 0 8px rgba(245,166,35,0.5);
+    }
+
+    .offline-banner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1A1A2E;
+      border: 1px solid rgba(245,166,35,0.3);
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      text-align: center;
+      max-width: 420px;
+      z-index: 100;
+    }
+    .offline-banner h2 {
+      font-family: var(--font-heading);
+      color: #F5A623;
+      font-size: 1.3rem;
+      margin: 0 0 0.75rem;
+    }
+    .offline-banner p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.7);
+      margin: 0;
+    }
+    .offline-banner.hidden { display: none; }
+
+    .kbd {
+      font-family: var(--font-mono);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.85em;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="offline-banner" id="offline">
+    <h2>Waiting for the deck…</h2>
+    <p>Open <span class="kbd">/cultivated-ai</span> in another window. Or press <span class="kbd">N</span> from the main deck to pair.</p>
+  </div>
+
+  <div class="presenter-shell">
+    <!-- Top bar -->
+    <div class="status-bar">
+      <div class="status-left">
+        <div class="sync-indicator">
+          <span class="sync-dot" id="sync-dot"></span>
+          <span id="sync-status">Not paired</span>
+        </div>
+      </div>
+      <div class="status-right">
+        <div>
+          <span class="status-label">Elapsed</span>
+          <span class="timer" id="timer">00:00</span>
+        </div>
+        <div class="timer-controls">
+          <button id="timer-start">Start</button>
+          <button id="timer-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main notes -->
+    <div class="notes-panel">
+      <div class="slide-label" id="slide-label">—</div>
+      <h1 class="slide-title" id="slide-title">Waiting…</h1>
+      <div class="notes-body" id="notes-body"></div>
+      <div class="mynotes-section">
+        <div class="mynotes-head">
+          <span class="mynotes-label">My notes (this slide)</span>
+          <span class="save-indicator" id="save-indicator">Saved</span>
+        </div>
+        <textarea
+          class="mynotes-textarea"
+          id="mynotes"
+          placeholder="Scribble mid-pitch. Audience reactions, follow-up questions, stories to tell. Auto-saved per slide."
+          spellcheck="true"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="right-col">
+      <div class="next-card">
+        <div class="next-label">↳ Up next</div>
+        <h2 class="next-title" id="next-title">—</h2>
+        <p class="next-snippet" id="next-snippet"></p>
+      </div>
+      <div class="counter-block">
+        <div class="counter-label">Position</div>
+        <div class="counter-big"><span id="counter-cur">—</span><span class="denom"> / {slideOrder.length}</span></div>
+        <div class="counter-dots" id="counter-dots">
+          {slideOrder.map((_, i) => <div class="counter-dot" data-idx={i}></div>)}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ slideNotes, slideOrder }}>
+    (function() {
+      const labelEl = document.getElementById('slide-label');
+      const titleEl = document.getElementById('slide-title');
+      const notesEl = document.getElementById('notes-body');
+      const nextTitleEl = document.getElementById('next-title');
+      const nextSnippetEl = document.getElementById('next-snippet');
+      const counterCurEl = document.getElementById('counter-cur');
+      const counterDotsEl = document.getElementById('counter-dots');
+      const syncDot = document.getElementById('sync-dot');
+      const syncStatus = document.getElementById('sync-status');
+      const offline = document.getElementById('offline');
+
+      const dots = Array.from(counterDotsEl.querySelectorAll('.counter-dot'));
+
+      // ─── Editable personal notes (localStorage) ───
+      const mynotesEl = document.getElementById('mynotes');
+      const saveIndicator = document.getElementById('save-indicator');
+      let currentSlideId = null;
+      let saveTimeout = null;
+      const STORAGE_PREFIX = 'ttm-cultivated-ai-mynotes:';
+
+      function loadMyNotes(slideId) {
+        try {
+          const raw = localStorage.getItem(STORAGE_PREFIX + slideId);
+          mynotesEl.value = raw || '';
+        } catch (e) {
+          mynotesEl.value = '';
+        }
+      }
+
+      function saveMyNotes() {
+        if (!currentSlideId) return;
+        try {
+          localStorage.setItem(STORAGE_PREFIX + currentSlideId, mynotesEl.value);
+          saveIndicator.textContent = 'Saved';
+          saveIndicator.classList.remove('stale');
+          saveIndicator.classList.add('visible');
+          clearTimeout(saveTimeout);
+          saveTimeout = setTimeout(() => saveIndicator.classList.remove('visible'), 1200);
+        } catch (e) {
+          saveIndicator.textContent = 'Save failed';
+          saveIndicator.classList.add('stale', 'visible');
+        }
+      }
+
+      let inputDebounce = null;
+      mynotesEl.addEventListener('input', () => {
+        saveIndicator.textContent = 'Saving…';
+        saveIndicator.classList.add('stale', 'visible');
+        clearTimeout(inputDebounce);
+        inputDebounce = setTimeout(saveMyNotes, 350);
+      });
+      mynotesEl.addEventListener('blur', saveMyNotes);
+      window.addEventListener('beforeunload', saveMyNotes);
+
+      function renderSlide(idx) {
+        const id = slideOrder[idx];
+        const data = slideNotes[id];
+        if (!data) return;
+
+        if (currentSlideId && currentSlideId !== id) {
+          clearTimeout(inputDebounce);
+          saveMyNotes();
+        }
+
+        labelEl.textContent = data.label || `Slide ${data.num}`;
+        titleEl.textContent = data.title;
+        notesEl.textContent = data.notes;
+        counterCurEl.textContent = String(data.num);
+
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+
+        const nextId = slideOrder[idx + 1];
+        if (nextId) {
+          const next = slideNotes[nextId];
+          nextTitleEl.textContent = `${next.num}. ${next.title}`;
+          const firstLine = (next.notes || '').split('\n').find(l => l.trim()) || '';
+          nextSnippetEl.textContent = firstLine;
+        } else {
+          nextTitleEl.textContent = '— end —';
+          nextSnippetEl.textContent = 'Q&A. Hand them the leave-behind. Pick a date.';
+        }
+
+        currentSlideId = id;
+        loadMyNotes(id);
+      }
+
+      // ─── Sync via BroadcastChannel ───
+      let channel = null;
+      let lastSeen = 0;
+      try {
+        channel = new BroadcastChannel('cultivated-ai');
+      } catch (e) {
+        console.warn('BroadcastChannel not supported');
+      }
+
+      function markConnected() {
+        lastSeen = Date.now();
+        syncDot.classList.add('connected');
+        syncStatus.textContent = 'Synced to deck';
+        offline.classList.add('hidden');
+      }
+      function markDisconnected() {
+        syncDot.classList.remove('connected');
+        syncStatus.textContent = 'Not paired';
+        offline.classList.remove('hidden');
+      }
+
+      if (channel) {
+        channel.addEventListener('message', (ev) => {
+          if (ev.data && ev.data.type === 'slide') {
+            markConnected();
+            renderSlide(ev.data.index);
+          }
+          if (ev.data && ev.data.type === 'ping') {
+            markConnected();
+          }
+        });
+        channel.postMessage({ type: 'request-state' });
+      }
+
+      dots.forEach((d, i) => {
+        d.addEventListener('click', () => {
+          if (channel) channel.postMessage({ type: 'goto', index: i });
+        });
+      });
+
+      setInterval(() => {
+        if (Date.now() - lastSeen > 3000 && lastSeen !== 0) {
+          markDisconnected();
+        }
+      }, 1000);
+
+      // ─── Timer ───
+      let startTime = null;
+      let elapsed = 0;
+      let running = false;
+      const timerEl = document.getElementById('timer');
+      const startBtn = document.getElementById('timer-start');
+      const resetBtn = document.getElementById('timer-reset');
+
+      function fmt(ms) {
+        const s = Math.floor(ms / 1000);
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        if (m >= 60) {
+          const h = Math.floor(m / 60);
+          const min = m % 60;
+          return `${String(h).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+        }
+        return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+      }
+      function tick() {
+        if (!running) return;
+        const now = Date.now();
+        timerEl.textContent = fmt(elapsed + (now - startTime));
+      }
+      setInterval(tick, 1000);
+      startBtn.addEventListener('click', () => {
+        if (running) {
+          running = false;
+          elapsed += Date.now() - startTime;
+          startBtn.textContent = 'Resume';
+        } else {
+          running = true;
+          startTime = Date.now();
+          startBtn.textContent = 'Pause';
+        }
+      });
+      resetBtn.addEventListener('click', () => {
+        running = false;
+        elapsed = 0;
+        startTime = null;
+        timerEl.textContent = '00:00';
+        startBtn.textContent = 'Start';
+      });
+
+      renderSlide(0);
+    })();
+  </script>
+</body>
+</html>

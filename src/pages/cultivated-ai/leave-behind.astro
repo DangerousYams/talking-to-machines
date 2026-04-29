@@ -1,0 +1,861 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Leave-behind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · Leave-behind
+       A4 portrait. 3 pages. Designed for print → PDF.
+       Open this URL, then ⌘P (or Ctrl+P), Save as PDF.
+       ══════════════════════════════════════════════════════ */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #E5E2DC;
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body::before { display: none !important; }
+
+    .lb-shell {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .lb-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--color-cream);
+      box-shadow: 0 10px 40px rgba(15,52,96,0.12);
+      margin: 0 auto 2rem;
+      padding: 18mm 16mm;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lb-page:last-child { margin-bottom: 0; }
+
+    /* Footer band on every page */
+    .lb-footer {
+      position: absolute;
+      bottom: 8mm;
+      left: 16mm;
+      right: 16mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      border-top: 1px solid rgba(26,26,46,0.08);
+      padding-top: 6mm;
+    }
+    .lb-footer .brand { color: var(--color-deep); font-weight: 700; }
+    .lb-footer .brand em { color: var(--color-amber); font-style: italic; font-weight: 600; letter-spacing: 0.05em; }
+    .lb-footer .num { color: var(--color-subtle); }
+
+    /* ─── Print rules ─── */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      html, body {
+        background: var(--color-cream) !important;
+      }
+      .lb-shell { padding: 0; max-width: none; }
+      .lb-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+      }
+      .lb-page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+      .screen-only { display: none !important; }
+    }
+
+    /* Print hint banner (hidden when printing) */
+    .print-hint {
+      max-width: 210mm;
+      margin: 0 auto 1.5rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(245,166,35,0.35);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-navy);
+    }
+    .print-hint kbd {
+      background: rgba(15,52,96,0.08);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+    .print-hint .accent { color: var(--color-amber); font-weight: 700; }
+
+    /* ════════════════════════════════════════════════════
+       PAGE 1 — Cover · the discipline · five stages
+       ════════════════════════════════════════════════════ */
+    .lb-cover-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 1rem;
+    }
+    .lb-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 4.5rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .lb-wordmark .ai { color: var(--color-amber); font-style: italic; }
+    .lb-verb {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 1.7rem;
+      color: var(--color-deep);
+      margin: 1rem 0 0;
+    }
+    .lb-verb .grow { color: var(--color-teal); }
+    .lb-verb .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+
+    .lb-pitch {
+      margin: 2.5rem 0 0;
+      padding: 1.5rem 1.75rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-amber);
+      border-radius: 0 10px 10px 0;
+    }
+    .lb-pitch p {
+      font-family: var(--font-body);
+      font-size: 1.02rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-pitch em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    .lb-section-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 2rem 0 0.85rem;
+    }
+    .lb-section-label .accent { color: var(--color-amber); }
+
+    .lb-stages-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .lb-stage-row {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.06);
+      align-items: baseline;
+      position: relative;
+      overflow: hidden;
+    }
+    .lb-stage-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+    .lb-stage-row.s1::before { background: var(--color-amber); }
+    .lb-stage-row.s2::before { background: var(--color-teal); }
+    .lb-stage-row.s3::before { background: var(--color-purple); }
+    .lb-stage-row.s4::before { background: var(--color-navy); }
+    .lb-stage-row.s5::before { background: var(--color-accent-red); }
+    .lb-stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      width: 56px;
+      flex-shrink: 0;
+    }
+    .lb-stage-row.s1 .lb-stage-num { color: var(--color-amber); }
+    .lb-stage-row.s2 .lb-stage-num { color: var(--color-teal); }
+    .lb-stage-row.s3 .lb-stage-num { color: var(--color-purple); }
+    .lb-stage-row.s4 .lb-stage-num { color: var(--color-navy); }
+    .lb-stage-row.s5 .lb-stage-num { color: var(--color-accent-red); }
+    .lb-stage-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      width: 130px;
+      flex-shrink: 0;
+    }
+    .lb-stage-row.s1 .lb-stage-name { color: var(--color-amber); }
+    .lb-stage-row.s2 .lb-stage-name { color: var(--color-teal); }
+    .lb-stage-row.s3 .lb-stage-name { color: var(--color-purple); }
+    .lb-stage-row.s4 .lb-stage-name { color: var(--color-navy); }
+    .lb-stage-row.s5 .lb-stage-name { color: var(--color-accent-red); }
+    .lb-stage-tag {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      flex: 1;
+    }
+    .lb-stage-tag em { color: var(--color-navy); font-style: italic; }
+
+    .lb-grouping {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0.85rem 0 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .lb-grouping .programme { color: var(--color-amber); font-weight: 700; }
+    .lb-grouping .grad { color: var(--color-navy); font-weight: 700; }
+
+    /* ════════════════════════════════════════════════════
+       PAGE 2 — The Programme
+       ════════════════════════════════════════════════════ */
+    .lb-page-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.6rem;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1rem;
+      color: var(--color-deep);
+    }
+    .lb-page-title em { color: var(--color-amber); font-style: italic; }
+    .lb-page-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+
+    .lb-spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem 1.5rem;
+      margin: 0 0 1.5rem;
+    }
+    .lb-spec-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.07);
+    }
+    .lb-spec-key {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+    }
+    .lb-spec-val {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+    }
+    .lb-spec-val em { color: var(--color-navy); font-style: italic; }
+
+    .lb-price-block {
+      margin: 1.25rem 0 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--color-warm-white);
+      border-radius: 10px;
+      border-left: 4px solid var(--color-amber);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .lb-price-mega {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.6rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-price-mega .ru { color: var(--color-amber); }
+    .lb-price-tag {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--color-subtle);
+      margin: 0.3rem 0 0;
+    }
+    .lb-price-explain {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+      max-width: 35ch;
+    }
+    .lb-price-explain em { color: var(--color-navy); font-style: italic; }
+
+    .lb-bundle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 0 0 1.5rem;
+    }
+    .lb-bundle-card {
+      padding: 1rem 1.15rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .lb-bundle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .lb-bundle-card.one::before { background: var(--color-teal); }
+    .lb-bundle-card.two::before { background: var(--color-amber); }
+    .lb-bundle-card .lb-bundle-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.3rem;
+      opacity: 0.4;
+      margin: 0 0 0.2rem;
+    }
+    .lb-bundle-card.one .lb-bundle-num { color: var(--color-teal); }
+    .lb-bundle-card.two .lb-bundle-num { color: var(--color-amber); }
+    .lb-bundle-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.5rem;
+    }
+    .lb-bundle-card.one h3 { color: var(--color-teal); }
+    .lb-bundle-card.two h3 { color: var(--color-amber); }
+    .lb-bundle-card p {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-bundle-card p em { color: var(--color-navy); font-style: italic; }
+
+    .lb-after-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.85rem;
+    }
+    .lb-after-card {
+      padding: 0.85rem 1rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .lb-after-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .lb-after-card.advisory::before { background: var(--color-purple); }
+    .lb-after-card.sovereignty::before { background: var(--color-navy); }
+    .lb-after-card.simulation::before { background: var(--color-accent-red); }
+    .lb-after-card .stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .lb-after-card.advisory .stage-num { color: var(--color-purple); }
+    .lb-after-card.sovereignty .stage-num { color: var(--color-navy); }
+    .lb-after-card.simulation .stage-num { color: var(--color-accent-red); }
+    .lb-after-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.4rem;
+    }
+    .lb-after-card.advisory h3 { color: var(--color-purple); }
+    .lb-after-card.sovereignty h3 { color: var(--color-navy); }
+    .lb-after-card.simulation h3 { color: var(--color-accent-red); }
+    .lb-after-card p {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-after-card p em { color: var(--color-navy); font-style: italic; }
+
+    /* ════════════════════════════════════════════════════
+       PAGE 3 — Examples · failures · founder · CTA
+       ════════════════════════════════════════════════════ */
+    .lb-examples-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 0 0 1.5rem;
+    }
+    .lb-example-card {
+      padding: 1.05rem 1.2rem;
+      background: var(--color-warm-white);
+      border-radius: 10px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .lb-example-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .lb-example-card.bajaj::before { background: var(--color-teal); }
+    .lb-example-card.nbim::before { background: var(--color-navy); }
+    .lb-example-card .ex-stage {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .lb-example-card.bajaj .ex-stage { color: var(--color-teal); }
+    .lb-example-card.nbim .ex-stage { color: var(--color-navy); }
+    .lb-example-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5rem;
+      color: var(--color-deep);
+    }
+    .lb-example-card .ex-numbers {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.5rem;
+    }
+    .lb-example-card.bajaj .ex-numbers { color: var(--color-teal); }
+    .lb-example-card.nbim .ex-numbers { color: var(--color-navy); }
+    .lb-example-card p {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-example-card p em { color: var(--color-navy); font-style: italic; }
+    .lb-example-card .ex-quote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0.5rem 0 0.3rem;
+    }
+    .lb-example-card .ex-attr {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--color-subtle);
+    }
+
+    .lb-failure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin: 0 0 1.5rem;
+    }
+    .lb-failure-card {
+      padding: 0.85rem 1.05rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .lb-failure-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .lb-failure-card.under::before { background: var(--color-sky); }
+    .lb-failure-card.over::before { background: var(--color-accent-red); }
+    .lb-failure-card .f-mode {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .lb-failure-card.under .f-mode { color: var(--color-sky); }
+    .lb-failure-card.over .f-mode { color: var(--color-accent-red); }
+    .lb-failure-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.98rem;
+      margin: 0 0 0.35rem;
+      color: var(--color-deep);
+    }
+    .lb-failure-card p {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-failure-card p em { color: var(--color-navy); font-style: italic; }
+
+    .lb-founder {
+      padding: 1.25rem 1.5rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-amber);
+      border-radius: 0 10px 10px 0;
+      margin: 0 0 1.25rem;
+    }
+    .lb-founder p {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .lb-founder p strong { font-weight: 700; color: var(--color-navy); }
+    .lb-founder p em { color: var(--color-amber); font-style: italic; font-weight: 600; }
+
+    .lb-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.5rem;
+      margin: 0 0 1.5rem;
+    }
+    .lb-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid;
+      background: var(--color-warm-white);
+      letter-spacing: 0.04em;
+    }
+    .lb-badge.b1 { color: var(--color-accent-red); border-color: rgba(233,69,96,0.3); }
+    .lb-badge.b2 { color: var(--color-purple); border-color: rgba(123,97,255,0.3); }
+    .lb-badge.b3 { color: var(--color-teal); border-color: rgba(22,199,154,0.3); }
+    .lb-badge.b4 { color: var(--color-amber); border-color: rgba(245,166,35,0.4); }
+    .lb-badge.b5 { color: var(--color-sky); border-color: rgba(14,165,233,0.3); }
+    .lb-badge.b6 { color: var(--color-navy); border-color: rgba(15,52,96,0.3); }
+
+    .lb-cta {
+      padding: 1.25rem 1.5rem;
+      background: var(--color-deep);
+      color: var(--color-cream);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .lb-cta .cta-line {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.4rem;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .lb-cta .cta-line .grow { color: var(--color-teal); }
+    .lb-cta .cta-line .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.6); }
+    .lb-cta .cta-step {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(248,246,243,0.65);
+    }
+    .lb-cta .cta-email {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--color-amber);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lb-shell">
+
+    <div class="print-hint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>). Choose <strong>Save as PDF</strong>. Margins <strong>None</strong>. Background graphics <strong>on</strong>.
+    </div>
+
+    <!-- ════════════════════════════════════════
+         PAGE 1 — Cover · discipline · five stages
+         ════════════════════════════════════════ -->
+    <div class="lb-page">
+      <p class="lb-cover-eyebrow">A discipline by Ocre Labs</p>
+      <h1 class="lb-wordmark">Cultivated <span class="ai">AI</span></h1>
+      <p class="lb-verb"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+
+      <div class="lb-pitch">
+        <p>Ocre Labs is an applied AI firm. We teach a five-stage discipline called <em>Cultivated AI</em> to leaders of traditional businesses. The flagship is a six-session programme that takes a cohort of up to fifteen leaders through Approach, Distillation, and Compounding. Mature practitioners graduate to <em>Sovereignty</em> (running AI inside their own walls, on their own data) and <em>Simulation</em> (using AI to rehearse strategy in environments their competitors cannot build).</p>
+      </div>
+
+      <span class="lb-section-label">The five <span class="accent">stages</span></span>
+      <ul class="lb-stages-list">
+        <li class="lb-stage-row s1">
+          <span class="lb-stage-num">Stage 1</span>
+          <span class="lb-stage-name">Approach</span>
+          <span class="lb-stage-tag">The leader sees what AI is, what it does well, what it does badly. Principles install. <em>The leader stops chasing tools.</em></span>
+        </li>
+        <li class="lb-stage-row s2">
+          <span class="lb-stage-num">Stage 2</span>
+          <span class="lb-stage-name">Distillation</span>
+          <span class="lb-stage-tag">SOPs distilled into AI playbooks that teach the model your way of working, not the other way around. <em>The technical term is agentic skills.</em></span>
+        </li>
+        <li class="lb-stage-row s3">
+          <span class="lb-stage-num">Stage 3</span>
+          <span class="lb-stage-name">Compounding</span>
+          <span class="lb-stage-tag">The best playbooks move from the cohort to the rest of the company. <em>The best of the company becomes the floor of the company.</em></span>
+        </li>
+        <li class="lb-stage-row s4">
+          <span class="lb-stage-num">Stage 4</span>
+          <span class="lb-stage-name">Sovereignty</span>
+          <span class="lb-stage-tag">Local AI inside the company's walls, fine-tuned on the company's own data. <em>You own the infrastructure, the data, and the decisions.</em></span>
+        </li>
+        <li class="lb-stage-row s5">
+          <span class="lb-stage-num">Stage 5</span>
+          <span class="lb-stage-name">Simulation</span>
+          <span class="lb-stage-tag">AI-built synthetic environments for strategy, training, and scenario play. <em>Things competitors cannot do at all.</em></span>
+        </li>
+      </ul>
+      <p class="lb-grouping">
+        <span><span class="programme">Stages 1–3</span> · The Programme</span>
+        <span style="opacity:0.4;">·</span>
+        <span><span class="grad">Stages 4–5</span> · Graduation engagements</span>
+      </p>
+
+      <div class="lb-footer">
+        <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 1 of 3</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         PAGE 2 — The Programme
+         ════════════════════════════════════════ -->
+    <div class="lb-page">
+      <h2 class="lb-page-title">The <em>Cultivated AI</em> Programme.</h2>
+      <p class="lb-page-sub">The flagship engagement. Stages 1–3, delivered in a six-session cohort.</p>
+
+      <div class="lb-spec-grid">
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Format</span>
+          <span class="lb-spec-val">Six sessions, two hours each, over three weeks.</span>
+        </div>
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Cohort</span>
+          <span class="lb-spec-val">Up to fifteen leaders from the same company.</span>
+        </div>
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Coverage</span>
+          <span class="lb-spec-val">Stages 1–3: Approach, Distillation, Compounding.</span>
+        </div>
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Delivery</span>
+          <span class="lb-spec-val">On-site or hybrid. Customised to your sector.</span>
+        </div>
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Facilitation</span>
+          <span class="lb-spec-val">Shalin Shodhan (Ocre Labs) leads every session.</span>
+        </div>
+        <div class="lb-spec-row">
+          <span class="lb-spec-key">Outcome</span>
+          <span class="lb-spec-val">Each leader leaves with a working playbook library.</span>
+        </div>
+      </div>
+
+      <div class="lb-price-block">
+        <div>
+          <p class="lb-price-mega"><span class="ru">₹</span>4 lakh</p>
+          <p class="lb-price-tag">per cohort. Up to fifteen leaders. Single price, no tiers.</p>
+        </div>
+        <p class="lb-price-explain">The Programme is the <em>entry to the discipline</em>, not the destination. Depth shows up after, in advisory, sovereignty, and simulation.</p>
+      </div>
+
+      <span class="lb-section-label">Each leader walks out with <span class="accent">two artefacts</span></span>
+      <div class="lb-bundle-grid">
+        <div class="lb-bundle-card one">
+          <p class="lb-bundle-num">01</p>
+          <h3>Their Playbook Library</h3>
+          <p>Four to six working AI playbooks built from <em>their own SOPs</em>, in production-ready form. Their work, running in their way.</p>
+        </div>
+        <div class="lb-bundle-card two">
+          <p class="lb-bundle-num">02</p>
+          <h3>The 90-Day Cultivated AI Plan</h3>
+          <p>A personalised plan governing the first 90 days of cultivation. <em>The discipline is years; the cadence is 90 days.</em></p>
+        </div>
+      </div>
+
+      <span class="lb-section-label">After the Programme · <span class="accent">optional engagements</span></span>
+      <div class="lb-after-grid">
+        <div class="lb-after-card advisory">
+          <div class="stage-num">Compound now</div>
+          <h3>90-Day Advisory</h3>
+          <p>Sponsor coaching. Day-30 and day-90 reviews. Written outcomes summary.</p>
+        </div>
+        <div class="lb-after-card sovereignty">
+          <div class="stage-num">Stage 4</div>
+          <h3>Sovereignty</h3>
+          <p>Local AI on your walls, on your data. Includes Lockbox. Custom-built per company.</p>
+        </div>
+        <div class="lb-after-card simulation">
+          <div class="stage-num">Stage 5</div>
+          <h3>Simulation</h3>
+          <p>Custom synthetic environments for strategy, training, and scenario play.</p>
+        </div>
+      </div>
+
+      <div class="lb-footer">
+        <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 2 of 3</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         PAGE 3 — Examples · failures · founder · CTA
+         ════════════════════════════════════════ -->
+    <div class="lb-page">
+      <h2 class="lb-page-title">What this looks like in <em>practice</em>.</h2>
+      <p class="lb-page-sub">Two real-world anchors. Two failure modes. One founder thesis.</p>
+
+      <span class="lb-section-label">The peer signal · <span class="accent">what real adoption looks like</span></span>
+      <div class="lb-examples-grid">
+        <div class="lb-example-card bajaj">
+          <div class="ex-stage">Distillation in practice</div>
+          <h3>Bajaj Finance</h3>
+          <p class="ex-numbers">₹1,600 cr disbursed. ~1,500 agents replaced.</p>
+          <p>AI voice agents on a single, high-revenue workflow. ₹1,600 crore disbursed in a single quarter (Q3 FY26). ~30% cost savings on the function. <em>An Indian NBFC, in your market, doing this now.</em></p>
+        </div>
+        <div class="lb-example-card nbim">
+          <div class="ex-stage">Sovereignty in practice</div>
+          <h3>NBIM</h3>
+          <p class="ex-numbers">213,000 hrs/year. 600+ staff using Claude.</p>
+          <p>The world's largest sovereign wealth fund (~$2.1T AUM). Claude deployed seriously, on their terms.</p>
+          <p class="ex-quote">"If you don't use it, you will never be promoted."</p>
+          <p class="ex-attr">— Nicolai Tangen, CEO</p>
+        </div>
+      </div>
+
+      <span class="lb-section-label">The two <span class="accent">failure modes</span></span>
+      <div class="lb-failure-grid">
+        <div class="lb-failure-card under">
+          <div class="f-mode">Under-adoption</div>
+          <h3>Microsoft Copilot</h3>
+          <p>Gartner: <em>~40% of enterprises piloting, only ~5% scaled.</em> Tens of millions of paid seats. Most sit unused.</p>
+        </div>
+        <div class="lb-failure-card over">
+          <div class="f-mode">Over-replacement</div>
+          <h3>Klarna</h3>
+          <p>2024: replaced customer service with AI. May 2025: walked it back. Now hybrid: <em>AI handles routine, humans handle empathy.</em></p>
+        </div>
+      </div>
+
+      <span class="lb-section-label">The <span class="accent">founder</span> thesis</span>
+      <div class="lb-founder">
+        <p><strong>AI adoption is a pipeline problem.</strong> For twenty years Shalin has built the production pipelines behind the world's biggest entertainment products at Pixar, EA, Lumosity, and Masala Games. <em>What he has learnt is that resilient pipelines are built by cultivating the approach, not chasing technology.</em></p>
+      </div>
+      <div class="lb-badges">
+        <span class="lb-badge b1">Pixar · 3 Academy Awards</span>
+        <span class="lb-badge b2">EA Spore · BAFTA</span>
+        <span class="lb-badge b3">Lumosity</span>
+        <span class="lb-badge b4">Masala Games · Founder</span>
+        <span class="lb-badge b5">Carnegie Mellon · MET</span>
+        <span class="lb-badge b6">Talking to Machines · Author</span>
+      </div>
+
+      <div class="lb-cta">
+        <span class="cta-step">One next step →</span>
+        <p class="cta-line">Cultivated AI. <span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+        <span class="cta-step" style="margin-top:0.4rem;">A 30-minute scoping conversation</span>
+        <span class="cta-email">shalin@ocrelabs.com</span>
+      </div>
+
+      <div class="lb-footer">
+        <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 3 of 3</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

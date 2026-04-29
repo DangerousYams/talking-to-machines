@@ -1,0 +1,1754 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'cover',
+  'thesis',
+  'about',
+  'licensing',
+  'failures',
+  'shift',
+  'discipline',
+  'stages',
+  'approach',
+  'distillation',
+  'bajaj',
+  'compounding',
+  'sovereignty',
+  'nbim',
+  'simulation',
+  'programme',
+  'bundle',
+  'price',
+  'after',
+  'why-ocre',
+  'close',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Pitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · pitch deck
+       Inherits global tokens (cream / deep / accent / etc).
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── Progress rail ─── */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-amber);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* ─── Slide number ─── */
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      right: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* ─── Brand mark in corner ─── */
+    .brand-mark {
+      position: absolute;
+      bottom: 28px;
+      left: 40px;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: var(--color-subtle);
+      opacity: 0.55;
+    }
+    .brand-mark .b-grow { font-style: italic; color: var(--color-amber); }
+
+    /* ─── Keyboard hint ─── */
+    .kbd-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      opacity: 0.55;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      background: rgba(26,26,46,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 0 2px;
+    }
+
+    /* ─── Staggered entrance ─── */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+    .deck-slide.is-active .stagger > *:nth-child(7) { transition-delay: 0.7s; }
+    .deck-slide.is-active .stagger > *:nth-child(8) { transition-delay: 0.8s; }
+
+    /* ─── Print / export-to-PDF ─── */
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body {
+        background: var(--color-cream) !important;
+        width: 1600px !important;
+        height: auto !important;
+      }
+      body.card-deck-page::before { display: none !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        scroll-snap-align: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      * { animation: none !important; }
+
+      .stages-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 1.25rem !important; }
+      .failures-grid { grid-template-columns: 1fr 1fr !important; gap: 3rem !important; }
+      .shift-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2rem !important; }
+      .bundle-grid { grid-template-columns: 1fr 1fr !important; gap: 2.5rem !important; }
+      .after-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .deck-slide { padding: 4rem 5rem !important; }
+    }
+
+    /* ─── Utilities ─── */
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 01 — Cover
+       ══════════════════════════════════════════════════════ */
+    .slide-cover {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-cover .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(5rem, 12vw, 10rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .slide-cover .wordmark .ai {
+      color: var(--color-amber);
+      font-style: italic;
+    }
+    .slide-cover .verb-pair {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      color: var(--color-deep);
+      margin: 2.5rem 0 0;
+      letter-spacing: -0.01em;
+    }
+    .slide-cover .verb-pair .grow { color: var(--color-teal); }
+    .slide-cover .verb-pair .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+    .slide-cover .firm {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 3.5rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 02 — Thesis
+       ══════════════════════════════════════════════════════ */
+    .slide-thesis {
+      justify-content: center;
+    }
+    .thesis-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .thesis-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-accent-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .thesis-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3.25rem, 6.5vw, 5.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+    }
+    .thesis-headline .pipeline { color: var(--color-amber); font-style: italic; }
+    .thesis-body {
+      font-family: var(--font-body);
+      font-size: 1.4rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 56ch;
+      margin: 0;
+    }
+    .thesis-body em { color: var(--color-navy); font-style: italic; }
+    .thesis-credit {
+      margin-top: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: var(--color-subtle);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — About
+       ══════════════════════════════════════════════════════ */
+    .slide-about { justify-content: center; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .about-name {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0.5rem 0 0.75rem;
+    }
+    .about-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .about-credits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .about-credits li {
+      display: flex;
+      gap: 14px;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+    }
+    .about-credits li:last-child { border-bottom: none; }
+    .credit-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 0.55rem;
+    }
+    .credit-body strong {
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--color-deep);
+      font-size: 1.02rem;
+    }
+    .credit-body .credit-detail {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .about-portrait {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(15,52,96,0.18),
+        0 0 0 6px var(--color-cream),
+        0 0 0 7px rgba(245,166,35,0.18);
+    }
+    .about-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.15) contrast(1.02);
+    }
+    .about-email {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-navy);
+      margin-top: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 04 — Licensing isn't adoption
+       ══════════════════════════════════════════════════════ */
+    .slide-licensing { justify-content: center; }
+    .licensing-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .licensing-eyebrow { margin-bottom: 1.5rem; }
+    .licensing-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+    }
+    .licensing-title .strike { text-decoration: line-through; text-decoration-color: rgba(233,69,96,0.65); text-decoration-thickness: 4px; color: var(--color-accent-red); }
+    .licensing-beats {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .licensing-beats li {
+      font-family: var(--font-body);
+      font-size: 1.4rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      padding-left: 1.6rem;
+      position: relative;
+    }
+    .licensing-beats li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.85rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-amber);
+    }
+    .licensing-beats em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 05 — Two failure modes
+       ══════════════════════════════════════════════════════ */
+    .slide-failures { justify-content: center; }
+    .failures-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .failures-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .failures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .failure-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .failure-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .failure-card.under::before { background: var(--color-sky); }
+    .failure-card.over::before { background: var(--color-accent-red); }
+    .failure-mode {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .failure-card.under .failure-mode { color: var(--color-sky); }
+    .failure-card.over .failure-mode { color: var(--color-accent-red); }
+    .failure-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.1rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+    }
+    .failure-stat {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      margin: 0.4rem 0 0.85rem;
+    }
+    .failure-card.under .failure-stat { color: var(--color-sky); }
+    .failure-card.over .failure-stat { color: var(--color-accent-red); }
+    .failure-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .failure-body em { color: var(--color-navy); font-style: italic; }
+    .failures-summary {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-subtle);
+      text-align: center;
+      margin: 2.5rem 0 0;
+      transform: rotate(-1deg);
+    }
+    .failures-summary .accent { color: var(--color-amber); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 06 — Ground is moving
+       ══════════════════════════════════════════════════════ */
+    .slide-shift { justify-content: center; }
+    .shift-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .shift-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .shift-headline em { color: var(--color-accent-red); font-style: italic; }
+    .shift-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .shift-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 12px;
+      padding: 1.75rem 1.5rem;
+    }
+    .shift-card-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.2rem;
+      line-height: 1;
+      color: var(--color-amber);
+      margin: 0 0 0.65rem;
+      opacity: 0.75;
+    }
+    .shift-card-text {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .shift-card-text em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 07 — Discipline introduction
+       ══════════════════════════════════════════════════════ */
+    .slide-discipline { justify-content: center; align-items: center; text-align: center; }
+    .discipline-eyebrow { margin-bottom: 1.25rem; }
+    .discipline-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 9vw, 7rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .discipline-name .ai { color: var(--color-amber); font-style: italic; }
+    .discipline-tag {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--color-subtle);
+      margin: 1.5rem 0 0;
+      max-width: 56ch;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 08 — Five stages overview
+       ══════════════════════════════════════════════════════ */
+    .slide-stages { justify-content: center; }
+    .stages-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .stages-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .stages-headline em { font-style: italic; color: var(--color-amber); }
+    .stages-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+    }
+    .stage-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 12px;
+      padding: 1.5rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stage-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .stage-card.s1::before { background: var(--color-amber); }
+    .stage-card.s2::before { background: var(--color-teal); }
+    .stage-card.s3::before { background: var(--color-purple); }
+    .stage-card.s4::before { background: var(--color-navy); }
+    .stage-card.s5::before { background: var(--color-accent-red); }
+    .stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 0.5rem;
+    }
+    .stage-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 0.65rem;
+    }
+    .stage-card.s1 .stage-title { color: var(--color-amber); }
+    .stage-card.s2 .stage-title { color: var(--color-teal); }
+    .stage-card.s3 .stage-title { color: var(--color-purple); }
+    .stage-card.s4 .stage-title { color: var(--color-navy); }
+    .stage-card.s5 .stage-title { color: var(--color-accent-red); }
+    .stage-tag {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .stages-rule {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .stages-rule .programme { color: var(--color-amber); font-weight: 700; }
+    .stages-rule .graduation { color: var(--color-navy); font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDES 09–10, 12–13, 15 — Individual stage slides
+       ══════════════════════════════════════════════════════ */
+    .slide-stage { justify-content: center; }
+    .stage-big-num {
+      position: absolute;
+      right: 4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(18rem, 34vw, 32rem);
+      line-height: 1;
+      opacity: 0.07;
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+    .slide-stage.s1 .stage-big-num { color: var(--color-amber); }
+    .slide-stage.s2 .stage-big-num { color: var(--color-teal); }
+    .slide-stage.s3 .stage-big-num { color: var(--color-purple); }
+    .slide-stage.s4 .stage-big-num { color: var(--color-navy); }
+    .slide-stage.s5 .stage-big-num { color: var(--color-accent-red); }
+    .stage-content {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .slide-stage.s1 .stage-pill { background: rgba(245,166,35,0.12); color: var(--color-amber); }
+    .slide-stage.s2 .stage-pill { background: rgba(22,199,154,0.12); color: var(--color-teal); }
+    .slide-stage.s3 .stage-pill { background: rgba(123,97,255,0.12); color: var(--color-purple); }
+    .slide-stage.s4 .stage-pill { background: rgba(15,52,96,0.10); color: var(--color-navy); }
+    .slide-stage.s5 .stage-pill { background: rgba(233,69,96,0.10); color: var(--color-accent-red); }
+    .stage-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0 0 1.5rem;
+      color: var(--color-deep);
+    }
+    .slide-stage.s1 .stage-name { color: var(--color-amber); }
+    .slide-stage.s2 .stage-name { color: var(--color-teal); }
+    .slide-stage.s3 .stage-name { color: var(--color-purple); }
+    .slide-stage.s4 .stage-name { color: var(--color-navy); }
+    .slide-stage.s5 .stage-name { color: var(--color-accent-red); }
+    .stage-body {
+      font-family: var(--font-body);
+      font-size: 1.4rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 58ch;
+      margin: 0;
+    }
+    .stage-body em { color: var(--color-navy); font-style: italic; }
+    .stage-body strong { font-weight: 700; color: var(--color-deep); }
+    .stage-payoff {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-subtle);
+      margin: 2rem 0 0;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .slide-stage.s1 .stage-payoff { color: var(--color-amber); }
+    .slide-stage.s2 .stage-payoff { color: var(--color-teal); }
+    .slide-stage.s3 .stage-payoff { color: var(--color-purple); }
+    .slide-stage.s4 .stage-payoff { color: var(--color-navy); }
+    .slide-stage.s5 .stage-payoff { color: var(--color-accent-red); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDES 11, 14 — Example slides (Bajaj, NBIM)
+       ══════════════════════════════════════════════════════ */
+    .slide-example { justify-content: center; }
+    .example-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .example-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .slide-example.bajaj .example-eyebrow { color: var(--color-teal); }
+    .slide-example.nbim .example-eyebrow { color: var(--color-navy); }
+    .example-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1.5rem;
+      color: var(--color-deep);
+    }
+    .example-tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--color-subtle);
+      margin: 0 0 1.5rem;
+    }
+    .example-body {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .example-body em { color: var(--color-navy); font-style: italic; }
+    .example-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .example-stat-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      position: relative;
+    }
+    .example-stat-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 4px 0 0 4px;
+    }
+    .slide-example.bajaj .example-stat-card::before { background: var(--color-teal); }
+    .slide-example.nbim .example-stat-card::before { background: var(--color-navy); }
+    .example-stat-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.6rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+      color: var(--color-deep);
+    }
+    .slide-example.bajaj .example-stat-num { color: var(--color-teal); }
+    .slide-example.nbim .example-stat-num { color: var(--color-navy); }
+    .example-stat-label {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .example-quote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.4rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .example-quote-attr {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--color-subtle);
+      margin-top: 0.6rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 16 — Programme overview
+       ══════════════════════════════════════════════════════ */
+    .slide-programme { justify-content: center; }
+    .programme-content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .programme-eyebrow { margin-bottom: 1.25rem; }
+    .programme-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+    }
+    .programme-headline em { color: var(--color-amber); font-style: italic; }
+    .programme-spec {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem 2.5rem;
+    }
+    .programme-spec li {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    .programme-spec li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-amber);
+    }
+    .programme-spec strong { font-weight: 700; color: var(--color-navy); display: block; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 0.2rem; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 17 — Bundle (two artefacts)
+       ══════════════════════════════════════════════════════ */
+    .slide-bundle { justify-content: center; }
+    .bundle-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .bundle-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .bundle-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2.25rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .bundle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .bundle-card.one::before { background: var(--color-teal); }
+    .bundle-card.two::before { background: var(--color-amber); }
+    .bundle-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      margin: 0 0 0.5rem;
+    }
+    .bundle-card.one .bundle-num { color: var(--color-teal); }
+    .bundle-card.two .bundle-num { color: var(--color-amber); }
+    .bundle-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 1rem;
+      color: var(--color-deep);
+    }
+    .bundle-card.one .bundle-title { color: var(--color-teal); }
+    .bundle-card.two .bundle-title { color: var(--color-amber); }
+    .bundle-body {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 1rem;
+    }
+    .bundle-body em { color: var(--color-navy); font-style: italic; }
+    .bundle-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 18 — Price
+       ══════════════════════════════════════════════════════ */
+    .slide-price { justify-content: center; align-items: center; text-align: center; }
+    .price-eyebrow { margin-bottom: 1rem; }
+    .price-mega {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(7rem, 18vw, 16rem);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .price-mega .ru { color: var(--color-amber); }
+    .price-tag {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--color-subtle);
+      margin: 1rem 0 2.5rem;
+    }
+    .price-explainer {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 56ch;
+      margin: 0 auto;
+    }
+    .price-explainer em { color: var(--color-navy); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 19 — After (optional engagements)
+       ══════════════════════════════════════════════════════ */
+    .slide-after { justify-content: center; }
+    .after-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .after-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .after-headline em { color: var(--color-amber); font-style: italic; }
+    .after-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .after-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.85rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .after-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .after-card.advisory::before { background: var(--color-purple); }
+    .after-card.sovereignty::before { background: var(--color-navy); }
+    .after-card.simulation::before { background: var(--color-accent-red); }
+    .after-card .stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .after-card.advisory .stage-num { color: var(--color-purple); }
+    .after-card.sovereignty .stage-num { color: var(--color-navy); }
+    .after-card.simulation .stage-num { color: var(--color-accent-red); }
+    .after-card .after-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+    }
+    .after-card.advisory .after-title { color: var(--color-purple); }
+    .after-card.sovereignty .after-title { color: var(--color-navy); }
+    .after-card.simulation .after-title { color: var(--color-accent-red); }
+    .after-card .after-body {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .after-card .after-body em { color: var(--color-navy); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 20 — Why Ocre (founder credibility)
+       ══════════════════════════════════════════════════════ */
+    .slide-why { justify-content: center; }
+    .why-content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .why-eyebrow { margin-bottom: 1rem; }
+    .why-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 2rem;
+      color: var(--color-deep);
+    }
+    .why-headline em { color: var(--color-amber); font-style: italic; }
+    .why-thesis {
+      font-family: var(--font-body);
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: var(--color-deep);
+      max-width: 64ch;
+      margin: 0 0 1.5rem;
+    }
+    .why-thesis strong { font-weight: 700; color: var(--color-navy); }
+    .why-thesis em { color: var(--color-amber); font-style: italic; font-weight: 600; }
+    .why-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem 0.85rem;
+      margin-top: 1rem;
+    }
+    .why-badge {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 6px 12px;
+      border-radius: 100px;
+      border: 1px solid;
+      background: var(--color-warm-white);
+    }
+    .why-badge.b1 { color: var(--color-accent-red); border-color: rgba(233,69,96,0.3); }
+    .why-badge.b2 { color: var(--color-purple); border-color: rgba(123,97,255,0.3); }
+    .why-badge.b3 { color: var(--color-teal); border-color: rgba(22,199,154,0.3); }
+    .why-badge.b4 { color: var(--color-amber); border-color: rgba(245,166,35,0.4); }
+    .why-badge.b5 { color: var(--color-sky); border-color: rgba(14,165,233,0.3); }
+    .why-badge.b6 { color: var(--color-navy); border-color: rgba(15,52,96,0.3); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 21 — Close
+       ══════════════════════════════════════════════════════ */
+    .slide-close {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .close-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .close-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4.5rem, 11vw, 9rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .close-wordmark .ai { color: var(--color-amber); font-style: italic; }
+    .close-verb {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+      color: var(--color-deep);
+      margin: 2rem 0 3rem;
+    }
+    .close-verb .grow { color: var(--color-teal); }
+    .close-verb .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+    .close-cta {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .close-email {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--color-navy);
+      margin-top: 0.6rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive — laptops at 1280+
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+      .about-credits li { justify-content: flex-start; text-align: left; }
+      .about-portrait { width: 240px; height: 240px; }
+      .stages-grid { grid-template-columns: repeat(5, 1fr); gap: 0.75rem; }
+      .stage-card { padding: 1rem 0.85rem; }
+      .stage-title { font-size: 1.15rem; }
+      .stage-tag { font-size: 0.85rem; }
+      .failures-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .shift-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .programme-spec { grid-template-columns: 1fr; }
+      .bundle-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .after-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .example-content { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 768px) {
+      .deck-slide { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>space</kbd> next · <kbd>n</kbd> presenter notes
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Cover ═══ -->
+    <section class="card-deck-card deck-slide slide-cover" data-slide="cover">
+      <div class="stagger">
+        <h1 class="wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="verb-pair"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+        <p class="firm">A discipline by Ocre Labs</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">01 · Cover</div>
+    </section>
+
+    <!-- ═══ 02 · Thesis ═══ -->
+    <section class="card-deck-card deck-slide slide-thesis" data-slide="thesis">
+      <div class="thesis-content stagger">
+        <span class="thesis-eyebrow caveat">The line we want you to remember</span>
+        <h1 class="thesis-headline">AI adoption is a <span class="pipeline">pipeline</span> problem.</h1>
+        <p class="thesis-body">For twenty years Shalin has built the production pipelines behind the world's biggest entertainment products at <em>Pixar, EA, Lumosity, and Masala Games</em>. And what he has learnt is that resilient pipelines are built by cultivating the approach, not chasing technology.</p>
+        <p class="thesis-credit">— Shalin Shodhan · Ocre Labs</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">02 · Thesis</div>
+    </section>
+
+    <!-- ═══ 03 · About ═══ -->
+    <section class="card-deck-card deck-slide slide-about" data-slide="about">
+      <div class="about-grid stagger">
+        <div>
+          <span class="mono-label">About me</span>
+          <h1 class="about-name">Shalin Shodhan</h1>
+          <p class="about-subtitle">Twenty years in games &amp; film. Now building Ocre Labs.</p>
+          <ul class="about-credits">
+            <li>
+              <span class="credit-dot" style="background: #E94560;"></span>
+              <div class="credit-body">
+                <strong>Pixar Animation Studios</strong>
+                <span class="credit-detail">6 feature films · 3 Academy Awards</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #7B61FF;"></span>
+              <div class="credit-body">
+                <strong>Electronic Arts — Spore</strong>
+                <span class="credit-detail">BAFTA Award for Technical Achievement</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #16C79A;"></span>
+              <div class="credit-body">
+                <strong>Lumosity</strong>
+                <span class="credit-detail">Principal Game Developer · tens of millions of users</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #F5A623;"></span>
+              <div class="credit-body">
+                <strong>Masala Games — Founder</strong>
+                <span class="credit-detail">Detective Dotson · Word Mess (#1 in 21 countries)</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #0EA5E9;"></span>
+              <div class="credit-body">
+                <strong>Carnegie Mellon University</strong>
+                <span class="credit-detail">MET — Entertainment Technology</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #0F3460;"></span>
+              <div class="credit-body">
+                <strong>Talking to Machines</strong>
+                <span class="credit-detail">Author · the consumer course on AI fluency</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div class="about-portrait">
+            <img src="/images/shalin.png" alt="Shalin Shodhan" />
+          </div>
+          <div class="about-email">shalin@ocrelabs.com</div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">03 · About</div>
+    </section>
+
+    <!-- ═══ 04 · Licensing isn't adoption ═══ -->
+    <section class="card-deck-card deck-slide slide-licensing" data-slide="licensing">
+      <div class="licensing-content stagger">
+        <span class="mono-label licensing-eyebrow">The diagnostic</span>
+        <h1 class="licensing-title"><span class="strike">Licensing</span> isn't adoption.</h1>
+        <ul class="licensing-beats">
+          <li>Companies are spending heavily on AI tools.</li>
+          <li>The receipts show up as <em>money out</em>, not as work done.</li>
+          <li>Vendors and consultants who don't know your business cannot fix this for you.</li>
+        </ul>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">04 · Licensing</div>
+    </section>
+
+    <!-- ═══ 05 · Two failure modes ═══ -->
+    <section class="card-deck-card deck-slide slide-failures" data-slide="failures">
+      <div class="failures-content stagger">
+        <h1 class="failures-headline">The two failure modes everyone is watching.</h1>
+        <div class="failures-grid">
+          <div class="failure-card under">
+            <div class="failure-mode">Under-adoption</div>
+            <h2 class="failure-name">Microsoft Copilot</h2>
+            <div class="failure-stat">~5% scaled.</div>
+            <p class="failure-body">Gartner: <em>~40% of enterprises piloting Copilot, only ~5% have scaled it.</em> Tens of millions of paid seats. Most sit unused. Licensing isn't adoption.</p>
+          </div>
+          <div class="failure-card over">
+            <div class="failure-mode">Over-replacement</div>
+            <h2 class="failure-name">Klarna</h2>
+            <div class="failure-stat">Walked it back.</div>
+            <p class="failure-body">2024: replaced customer service with AI. May 2025: CEO publicly walked it back. Now hybrid: <em>AI handles routine, humans handle empathy</em>. Replacement isn't adoption either.</p>
+          </div>
+        </div>
+        <p class="failures-summary">Cultivated AI is the path <span class="accent">between</span>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">05 · Failure modes</div>
+    </section>
+
+    <!-- ═══ 06 · Ground is moving ═══ -->
+    <section class="card-deck-card deck-slide slide-shift" data-slide="shift">
+      <div class="shift-content stagger">
+        <h1 class="shift-headline">The ground is <em>moving</em> anyway.</h1>
+        <div class="shift-grid">
+          <div class="shift-card">
+            <p class="shift-card-num">01</p>
+            <p class="shift-card-text">Your <em>competitors</em> are quietly redesigning around AI.</p>
+          </div>
+          <div class="shift-card">
+            <p class="shift-card-num">02</p>
+            <p class="shift-card-text">Your <em>buyers and partners</em> are modelling your business better than you can model theirs.</p>
+          </div>
+          <div class="shift-card">
+            <p class="shift-card-num">03</p>
+            <p class="shift-card-text">The <em>unit economics</em> of your category are shifting under you.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">06 · Ground</div>
+    </section>
+
+    <!-- ═══ 07 · Discipline introduction ═══ -->
+    <section class="card-deck-card deck-slide slide-discipline" data-slide="discipline">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="mono-label discipline-eyebrow">A staged discipline</span>
+        <h1 class="discipline-name">Cultivated <span class="ai">AI</span></h1>
+        <p class="discipline-tag">Five stages, in order, that take a leader from first principles to AI-built simulations. Years, not quarters.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">07 · Discipline</div>
+    </section>
+
+    <!-- ═══ 08 · Five stages ═══ -->
+    <section class="card-deck-card deck-slide slide-stages" data-slide="stages">
+      <div class="stages-content stagger">
+        <h1 class="stages-headline">Five stages of <em>Cultivated AI</em>.</h1>
+        <div class="stages-grid">
+          <div class="stage-card s1">
+            <div class="stage-num">Stage 1</div>
+            <h3 class="stage-title">Approach</h3>
+            <p class="stage-tag">Principles install. Stop chasing tools.</p>
+          </div>
+          <div class="stage-card s2">
+            <div class="stage-num">Stage 2</div>
+            <h3 class="stage-title">Distillation</h3>
+            <p class="stage-tag">SOPs become AI playbooks.</p>
+          </div>
+          <div class="stage-card s3">
+            <div class="stage-num">Stage 3</div>
+            <h3 class="stage-title">Compounding</h3>
+            <p class="stage-tag">Best playbooks spread company-wide.</p>
+          </div>
+          <div class="stage-card s4">
+            <div class="stage-num">Stage 4</div>
+            <h3 class="stage-title">Sovereignty</h3>
+            <p class="stage-tag">AI on your walls, on your data.</p>
+          </div>
+          <div class="stage-card s5">
+            <div class="stage-num">Stage 5</div>
+            <h3 class="stage-title">Simulation</h3>
+            <p class="stage-tag">Synthetic environments for strategy.</p>
+          </div>
+        </div>
+        <div class="stages-rule">
+          <span><span class="programme">Stages 1–3</span> · The Programme</span>
+          <span style="opacity:0.4;">·</span>
+          <span><span class="graduation">Stages 4–5</span> · Graduation engagements</span>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">08 · Five stages</div>
+    </section>
+
+    <!-- ═══ 09 · Stage 1 · Approach ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s1" data-slide="approach">
+      <div class="stage-big-num">01</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 1</span>
+        <h1 class="stage-name">Approach.</h1>
+        <p class="stage-body">The leader sees what AI is, what it does well, what it does badly, and where it's heading. The principles get installed. Mental models start working. By the end of this stage, the leader stops chasing tools and starts thinking about AI as a <em>discipline</em>.</p>
+        <span class="stage-payoff">Tools change every quarter. Principles outlive them.</span>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">09 · Approach</div>
+    </section>
+
+    <!-- ═══ 10 · Stage 2 · Distillation ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s2" data-slide="distillation">
+      <div class="stage-big-num">02</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 2</span>
+        <h1 class="stage-name">Distillation.</h1>
+        <p class="stage-body">The leader takes their existing SOPs, the way work already gets done in their role, and distils them into <strong>AI playbooks that teach the model your way of working</strong>, not the other way around. The technical term is <em>agentic skills</em>; we use <em>playbooks</em> because the work is business, not engineering.</p>
+        <span class="stage-payoff">Your work, in your way. Not a vendor demo.</span>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">10 · Distillation</div>
+    </section>
+
+    <!-- ═══ 11 · Bajaj Finance ═══ -->
+    <section class="card-deck-card deck-slide slide-example bajaj" data-slide="bajaj">
+      <div class="example-content stagger">
+        <div>
+          <div class="example-eyebrow">Distillation in practice</div>
+          <h2 class="example-name">Bajaj Finance.</h2>
+          <p class="example-tagline">An Indian NBFC rebuilding a P&amp;L workflow around AI.</p>
+          <p class="example-body">Bajaj Finance built AI voice agents for loan disbursals on a single, high-revenue workflow. Not a Copilot rollout. Not a tool review. A specific function, rebuilt around AI from the ground up. <em>That's what Distillation looks like at scale.</em> Your peers, in your market, are doing this now.</p>
+        </div>
+        <div class="example-stats">
+          <div class="example-stat-card">
+            <p class="example-stat-num">₹1,600 cr</p>
+            <p class="example-stat-label">Disbursed through AI voice agents in <em>a single quarter</em> (Q3 FY26).</p>
+          </div>
+          <div class="example-stat-card">
+            <p class="example-stat-num">~1,500</p>
+            <p class="example-stat-label">Calling agents replaced. ~30% cost savings on the workflow.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">11 · Bajaj Finance</div>
+    </section>
+
+    <!-- ═══ 12 · Stage 3 · Compounding ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s3" data-slide="compounding">
+      <div class="stage-big-num">03</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 3</span>
+        <h1 class="stage-name">Compounding.</h1>
+        <p class="stage-body">The best playbooks move from the cohort to the rest of the company. The leader who built a strong report-making playbook shares it. The team that figured out how to brief partners passes their playbook on. <em>Each playbook adopted raises the floor for the next.</em></p>
+        <span class="stage-payoff">The best of the company becomes the floor of the company.</span>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">12 · Compounding</div>
+    </section>
+
+    <!-- ═══ 13 · Stage 4 · Sovereignty ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s4" data-slide="sovereignty">
+      <div class="stage-big-num">04</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 4</span>
+        <h1 class="stage-name">Sovereignty.</h1>
+        <p class="stage-body">Local AI inside the company's own walls. Fine-tuning on the company's own data. By this stage the company doesn't depend on vendors for its AI direction. <strong>It owns the infrastructure, the data, and the decisions.</strong></p>
+        <span class="stage-payoff">Where the strategic moat actually compounds.</span>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">13 · Sovereignty</div>
+    </section>
+
+    <!-- ═══ 14 · NBIM ═══ -->
+    <section class="card-deck-card deck-slide slide-example nbim" data-slide="nbim">
+      <div class="example-content stagger">
+        <div>
+          <div class="example-eyebrow">Sovereignty in practice</div>
+          <h2 class="example-name">NBIM.</h2>
+          <p class="example-tagline">The world's largest sovereign wealth fund. Public accountability. Fiduciary duty. ~$2.1 trillion AUM.</p>
+          <p class="example-body">A sovereign wealth fund cannot have its data leaking to vendors. So when NBIM went all-in on AI, they went all-in <em>on their terms</em>. That's the bar. That's what Stage 4 looks like at the top of the mountain.</p>
+        </div>
+        <div class="example-stats">
+          <div class="example-stat-card">
+            <p class="example-stat-num">213,000 hrs</p>
+            <p class="example-stat-label">Saved per year. <em>600+ staff using Claude weekly.</em> ~20% productivity gains.</p>
+          </div>
+          <div class="example-stat-card">
+            <p class="example-quote">"If you don't use it, you will never be promoted."</p>
+            <p class="example-quote-attr">— Nicolai Tangen, CEO, NBIM</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">14 · NBIM</div>
+    </section>
+
+    <!-- ═══ 15 · Stage 5 · Simulation ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s5" data-slide="simulation">
+      <div class="stage-big-num">05</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 5</span>
+        <h1 class="stage-name">Simulation.</h1>
+        <p class="stage-body">The deepest unlock. Most companies will never get here. The ones who do are using AI to build <em>synthetic environments</em> where strategy can be rehearsed, teams can be trained against scenarios that don't exist yet, and what-ifs can be explored at speed.</p>
+        <span class="stage-payoff">Two tiers above licensing. Things competitors cannot do at all.</span>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">15 · Simulation</div>
+    </section>
+
+    <!-- ═══ 16 · The Programme ═══ -->
+    <section class="card-deck-card deck-slide slide-programme" data-slide="programme">
+      <div class="programme-content stagger">
+        <span class="mono-label programme-eyebrow">The flagship engagement</span>
+        <h1 class="programme-headline">The <em>Cultivated AI</em> Programme.</h1>
+        <ul class="programme-spec">
+          <li><strong>Format</strong>Six sessions, two hours each, over three weeks.</li>
+          <li><strong>Cohort</strong>Up to fifteen leaders from the same company.</li>
+          <li><strong>Coverage</strong>Stages 1–3: Approach, Distillation, Compounding.</li>
+          <li><strong>Delivery</strong>On-site or hybrid. Customised to your sector.</li>
+          <li><strong>Facilitation</strong>Shalin Shodhan (Ocre Labs) leads every session.</li>
+          <li><strong>Outcome</strong>Each leader leaves with a working playbook library.</li>
+        </ul>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">16 · Programme</div>
+    </section>
+
+    <!-- ═══ 17 · Bundle (two artefacts) ═══ -->
+    <section class="card-deck-card deck-slide slide-bundle" data-slide="bundle">
+      <div class="bundle-content stagger">
+        <h1 class="bundle-headline">Each leader walks out with two artefacts.</h1>
+        <div class="bundle-grid">
+          <div class="bundle-card one">
+            <div class="bundle-num">01</div>
+            <h2 class="bundle-title">Their Playbook Library</h2>
+            <p class="bundle-body">Four to six working AI playbooks built from <em>their own SOPs</em>, in production-ready form. Their work, running in their way.</p>
+            <p class="bundle-tag">Stage 2 deliverable</p>
+          </div>
+          <div class="bundle-card two">
+            <div class="bundle-num">02</div>
+            <h2 class="bundle-title">The 90-Day Cultivated AI Plan</h2>
+            <p class="bundle-body">A personalised plan governing what they deepen, share, and extend over the first 90 days of cultivation. <em>The discipline is years; the operating cadence is 90 days.</em></p>
+            <p class="bundle-tag">Compounding starter</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">17 · Artefacts</div>
+    </section>
+
+    <!-- ═══ 18 · Price ═══ -->
+    <section class="card-deck-card deck-slide slide-price" data-slide="price">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="mono-label price-eyebrow">Price · single, flat, no tiers</span>
+        <p class="price-mega"><span class="ru">₹</span>4 lakh</p>
+        <p class="price-tag">per cohort. Up to fifteen leaders.</p>
+        <p class="price-explainer">The Programme is the <em>entry to the discipline</em>, not the destination. We've made it accessible so the question is "when," not "whether." Depth shows up after, in advisory, sovereignty, and simulation.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">18 · Price</div>
+    </section>
+
+    <!-- ═══ 19 · After (optional engagements) ═══ -->
+    <section class="card-deck-card deck-slide slide-after" data-slide="after">
+      <div class="after-content stagger">
+        <h1 class="after-headline">After the Programme. <em>Optional.</em></h1>
+        <div class="after-grid">
+          <div class="after-card advisory">
+            <div class="stage-num">Compound now</div>
+            <h2 class="after-title">90-Day Advisory</h2>
+            <p class="after-body">Sponsor coaching. Day-30 and day-90 reviews. Written outcomes summary. <em>For cohorts that want to compound the discipline immediately.</em></p>
+          </div>
+          <div class="after-card sovereignty">
+            <div class="stage-num">Stage 4</div>
+            <h2 class="after-title">Sovereignty</h2>
+            <p class="after-body">Local AI on your walls, on your data. Includes Lockbox. Custom-built per company. <em>Run AI on your own terms.</em></p>
+          </div>
+          <div class="after-card simulation">
+            <div class="stage-num">Stage 5</div>
+            <h2 class="after-title">Simulation</h2>
+            <p class="after-body">Custom synthetic environments for strategy, training, and scenario play. <em>Things your competitors cannot do at all.</em></p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">19 · After</div>
+    </section>
+
+    <!-- ═══ 20 · Why Ocre Labs ═══ -->
+    <section class="card-deck-card deck-slide slide-why" data-slide="why-ocre">
+      <div class="why-content stagger">
+        <span class="mono-label why-eyebrow">Why Ocre Labs</span>
+        <h1 class="why-headline">The <em>founder</em> thesis.</h1>
+        <p class="why-thesis"><strong>AI adoption is a pipeline problem.</strong> For twenty years Shalin has built the production pipelines behind the world's biggest entertainment products. Films watched the world over. Games played billions of times. <em>What he learnt: resilient pipelines are built by cultivating the approach, not chasing technology.</em></p>
+        <div class="why-badges">
+          <span class="why-badge b1">Pixar · 3 Academy Awards</span>
+          <span class="why-badge b2">EA Spore · BAFTA</span>
+          <span class="why-badge b3">Lumosity</span>
+          <span class="why-badge b4">Masala Games · Founder</span>
+          <span class="why-badge b5">Carnegie Mellon · MET</span>
+          <span class="why-badge b6">Talking to Machines · Author</span>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">20 · Why Ocre</div>
+    </section>
+
+    <!-- ═══ 21 · Close ═══ -->
+    <section class="card-deck-card deck-slide slide-close" data-slide="close">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="close-eyebrow">One next step →</span>
+        <h1 class="close-wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="close-verb"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+        <p class="close-cta">A 30-minute scoping conversation</p>
+        <p class="close-email">shalin@ocrelabs.com</p>
+      </div>
+      <div class="brand-mark">Cultivated AI · <span class="b-grow">Grow, don't Chase.</span></div>
+      <div class="slide-num">21 · Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    // ════════════════════════════════════════════════════════
+    // Deck behavior: keyboard nav + active slide tracking
+    // Modeled on /workshop-day1.
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      // ─── Presenter sync ───
+      let channel = null;
+      try { channel = new BroadcastChannel('cultivated-ai'); } catch (e) {}
+
+      function broadcastSlide(idx) {
+        if (channel) channel.postMessage({ type: 'slide', index: idx });
+      }
+      if (channel) {
+        channel.addEventListener('message', (ev) => {
+          if (ev.data && ev.data.type === 'goto' && typeof ev.data.index === 'number') {
+            goTo(ev.data.index);
+          }
+          if (ev.data && ev.data.type === 'request-state') {
+            broadcastSlide(current);
+          }
+        });
+        setInterval(() => { if (channel) channel.postMessage({ type: 'ping' }); }, 1500);
+      }
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+        broadcastSlide(idx);
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) {
+          kbdHint.classList.add('hidden');
+          hintHidden = true;
+        }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+          case 'n':
+          case 'N':
+            e.preventDefault();
+            window.open('/cultivated-ai/presenter', 'presenter', 'width=1100,height=800,menubar=no,toolbar=no,location=no');
+            break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+</body>
+</html>
