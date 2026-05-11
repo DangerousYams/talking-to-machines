@@ -1,0 +1,1480 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'cover',
+  'positioning',
+  'trap',
+  'shift',
+  'why',
+  'discipline',
+  'ladder',
+  'habits',
+  'format',
+  'leave',
+  'showcase',
+  'about',
+  'thesis',
+  'close',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>AI Thinking · Pitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       AI Thinking · pitch deck
+       Inherits global tokens. Modeled on cultivated-ai.astro.
+       Primary accent: teal (the AI Thinking colour).
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── Progress rail ─── */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-teal);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      right: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    .brand-mark {
+      position: absolute;
+      bottom: 28px;
+      left: 40px;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: var(--color-subtle);
+      opacity: 0.55;
+    }
+    .brand-mark .b-tag { font-style: italic; color: var(--color-teal); }
+
+    .kbd-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      opacity: 0.55;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      background: rgba(26,26,46,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 0 2px;
+    }
+
+    /* ─── Staggered entrance ─── */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+    .deck-slide.is-active .stagger > *:nth-child(7) { transition-delay: 0.7s; }
+    .deck-slide.is-active .stagger > *:nth-child(8) { transition-delay: 0.8s; }
+
+    /* ─── Print / export-to-PDF ─── */
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body {
+        background: var(--color-cream) !important;
+        width: 1600px !important;
+        height: auto !important;
+      }
+      body.card-deck-page::before { display: none !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        scroll-snap-align: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      * { animation: none !important; }
+
+      .ladder-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.5rem !important; }
+      .why-grid { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+      .shift-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2rem !important; }
+      .habits-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 0.7rem !important; }
+      .leave-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.25rem !important; }
+      .format-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .deck-slide { padding: 4rem 5rem !important; }
+    }
+
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .deck-slide p { max-width: none; }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 01 — Cover
+       ══════════════════════════════════════════════════════ */
+    .slide-cover {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-cover .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(5rem, 12vw, 10rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .slide-cover .wordmark .ai {
+      color: var(--color-teal);
+      font-style: italic;
+    }
+    .slide-cover .tagline {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      color: var(--color-deep);
+      margin: 2.5rem auto 0;
+      letter-spacing: -0.01em;
+      text-align: center;
+    }
+    .slide-cover .tagline em { color: var(--color-teal); font-style: italic; }
+    .slide-cover .audience {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 3.5rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 02 — Positioning (Erhart one-liner)
+       ══════════════════════════════════════════════════════ */
+    .slide-positioning { justify-content: center; }
+    .positioning-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .positioning-eyebrow { display: block; margin-bottom: 1.75rem; }
+    .positioning-statement {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      letter-spacing: -0.02em;
+      line-height: 1.32;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .positioning-statement .p-who { color: var(--color-teal); }
+    .positioning-statement .p-what { color: var(--color-amber); }
+    .positioning-statement .p-against { color: var(--color-accent-red); }
+
+    .positioning-key {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.75rem;
+      flex-wrap: wrap;
+    }
+    .positioning-key-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .positioning-key-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .positioning-key-item.who .positioning-key-dot { background: var(--color-teal); }
+    .positioning-key-item.what .positioning-key-dot { background: var(--color-amber); }
+    .positioning-key-item.against .positioning-key-dot { background: var(--color-accent-red); }
+    .positioning-key-item.who .label { color: var(--color-teal); }
+    .positioning-key-item.what .label { color: var(--color-amber); }
+    .positioning-key-item.against .label { color: var(--color-accent-red); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — The trap
+       ══════════════════════════════════════════════════════ */
+    .slide-trap { justify-content: center; align-items: center; text-align: center; }
+    .trap-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-accent-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .trap-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 8vw, 7rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin: 0 0 2rem;
+      color: var(--color-accent-red);
+      max-width: 22ch;
+    }
+    .trap-body {
+      font-family: var(--font-body);
+      font-size: 1.35rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      max-width: 44ch;
+      margin: 0 auto 1.4rem;
+      text-wrap: balance;
+    }
+    .trap-punch {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.85rem;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--color-navy);
+      max-width: 32ch;
+      margin: 0 auto;
+      text-wrap: balance;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 04 — The ground is moving (3 cards)
+       ══════════════════════════════════════════════════════ */
+    .slide-shift { justify-content: center; }
+    .shift-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .shift-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.8vw, 3.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 2.75rem;
+      color: var(--color-deep);
+      text-align: center;
+      max-width: 28ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .shift-headline em { color: var(--color-accent-red); font-style: italic; }
+    .shift-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    .shift-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 14px;
+      padding: 1.85rem 1.6rem 1.75rem;
+      position: relative;
+    }
+    .shift-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 14px 0 0 14px;
+    }
+    .shift-card.s1::before { background: var(--color-amber); }
+    .shift-card.s2::before { background: var(--color-accent-red); }
+    .shift-card.s3::before { background: var(--color-purple); }
+    .shift-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-subtle);
+      margin: 0 0 0.6rem;
+    }
+    .shift-card-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+    }
+    .shift-card.s1 .shift-card-name { color: var(--color-amber); }
+    .shift-card.s2 .shift-card-name { color: var(--color-accent-red); }
+    .shift-card.s3 .shift-card-name { color: var(--color-purple); }
+    .shift-card-text {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .shift-card-text em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 05 — Why (the four mechanism questions)
+       ══════════════════════════════════════════════════════ */
+    .slide-why { justify-content: center; }
+    .why-content { max-width: 1320px; margin: 0 auto; width: 100%; }
+    .why-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.4vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .why-headline em { color: var(--color-teal); font-style: italic; }
+    .why-sub {
+      font-family: var(--font-body);
+      font-size: 1.2rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      text-align: center;
+      max-width: 60ch;
+      margin: 0 auto 2.5rem;
+    }
+    .why-sub strong { color: var(--color-navy); font-weight: 700; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .why-card {
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 0 12px 12px 0;
+      padding: 2.25rem 2rem;
+      display: flex;
+      align-items: center;
+      min-height: 160px;
+    }
+    .why-q {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.7rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--color-navy);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 06 — Discipline reveal
+       ══════════════════════════════════════════════════════ */
+    .slide-discipline { justify-content: center; align-items: center; text-align: center; }
+    .discipline-eyebrow { margin-bottom: 1.25rem; }
+    .discipline-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 9vw, 7.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .discipline-name .ai { color: var(--color-teal); font-style: italic; }
+    .discipline-tag {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--color-subtle);
+      margin: 1.75rem 0 0;
+      max-width: 60ch;
+    }
+    .discipline-tag em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 07 — The Ladder (4 levels)
+       ══════════════════════════════════════════════════════ */
+    .slide-ladder { justify-content: center; }
+    .ladder-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .ladder-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.8vw, 3.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .ladder-headline em { color: var(--color-teal); font-style: italic; }
+    .ladder-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--color-subtle);
+      text-align: center;
+      margin: 0 auto 2.5rem;
+      max-width: 60ch;
+    }
+    .ladder-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .ladder-rung {
+      background: var(--color-warm-white);
+      border-radius: 14px;
+      padding: 1.5rem 1.4rem 1.6rem;
+      border-top: 5px solid;
+      position: relative;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+    }
+    .ladder-rung.r1 { border-color: var(--color-accent-red); }
+    .ladder-rung.r2 { border-color: var(--color-amber); }
+    .ladder-rung.r3 { border-color: var(--color-teal); }
+    .ladder-rung.r4 { border-color: var(--color-purple); }
+    .ladder-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 0.4rem;
+    }
+    .ladder-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.85rem;
+    }
+    .ladder-rung.r1 .ladder-name { color: var(--color-accent-red); }
+    .ladder-rung.r2 .ladder-name { color: var(--color-amber); }
+    .ladder-rung.r3 .ladder-name { color: var(--color-teal); }
+    .ladder-rung.r4 .ladder-name { color: var(--color-purple); }
+    .ladder-line {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .ladder-arrow {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      color: var(--color-subtle);
+    }
+    .ladder-arrow .accent { color: var(--color-purple); font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 08 — The 15 habits (wall)
+       ══════════════════════════════════════════════════════ */
+    .slide-habits { justify-content: center; }
+    .habits-content { max-width: 1480px; margin: 0 auto; width: 100%; }
+    .habits-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.4vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 0.6rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .habits-headline em { color: var(--color-teal); font-style: italic; }
+    .habits-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--color-subtle);
+      text-align: center;
+      margin: 0 auto 2rem;
+      max-width: 64ch;
+    }
+    .habits-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.7rem;
+    }
+    .habit {
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border-left: 3px solid var(--color-teal);
+      padding: 1rem 1rem 1.1rem;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+    }
+    .habit.frame { border-color: var(--color-accent-red); }
+    .habit.choose { border-color: var(--color-amber); }
+    .habit.comm { border-color: var(--color-teal); }
+    .habit.eval { border-color: var(--color-purple); }
+    .habit.edge { border-color: var(--color-navy); }
+    .habit-num {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 0.25rem;
+    }
+    .habit-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .habits-legend {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .habits-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .habits-legend-dot {
+      width: 8px; height: 8px; border-radius: 2px;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 09 — Format
+       ══════════════════════════════════════════════════════ */
+    .slide-format { justify-content: center; align-items: center; }
+    .format-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .format-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.8vw, 3.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .format-headline em { color: var(--color-teal); font-style: italic; }
+    .format-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+    .format-card {
+      background: var(--color-warm-white);
+      border-top: 4px solid var(--color-teal);
+      border-radius: 14px;
+      padding: 2rem 1.75rem 2rem;
+      text-align: center;
+    }
+    .format-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.85rem;
+    }
+    .format-value {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--color-deep);
+      margin: 0 0 0.6rem;
+    }
+    .format-detail {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 10 — What students leave with
+       ══════════════════════════════════════════════════════ */
+    .slide-leave { justify-content: center; }
+    .leave-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .leave-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.8vw, 3.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .leave-headline em { color: var(--color-teal); font-style: italic; }
+    .leave-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+    .leave-card {
+      background: var(--color-warm-white);
+      border-radius: 14px;
+      padding: 1.5rem 1.4rem 1.6rem;
+      border-top: 4px solid var(--color-teal);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+    .leave-card.c1 { border-color: var(--color-teal); }
+    .leave-card.c2 { border-color: var(--color-amber); }
+    .leave-card.c3 { border-color: var(--color-purple); }
+    .leave-card.c4 { border-color: var(--color-navy); }
+    .leave-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--color-subtle);
+      margin: 0 0 0.5rem;
+    }
+    .leave-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--color-deep);
+      margin: 0 0 0.7rem;
+    }
+    .leave-card.c1 .leave-name { color: var(--color-teal); }
+    .leave-card.c2 .leave-name { color: var(--color-amber); }
+    .leave-card.c3 .leave-name { color: var(--color-purple); }
+    .leave-card.c4 .leave-name { color: var(--color-navy); }
+    .leave-body {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .leave-body em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 11 — Showcase Day
+       ══════════════════════════════════════════════════════ */
+    .slide-showcase { justify-content: center; align-items: center; text-align: center; }
+    .showcase-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--color-purple);
+      margin-bottom: 1.5rem;
+    }
+    .showcase-week {
+      font-family: 'Caveat', cursive;
+      font-size: 2.4rem;
+      color: var(--color-purple);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .showcase-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 8vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0 0 1.5rem;
+      color: var(--color-deep);
+    }
+    .showcase-name em { color: var(--color-purple); font-style: italic; }
+    .showcase-body {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      max-width: 56ch;
+      margin: 0 auto;
+    }
+    .showcase-body em { color: var(--color-purple); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 12 — About Shalin (portrait + poster ticker)
+       ══════════════════════════════════════════════════════ */
+    .slide-about {
+      padding: 3rem 5rem 14rem;
+      justify-content: center;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .about-name {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0.5rem 0 0.75rem;
+      color: var(--color-deep);
+    }
+    .about-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .about-credits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .about-credits li {
+      display: flex;
+      gap: 14px;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+    }
+    .about-credits li:last-child { border-bottom: none; }
+    .credit-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 0.55rem;
+    }
+    .credit-body strong {
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--color-deep);
+      font-size: 1.02rem;
+    }
+    .credit-body .credit-detail {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .about-portrait {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(15,52,96,0.18),
+        0 0 0 6px var(--color-cream),
+        0 0 0 7px rgba(22,199,154,0.18);
+    }
+    .about-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.15) contrast(1.02);
+    }
+    .about-email {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-navy);
+      margin-top: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .poster-ticker {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    }
+    .poster-track {
+      display: flex;
+      animation: ticker 55s linear infinite;
+      width: max-content;
+      will-change: transform;
+    }
+    .poster-track img {
+      height: 150px;
+      margin-right: 20px;
+      border-radius: 6px;
+      box-shadow: 0 8px 26px rgba(15,52,96,0.18);
+      flex-shrink: 0;
+    }
+    @keyframes ticker {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 13 — Thesis
+       ══════════════════════════════════════════════════════ */
+    .slide-thesis { justify-content: center; }
+    .thesis-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .thesis-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.7rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .thesis-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 5.6vw, 4.6rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin: 0 0 2rem;
+      color: var(--color-deep);
+    }
+    .thesis-headline em { color: var(--color-teal); font-style: italic; font-weight: 800; }
+    .thesis-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.4rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      max-width: 58ch;
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 14 — Close
+       ══════════════════════════════════════════════════════ */
+    .slide-close {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .close-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 8vw, 6.5rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .close-wordmark .ai { color: var(--color-teal); font-style: italic; }
+    .close-tagline {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      color: var(--color-deep);
+      margin: 1.75rem 0 0;
+      max-width: 38ch;
+    }
+    .close-email {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      color: var(--color-navy);
+      margin-top: 2.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .ladder-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: 1fr; }
+      .shift-grid { grid-template-columns: 1fr; }
+      .habits-grid { grid-template-columns: repeat(3, 1fr); }
+      .leave-grid { grid-template-columns: repeat(2, 1fr); }
+      .format-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .deck-slide { padding: 3rem 2rem; }
+      .habits-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &middot; <kbd>space</kbd> next
+  </div>
+
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Cover ═══ -->
+    <section class="card-deck-card deck-slide slide-cover" data-slide="cover">
+      <div class="stagger">
+        <h1 class="wordmark"><span class="ai">AI</span> Thinking.</h1>
+        <p class="tagline">First principles for any AI, <em>today and tomorrow</em>.</p>
+        <p class="audience">A briefing for parents and educators</p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">01 &middot; Cover</div>
+    </section>
+
+    <!-- ═══ 02 · Positioning ═══ -->
+    <section class="card-deck-card deck-slide slide-positioning" data-slide="positioning">
+      <div class="positioning-content stagger">
+        <h1 class="positioning-statement">
+          We teach <span class="p-who">grades 6 through 12</span> to <span class="p-what">think about AI from first principles</span>, so they can effectively use any AI, today or in the future, without losing <span class="p-against">their own thinking</span> along the way.
+        </h1>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">02 &middot; Positioning</div>
+    </section>
+
+    <!-- ═══ 03 · The trap ═══ -->
+    <section class="card-deck-card deck-slide slide-trap" data-slide="trap">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="trap-eyebrow">The trap.</span>
+        <h1 class="trap-headline">Using AI tools isn't thinking.</h1>
+        <p class="trap-body">Most AI workshops have students make a poster, a presentation, a song with AI.</p>
+        <p class="trap-punch">In this mode the child is no better at thinking than before.</p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">03 &middot; The trap</div>
+    </section>
+
+    <!-- ═══ 04 · The ground is moving ═══ -->
+    <section class="card-deck-card deck-slide slide-shift" data-slide="shift">
+      <div class="shift-content stagger">
+        <h1 class="shift-headline">By graduation, <em>three things will be true</em>.</h1>
+        <div class="shift-grid">
+          <div class="shift-card s1">
+            <p class="shift-card-num">01 &middot; Tools</p>
+            <h2 class="shift-card-name">AI itself keeps changing.</h2>
+            <p class="shift-card-text">The model your students will use in five years <em>doesn't exist yet</em>. A workshop built around today's tools is obsolete by graduation.</p>
+          </div>
+          <div class="shift-card s2">
+            <p class="shift-card-num">02 &middot; Default</p>
+            <h2 class="shift-card-name">AI use will be assumed.</h2>
+            <p class="shift-card-text">Teachers and employers won't ask whether AI was involved. They will ask <em>what the student added on top</em>.</p>
+          </div>
+          <div class="shift-card s3">
+            <p class="shift-card-num">03 &middot; Edge</p>
+            <h2 class="shift-card-name">The thinking is the edge.</h2>
+            <p class="shift-card-text">When the tools are equal and the use is universal, the student's <em>own judgment is the only differentiator left</em>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">04 &middot; The shift</div>
+    </section>
+
+    <!-- ═══ 05 · Why AI behaves the way it does ═══ -->
+    <section class="card-deck-card deck-slide slide-why" data-slide="why">
+      <div class="why-content stagger">
+        <h1 class="why-headline">The students winning at AI think about it from <em>first principles</em>.</h1>
+        <p class="why-sub">Most workshops show students <strong>what</strong> AI does. We show them <strong>why</strong>, because the why is what transfers from one model to the next.</p>
+        <div class="why-grid">
+          <div class="why-card">
+            <p class="why-q">Why does AI agree with you when you are wrong?</p>
+          </div>
+          <div class="why-card">
+            <p class="why-q">Why does AI invent things confidently?</p>
+          </div>
+          <div class="why-card">
+            <p class="why-q">Why does AI output always sound like AI?</p>
+          </div>
+          <div class="why-card">
+            <p class="why-q">Why does a long conversation get worse over time?</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">05 &middot; The why</div>
+    </section>
+
+    <!-- ═══ 06 · The discipline ═══ -->
+    <section class="card-deck-card deck-slide slide-discipline" data-slide="discipline">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="mono-label discipline-eyebrow">We call this discipline</span>
+        <h1 class="discipline-name"><span class="ai">AI</span> Thinking.</h1>
+        <p class="discipline-tag">Understand the why, and you can direct any AI well. <em>That understanding outlasts every tool.</em></p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">06 &middot; The discipline</div>
+    </section>
+
+    <!-- ═══ 07 · The Ladder ═══ -->
+    <section class="card-deck-card deck-slide slide-ladder" data-slide="ladder">
+      <div class="ladder-content stagger">
+        <h1 class="ladder-headline">The four levels of <em>AI Thinking</em>.</h1>
+        <p class="ladder-sub">The workshop and 90-day plan are designed to move them up a few levels.</p>
+        <ol class="ladder-grid">
+          <li class="ladder-rung r1">
+            <p class="ladder-num">Level 1</p>
+            <h3 class="ladder-name">Quoter.</h3>
+            <p class="ladder-line">Copies AI output and submits it as their own. The shortcut. Looks easy. Teaches nothing.</p>
+          </li>
+          <li class="ladder-rung r2">
+            <p class="ladder-num">Level 2</p>
+            <h3 class="ladder-name">Curator.</h3>
+            <p class="ladder-line">Knows which AI is best for which job. Writing one. Research another. Picture-making another. Picks the right tool every time.</p>
+          </li>
+          <li class="ladder-rung r3">
+            <p class="ladder-num">Level 3</p>
+            <h3 class="ladder-name">Author.</h3>
+            <p class="ladder-line">Takes what AI gives and makes it theirs. Layers their voice, taste, and judgment. The work sounds like them, not the machine.</p>
+          </li>
+          <li class="ladder-rung r4">
+            <p class="ladder-num">Level 4</p>
+            <h3 class="ladder-name">Orchestrator.</h3>
+            <p class="ladder-line">Runs many AIs together. Picks the best from each. Turns common tasks into Agentic Skills. Makes something only they could make.</p>
+          </li>
+        </ol>
+        <p class="ladder-arrow">Quoter &rarr; Curator &rarr; Author &rarr; <span class="accent">Orchestrator</span></p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">07 &middot; The ladder</div>
+    </section>
+
+    <!-- ═══ 08 · The 15 habits ═══ -->
+    <section class="card-deck-card deck-slide slide-habits" data-slide="habits">
+      <div class="habits-content stagger">
+        <h1 class="habits-headline">The fifteen habits of <em>AI Thinking</em>.</h1>
+        <p class="habits-sub">Durable principles. True of AI in 2020, true today, true of whichever model ships in 2030.</p>
+        <ol class="habits-grid">
+          <li class="habit frame">
+            <p class="habit-num">01 &middot; Frame</p>
+            <p class="habit-title">Learn for the AI of tomorrow.</p>
+          </li>
+          <li class="habit frame">
+            <p class="habit-num">02 &middot; Frame</p>
+            <p class="habit-title">It is a communication problem.</p>
+          </li>
+          <li class="habit frame">
+            <p class="habit-num">03 &middot; Frame</p>
+            <p class="habit-title">Three moves, on repeat.</p>
+          </li>
+          <li class="habit choose">
+            <p class="habit-num">04 &middot; Choose</p>
+            <p class="habit-title">Pick the right AI for the task.</p>
+          </li>
+          <li class="habit comm">
+            <p class="habit-num">05 &middot; Communicate</p>
+            <p class="habit-title">Frame the conversation.</p>
+          </li>
+          <li class="habit comm">
+            <p class="habit-num">06 &middot; Communicate</p>
+            <p class="habit-title">Examples beat instructions.</p>
+          </li>
+          <li class="habit comm">
+            <p class="habit-num">07 &middot; Communicate</p>
+            <p class="habit-title">Ask AI to ask you questions.</p>
+          </li>
+          <li class="habit eval">
+            <p class="habit-num">08 &middot; Recursion</p>
+            <p class="habit-title">Ask AI for help with AI.</p>
+          </li>
+          <li class="habit eval">
+            <p class="habit-num">09 &middot; Evaluate</p>
+            <p class="habit-title">Iteration is everything.</p>
+          </li>
+          <li class="habit eval">
+            <p class="habit-num">10 &middot; Evaluate</p>
+            <p class="habit-title">Don't take the quick win.</p>
+          </li>
+          <li class="habit eval">
+            <p class="habit-num">11 &middot; Evaluate</p>
+            <p class="habit-title">Never trust one machine.</p>
+          </li>
+          <li class="habit eval">
+            <p class="habit-num">12 &middot; Evaluate</p>
+            <p class="habit-title">Always humanise the output.</p>
+          </li>
+          <li class="habit edge">
+            <p class="habit-num">13 &middot; Edge</p>
+            <p class="habit-title">Conviction. Art. Sense. Judgment.</p>
+          </li>
+          <li class="habit edge">
+            <p class="habit-num">14 &middot; Long game</p>
+            <p class="habit-title">Sessions become your playbook.</p>
+          </li>
+          <li class="habit edge">
+            <p class="habit-num">15 &middot; Mental model</p>
+            <p class="habit-title">Every task is one of three things.</p>
+          </li>
+        </ol>
+        <div class="habits-legend">
+          <div class="habits-legend-item"><span class="habits-legend-dot" style="background: var(--color-accent-red);"></span>Frame</div>
+          <div class="habits-legend-item"><span class="habits-legend-dot" style="background: var(--color-amber);"></span>Choose</div>
+          <div class="habits-legend-item"><span class="habits-legend-dot" style="background: var(--color-teal);"></span>Communicate</div>
+          <div class="habits-legend-item"><span class="habits-legend-dot" style="background: var(--color-purple);"></span>Evaluate</div>
+          <div class="habits-legend-item"><span class="habits-legend-dot" style="background: var(--color-navy);"></span>Edge</div>
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">08 &middot; The fifteen</div>
+    </section>
+
+    <!-- ═══ 09 · Format ═══ -->
+    <section class="card-deck-card deck-slide slide-format" data-slide="format">
+      <div class="format-content stagger">
+        <h1 class="format-headline">Format <em>at a glance</em>.</h1>
+        <div class="format-grid">
+          <div class="format-card">
+            <p class="format-label">Length</p>
+            <p class="format-value">60 minutes</p>
+            <p class="format-detail">One session.</p>
+          </div>
+          <div class="format-card">
+            <p class="format-label">Audience</p>
+            <p class="format-value">Grades 6 to 12</p>
+            <p class="format-detail">25 or fewer students per session.</p>
+          </div>
+          <div class="format-card">
+            <p class="format-label">After</p>
+            <p class="format-value">90-day plan</p>
+            <p class="format-detail">Pair partner, Skill library, Showcase Day.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">09 &middot; Format</div>
+    </section>
+
+    <!-- ═══ 10 · What students leave with ═══ -->
+    <section class="card-deck-card deck-slide slide-leave" data-slide="leave">
+      <div class="leave-content stagger">
+        <h1 class="leave-headline">What students <em>leave with</em>.</h1>
+        <div class="leave-grid">
+          <div class="leave-card c1">
+            <p class="leave-num">01</p>
+            <h3 class="leave-name">Their own Agentic Skill.</h3>
+            <p class="leave-body">A personal AI helper that does a task they care about, the way they like it done. Older students who code <em>build a Chrome extension instead</em>.</p>
+          </div>
+          <div class="leave-card c2">
+            <p class="leave-num">02</p>
+            <h3 class="leave-name">Every classmate's Skills, too.</h3>
+            <p class="leave-body">Each student leaves with the cohort's <em>whole library of Agentic Skills</em>, installable by all.</p>
+          </div>
+          <div class="leave-card c3">
+            <p class="leave-num">03</p>
+            <h3 class="leave-name">A pair partner.</h3>
+            <p class="leave-body">One classmate, committed to the same 90-day plan. <em>Weekly check-ins.</em></p>
+          </div>
+          <div class="leave-card c4">
+            <p class="leave-num">04</p>
+            <h3 class="leave-name">The AI Thinker's Cheat Sheet.</h3>
+            <p class="leave-body">All <em>fifteen habits</em>, on one page.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">10 &middot; Takeaways</div>
+    </section>
+
+    <!-- ═══ 11 · Showcase Day ═══ -->
+    <section class="card-deck-card deck-slide slide-showcase" data-slide="showcase">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <p class="showcase-eyebrow">The 90-day plan ends with</p>
+        <span class="showcase-week">Week 12.</span>
+        <h1 class="showcase-name">Showcase <em>Day.</em></h1>
+        <p class="showcase-body">The cohort comes back together to demo what they built and vote the <em>most valuable Agentic Skill</em> of the season.</p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">11 &middot; Showcase</div>
+    </section>
+
+    <!-- ═══ 12 · About ═══ -->
+    <section class="card-deck-card deck-slide slide-about" data-slide="about">
+      <div class="about-grid stagger">
+        <div>
+          <span class="mono-label">About me</span>
+          <h1 class="about-name">Shalin Shodhan</h1>
+          <p class="about-subtitle">20 years in games &amp; film.</p>
+          <ul class="about-credits">
+            <li>
+              <span class="credit-dot" style="background: #E94560;"></span>
+              <div class="credit-body">
+                <strong>Pixar Animation Studios</strong>
+                <span class="credit-detail">6 feature films &middot; 3 Academy Awards</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #7B61FF;"></span>
+              <div class="credit-body">
+                <strong>Electronic Arts &ndash; Spore</strong>
+                <span class="credit-detail">BAFTA Award for Technical Achievement</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #16C79A;"></span>
+              <div class="credit-body">
+                <strong>Lumosity</strong>
+                <span class="credit-detail">Principal Game Developer</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #F5A623;"></span>
+              <div class="credit-body">
+                <strong>Masala Games &ndash; Founder</strong>
+                <span class="credit-detail">Detective Dotson &middot; Word Mess (#1 in 21 countries)</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #0EA5E9;"></span>
+              <div class="credit-body">
+                <strong>Carnegie Mellon University</strong>
+                <span class="credit-detail">MET &ndash; Entertainment Technology</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div class="about-portrait">
+            <img src="/images/shalin.png" alt="Shalin Shodhan" />
+          </div>
+          <div class="about-email">shalin@masalagames.com</div>
+        </div>
+      </div>
+      <div class="poster-ticker">
+        <div class="poster-track">
+          <img src="/images/workshop/dotson_square.png" alt="Detective Dotson" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="Toy Story 3" />
+          <img src="/images/workshop/art_cars2.jpg" alt="Cars 2" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="Monsters University" />
+          <img src="/images/workshop/art_insideout.jpg" alt="Inside Out" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="Finding Dory" />
+          <img src="/images/workshop/spore_cover.webp" alt="Spore" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="Word Mess" />
+          <img src="/images/workshop/dotson_square.png" alt="" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="" />
+          <img src="/images/workshop/art_cars2.jpg" alt="" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="" />
+          <img src="/images/workshop/art_insideout.jpg" alt="" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="" />
+          <img src="/images/workshop/spore_cover.webp" alt="" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="" />
+        </div>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">12 &middot; About</div>
+    </section>
+
+    <!-- ═══ 13 · Thesis ═══ -->
+    <section class="card-deck-card deck-slide slide-thesis" data-slide="thesis">
+      <div class="thesis-content stagger">
+        <h1 class="thesis-headline">From a <em>Quoter of AI</em> to an <em>AI Thinker</em>: with the judgment to choose the right AI, use it when it helps, skip it when it doesn't, and let their own voice carry the work.</h1>
+        <p class="thesis-sub">That is what one workshop, fifteen habits, and a 90-day plan are built for.</p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">13 &middot; Thesis</div>
+    </section>
+
+    <!-- ═══ 14 · Close ═══ -->
+    <section class="card-deck-card deck-slide slide-close" data-slide="close">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <h1 class="close-wordmark"><span class="ai">AI</span> Thinking.</h1>
+        <p class="close-tagline">First principles for any AI, today and tomorrow.</p>
+        <p class="close-email">shalin@masalagames.com</p>
+      </div>
+      <div class="brand-mark">AI Thinking &middot; <span class="b-tag">First principles for any AI.</span></div>
+      <div class="slide-num">14 &middot; Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) {
+          kbdHint.classList.add('hidden');
+          hintHidden = true;
+        }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+</body>
+</html>
