@@ -1,0 +1,884 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>AI Thinking · A briefing for parents and educators</title>
+  <style>
+    /* ══════════════════════════════════════════════════════
+       AI Thinking · A briefing for parents and educators
+       Three A4 portrait pages.
+       Page 1: the pitch (Erhart spine).
+       Page 2: substance (ladder, mechanism, compounding, parent FAQ).
+       Page 3: the 15 habits + format + bio + footer.
+       ══════════════════════════════════════════════════════ */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #E5E2DC;
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body::before { display: none !important; }
+
+    .at-shell {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .at-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--color-cream);
+      box-shadow: 0 10px 40px rgba(15,52,96,0.12);
+      margin: 0 auto 1.25rem;
+      padding: 16mm 18mm 22mm;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .at-footer {
+      position: absolute;
+      bottom: 8mm;
+      left: 18mm;
+      right: 18mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      border-top: 1px solid rgba(26,26,46,0.08);
+      padding-top: 5mm;
+    }
+    .at-footer .brand { color: var(--color-deep); font-weight: 700; }
+    .at-footer .brand em { color: var(--color-teal); font-style: italic; font-weight: 600; letter-spacing: 0.05em; }
+    .at-footer .pageno { color: var(--color-subtle); }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body { background: var(--color-cream) !important; }
+      .at-shell { padding: 0; max-width: none; }
+      .at-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+      }
+      .at-page:last-of-type {
+        page-break-after: auto;
+        break-after: auto;
+      }
+      .screen-only { display: none !important; }
+    }
+
+    .print-hint {
+      max-width: 210mm;
+      margin: 0 auto 1.5rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(22,199,154,0.4);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-navy);
+    }
+    .print-hint kbd {
+      background: rgba(15,52,96,0.08);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+    .print-hint .accent { color: var(--color-teal); font-weight: 700; }
+
+    /* ─────────── Page 1 (the pitch) ─────────── */
+
+    .at-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.85rem;
+    }
+    .at-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 3.1rem;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      margin: 0 0 0.6rem;
+      color: var(--color-deep);
+    }
+    .at-tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.45;
+      color: var(--color-navy);
+      margin: 0 0 2rem;
+      max-width: 64ch;
+    }
+
+    .at-rule {
+      border: 0;
+      height: 1px;
+      background: rgba(26,26,46,0.1);
+      margin: 0 0 1.25rem;
+    }
+
+    .at-step-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.45rem;
+    }
+
+    .at-step1-line {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0 0 1.6rem;
+      max-width: 70ch;
+    }
+    .at-step1-line em { color: var(--color-teal); font-style: italic; }
+
+    .at-trap-line {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.4rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--color-accent-red);
+      margin: 0 0 0.85rem;
+    }
+    .at-step2-body p {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 0.7rem;
+      max-width: 72ch;
+    }
+    .at-step2-body p em {
+      font-style: italic;
+      color: var(--color-navy);
+      font-weight: 600;
+    }
+
+    .at-step3-block {
+      margin-top: 1.25rem;
+      padding: 1rem 1.25rem 1.05rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 0 10px 10px 0;
+    }
+    .at-step3-lead {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0 0 0.55rem;
+    }
+    .at-step3-lead .name { color: var(--color-teal); }
+    .at-step3-body {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .at-step3-body em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    .at-step3-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem;
+      margin: 0.65rem 0 0.7rem;
+    }
+    .at-step3-cell {
+      padding: 0.55rem 0.7rem 0.6rem;
+      background: var(--color-cream);
+      border-radius: 6px;
+      border-left: 2px solid var(--color-teal);
+    }
+    .at-step3-cell-label {
+      font-family: var(--font-mono);
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.18rem;
+    }
+    .at-step3-cell-value {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.95rem;
+      line-height: 1.2;
+      color: var(--color-deep);
+      margin: 0 0 0.18rem;
+    }
+    .at-step3-cell-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.7rem;
+      line-height: 1.35;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .at-step3-closer {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .at-step3-closer em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ─────────── Page 2 (substance) ─────────── */
+
+    .at-section {
+      margin: 0 0 1.25rem;
+    }
+    .at-section:last-child { margin-bottom: 0; }
+
+    .at-h2 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      color: var(--color-deep);
+      margin: 0 0 0.6rem;
+    }
+    .at-h2 em { color: var(--color-teal); font-style: italic; }
+
+    .at-section-intro {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.85rem;
+      max-width: 72ch;
+    }
+
+    .at-ladder {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+    .at-rung {
+      padding: 0.7rem 0.75rem 0.8rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border-top: 4px solid;
+      position: relative;
+    }
+    .at-rung.r1 { border-color: var(--color-accent-red); }
+    .at-rung.r2 { border-color: var(--color-amber); }
+    .at-rung.r3 { border-color: var(--color-teal); }
+    .at-rung.r4 { border-color: var(--color-purple); }
+    .at-rung-num {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 0.2rem;
+    }
+    .at-rung-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.3rem;
+    }
+    .at-rung.r1 .at-rung-name { color: var(--color-accent-red); }
+    .at-rung.r2 .at-rung-name { color: var(--color-amber); }
+    .at-rung.r3 .at-rung-name { color: var(--color-teal); }
+    .at-rung.r4 .at-rung-name { color: var(--color-purple); }
+    .at-rung-line {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      margin: 0;
+    }
+
+    .at-mech-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+    .at-mech {
+      padding: 0.65rem 0.85rem 0.75rem;
+      background: var(--color-warm-white);
+      border-left: 3px solid var(--color-navy);
+      border-radius: 0 6px 6px 0;
+    }
+    .at-mech-q {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-navy);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      margin: 0 0 0.3rem;
+      font-weight: 600;
+    }
+    .at-mech-a {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .at-mech-a em { color: var(--color-teal); font-style: italic; font-weight: 600; }
+
+    .at-callout {
+      padding: 0.85rem 1.1rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-purple);
+      border-radius: 0 8px 8px 0;
+    }
+    .at-callout p {
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.5rem;
+    }
+    .at-callout p:last-child { margin-bottom: 0; }
+    .at-callout p em { color: var(--color-purple); font-style: italic; font-weight: 600; }
+    .at-callout strong { color: var(--color-deep); font-weight: 800; }
+
+    .at-leave-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem 1rem;
+    }
+    .at-leave-list li {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+      padding-left: 0.85rem;
+      position: relative;
+    }
+    .at-leave-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 5px;
+      height: 5px;
+      background: var(--color-teal);
+      border-radius: 50%;
+    }
+    .at-leave-list li strong { color: var(--color-navy); font-weight: 700; }
+
+    .at-faq {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem 1rem;
+    }
+    .at-faq-row {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+    }
+    .at-faq-row strong {
+      display: block;
+      color: var(--color-navy);
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .at-showcase {
+      margin: 1rem 0 0;
+      padding: 0.85rem 1.2rem 0.95rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-purple);
+      border-radius: 0 10px 10px 0;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 1.4rem;
+      align-items: center;
+    }
+    .at-showcase-when {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-purple);
+      line-height: 1.2;
+    }
+    .at-showcase-when strong {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      text-transform: none;
+      letter-spacing: -0.02em;
+      margin-top: 0.25rem;
+    }
+    .at-showcase-body {
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+    }
+    .at-showcase-body em {
+      color: var(--color-purple);
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    /* ─────────── Page 3 (habits + bio) ─────────── */
+
+    .at-habits {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.45rem 0.65rem;
+    }
+    .at-habit {
+      padding: 0.55rem 0.7rem 0.6rem;
+      background: var(--color-warm-white);
+      border-radius: 6px;
+      border-left: 3px solid var(--color-teal);
+    }
+    .at-habit.axis-frame { border-color: var(--color-accent-red); }
+    .at-habit.axis-choose { border-color: var(--color-amber); }
+    .at-habit.axis-comm { border-color: var(--color-teal); }
+    .at-habit.axis-eval { border-color: var(--color-purple); }
+    .at-habit.axis-edge { border-color: var(--color-navy); }
+    .at-habit-num {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--color-subtle);
+      text-transform: uppercase;
+      margin: 0 0 0.15rem;
+    }
+    .at-habit-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.82rem;
+      line-height: 1.2;
+      color: var(--color-deep);
+      margin: 0 0 0.2rem;
+    }
+    .at-habit-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.7rem;
+      line-height: 1.35;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    .at-format {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem;
+      margin: 0 0 1.1rem;
+    }
+    .at-format-cell {
+      padding: 0.55rem 0.7rem 0.6rem;
+      background: var(--color-warm-white);
+      border-radius: 6px;
+      border-top: 2px solid var(--color-teal);
+    }
+    .at-format-label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.18rem;
+    }
+    .at-format-value {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .at-format-value small {
+      display: block;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 0.7rem;
+      color: var(--color-subtle);
+      margin-top: 0.15rem;
+    }
+
+    .at-bio {
+      padding: 0.95rem 1.15rem 1.05rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-navy);
+      border-radius: 0 8px 8px 0;
+    }
+    .at-bio p {
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.55rem;
+    }
+    .at-bio p:last-child { margin-bottom: 0; }
+    .at-bio p strong { color: var(--color-navy); font-weight: 800; }
+    .at-bio p em { color: var(--color-teal); font-style: italic; font-weight: 600; }
+    .at-bio .thesis {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      font-weight: 600;
+    }
+
+    .at-closer {
+      margin: 1.25rem 0 0;
+      padding: 0.9rem 1.2rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 0 10px 10px 0;
+    }
+    .at-closer p {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .at-closer p em { color: var(--color-teal); font-style: italic; }
+
+  </style>
+</head>
+<body>
+
+  <div class="at-shell">
+
+    <div class="print-hint screen-only">
+      <span class="accent">Print to PDF &rarr;</span>
+      Press <kbd>&#8984; P</kbd> (or <kbd>Ctrl + P</kbd>). Choose <strong>Save as PDF</strong>. Margins <strong>None</strong>. Background graphics <strong>on</strong>.
+    </div>
+
+    <!-- ════════════════════ PAGE 1 ════════════════════ -->
+    <div class="at-page">
+      <p class="at-eyebrow">A briefing for parents and educators</p>
+      <h1 class="at-title">AI Thinking.</h1>
+      <p class="at-tagline">First principles for any AI, today and tomorrow.</p>
+
+      <hr class="at-rule" />
+
+      <p class="at-step-label">Step 1 &middot; Who it is for</p>
+      <p class="at-step1-line">
+        We teach grades 6 through 12 to think about AI from <em>first principles</em>, so they can effectively use any AI, today or in the future, without losing their own thinking along the way.
+      </p>
+
+      <p class="at-step-label">Step 2 &middot; The problem</p>
+      <p class="at-trap-line">Using AI tools isn't thinking.</p>
+      <div class="at-step2-body">
+        <p>
+          AI education focuses on tool use. Unfortunately, in this mode the child is no better at thinking than before.
+        </p>
+        <p>
+          AI itself keeps changing. The model your students will use in five years does not exist yet. A workshop built around today's tools will be obsolete by the time they graduate.
+        </p>
+        <p>
+          By then, AI use will be assumed in everything. Teachers and employers won't ask whether AI was involved. They will ask what <em>the student</em> added on top.
+        </p>
+        <p>
+          The students winning at AI think about it from first principles. Why it agrees when you are wrong. Why it invents things. Why it sounds like itself. Why long conversations decay. Understand the why and you can direct any AI well. <em>That understanding outlasts every tool.</em>
+        </p>
+      </div>
+
+      <div class="at-step3-block">
+        <p class="at-step-label" style="margin-bottom: 0.3rem;">Step 3 &middot; What we teach</p>
+        <p class="at-step3-lead">
+          That is what we teach. We call it <span class="name">AI Thinking</span>.
+        </p>
+        <div class="at-step3-grid">
+          <div class="at-step3-cell">
+            <p class="at-step3-cell-label">The principles</p>
+            <p class="at-step3-cell-value">15 habits</p>
+            <p class="at-step3-cell-sub">Durable across every tool</p>
+          </div>
+          <div class="at-step3-cell">
+            <p class="at-step3-cell-label">The workshop</p>
+            <p class="at-step3-cell-value">60 minutes</p>
+            <p class="at-step3-cell-sub">Grades 6 through 12</p>
+          </div>
+          <div class="at-step3-cell">
+            <p class="at-step3-cell-label">After the workshop</p>
+            <p class="at-step3-cell-value">90-day plan</p>
+            <p class="at-step3-cell-sub">Pair partner, Skill library, Showcase Day</p>
+          </div>
+        </div>
+        <p class="at-step3-closer">
+          Students approach AI through 15 principles and leave with a 90-day plan to go from a <em>Quoter of AI</em> to an <em>AI Thinker</em> with the judgment to choose the right AI, use it when it helps, skip it when it doesn't, and let their own voice carry the work.
+        </p>
+      </div>
+
+      <div class="at-footer">
+        <span class="brand">AI Thinking</span>
+        <span class="pageno">Page 1 of 3</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════ PAGE 2 ════════════════════ -->
+    <div class="at-page">
+
+      <div class="at-section">
+        <h2 class="at-h2">The four levels of <em>AI Thinking</em>.</h2>
+        <p class="at-section-intro">
+          The workshop and 90-day plan are designed to move them up a few levels.
+        </p>
+        <ol class="at-ladder">
+          <li class="at-rung r1">
+            <p class="at-rung-num">Level 1</p>
+            <p class="at-rung-name">Quoter</p>
+            <p class="at-rung-line">Copies AI output and submits it as their own. The shortcut. Looks easy. Teaches nothing.</p>
+          </li>
+          <li class="at-rung r2">
+            <p class="at-rung-num">Level 2</p>
+            <p class="at-rung-name">Curator</p>
+            <p class="at-rung-line">Knows which AI is best for which job. Writing one. Research another. Picture-making another. Picks the right tool every time.</p>
+          </li>
+          <li class="at-rung r3">
+            <p class="at-rung-num">Level 3</p>
+            <p class="at-rung-name">Author</p>
+            <p class="at-rung-line">Takes what AI gives and makes it theirs. Layers their voice, taste, and judgment. The work sounds like them, not the machine.</p>
+          </li>
+          <li class="at-rung r4">
+            <p class="at-rung-num">Level 4</p>
+            <p class="at-rung-name">Orchestrator</p>
+            <p class="at-rung-line">Runs many AIs together. Picks the best from each. Turns common tasks into Agentic Skills. Makes something only they could make.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="at-section">
+        <h2 class="at-h2">The thinking we teach. <em>Why AI behaves the way it does.</em></h2>
+        <p class="at-section-intro">
+          Most workshops show students <em>what</em> AI does. AI Thinking shows them <em>why</em>, because the why is what transfers from one model to the next.
+        </p>
+        <div class="at-mech-grid">
+          <div class="at-mech">
+            <p class="at-mech-q">Why does AI agree with you when you are wrong?</p>
+            <p class="at-mech-a">Sycophancy. Students learn to ask in ways that <em>invite honest pushback.</em></p>
+          </div>
+          <div class="at-mech">
+            <p class="at-mech-q">Why does AI invent things confidently?</p>
+            <p class="at-mech-a">Pattern completion, not knowledge retrieval. Students learn <em>when to trust and when to cross-check.</em></p>
+          </div>
+          <div class="at-mech">
+            <p class="at-mech-q">Why does AI output always sound like AI?</p>
+            <p class="at-mech-a">Trained on the average of polished writing, and that average has a recognisable voice. Students learn to <em>break out with examples, their own taste, and by never shipping the first draft.</em></p>
+          </div>
+          <div class="at-mech">
+            <p class="at-mech-q">Why does a long conversation get worse over time?</p>
+            <p class="at-mech-a">Context window decay. Students learn to <em>summarise, restart, and structure conversations that don't degrade.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="at-section">
+        <h2 class="at-h2">What students leave with.</h2>
+        <ul class="at-leave-list">
+          <li><strong>Their own Agentic Skill.</strong> A personal AI helper that does a task they care about, the way they like it done. Older students who code build a Chrome extension instead.</li>
+          <li><strong>Every classmate's Skills, too.</strong> Each student leaves with the cohort's whole library of Agentic Skills, installable by all.</li>
+          <li><strong>A pair partner.</strong> One classmate, committed to the same 90-day plan. Weekly check-ins.</li>
+          <li><strong>The AI Thinker's Cheat Sheet.</strong> All fifteen habits, on one page.</li>
+        </ul>
+        <div class="at-showcase">
+          <div class="at-showcase-when">
+            Week 12
+            <strong>Showcase Day.</strong>
+          </div>
+          <div class="at-showcase-body">
+            The cohort comes back together to demo what they built and vote the <em>most valuable Agentic Skill</em> of the season.
+          </div>
+        </div>
+      </div>
+
+      <div class="at-footer">
+        <span class="brand">AI Thinking</span>
+        <span class="pageno">Page 2 of 3</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════ PAGE 3 ════════════════════ -->
+    <div class="at-page">
+
+      <div class="at-section">
+        <h2 class="at-h2">The fifteen habits of <em>AI Thinking</em>.</h2>
+        <p class="at-section-intro">
+          The durable principles. True of AI in 2020, true today, true of whichever model ships in 2030. Internalise these and you can direct any AI well.
+        </p>
+        <ol class="at-habits">
+          <li class="at-habit axis-frame">
+            <p class="at-habit-num">01 &middot; Frame</p>
+            <p class="at-habit-title">Learn for the AI of tomorrow.</p>
+            <p class="at-habit-sub">Build around approach, not tools.</p>
+          </li>
+          <li class="at-habit axis-frame">
+            <p class="at-habit-num">02 &middot; Frame</p>
+            <p class="at-habit-title">It is a communication problem.</p>
+            <p class="at-habit-sub">Not a technical one.</p>
+          </li>
+          <li class="at-habit axis-frame">
+            <p class="at-habit-num">03 &middot; Frame</p>
+            <p class="at-habit-title">Three moves, on repeat.</p>
+            <p class="at-habit-sub">Choose, communicate, evaluate.</p>
+          </li>
+          <li class="at-habit axis-choose">
+            <p class="at-habit-num">04 &middot; Choose</p>
+            <p class="at-habit-title">Pick the right AI for the task.</p>
+            <p class="at-habit-sub">When in doubt, ask AI which AI to use.</p>
+          </li>
+          <li class="at-habit axis-comm">
+            <p class="at-habit-num">05 &middot; Communicate</p>
+            <p class="at-habit-title">Don't perfect the prompt. Frame the conversation.</p>
+            <p class="at-habit-sub">The session is the unit, not the message.</p>
+          </li>
+          <li class="at-habit axis-comm">
+            <p class="at-habit-num">06 &middot; Communicate</p>
+            <p class="at-habit-title">Great examples beat great instructions.</p>
+            <p class="at-habit-sub">Show what good looks like. Show what bad looks like.</p>
+          </li>
+          <li class="at-habit axis-comm">
+            <p class="at-habit-num">07 &middot; Communicate</p>
+            <p class="at-habit-title">Ask AI to ask you questions.</p>
+            <p class="at-habit-sub">Socratic beats one-shot. Every single time.</p>
+          </li>
+          <li class="at-habit axis-eval">
+            <p class="at-habit-num">08 &middot; Recursion</p>
+            <p class="at-habit-title">Ask AI for help with AI.</p>
+            <p class="at-habit-sub">Use the machines on each other.</p>
+          </li>
+          <li class="at-habit axis-eval">
+            <p class="at-habit-num">09 &middot; Evaluate</p>
+            <p class="at-habit-title">Iteration is everything.</p>
+            <p class="at-habit-sub">Three to five passes. Every time.</p>
+          </li>
+          <li class="at-habit axis-eval">
+            <p class="at-habit-num">10 &middot; Evaluate</p>
+            <p class="at-habit-title">Don't take the quick win.</p>
+            <p class="at-habit-sub">Push back. Ask what it is holding back.</p>
+          </li>
+          <li class="at-habit axis-eval">
+            <p class="at-habit-num">11 &middot; Evaluate</p>
+            <p class="at-habit-title">Never trust one machine.</p>
+            <p class="at-habit-sub">Same task, three models, compare.</p>
+          </li>
+          <li class="at-habit axis-eval">
+            <p class="at-habit-num">12 &middot; Evaluate</p>
+            <p class="at-habit-title">Always humanise the output.</p>
+            <p class="at-habit-sub">Nothing ships raw. Layer your own twenty per cent.</p>
+          </li>
+          <li class="at-habit axis-edge">
+            <p class="at-habit-num">13 &middot; Edge</p>
+            <p class="at-habit-title">Conviction. Art. Sense. Judgment.</p>
+            <p class="at-habit-sub">These come from you, not the machine.</p>
+          </li>
+          <li class="at-habit axis-edge">
+            <p class="at-habit-num">14 &middot; Long game</p>
+            <p class="at-habit-title">Your sessions become your playbook.</p>
+            <p class="at-habit-sub">The conversations are the corpus. Guard them.</p>
+          </li>
+          <li class="at-habit axis-edge">
+            <p class="at-habit-num">15 &middot; Mental model</p>
+            <p class="at-habit-title">Every AI task is one of three things.</p>
+            <p class="at-habit-sub">Know (information), Do (action), Show (artefact).</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="at-section">
+        <h2 class="at-h2">Format at a glance.</h2>
+        <div class="at-format">
+          <div class="at-format-cell">
+            <p class="at-format-label">Length</p>
+            <p class="at-format-value">60 minutes<small>One session</small></p>
+          </div>
+          <div class="at-format-cell">
+            <p class="at-format-label">Audience</p>
+            <p class="at-format-value">Grades 6 to 12<small>25 or fewer students per session</small></p>
+          </div>
+          <div class="at-format-cell">
+            <p class="at-format-label">After</p>
+            <p class="at-format-value">90-day plan<small>Pair partner, Skill library, Showcase Day</small></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="at-section">
+        <h2 class="at-h2">Who is behind it.</h2>
+        <div class="at-bio">
+          <p>
+            <strong>Shalin Shodhan</strong> has spent twenty years across games, film, and education. At Pixar he contributed to six animated features, including <em>Toy Story 3</em> and <em>Inside Out</em>, three of which won Academy Awards. At Electronic Arts he helped build <em>Spore</em>, which won the BAFTA for Best Game. He went on to design learning software at Lumosity and Osmo, and now runs his own studio Masala Games, makers of <em>Word Mess</em>. He studied at Carnegie Mellon and is the author of the interactive AI curriculum, <em>Talking to Machines</em>.
+          </p>
+        </div>
+      </div>
+
+      <div class="at-footer">
+        <span class="brand">AI Thinking</span>
+        <span class="pageno">Page 3 of 3</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
