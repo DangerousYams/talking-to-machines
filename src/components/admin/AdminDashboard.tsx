@@ -376,7 +376,15 @@ function AdminDashboardInner() {
             Talking to Machines — Admin
           </h1>
           <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0 }}>
-            Analytics & management
+            Analytics & management ·{' '}
+            <a
+              href="/artifacts"
+              target="_blank"
+              rel="noopener"
+              style={{ color: '#F5A623', textDecoration: 'none', fontWeight: 600 }}
+            >
+              Artifacts index ↗
+            </a>
           </p>
         </div>
 

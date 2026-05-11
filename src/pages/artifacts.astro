@@ -1,0 +1,476 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+interface Artifact {
+  title: string;
+  desc: string;
+  href?: string;     // public URL
+  path?: string;     // file path (for things that aren't web routes)
+  tag: string;       // small label e.g. "Page", "PDF", "Slides", "Form", "Admin", "Skill", "iOS"
+}
+
+interface Section {
+  key: 'cai' | 'web' | 'course' | 'api' | 'native' | 'finwizz';
+  title: string;
+  blurb: string;
+  items: Artifact[];
+}
+
+const sections: Section[] = [
+  {
+    key: 'cai',
+    title: 'Cultivated AI',
+    blurb: 'Owner-facing briefings, the pitch deck, and persona-driven variants.',
+    items: [
+      { title: 'Owner brief, generic', desc: 'Procurement Priya. The source-of-truth layout.', href: '/cultivated-ai/for-owners', tag: 'PDF' },
+      { title: 'Owner brief, Finwizz', desc: 'Priya, Head of Credit at Finwizz NBFC.', href: '/cultivated-ai/for-owners/finwizz', tag: 'PDF' },
+      { title: 'Pitch slides', desc: 'Programme overview deck. Default (procurement Priya).', href: '/cultivated-ai', tag: 'Slides' },
+      { title: 'Pitch slides, Finwizz', desc: 'Persona-driven pitch for Priya at Finwizz.', href: '/cultivated-ai/pitch/finwizz', tag: 'Slides' },
+      { title: 'Presenter view', desc: 'Pitch with speaker notes.', href: '/cultivated-ai/presenter', tag: 'Slides' },
+      { title: 'Leave-behind', desc: 'One-pager for after the conversation.', href: '/cultivated-ai/leave-behind', tag: 'PDF' },
+      { title: 'AIA Engineering addendum', desc: 'Marketing and reach questions, mapped to the four stages.', href: '/cultivated-ai/addendum-aia', tag: 'PDF' },
+      { title: 'Positioning doc', desc: 'Programme positioning notes.', path: '/aic/cultivated-ai-positioning.md', tag: 'Doc' },
+    ],
+  },
+  {
+    key: 'web',
+    title: 'Talking to Machines, website',
+    blurb: 'The eleven-chapter scrollytelling experience and its supporting pages.',
+    items: [
+      { title: 'Landing', desc: 'Table of contents.', href: '/', tag: 'Page' },
+      { title: 'Chapter 1, You Already Speak AI', desc: '', href: '/ch1', tag: 'Chapter' },
+      { title: 'Chapter 2, The Art of Asking', desc: '', href: '/ch2', tag: 'Chapter' },
+      { title: 'Chapter 3, Context Engineering', desc: '', href: '/ch3', tag: 'Chapter' },
+      { title: 'Chapter 4, The AI Landscape', desc: '', href: '/ch4', tag: 'Chapter' },
+      { title: 'Chapter 5, Give It Tools', desc: '', href: '/ch5', tag: 'Chapter' },
+      { title: 'Chapter 6, Building Agents', desc: '', href: '/ch6', tag: 'Chapter' },
+      { title: 'Chapter 7, Mastering Claude Code', desc: '', href: '/ch7', tag: 'Chapter' },
+      { title: 'Chapter 8, Orchestrating Complexity', desc: '', href: '/ch8', tag: 'Chapter' },
+      { title: 'Chapter 9, When AI Gets It Wrong', desc: '', href: '/ch9', tag: 'Chapter' },
+      { title: 'Chapter 10, The Human Edge', desc: '', href: '/ch10', tag: 'Chapter' },
+      { title: 'Chapter 11, Build Something Real', desc: '', href: '/ch11', tag: 'Chapter' },
+      { title: 'Field guide', desc: 'Companion reference.', href: '/field-guide', tag: 'Page' },
+      { title: 'Toolbox', desc: 'Curated AI tools list.', href: '/toolbox', tag: 'Page' },
+      { title: 'Tools', desc: 'Alt tools surface.', href: '/tools', tag: 'Page' },
+      { title: 'Playbook', desc: 'Reader playbook.', href: '/playbook', tag: 'Page' },
+      { title: 'Personalize', desc: 'Reader personalisation flow.', href: '/personalize', tag: 'Page' },
+      { title: 'Restore access', desc: 'Restore purchases / device unlock.', href: '/restore', tag: 'Page' },
+      { title: 'Success', desc: 'Post-checkout landing.', href: '/success', tag: 'Page' },
+      { title: 'GoTTM link redirector', desc: '', href: '/gottm-link', tag: 'Util' },
+      { title: 'Absolutely You’re Right', desc: 'Aside / easter egg.', href: '/absolutely-youre-right', tag: 'Page' },
+      { title: 'Locales', desc: '18 translations: ar, bn, de, es, fr, gu, hi, id, ja, kn, ko, mr, pt, ta, te, tr, vi, zh.', path: 'src/pages/<locale>/', tag: 'i18n' },
+      { title: 'Share cards', desc: '9 variants for LinkedIn / takeaways exports.', path: 'src/pages/share-card-*.astro', tag: 'Asset' },
+    ],
+  },
+  {
+    key: 'course',
+    title: 'Zoom course, three days',
+    blurb: 'Signup, slide decks, intro survey, feedback form, and admin dashboards.',
+    items: [
+      { title: 'Course signup', desc: 'Public landing for the cohort.', href: '/course', tag: 'Page' },
+      { title: 'Workshop signup', desc: 'Alt signup surface.', href: '/workshop', tag: 'Page' },
+      { title: 'Day 1 slides', desc: '', href: '/workshop-day1', tag: 'Slides' },
+      { title: 'Day 1 presenter', desc: 'Speaker view.', href: '/workshop-day1/presenter', tag: 'Slides' },
+      { title: 'Day 2 slides', desc: '', href: '/workshop-day2', tag: 'Slides' },
+      { title: 'Day 3 slides', desc: '', href: '/workshop-day3', tag: 'Slides' },
+      { title: 'Intro survey', desc: 'Pre-course participant survey.', href: '/courseintro', tag: 'Form' },
+      { title: 'Intro survey admin', desc: 'Responses dashboard.', href: '/courseintro/dashboard', tag: 'Admin' },
+      { title: 'Feedback form', desc: 'Post-workshop feedback.', href: '/workshopfeedback', tag: 'Form' },
+      { title: 'Feedback admin', desc: 'Responses dashboard.', href: '/workshopfeedback/dashboard', tag: 'Admin' },
+      { title: 'Master admin', desc: 'Top-level admin console.', href: '/admin', tag: 'Admin' },
+    ],
+  },
+  {
+    key: 'api',
+    title: 'API and backend',
+    blurb: 'Serverless routes that power the website and course flows.',
+    items: [
+      { title: '/api/chat', desc: 'Claude proxy with streaming.', path: 'src/pages/api/chat.ts', tag: 'API' },
+      { title: '/api/create-checkout', desc: 'Stripe checkout session.', path: 'src/pages/api/create-checkout.ts', tag: 'API' },
+      { title: '/api/stripe-webhook', desc: 'Stripe payment webhook.', path: 'src/pages/api/stripe-webhook.ts', tag: 'API' },
+      { title: '/api/redeem-code', desc: 'Cohort / promo code redemption.', path: 'src/pages/api/redeem-code.ts', tag: 'API' },
+      { title: '/api/unlock', desc: 'Unlock paid content.', path: 'src/pages/api/unlock.ts', tag: 'API' },
+      { title: '/api/devices', desc: 'Device management.', path: 'src/pages/api/devices.ts', tag: 'API' },
+      { title: '/api/refresh-token', desc: 'Auth token refresh.', path: 'src/pages/api/refresh-token.ts', tag: 'API' },
+      { title: '/api/request-restore', desc: 'Initiate purchase restore.', path: 'src/pages/api/request-restore.ts', tag: 'API' },
+      { title: '/api/restore', desc: 'Complete restore.', path: 'src/pages/api/restore.ts', tag: 'API' },
+      { title: '/api/verify-apple-receipt', desc: 'iOS IAP verification.', path: 'src/pages/api/verify-apple-receipt.ts', tag: 'API' },
+      { title: '/api/feed/*', desc: 'Feed endpoints.', path: 'src/pages/api/feed/', tag: 'API' },
+      { title: '/api/admin/*', desc: 'Admin endpoints.', path: 'src/pages/api/admin/', tag: 'API' },
+    ],
+  },
+  {
+    key: 'native',
+    title: 'iOS port',
+    blurb: 'Native Swift port of the chapter experience.',
+    items: [
+      { title: 'Xcode project', desc: 'Full iOS app workspace.', path: '/aic/talking-to-machines-ios/TalkingToMachines.xcodeproj', tag: 'iOS' },
+      { title: 'App / Core / Features', desc: 'Source folders.', path: '/aic/talking-to-machines-ios/{App,Core,Features,Packages}', tag: 'iOS' },
+      { title: 'Tests + UITests', desc: 'Test bundles.', path: '/aic/talking-to-machines-ios/{Tests,UITests}', tag: 'iOS' },
+      { title: 'extract_translations.mjs', desc: 'i18n extraction tool.', path: '/aic/talking-to-machines-ios/extract_translations.mjs', tag: 'Script' },
+    ],
+  },
+  {
+    key: 'finwizz',
+    title: 'Finwizz demo',
+    blurb: 'NBFC underwriting demo: skill, sample inputs, and generated outputs.',
+    items: [
+      { title: 'README', desc: 'Demo overview.', path: '/aic/finwizz-demo/README.md', tag: 'Doc' },
+      { title: 'credit-memo-drafter skill', desc: 'Priya’s underwriting workflow as an agentic skill.', path: '/aic/finwizz-demo/.claude/skills/credit-memo-drafter/', tag: 'Skill' },
+      { title: 'Sample inputs', desc: 'LAF, KYC, bank statements, bureau reports.', path: '/aic/finwizz-demo/inputs/', tag: 'Data' },
+      { title: 'Expected output', desc: 'Reference memo for evaluation.', path: '/aic/finwizz-demo/expected-output/', tag: 'Data' },
+      { title: 'Generated output', desc: 'Memos drafted by the skill.', path: '/aic/finwizz-demo/output/', tag: 'Data' },
+    ],
+  },
+];
+
+const sectionAccent: Record<Section['key'], string> = {
+  cai: 'var(--color-amber)',
+  web: 'var(--color-accent-red)',
+  course: 'var(--color-purple)',
+  api: 'var(--color-teal)',
+  native: 'var(--color-sky)',
+  finwizz: 'var(--color-navy)',
+};
+
+const tagColor: Record<string, string> = {
+  PDF: 'var(--color-amber)',
+  Slides: 'var(--color-purple)',
+  Page: 'var(--color-accent-red)',
+  Chapter: 'var(--color-accent-red)',
+  Form: 'var(--color-teal)',
+  Admin: 'var(--color-deep)',
+  API: 'var(--color-teal)',
+  Skill: 'var(--color-navy)',
+  Data: 'var(--color-navy)',
+  Doc: 'var(--color-subtle)',
+  iOS: 'var(--color-sky)',
+  Script: 'var(--color-sky)',
+  Asset: 'var(--color-purple)',
+  i18n: 'var(--color-purple)',
+  Util: 'var(--color-subtle)',
+  HTML: 'var(--color-subtle)',
+};
+
+const totalCount = sections.reduce((n, s) => n + s.items.length, 0);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Artifacts &middot; Cultivated AI / Talking to Machines</title>
+  <style>
+    body {
+      background: var(--color-cream);
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      margin: 0;
+      padding: 0;
+    }
+    body::before { display: none !important; }
+
+    .ar-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .ar-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 0.6rem;
+    }
+    .ar-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+    }
+    .ar-title em { color: var(--color-accent-red); font-style: italic; }
+    .ar-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      margin: 0 0 0.4rem;
+      max-width: 70ch;
+    }
+    .ar-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .ar-divider {
+      height: 1px;
+      background: rgba(26,26,46,0.1);
+      margin: 2.5rem 0 0;
+    }
+
+    .ar-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin: 1.75rem 0 0;
+    }
+    .ar-toc a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-deep);
+      text-decoration: none;
+      padding: 0.35rem 0.7rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.1);
+      border-radius: 999px;
+      transition: all 0.15s ease;
+    }
+    .ar-toc a:hover {
+      border-color: var(--color-accent-red);
+      color: var(--color-accent-red);
+    }
+    .ar-toc a .count {
+      color: var(--color-subtle);
+      margin-left: 0.4rem;
+    }
+
+    .ar-section {
+      margin: 3.5rem 0 0;
+      scroll-margin-top: 1rem;
+    }
+    .ar-section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.85rem;
+      margin: 0 0 0.4rem;
+      flex-wrap: wrap;
+    }
+    .ar-section-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .ar-section-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .ar-section-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-subtle);
+      margin-left: auto;
+    }
+    .ar-section-blurb {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0 0 1.25rem;
+      max-width: 70ch;
+    }
+    .ar-section-rule {
+      height: 3px;
+      width: 56px;
+      border-radius: 2px;
+      margin: 0 0 1rem;
+    }
+
+    .ar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.7rem;
+    }
+
+    .ar-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.95rem 1.1rem 1rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: all 0.18s ease;
+      overflow: hidden;
+    }
+    .ar-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent, var(--color-subtle));
+      opacity: 0.5;
+      transition: opacity 0.18s ease;
+    }
+    .ar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15,52,96,0.08);
+      border-color: rgba(26,26,46,0.18);
+    }
+    .ar-card:hover::before { opacity: 1; }
+    .ar-card.is-path { cursor: default; }
+    .ar-card.is-path:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: rgba(26,26,46,0.08);
+    }
+    .ar-card.is-path:hover::before { opacity: 0.5; }
+
+    .ar-card-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      justify-content: space-between;
+    }
+    .ar-card-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.25;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .ar-card-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--tag, var(--color-subtle));
+      padding: 0.2rem 0.45rem;
+      background: rgba(26,26,46,0.04);
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .ar-card-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .ar-card-desc:empty { display: none; }
+    .ar-card-href {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-navy);
+      margin-top: 0.15rem;
+      word-break: break-all;
+    }
+    .ar-card-path {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--color-subtle);
+      margin-top: 0.15rem;
+      word-break: break-all;
+    }
+
+    .ar-foot {
+      margin: 4rem 0 0;
+      padding: 1.25rem 0 0;
+      border-top: 1px solid rgba(26,26,46,0.1);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .ar-foot .brand { color: var(--color-deep); font-weight: 700; }
+    .ar-foot .brand em { color: var(--color-amber); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="ar-shell">
+
+    <p class="ar-eyebrow">Internal index</p>
+    <h1 class="ar-title">Artifacts, <em>one place</em>.</h1>
+    <p class="ar-sub">Every output across Cultivated AI, the Talking to Machines website and Zoom course, the iOS port, and the Finwizz demo. Click to open. Internal use, not indexed.</p>
+    <p class="ar-meta">{totalCount} artifacts &middot; {sections.length} sections &middot; updated 2026-05-11</p>
+
+    <nav class="ar-toc" aria-label="Sections">
+      {sections.map((s) => (
+        <a href={`#${s.key}`}>
+          {s.title}<span class="count">{s.items.length}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="ar-divider"></div>
+
+    {sections.map((section, idx) => (
+      <section class="ar-section" id={section.key}>
+        <div class="ar-section-rule" style={`background: ${sectionAccent[section.key]}`}></div>
+        <div class="ar-section-head">
+          <span class="ar-section-num" style={`color: ${sectionAccent[section.key]}`}>
+            {String(idx + 1).padStart(2, '0')}
+          </span>
+          <h2 class="ar-section-name">{section.title}</h2>
+          <span class="ar-section-count">{section.items.length} items</span>
+        </div>
+        <p class="ar-section-blurb">{section.blurb}</p>
+
+        <div class="ar-grid">
+          {section.items.map((it) => {
+            const accent = sectionAccent[section.key];
+            const tagC = tagColor[it.tag] || 'var(--color-subtle)';
+            const cls = `ar-card${it.href ? '' : ' is-path'}`;
+            const style = `--accent: ${accent}; --tag: ${tagC};`;
+            return it.href ? (
+              <a class={cls} href={it.href} target="_blank" rel="noopener" style={style}>
+                <div class="ar-card-row">
+                  <span class="ar-card-title">{it.title}</span>
+                  <span class="ar-card-tag">{it.tag}</span>
+                </div>
+                {it.desc && <p class="ar-card-desc">{it.desc}</p>}
+                <span class="ar-card-href">{it.href}</span>
+              </a>
+            ) : (
+              <div class={cls} style={style}>
+                <div class="ar-card-row">
+                  <span class="ar-card-title">{it.title}</span>
+                  <span class="ar-card-tag">{it.tag}</span>
+                </div>
+                {it.desc && <p class="ar-card-desc">{it.desc}</p>}
+                {it.path && <span class="ar-card-path">{it.path}</span>}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+
+    <div class="ar-foot">
+      <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+      <span>/artifacts &middot; internal</span>
+    </div>
+
+  </div>
+</body>
+</html>

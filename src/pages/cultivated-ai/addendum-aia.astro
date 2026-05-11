@@ -1,0 +1,298 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Addendum for AIA Engineering · Marketing and reach</title>
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · Addendum for AIA Engineering
+       Single A4 portrait page. Maps the prospect's marketing
+       and reach questions to the four stages of the workshop.
+       ══════════════════════════════════════════════════════ */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #E5E2DC;
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body::before { display: none !important; }
+
+    .br-shell {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .br-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--color-cream);
+      box-shadow: 0 10px 40px rgba(15,52,96,0.12);
+      margin: 0 auto;
+      padding: 14mm 18mm 18mm;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .br-footer {
+      position: absolute;
+      bottom: 8mm;
+      left: 18mm;
+      right: 18mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      border-top: 1px solid rgba(26,26,46,0.08);
+      padding-top: 6mm;
+    }
+    .br-footer .brand { color: var(--color-deep); font-weight: 700; }
+    .br-footer .brand em { color: var(--color-amber); font-style: italic; font-weight: 600; letter-spacing: 0.05em; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body { background: var(--color-cream) !important; }
+      .br-shell { padding: 0; max-width: none; }
+      .br-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: auto;
+        break-after: auto;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+      }
+      .screen-only { display: none !important; }
+    }
+
+    .print-hint {
+      max-width: 210mm;
+      margin: 0 auto 1.5rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(245,166,35,0.35);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-navy);
+    }
+    .print-hint kbd {
+      background: rgba(15,52,96,0.08);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+    .print-hint .accent { color: var(--color-amber); font-weight: 700; }
+
+    .br-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 0.55rem;
+    }
+    .br-page-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 1.1rem;
+      color: var(--color-deep);
+    }
+    .br-page-title em { color: var(--color-amber); font-style: italic; }
+    .br-page-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      margin: 0 0 1.75rem;
+      max-width: 64ch;
+    }
+
+    .br-stages-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .br-stage-row {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 0.55rem;
+      row-gap: 0.35rem;
+      align-items: baseline;
+      padding: 0.8rem 1.1rem 0.9rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .br-stage-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+    .br-stage-row.s1::before { background: var(--color-amber); }
+    .br-stage-row.s2::before { background: var(--color-teal); }
+    .br-stage-row.s3::before { background: var(--color-purple); }
+    .br-stage-row.s4::before { background: var(--color-accent-red); }
+    .br-stage-num {
+      grid-column: 1;
+      grid-row: 1;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .br-stage-row.s1 .br-stage-num { color: var(--color-amber); }
+    .br-stage-row.s2 .br-stage-num { color: var(--color-teal); }
+    .br-stage-row.s3 .br-stage-num { color: var(--color-purple); }
+    .br-stage-row.s4 .br-stage-num { color: var(--color-accent-red); }
+    .br-stage-name {
+      grid-column: 2;
+      grid-row: 1;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+    .br-stage-row.s1 .br-stage-name { color: var(--color-amber); }
+    .br-stage-row.s2 .br-stage-name { color: var(--color-teal); }
+    .br-stage-row.s3 .br-stage-name { color: var(--color-purple); }
+    .br-stage-row.s4 .br-stage-name { color: var(--color-accent-red); }
+    .br-stage-tag {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      display: block;
+    }
+    .br-stage-tag .br-q {
+      display: block;
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin: 0 0 0.4rem;
+    }
+    .br-stage-tag .br-q + .br-q { margin-top: 0; }
+    .br-stage-tag .br-a {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0.4rem 0 0;
+    }
+    .br-stage-tag .br-a em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    .br-closer {
+      margin: auto 0 0.5rem;
+      padding: 1.1rem 1.4rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-navy);
+      border-radius: 0 10px 10px 0;
+    }
+    .br-closer p {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .br-closer p em { color: var(--color-amber); font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <div class="br-shell">
+
+    <div class="print-hint screen-only">
+      <span class="accent">Print to PDF &rarr;</span>
+      Press <kbd>&#8984; P</kbd> (or <kbd>Ctrl + P</kbd>). Choose <strong>Save as PDF</strong>. Margins <strong>None</strong>. Background graphics <strong>on</strong>.
+    </div>
+
+    <div class="br-page">
+      <p class="br-eyebrow">Addendum for AIA Engineering</p>
+      <h2 class="br-page-title">Your questions, <em>mapped to the four stages</em> of the Cultivated AI programme.</h2>
+
+      <ul class="br-stages-list">
+        <li class="br-stage-row s1">
+          <span class="br-stage-num">Stage 1</span>
+          <span class="br-stage-name">Approach</span>
+          <span class="br-stage-tag">
+            <span class="br-q">Which AI marketing tools should we use?</span>
+            <span class="br-a">The wrong question to lead with, and the right one to answer once. In Stage 1 your leadership sees the AI marketing landscape clearly: what is mature, what is hype, what will still be here in twelve months. You leave with a <em>sharp opinion</em> on what belongs in your stack and what does not.</span>
+          </span>
+        </li>
+        <li class="br-stage-row s2">
+          <span class="br-stage-num">Stage 2</span>
+          <span class="br-stage-name">Distillation</span>
+          <span class="br-stage-tag">
+            <span class="br-q">As we grow, how do we keep our outreach personal and our on-site engineers carrying the founder's vision and passion?</span>
+            <span class="br-a">Both are encoding problems. The way your senior team qualifies a buyer, opens a demo, handles a pricing pushback. That lives in a few heads today. In Stage 2 we turn each of those into an agentic playbook. A <em>Buyer Qualification</em> playbook. A <em>First-Pitch Conversation</em> playbook. An <em>On-Site Engineer Briefing Pack</em>. Your engineers in S&atilde;o Paulo or Johannesburg run them with AI co-pilots, sounding the way your senior team would.</span>
+          </span>
+        </li>
+        <li class="br-stage-row s3">
+          <span class="br-stage-num">Stage 3</span>
+          <span class="br-stage-name">Compounding</span>
+          <span class="br-stage-tag">
+            <span class="br-q">How do we reach the right buyer in South America, Africa, and Europe?</span>
+            <span class="br-q">Can AI enhance our website, LinkedIn, demos, and videos?</span>
+            <span class="br-a">Compounding is reach. Your best buyer-discovery pattern, productised. Your strongest LinkedIn voice, multiplied across regions and languages. Your best demo video, recut for ten markets without losing the technical detail. In Stage 3 your distilled playbooks plug into outbound, content, and discovery. <em>Your reach grows without your team's hours growing.</em></span>
+          </span>
+        </li>
+        <li class="br-stage-row s4">
+          <span class="br-stage-num">Stage 4</span>
+          <span class="br-stage-name">Simulation</span>
+          <span class="br-stage-tag">
+            <span class="br-q">How can road shows be enhanced with AI?</span>
+            <span class="br-a">Road shows are high-stakes conversations under time pressure. Stage 4 builds synthetic environments where your engineers practise the buyer they will meet on Tuesday in Santiago. Pricing pushback, technical objections, language register, regional context. <em>By the time the meeting is real, the conversation has happened twenty times.</em></span>
+          </span>
+        </li>
+      </ul>
+
+      <div class="br-closer">
+        <p>Your marketing problem is not a <em>tool</em> problem. It is a problem of <em>spreading your best work across every conversation, every region</em>. That is what the four stages are built for.</p>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Addendum for AIA Engineering &middot; Marketing and reach</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

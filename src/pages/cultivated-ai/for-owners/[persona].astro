@@ -1,0 +1,1014 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import { personas, type Persona } from '../../../data/personas';
+
+export async function getStaticPaths() {
+  return Object.values(personas).map((p) => ({
+    params: { persona: p.slug },
+    props: { persona: p },
+  }));
+}
+
+interface Props {
+  persona: Persona;
+}
+
+const { persona } = Astro.props;
+
+const pageTotal = 6;
+const footerLabel = `Briefing ${persona.briefingFor}`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · A briefing {persona.briefingFor}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · A briefing for owners (persona variant)
+       Same structure as /cultivated-ai/for-owners but Page 3
+       is driven by the selected persona.
+       ══════════════════════════════════════════════════════ */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #E5E2DC;
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body::before { display: none !important; }
+
+    .br-shell { max-width: 210mm; margin: 0 auto; padding: 2rem 0; }
+
+    .br-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--color-cream);
+      box-shadow: 0 10px 40px rgba(15,52,96,0.12);
+      margin: 0 auto 2rem;
+      padding: 18mm 18mm 22mm;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
+    .br-page:last-child { margin-bottom: 0; }
+
+    .br-footer {
+      position: absolute;
+      bottom: 8mm; left: 18mm; right: 18mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      border-top: 1px solid rgba(26,26,46,0.08);
+      padding-top: 6mm;
+    }
+    .br-footer .brand { color: var(--color-deep); font-weight: 700; }
+    .br-footer .brand em { color: var(--color-amber); font-style: italic; font-weight: 600; letter-spacing: 0.05em; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body { background: var(--color-cream) !important; }
+      .br-shell { padding: 0; max-width: none; }
+      .br-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        break-after: page;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+      }
+      .br-page:last-child { page-break-after: auto; break-after: auto; }
+      .screen-only { display: none !important; }
+    }
+
+    .print-hint {
+      max-width: 210mm;
+      margin: 0 auto 1.5rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(245,166,35,0.35);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-navy);
+    }
+    .print-hint kbd {
+      background: rgba(15,52,96,0.08);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.78rem;
+    }
+    .print-hint .accent { color: var(--color-amber); font-weight: 700; }
+
+    .br-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 1rem;
+    }
+    .br-section-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 1.75rem 0 0.85rem;
+    }
+    .br-section-label .accent { color: var(--color-amber); }
+
+    .br-page-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.5rem;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 0.9rem;
+      color: var(--color-deep);
+    }
+    .br-page-title em { color: var(--color-amber); font-style: italic; }
+    .br-page-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0 0 1.5rem;
+      max-width: 60ch;
+    }
+
+    .br-prose p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--color-deep);
+      margin: 0 0 1rem;
+      max-width: 64ch;
+    }
+    .br-prose p em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .br-prose p strong { color: var(--color-deep); font-weight: 700; }
+    .br-prose p:last-child { margin-bottom: 0; }
+
+    .br-example {
+      margin: 1.25rem 0;
+      padding: 0.95rem 1.25rem;
+      background: var(--color-warm-white);
+      border-left: 3px solid var(--color-teal);
+      border-radius: 0 8px 8px 0;
+    }
+    .br-example .label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin: 0 0 0.4rem;
+    }
+    .br-example p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .br-example p em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* PAGE 1 */
+    .br-cover-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 1rem;
+    }
+    .br-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 4.5rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .br-wordmark .ai { color: var(--color-amber); font-style: italic; }
+    .br-verb {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 1.7rem;
+      color: var(--color-deep);
+      margin: 1rem 0 0;
+    }
+    .br-verb .grow { color: var(--color-teal); }
+    .br-verb .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+    .br-positioning { margin: 2.25rem 0 0; padding: 0; }
+    .br-positioning p {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.1rem;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      margin: 0;
+      max-width: 22ch;
+    }
+    .br-positioning p .who { color: var(--color-teal); }
+    .br-positioning p .what { color: var(--color-amber); }
+    .br-positioning p .against { color: var(--color-accent-red); }
+
+    /* PAGE 2 */
+    .br-questions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.5rem 0 0;
+    }
+    .br-question {
+      padding: 0.9rem 1.1rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+    }
+    .br-question .q-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--color-amber);
+      margin: 0 0 0.25rem;
+    }
+    .br-question p {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .br-question p em { color: var(--color-navy); font-style: italic; }
+
+    .br-stages-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .br-stage-row {
+      display: flex;
+      gap: 1rem;
+      padding: 0.85rem 1.1rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.06);
+      align-items: baseline;
+      position: relative;
+      overflow: hidden;
+    }
+    .br-stage-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+    .br-stage-row.s1::before { background: var(--color-amber); }
+    .br-stage-row.s2::before { background: var(--color-teal); }
+    .br-stage-row.s3::before { background: var(--color-purple); }
+    .br-stage-row.s4::before { background: var(--color-accent-red); }
+    .br-stage-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      width: 56px;
+      flex-shrink: 0;
+    }
+    .br-stage-row.s1 .br-stage-num { color: var(--color-amber); }
+    .br-stage-row.s2 .br-stage-num { color: var(--color-teal); }
+    .br-stage-row.s3 .br-stage-num { color: var(--color-purple); }
+    .br-stage-row.s4 .br-stage-num { color: var(--color-accent-red); }
+    .br-stage-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      width: 130px;
+      flex-shrink: 0;
+    }
+    .br-stage-row.s1 .br-stage-name { color: var(--color-amber); }
+    .br-stage-row.s2 .br-stage-name { color: var(--color-teal); }
+    .br-stage-row.s3 .br-stage-name { color: var(--color-purple); }
+    .br-stage-row.s4 .br-stage-name { color: var(--color-accent-red); }
+    .br-stage-tag {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      flex: 1;
+    }
+    .br-stage-tag em { color: var(--color-navy); font-style: italic; }
+
+    /* Page 6 compact 4-across */
+    .br-stages-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin: 0.5rem 0 1rem;
+    }
+    .br-stage-card {
+      padding: 0.85rem 0.95rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .br-stage-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+    }
+    .br-stage-card.s1::before { background: var(--color-amber); }
+    .br-stage-card.s2::before { background: var(--color-teal); }
+    .br-stage-card.s3::before { background: var(--color-purple); }
+    .br-stage-card.s4::before { background: var(--color-accent-red); }
+    .br-stage-card .br-stage-num { width: auto; font-size: 0.6rem; }
+    .br-stage-card .br-stage-name { width: auto; font-size: 1.05rem; margin: 0.1rem 0 0.3rem; }
+    .br-stage-card.s1 .br-stage-name { color: var(--color-amber); }
+    .br-stage-card.s2 .br-stage-name { color: var(--color-teal); }
+    .br-stage-card.s3 .br-stage-name { color: var(--color-purple); }
+    .br-stage-card.s4 .br-stage-name { color: var(--color-accent-red); }
+    .br-stage-card .br-stage-tag { flex: 0 1 auto; font-size: 0.85rem; line-height: 1.4; }
+
+    /* PAGE 3 (persona) */
+    .br-priya-intro {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--color-deep);
+      margin: 0 0 1.25rem;
+      max-width: 64ch;
+    }
+    .br-priya-intro em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .br-priya-stages { display: flex; flex-direction: column; gap: 0.85rem; }
+    .br-priya-stage {
+      padding: 0.95rem 1.15rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+    .br-priya-stage::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+    .br-priya-stage.s1::before { background: var(--color-amber); }
+    .br-priya-stage.s2::before { background: var(--color-teal); }
+    .br-priya-stage.s3::before { background: var(--color-purple); }
+    .br-priya-stage.s4::before { background: var(--color-accent-red); }
+    .br-priya-stage .ps-head { display: flex; gap: 0.75rem; align-items: baseline; margin: 0 0 0.4rem; }
+    .br-priya-stage .ps-num {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .br-priya-stage.s1 .ps-num { color: var(--color-amber); }
+    .br-priya-stage.s2 .ps-num { color: var(--color-teal); }
+    .br-priya-stage.s3 .ps-num { color: var(--color-purple); }
+    .br-priya-stage.s4 .ps-num { color: var(--color-accent-red); }
+    .br-priya-stage h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .br-priya-stage.s1 h3 { color: var(--color-amber); }
+    .br-priya-stage.s2 h3 { color: var(--color-teal); }
+    .br-priya-stage.s3 h3 { color: var(--color-purple); }
+    .br-priya-stage.s4 h3 { color: var(--color-accent-red); }
+    .br-priya-stage p.lede {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.4rem;
+    }
+    .br-priya-stage p.lede em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .br-priya-stage ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.2rem 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.5rem;
+    }
+    .br-priya-stage ul li {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--color-cream);
+      border: 1px solid rgba(26,26,46,0.1);
+      color: var(--color-deep);
+    }
+    .br-priya-stage.s1 ul li { border-color: rgba(245,166,35,0.35); }
+    .br-priya-stage.s2 ul li { border-color: rgba(22,199,154,0.35); }
+    .br-priya-stage.s3 ul li { border-color: rgba(123,97,255,0.35); }
+    .br-priya-stage.s4 ul li { border-color: rgba(233,69,96,0.35); }
+
+    /* PAGES 4 + 5 (case studies) */
+    .br-paired-cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0 1.25rem;
+    }
+    .br-paired-case {
+      padding: 1.2rem 1.4rem 1.4rem;
+      background: var(--color-warm-white);
+      border-radius: 10px;
+      border: 1px solid rgba(26,26,46,0.07);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .br-paired-case::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .br-paired-case.nbim::before { background: var(--color-navy); }
+    .br-paired-case.ramp::before { background: var(--color-purple); }
+    .br-paired-case.bajaj::before { background: var(--color-teal); }
+    .br-paired-case .case-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .br-paired-case.nbim .case-eyebrow { color: var(--color-navy); }
+    .br-paired-case.ramp .case-eyebrow { color: var(--color-purple); }
+    .br-paired-case.bajaj .case-eyebrow { color: var(--color-teal); }
+    .br-paired-case .case-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .br-paired-case .case-stat { margin: 0; }
+    .br-paired-case .case-stat .num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 0.3rem;
+    }
+    .br-paired-case.nbim .case-stat .num { color: var(--color-navy); }
+    .br-paired-case.ramp .case-stat .num { color: var(--color-purple); }
+    .br-paired-case.bajaj .case-stat .num { color: var(--color-teal); }
+    .br-paired-case .case-stat .label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .br-paired-case .case-stat .label em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .br-paired-case .case-quote {
+      margin-top: auto;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(26,26,46,0.1);
+    }
+    .br-paired-case .case-quote .q {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0 0 0.4rem;
+    }
+    .br-paired-case .case-quote .q em { color: var(--color-navy); font-style: italic; font-weight: 700; }
+    .br-paired-case .case-quote .attr {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .br-paired-case.copilot::before { background: var(--color-sky); }
+    .br-paired-case.copilot .case-eyebrow { color: var(--color-sky); }
+    .br-paired-case.copilot .case-stat .num { color: var(--color-sky); }
+    .br-paired-case.klarna::before { background: var(--color-accent-red); }
+    .br-paired-case.klarna .case-eyebrow { color: var(--color-accent-red); }
+    .br-paired-case.klarna .case-stat .num { color: var(--color-accent-red); }
+    .br-paired-case.warn::before { background: var(--color-amber); }
+    .br-paired-case.warn .case-eyebrow { color: var(--color-amber); }
+    .br-paired-case.warn .case-stat .num { color: var(--color-amber); }
+    .br-paired-case.wide {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "eyebrow eyebrow"
+        "name name"
+        "stat quote";
+      column-gap: 1.75rem;
+      row-gap: 0.5rem;
+    }
+    .br-paired-case.wide .case-eyebrow { grid-area: eyebrow; }
+    .br-paired-case.wide .case-name { grid-area: name; margin-bottom: 0.4rem; }
+    .br-paired-case.wide .case-stat { grid-area: stat; align-self: center; }
+    .br-paired-case.wide .case-quote {
+      grid-area: quote;
+      margin-top: 0;
+      padding-top: 0;
+      padding-left: 1.75rem;
+      border-top: none;
+      border-left: 1px solid rgba(26,26,46,0.12);
+      align-self: center;
+    }
+
+    .br-why {
+      margin-top: 1.25rem;
+      padding: 1rem 1.3rem;
+      background: var(--color-deep);
+      color: var(--color-cream);
+      border-radius: 10px;
+    }
+    .br-why .label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 0.4rem;
+    }
+    .br-why p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 60ch;
+    }
+    .br-why p em { color: var(--color-amber); font-style: italic; font-weight: 600; }
+
+    /* PAGE 6 */
+    .br-spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1.5rem;
+      margin: 0 0 1.25rem;
+    }
+    .br-spec-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.07);
+    }
+    .br-spec-key {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+    }
+    .br-spec-val {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: var(--color-deep);
+    }
+    .br-spec-val em { color: var(--color-navy); font-style: italic; }
+    .br-spec-grid.simple { grid-template-columns: 1fr; gap: 0; margin: 0.5rem 0 1.25rem; }
+    .br-spec-grid.simple .br-spec-row {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      align-items: baseline;
+      column-gap: 1.5rem;
+      padding: 0.85rem 0;
+    }
+    .br-spec-grid.simple .br-spec-row:last-child { border-bottom: none; }
+    .br-spec-grid.simple .br-spec-key { font-size: 0.7rem; }
+    .br-spec-grid.simple .br-spec-val { font-size: 1rem; line-height: 1.5; }
+
+    .br-instructors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin: 0.5rem 0 1rem;
+    }
+    .br-instructor {
+      padding: 1rem 1.15rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border: 1px solid rgba(26,26,46,0.07);
+      border-left: 4px solid;
+    }
+    .br-instructor.amber { border-left-color: var(--color-amber); }
+    .br-instructor.teal { border-left-color: var(--color-teal); }
+    .br-instructor h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.01em;
+    }
+    .br-instructor.amber h3 { color: var(--color-amber); }
+    .br-instructor.teal h3 { color: var(--color-teal); }
+    .br-instructor p {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+
+    .br-page:has(.br-closer) { display: flex; flex-direction: column; }
+    .br-closer {
+      margin: auto 0 1rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-navy);
+      border-radius: 0 10px 10px 0;
+    }
+    .br-closer p {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-style: italic;
+      font-size: 1.4rem;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .br-closer p em { color: var(--color-amber); font-style: italic; }
+  </style>
+</head>
+<body>
+
+  <div class="br-shell">
+
+    <div class="print-hint screen-only">
+      <span class="accent">Print to PDF &rarr;</span>
+      Press <kbd>&#8984; P</kbd> (or <kbd>Ctrl + P</kbd>). Choose <strong>Save as PDF</strong>. Margins <strong>None</strong>. Background graphics <strong>on</strong>.
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 1 · Cover
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-cover-eyebrow">A briefing {persona.briefingFor}</p>
+      <h1 class="br-wordmark">Cultivated <span class="ai">AI</span></h1>
+      <p class="br-verb"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+
+      <div class="br-positioning">
+        <p>We train <span class="who">business leaders</span> to <span class="what">shape AI adoption</span> in their teams, without depending on <span class="against">vendors</span> who don't understand your business.</p>
+      </div>
+
+      <div class="br-prose" style="margin-top: 1.75rem;">
+        <p>Just buying licenses for the AI tools that the vendors sold you will not lead to <em>meaningful AI adoption</em>. Your leadership team has to understand how to approach AI. Meanwhile the ground beneath your category is moving whether you act or not. Not just your competitors. Your suppliers and your customers are using AI to <em>model you better than you can model them</em>.</p>
+      </div>
+
+      <div class="br-example">
+        <p class="label">For example</p>
+        <p>Your customers are no longer searching for you. They are <em>asking AI about you</em>. Have you optimised your online presence for AIs to recommend you?</p>
+      </div>
+
+      <span class="br-section-label">What <span class="accent">Cultivated AI</span> is</span>
+      <div class="br-prose">
+        <p>Cultivated AI is a <em>12-hour programme</em> where your department heads and leadership team will learn to place AI in the context of their daily functions. Each leader walks away with a customised <em>90-day adoption plan</em> that we help them design. They will be able to identify the week-long tasks that can be compressed to 30 minutes using the correct AI tools. Critically, they will learn to <em>plan for the AI of tomorrow</em>.</p>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 1 of {pageTotal} &middot; Cover &middot; {footerLabel}</span>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 2 · The discipline
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-eyebrow">The discipline &middot; why it works</p>
+      <h2 class="br-page-title">The leaders winning learned to <em>think clearly</em>.</h2>
+      <p class="br-page-sub">About AI, in the context of <strong>their own</strong> business. With principles that hold up as the tools change every quarter.</p>
+
+      <div class="br-questions">
+        <div class="br-question"><p class="q-num">01</p><p>What to <em>deploy</em>.</p></div>
+        <div class="br-question"><p class="q-num">02</p><p>What to <em>ignore</em>.</p></div>
+        <div class="br-question"><p class="q-num">03</p><p>Where it <em>fits</em>.</p></div>
+        <div class="br-question"><p class="q-num">04</p><p>Where it <em>doesn't</em>.</p></div>
+      </div>
+
+      <span class="br-section-label">The four <span class="accent">stages</span> of Cultivated AI</span>
+      <ul class="br-stages-list">
+        <li class="br-stage-row s1">
+          <span class="br-stage-num">Stage 1</span>
+          <span class="br-stage-name">Approach</span>
+          <span class="br-stage-tag">Fifteen principles for getting the most out of AI. <em>The leader stops chasing tools and starts thinking clearly about them.</em></span>
+        </li>
+        <li class="br-stage-row s2">
+          <span class="br-stage-num">Stage 2</span>
+          <span class="br-stage-name">Distillation</span>
+          <span class="br-stage-tag">What's been between the leader's ears for years now runs as agentic AI playbooks. Their work, in their voice, at scale. <em>The technical term is agentic skills.</em></span>
+        </li>
+        <li class="br-stage-row s3">
+          <span class="br-stage-num">Stage 3</span>
+          <span class="br-stage-name">Compounding</span>
+          <span class="br-stage-tag">The best playbooks move from one leader to the cohort, then to the rest of the company. <em>Your best work stops being rare, and starts being the default.</em></span>
+        </li>
+        <li class="br-stage-row s4">
+          <span class="br-stage-num">Stage 4</span>
+          <span class="br-stage-name">Simulation</span>
+          <span class="br-stage-tag">Synthetic AI environments for strategy, preparation, and training. For the leader, and for the team. <em>Things competitors cannot do at all.</em></span>
+        </li>
+      </ul>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 2 of {pageTotal} &middot; The discipline</span>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 3 · Persona (driven by /data/personas.ts)
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-eyebrow">An example &middot; for {persona.briefingFor.replace(/^for\s+/, '')}</p>
+      <h2 class="br-page-title">Meet <em>{persona.firstName}</em>.</h2>
+
+      <p class="br-priya-intro" set:html={persona.intro} />
+
+      <div class="br-priya-stages">
+        <div class="br-priya-stage s1">
+          <div class="ps-head"><span class="ps-num">Stage 1</span><h3>Approach. How {persona.firstName} now thinks.</h3></div>
+          <p class="lede">{persona.firstName} has internalised four principles she now uses on every AI question that lands on her desk. <em>She stopped asking which tool to buy; she started asking how to think.</em></p>
+          <ul>
+            {persona.stage1Principles.map((p) => (<li set:html={p} />))}
+          </ul>
+        </div>
+
+        <div class="br-priya-stage s2">
+          <div class="ps-head"><span class="ps-num">Stage 2</span><h3>Distillation. Her playbooks now run as AI.</h3></div>
+          <p class="lede" set:html={persona.stage2.lede} />
+          <ul>
+            {persona.stage2.playbooks.map((p) => (<li>{p}</li>))}
+          </ul>
+        </div>
+
+        <div class="br-priya-stage s3">
+          <div class="ps-head"><span class="ps-num">Stage 3</span><h3>Compounding. She inherits her cohort's work.</h3></div>
+          <p class="lede" set:html={persona.stage3.lede} />
+          <ul>
+            {persona.stage3.playbooks.map((p) => (<li>{p}</li>))}
+          </ul>
+        </div>
+
+        <div class="br-priya-stage s4">
+          <div class="ps-head"><span class="ps-num">Stage 4</span><h3>Simulation. She rehearses what hasn't happened yet.</h3></div>
+          <p class="lede" set:html={persona.stage4.lede} />
+          <ul>
+            {persona.stage4.environments.map((e) => (<li>{e}</li>))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 3 of {pageTotal} &middot; {persona.pageLabel}</span>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 4 · Case studies
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-eyebrow">Some case studies</p>
+      <h2 class="br-page-title">When the leader sets a <em>public standard</em>.</h2>
+
+      <div class="br-paired-cases">
+        <div class="br-paired-case nbim">
+          <p class="case-eyebrow">Norway's Sovereign Wealth Fund</p>
+          <h3 class="case-name">NBIM</h3>
+          <div class="case-stat">
+            <p class="num">213,000 hrs</p>
+            <p class="label">Saved per year. <em>600+ staff using Claude weekly.</em></p>
+          </div>
+          <div class="case-quote">
+            <p class="q">"If you don't use it, <em>you will never be promoted</em>."</p>
+            <p class="attr">Nicolai Tangen, CEO, NBIM</p>
+          </div>
+        </div>
+
+        <div class="br-paired-case ramp">
+          <p class="case-eyebrow">$22B fintech &middot; ~1,200 people</p>
+          <h3 class="case-name">Ramp</h3>
+          <div class="case-stat">
+            <p class="num">99.5%</p>
+            <p class="label">of employees are weekly AI users. <em>~30% of merged code changes from their internal coding agent.</em></p>
+          </div>
+          <div class="case-quote">
+            <p class="q">"If you're not using Claude Code this year, no matter your role, you're <em>underperforming</em>."</p>
+            <p class="attr">Geoff Charles, CPO, Ramp</p>
+          </div>
+        </div>
+
+        <div class="br-paired-case bajaj wide">
+          <p class="case-eyebrow">India's largest NBFC</p>
+          <h3 class="case-name">Bajaj Finance</h3>
+          <div class="case-stat">
+            <p class="num">&#8377;1,600 cr</p>
+            <p class="label">Disbursed in a single quarter via AI voice agents on one workflow. <em>~1,500 agent roles redesigned. ~30% cost savings on the function.</em></p>
+          </div>
+          <div class="case-quote">
+            <p class="q">A flagship workflow, run by AI, <em>disclosed publicly on the earnings call</em>.</p>
+            <p class="attr">Bajaj Finance &middot; Q3 FY26 results</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="br-why">
+        <p class="label">Why this matters for you</p>
+        <p>The world's most accountable institutional investor, one of its fastest-growing fintechs, and India's largest NBFC have made the same call. AI is non-negotiable, set publicly from the top. The Cultivated AI programme helps you build the equivalent for your business, on your terms.</p>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 4 of {pageTotal} &middot; Three case studies</span>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 5 · Failure modes
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-eyebrow">Some failure modes</p>
+      <h2 class="br-page-title">What can still <em>go wrong</em>.</h2>
+
+      <div class="br-paired-cases">
+        <div class="br-paired-case copilot">
+          <p class="case-eyebrow">Under-adoption</p>
+          <h3 class="case-name">Microsoft Copilot</h3>
+          <div class="case-stat">
+            <p class="num">~5%</p>
+            <p class="label">of enterprises that piloted Copilot have scaled it. <em>Tens of millions of paid seats sit unused.</em></p>
+          </div>
+          <div class="case-quote">
+            <p class="q">"Licensing is <em>not adoption</em>."</p>
+            <p class="attr">Gartner &middot; 2025</p>
+          </div>
+        </div>
+
+        <div class="br-paired-case klarna">
+          <p class="case-eyebrow">Over-replacement</p>
+          <h3 class="case-name">Klarna</h3>
+          <div class="case-stat">
+            <p class="num">May 2025</p>
+            <p class="label">Replaced customer service with AI in 2024. By May 2025 the CEO publicly walked it back. <em>Now hybrid.</em></p>
+          </div>
+          <div class="case-quote">
+            <p class="q">"AI handles routine, <em>humans handle empathy</em>."</p>
+            <p class="attr">Klarna &middot; revised position</p>
+          </div>
+        </div>
+
+        <div class="br-paired-case warn wide">
+          <p class="case-eyebrow">Happening now &middot; the same company from page 4</p>
+          <h3 class="case-name">Bajaj Finance &middot; Copilot</h3>
+          <div class="case-stat">
+            <p class="num">27,000 licenses</p>
+            <p class="label">Committed to Microsoft Copilot, the same product that <em>~95% of enterprises piloted but did not scale</em>.</p>
+          </div>
+          <div class="case-quote">
+            <p class="q">Even India's largest NBFC can fall into the under-adoption pattern.</p>
+            <p class="attr">Cultivated AI assessment</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="br-why">
+        <p class="label">Why this matters for you</p>
+        <p>The failure modes above are the default outcome when AI procurement happens before AI thinking. Stage 1 of the Cultivated AI programme exists precisely to ensure your leadership team approaches AI with the clarity to avoid both.</p>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 5 of {pageTotal} &middot; Failure modes</span>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         PAGE 6 · The engagement
+         ═════════════════════════════════════════════════ -->
+    <div class="br-page">
+      <p class="br-eyebrow">The engagement</p>
+      <h2 class="br-page-title">Exactly <em>what we'll do</em>.</h2>
+      <p class="br-page-sub">A 4-stage programme that clarifies your approach to AI.</p>
+
+      <div class="br-stages-row">
+        <div class="br-stage-card s1">
+          <span class="br-stage-num">Stage 1</span>
+          <span class="br-stage-name">Approach</span>
+          <span class="br-stage-tag">15 core principles.</span>
+        </div>
+        <div class="br-stage-card s2">
+          <span class="br-stage-num">Stage 2</span>
+          <span class="br-stage-name">Distillation</span>
+          <span class="br-stage-tag">Encode your expertise.</span>
+        </div>
+        <div class="br-stage-card s3">
+          <span class="br-stage-num">Stage 3</span>
+          <span class="br-stage-name">Compounding</span>
+          <span class="br-stage-tag">Spread the best playbooks.</span>
+        </div>
+        <div class="br-stage-card s4">
+          <span class="br-stage-num">Stage 4</span>
+          <span class="br-stage-name">Simulation</span>
+          <span class="br-stage-tag">For strategy and training.</span>
+        </div>
+      </div>
+
+      <p class="br-page-sub">Every stage is workshopped in the context of your daily functions.</p>
+
+      <div class="br-spec-grid simple">
+        <div class="br-spec-row"><span class="br-spec-key">Format</span><span class="br-spec-val">12-hour programme. Scheduled as per convenience.</span></div>
+        <div class="br-spec-row"><span class="br-spec-key">Cohort</span><span class="br-spec-val">Up to fifteen leaders from the same company.</span></div>
+        <div class="br-spec-row"><span class="br-spec-key">Takeaway</span><span class="br-spec-val">Each leader leaves with a personalised 90-day AI adoption plan that puts all four stages to work.</span></div>
+      </div>
+
+      <span class="br-section-label"><span class="accent">Conducted by</span></span>
+      <div class="br-instructors">
+        <div class="br-instructor amber">
+          <h3>Shalin Shodhan</h3>
+          <p>20 years building tech pipelines for the world's best entertainment products, from Pixar movies to EA Games.</p>
+        </div>
+        <div class="br-instructor teal">
+          <h3>Shirish Andhare</h3>
+          <p>20+ years of product leadership at Twitter, Uber, Razorpay. Senior Operating Partner at Glade Brook Capital.</p>
+        </div>
+      </div>
+
+      <div class="br-closer">
+        <p>Resilient pipelines are built by <em>cultivating</em> the approach, not chasing technology.</p>
+      </div>
+
+      <div class="br-footer">
+        <span class="brand">Cultivated AI &middot; <em>Grow, don't Chase.</em></span>
+        <span class="num">Page 6 of {pageTotal} &middot; What we will do</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
