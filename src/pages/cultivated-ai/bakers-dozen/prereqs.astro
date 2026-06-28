@@ -1,0 +1,194 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Part One · What to bring · The Baker's Dozen</title>
+  <style>
+    /* account-tier ladder: good / better / best */
+    .pr-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin: 1.1rem 0 0;
+    }
+    .pr-tier {
+      padding: 1rem 1.1rem 1.15rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative; overflow: hidden;
+    }
+    .pr-tier::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .pr-tier .lvl {
+      font-family: var(--font-mono);
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--bar);
+    }
+    .pr-tier h4 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.05rem;
+      margin: 0.15rem 0 0.3rem; color: var(--color-deep);
+    }
+    .pr-tier p {
+      font-family: var(--font-body);
+      font-size: 0.84rem; line-height: 1.5;
+      color: var(--color-deep); margin: 0;
+    }
+    .pr-tier p em { color: var(--color-navy); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-amber);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Send or print →</span>
+      One page. Share it with every attendee a few days before Session 1.
+    </div>
+
+    <p class="cd-eyebrow">Cultivated AI · Part One · what to bring</p>
+    <h1 class="cd-title">Come <em>ready to work</em>.</h1>
+    <p class="cd-lede">This is a hands-on workshop. Everyone works on their own laptop, on their own real tasks. The setup is light, but please do it <strong>before Session 1</strong>, so the first hour is spent learning, not logging in.</p>
+    <p class="cd-meta">Per attendee · ~10 min to set up · The Baker's Dozen</p>
+    <div class="cd-rule"></div>
+
+    <!-- ── Accounts ── -->
+    <section class="cd-section is-amber">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">01</span>
+        <h2 class="cd-section-name">An AI <em>account</em></h2>
+      </div>
+      <p class="cd-section-blurb">Pick one of the three big assistants and have it signed in. Paid is great, the free tier is genuinely fine for the workshop.</p>
+      <ul class="cd-checklist">
+        <li class="cd-check is-amber">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>One account: Claude, ChatGPT, or Gemini</h4>
+            <p>Sign in and confirm it works before you arrive. Claude (<em>claude.ai</em>) or Gemini (<em>gemini.google.com</em>) are both excellent. Any one of the three is enough to follow every exercise.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-amber);">Required</span>
+        </li>
+        <li class="cd-check is-teal">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>Ideally a paid plan (about US$20 / month)</h4>
+            <p>The Pro tier removes the tight usage caps and unlocks the strongest models, which makes the labs smoother. Worth it for the two weeks, not a requirement.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-teal);">Recommended</span>
+        </li>
+      </ul>
+
+      <div class="pr-tiers">
+        <div class="pr-tier is-sky" style="--bar: var(--color-sky);">
+          <span class="lvl">Good</span>
+          <h4>Free tier</h4>
+          <p>Any one assistant on its free plan. You can do <em>every</em> exercise, just with usage limits.</p>
+        </div>
+        <div class="pr-tier is-teal" style="--bar: var(--color-teal);">
+          <span class="lvl">Better</span>
+          <h4>One paid plan</h4>
+          <p>One Pro subscription (Claude, ChatGPT, or Gemini). No caps, best models, smoother labs.</p>
+        </div>
+        <div class="pr-tier is-amber" style="--bar: var(--color-amber);">
+          <span class="lvl">Best</span>
+          <h4>Two accounts</h4>
+          <p>A paid main plus a second free account, so you can practise <em>cross-checking the same task across models</em> (Principle 11).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Device ── -->
+    <section class="cd-section is-teal">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">02</span>
+        <h2 class="cd-section-name">A laptop and <em>Chrome</em></h2>
+      </div>
+      <ul class="cd-checklist">
+        <li class="cd-check is-teal">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>A laptop (not a phone or tablet)</h4>
+            <p>Mac or Windows, both fine. You will be typing, comparing windows side by side, and editing real documents. A phone won't keep up.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-amber);">Required</span>
+        </li>
+        <li class="cd-check is-purple">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>Google Chrome installed</h4>
+            <p>We use Chrome for the agents and Chrome-extension demos in Session 3. Download it free from <em>google.com/chrome</em> if you don't have it.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-amber);">Required</span>
+        </li>
+        <li class="cd-check is-sky">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>A charger and steady wi-fi</h4>
+            <p>Two hours of live work per session. Bring the charger, and check you can reach the AI sites on the venue network.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-teal);">Recommended</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ── Bring your own work ── -->
+    <section class="cd-section is-purple">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">03</span>
+        <h2 class="cd-section-name">Your own <em>real work</em></h2>
+      </div>
+      <p class="cd-section-blurb">The exercises are only as good as the material you bring. This is what turns the workshop into something you keep using.</p>
+      <ul class="cd-checklist">
+        <li class="cd-check is-purple">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>Three repetitive tasks</h4>
+            <p>The same three you'll name in the pre-workshop questionnaire. We build your first skills from these.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-amber);">Required</span>
+        </li>
+        <li class="cd-check is-navy">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body">
+            <h4>One real document you dread making</h4>
+            <p>A report, email, or deck. Anonymise anything sensitive first. We rebuild it with you, live.</p>
+          </div>
+          <span class="cd-pill" style="--pill: var(--color-teal);">Recommended</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ── Not needed ── -->
+    <section class="cd-section is-navy">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">04</span>
+        <h2 class="cd-section-name">What you <em>don't</em> need</h2>
+      </div>
+      <div class="cd-prose">
+        <p>No coding experience. No prior AI experience. No special software beyond a browser and one account. If you can write an email and use a spreadsheet, you have everything you need to keep up. We handle the rest in the room.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Part One · prerequisites</span>
+    </div>
+
+  </div>
+</body>
+</html>

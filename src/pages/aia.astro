@@ -1,0 +1,740 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'cover',
+  'moving',
+  'encirclement',
+  'moves',
+  'close',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · For Owners · AIA Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · For Owners · AIA pitch deck
+       Inherits global tokens (cream / deep / accent / etc).
+       Primary accent: navy. Urgency: accent-red. Action: amber.
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── Progress rail ─── */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-navy);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* ─── Brand mark + slide num ─── */
+    .brand-mark {
+      position: absolute;
+      bottom: 24px;
+      left: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--color-subtle);
+    }
+    .brand-mark .b-grow { font-style: italic; color: var(--color-navy); }
+    .slide-num {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ─── Keyboard hint ─── */
+    .kbd-hint {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-subtle);
+      background: rgba(250, 248, 245, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.06);
+      transition: opacity 0.4s ease;
+    }
+    .kbd-hint.hidden { opacity: 0; pointer-events: none; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.15);
+      border-radius: 4px;
+      margin: 0 1px;
+    }
+
+    /* ─── Card-deck container ─── */
+    .card-deck-container { scroll-snap-type: y mandatory; height: 100vh; overflow-y: scroll; }
+    .card-deck-card {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      position: relative;
+      opacity: 0.55;
+      transition: opacity 0.5s ease;
+    }
+    .card-deck-card.is-active { opacity: 1; }
+
+    /* ─── Stagger animation ─── */
+    .stagger > * { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+
+    /* ──────────────────────────────────────────────────────
+       Print: 1600x900 per page
+       ────────────────────────────────────────────────────── */
+    @page { size: 1600px 900px; margin: 0; }
+    @media print {
+      html, body { background: var(--color-cream) !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container { scroll-snap-type: none; height: auto; overflow: visible; }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        min-height: 900px !important;
+        max-height: 900px !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        opacity: 1 !important;
+        padding: 4rem 5rem !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * { opacity: 1 !important; transform: none !important; }
+    }
+
+    .deck-slide p { max-width: none; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 01 — Cover
+       ══════════════════════════════════════════════════════ */
+    .slide-cover {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .cover-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .cover-eyebrow .dot { color: var(--color-navy); }
+    .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4.5rem, 11vw, 9rem);
+      line-height: 1;
+      color: var(--color-deep);
+      letter-spacing: -0.03em;
+      margin: 0 0 1.25rem;
+    }
+    .wordmark .ai {
+      font-style: italic;
+      color: var(--color-navy);
+    }
+    .verb-pair {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--color-deep);
+      margin: 0 0 1.75rem;
+      letter-spacing: -0.01em;
+    }
+    .verb-pair .grow { color: var(--color-navy); font-weight: 700; font-style: normal; }
+    .verb-pair .chase { color: var(--color-accent-red); font-weight: 700; font-style: normal; text-decoration: line-through; text-decoration-thickness: 2px; }
+    .cover-context {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 1.25rem 0 0;
+    }
+    .cover-context .pipe { color: rgba(15,52,96,0.5); margin: 0 0.6rem; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 02 — The ground is moving
+       ══════════════════════════════════════════════════════ */
+    .slide-moving { padding: 3.5rem 5rem; }
+    .moving-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .moving-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      margin: 0 0 0.85rem;
+    }
+    .moving-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      color: var(--color-deep);
+      letter-spacing: -0.02em;
+      margin: 0 0 0.6rem;
+    }
+    .moving-headline em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .moving-sub {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--color-subtle);
+      margin: 0 0 2.2rem;
+      max-width: 900px;
+    }
+    .moving-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.1rem 1.5rem;
+    }
+    .moving-card {
+      padding: 1.4rem 1.6rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-accent-red);
+      border-radius: 4px;
+      box-shadow: 0 2px 14px rgba(26,26,46,0.04);
+    }
+    .moving-card.navy { border-left-color: var(--color-navy); }
+    .moving-card.amber { border-left-color: var(--color-amber); }
+    .moving-card .m-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.7rem;
+      color: var(--color-accent-red);
+      margin: 0 0 0.15rem;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+    .moving-card.navy .m-num { color: var(--color-navy); }
+    .moving-card.amber .m-num { color: var(--color-amber); }
+    .moving-card .m-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--color-deep);
+      margin: 0 0 0.45rem;
+      letter-spacing: -0.005em;
+    }
+    .moving-card .m-body {
+      font-family: var(--font-body);
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .moving-card .m-body em { font-style: italic; color: var(--color-navy); font-weight: 600; }
+    .moving-card .m-source {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--color-subtle);
+      margin-top: 0.4rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — Strategic encirclement
+       ══════════════════════════════════════════════════════ */
+    .slide-encirclement { padding: 3.5rem 5rem; }
+    .enc-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .enc-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-navy);
+      margin: 0 0 0.85rem;
+    }
+    .enc-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      color: var(--color-deep);
+      letter-spacing: -0.02em;
+      margin: 0 0 1.8rem;
+    }
+    .enc-headline em { font-style: italic; color: var(--color-accent-red); font-weight: 800; }
+    .enc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2rem;
+    }
+    .enc-col h3 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--color-navy);
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(15,52,96,0.18);
+      letter-spacing: -0.005em;
+    }
+    .enc-col.right h3 { color: var(--color-accent-red); border-bottom-color: rgba(233,69,96,0.25); }
+    .enc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .enc-list li {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+      font-family: var(--font-body);
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+    }
+    .enc-list li:last-child { border-bottom: none; }
+    .enc-list li strong {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--color-deep);
+      margin-bottom: 0.15rem;
+      letter-spacing: -0.005em;
+    }
+    .enc-list li em { font-style: italic; color: var(--color-navy); font-weight: 600; }
+    .enc-aia {
+      margin-top: 1.4rem;
+      padding: 1rem 1.2rem;
+      background: rgba(233,69,96,0.08);
+      border-left: 4px solid var(--color-accent-red);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+    }
+    .enc-aia strong { color: var(--color-accent-red); }
+    .enc-aia em { font-style: italic; color: var(--color-deep); font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 04 — Four moves
+       ══════════════════════════════════════════════════════ */
+    .slide-moves { padding: 3.5rem 5rem; }
+    .moves-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .moves-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 0.85rem;
+    }
+    .moves-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      color: var(--color-deep);
+      letter-spacing: -0.02em;
+      margin: 0 0 0.6rem;
+    }
+    .moves-headline em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .moves-sub {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+      max-width: 1000px;
+    }
+    .moves-sub em { font-style: italic; color: var(--color-deep); font-weight: 600; }
+    .moves-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem 1.5rem;
+    }
+    .move-card {
+      padding: 1.5rem 1.7rem;
+      background: var(--color-warm-white);
+      border-top: 4px solid var(--color-amber);
+      border-radius: 4px;
+      box-shadow: 0 2px 14px rgba(26,26,46,0.05);
+    }
+    .move-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin: 0 0 0.4rem;
+    }
+    .move-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--color-deep);
+      margin: 0 0 0.55rem;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .move-title em { font-style: italic; color: var(--color-navy); font-weight: 700; }
+    .move-body {
+      font-family: var(--font-body);
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 0.6rem;
+    }
+    .move-moat {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--color-navy);
+      margin: 0;
+      padding-top: 0.55rem;
+      border-top: 1px dashed rgba(15,52,96,0.2);
+    }
+    .move-moat .lbl { text-transform: uppercase; letter-spacing: 0.18em; color: var(--color-subtle); margin-right: 0.4rem; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 05 — Close (thesis + sign-off)
+       ══════════════════════════════════════════════════════ */
+    .slide-close {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .close-thesis {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2rem, 3.6vw, 3rem);
+      line-height: 1.18;
+      color: var(--color-deep);
+      letter-spacing: -0.02em;
+      max-width: 1100px;
+      margin: 0 auto 2.4rem;
+    }
+    .close-thesis .strike {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      color: var(--color-accent-red);
+      font-weight: 700;
+    }
+    .close-thesis em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .close-divider {
+      width: 80px;
+      height: 2px;
+      background: var(--color-navy);
+      margin: 0 auto 1.8rem;
+      opacity: 0.4;
+    }
+    .close-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      line-height: 1;
+      color: var(--color-deep);
+      letter-spacing: -0.03em;
+      margin: 0 0 0.6rem;
+    }
+    .close-wordmark .ai { font-style: italic; color: var(--color-navy); }
+    .close-sub {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 1.2rem;
+    }
+    .close-sub .accent { color: var(--color-navy); }
+    .close-email {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--color-deep);
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress dots -->
+  <nav class="progress-rail" aria-label="Slide progress">
+    {slides.map(() => (
+      <span class="progress-dot"></span>
+    ))}
+  </nav>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or click edges
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Cover ═══ -->
+    <section class="card-deck-card deck-slide slide-cover" data-slide="cover">
+      <div class="stagger">
+        <p class="cover-eyebrow">For Owners <span class="dot">·</span> Industrial Leadership</p>
+        <h1 class="wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="verb-pair"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+        <p class="cover-context">AIA Engineering <span class="pipe">|</span> Ahmedabad <span class="pipe">|</span> May 2026</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Owners</span></div>
+      <div class="slide-num">01 &middot; Cover</div>
+    </section>
+
+    <!-- ═══ 02 · The ground is moving ═══ -->
+    <section class="card-deck-card deck-slide slide-moving" data-slide="moving">
+      <div class="moving-content stagger">
+        <p class="moving-eyebrow">The ground is moving</p>
+        <h1 class="moving-headline">Your customers are <em>quantifying AI ROI</em>. Your competitors are <em>productising it</em>.</h1>
+        <p class="moving-sub">Five disclosures from the last 18 months. Each one is a number a CFO can defend in a board meeting.</p>
+        <div class="moving-grid">
+          <div class="moving-card">
+            <p class="m-num">$6.5M / yr</p>
+            <p class="m-title">Newmont · Cadia, NSW</p>
+            <p class="m-body">An ML controller on the HPGR feeding the SAG mill lifted throughput <em>80 t/hr</em>. Cadia is almost certainly an AIA-supplied mine.<span class="m-source">Q2 2024 earnings call · Cadia Site Tour, Nov 2024</span></p>
+          </div>
+          <div class="moving-card">
+            <p class="m-num">$18.9M</p>
+            <p class="m-title">BHP · Escondida concentrator</p>
+            <p class="m-body">Azure ML hourly recommendations to operators. <em>3 GL of water and 118 GWh of energy saved</em> since FY22. BHP opened an Industry AI Hub in Singapore in May 2025.<span class="m-source">BHP Insights, Aug 2024</span></p>
+          </div>
+          <div class="moving-card">
+            <p class="m-num">~$400M</p>
+            <p class="m-title">Freeport-McMoRan · Bagdad</p>
+            <p class="m-body">McKinsey ML found Bagdad's ore was <em>seven types, not one</em>. +90,000 t/yr copper. <em>A new concentrator without the $1.5–2B capex.</em><span class="m-source">McKinsey case study, 2024</span></p>
+          </div>
+          <div class="moving-card navy">
+            <p class="m-num">Inside the ball</p>
+            <p class="m-title">Moly-Cop · Digital Engine</p>
+            <p class="m-body">Wireless sensors <em>inside the SAG ball itself</em>. Three AI acquisitions in 24 months. Edikan Gold: <em>27% throughput uplift in 8 months</em>.<span class="m-source">SAG 2023 Vancouver · MILL Trakka acquisition</span></p>
+          </div>
+          <div class="moving-card navy">
+            <p class="m-num">40 yrs of data</p>
+            <p class="m-title">Magotteaux · 2024 Annual Report</p>
+            <p class="m-body">"Building on more than 40 years of data, Magotteaux developed <em>machine learning models to predict grinding media alloys performance</em>." Plus a five-year strategic partnership with Codelco.<span class="m-source">Magotteaux Integrated Annual Report, 2024</span></p>
+          </div>
+          <div class="moving-card amber">
+            <p class="m-num">62%</p>
+            <p class="m-title">Mining AI capital flow</p>
+            <p class="m-body">Of mining AI investment now happens through <em>M&amp;A, not internal R&amp;D</em>. Productised AI vendors are being acquired. The window to build the moat is narrowing.<span class="m-source">Mind the Bridge × BHP, Oct 2025</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Owners</span></div>
+      <div class="slide-num">02 &middot; The ground is moving</div>
+    </section>
+
+    <!-- ═══ 03 · Strategic encirclement ═══ -->
+    <section class="card-deck-card deck-slide slide-encirclement" data-slide="encirclement">
+      <div class="enc-content stagger">
+        <p class="enc-eyebrow">Strategic encirclement</p>
+        <h1 class="enc-headline">Both sides of AIA's value chain are <em>moving without you</em>.</h1>
+        <div class="enc-grid">
+          <div class="enc-col left">
+            <h3>Wear-parts competitors · digital posture today</h3>
+            <ul class="enc-list">
+              <li><strong>Moly-Cop</strong>Sensors inside the SAG ball. Digital Engine platform. <em>3 AI acquisitions in 24 months.</em></li>
+              <li><strong>Magotteaux</strong>ML model on 40 years of alloy data. Codelco 5-yr partnership. MagoSense mill monitor at scale.</li>
+              <li><strong>Weir Group</strong>Acquired Motion Metrics (CV, 2021) and SentianAI (Sweden, 2023). Markets a <em>"Holistic AI System"</em> that bundles wear with production.</li>
+              <li><strong>ME Elecmetal</strong>SecureFIT smart bolting (claims <em>up to 50% maintenance-downtime reduction</em>). QuickScan 15-min SAG scan.</li>
+              <li><strong>FLSmidth · Metso</strong>OEMs now sell AI-driven <em>wear-life prediction</em> bundled with their own consumables. The textbook disintermediation play.</li>
+            </ul>
+          </div>
+          <div class="enc-col right">
+            <h3>Indian customers and peers · already deployed</h3>
+            <ul class="enc-list">
+              <li><strong>Hindustan Zinc</strong>Tele-remote underground mining at Rampura Agucha. <em>HEMM uptime up 24–28%.</em> 40+ startup collaborations via Vedanta Spark.</li>
+              <li><strong>Tata Steel</strong>Digital twins of mines <em>350–400 km from the control tower</em>. 11–12k CV cameras. 3 plants on the WEF Global Lighthouse Network.</li>
+              <li><strong>JSW Steel · Athena</strong>Predictive maintenance across 10 plants and <em>2,900 critical assets</em>. 25,000+ hours of unplanned downtime avoided in FY25.</li>
+              <li><strong>Adani Cement · CiNOC</strong>Central Intelligence and Operations Command launched 2025. AI embedded in plant, logistics, and commercial decisions.</li>
+              <li><strong>UltraTech · Hindalco</strong>UltraTech runs Expert Optimiser across the kiln chain. Hindalco's GDNA unit (60+ data scientists) deploys VEDA across 14 plants.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="enc-aia"><strong>AIA's public AI footprint:</strong> <em>zero.</em> No Chief Digital or Technology Officer disclosed. No AI line in FY26 capex (₹120–130 Cr, of which ~₹30 Cr is solar). MillART is good metallurgy, but it is DEM simulation, not ML.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Owners</span></div>
+      <div class="slide-num">03 &middot; Strategic encirclement</div>
+    </section>
+
+    <!-- ═══ 04 · Four moves ═══ -->
+    <section class="card-deck-card deck-slide slide-moves" data-slide="moves">
+      <div class="moves-content stagger">
+        <p class="moves-eyebrow">What we can do about it</p>
+        <h1 class="moves-headline">Four moves AIA can make in the next <em>twelve months</em>.</h1>
+        <p class="moves-sub">Each one is a defensible play. Not a tool purchase. Each is anchored in <em>an asset only AIA has</em>: forty years of mine-by-mine wear data across more than a hundred unique ore and media combinations.</p>
+        <div class="moves-grid">
+          <div class="move-card">
+            <p class="move-num">Move 01 · Wear analytics</p>
+            <p class="move-title">A <em>predictive wear product</em> on AIA's own data.</p>
+            <p class="move-body">XGBoost models published in 2024 predict SAG liner wear at <em>~5% MAPE</em>. The residual gap is alloy and ball-property data. AIA owns precisely that, mine by mine. Ship a wear-prediction service before Magotteaux scales theirs.</p>
+            <p class="move-moat"><span class="lbl">Moat</span>40 years of proprietary mine-by-mine performance records.</p>
+          </div>
+          <div class="move-card">
+            <p class="move-num">Move 02 · Generative R&amp;D</p>
+            <p class="move-title">An AI pipeline for <em>ore-specific alloy design</em>.</p>
+            <p class="move-body">Microsoft's MatterGen (open-sourced Jan 2025) and DeepMind's GNoME design novel inorganic crystals from target properties. Pair with MAGMASOFT and CALPHAD to produce ore-specific high-chrome candidates competitors cannot replicate without your performance data.</p>
+            <p class="move-moat"><span class="lbl">Moat</span>Outcomes data from a hundred-plus operating mills.</p>
+          </div>
+          <div class="move-card">
+            <p class="move-num">Move 03 · Foundry CV</p>
+            <p class="move-title">Computer vision on the <em>casting line</em>.</p>
+            <p class="move-body">YOLO defect detection and 3D anomaly models on CT scans are off-the-shelf. The lowest-execution-risk pilot AIA can run, inside its own foundries, with measurable yield uplift in one quarter. Builds internal AI muscle before any customer-facing work.</p>
+            <p class="move-moat"><span class="lbl">Moat</span>Your physical lines, your defect labels, your cost data.</p>
+          </div>
+          <div class="move-card">
+            <p class="move-num">Move 04 · Customer engagement</p>
+            <p class="move-title">A <em>customer portal</em> that predicts wear and quotes itself.</p>
+            <p class="move-body">Caterpillar's Cat Helios runs on 16 PB across 1.6M connected assets. AI-handled B2B interactions cost <em>$1–2 vs $15–25 rep-assisted</em>. Convert AIA field service from a cost centre into a continuous data-collection engine.</p>
+            <p class="move-moat"><span class="lbl">Moat</span>Direct mill-floor relationships your OEMs do not have.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Owners</span></div>
+      <div class="slide-num">04 &middot; Four moves</div>
+    </section>
+
+    <!-- ═══ 05 · Close ═══ -->
+    <section class="card-deck-card deck-slide slide-close" data-slide="close">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <h1 class="close-thesis">The companies winning didn't <span class="strike">buy the most tools</span>. They <em>thought clearly about the data only they own</em>.</h1>
+        <div class="close-divider"></div>
+        <h2 class="close-wordmark">Cultivated <span class="ai">AI</span></h2>
+        <p class="close-sub">For <span class="accent">Owners</span></p>
+        <p class="close-email">shalin@masalagames.com</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Owners</span></div>
+      <div class="slide-num">05 &middot; Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) { kbdHint.classList.add('hidden'); hintHidden = true; }
+        switch (e.key) {
+          case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ':
+            e.preventDefault(); goTo(current + 1); break;
+          case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+            e.preventDefault(); goTo(current - 1); break;
+          case 'Home': e.preventDefault(); goTo(0); break;
+          case 'End': e.preventDefault(); goTo(slides.length - 1); break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+</body>
+</html>

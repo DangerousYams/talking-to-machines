@@ -11,7 +11,7 @@ interface Artifact {
 }
 
 interface Section {
-  key: 'cai' | 'web' | 'course' | 'api' | 'native' | 'finwizz';
+  key: 'cai' | 'bakers' | 'schools' | 'web' | 'course' | 'api' | 'native' | 'finwizz';
   title: string;
   blurb: string;
   items: Artifact[];
@@ -30,7 +30,40 @@ const sections: Section[] = [
       { title: 'Presenter view', desc: 'Pitch with speaker notes.', href: '/cultivated-ai/presenter', tag: 'Slides' },
       { title: 'Leave-behind', desc: 'One-pager for after the conversation.', href: '/cultivated-ai/leave-behind', tag: 'PDF' },
       { title: 'AIA Engineering addendum', desc: 'Marketing and reach questions, mapped to the four stages.', href: '/cultivated-ai/addendum-aia', tag: 'PDF' },
+      { title: 'AIA pitch, mining-strategy angle', desc: 'Five-slide pitch using the Magotteaux / Moly-Cop / Newmont / BHP receipts. Four moves: predictive wear, generative alloy R&D, casting-line CV, customer portal.', href: '/aia', tag: 'Slides' },
+      { title: 'AIA pitch, owners angle', desc: 'Five-slide pitch built on owner-fluency and daily-ops impact. Six functions, three shifts each. Calibrate / Map / Commit workshop format.', href: '/aia-owners', tag: 'Slides' },
+      { title: 'AIA research notes', desc: 'Compass deep-research brief plus agent research run. Sourced backing for both AIA pitches.', path: '/aic/talking-to-machines/AIA/research/', tag: 'Doc' },
       { title: 'Positioning doc', desc: 'Programme positioning notes.', path: '/aic/cultivated-ai-positioning.md', tag: 'Doc' },
+    ],
+  },
+  {
+    key: 'bakers',
+    title: "The Baker's Dozen engagement",
+    blurb: "Two-part Cultivated AI engagement for The Baker's Dozen. Part One is the discipline (15 principles, skills, agents). Part Two is Mission Control (one data pipeline plus AI querying). Client-specific.",
+    items: [
+      { title: 'Part One · Leave-behind', desc: 'Client one-pager, 4pp A4. Foundations, the 15 principles, skills, agents.', href: '/cultivated-ai/leave-behind-bakers-dozen', tag: 'PDF' },
+      { title: 'Part One · Session plan', desc: 'Detailed 4 × 2hr facilitator run-sheet, timed beats, mapped to the live activities.', href: '/cultivated-ai/bakers-dozen/sessions', tag: 'Plan' },
+      { title: 'Part One · Pre-workshop interview', desc: '16 questions to surface each leader’s real tasks before day one.', href: '/cultivated-ai/bakers-dozen/questionnaire', tag: 'Form' },
+      { title: 'Part One · Prerequisites', desc: 'What each attendee brings: an account, a laptop, Chrome, real work.', href: '/cultivated-ai/bakers-dozen/prereqs', tag: 'Doc' },
+      { title: 'Part Two · Mission Control · Leave-behind', desc: 'Client one-pager, 4pp A4. Warehouse, semantic layer, plain-language querying, AEO. Sky/navy.', href: '/cultivated-ai/mission-control/leave-behind', tag: 'PDF' },
+      { title: 'Part Two · Session plan', desc: 'Detailed 4 × 2hr run-sheet: warehouse → semantic layer → query → show up in AI answers.', href: '/cultivated-ai/mission-control/sessions', tag: 'Plan' },
+      { title: 'Part Two · Pre-workshop interview', desc: '18 questions on sources, golden questions, governance, and AEO.', href: '/cultivated-ai/mission-control/questionnaire', tag: 'Form' },
+      { title: 'Part Two · Prerequisites', desc: 'The right people, plus read access to Power BI, GobbleCube, production and supply chain.', href: '/cultivated-ai/mission-control/prereqs', tag: 'Doc' },
+      { title: 'Part Two · Case studies', desc: 'Designed evidence digest: Swiggy Hermes, Uber QueryGPT, the semantic-layer benchmark, the GEO study.', href: '/cultivated-ai/mission-control/case-studies', tag: 'Doc' },
+      { title: 'Part Two · Case studies, full research', desc: 'The fully-cited research markdown behind the digest.', path: '/aic/talking-to-machines/bakers-dozen/research/bi-democratization-case-studies.md', tag: 'Doc' },
+    ],
+  },
+  {
+    key: 'schools',
+    title: 'Schools and educators',
+    blurb: 'Cultivated AI for Schools (the parallel of the owner pitch), and the AI Thinking briefing for parents and educators.',
+    items: [
+      { title: 'For Schools brief', desc: 'Six-page A4 briefing for school heads. Mirrors the owner brief structure, teal accent.', href: '/for-schools-briefing', tag: 'PDF' },
+      { title: 'For Schools pitch slides', desc: 'Seventeen-slide deck. Anjali (middle-school English teacher) threaded through the four stages.', href: '/for-schools', tag: 'Slides' },
+      { title: 'For Schools pitch, BIS short', desc: 'Thirteen-slide variant tailored for BIS Mumbai. Three-hour single-day workshop, four stages (Approach / Provenance / Conversation / Policy), no persona threading.', href: '/for-schools-short', tag: 'Slides' },
+      { title: 'AI Thinking brief', desc: 'Three-page A4 briefing for parents and educators. Erhart spine on page one, fifteen habits on page three.', href: '/ai-thinking-briefing', tag: 'PDF' },
+      { title: 'AI Thinking pitch slides', desc: 'Fourteen-slide deck of the AI Thinking briefing.', href: '/ai-thinking', tag: 'Slides' },
+      { title: 'AI Thinking pitch, lite', desc: 'Same deck with the About-page poster ticker stripped. PDF drops from 8.5 MB to 1.5 MB.', href: '/ai-thinking-lite', tag: 'Slides' },
     ],
   },
   {
@@ -127,6 +160,8 @@ const sections: Section[] = [
 
 const sectionAccent: Record<Section['key'], string> = {
   cai: 'var(--color-amber)',
+  bakers: 'var(--color-sky)',
+  schools: 'var(--color-teal)',
   web: 'var(--color-accent-red)',
   course: 'var(--color-purple)',
   api: 'var(--color-teal)',
@@ -136,6 +171,7 @@ const sectionAccent: Record<Section['key'], string> = {
 
 const tagColor: Record<string, string> = {
   PDF: 'var(--color-amber)',
+  Plan: 'var(--color-teal)',
   Slides: 'var(--color-purple)',
   Page: 'var(--color-accent-red)',
   Chapter: 'var(--color-accent-red)',
@@ -412,7 +448,7 @@ const totalCount = sections.reduce((n, s) => n + s.items.length, 0);
     <p class="ar-eyebrow">Internal index</p>
     <h1 class="ar-title">Artifacts, <em>one place</em>.</h1>
     <p class="ar-sub">Every output across Cultivated AI, the Talking to Machines website and Zoom course, the iOS port, and the Finwizz demo. Click to open. Internal use, not indexed.</p>
-    <p class="ar-meta">{totalCount} artifacts &middot; {sections.length} sections &middot; updated 2026-05-11</p>
+    <p class="ar-meta">{totalCount} artifacts &middot; {sections.length} sections &middot; updated 2026-06-28</p>
 
     <nav class="ar-toc" aria-label="Sections">
       {sections.map((s) => (

@@ -1,0 +1,29 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import '../../styles/ladder.css';
+import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../../components/analytics/GtagHead.astro';
+import HeadSEO from '../../components/seo/HeadSEO.astro';
+import LadderApp from '../../components/ladder/LadderApp';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>The Ladder — Talking to Machines</title>
+    <HeadSEO
+      title="The Ladder — Talking to Machines"
+      description="Stop quoting machines. Start talking to them. Climb the four levels of AI Thinking through hands-on exercises, with a graded checkpoint at every rung."
+      path="/ladder"
+    />
+    <GtagHead />
+  </head>
+  <body>
+    <LadderApp client:load />
+    <Analytics />
+  </body>
+</html>

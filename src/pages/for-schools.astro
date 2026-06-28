@@ -1,0 +1,1673 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'cover',
+  'positioning',
+  'already',
+  'ditches',
+  'shift',
+  'incidents',
+  'good',
+  'disciplines',
+  'ladder',
+  'workshop',
+  'approach',
+  'practice',
+  'policy',
+  'studio',
+  'bundle',
+  'thesis',
+  'close',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · For Schools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · For Schools · pitch deck
+       Inherits global tokens (cream / deep / accent / etc).
+       Primary accent: teal. Failure / incidents: accent-red.
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── Progress rail ─── */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-teal);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* ─── Brand mark + slide num ─── */
+    .brand-mark {
+      position: absolute;
+      bottom: 24px;
+      left: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--color-subtle);
+    }
+    .brand-mark .b-grow { font-style: italic; color: var(--color-teal); }
+    .slide-num {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ─── Keyboard hint ─── */
+    .kbd-hint {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-subtle);
+      background: rgba(250, 248, 245, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.06);
+      transition: opacity 0.4s ease;
+    }
+    .kbd-hint.hidden { opacity: 0; pointer-events: none; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.15);
+      border-radius: 4px;
+      margin: 0 1px;
+    }
+
+    /* ─── Card-deck container (1 slide per "page") ─── */
+    .card-deck-container { scroll-snap-type: y mandatory; height: 100vh; overflow-y: scroll; }
+    .card-deck-card {
+      scroll-snap-align: start;
+      min-height: 100vh;
+      position: relative;
+      opacity: 0.55;
+      transition: opacity 0.5s ease;
+    }
+    .card-deck-card.is-active { opacity: 1; }
+
+    /* ─── Stagger animation for slide content ─── */
+    .stagger > * { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+    .deck-slide.is-active .stagger > *:nth-child(7) { transition-delay: 0.7s; }
+    .deck-slide.is-active .stagger > *:nth-child(8) { transition-delay: 0.8s; }
+
+    /* ──────────────────────────────────────────────────────
+       Print: 1600x900 per page, no margins, single slide per page
+       ────────────────────────────────────────────────────── */
+    @page { size: 1600px 900px; margin: 0; }
+    @media print {
+      html, body { background: var(--color-cream) !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container { scroll-snap-type: none; height: auto; overflow: visible; }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        min-height: 900px !important;
+        max-height: 900px !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        opacity: 1 !important;
+        padding: 4rem 5rem !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * { opacity: 1 !important; transform: none !important; }
+    }
+
+    .deck-slide p { max-width: none; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 01 — Cover
+       ══════════════════════════════════════════════════════ */
+    .slide-cover {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .cover-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .cover-eyebrow .dot { color: var(--color-teal); }
+    .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4.5rem, 11vw, 9rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .wordmark .ai { color: var(--color-teal); font-style: italic; }
+    .verb-pair {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+      color: var(--color-deep);
+      margin: 2rem 0 0;
+    }
+    .verb-pair .grow { color: var(--color-teal); }
+    .verb-pair .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+    .cover-tag {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+      color: var(--color-subtle);
+      margin: 2.5rem auto 0;
+      text-align: center;
+    }
+    .cover-tag em { color: var(--color-teal); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 02 — Positioning
+       ══════════════════════════════════════════════════════ */
+    .slide-positioning { justify-content: center; }
+    .positioning-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .positioning-statement {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.4vw, 3.4rem);
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+      color: var(--color-deep);
+      margin: 0 auto;
+      text-align: center;
+      text-wrap: balance;
+      max-width: 22ch;
+    }
+    .positioning-statement .p-who { color: var(--color-teal); font-style: italic; }
+    .positioning-statement .p-what { color: var(--color-amber); font-style: italic; }
+    .positioning-statement .p-against { color: var(--color-accent-red); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — Already here (students are using AI)
+       ══════════════════════════════════════════════════════ */
+    .slide-already { justify-content: center; }
+    .already-content { max-width: 1200px; margin: 0 auto; width: 100%; }
+    .already-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin-bottom: 1rem;
+    }
+    .already-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.75rem, 5.5vw, 4.25rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-wrap: balance;
+    }
+    .already-headline em { color: var(--color-teal); font-style: italic; }
+    .already-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .already-stat {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.6rem 1.25rem;
+      border-top: 3px solid var(--color-teal);
+    }
+    .already-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.6rem;
+      line-height: 1;
+      color: var(--color-teal);
+      margin: 0 0 0.6rem;
+      letter-spacing: -0.02em;
+    }
+    .already-label {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .already-label em { color: var(--color-navy); font-style: italic; }
+    .already-source {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--color-subtle);
+      text-transform: uppercase;
+      margin-top: 0.6rem;
+      display: block;
+    }
+    .already-summary {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.6rem;
+      color: var(--color-deep);
+      text-align: center;
+      margin: 2.5rem 0 0;
+    }
+    .already-summary .accent { color: var(--color-teal); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 04 — The two ditches
+       ══════════════════════════════════════════════════════ */
+    .slide-ditches { justify-content: center; }
+    .ditches-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .ditches-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.8vw, 3.6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .ditches-headline em { color: var(--color-accent-red); font-style: italic; }
+    .ditches-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .ditch-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.85rem;
+      position: relative;
+    }
+    .ditch-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--color-accent-red);
+    }
+    .ditch-mode {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      margin-bottom: 0.6rem;
+    }
+    .ditch-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 0.4rem;
+      color: var(--color-deep);
+    }
+    .ditch-stat {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--color-accent-red);
+      margin: 0 0 0.85rem;
+    }
+    .ditch-body {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 0.75rem;
+    }
+    .ditch-body em { color: var(--color-navy); font-style: italic; }
+    .ditch-body:last-child { margin-bottom: 0; }
+    .ditches-summary {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.45rem;
+      color: var(--color-deep);
+      text-align: center;
+      margin: 2.25rem 0 0;
+    }
+    .ditches-summary .accent { color: var(--color-teal); font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 05 — The ground is moving (3 cards)
+       ══════════════════════════════════════════════════════ */
+    .slide-shift { justify-content: center; }
+    .shift-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .shift-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.5rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .shift-headline em { color: var(--color-teal); font-style: italic; }
+    .shift-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .shift-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.85rem 1.6rem;
+      position: relative;
+    }
+    .shift-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      font-weight: 600;
+      margin: 0 0 0.7rem;
+    }
+    .shift-card-text {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .shift-card-text em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .shift-card-source {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 0.85rem;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 06 — The incidents (deepfakes + harms catalog)
+       ══════════════════════════════════════════════════════ */
+    .slide-incidents { justify-content: center; }
+    .incidents-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .incidents-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      margin-bottom: 1rem;
+    }
+    .incidents-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.6vw, 3.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 1.75rem;
+      color: var(--color-deep);
+      text-wrap: balance;
+    }
+    .incidents-headline em { color: var(--color-accent-red); font-style: italic; }
+    .incidents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem 1.5rem;
+    }
+    .incident {
+      padding: 0.95rem 1.1rem;
+      background: var(--color-warm-white);
+      border-left: 3px solid var(--color-accent-red);
+      border-radius: 0 8px 8px 0;
+    }
+    .incident-cat {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      font-weight: 600;
+      margin: 0 0 0.3rem;
+    }
+    .incident-body {
+      font-family: var(--font-body);
+      font-size: 0.96rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+    }
+    .incident-body em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .incident-body strong { font-weight: 700; color: var(--color-deep); }
+    .incidents-foot {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--color-deep);
+      text-align: center;
+      margin: 1.75rem 0 0;
+    }
+    .incidents-foot .accent { color: var(--color-accent-red); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 07 — What thoughtful schools did (Estonia + Khan)
+       ══════════════════════════════════════════════════════ */
+    .slide-good { justify-content: center; }
+    .good-content { max-width: 1350px; margin: 0 auto; width: 100%; }
+    .good-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      text-align: center;
+      text-wrap: balance;
+    }
+    .good-headline em { color: var(--color-teal); font-style: italic; }
+    .good-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .good-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.85rem 1.75rem;
+      position: relative;
+    }
+    .good-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .good-card.win::before { background: var(--color-teal); }
+    .good-card.honest::before { background: var(--color-amber); }
+    .good-cat {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin: 0 0 0.55rem;
+    }
+    .good-card.win .good-cat { color: var(--color-teal); }
+    .good-card.honest .good-cat { color: var(--color-amber); }
+    .good-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.85rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 0.85rem;
+      color: var(--color-deep);
+    }
+    .good-card.win .good-name { color: var(--color-teal); }
+    .good-card.honest .good-name { color: var(--color-amber); }
+    .good-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 1rem;
+    }
+    .good-body em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .good-quote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      margin: 0;
+      padding: 0.85rem 1rem;
+      background: rgba(22,199,154,0.06);
+      border-left: 3px solid var(--color-teal);
+      border-radius: 0 6px 6px 0;
+    }
+    .good-card.honest .good-quote {
+      background: rgba(245,166,35,0.06);
+      border-left-color: var(--color-amber);
+    }
+    .good-quote-attr {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0.5rem 0 0;
+    }
+    .good-moves {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .good-moves li {
+      font-family: var(--font-body);
+      font-size: 0.93rem;
+      line-height: 1.45;
+      color: var(--color-deep);
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .good-moves li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-teal);
+    }
+    .good-moves li strong { font-weight: 700; color: var(--color-teal); }
+    .good-moves li em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 08 — Five disciplines
+       ══════════════════════════════════════════════════════ */
+    .slide-disciplines { justify-content: center; }
+    .disciplines-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .disciplines-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 0.75rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .disciplines-headline em { color: var(--color-teal); font-style: italic; }
+    .disciplines-sub {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--color-subtle);
+      text-align: center;
+      margin: 0 0 2.25rem;
+    }
+    .disciplines-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+    .discipline-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.4rem 1.1rem;
+      position: relative;
+    }
+    .discipline-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--color-teal);
+      opacity: 0.25;
+      margin: 0 0 0.5rem;
+    }
+    .discipline-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      color: var(--color-deep);
+      margin: 0 0 0.5rem;
+    }
+    .discipline-name em { color: var(--color-teal); font-style: italic; }
+    .discipline-body {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 09 — L0–L3 ladder for teachers
+       ══════════════════════════════════════════════════════ */
+    .slide-ladder { justify-content: center; }
+    .ladder-content { max-width: 1300px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: center; }
+    .ladder-left { }
+    .ladder-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      margin-bottom: 1rem;
+    }
+    .ladder-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.2vw, 3.1rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 1.25rem;
+      color: var(--color-deep);
+      text-wrap: balance;
+    }
+    .ladder-headline em { color: var(--color-teal); font-style: italic; }
+    .ladder-pull {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.2rem;
+      line-height: 1.45;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .ladder-pull em { color: var(--color-deep); font-weight: 600; }
+    .ladder {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.8rem;
+    }
+    .rung {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 1.1rem;
+      align-items: center;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      position: relative;
+    }
+    .rung .tier {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .rung.r0 .tier { color: var(--color-subtle); }
+    .rung.r1 .tier { color: var(--color-amber); }
+    .rung.r2 .tier { color: var(--color-purple); }
+    .rung.r3 .tier { color: var(--color-teal); }
+    .rung-text h5 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.15rem;
+      color: var(--color-deep);
+    }
+    .rung-text p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .rung-text p em { color: var(--color-navy); font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 10 — The workshop · 4 stages overview
+       ══════════════════════════════════════════════════════ */
+    .slide-workshop { justify-content: center; }
+    .workshop-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .workshop-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 6vw, 4.75rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .workshop-headline em { color: var(--color-teal); font-style: italic; }
+    .workshop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .ws-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 12px;
+      padding: 1.5rem 1.25rem;
+      position: relative;
+    }
+    .ws-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .ws-card.s1::before { background: var(--color-teal); }
+    .ws-card.s2::before { background: var(--color-amber); }
+    .ws-card.s3::before { background: var(--color-purple); }
+    .ws-card.s4::before { background: var(--color-accent-red); }
+    .ws-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.55rem;
+    }
+    .ws-card.s1 .ws-num { color: var(--color-teal); }
+    .ws-card.s2 .ws-num { color: var(--color-amber); }
+    .ws-card.s3 .ws-num { color: var(--color-purple); }
+    .ws-card.s4 .ws-num { color: var(--color-accent-red); }
+    .ws-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.55rem;
+      color: var(--color-deep);
+    }
+    .ws-tag {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .workshop-meta {
+      list-style: none;
+      padding: 0;
+      margin: 2.25rem 0 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .workshop-meta div { padding: 0; }
+    .workshop-meta dt {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-teal);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .workshop-meta dd {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDES 11–14 — Stage walk-through (Anjali persona)
+       ══════════════════════════════════════════════════════ */
+    .slide-stage { justify-content: center; position: relative; }
+    .stage-big-num {
+      position: absolute;
+      top: 4rem; right: 5rem;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 14rem;
+      line-height: 0.85;
+      letter-spacing: -0.05em;
+      opacity: 0.06;
+      color: var(--color-deep);
+      pointer-events: none;
+    }
+    .stage-content { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+    .stage-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    .slide-stage.s1 .stage-pill { background: rgba(22,199,154,0.12); color: var(--color-teal); }
+    .slide-stage.s2 .stage-pill { background: rgba(245,166,35,0.12); color: var(--color-amber); }
+    .slide-stage.s3 .stage-pill { background: rgba(123,97,255,0.12); color: var(--color-purple); }
+    .slide-stage.s4 .stage-pill { background: rgba(233,69,96,0.12); color: var(--color-accent-red); }
+    .stage-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin: 0 0 1.5rem;
+      color: var(--color-deep);
+    }
+    .slide-stage.s1 .stage-name { color: var(--color-teal); }
+    .slide-stage.s2 .stage-name { color: var(--color-amber); }
+    .slide-stage.s3 .stage-name { color: var(--color-purple); }
+    .slide-stage.s4 .stage-name { color: var(--color-accent-red); }
+    .story-intro {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      margin: 0 0 1.5rem;
+      max-width: 70ch;
+    }
+    .story-intro em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .story-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.7rem;
+    }
+    .story-list li {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--color-deep);
+      padding: 0.8rem 1rem;
+      background: var(--color-warm-white);
+      border-radius: 8px;
+      border-left: 3px solid;
+      counter-increment: storycount;
+      position: relative;
+      padding-left: 3.2rem;
+    }
+    .story-list { counter-reset: storycount; }
+    .story-list li::before {
+      content: counter(storycount, decimal-leading-zero);
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--color-subtle);
+    }
+    .slide-stage.s1 .story-list li { border-left-color: var(--color-teal); }
+    .slide-stage.s2 .story-list li { border-left-color: var(--color-amber); }
+    .slide-stage.s3 .story-list li { border-left-color: var(--color-purple); }
+    .slide-stage.s4 .story-list li { border-left-color: var(--color-accent-red); }
+    .story-list li em { color: var(--color-navy); font-style: italic; font-weight: 600; }
+    .story-footnote {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--color-subtle);
+      margin: 1.25rem 0 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 15 — Bundle (two artefacts you walk away with)
+       ══════════════════════════════════════════════════════ */
+    .slide-bundle { justify-content: center; }
+    .bundle-content { max-width: 1250px; margin: 0 auto; width: 100%; }
+    .bundle-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.6vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      text-align: center;
+    }
+    .bundle-headline em { color: var(--color-teal); font-style: italic; }
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.25rem;
+    }
+    .bundle-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .bundle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .bundle-card.one::before { background: var(--color-teal); }
+    .bundle-card.two::before { background: var(--color-purple); }
+    .bundle-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      margin: 0 0 0.5rem;
+    }
+    .bundle-card.one .bundle-num { color: var(--color-teal); }
+    .bundle-card.two .bundle-num { color: var(--color-purple); }
+    .bundle-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.75rem;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 0.85rem;
+    }
+    .bundle-card.one .bundle-title { color: var(--color-teal); }
+    .bundle-card.two .bundle-title { color: var(--color-purple); }
+    .bundle-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0 0 0.85rem;
+    }
+    .bundle-body em { color: var(--color-navy); font-style: italic; }
+    .bundle-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 16 — Thesis
+       ══════════════════════════════════════════════════════ */
+    .slide-thesis {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .thesis-content { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .thesis-headline {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.75rem, 5.5vw, 4.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--color-deep);
+      margin: 0;
+      text-wrap: balance;
+    }
+    .thesis-headline em { color: var(--color-teal); font-style: italic; }
+    .thesis-headline .strike { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: rgba(233,69,96,0.55); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 17 — Close
+       ══════════════════════════════════════════════════════ */
+    .slide-close {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .close-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .close-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .close-wordmark .ai { color: var(--color-teal); font-style: italic; }
+    .close-sub {
+      font-family: var(--font-heading);
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+      color: var(--color-subtle);
+      margin: 0.75rem 0 0;
+    }
+    .close-sub .accent { color: var(--color-teal); font-weight: 700; }
+    .close-verb {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(1.4rem, 2.4vw, 1.95rem);
+      color: var(--color-deep);
+      margin: 2rem 0 2.5rem;
+    }
+    .close-verb .grow { color: var(--color-teal); }
+    .close-verb .chase { color: var(--color-accent-red); text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(233,69,96,0.5); }
+    .close-email {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--color-navy);
+      margin-top: 0.6rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive — laptops at 1280-
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .already-grid { grid-template-columns: repeat(2, 1fr); }
+      .ditches-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .shift-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .incidents-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+      .good-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .disciplines-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .ladder-content { grid-template-columns: 1fr; gap: 2rem; }
+      .workshop-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .workshop-meta { grid-template-columns: 1fr; gap: 1rem; }
+      .bundle-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+    @media (max-width: 768px) {
+      .deck-slide { padding: 3rem 2rem; }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &middot; <kbd>space</kbd> next
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Cover ═══ -->
+    <section class="card-deck-card deck-slide slide-cover" data-slide="cover">
+      <div class="stagger">
+        <p class="cover-eyebrow">For Schools <span class="dot">·</span> Teacher Training</p>
+        <h1 class="wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="verb-pair"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">01 &middot; Cover</div>
+    </section>
+
+    <!-- ═══ 02 · Positioning ═══ -->
+    <section class="card-deck-card deck-slide slide-positioning" data-slide="positioning">
+      <div class="positioning-content stagger">
+        <h1 class="positioning-statement">We train <span class="p-who">your teachers</span> to <span class="p-what">shape AI in their classrooms</span>, before <span class="p-against">vendors and students</span> shape it for them.</h1>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">02 &middot; Positioning</div>
+    </section>
+
+    <!-- ═══ 03 · Already here ═══ -->
+    <section class="card-deck-card deck-slide slide-already" data-slide="already">
+      <div class="already-content stagger">
+        <p class="already-eyebrow">The reality on the ground</p>
+        <h1 class="already-headline">Your students are <em>already there</em>. Most of your teachers aren't.</h1>
+        <div class="already-grid">
+          <div class="already-stat">
+            <p class="already-num">2 in 3</p>
+            <p class="already-label">US teens use AI chatbots. <em>30% daily.</em> 54% for schoolwork.<span class="already-source">Pew Research, late 2025</span></p>
+          </div>
+          <div class="already-stat">
+            <p class="already-num">46%</p>
+            <p class="already-label">of teens who used AI for schoolwork did so <em>without teacher permission</em>.<span class="already-source">Common Sense Media, Sept 2024</span></p>
+          </div>
+          <div class="already-stat">
+            <p class="already-num">68%</p>
+            <p class="already-label">of US teachers report <em>no school or district AI training</em>. None.<span class="already-source">Walton / Gallup, 2025</span></p>
+          </div>
+          <div class="already-stat">
+            <p class="already-num">19%</p>
+            <p class="already-label">of US teachers say their school has any AI policy at all.<span class="already-source">RAND American Educator Panel, 2025</span></p>
+          </div>
+        </div>
+        <p class="already-summary">The horse <span class="accent">has left the barn</span>. The question is whether the faculty knows.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">03 &middot; Already here</div>
+    </section>
+
+    <!-- ═══ 04 · Two ditches ═══ -->
+    <section class="card-deck-card deck-slide slide-ditches" data-slide="ditches">
+      <div class="ditches-content stagger">
+        <h1 class="ditches-headline">Schools fall into <em>two ditches</em>.</h1>
+        <div class="ditches-grid">
+          <div class="ditch-card">
+            <div class="ditch-mode">Ditch one &middot; The reflexive ban</div>
+            <h2 class="ditch-name">NYC. LAUSD. Seattle. Victoria.</h2>
+            <div class="ditch-stat">All reversed within months.</div>
+            <p class="ditch-body">NYC banned ChatGPT in January 2023. The Chancellor reversed it in May, calling the original move <em>"knee-jerk fear."</em></p>
+            <p class="ditch-body">Outcome: students use AI anyway. In secret. Without judgment, citation, or supervision.</p>
+          </div>
+          <div class="ditch-card">
+            <div class="ditch-mode">Ditch two &middot; The vendor splurge</div>
+            <h2 class="ditch-name">LAUSD's "Ed". South Korea's AIDT.</h2>
+            <div class="ditch-stat">$6M paid. $850M spent. Both collapsed.</div>
+            <p class="ditch-body">LAUSD signed $6.2M with AllHere. Eight weeks later: bankruptcy. Student data routed to <em>eight foreign countries</em>. CEO indicted. <em>FBI raided the Superintendent's home.</em></p>
+            <p class="ditch-body">South Korea: ₩1.2 trillion. <em>86% of teachers and parents opposed it.</em> Adoption fell 37% &rarr; 19%. Downgraded to "supplementary materials."</p>
+          </div>
+        </div>
+        <p class="ditches-summary">This workshop is the path <span class="accent">between</span>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">04 &middot; The two ditches</div>
+    </section>
+
+    <!-- ═══ 05 · The ground is moving ═══ -->
+    <section class="card-deck-card deck-slide slide-shift" data-slide="shift">
+      <div class="shift-content stagger">
+        <h1 class="shift-headline">The ground <em>has already moved</em>.</h1>
+        <div class="shift-grid">
+          <div class="shift-card">
+            <p class="shift-card-num">01 &middot; The students moved first</p>
+            <p class="shift-card-text"><em>2 in 3</em> teens use AI chatbots. <em>30% every day.</em> Almost half do schoolwork on it without telling you.<span class="shift-card-source">Pew 2025 &middot; Common Sense 2024</span></p>
+          </div>
+          <div class="shift-card">
+            <p class="shift-card-num">02 &middot; The other systems moved next</p>
+            <p class="shift-card-text"><em>Estonia</em> put every upper-secondary school on AI in Sept 2025. <em>India's CBSE</em> makes AI compulsory in Classes 9&ndash;10 by 2027&ndash;28. <em>China</em>: 8+ class hours of AI a year, every grade, from Sept 2025.<span class="shift-card-source">Estonia &middot; CBSE &middot; China MoE</span></p>
+          </div>
+          <div class="shift-card">
+            <p class="shift-card-num">03 &middot; Your faculty hasn't</p>
+            <p class="shift-card-text"><em>68%</em> of teachers have no AI training at all. <em>96%</em> of parents have heard nothing from your school. The headline writes itself when something goes wrong.<span class="shift-card-source">RAND / Walton / Common Sense, 2025</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">05 &middot; Ground</div>
+    </section>
+
+    <!-- ═══ 06 · Incidents ═══ -->
+    <section class="card-deck-card deck-slide slide-incidents" data-slide="incidents">
+      <div class="incidents-content stagger">
+        <p class="incidents-eyebrow">The new category of incident</p>
+        <h1 class="incidents-headline">Schools that aren't ready for these are <em>making the news</em>.</h1>
+        <div class="incidents-grid">
+          <div class="incident">
+            <p class="incident-cat">Deepfake nudes &middot; New Jersey</p>
+            <p class="incident-body"><strong>Westfield High, Oct 2023.</strong> Boys generated AI nudes of <em>30+ sophomore girls</em> via the Clothoff app. School read victims' names over the intercom. No charges filed.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Deepfake nudes &middot; Pennsylvania</p>
+            <p class="incident-body"><strong>Lancaster Country Day.</strong> Two 14-year-olds made <em>347 explicit images of 59 minors</em>. The school received a tip in November. Did not report. Police were told <em>six months later</em>, by a parent.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Deepfake nudes &middot; South Korea</p>
+            <p class="incident-body"><strong>Telegram scandal, Aug 2024.</strong> Over <em>500 schools targeted</em>. ~920 school-based victims. <em>74% of suspects were aged 10&ndash;19.</em> One channel: 220,000+ subscribers.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">False AI-cheating accusation</p>
+            <p class="incident-body"><strong>Marley Stevens, UNG.</strong> Lost her HOPE scholarship after an AI detector flagged her Grammarly use. <em>Stanford finding: 50%+ of TOEFL essays by non-native English speakers</em> are misclassified as AI-written.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Surveillance harm &middot; Kansas</p>
+            <p class="incident-body"><strong>Lawrence Public Schools.</strong> Federal lawsuit filed Sept 2024 over Gaggle alerts. Reporters found <em>1 in 3 LGBTQ students were outed</em> by digital monitoring nationally. Mental-health phrases triggered alerts.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Algorithmic bias &middot; assessment</p>
+            <p class="incident-body"><strong>ETS draft, June 2024.</strong> GPT-4o scoring 13,121 student essays <em>penalized Asian American students more</em> than other ethnicities. Differences not explainable by the data.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Cognitive harm &middot; learning loss</p>
+            <p class="incident-body"><strong>Bastani et al., PNAS 2025.</strong> When AI access was removed for the test, students who had been using ChatGPT scored <em>17% lower than the control group</em>. The dependence is measurable.</p>
+          </div>
+          <div class="incident">
+            <p class="incident-cat">Cognitive harm &middot; neural</p>
+            <p class="incident-body"><strong>MIT Media Lab, June 2025.</strong> EEG study of students writing essays. ChatGPT group showed the <em>lowest neural connectivity</em>. Almost none could quote a sentence from their own essay.</p>
+          </div>
+        </div>
+        <p class="incidents-foot">Federal law (the <span class="accent">TAKE IT DOWN Act, May 2025</span>) and the EU AI Act (Aug 2026) now apply to schools. The faculty has to know.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">06 &middot; Incidents</div>
+    </section>
+
+    <!-- ═══ 07 · What thoughtful schools did ═══ -->
+    <section class="card-deck-card deck-slide slide-good" data-slide="good">
+      <div class="good-content stagger">
+        <h1 class="good-headline">The schools that did this well had <em>infrastructure for thinking</em> before they had a tool.</h1>
+        <div class="good-grid">
+          <div class="good-card win">
+            <p class="good-cat">The example to study</p>
+            <h2 class="good-name">Estonia &middot; AI Leap</h2>
+            <p class="good-body">All 154 upper-secondary schools. ChatGPT Edu and Gemini, <em>free for every teacher</em>. €4M year one, half public, half private donors. Five things they did differently:</p>
+            <ul class="good-moves">
+              <li><strong>Built it local.</strong> Estonian-language app, with the University of Tartu and the Institute of the Estonian Language. Not a foreign chatbot bolted on.</li>
+              <li><strong>Designed for thinking.</strong> The app refuses to give direct answers; it scaffolds reasoning instead.</li>
+              <li><strong>Trained teachers first.</strong> 60%+ of upper-secondary teachers now use AI weekly, ahead of universal student access.</li>
+              <li><strong>Phased the rollout.</strong> 20K students Sept 2025, 58K by 2027. Not a big bang.</li>
+              <li><strong>Multi-model from day one.</strong> OpenAI and Anthropic together. No vendor lock-in.</li>
+            </ul>
+            <blockquote class="good-quote">
+              "Estonia's true leap is to learn to think with artificial intelligence, not <em>instead of it</em>."
+            </blockquote>
+            <p class="good-quote-attr">&mdash; Kristina Kallas, Minister of Education</p>
+          </div>
+          <div class="good-card honest">
+            <p class="good-cat">The honest counter-example</p>
+            <h2 class="good-name">Khanmigo &middot; Sal Khan</h2>
+            <p class="good-body">$15 per student. Free for every teacher worldwide via Microsoft. 795 districts. 2 million users. The closest thing to a "global AI tutor" we've ever had.</p>
+            <p class="good-body">In April 2026, Khan publicly admitted: <em>only 15% of students with access regularly engage</em>. The product was rebuilt. The PNAS RCT found no effect for lower-performing students.</p>
+            <blockquote class="good-quote">
+              "For a lot of students, it was a non-event. They just <em>didn't use it much</em>. Our biggest lever is investing in the human systems."
+            </blockquote>
+            <p class="good-quote-attr">&mdash; Sal Khan, Chalkbeat April 2026</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">07 &middot; What worked</div>
+    </section>
+
+    <!-- ═══ 08 · Five disciplines ═══ -->
+    <section class="card-deck-card deck-slide slide-disciplines" data-slide="disciplines">
+      <div class="disciplines-content stagger">
+        <h1 class="disciplines-headline">The five <em>disciplines</em> the winners share.</h1>
+        <p class="disciplines-sub">Across Estonia, Singapore, South Australia, Newark, Peninsula. All of them. Every time.</p>
+        <div class="disciplines-grid">
+          <div class="discipline-card">
+            <p class="discipline-num">01</p>
+            <p class="discipline-name"><em>Pilot</em>, don't mandate.</p>
+            <p class="discipline-body">8&ndash;50 schools. Measured. Then expanded. South Australia is the textbook case.</p>
+          </div>
+          <div class="discipline-card">
+            <p class="discipline-num">02</p>
+            <p class="discipline-name"><em>Train</em> teachers first.</p>
+            <p class="discipline-body">Before the tool. Not after. The 68% with no training is not an accident.</p>
+          </div>
+          <div class="discipline-card">
+            <p class="discipline-num">03</p>
+            <p class="discipline-name"><em>Write</em> policy. Tell parents.</p>
+            <p class="discipline-body">96% of elementary families have heard nothing from their school. Fix that first.</p>
+          </div>
+          <div class="discipline-card">
+            <p class="discipline-num">04</p>
+            <p class="discipline-name">Design for student <em>agency</em>.</p>
+            <p class="discipline-body">Estonia's app refuses direct answers. The Bastani "Tutor mode" neutralized the harm.</p>
+          </div>
+          <div class="discipline-card">
+            <p class="discipline-num">05</p>
+            <p class="discipline-name"><em>Augment</em> teachers, never replace.</p>
+            <p class="discipline-body">Aila pauses to keep the teacher in the driving seat. Alpha School's "no teachers" claim is collapsing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">08 &middot; Disciplines</div>
+    </section>
+
+    <!-- ═══ 09 · L0–L3 ladder ═══ -->
+    <section class="card-deck-card deck-slide slide-ladder" data-slide="ladder">
+      <div class="ladder-content stagger">
+        <div class="ladder-left">
+          <p class="ladder-eyebrow">The teacher ladder</p>
+          <h1 class="ladder-headline">Where is your faculty <em>today</em>? Where do you need them <em>by June</em>?</h1>
+          <p class="ladder-pull">Most schools have an <em>L0/L1 average</em> and don't know it. The workshop moves a cohort to <em>L2</em> in 12 hours, with the trajectory and tools to reach <em>L3</em> on their own.</p>
+        </div>
+        <ol class="ladder">
+          <li class="rung r0">
+            <span class="tier">L0</span>
+            <div class="rung-text">
+              <h5>Curious bystander.</h5>
+              <p>"I tried ChatGPT once." No classroom use. <em>Most of your faculty.</em></p>
+            </div>
+          </li>
+          <li class="rung r1">
+            <span class="tier">L1</span>
+            <div class="rung-text">
+              <h5>Daily helper.</h5>
+              <p>Lesson plans, rubrics, parent emails drafted with AI. <em>Personal productivity only.</em></p>
+            </div>
+          </li>
+          <li class="rung r2">
+            <span class="tier">L2</span>
+            <div class="rung-text">
+              <h5>Embedded in pedagogy.</h5>
+              <p>Designs assignments AI can't shortcut. Uses AI as a <em>Socratic peer</em> for students.</p>
+            </div>
+          </li>
+          <li class="rung r3">
+            <span class="tier">L3</span>
+            <div class="rung-text">
+              <h5>Curriculum architect.</h5>
+              <p>Builds AI-resilient assessment. Models judgment publicly. <em>Mentors colleagues.</em></p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">09 &middot; The ladder</div>
+    </section>
+
+    <!-- ═══ 10 · The workshop · 4 stages ═══ -->
+    <section class="card-deck-card deck-slide slide-workshop" data-slide="workshop">
+      <div class="workshop-content stagger">
+        <h1 class="workshop-headline">The <em>workshop</em>.</h1>
+        <div class="workshop-grid">
+          <div class="ws-card s1">
+            <p class="ws-num">Stage 1</p>
+            <h3 class="ws-title">Approach</h3>
+            <p class="ws-tag">15 principles teachers walk in repeating.</p>
+          </div>
+          <div class="ws-card s2">
+            <p class="ws-num">Stage 2</p>
+            <h3 class="ws-title">Practice</h3>
+            <p class="ws-tag">Build classroom playbooks, in your subject, in your voice.</p>
+          </div>
+          <div class="ws-card s3">
+            <p class="ws-num">Stage 3</p>
+            <h3 class="ws-title">Policy</h3>
+            <p class="ws-tag">Draft your school's own AI policy. Run incident drills.</p>
+          </div>
+          <div class="ws-card s4">
+            <p class="ws-num">Stage 4</p>
+            <h3 class="ws-title">Studio</h3>
+            <p class="ws-tag">Synthetic environments for differentiation, IEPs, tough conversations.</p>
+          </div>
+        </div>
+        <dl class="workshop-meta">
+          <div><dt>Format</dt><dd>Six sessions, two hours each, over six weeks. <em>Twelve hours total.</em></dd></div>
+          <div><dt>Cohort</dt><dd>Up to fifteen teachers from your school. Mixed subjects. Mixed seniority.</dd></div>
+          <div><dt>Take-away</dt><dd>Each teacher leaves with a 90-day classroom plan. The cohort co-authors a school AI policy draft.</dd></div>
+        </dl>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">10 &middot; The workshop</div>
+    </section>
+
+    <!-- ═══ 11 · Stage 1 · Approach (Anjali) ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s1" data-slide="approach">
+      <div class="stage-big-num">01</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 1</span>
+        <h1 class="stage-name">Approach.</h1>
+        <p class="story-intro"><em>Anjali</em>, middle-school English. She has finished Stage 1. This is how she now thinks.</p>
+        <ol class="story-list">
+          <li>Plan for the AI of <em>next term</em>, not the chatbot fad of this one.</li>
+          <li>Ask AI to ask <em>you</em> the questions before you set the assignment.</li>
+          <li>Treat every AI answer as a <em>draft</em>, not a verdict. Cross-check with another model.</li>
+          <li>Design for the <em>process</em> students show, not the output they hand in.</li>
+        </ol>
+        <p class="story-footnote">Anjali is rebuilding her Year 8 essay rubric &rarr;</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">11 &middot; Approach &middot; Anjali</div>
+    </section>
+
+    <!-- ═══ 12 · Stage 2 · Practice (Anjali) ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s2" data-slide="practice">
+      <div class="stage-big-num">02</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 2</span>
+        <h1 class="stage-name">Practice.</h1>
+        <p class="story-intro">What was between <em>Anjali's ears</em> now runs as classroom playbooks &mdash; in her voice, on her timetable.</p>
+        <ol class="story-list">
+          <li>Differentiated <em>reading-level rewriter</em> for the same text across her three sets.</li>
+          <li>Socratic <em>essay-feedback partner</em> students use before they submit.</li>
+          <li>Parent-conference <em>brief composer</em> from term marks and notes.</li>
+          <li>IEP-aware <em>worksheet generator</em> for her three SEN students.</li>
+          <li>Citation-and-source <em>integrity checker</em> for student work.</li>
+        </ol>
+        <p class="story-footnote">These spread to her department next &rarr;</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">12 &middot; Practice &middot; Anjali</div>
+    </section>
+
+    <!-- ═══ 13 · Stage 3 · Policy (Anjali) ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s3" data-slide="policy">
+      <div class="stage-big-num">03</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 3</span>
+        <h1 class="stage-name">Policy.</h1>
+        <p class="story-intro">Anjali's cohort co-authored what 96% of families haven't seen from their school: <em>a policy that's actually theirs</em>.</p>
+        <ol class="story-list">
+          <li>What students <em>may</em> use AI for. What they <em>may not</em>. By subject. By age.</li>
+          <li>How AI use must be <em>cited</em> in submitted work, and what counts as integrity.</li>
+          <li>Faculty protocol for a suspected <em>deepfake or harassment</em> incident, hour by hour.</li>
+          <li>What gets sent to <em>parents</em>, and what stays inside the school.</li>
+          <li>What the school will <em>never</em> do: detection-only verdicts, sentiment surveillance, opaque grading.</li>
+        </ol>
+        <p class="story-footnote">A real document. Defensible to the board, the parents, and the regulator &rarr;</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">13 &middot; Policy &middot; Anjali</div>
+    </section>
+
+    <!-- ═══ 14 · Stage 4 · Studio (Anjali) ═══ -->
+    <section class="card-deck-card deck-slide slide-stage s4" data-slide="studio">
+      <div class="stage-big-num">04</div>
+      <div class="stage-content stagger">
+        <span class="stage-pill">Stage 4</span>
+        <h1 class="stage-name">Studio.</h1>
+        <p class="story-intro">Anjali uses synthetic AI environments for <em>preparation, training, and difficult conversations</em> &mdash; her own, and her team's.</p>
+        <ol class="story-list">
+          <li>Parent-conference <em>rehearsals</em> against an AI playing the difficult parent.</li>
+          <li>Deepfake-incident <em>response drill</em> with the safeguarding team.</li>
+          <li>Differentiation <em>simulations</em> for a mixed-ability lesson before she teaches it.</li>
+          <li>New-teacher <em>onboarding</em> against synthetic Year 9 classroom scenarios.</li>
+          <li>SEN review <em>dry-runs</em> before the IEP meeting.</li>
+        </ol>
+        <p class="story-footnote">Things her school could not rehearse before AI &rarr;</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">14 &middot; Studio &middot; Anjali</div>
+    </section>
+
+    <!-- ═══ 15 · Bundle (two artefacts) ═══ -->
+    <section class="card-deck-card deck-slide slide-bundle" data-slide="bundle">
+      <div class="bundle-content stagger">
+        <h1 class="bundle-headline">What every cohort <em>walks away with</em>.</h1>
+        <div class="bundle-grid">
+          <div class="bundle-card one">
+            <p class="bundle-num">01</p>
+            <h2 class="bundle-title">Personal classroom playbook.</h2>
+            <p class="bundle-body">Each teacher leaves with their own 90-day plan, their own playbooks, in their <em>own subject and voice</em>. Not a template. The thing they will actually use on Monday.</p>
+            <p class="bundle-tag">Per teacher &middot; Subject-specific</p>
+          </div>
+          <div class="bundle-card two">
+            <p class="bundle-num">02</p>
+            <h2 class="bundle-title">School AI policy draft.</h2>
+            <p class="bundle-body">The cohort co-authors one document &mdash; classroom use, integrity, incidents, parent comms, and what the school will <em>never</em> do. Defensible to your board, parents, and the regulator.</p>
+            <p class="bundle-tag">Per school &middot; Board-ready</p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">15 &middot; What you walk away with</div>
+    </section>
+
+    <!-- ═══ 16 · Thesis ═══ -->
+    <section class="card-deck-card deck-slide slide-thesis" data-slide="thesis">
+      <div class="thesis-content stagger">
+        <h1 class="thesis-headline">Schools that win don't <span class="strike">chase the next vendor</span>. They <em>grow the teachers they already have</em>.</h1>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">16 &middot; Thesis</div>
+    </section>
+
+    <!-- ═══ 17 · Close ═══ -->
+    <section class="card-deck-card deck-slide slide-close" data-slide="close">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="close-eyebrow">let's talk</span>
+        <h1 class="close-wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="close-sub">For <span class="accent">Schools</span></p>
+        <p class="close-verb"><span class="grow">Grow</span>, don't <span class="chase">Chase</span>.</p>
+        <p class="close-email">shalin@masalagames.com</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Schools</span></div>
+      <div class="slide-num">17 &middot; Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    // ════════════════════════════════════════════════════════
+    // Deck behavior: keyboard nav + active slide tracking
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) {
+          kbdHint.classList.add('hidden');
+          hintHidden = true;
+        }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+</body>
+</html>

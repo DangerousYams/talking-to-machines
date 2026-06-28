@@ -20,6 +20,7 @@ const MODEL_MAP: Record<string, string> = {
   'agent-swarm': 'claude-haiku-4-5-20251001',
   'prompt-framer': 'claude-haiku-4-5-20251001',
   'workshop': 'claude-haiku-4-5-20251001',
+  'ladder': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
@@ -38,7 +39,11 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'agent-swarm': 800,
   'prompt-framer': 400,
   'workshop': 700,
+  'ladder': 700,
 };
+
+// Free daily allowance for the Ladder (per IP) — exercises must work logged-out
+const LADDER_FREE_QUOTA = 20;
 
 // ---------------------------------------------------------------------------
 // KV adapter — Vercel KV in prod, in-memory Map for local dev
@@ -335,6 +340,35 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
     if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
+    return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
+  }
+
+  // -----------------------------------------------------------------------
+  // Route: ladder (free for everyone, 20/day per IP, Haiku; paid users
+  // draw from their shared daily quota instead)
+  // -----------------------------------------------------------------------
+  if (source === 'ladder') {
+    if (isPaidUser) {
+      const quotaKey = `quota:paid:${tokenPayload!.cid || tokenPayload!.uid}`;
+      const quota = await checkAndIncrQuota(kv, quotaKey, DAILY_QUOTA);
+      if (!quota.allowed) {
+        return jsonResponse(
+          { error: 'Daily limit reached. Resets at midnight UTC.' },
+          429,
+          quotaHeaders(quota.remaining, quota.limit, quota.reset)
+        );
+      }
+      if (tokenPayload!.uid) touchDeviceDebounced(kv, tokenPayload!.uid);
+      return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
+    }
+    const quota = await checkAndIncrQuota(kv, `quota:ladder:${ip}`, LADDER_FREE_QUOTA);
+    if (!quota.allowed) {
+      return jsonResponse(
+        { error: "You've used today's free AI turns on the Ladder. Come back tomorrow, or unlock full access." },
+        429,
+        quotaHeaders(quota.remaining, quota.limit, quota.reset)
+      );
+    }
     return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
   }
 

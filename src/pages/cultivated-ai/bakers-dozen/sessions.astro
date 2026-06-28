@@ -1,0 +1,360 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Part One · Session plan · The Baker's Dozen</title>
+  <style>
+    /* ── At-a-glance map of the four sessions ── */
+    .ses-map {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+      margin: 1.75rem 0 0;
+    }
+    .ses-mapcard {
+      padding: 0.95rem 1.1rem 1.05rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ses-mapcard::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .ses-mapcard .n {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--bar);
+    }
+    .ses-mapcard h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.08rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.15rem 0 0.35rem; color: var(--color-deep);
+    }
+    .ses-mapcard p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.45;
+      color: var(--color-subtle); margin: 0;
+    }
+    /* "Walk out with" note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-teal)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-teal)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-teal)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .ses-out p em { color: var(--color-navy); font-style: italic; }
+    /* legend */
+    .ses-legend {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem;
+      margin: 1.5rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-amber);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">Cultivated AI · Part One · facilitator plan</p>
+    <h1 class="cd-title">The four sessions, <em>in detail</em>.</h1>
+    <p class="cd-lede">Eight hours over four two-hour sessions. <strong>Hands on the keyboard</strong> throughout, on each leader's own real work. This is the internal run-sheet: timings, the exact activity at each beat, and what each session leaves behind.</p>
+    <p class="cd-meta">~20 leaders · 4 × 2 hrs · facilitator copy · The Baker's Dozen</p>
+    <div class="cd-rule"></div>
+
+    <div class="ses-legend">
+      <span class="cd-pill" style="--pill: var(--color-navy);">Teach · short</span>
+      <span class="cd-pill" style="--pill: var(--color-purple);">Lab · hands-on</span>
+      <span class="cd-pill" style="--pill: var(--color-sky);">Demo · watch</span>
+      <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span>
+    </div>
+
+    <div class="ses-map">
+      <div class="ses-mapcard is-amber" style="--bar: var(--color-amber);">
+        <span class="n">Session 1 · 2 hrs</span>
+        <h3>From neurons to tokens</h3>
+        <p>How LLMs actually work, so context, cost, and model choice follow from understanding.</p>
+      </div>
+      <div class="ses-mapcard is-teal" style="--bar: var(--color-teal);">
+        <span class="n">Session 2 · 2 hrs</span>
+        <h3>The fifteen principles, on the keyboard</h3>
+        <p>The full discipline, practised on each leader's real tasks.</p>
+      </div>
+      <div class="ses-mapcard is-purple" style="--bar: var(--color-purple);">
+        <span class="n">Session 3 · 2 hrs</span>
+        <h3>Skills you build</h3>
+        <p>Turn your best repeated work into a reusable skill. First taste of agents.</p>
+      </div>
+      <div class="ses-mapcard is-sky" style="--bar: var(--color-sky);">
+        <span class="n">Session 4 · 2 hrs</span>
+        <h3>Skills you share, and a 90-day plan</h3>
+        <p>From one desk to the team to the company, and a written plan to commit to.</p>
+      </div>
+    </div>
+
+    <!-- ════════ SESSION 1 ════════ -->
+    <section class="cd-section is-amber">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 01</span>
+        <h2 class="cd-section-name">From <em>neurons</em> to tokens</h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Build true intuition for what a model is. Every later decision (how much context, which model, what it costs) should fall out of understanding, not folklore.</p>
+
+      <div class="cd-callout">
+        <h4>Objective</h4>
+        <p>Each leader leaves able to say, in their own words, what an LLM does and why it behaves the way it does, and with a cost-and-model cheat sheet for their own top tasks.</p>
+      </div>
+
+      <ol class="cd-timeline">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Open: this is a people change, not a software install <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Set the room. Leaders, not engineers. The honest frame: AI makes your judgment <em>more</em> valuable, and the parts of the job you actually like come back. Name the fear out loud so it stops running the rollout.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The brain, simplified <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A neuron takes signals, weighs them, fires. Stack billions and you get pattern recognition. Walk from the biological neuron to the artificial one on the whiteboard. <em>New visual: neuron to perceptron.</em></p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:30 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">From neural nets to LLMs <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">What "predict the next token" really means. Training versus inference. The key reframe for the whole workshop: this is a <strong>communication</strong> tool, not a database to query.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:45 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Context is everything <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Run <em>Context Window Viz</em> (Ch 3): watch messages fill the window and the oldest fall away. Then <em>Forgetting Experiment</em> (Ch 3): the same chat with and without a summary, so they feel why context management matters.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:05 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Break</p>
+          <p class="cd-beat-desc">Short reset.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:10 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Tokens and token economics <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">What a token is, why long chats cost more and drift, and the survival strategies. <em>New widget: Token Cost Calculator</em>, price the same Baker's Dozen task (say a city-sales digest) across models and see the spread.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:30 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Choosing the right model <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">The big three (ChatGPT, Claude, Gemini), when each wins, and Principle 4: when in doubt, ask AI which AI to use. Run the same prompt three ways (the Big Three shootout). <em>New widget: model-selection decision tree.</em></p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:50 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">First principle on the keyboard <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 5, frame the conversation. Each leader runs one real task the right way: a session, not a one-line prompt. Sets up Session 2.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-amber);">
+        <h4>Walk out with</h4>
+        <p>A working mental model of how LLMs behave, plus a filled-in <em>cost-and-model cheat sheet</em> for their three most frequent tasks.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 2 ════════ -->
+    <section class="cd-section is-teal">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 02</span>
+        <h2 class="cd-section-name">The fifteen principles, <em>on the keyboard</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">From "using AI" to a repeatable discipline. Every principle is practised on the leader's own real work, not a toy example.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-teal);">
+        <h4>Objective</h4>
+        <p>Each leader applies the full fifteen-principle loop to three or more of their real tasks, and leaves with a personal cheat sheet they will actually reach for.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-teal);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Recap and the core loop <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Principles 1 to 3: build around approach not tools; it's a communication problem, not a technical one; <strong>Choose → Communicate → Evaluate</strong>, on repeat. The session is the unit, not the message.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Frame, and show what good looks like <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 5 (frame the conversation) and 6 (great examples beat great instructions). Run <em>Prompt Makeover</em> (Ch 1): toggle the building blocks, watch quality climb. Then each leader frames a real brief (a Blinkit listing, a vendor email) with a good and a bad example attached.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:35 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Make the machine interrogate you <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 7 (ask AI to ask you) and 8 (ask AI for help with AI). Run <em>Flip the Script</em> (Ch 2): the AI asks clarifying questions before it answers. Compare the Socratic result to the one-shot answer.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:55 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Break</p>
+          <p class="cd-beat-desc">Short reset.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:00 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Don't settle, iterate <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 9 (iteration is everything, three to five passes) and 10 (don't take the quick win, ask what it's holding back). Each leader takes one task through five passes and watches it get genuinely better.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Trust nothing once <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 11 (cross-check across three models) and 12 (humanize, deslop, nothing ships raw). Run <em>Sycophancy Test</em> (Ch 9): watch the model cave to a leading question, then ask it neutrally. Deslop one real output together.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The human edge, and a mental model <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Principle 13 (conviction, taste, judgment come from you), 14 (your sessions become your SOP), 15 (every task is Know, Do, or Show). Run <em>Taste Test</em> (Ch 10): rank five variants against expert consensus. Then each leader sorts their week into Know / Do / Show.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:55 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Close: your principle cheat sheet <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Each leader names the two principles they break most often. That becomes their focus for the next week.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-teal);">
+        <h4>Walk out with</h4>
+        <p>The fifteen principles applied to three or more real tasks, and a <em>Know / Do / Show map</em> of their own working week.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 3 ════════ -->
+    <section class="cd-section is-purple">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 03</span>
+        <h2 class="cd-section-name">Skills <em>you build</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Turn a leader's best repeated work into a reusable skill, then take a first taste of agents that act on their behalf.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>Objective</h4>
+        <p>Each leader ships one working, voice-tuned skill they will use the next working day, and leaves with a shortlist of daily tasks ready to hand to a browser agent.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-purple);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">What a skill is <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Name, trigger, steps, examples. Why a saved skill beats re-prompting from scratch every time, and how it captures what's in your head.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Skills anatomy lab <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Deconstruct a real, proven skill into its parts so the shape is obvious before anyone writes one.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:25 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Find before you build <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Official (Anthropic), community, and your own. Browse, pick one close to a real need, and plan the tweak. Most good skills are adapted, not invented.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:40 · 40m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Build your first skill, end to end <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Each leader writes a SKILL.md for one real Baker's Dozen workflow (a Blinkit listing drafter, a city-sales daily digest, a vendor-negotiation brief), with triggers, steps, and examples, then tunes it to their voice. <em>Includes a 5-minute break mid-build.</em></p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Compose skills <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Chain two skills into one bigger workflow (digest then draft the action email). The whole becomes more than re-running each by hand.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:35 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">First taste of agents <span class="cd-pill" style="--pill: var(--color-sky);">Demo</span> <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">The agent loop: Plan → Act → Observe → Refine. Live demo of a <em>Chrome extension that acts in the browser</em>. Then <em>Agent Blueprint</em> (Ch 6): plan a simple daily-task automation step by step.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:55 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Close <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Each leader commits to running their new skill once before Session 4.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-purple);">
+        <h4>Walk out with</h4>
+        <p>One working, voice-tuned skill ready for Monday, and a <em>shortlist of repetitive daily tasks</em> to hand to a browser agent.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 4 ════════ -->
+    <section class="cd-section is-sky">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 04</span>
+        <h2 class="cd-section-name">Skills you share, and a <em>90-day plan</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Move skills from one desk to the team to the company, place each function on the ladder, and leave with a plan to commit to.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-sky);">
+        <h4>Objective</h4>
+        <p>Each leader leaves with a written 90-day plan (phases, owners, metrics) and a model for how skills spread between teams instead of staying siloed.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-sky);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Why good work stays siloed <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Your best person's best workflow usually dies on their laptop. The whole game in Part One's last session is making it spread, so one person's leverage becomes everyone's default.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">From desk to team <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Package a skill so a teammate can run it cold; the handoff doc is the real interface. <em>New activity: team skill-vote</em>, the table picks one skill and refines it together until anyone can run it.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:30 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Across the company <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A simple skills library and an ownership model, plus how wins spread (the adoption ladder). Lightweight governance so quality holds as it scales.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:50 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Break</p>
+          <p class="cd-beat-desc">Short reset.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:55 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Where each team sits <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Place each function on the ladder, Quoter → Curator → Author → Orchestrator, and map functions to AI or deliberately not. Honest about where AI does not belong yet.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The 90-day plan <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Phase 1 (weeks 1 to 4: foundation and first wins), Phase 2 (weeks 5 to 8: deepen and compound), Phase 3 (weeks 9 to 12: scale, automation, culture). Each leader drafts their own.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:50 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Commit <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Success metrics, named owners, a first review date. The concrete path to <em>India's most AI-forward D2C org</em>.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-sky);">
+        <h4>Walk out with</h4>
+        <p>A written <em>90-day plan</em> with phases, owners, and metrics, and a working model for sharing skills between teams.</p>
+      </div>
+    </section>
+
+    <!-- ════════ Facilitator notes ════════ -->
+    <section class="cd-section is-navy">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Notes</span>
+        <h2 class="cd-section-name">Facilitator <em>notes</em></h2>
+      </div>
+      <div class="cd-prose">
+        <p><strong>Bring real work.</strong> The single biggest predictor of stickiness is that every lab runs on the leader's own task, not a sample. The pre-workshop questionnaire exists to collect those tasks in advance, so the room is ready to go.</p>
+        <p><strong>Pace.</strong> Each session keeps teaching short and lab long. If a beat runs over, cut the next teach segment, never the lab.</p>
+        <p><strong>Carry-over.</strong> Sessions are designed to be a week apart, so leaders use what they learned between sittings. Each session opens with a quick "what did you actually run" round.</p>
+        <p><strong>Room setup.</strong> Everyone on a laptop with their account live (see the pre-req list). One large screen for demos. Facilitator runs the new widgets (Token Cost Calculator, model-selection tree, agent demo) from the Talking to Machines site.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Part One · session plan · internal</span>
+    </div>
+
+  </div>
+</body>
+</html>

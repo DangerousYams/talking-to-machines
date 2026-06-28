@@ -1,0 +1,336 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Part Two · Mission Control · The Baker's Dozen</title>
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · Part Two · Mission Control · Leave-behind
+       A4 portrait. 4 pages. Print → PDF. ⌘P, Save as PDF.
+       Sibling of the Part One leave-behind; led with sky/navy.
+       ══════════════════════════════════════════════════════ */
+    html, body {
+      margin: 0; padding: 0;
+      background: #E5E2DC;
+      color: var(--color-deep);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body::before { display: none !important; }
+
+    .lb-shell { max-width: 210mm; margin: 0 auto; padding: 2rem 0; }
+    .lb-page {
+      width: 210mm; min-height: 297mm;
+      background: var(--color-cream);
+      box-shadow: 0 10px 40px rgba(15,52,96,0.12);
+      margin: 0 auto 2rem;
+      padding: 20mm 18mm;
+      box-sizing: border-box;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .lb-pagebody { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+    .lb-page:last-child { margin-bottom: 0; }
+
+    .lb-footer {
+      margin-top: 1.75rem;
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-subtle);
+      border-top: 1px solid rgba(26,26,46,0.08);
+      padding-top: 6mm;
+    }
+    .lb-footer .brand { color: var(--color-deep); font-weight: 700; }
+    .lb-footer .brand em { color: var(--color-amber); font-style: italic; font-weight: 600; letter-spacing: 0.05em; }
+    .lb-footer .num { color: var(--color-subtle); }
+
+    @media print {
+      @page { size: A4 portrait; margin: 0; }
+      html, body { background: var(--color-cream) !important; }
+      .lb-shell { padding: 0; max-width: none; }
+      .lb-page {
+        margin: 0 !important; box-shadow: none !important;
+        page-break-after: always; break-after: page;
+        width: 210mm !important; height: 297mm !important; min-height: 297mm !important;
+      }
+      .lb-page:last-child { page-break-after: auto; break-after: auto; }
+      .screen-only { display: none !important; }
+    }
+
+    .print-hint {
+      max-width: 210mm; margin: 0 auto 1.5rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(14,165,233,0.35);
+      border-radius: 8px;
+      font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-navy);
+    }
+    .print-hint kbd { background: rgba(15,52,96,0.08); padding: 1px 6px; border-radius: 3px; font-size: 0.78rem; }
+    .print-hint .accent { color: var(--color-sky); font-weight: 700; }
+
+    /* ── Cover ── */
+    .lb-cover-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--color-sky); margin: 0 0 1rem;
+    }
+    .lb-wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 4.2rem; line-height: 1;
+      letter-spacing: -0.03em; margin: 0; color: var(--color-deep);
+    }
+    .lb-wordmark .ctrl { color: var(--color-sky); font-style: italic; }
+    .lb-verb {
+      font-family: var(--font-heading);
+      font-weight: 700; font-style: italic; font-size: 1.55rem;
+      color: var(--color-deep); margin: 1rem 0 0;
+    }
+    .lb-verb .ask { color: var(--color-amber); }
+    .lb-rule { width: 60px; height: 3px; background: var(--color-sky); border-radius: 2px; margin: 1.25rem 0 0; }
+
+    .lb-statement {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.9rem; line-height: 1.2;
+      letter-spacing: -0.02em; color: var(--color-deep); margin: 2.25rem 0 0;
+    }
+    .lb-statement .s { color: var(--color-sky); }
+    .lb-statement .a { color: var(--color-amber); }
+    .lb-statement .t { color: var(--color-teal); }
+
+    .lb-page-title {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 2.5rem;
+      letter-spacing: -0.03em; line-height: 1.05;
+      margin: 0 0 1rem; color: var(--color-deep);
+    }
+    .lb-page-title em { color: var(--color-sky); font-style: italic; }
+    .lb-page-sub {
+      font-family: var(--font-body); font-style: italic;
+      font-size: 1rem; color: var(--color-subtle); margin: 0 0 2rem;
+    }
+    .lb-page-sub strong { color: var(--color-navy); font-weight: 600; font-style: normal; }
+
+    .lb-section-label {
+      display: block; font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0 0 0.85rem;
+    }
+    .lb-section-label .accent { color: var(--color-sky); }
+    .lb-section-title {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.5rem;
+      letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--color-deep); margin: 2.5rem 0 1.1rem;
+    }
+    .lb-section-title em { color: var(--color-sky); font-style: italic; }
+
+    /* ── Spec grid ── */
+    .lb-spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem 1.5rem; margin: 1.5rem 0 0; }
+    .lb-spec-row { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.55rem 0; border-bottom: 1px solid rgba(26,26,46,0.07); }
+    .lb-spec-key { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-sky); }
+    .lb-spec-val { font-family: var(--font-body); font-size: 0.98rem; line-height: 1.4; color: var(--color-deep); }
+    .lb-spec-val em { color: var(--color-navy); font-style: italic; }
+
+    /* ── Why grid ── */
+    .lb-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 0 0 0.5rem; }
+    .lb-why-card { padding: 1.05rem 1.25rem 1.05rem 1.4rem; background: var(--color-warm-white); border-radius: 8px; border: 1px solid rgba(26,26,46,0.07); position: relative; overflow: hidden; }
+    .lb-why-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .lb-why-card.w1::before { background: var(--color-sky); }
+    .lb-why-card.w2::before { background: var(--color-teal); }
+    .lb-why-card.w3::before { background: var(--color-purple); }
+    .lb-why-card.w4::before { background: var(--color-amber); }
+    .lb-why-card h3 { font-family: var(--font-heading); font-weight: 800; font-size: 1.08rem; letter-spacing: -0.01em; margin: 0 0 0.3rem; color: var(--color-deep); }
+    .lb-why-card.w1 h3 { color: var(--color-sky); }
+    .lb-why-card.w2 h3 { color: var(--color-teal); }
+    .lb-why-card.w3 h3 { color: var(--color-purple); }
+    .lb-why-card.w4 h3 { color: var(--color-amber); }
+    .lb-why-card p { font-family: var(--font-body); font-size: 0.85rem; line-height: 1.45; color: var(--color-deep); margin: 0; }
+    .lb-why-card p em { color: var(--color-navy); font-style: italic; }
+
+    /* ── Proof pull ── */
+    .lb-proof { margin: 1.4rem 0 0; padding: 1rem 1.4rem; background: var(--color-warm-white); border-left: 4px solid var(--color-purple); border-radius: 0 10px 10px 0; }
+    .lb-proof p { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.55; color: var(--color-deep); margin: 0; }
+    .lb-proof strong { color: var(--color-purple); font-weight: 800; }
+    .lb-proof em { color: var(--color-navy); font-style: italic; }
+
+    /* ── Ladder ── */
+    .lb-ladder-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .lb-rung { display: flex; gap: 1rem; align-items: baseline; padding: 0.65rem 1rem; background: var(--color-warm-white); border-radius: 8px; border: 1px solid rgba(26,26,46,0.06); position: relative; overflow: hidden; }
+    .lb-rung::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .lb-rung.q0 { margin-left: 0; }
+    .lb-rung.q1 { margin-left: 1.4rem; }
+    .lb-rung.q2 { margin-left: 2.8rem; }
+    .lb-rung.q3 { margin-left: 4.2rem; }
+    .lb-rung.q0::before { background: var(--color-accent-red); }
+    .lb-rung.q1::before { background: var(--color-sky); }
+    .lb-rung.q2::before { background: var(--color-purple); }
+    .lb-rung.q3::before { background: var(--color-amber); }
+    .lb-rung-tier { font-family: var(--font-heading); font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em; width: 116px; flex-shrink: 0; }
+    .lb-rung.q0 .lb-rung-tier { color: var(--color-accent-red); }
+    .lb-rung.q1 .lb-rung-tier { color: var(--color-sky); }
+    .lb-rung.q2 .lb-rung-tier { color: var(--color-purple); }
+    .lb-rung.q3 .lb-rung-tier { color: var(--color-amber); }
+    .lb-rung-text { font-family: var(--font-body); font-size: 0.84rem; line-height: 1.4; color: var(--color-deep); flex: 1; }
+    .lb-rung-text strong { color: var(--color-navy); font-weight: 700; }
+
+    /* ── Day / session list ── */
+    .lb-day-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+    .lb-day { padding: 0.9rem 1.15rem; background: var(--color-warm-white); border-radius: 8px; border: 1px solid rgba(26,26,46,0.06); position: relative; overflow: hidden; }
+    .lb-day::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .lb-day.d1::before { background: var(--color-sky); }
+    .lb-day.d2::before { background: var(--color-purple); }
+    .lb-day.d3::before { background: var(--color-teal); }
+    .lb-day.d4::before { background: var(--color-amber); }
+    .lb-day-head { display: flex; gap: 0.85rem; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.35rem; }
+    .lb-day-num { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; flex-shrink: 0; }
+    .lb-day.d1 .lb-day-num { color: var(--color-sky); }
+    .lb-day.d2 .lb-day-num { color: var(--color-purple); }
+    .lb-day.d3 .lb-day-num { color: var(--color-teal); }
+    .lb-day.d4 .lb-day-num { color: var(--color-amber); }
+    .lb-day-name { font-family: var(--font-heading); font-weight: 800; font-size: 1.12rem; letter-spacing: -0.01em; }
+    .lb-day.d1 .lb-day-name { color: var(--color-sky); }
+    .lb-day.d2 .lb-day-name { color: var(--color-purple); }
+    .lb-day.d3 .lb-day-name { color: var(--color-teal); }
+    .lb-day.d4 .lb-day-name { color: var(--color-amber); }
+    .lb-day-beats { font-family: var(--font-body); font-size: 0.88rem; line-height: 1.5; color: var(--color-deep); margin: 0; }
+    .lb-day-beats em { color: var(--color-navy); font-style: italic; }
+
+    /* ── Takeaways ── */
+    .lb-take-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    .lb-take { display: flex; gap: 0.9rem; align-items: baseline; padding: 0.7rem 1rem; background: var(--color-warm-white); border-radius: 8px; border: 1px solid rgba(26,26,46,0.06); position: relative; overflow: hidden; }
+    .lb-take::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .lb-take.t1::before { background: var(--color-sky); }
+    .lb-take.t2::before { background: var(--color-purple); }
+    .lb-take.t3::before { background: var(--color-teal); }
+    .lb-take.t4::before { background: var(--color-amber); }
+    .lb-take.t5::before { background: var(--color-accent-red); }
+    .lb-take-num { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; width: 22px; flex-shrink: 0; }
+    .lb-take.t1 .lb-take-num { color: var(--color-sky); }
+    .lb-take.t2 .lb-take-num { color: var(--color-purple); }
+    .lb-take.t3 .lb-take-num { color: var(--color-teal); }
+    .lb-take.t4 .lb-take-num { color: var(--color-amber); }
+    .lb-take.t5 .lb-take-num { color: var(--color-accent-red); }
+    .lb-take-body { flex: 1; }
+    .lb-take-body h4 { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; letter-spacing: -0.01em; margin: 0 0 0.15rem; color: var(--color-deep); }
+    .lb-take-body p { font-family: var(--font-body); font-size: 0.86rem; line-height: 1.45; color: var(--color-deep); margin: 0; }
+    .lb-take-body p em { color: var(--color-navy); font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="lb-shell">
+
+    <div class="print-hint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>). Choose <strong>Save as PDF</strong>. Margins <strong>None</strong>. Background graphics <strong>on</strong>.
+    </div>
+
+    <!-- ════════ PAGE 1 · Cover ════════ -->
+    <div class="lb-page">
+      <div class="lb-pagebody">
+        <p class="lb-cover-eyebrow">Cultivated AI · Part Two</p>
+        <h1 class="lb-wordmark">Mission <span class="ctrl">Control</span></h1>
+        <p class="lb-verb">One screen. <span class="ask">Ask the business.</span></p>
+        <div class="lb-rule"></div>
+
+        <p class="lb-statement">We turn scattered telemetry into one <span class="s">nervous system</span>, so leadership can <span class="a">ask the business</span> a question in plain language, and <span class="t">act</span> on the answer.</p>
+
+        <h2 class="lb-page-title" style="margin-top:2.75rem;">The <em>workshop</em>.</h2>
+        <div class="lb-spec-grid">
+          <div class="lb-spec-row"><span class="lb-spec-key">Format</span><span class="lb-spec-val">Four two-hour sessions. Eight hours in all.</span></div>
+          <div class="lb-spec-row"><span class="lb-spec-key">Cohort</span><span class="lb-spec-val">Small. Leadership plus the people who own the data.</span></div>
+          <div class="lb-spec-row"><span class="lb-spec-key">Coverage</span><span class="lb-spec-val">One warehouse, a semantic layer, plain-language querying, and showing up in AI answers.</span></div>
+          <div class="lb-spec-row"><span class="lb-spec-key">Outcome</span><span class="lb-spec-val">A pipeline plan, real questions answered, and a roadmap.</span></div>
+        </div>
+      </div>
+      <div class="lb-footer"><span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span><span class="num">Page 1 of 4</span></div>
+    </div>
+
+    <!-- ════════ PAGE 2 · The idea · the climb ════════ -->
+    <div class="lb-page">
+      <div class="lb-pagebody">
+        <span class="lb-section-label">The idea · <span class="accent">why it works</span></span>
+        <h2 class="lb-page-title">A business you can <em>ask</em>.</h2>
+        <p class="lb-page-sub">Today your numbers live in Power BI, GobbleCube, production sheets, and supply-chain files. <strong>Scattered data can't be asked.</strong> Mission Control brings it into one place that knows what your words mean.</p>
+
+        <div class="lb-why-grid">
+          <div class="lb-why-card w1"><h3>Aggregate</h3><p>Every source, city, store, and platform feeding one governed warehouse on a <em>daily automated dump</em>.</p></div>
+          <div class="lb-why-card w2"><h3>Define</h3><p>A semantic layer that encodes what <em>fill rate, active SKU, and incremental lift</em> mean, once, for everyone.</p></div>
+          <div class="lb-why-card w3"><h3>Ask</h3><p>Leadership asks in plain English, cross-checks, and <em>acts on a high-impact problem</em>, no analyst in the loop.</p></div>
+          <div class="lb-why-card w4"><h3>Show up</h3><p>The same AI lens turned outward, so the brand <em>appears when shoppers ask AI</em> what to buy.</p></div>
+        </div>
+
+        <div class="lb-proof">
+          <p>Why the order matters: across published benchmarks, plain text-to-SQL on a real warehouse is right about <strong>a third</strong> of the time. Define your metrics once in a semantic layer and the same questions get answered correctly <strong>near every time</strong>. <em>The pipeline is the project. The chat is the easy last mile.</em></p>
+        </div>
+
+        <h3 class="lb-section-title">Where your data <em>climbs</em>.</h3>
+        <ol class="lb-ladder-list">
+          <li class="lb-rung q0"><span class="lb-rung-tier">Scattered</span><span class="lb-rung-text">Numbers in many tools. Leaders wait on analysts for every answer. <strong>The rung to escape.</strong></span></li>
+          <li class="lb-rung q1"><span class="lb-rung-tier">Centralised</span><span class="lb-rung-text">One warehouse, fed daily. A single source of truth everyone trusts.</span></li>
+          <li class="lb-rung q2"><span class="lb-rung-tier">Defined</span><span class="lb-rung-text">A semantic layer encodes your business. Answers become trustworthy, not just fast.</span></li>
+          <li class="lb-rung q3"><span class="lb-rung-tier">Conversational</span><span class="lb-rung-text">Leadership asks and acts. The brand shows up in AI answers, too.</span></li>
+        </ol>
+      </div>
+      <div class="lb-footer"><span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span><span class="num">Page 2 of 4</span></div>
+    </div>
+
+    <!-- ════════ PAGE 3 · The four sessions ════════ -->
+    <div class="lb-page">
+      <div class="lb-pagebody">
+        <span class="lb-section-label">The agenda · <span class="accent">session by session</span></span>
+        <h2 class="lb-page-title">The <em>four sessions</em>.</h2>
+        <p class="lb-page-sub">Eight hours, split into four two-hour sessions, built around your real data.</p>
+
+        <ol class="lb-day-list">
+          <li class="lb-day d1">
+            <div class="lb-day-head"><span class="lb-day-num">Session 1 · 2 hrs</span><span class="lb-day-name">One place for everything</span></div>
+            <p class="lb-day-beats">Inventory every source (Power BI, GobbleCube, production, supply chain). Design the central warehouse and a <em>daily automated dump</em> that lands it all in one place. Ask the first real question and see what's missing.</p>
+          </li>
+          <li class="lb-day d2">
+            <div class="lb-day-head"><span class="lb-day-num">Session 2 · 2 hrs</span><span class="lb-day-name">Teach the machine your business</span></div>
+            <p class="lb-day-beats">Define your metrics once in a semantic layer. List the questions leadership actually asks, and seed an example library from queries your team already trusts. Build the <em>trust surface</em> that makes answers safe to act on.</p>
+          </li>
+          <li class="lb-day d3">
+            <div class="lb-day-head"><span class="lb-day-num">Session 3 · 2 hrs</span><span class="lb-day-name">Ask the business</span></div>
+            <p class="lb-day-beats">Query the nervous system in plain language, where you already work. Then apply <em>the AI lens to one high-impact problem</em> end to end, with governance so the right people see the right data.</p>
+          </li>
+          <li class="lb-day d4">
+            <div class="lb-day-head"><span class="lb-day-num">Session 4 · 2 hrs</span><span class="lb-day-name">Show up in the answer</span></div>
+            <p class="lb-day-beats">Ask AI "best protein chips in India" and see who it names. Learn how AI answers pick brands, build an <em>AEO playbook</em> for Baker's Dozen, and leave with a phased roadmap and owners.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="lb-footer"><span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span><span class="num">Page 3 of 4</span></div>
+    </div>
+
+    <!-- ════════ PAGE 4 · Takeaways ════════ -->
+    <div class="lb-page">
+      <div class="lb-pagebody">
+        <span class="lb-section-label">The <span class="accent">takeaways</span></span>
+        <h2 class="lb-page-title">What you <em>walk out with</em>.</h2>
+
+        <ol class="lb-take-list">
+          <li class="lb-take t1"><span class="lb-take-num">01</span><div class="lb-take-body"><h4>A single source of truth</h4><p>A central-warehouse plan and a daily automated dump that ends the hunt across tools.</p></div></li>
+          <li class="lb-take t2"><span class="lb-take-num">02</span><div class="lb-take-body"><h4>A business that answers itself</h4><p>A semantic layer and a golden-questions list, so leadership can ask in plain language and trust what comes back.</p></div></li>
+          <li class="lb-take t3"><span class="lb-take-num">03</span><div class="lb-take-body"><h4>The AI lens on real problems</h4><p>One high-impact problem worked end to end with data and AI, as the template for the next.</p></div></li>
+          <li class="lb-take t4"><span class="lb-take-num">04</span><div class="lb-take-body"><h4>Show up when shoppers ask AI</h4><p>An AEO playbook so Baker's Dozen appears in AI answers, not just in search.</p></div></li>
+          <li class="lb-take t5"><span class="lb-take-num">05</span><div class="lb-take-body"><h4>A phased roadmap</h4><p>Owners, metrics, and sequence, the concrete path to <em>India's most AI-forward D2C organisation</em>.</p></div></li>
+        </ol>
+      </div>
+      <div class="lb-footer"><span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span><span class="num">Page 4 of 4</span></div>
+    </div>
+
+  </div>
+</body>
+</html>

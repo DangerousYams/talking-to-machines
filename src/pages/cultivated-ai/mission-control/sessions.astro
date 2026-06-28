@@ -1,0 +1,288 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Mission Control · Session plan · The Baker's Dozen</title>
+  <style>
+    .ses-map { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; margin: 1.75rem 0 0; }
+    .ses-mapcard { padding: 0.95rem 1.1rem 1.05rem; background: var(--color-warm-white); border: 1px solid rgba(26,26,46,0.07); border-radius: 8px; position: relative; overflow: hidden; }
+    .ses-mapcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--bar); }
+    .ses-mapcard .n { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bar); }
+    .ses-mapcard h3 { font-family: var(--font-heading); font-weight: 800; font-size: 1.08rem; letter-spacing: -0.01em; line-height: 1.15; margin: 0.15rem 0 0.35rem; color: var(--color-deep); }
+    .ses-mapcard p { font-family: var(--font-body); font-size: 0.85rem; line-height: 1.45; color: var(--color-subtle); margin: 0; }
+    .ses-out { margin: 1.4rem 0 0; padding: 0.95rem 1.25rem; background: color-mix(in srgb, var(--bar, var(--color-sky)) 8%, var(--color-warm-white)); border: 1px solid color-mix(in srgb, var(--bar, var(--color-sky)) 28%, transparent); border-radius: 8px; }
+    .ses-out h4 { font-family: var(--font-mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bar, var(--color-sky)); margin: 0 0 0.35rem; }
+    .ses-out p { font-family: var(--font-body); font-size: 0.95rem; line-height: 1.55; color: var(--color-deep); margin: 0; }
+    .ses-out p em { color: var(--color-navy); font-style: italic; }
+    .ses-legend { display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem; margin: 1.5rem 0 0; }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-sky);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">Cultivated AI · Part Two · Mission Control · facilitator plan</p>
+    <h1 class="cd-title">The four sessions, <em>in detail</em>.</h1>
+    <p class="cd-lede">A small, mixed room: leadership plus the people who own the data. This is a <strong>build</strong>, not a lecture. By the end there is a real pipeline plan, real questions answered, and a roadmap. This is the internal run-sheet.</p>
+    <p class="cd-meta">Leadership + data owners · 4 × 2 hrs · facilitator copy · The Baker's Dozen</p>
+    <div class="cd-rule"></div>
+
+    <div class="ses-legend">
+      <span class="cd-pill" style="--pill: var(--color-navy);">Teach · short</span>
+      <span class="cd-pill" style="--pill: var(--color-purple);">Lab · hands-on</span>
+      <span class="cd-pill" style="--pill: var(--color-teal);">Decide</span>
+      <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span>
+    </div>
+
+    <div class="ses-map">
+      <div class="ses-mapcard" style="--bar: var(--color-sky);">
+        <span class="n">Session 1 · 2 hrs</span>
+        <h3>One place for everything</h3>
+        <p>Inventory the sources, choose the warehouse, design the daily dump.</p>
+      </div>
+      <div class="ses-mapcard" style="--bar: var(--color-purple);">
+        <span class="n">Session 2 · 2 hrs</span>
+        <h3>Teach the machine your business</h3>
+        <p>The semantic layer, golden questions, and a trust surface.</p>
+      </div>
+      <div class="ses-mapcard" style="--bar: var(--color-teal);">
+        <span class="n">Session 3 · 2 hrs</span>
+        <h3>Ask the business</h3>
+        <p>Query in plain language, then work one high-impact problem end to end.</p>
+      </div>
+      <div class="ses-mapcard" style="--bar: var(--color-amber);">
+        <span class="n">Session 4 · 2 hrs</span>
+        <h3>Show up in the answer</h3>
+        <p>The protein-chips exercise, an AEO playbook, and the roadmap.</p>
+      </div>
+    </div>
+
+    <!-- ════════ SESSION 1 ════════ -->
+    <section class="cd-section" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 01</span>
+        <h2 class="cd-section-name">One place for <em>everything</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Scattered data can't be asked. Get every source into one governed place on a daily automated dump, then ask the first real question and see what's still missing.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-sky);">
+        <h4>Objective</h4>
+        <p>Leave with a complete data inventory, a decision on the central warehouse, a daily-dump plan, and a precise list of what's blocking trustworthy answers.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-sky);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The single nervous system <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Four dashboards are four places to look, not one place to ask. The goal of the whole workshop: <em>ask the business a question, get an answer you can act on.</em></p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Data inventory <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">List every source: Power BI telemetry, GobbleCube (city, store, and platform analytics), production, and supply chain. For each, capture the grain, the owner, how often it refreshes, and who can see it. This map is the foundation.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:35 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The central warehouse <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span> <span class="cd-pill" style="--pill: var(--color-teal);">Decide</span></p>
+          <p class="cd-beat-desc">What a single source of truth is and the realistic options. Because Baker's Dozen already runs Power BI, Microsoft Fabric / OneLake is the lowest-friction path; Snowflake and BigQuery are the common D2C alternatives. Map current state to target.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:55 · 5m</span><div class="cd-beat-body"><p class="cd-beat-name">Break</p><p class="cd-beat-desc">Short reset.</p></div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:00 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The daily dump <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Design a scheduled daily refresh that lands every source in the warehouse: GobbleCube exports, Power BI semantic models, production and supply-chain files. Sketch the pipeline and name an owner for each job, so it runs without anyone remembering to press a button.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:25 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">First query, warts and all <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Point an AI layer (Power BI Copilot or a warehouse copilot) at the data and ask one real question. Watch it half-work. Write down exactly what it got wrong, missing definitions, ambiguous joins, unclear metric names. That gap list is Session 2.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:45 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Close: the gap list <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Agree the top blockers and who chases each before next session.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-sky);">
+        <h4>Walk out with</h4>
+        <p>A data inventory, a warehouse decision, a <em>daily-dump pipeline sketch</em> with owners, and a gap list.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 2 ════════ -->
+    <section class="cd-section" style="--bar: var(--color-purple);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 02</span>
+        <h2 class="cd-section-name">Teach the machine <em>your business</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">The highest-leverage session. Define your metrics once so the AI stops guessing, seed the questions leadership actually asks, and build the trust surface that makes answers safe to act on.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>Objective</h4>
+        <p>Leave with a first metric dictionary, a golden-questions list, a low-cost way to seed examples, and a routine for validating answers.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-purple);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Why answers come back confidently wrong <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">The proof point: on a real warehouse, plain text-to-SQL is right roughly a third of the time; grounded in a semantic layer it approaches near-perfect on in-scope questions. The danger is not an error message, it's a wrong number that looks right. <em>This is the slide that justifies the whole project.</em></p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Your metric dictionary <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Define, once and centrally: revenue, active SKU, fill rate, incremental lift, city contribution, wastage. Resolve the quiet disagreements (when marketing's "customer" is not finance's "customer", no AI can be right for both until you decide).</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:35 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Golden questions <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Write the ten to twenty questions leadership genuinely asks ("which SKUs slipped on Blinkit in Pune last week, and why"). These double as the test set you'll score the system against.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:55 · 5m</span><div class="cd-beat-body"><p class="cd-beat-name">Break</p><p class="cd-beat-desc">Short reset.</p></div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:00 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The Swiggy trick <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span> <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Swiggy (same business, Indian quick-commerce) went from 54% to 93% accuracy by retrieving past validated queries as examples. The low-cost move: reverse-generate plain-language questions from queries your analysts already trust, then feed those back as grounding. Plan how to seed yours.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The trust surface <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Make every answer show its working: the generated query or assumptions, a confidence signal, and a check against an existing trusted Power BI dashboard. Leadership acts on answers they can sanity-check, and not before.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Governance, inherited <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Don't rebuild security. Inherit role-based access, row-level rules, and audit logs from the warehouse, and wrap PII handling around it. Decide who can see what before anyone asks the first sensitive question.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:55 · 5m</span><div class="cd-beat-body"><p class="cd-beat-name">Close</p><p class="cd-beat-desc">Confirm owners for the dictionary and the example library.</p></div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-purple);">
+        <h4>Walk out with</h4>
+        <p>A metric dictionary v1, a <em>golden-questions list</em>, a method to seed examples cheaply, and a validation routine.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 3 ════════ -->
+    <section class="cd-section" style="--bar: var(--color-teal);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 03</span>
+        <h2 class="cd-section-name">Ask the <em>business</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Now use it. Leadership queries the nervous system in plain language, then applies the AI lens to one high-impact problem, end to end.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-teal);">
+        <h4>Objective</h4>
+        <p>Leave having answered real questions without an analyst in the loop, worked one high-impact problem to a decision, and started a scored eval set.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-teal);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Deliver where you already work <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A new dashboard nobody opens loses to a question you can ask in Slack or Teams. Decide where Mission Control lives so it actually gets used.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Live querying <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Each leader runs their own golden questions, cross-checks the answer (Part One, Principle 11: never trust one machine), and iterates. Track first-shot acceptance, the most honest measure of whether it's working.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:40 · 5m</span><div class="cd-beat-body"><p class="cd-beat-name">Break</p><p class="cd-beat-desc">Short reset.</p></div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:45 · 35m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The AI lens on a high-impact problem <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Pick one real problem (city-level wastage, slipping fill rate on Zepto, promo ROI by platform) and work it the whole way: frame the question, query the data, cross-check, decide, name the action. This becomes the template the team reuses on every future problem.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The evaluation harness <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span> <span class="cd-pill" style="--pill: var(--color-teal);">Decide</span></p>
+          <p class="cd-beat-desc">Turn the golden questions into a test set that's scored continuously (did it run, was it right, was the first answer accepted). You can't improve what you don't measure, and this is how trust grows over time.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Close: who owns the answers <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Name an owner for the system and a cadence for reviewing the eval scores.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-teal);">
+        <h4>Walk out with</h4>
+        <p>Real questions answered directly, one <em>high-impact problem worked to a decision</em>, and a scored eval set started.</p>
+      </div>
+    </section>
+
+    <!-- ════════ SESSION 4 ════════ -->
+    <section class="cd-section" style="--bar: var(--color-amber);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 04</span>
+        <h2 class="cd-section-name">Show up in the <em>answer</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Turn the same AI lens outward. Make Baker's Dozen show up when a shopper asks an AI what to buy, then leave with a phased roadmap.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-amber);">
+        <h4>Objective</h4>
+        <p>Leave with an honest audit of how Baker's Dozen appears in AI answers today, a concrete AEO playbook, and a sequenced roadmap with owners and metrics.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-amber);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The protein-chips exercise <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Ask ChatGPT, Gemini, and Perplexity "best protein chips in India," then "high-protein cookies" and "healthiest packaged bread." Record who gets named, who doesn't, and which sources the AI cites. The gap is visible to the whole room in five minutes.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:20 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">How AI answers pick brands <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">The answer is assembled, not ranked. AI recommends what shows up consistently across the sources it trusts (Reddit India, YouTube, review sites, your own structured pages). The one peer-reviewed study (Princeton, KDD 2024) found quotes, statistics, and citations can lift AI-answer visibility by up to about 40%.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:40 · 5m</span><div class="cd-beat-body"><p class="cd-beat-name">Break</p><p class="cd-beat-desc">Short reset.</p></div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:45 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The Baker's Dozen AEO playbook <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Audit and plan: entity clarity (same product descriptions everywhere, unambiguous category), write-for-extraction (protein grams, ingredients, certifications, not vague claims), presence on Reddit and YouTube and the marketplaces, earned reviews, and a way to monitor share of voice across the assistants.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:10 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The roadmap <span class="cd-pill" style="--pill: var(--color-purple);">Lab</span></p>
+          <p class="cd-beat-desc">Sequence the build: warehouse, then semantic layer, then the chat layer, then AEO. Phase it, decide what's in-house versus a partner, assign owners, and set the metrics. The concrete path to <em>India's most AI-forward D2C org</em>.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Commit <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">A first review date, named owners, and the single metric that will prove this is working.</p>
+        </div></li>
+      </ol>
+
+      <div class="ses-out" style="--bar: var(--color-amber);">
+        <h4>Walk out with</h4>
+        <p>An AI-answer visibility audit, an <em>AEO playbook</em>, and a phased roadmap with owners and metrics.</p>
+      </div>
+    </section>
+
+    <!-- ════════ Facilitator notes ════════ -->
+    <section class="cd-section" style="--bar: var(--color-navy);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Notes</span>
+        <h2 class="cd-section-name">Facilitator <em>notes</em></h2>
+      </div>
+      <div class="cd-prose">
+        <p><strong>Right people in the room.</strong> This only works if leadership and the data owners are present together. Decisions (warehouse choice, metric definitions, owners) get made live, not deferred.</p>
+        <p><strong>Access before Session 1.</strong> Read access to Power BI, GobbleCube exports, and the production / supply-chain files needs to be sorted in advance, or Session 1 stalls on logins. See the pre-req list.</p>
+        <p><strong>Build, don't admire.</strong> Every session ends with an artefact: the inventory, the dictionary, the worked problem, the roadmap. If a teach segment runs long, cut it, never the lab.</p>
+        <p><strong>The order is the message.</strong> Resist jumping to the chat layer. The whole credibility of the workshop rests on building the warehouse and semantic layer first; the natural-language interface is the easy last mile.</p>
+        <p><strong>Honesty on AEO.</strong> Lean on the one peer-reviewed source for the headline claim. Present vendor traffic and conversion numbers as directional, not fact. The honest message: AI shopping referrals are small today but growing and convert well, so it's worth starting now, cheaply.</p>
+      </div>
+      <div class="cd-callout" style="--bar: var(--color-navy);">
+        <h4>Background</h4>
+        <p>The precedents and numbers behind this plan are in the <em>case studies</em> doc (Swiggy Hermes, Uber QueryGPT, the semantic-layer benchmark, the Princeton GEO study).</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Mission Control · session plan · internal</span>
+    </div>
+
+  </div>
+</body>
+</html>

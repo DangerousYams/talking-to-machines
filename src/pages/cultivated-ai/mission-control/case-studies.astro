@@ -1,0 +1,322 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Mission Control · Case studies · The Baker's Dozen</title>
+  <style>
+    /* credibility legend */
+    .cs-legend { display: flex; flex-wrap: wrap; gap: 0.45rem 0.55rem; margin: 1.4rem 0 0; }
+    .cred {
+      font-family: var(--font-mono); font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.2rem 0.5rem; border-radius: 4px;
+      color: var(--cc); background: color-mix(in srgb, var(--cc) 13%, transparent);
+    }
+    .cc-company { --cc: var(--color-sky); }
+    .cc-independent { --cc: var(--color-teal); }
+    .cc-academic { --cc: var(--color-purple); }
+    .cc-vendor { --cc: var(--color-amber); }
+    .cc-secondary { --cc: var(--color-subtle); }
+
+    /* case cards */
+    .cs-list { display: flex; flex-direction: column; gap: 0.85rem; margin: 1.1rem 0 0; }
+    .cs-case {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 10px;
+      padding: 1.15rem 1.3rem 1.2rem 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .cs-case::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--bar, var(--color-navy)); }
+    .cs-case.feat { border-color: color-mix(in srgb, var(--bar) 40%, transparent); box-shadow: 0 6px 22px rgba(15,52,96,0.07); }
+    .cs-head { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; margin: 0 0 0.15rem; }
+    .cs-org { font-family: var(--font-heading); font-weight: 800; font-size: 1.22rem; letter-spacing: -0.02em; color: var(--color-deep); margin: 0; }
+    .cs-sector { font-family: var(--font-mono); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bar, var(--color-navy)); padding: 0.18rem 0.45rem; border: 1px solid color-mix(in srgb, var(--bar) 35%, transparent); border-radius: 100px; }
+    .cs-flag { font-family: var(--font-mono); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-warm-white); background: var(--bar); padding: 0.18rem 0.5rem; border-radius: 4px; margin-left: auto; }
+    .cs-what { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.55; color: var(--color-deep); margin: 0.4rem 0 0; max-width: 64ch; }
+    .cs-what em { color: var(--color-navy); font-style: italic; }
+    .cs-metric { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.7rem 0 0; flex-wrap: wrap; }
+    .cs-metric .big { font-family: var(--font-heading); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--bar, var(--color-navy)); }
+    .cs-metric .lbl { font-family: var(--font-body); font-size: 0.84rem; color: var(--color-subtle); font-style: italic; }
+    .cs-rel { font-family: var(--font-body); font-size: 0.86rem; line-height: 1.5; color: var(--color-deep); margin: 0.7rem 0 0; padding: 0.5rem 0 0.5rem 0.85rem; border-left: 3px solid color-mix(in srgb, var(--bar) 45%, transparent); }
+    .cs-rel strong { color: var(--bar, var(--color-navy)); font-weight: 700; }
+    .cs-src { margin: 0.7rem 0 0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .cs-src a { font-family: var(--font-mono); font-size: 0.68rem; color: var(--color-navy); text-decoration: underline; text-underline-offset: 2px; word-break: break-all; }
+
+    /* numbered architecture steps */
+    .cs-steps { list-style: none; counter-reset: step; margin: 1.1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .cs-step { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: baseline; padding: 0.55rem 0; border-bottom: 1px solid rgba(26,26,46,0.07); }
+    .cs-step:last-child { border-bottom: none; }
+    .cs-step::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--color-teal); }
+    .cs-step h4 { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; letter-spacing: -0.01em; color: var(--color-deep); margin: 0 0 0.1rem; }
+    .cs-step p { font-family: var(--font-body); font-size: 0.88rem; line-height: 1.5; color: var(--color-deep); margin: 0; }
+    .cs-step p em { color: var(--color-navy); font-style: italic; }
+
+    /* fail / tactic bullets */
+    .cs-bullets { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+    .cs-bullets li { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.55; color: var(--color-deep); padding-left: 1.1rem; position: relative; max-width: 66ch; }
+    .cs-bullets li::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 6px; height: 6px; border-radius: 50%; background: var(--bar, var(--color-accent-red)); }
+    .cs-bullets li strong { color: var(--color-navy); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-navy);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Reference doc →</span>
+      Evidence behind Mission Control. The full, fully-cited research is in <strong>bakers-dozen/research/bi-democratization-case-studies.md</strong>.
+    </div>
+
+    <p class="cd-eyebrow">Cultivated AI · Mission Control · evidence</p>
+    <h1 class="cd-title">What's <em>actually worked</em>.</h1>
+    <p class="cd-lede">Real precedents for democratizing business intelligence with AI, and for showing up in AI answers. Sources are tagged by how much to trust them. The honest headline: <strong>the warehouse and the semantic layer are the project; the chat is the easy last mile.</strong></p>
+    <p class="cd-meta">13 precedents · sources cited · The Baker's Dozen</p>
+    <div class="cd-rule"></div>
+
+    <div class="cs-legend">
+      <span class="cred cc-academic">Peer-reviewed</span>
+      <span class="cred cc-company">Company-reported</span>
+      <span class="cred cc-independent">Independently reported</span>
+      <span class="cred cc-vendor">Vendor-claimed</span>
+      <span class="cred cc-secondary">Secondary</span>
+    </div>
+
+    <div class="cd-callout" style="--bar: var(--color-purple); margin-top: 1.75rem;">
+      <h4>The one number to show leadership</h4>
+      <p>On a real warehouse, plain text-to-SQL answered correctly about <strong>33%</strong> of the time (GPT-4, 2023). Grounded in a governed semantic layer, the same questions hit <strong>98 to 100%</strong>. Even with today's frontier models (90%+ raw), the semantic layer is still the line between "usually right" and "trustworthy." <em>dbt Labs benchmark, public methodology, built on an academic benchmark.</em></p>
+    </div>
+
+    <!-- ════════ Thread A: end-user precedents ════════ -->
+    <section class="cd-section" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">01</span>
+        <h2 class="cd-section-name">Companies that <em>did it</em></h2>
+      </div>
+      <p class="cd-section-blurb">Organizations that let non-technical people ask their data in plain language. The closest analog to Baker's Dozen is first.</p>
+
+      <div class="cs-list">
+
+        <div class="cs-case feat" style="--bar: var(--color-teal);">
+          <div class="cs-head">
+            <h3 class="cs-org">Swiggy · Hermes</h3>
+            <span class="cs-sector">Indian quick-commerce</span>
+            <span class="cs-flag">Closest precedent</span>
+          </div>
+          <p class="cs-what">Ask a question in plain English in Slack; Hermes generates SQL, runs it, and answers. V3 became a conversational "AI data analyst" on Snowflake, retrieving <em>past validated queries</em> as few-shot grounding, with an agentic loop and a confidence-plus-explanation layer.</p>
+          <div class="cs-metric"><span class="big">54% → 93%</span><span class="lbl">SQL accuracy (V1 to V3)</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> same business, same geography, same warehouse choice many D2C brands make. The cheap trick to copy: reverse-generate questions from SQL your analysts already trust, then retrieve those as examples.</p>
+          <div class="cs-src"><span class="cred cc-independent">Independently reported</span><a href="https://www.infoq.com/news/2026/01/swiggy-hermes-conversational-ai/">infoq.com/news/2026/01/swiggy-hermes</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-sky);">
+          <div class="cs-head">
+            <h3 class="cs-org">Uber · QueryGPT</h3>
+            <span class="cs-sector">Mobility / marketplace</span>
+          </div>
+          <p class="cs-what">Internal natural-language-to-SQL for operators and analysts. A multi-agent pipeline (intent, table, column) with RAG over curated SQL, scoped by 12 business "workspaces," plus an evaluation harness scoring every answer.</p>
+          <div class="cs-metric"><span class="big">~10 min → ~3 min</span><span class="lbl">query authoring, ~300 daily users</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> the workspace pattern (scope the model to a domain before it writes SQL) and the eval harness are directly reusable. Note: the viral "140,000 hours saved" figure is a third-party extrapolation, not Uber's.</p>
+          <div class="cs-src"><span class="cred cc-company">Company-reported</span><a href="https://www.uber.com/en-CA/blog/query-gpt/">uber.com/blog/query-gpt</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-sky);">
+          <div class="cs-head">
+            <h3 class="cs-org">Pinterest · Analytics Agent</h3>
+            <span class="cs-sector">Consumer platform</span>
+          </div>
+          <p class="cs-what">Text-to-SQL inside their open-source Querybook, evolved into an agent that also helps discover tables and reuse past queries. RAG table retrieval (OpenSearch) narrows the schema before generation.</p>
+          <div class="cs-metric"><span class="big">20% → 40%+</span><span class="lbl">first-shot SQL acceptance</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> proof that table and column retrieval (not a bigger model) moves accuracy, and that "first-shot acceptance" is a more honest success metric than raw benchmark scores.</p>
+          <div class="cs-src"><span class="cred cc-company">Company-reported</span><a href="https://medium.com/pinterest-engineering/how-we-built-text-to-sql-at-pinterest-30bad30dabff">pinterest-engineering / text-to-sql</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-sky);">
+          <div class="cs-head">
+            <h3 class="cs-org">DoorDash · AskDataAI + Transaxle</h3>
+            <span class="cs-sector">Food delivery</span>
+          </div>
+          <p class="cs-what">A plain-English data assistant plus a SQL-dialect translation service, with a planned MCP bridge so one assistant can target Snowflake, Databricks, and Trino.</p>
+          <div class="cs-metric"><span class="big">In development</span><span class="lbl">directional, no hard self-serve metrics yet</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> the multi-engine, MCP-mediated pattern is useful if you end up with more than one store (GobbleCube exports plus a warehouse).</p>
+          <div class="cs-src"><span class="cred cc-company">Company-reported</span><a href="https://careersatdoordash.com/blog/doordash-sql-dialects-unified-translator/">careersatdoordash.com/blog</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-sky);">
+          <div class="cs-head">
+            <h3 class="cs-org">Instacart · Ava &nbsp;·&nbsp; Wealthsimple · LLM Gateway</h3>
+            <span class="cs-sector">Adoption + governance</span>
+          </div>
+          <p class="cs-what">Two adoption templates. Instacart's Ava (general assistant) reached <em>900+ weekly users</em> by living where people already work. Wealthsimple's open-sourced gateway adds PII redaction, self-hosted models, and audit, used by over half the company.</p>
+          <div class="cs-metric"><span class="big">50%+ of staff</span><span class="lbl">internal adoption, both</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> adoption scales when the tool starts small and lives in Slack/Teams; and the gateway is the template for the PII, access, and audit layer that should wrap any leadership-facing assistant.</p>
+          <div class="cs-src"><span class="cred cc-company">Company-reported</span><span class="cred cc-secondary">Aggregated</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════ Enabling stack ════════ -->
+    <section class="cd-section" style="--bar: var(--color-amber);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">02</span>
+        <h2 class="cd-section-name">The tools that <em>enable it</em></h2>
+      </div>
+      <p class="cd-section-blurb">Every one of these depends on a governed semantic model for quality. The client's existing stack (Power BI) is first.</p>
+
+      <div class="cs-list">
+
+        <div class="cs-case feat" style="--bar: var(--color-amber);">
+          <div class="cs-head">
+            <h3 class="cs-org">Microsoft Power BI Copilot + Fabric</h3>
+            <span class="cs-sector">Client's existing stack</span>
+            <span class="cs-flag">Start here</span>
+          </div>
+          <p class="cs-what">Copilot in Fabric is generally available: generate report pages from a prompt, write narrative summaries, answer in conversational language. Fabric "data agents" sit over your data and are consumable from Power BI, M365 Copilot, and MCP endpoints. Available from the F2 SKU since April 2025 (far below the old F64 floor).</p>
+          <div class="cs-metric"><span class="big">Lowest friction</span><span class="lbl">reuses existing Power BI datasets</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> the fastest on-ramp, but quality depends entirely on well-modeled, well-named semantic models. The "3-5x analyst productivity" claim is vendor-ecosystem, not verified. The warehouse and semantic-layer work is a prerequisite, not optional.</p>
+          <div class="cs-src"><span class="cred cc-vendor">Vendor docs</span><a href="https://learn.microsoft.com/en-us/fabric/fundamentals/copilot-fabric-overview">learn.microsoft.com/fabric/copilot</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-navy);">
+          <div class="cs-head">
+            <h3 class="cs-org">Databricks · AI/BI Genie</h3>
+            <span class="cs-sector">Lakehouse · best customer proof</span>
+          </div>
+          <p class="cs-what">Conversational analytics over a lakehouse, embeddable into Teams, governed by Unity Catalog. The AA trained it on "golden questions," validated answers against existing Power BI dashboards, and used catalog RBAC.</p>
+          <div class="cs-metric"><span class="big">up to 70%</span><span class="lbl">less time on routine queries (The AA, vendor-claimed)</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> The AA's recipe is directly copyable: golden questions, validation against trusted dashboards, governance from the catalog, delivered in the chat tool people already use.</p>
+          <div class="cs-src"><span class="cred cc-vendor">Vendor-claimed</span><a href="https://www.databricks.com/customers/the-aa/ai-bi-genie-api">databricks.com/customers/the-aa</a></div>
+        </div>
+
+        <div class="cs-case" style="--bar: var(--color-navy);">
+          <div class="cs-head">
+            <h3 class="cs-org">Snowflake Cortex · Looker + Gemini · ThoughtSpot · Tableau</h3>
+            <span class="cs-sector">The semantic-layer field</span>
+          </div>
+          <p class="cs-what">Four ways to buy the same idea. <em>Cortex Analyst</em> answers plain-language questions against a semantic model written as YAML, inheriting RBAC. <em>Looker + Gemini</em> grounds answers in the LookML semantic layer. <em>ThoughtSpot Spotter</em> is retail/CPG-specific (inventory, sell-through, promotions). <em>Tableau Pulse</em> pushes metric digests and anomaly explanations without being asked.</p>
+          <div class="cs-metric"><span class="big">"Define once"</span><span class="lbl">the semantic layer is the moat</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> ThoughtSpot's promotion-lift and sell-through use cases map almost one-to-one onto quick-commerce questions. Pulse's push model fits a leadership team that won't log in daily.</p>
+          <div class="cs-src"><span class="cred cc-vendor">Vendor docs</span><a href="https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst">docs.snowflake.com/cortex-analyst</a></div>
+        </div>
+
+        <div class="cs-case feat" style="--bar: var(--color-purple);">
+          <div class="cs-head">
+            <h3 class="cs-org">dbt · Semantic Layer vs text-to-SQL</h3>
+            <span class="cs-sector">The architecture proof</span>
+          </div>
+          <p class="cs-what">A public benchmark (built on an academic one) comparing raw text-to-SQL against semantic-layer-grounded querying, each question run 20 times across models.</p>
+          <div class="cs-metric"><span class="big">32.7% → 60.5%</span><span class="lbl">GPT-4, 2023 · and 84% → 100% with GPT-5.3 Codex, 2026</span></div>
+          <p class="cs-rel"><strong>For Baker's Dozen:</strong> this is the line to put in front of leadership. For questions inside the semantic model's scope, accuracy approaches 100% because SQL is generated from governed definitions, not inferred.</p>
+          <div class="cs-src"><span class="cred cc-vendor">Vendor benchmark, public method</span><a href="https://docs.getdbt.com/blog/semantic-layer-vs-text-to-sql-2026">docs.getdbt.com/blog/semantic-layer-vs-text-to-sql</a></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════ Architecture pattern ════════ -->
+    <section class="cd-section" style="--bar: var(--color-teal);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">03</span>
+        <h2 class="cd-section-name">The pattern that <em>works</em></h2>
+      </div>
+      <p class="cd-section-blurb">Every success above shares the same skeleton, in this order. The order is the lesson.</p>
+
+      <ol class="cs-steps">
+        <li class="cs-step"><div><h4>Central warehouse as the single source</h4><p>One governed store the GobbleCube and Power BI telemetry feed into. Without it, the AI is querying inconsistent silos.</p></div></li>
+        <li class="cs-step"><div><h4>A semantic / metrics layer on top</h4><p>Business definitions (revenue, active SKU, fill rate, incremental lift) encoded once, centrally. <em>The highest-leverage component.</em></p></div></li>
+        <li class="cs-step"><div><h4>Retrieval of curated example queries</h4><p>Ground the model in validated past queries and the right tables before it generates anything. Moves accuracy more than a bigger model.</p></div></li>
+        <li class="cs-step"><div><h4>Domain scoping</h4><p>Narrow the model to a business area before it answers (Uber's "workspaces"). Less ambiguity, fewer tokens.</p></div></li>
+        <li class="cs-step"><div><h4>Agentic orchestration</h4><p>Break a complex question into steps rather than one-shot generation.</p></div></li>
+        <li class="cs-step"><div><h4>Governance and access, inherited</h4><p>RBAC, row-level security, masking, SSO, and audit logs, all from the warehouse layer.</p></div></li>
+        <li class="cs-step"><div><h4>A trust surface</h4><p>Show the query or assumptions, attach a confidence score, validate against an already-trusted dashboard. This is what makes leadership act.</p></div></li>
+        <li class="cs-step"><div><h4>An evaluation harness</h4><p>A golden-question test set scored continuously. You cannot improve what you do not measure.</p></div></li>
+        <li class="cs-step"><div><h4>Delivery where people already work</h4><p>Slack, Teams, or the existing BI tool. Adoption follows convenience.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ Why some fail ════════ -->
+    <section class="cd-section" style="--bar: var(--color-accent-red);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">04</span>
+        <h2 class="cd-section-name">Why some <em>fail</em></h2>
+      </div>
+      <ul class="cs-bullets" style="--bar: var(--color-accent-red);">
+        <li><strong>No semantic layer.</strong> The model guesses what metrics mean and lands around a third right on a real schema.</li>
+        <li><strong>Plausible-but-wrong answers.</strong> The dangerous failure is not an error, it's a confident wrong number that looks trustworthy.</li>
+        <li><strong>Semantic disagreement across teams.</strong> When marketing's "customer" differs from finance's, no system is right for everyone until the definition is encoded centrally.</li>
+        <li><strong>Dirty data.</strong> Garbage in the warehouse becomes confident garbage out.</li>
+        <li><strong>No governance, so trust never forms.</strong> If users can't tell what the AI accessed or whether they were allowed to, leadership won't rely on it.</li>
+        <li><strong>A tool dropped in without semantic-model prep.</strong> Microsoft's own guidance warns Copilot on unprepared models leads to low adoption and a quiet return to manual reporting.</li>
+      </ul>
+    </section>
+
+    <!-- ════════ AEO / GEO ════════ -->
+    <section class="cd-section" style="--bar: var(--color-amber);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">05</span>
+        <h2 class="cd-section-name">Showing up in <em>AI answers</em></h2>
+      </div>
+      <p class="cd-section-blurb">When a shopper asks an AI "best protein chips in India," the answer is assembled, not ranked. The job shifts from ranking one page to being mentioned consistently across the sources AI trusts.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>The credible source</h4>
+        <p>"GEO: Generative Engine Optimization" (Princeton, Georgia Tech, Allen Institute, IIT Delhi; KDD 2024) tested content tactics on a 10,000-query benchmark. Optimizations lifted source visibility by up to <strong>40%</strong>. Best low-effort moves: <em>quotations (~28%), statistics (~26%), fluency (~25%), citing sources (~25%)</em>. Keyword stuffing did almost nothing.</p>
+      </div>
+
+      <ul class="cs-bullets" style="--bar: var(--color-amber);">
+        <li><strong>It's frequency, not position.</strong> Visibility is how often the brand appears across many answers to many prompts, and answers are non-deterministic.</li>
+        <li><strong>Models look for agreement.</strong> Consistent positioning across Reddit (including India subreddits), YouTube, review sites, and your own structured pages builds the confidence to recommend you.</li>
+        <li><strong>Entity clarity.</strong> Same product descriptions everywhere, an unambiguous category ("high-protein cookies," not "snacks"), and structured data that matches the visible page.</li>
+        <li><strong>Write for extraction.</strong> Self-contained paragraphs, main point first, hard facts (protein grams, ingredients, certifications) over vague claims.</li>
+        <li><strong>Monitor share of voice.</strong> Track how often, and how positively, the brand is named across ChatGPT, Gemini, and Perplexity, and watch the displacement risk (in some categories AI names competitors most of the time even when you're cited).</li>
+      </ul>
+
+      <div class="cd-callout" style="--bar: var(--color-subtle);">
+        <h4>Honest limitation</h4>
+        <p>Outside the Princeton paper, most AEO numbers come from vendors and aggregators, not peer-reviewed work. Use the academic study for credibility and the tactics as a checklist, not a guarantee. AI shopping referrals are small today (around 1% of web traffic) but growing fast and converting well, so it's worth starting now, cheaply.</p>
+      </div>
+    </section>
+
+    <!-- ════════ Takeaways ════════ -->
+    <section class="cd-section" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">06</span>
+        <h2 class="cd-section-name">Takeaways for <em>Baker's Dozen</em></h2>
+      </div>
+      <ul class="cs-bullets" style="--bar: var(--color-sky);">
+        <li><strong>Build the semantic layer first, then add the chat.</strong> 33% raw versus 98-100% grounded is the clearest proof that the warehouse plus a governed metrics layer is the real project.</li>
+        <li><strong>Copy Swiggy, not a Silicon Valley giant.</strong> Same business and geography. Bootstrap an example library by reverse-generating questions from queries your analysts already trust.</li>
+        <li><strong>Use the Power BI / Fabric path for speed,</strong> but expect no magic from Copilot on unprepared models. The prerequisite is clean models and defined metrics.</li>
+        <li><strong>Ship a trust surface from day one.</strong> Show the query, attach a confidence score, validate against an existing dashboard.</li>
+        <li><strong>Deliver where leaders already are.</strong> Slack or Teams beats a dashboard nobody opens. Start with 10-20 golden questions and measure first-shot acceptance.</li>
+        <li><strong>For AEO, optimize for consistent presence, not one ranking.</strong> Same positioning and hard facts across Reddit India, YouTube, marketplaces, and structured own-site pages.</li>
+      </ul>
+    </section>
+
+    <div class="cd-callout" style="--bar: var(--color-navy); margin-top: 2.75rem;">
+      <h4>Full research</h4>
+      <p>Every claim above is cited in full in <em>bakers-dozen/research/bi-democratization-case-studies.md</em>, with source URLs and credibility tags.</p>
+    </div>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Mission Control · case studies · internal</span>
+    </div>
+
+  </div>
+</body>
+</html>

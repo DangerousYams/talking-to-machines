@@ -1,0 +1,905 @@
+---
+export const prerender = true;
+import '../styles/global.css';
+
+const slides = [
+  'cover',
+  'shift',
+  'moat',
+  'overview',
+  'step1',
+  'step2',
+  'step3',
+  'step4',
+  'step5',
+  'shape',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · For Marketing · AIA Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Cultivated AI · For Marketing · AIA marketing engagement deck
+       Inherits global tokens. Primary accent: navy.
+       Step colors: red / amber / teal / purple / navy
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* ─── Progress rail ─── */
+    .progress-rail {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 50; padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75); backdrop-filter: blur(10px);
+      border-radius: 100px; border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(26,26,46,0.15); transition: all 0.3s ease;
+    }
+    .progress-dot.active { background: var(--color-navy); width: 16px; border-radius: 100px; }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* ─── Brand mark + slide num ─── */
+    .brand-mark {
+      position: absolute; bottom: 24px; left: 32px;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.08em; color: var(--color-subtle);
+    }
+    .brand-mark .b-grow { font-style: italic; color: var(--color-navy); }
+    .slide-num {
+      position: absolute; bottom: 24px; right: 32px;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-subtle);
+    }
+
+    /* ─── Keyboard hint ─── */
+    .kbd-hint {
+      position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+      z-index: 40; font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--color-subtle); background: rgba(250, 248, 245, 0.85);
+      backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.06); transition: opacity 0.4s ease;
+    }
+    .kbd-hint.hidden { opacity: 0; pointer-events: none; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono); font-size: 0.7rem; padding: 2px 6px;
+      background: var(--color-warm-white); border: 1px solid rgba(26,26,46,0.15);
+      border-radius: 4px; margin: 0 1px;
+    }
+
+    /* ─── Card-deck container ─── */
+    .card-deck-container { scroll-snap-type: y mandatory; height: 100vh; overflow-y: scroll; }
+    .card-deck-card {
+      scroll-snap-align: start; min-height: 100vh; position: relative;
+      opacity: 0.55; transition: opacity 0.5s ease;
+    }
+    .card-deck-card.is-active { opacity: 1; }
+
+    /* ─── Stagger animation ─── */
+    .stagger > * { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+
+    /* ─── Print: 1600x900 per page ─── */
+    @page { size: 1600px 900px; margin: 0; }
+    @media print {
+      html, body { background: var(--color-cream) !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container { scroll-snap-type: none; height: auto; overflow: visible; }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important; height: 900px !important;
+        min-height: 900px !important; max-height: 900px !important;
+        page-break-after: always !important; break-after: page !important;
+        opacity: 1 !important; padding: 4rem 5rem !important;
+        box-sizing: border-box !important; overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important; break-after: auto !important;
+      }
+      .stagger > * { opacity: 1 !important; transform: none !important; }
+    }
+
+    .deck-slide p { max-width: none; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 01 — Cover
+       ══════════════════════════════════════════════════════ */
+    .slide-cover { align-items: center; justify-content: center; text-align: center; }
+    .cover-eyebrow {
+      font-family: var(--font-mono); font-size: 0.85rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0 0 2rem;
+    }
+    .cover-eyebrow .dot { color: var(--color-navy); }
+    .wordmark {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(4.5rem, 11vw, 9rem); line-height: 1;
+      color: var(--color-deep); letter-spacing: -0.03em; margin: 0 0 1.25rem;
+    }
+    .wordmark .ai { font-style: italic; color: var(--color-navy); }
+    .cover-tagline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      font-weight: 400; font-style: italic;
+      color: var(--color-deep); margin: 0 0 1.75rem; letter-spacing: -0.01em;
+    }
+    .cover-tagline .raise { color: var(--color-amber); font-weight: 700; font-style: normal; }
+    .cover-tagline .ai-word { color: var(--color-navy); font-weight: 700; font-style: normal; }
+    .cover-context {
+      font-family: var(--font-mono); font-size: 0.85rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 1.25rem 0 0;
+    }
+    .cover-context .pipe { color: rgba(15,52,96,0.5); margin: 0 0.6rem; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 02 — The shift (real Claude excerpts)
+       ══════════════════════════════════════════════════════ */
+    .slide-shift { padding: 3rem 5rem; align-items: center; justify-content: center; }
+    .shift-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .shift-eyebrow {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--color-accent-red); margin: 0 0 0.85rem; text-align: center;
+    }
+    .shift-headline {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.4rem, 4.2vw, 3.6rem); line-height: 1.05;
+      color: var(--color-deep); letter-spacing: -0.03em;
+      margin: 0 0 1.6rem; text-align: center;
+    }
+    .shift-headline em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .shift-prompt {
+      font-family: var(--font-mono); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep);
+      margin: 0 auto 1.4rem; max-width: 1100px;
+      padding: 0.85rem 1.3rem;
+      background: var(--color-warm-white);
+      border-left: 3px solid var(--color-subtle);
+      border-radius: 4px;
+    }
+    .shift-prompt .prompt-tag {
+      display: block;
+      font-size: 0.64rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--color-subtle);
+      margin-bottom: 0.35rem;
+    }
+    .shift-table {
+      list-style: none; padding: 0;
+      margin: 0 0 1.4rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .shift-row {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 2rem; align-items: center;
+      padding: 0.9rem 1.4rem;
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-navy);
+      border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(26,26,46,0.04);
+    }
+    .shift-row.aia {
+      background: rgba(233,69,96,0.06);
+      border-left-color: var(--color-accent-red);
+    }
+    .shift-vendor {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: 1.4rem; color: var(--color-deep);
+      letter-spacing: -0.01em; margin: 0; line-height: 1.05;
+    }
+    .shift-row.aia .shift-vendor { color: var(--color-accent-red); }
+    .shift-says {
+      font-family: var(--font-body); font-size: 0.98rem;
+      line-height: 1.5; color: var(--color-deep); margin: 0;
+      font-style: italic;
+    }
+    .shift-says em { font-style: italic; color: var(--color-navy); font-weight: 700; }
+    .shift-row.aia .shift-says em { color: var(--color-accent-red); }
+    .shift-pull {
+      font-family: var(--font-heading); font-style: italic;
+      font-size: 1.4rem; color: var(--color-deep); margin: 0 auto 0.7rem;
+      text-align: center; letter-spacing: -0.005em;
+      padding: 1.1rem 1.8rem; max-width: 1100px;
+      background: rgba(15,52,96,0.05); border-radius: 4px;
+      line-height: 1.4;
+    }
+    .shift-pull em { color: var(--color-accent-red); font-weight: 700; font-style: italic; }
+    .shift-source {
+      font-family: var(--font-mono); font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0; text-align: center;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 03 — The moat
+       ══════════════════════════════════════════════════════ */
+    .slide-moat { padding: 3.5rem 5rem; align-items: center; justify-content: center; }
+    .moat-content { max-width: 1300px; margin: 0 auto; width: 100%; text-align: center; }
+    .moat-eyebrow {
+      font-family: var(--font-mono); font-size: 0.82rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--color-amber); margin: 0 0 1.4rem;
+    }
+    .moat-headline {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.4rem, 4.4vw, 3.6rem); line-height: 1.1;
+      color: var(--color-deep); letter-spacing: -0.03em; margin: 0 0 2rem;
+    }
+    .moat-headline em { font-style: italic; color: var(--color-amber); font-weight: 800; }
+    .moat-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem;
+      margin: 0 0 2rem;
+    }
+    .moat-stat {
+      padding: 1.6rem 1.2rem;
+      background: var(--color-warm-white);
+      border-top: 4px solid var(--color-amber);
+      border-radius: 4px;
+      box-shadow: 0 2px 14px rgba(26,26,46,0.05);
+    }
+    .moat-num {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+      color: var(--color-amber); line-height: 1;
+      letter-spacing: -0.025em; margin: 0 0 0.5rem;
+    }
+    .moat-label {
+      font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--color-deep); margin: 0; line-height: 1.4;
+    }
+    .moat-pull {
+      font-family: var(--font-heading); font-style: italic;
+      font-size: 1.4rem; color: var(--color-deep); margin: 0;
+      padding: 1.2rem 2rem; max-width: 1100px;
+      background: rgba(245,166,35,0.08); border-radius: 4px;
+      letter-spacing: -0.005em; line-height: 1.4;
+    }
+    .moat-pull em { font-style: italic; color: var(--color-accent-red); font-weight: 700; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 04 — Five steps overview
+       ══════════════════════════════════════════════════════ */
+    .slide-overview { padding: 3.5rem 5rem; }
+    .ov-content { max-width: 1450px; margin: 0 auto; width: 100%; }
+    .ov-eyebrow {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--color-navy); margin: 0 0 0.85rem;
+    }
+    .ov-headline {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 1.05;
+      color: var(--color-deep); letter-spacing: -0.02em; margin: 0 0 0.6rem;
+    }
+    .ov-headline em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .ov-sub {
+      font-family: var(--font-body); font-size: 1.1rem;
+      color: var(--color-subtle); margin: 0 0 2rem; max-width: 1100px;
+      line-height: 1.5;
+    }
+    .ov-sub em { font-style: italic; color: var(--color-deep); font-weight: 600; }
+    .ov-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.1rem;
+    }
+    .ov-card {
+      padding: 1.4rem 1.3rem;
+      background: var(--color-warm-white);
+      border-top: 4px solid var(--color-navy);
+      border-radius: 4px;
+      box-shadow: 0 2px 14px rgba(26,26,46,0.05);
+      display: flex; flex-direction: column;
+    }
+    .ov-card.s1 { border-top-color: var(--color-accent-red); }
+    .ov-card.s2 { border-top-color: var(--color-amber); }
+    .ov-card.s3 { border-top-color: var(--color-teal); }
+    .ov-card.s4 { border-top-color: var(--color-purple); }
+    .ov-card.s5 { border-top-color: var(--color-navy); }
+    .ov-num {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0 0 0.4rem;
+    }
+    .ov-name {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: 1.7rem; line-height: 1.05;
+      color: var(--color-deep); margin: 0 0 0.55rem;
+      letter-spacing: -0.015em;
+    }
+    .ov-card.s1 .ov-name { color: var(--color-accent-red); }
+    .ov-card.s2 .ov-name { color: var(--color-amber); }
+    .ov-card.s3 .ov-name { color: var(--color-teal); }
+    .ov-card.s4 .ov-name { color: var(--color-purple); }
+    .ov-card.s5 .ov-name { color: var(--color-navy); }
+    .ov-when {
+      font-family: var(--font-mono); font-size: 0.66rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0 0 0.85rem;
+    }
+    .ov-line {
+      font-family: var(--font-body); font-size: 0.9rem;
+      line-height: 1.5; color: var(--color-deep); margin: 0;
+    }
+    .ov-pull {
+      font-family: var(--font-heading); font-style: italic;
+      font-size: 1.25rem; color: var(--color-deep); margin: 1.6rem 0 0;
+      text-align: center; letter-spacing: -0.005em;
+    }
+    .ov-pull em { color: var(--color-navy); font-weight: 700; font-style: italic; }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDES 05-09 — One step per slide (shared layout)
+       ══════════════════════════════════════════════════════ */
+    .slide-step { padding: 3.5rem 5rem; }
+    .step-content { max-width: 1400px; margin: 0 auto; width: 100%; }
+    .step-eyebrow {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      margin: 0 0 0.6rem;
+    }
+    .step-headline {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 4rem); line-height: 1;
+      letter-spacing: -0.025em; color: var(--color-deep);
+      margin: 0 0 0.5rem;
+    }
+    .step-headline em { font-style: italic; font-weight: 800; }
+    .step-when {
+      font-family: var(--font-mono); font-size: 0.85rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-subtle); margin: 0 0 1.6rem;
+    }
+    .step-tagline {
+      font-family: var(--font-heading);
+      font-size: 1.55rem; color: var(--color-deep);
+      margin: 0 0 1.6rem; line-height: 1.35;
+      max-width: 1150px; font-style: italic;
+    }
+    .step-tagline em { font-weight: 700; font-style: italic; }
+    .step-grid {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.6rem;
+      margin: 0 0 1.4rem;
+    }
+    .step-block {
+      padding: 1.4rem 1.5rem;
+      background: var(--color-warm-white);
+      border-radius: 4px;
+      box-shadow: 0 2px 14px rgba(26,26,46,0.04);
+    }
+    .step-block-tag {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin: 0 0 0.55rem;
+    }
+    .step-block ul {
+      list-style: none; padding: 0; margin: 0;
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep);
+    }
+    .step-block ul li {
+      padding: 0.3rem 0 0.3rem 1rem; position: relative;
+    }
+    .step-block ul li::before {
+      content: ""; position: absolute; left: 0; top: 0.85rem;
+      width: 6px; height: 1px; opacity: 0.7;
+    }
+    .step-block ul li em { font-style: italic; font-weight: 600; }
+    .step-output {
+      padding: 1.2rem 1.5rem;
+      border-radius: 4px;
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep);
+      margin: 0;
+    }
+    .step-output strong {
+      display: block;
+      font-family: var(--font-mono); font-weight: 700;
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .step-output em { font-style: italic; font-weight: 600; }
+    .step-watch {
+      font-family: var(--font-body); font-style: italic;
+      font-size: 0.95rem; color: var(--color-subtle);
+      margin: 0; padding: 0.9rem 1.2rem;
+      border-left: 3px solid rgba(26,26,46,0.15);
+      line-height: 1.5;
+    }
+    .step-watch strong {
+      font-style: normal; color: var(--color-deep);
+      font-family: var(--font-mono); font-weight: 700;
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      display: block; margin-bottom: 0.35rem;
+    }
+
+    /* Step 1: red */
+    .slide-step1 .step-eyebrow,
+    .slide-step1 .step-block-tag { color: var(--color-accent-red); }
+    .slide-step1 .step-headline em { color: var(--color-accent-red); }
+    .slide-step1 .step-block ul li::before { background: var(--color-accent-red); }
+    .slide-step1 .step-output { background: rgba(233,69,96,0.07); }
+    .slide-step1 .step-output strong { color: var(--color-accent-red); }
+
+    /* Step 2: amber */
+    .slide-step2 .step-eyebrow,
+    .slide-step2 .step-block-tag { color: var(--color-amber); }
+    .slide-step2 .step-headline em { color: var(--color-amber); }
+    .slide-step2 .step-block ul li::before { background: var(--color-amber); }
+    .slide-step2 .step-output { background: rgba(245,166,35,0.09); }
+    .slide-step2 .step-output strong { color: var(--color-amber); }
+
+    /* Step 3: teal */
+    .slide-step3 .step-eyebrow,
+    .slide-step3 .step-block-tag { color: var(--color-teal); }
+    .slide-step3 .step-headline em { color: var(--color-teal); }
+    .slide-step3 .step-block ul li::before { background: var(--color-teal); }
+    .slide-step3 .step-output { background: rgba(22,199,154,0.08); }
+    .slide-step3 .step-output strong { color: var(--color-teal); }
+
+    /* Step 4: purple */
+    .slide-step4 .step-eyebrow,
+    .slide-step4 .step-block-tag { color: var(--color-purple); }
+    .slide-step4 .step-headline em { color: var(--color-purple); }
+    .slide-step4 .step-block ul li::before { background: var(--color-purple); }
+    .slide-step4 .step-output { background: rgba(123,97,255,0.07); }
+    .slide-step4 .step-output strong { color: var(--color-purple); }
+
+    /* Step 5: navy */
+    .slide-step5 .step-eyebrow,
+    .slide-step5 .step-block-tag { color: var(--color-navy); }
+    .slide-step5 .step-headline em { color: var(--color-navy); }
+    .slide-step5 .step-block ul li::before { background: var(--color-navy); }
+    .slide-step5 .step-output { background: rgba(15,52,96,0.06); }
+    .slide-step5 .step-output strong { color: var(--color-navy); }
+
+    /* ══════════════════════════════════════════════════════
+       SLIDE 10 — Shape + close
+       ══════════════════════════════════════════════════════ */
+    .slide-shape { padding: 3.5rem 5rem; align-items: center; justify-content: center; }
+    .shape-content { max-width: 1300px; margin: 0 auto; width: 100%; }
+    .shape-eyebrow {
+      font-family: var(--font-mono); font-size: 0.82rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--color-navy); margin: 0 0 1rem; text-align: center;
+    }
+    .shape-headline {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: clamp(2.4rem, 4.2vw, 3.6rem); line-height: 1.05;
+      color: var(--color-deep); letter-spacing: -0.025em;
+      margin: 0 0 1.8rem; text-align: center;
+    }
+    .shape-headline em { font-style: italic; color: var(--color-navy); font-weight: 800; }
+    .shape-timeline {
+      list-style: none; padding: 0; margin: 0 0 1.8rem;
+    }
+    .shape-timeline li {
+      display: grid; grid-template-columns: 110px 130px 1fr;
+      gap: 1.4rem; align-items: baseline;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(26,26,46,0.08);
+      font-family: var(--font-body); font-size: 1rem;
+      color: var(--color-deep);
+    }
+    .shape-timeline li:last-child { border-bottom: none; }
+    .shape-timeline .tl-step {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+    .shape-timeline .tl-when {
+      font-family: var(--font-heading); font-weight: 700;
+      font-size: 1.05rem; color: var(--color-navy);
+    }
+    .shape-timeline .tl-what em { font-style: italic; color: var(--color-navy); font-weight: 600; }
+    .shape-pull {
+      font-family: var(--font-heading); font-style: italic;
+      font-size: 1.4rem; color: var(--color-deep); margin: 0;
+      padding: 1.4rem 2rem; max-width: 1200px;
+      background: rgba(15,52,96,0.06); border-radius: 4px;
+      letter-spacing: -0.005em; line-height: 1.45;
+      text-align: center;
+    }
+    .shape-pull em { font-style: italic; color: var(--color-amber); font-weight: 700; }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <nav class="progress-rail" aria-label="Slide progress">
+    {slides.map(() => (<span class="progress-dot"></span>))}
+  </nav>
+
+  <div class="kbd-hint" id="kbd-hint">
+    Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or click edges
+  </div>
+
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Cover ═══ -->
+    <section class="card-deck-card deck-slide slide-cover" data-slide="cover">
+      <div class="stagger">
+        <p class="cover-eyebrow">For Marketing <span class="dot">·</span> Engagement Plan</p>
+        <h1 class="wordmark">Cultivated <span class="ai">AI</span></h1>
+        <p class="cover-tagline"><span class="raise">Raise the bar</span>, with <span class="ai-word">AI</span>.</p>
+        <p class="cover-context">AIA Engineering <span class="pipe">|</span> Ahmedabad <span class="pipe">|</span> May 2026</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">01 &middot; Cover</div>
+    </section>
+
+    <!-- ═══ 02 · The shift (real Claude excerpts) ═══ -->
+    <section class="card-deck-card deck-slide slide-shift" data-slide="shift">
+      <div class="shift-content stagger">
+        <p class="shift-eyebrow">The shift</p>
+        <h1 class="shift-headline">AI knows your <em>facts</em>. It doesn't know your <em>story</em>.</h1>
+        <div class="shift-prompt">
+          <span class="prompt-tag">A buyer prompt running today</span>
+          "Top 5 suppliers of high-chrome grinding media for a 12 Mtpa cement plant in Gujarat?"
+        </div>
+        <ul class="shift-table">
+          <li class="shift-row">
+            <h3 class="shift-vendor">Magotteaux</h3>
+            <p class="shift-says">"The reference point. Developed the first cast chromium balls in 1950. <em>The technology benchmark.</em>"</p>
+          </li>
+          <li class="shift-row">
+            <h3 class="shift-vendor">Molycop</h3>
+            <p class="shift-says">"Lean heavily on <em>instrumentation</em> and lifecycle costing. <em>Published marked-ball wear tests</em> at named mines."</p>
+          </li>
+          <li class="shift-row aia">
+            <h3 class="shift-vendor">AIA Engineering</h3>
+            <p class="shift-says">"Already in your backyard. <em>Use them as the price anchor</em> and the inventory-buffer supplier."</p>
+          </li>
+        </ul>
+        <p class="shift-pull">AIA doesn't have a <em>product</em> problem. It has a <em>publishing</em> problem.</p>
+        <p class="shift-source">Excerpts from a Claude response, May 2026</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">02 &middot; The shift</div>
+    </section>
+
+    <!-- ═══ 03 · The moat ═══ -->
+    <section class="card-deck-card deck-slide slide-moat" data-slide="moat">
+      <div class="moat-content stagger">
+        <p class="moat-eyebrow">The moat</p>
+        <h1 class="moat-headline">The unfair advantage no competitor can copy: <em>your data</em>.</h1>
+        <div class="moat-stats">
+          <div class="moat-stat">
+            <p class="moat-num">40 yrs</p>
+            <p class="moat-label">of mine-by-mine wear records</p>
+          </div>
+          <div class="moat-stat">
+            <p class="moat-num">100+</p>
+            <p class="moat-label">unique mine, ore and media combinations</p>
+          </div>
+          <div class="moat-stat">
+            <p class="moat-num">120</p>
+            <p class="moat-label">countries with live application data</p>
+          </div>
+        </div>
+        <p class="moat-pull">Generic AI gives generic copy. AI on AIA's data gives content <em>only AIA can publish</em>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">03 &middot; The moat</div>
+    </section>
+
+    <!-- ═══ 04 · Five steps overview ═══ -->
+    <section class="card-deck-card deck-slide slide-overview" data-slide="overview">
+      <div class="ov-content stagger">
+        <p class="ov-eyebrow">The plan</p>
+        <h1 class="ov-headline">Eight weeks. <em>Five steps.</em> Your team owns it.</h1>
+        <p class="ov-sub">We don't run AIA's marketing. We build the muscle into the team. We ship the first ten things side by side, then <em>you own it</em>.</p>
+        <div class="ov-grid">
+          <div class="ov-card s1">
+            <p class="ov-num">Step 01</p>
+            <h3 class="ov-name">Diagnose.</h3>
+            <p class="ov-when">Weeks 1-2</p>
+            <p class="ov-line">Audit what AI says about AIA today. Define the Tier 1 accounts the content is pointed at.</p>
+          </div>
+          <div class="ov-card s2">
+            <p class="ov-num">Step 02</p>
+            <h3 class="ov-name">Excavate.</h3>
+            <p class="ov-when">Weeks 2-4</p>
+            <p class="ov-line">Mine 40 years of internal trial reports into a sanitized, structured corpus AI can publish from.</p>
+          </div>
+          <div class="ov-card s3">
+            <p class="ov-num">Step 03</p>
+            <h3 class="ov-name">Capture.</h3>
+            <p class="ov-when">Weeks 3-4</p>
+            <p class="ov-line">Interview Bhadresh, the Chief Metallurgist, a Vega lead. Build voice profiles that don't sound like AI.</p>
+          </div>
+          <div class="ov-card s4">
+            <p class="ov-num">Step 04</p>
+            <h3 class="ov-name">Build.</h3>
+            <p class="ov-when">Weeks 4-7</p>
+            <p class="ov-line">Stand up the engine. First 8 weeks of posts, 5 case studies, the sales briefing agent, employee advocacy.</p>
+          </div>
+          <div class="ov-card s5">
+            <p class="ov-num">Step 05</p>
+            <h3 class="ov-name">Transfer.</h3>
+            <p class="ov-when">Weeks 7-8 +</p>
+            <p class="ov-line">Hand over the playbook. Train the team. Monthly office hours. Quarterly AI shelf re-audit.</p>
+          </div>
+        </div>
+        <p class="ov-pull">Each step has one job. Each step ships <em>something tangible</em>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">04 &middot; The plan</div>
+    </section>
+
+    <!-- ═══ 05 · Step 1 · Diagnose ═══ -->
+    <section class="card-deck-card deck-slide slide-step slide-step1" data-slide="step1">
+      <div class="step-content stagger">
+        <p class="step-eyebrow">Step 01</p>
+        <h1 class="step-headline"><em>Diagnose.</em></h1>
+        <p class="step-when">Weeks 1-2</p>
+        <p class="step-tagline">Run the AI Shelf Audit. Run the ICP workshop. <em>Know where you stand and who you're aiming at.</em></p>
+        <div class="step-grid">
+          <div class="step-block">
+            <p class="step-block-tag">What we do</p>
+            <ul>
+              <li>50 buyer-persona prompts run through Claude, ChatGPT, Perplexity and Gemini.</li>
+              <li>Score every answer on three axes: <em>was AIA mentioned, was it specific, was it accurate</em>.</li>
+              <li>Half-day workshop with sales leadership to define Tier 1 (top 50 named accounts), Tier 2, Tier 3.</li>
+              <li>For each Tier 1 account, name the buying committee: mill superintendent, comminution engineer, COO, procurement head.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="step-output">
+              <strong>Output</strong>
+              A baseline AI Shelf score showing AIA today vs Magotteaux, Molycop, Weir, FLSmidth. Plus a <em>target list of 50 accounts and ~250 named buyers</em> the content will be pointed at.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">05 &middot; Step 1 · Diagnose</div>
+    </section>
+
+    <!-- ═══ 06 · Step 2 · Excavate ═══ -->
+    <section class="card-deck-card deck-slide slide-step slide-step2" data-slide="step2">
+      <div class="step-content stagger">
+        <p class="step-eyebrow">Step 02</p>
+        <h1 class="step-headline"><em>Excavate.</em></h1>
+        <p class="step-when">Weeks 2-4</p>
+        <p class="step-tagline">Mine AIA's own data into a corpus AI can publish from. <em>This is the step most consultants skip and the one that makes the difference.</em></p>
+        <div class="step-grid">
+          <div class="step-block">
+            <p class="step-block-tag">What we do</p>
+            <ul>
+              <li>Sit with R&amp;D, application engineering, plant heads. Pull internal trial reports, wear records, application notes.</li>
+              <li>Sanitize. Strip customer names where confidentiality requires. Get legal sign-off on what can be published.</li>
+              <li>Structure for an AI agent: indexed and tagged by <em>ore type, mill type, geography, alloy grade</em>.</li>
+              <li>Use Claude Enterprise or Azure OpenAI with a no-training contract. Data never leaves the estate.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="step-output">
+              <strong>Output</strong>
+              A clean internal RAG corpus that becomes the fuel for every piece of content. <em>Without this, AI gives you generic copy. With it, AI produces content only AIA could publish.</em>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">06 &middot; Step 2 · Excavate</div>
+    </section>
+
+    <!-- ═══ 07 · Step 3 · Capture ═══ -->
+    <section class="card-deck-card deck-slide slide-step slide-step3" data-slide="step3">
+      <div class="step-content stagger">
+        <p class="step-eyebrow">Step 03</p>
+        <h1 class="step-headline"><em>Capture.</em></h1>
+        <p class="step-when">Weeks 3-4 (parallel to Step 2)</p>
+        <p class="step-tagline">Record the human voices before any content gets written. <em>The reason AI marketing fails in technical sales is that it sounds like AI.</em></p>
+        <div class="step-grid">
+          <div class="step-block">
+            <p class="step-block-tag">What we do</p>
+            <ul>
+              <li><em>Bhadresh Shah, 90 minutes.</em> India manufacturing, hi-chrome vs forged, where the industry is going. Let him talk.</li>
+              <li><em>Chief Metallurgist or R&amp;D head, 60 minutes.</em> The deep technical voice. Specific opinions on alloy chemistry, heat treatment, mill liner design.</li>
+              <li><em>One Vega regional head, 60 minutes.</em> The customer-facing voice. Stories from mines.</li>
+              <li>Transcribe each. Build a voice profile in Claude per person: cadence, idioms, the words they never use.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="step-output">
+              <strong>Output</strong>
+              Three voice profiles that produce drafts in each person's actual voice. <em>The person edits. They do not write.</em>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">07 &middot; Step 3 · Capture</div>
+    </section>
+
+    <!-- ═══ 08 · Step 4 · Build ═══ -->
+    <section class="card-deck-card deck-slide slide-step slide-step4" data-slide="step4">
+      <div class="step-content stagger">
+        <p class="step-eyebrow">Step 04</p>
+        <h1 class="step-headline"><em>Build.</em></h1>
+        <p class="step-when">Weeks 4-7</p>
+        <p class="step-tagline">Stand up the engine and ship the first eight weeks. <em>Five distinct things go live.</em></p>
+        <div class="step-grid">
+          <div class="step-block">
+            <p class="step-block-tag">What ships</p>
+            <ul>
+              <li><em>LinkedIn cadence.</em> 3 posts/week from the corporate page, 1/week from each named expert, 1/fortnight from Bhadresh.</li>
+              <li><em>5 case studies.</em> "Named mine + named challenge + a real number + named AIA expert." Customer-cleared.</li>
+              <li><em>The account briefing agent.</em> A Claude project sales reps query before every Tier 1 meeting.</li>
+              <li><em>Employee advocacy.</em> 15 field engineers across LATAM, India, CIS, Africa amplifying with their own commentary.</li>
+              <li><em>Regional language layer.</em> Spanish, Portuguese, Russian, Arabic versions for Vega's regional reps.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="step-output">
+              <strong>Output</strong>
+              A working publishing system shipping <em>6-8 posts/week, 5 published case studies, an active sales briefing agent, and 15 amplifying field engineers in 4 languages</em>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">08 &middot; Step 4 · Build</div>
+    </section>
+
+    <!-- ═══ 09 · Step 5 · Transfer ═══ -->
+    <section class="card-deck-card deck-slide slide-step slide-step5" data-slide="step5">
+      <div class="step-content stagger">
+        <p class="step-eyebrow">Step 05</p>
+        <h1 class="step-headline"><em>Transfer.</em></h1>
+        <p class="step-when">Weeks 7-8 + ongoing</p>
+        <p class="step-tagline">Hand over the keys to AIA's team. <em>Otherwise we have built a dependency, not a capability.</em></p>
+        <div class="step-grid">
+          <div class="step-block">
+            <p class="step-block-tag">What we do</p>
+            <ul>
+              <li>Document the operating playbook: weekly content calendar, prompts, voice profiles, case-study template, legal review checklist.</li>
+              <li>Train the AIA marketing team and the SMEs on the AI tooling. Hands-on. Not a slide deck.</li>
+              <li>Monthly office-hours retainer for 6 months: one call a month, troubleshoot, raise the bar.</li>
+              <li>Quarterly AI Shelf re-audit. The scoreboard for whether the program is working.</li>
+            </ul>
+          </div>
+          <div>
+            <p class="step-output">
+              <strong>Output</strong>
+              AIA's team owns the engine. Success metric: the AI Shelf Audit moves from <em>"AIA gets a line"</em> to <em>"AIA gets a paragraph with named experts and named numbers."</em>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">09 &middot; Step 5 · Transfer</div>
+    </section>
+
+    <!-- ═══ 10 · The shape ═══ -->
+    <section class="card-deck-card deck-slide slide-shape" data-slide="shape">
+      <div class="shape-content stagger">
+        <p class="shape-eyebrow">The shape</p>
+        <h1 class="shape-headline">Eight intensive weeks. Then <em>your team runs it</em>.</h1>
+        <ul class="shape-timeline">
+          <li>
+            <span class="tl-step">Step 01</span>
+            <span class="tl-when">Weeks 1-2</span>
+            <span class="tl-what tl-what-l">AI Shelf Audit + <em>ICP target list</em>.</span>
+          </li>
+          <li>
+            <span class="tl-step">Step 02</span>
+            <span class="tl-when">Weeks 2-4</span>
+            <span class="tl-what">Sanitized <em>internal corpus</em>.</span>
+          </li>
+          <li>
+            <span class="tl-step">Step 03</span>
+            <span class="tl-when">Weeks 3-4</span>
+            <span class="tl-what">Three <em>voice profiles</em>.</span>
+          </li>
+          <li>
+            <span class="tl-step">Step 04</span>
+            <span class="tl-when">Weeks 4-7</span>
+            <span class="tl-what">Live <em>content engine</em>, 5 case studies, sales briefing agent, employee advocacy.</span>
+          </li>
+          <li>
+            <span class="tl-step">Step 05</span>
+            <span class="tl-when">Weeks 7-8 +</span>
+            <span class="tl-what">Playbook, trained team, <em>quarterly re-audit</em>.</span>
+          </li>
+        </ul>
+        <p class="shape-pull">We don't run your marketing. We build the muscle, ship the first ten things with you, then come back monthly to <em>raise the bar</em>.</p>
+      </div>
+      <div class="brand-mark">Cultivated AI &middot; <span class="b-grow">For Marketing</span></div>
+      <div class="slide-num">10 &middot; The shape</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) { kbdHint.classList.add('hidden'); hintHidden = true; }
+        switch (e.key) {
+          case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ':
+            e.preventDefault(); goTo(current + 1); break;
+          case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+            e.preventDefault(); goTo(current - 1); break;
+          case 'Home': e.preventDefault(); goTo(0); break;
+          case 'End': e.preventDefault(); goTo(slides.length - 1); break;
+        }
+      });
+
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      updateActive(0);
+    })();
+  </script>
+</body>
+</html>
