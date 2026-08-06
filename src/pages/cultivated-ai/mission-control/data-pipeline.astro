@@ -1,0 +1,308 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Internal · Data pipeline thinking · Mission Control · The Baker's Dozen</title>
+  <style>
+    /* ── internal banner ── */
+    .dp-internal {
+      max-width: 880px;
+      margin: 0 auto 1.75rem;
+      padding: 0.7rem 1.15rem;
+      background: color-mix(in srgb, var(--color-accent-red) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--color-accent-red) 35%, transparent);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+      color: var(--color-navy);
+      display: flex;
+      gap: 0.7rem;
+      align-items: baseline;
+    }
+    .dp-internal .tag {
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-accent-red);
+      white-space: nowrap;
+    }
+
+    /* ── phase ladder (crawl / walk / run) ── */
+    .dp-ladder { list-style: none; margin: 1.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+    .dp-step {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.4rem 1.1rem;
+      padding: 1rem 1.2rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dp-step::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+      background: var(--bar, var(--doc-accent));
+    }
+    .dp-step-phase {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--bar, var(--doc-accent));
+      padding-top: 0.2rem;
+    }
+    .dp-step-when {
+      grid-column: 2;
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin: 0 0 0.35rem;
+    }
+    .dp-step-body { grid-column: 2; }
+    .dp-step-body h4 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--color-deep);
+      margin: 0 0 0.25rem;
+    }
+    .dp-step-body p {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--color-deep);
+      margin: 0;
+      max-width: 62ch;
+    }
+    .dp-step-body p em { color: var(--color-navy); font-style: italic; }
+    .dp-step-body strong { color: var(--color-navy); font-weight: 700; }
+
+    /* ── comparison table (pdf vs csv) ── */
+    .dp-table { width: 100%; border-collapse: collapse; margin: 1.3rem 0 0; font-family: var(--font-body); }
+    .dp-table caption {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      text-align: left;
+      margin-bottom: 0.5rem;
+    }
+    .dp-table th, .dp-table td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.7rem 0.85rem;
+      border-bottom: 1px solid rgba(26,26,46,0.09);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .dp-table thead th {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-navy);
+      border-bottom: 2px solid rgba(26,26,46,0.16);
+    }
+    .dp-table thead th.dp-good { color: var(--color-teal); }
+    .dp-table thead th.dp-bad { color: var(--color-accent-red); }
+    .dp-table tbody th {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      width: 8.5rem;
+    }
+    .dp-table td em { color: var(--color-navy); font-style: italic; }
+
+    @media (max-width: 640px) {
+      .dp-step { grid-template-columns: 1fr; }
+      .dp-step-phase { padding-top: 0; }
+      .dp-step-when, .dp-step-body { grid-column: 1; }
+      .dp-table th, .dp-table td { font-size: 0.82rem; padding: 0.55rem 0.5rem; }
+      .dp-table tbody th { width: 6rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dp-internal">
+    <span class="tag">Internal</span>
+    <span>Working doc for us, not the client. This is the reasoning behind Mission Control's pipeline, not a deliverable. Nothing here is linked from the artifacts index.</span>
+  </div>
+
+  <div class="cd-shell" style="--doc-accent: var(--color-sky);">
+
+    <p class="cd-eyebrow">Mission Control · internal · architecture</p>
+    <h1 class="cd-title">A data pipeline for a company with <em>no IT</em>.</h1>
+    <p class="cd-lede">The Baker's Dozen runs on spreadsheets, Power BI, and GobbleCube, with no engineer to own a stack. So the question isn't which warehouse is best. It's <strong>what they can operate themselves once we leave the room.</strong> This is how we think about that.</p>
+    <p class="cd-meta">Internal · Mission Control · The Baker's Dozen</p>
+    <div class="cd-rule"></div>
+
+    <!-- 01 -->
+    <section class="cd-section" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">01</span><h2 class="cd-section-name">"Self-managed" means <em>operate</em>, not build</h2></div>
+      <p class="cd-section-blurb">The single distinction that decides every other choice on this page.</p>
+      <div class="cd-prose">
+        <p>A no-IT org can do the operating jobs. They can click a weekly export, drop files in a folder, watch a number move, and flag when it looks wrong. They cannot do the building jobs. They can't keep a script alive, fix a connector that broke overnight, or model a schema.</p>
+        <p>So every step we hand them has to be something a vendor keeps running, or something so simple it can't really break. The moment a step needs an engineer to stay alive, it belongs to us or to a retainer, never to them.</p>
+      </div>
+      <div class="cd-callout" style="--bar: var(--color-sky);">
+        <h4>The rule</h4>
+        <p>Buy the plumbing, never build it in-house. If keeping a step running needs code, it's the wrong step for The Baker's Dozen to own.</p>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="cd-section" style="--bar: var(--color-amber);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">02</span><h2 class="cd-section-name">The one fact everything forks on: can <em>GobbleCube</em> export?</h2></div>
+      <div class="cd-prose">
+        <p>Before scoping anything, we need to know how data leaves GobbleCube. If it gives structured exports (a CSV download, an API key, a scheduled email), we have a real pipeline. If it only shows dashboards on screen or spits out PDF reports, that source is capped at "read and summarize" and never joins the rest cleanly.</p>
+        <p><em>I can't verify GobbleCube's export capability.</em> It's the first question for their data owner, and the answer changes the whole shape of Part Two. Same question applies, less urgently, to Power BI (we want the underlying datasets, not just published dashboards) and the production and supply-chain files.</p>
+      </div>
+      <div class="cd-callout" style="--bar: var(--color-amber);">
+        <h4>First thing to confirm</h4>
+        <p>Get one real export sample from each source before Session 1. GobbleCube is the pivotal unknown. Everything downstream assumes the numbers can leave their tools as data.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="cd-section" style="--bar: var(--color-teal);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">03</span><h2 class="cd-section-name">The daily-snapshot idea: right instinct, wrong <em>format</em></h2></div>
+      <p class="cd-section-blurb">Shalin's proposal was a daily job that dumps everything into one Google Drive folder. The instinct is good. One part of it quietly defeats the goal.</p>
+      <div class="cd-prose">
+        <p><strong>Keep this.</strong> One place, daily cadence, manual kickoff is fine, no IT needed. That's the correct shape for them, and the snapshots give point-in-time history that Power BI mostly forgets.</p>
+        <p><strong>Change this: don't dump PDFs.</strong> A PDF is a picture of the numbers. The instant you want to ask questions of the data, PDF fights you. An AI reading tables and charts out of a PDF guesses, and it can't aggregate across many of them, which is exactly what leadership will ask for. Export the structured file the source already offers (CSV or a Google Sheet) and the same daily habit now has a real query path.</p>
+      </div>
+      <table class="dp-table">
+        <caption>Same effort, opposite outcome</caption>
+        <thead>
+          <tr><th></th><th class="dp-bad">Daily PDF dump</th><th class="dp-good">Daily CSV / Sheets dump</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>What it is</th><td>A picture of the numbers</td><td>The numbers themselves</td></tr>
+          <tr><th>AI can query it</th><td>Reads and summarizes a few, guesses at tables and charts</td><td>Aggregates, joins, and computes reliably</td></tr>
+          <tr><th>Trend over time</th><td>Open every snapshot, slow and lossy</td><td>One growing table, one question</td></tr>
+          <tr><th>Effort to produce</th><td>Same weekly click</td><td>Same weekly click</td></tr>
+          <tr><th>Use it when</th><td><em>Only</em> when a source refuses to export data</td><td>Every source that will export data</td></tr>
+        </tbody>
+      </table>
+      <div class="cd-callout" style="--bar: var(--color-teal);">
+        <h4>Net</h4>
+        <p>Keep the instinct, change the format. One Drive folder, one cumulative Sheet per source, structured not PDF. PDFs go in a <em>pdf-only</em> corner reserved for sources that leave us no choice.</p>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="cd-section" style="--bar: var(--color-purple);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">04</span><h2 class="cd-section-name">The stack, <em>crawl → walk → run</em></h2></div>
+      <p class="cd-section-blurb">Same destination the whole way. Each phase is only reached when the previous one starts to hurt, so nothing is over-built ahead of need.</p>
+      <ol class="dp-ladder">
+        <li class="dp-step" style="--bar: var(--color-teal);">
+          <span class="dp-step-phase">Crawl</span>
+          <p class="dp-step-when">Now · zero engineer · near-zero cost</p>
+          <div class="dp-step-body">
+            <h4>A Drive folder of structured exports</h4>
+            <p>Daily CSV or Sheet exports into one Google Drive folder, one cumulative Sheet per source. Query it with Gemini in Workspace, NotebookLM, or Claude. This alone proves whether "just ask the business" earns its keep, before anyone spends money.</p>
+          </div>
+        </li>
+        <li class="dp-step" style="--bar: var(--color-sky);">
+          <span class="dp-step-phase">Walk</span>
+          <p class="dp-step-when">When a manual dump gets tedious</p>
+          <div class="dp-step-body">
+            <h4>Swap that one source for a managed connector</h4>
+            <p>Replace only the painful source with a bought connector (<strong>Hevo</strong> or <strong>Daton</strong>, both Indian and D2C-focused with vendor support) feeding <strong>BigQuery</strong>. The vendor maintains the pipe. Still no code kept alive in-house. Do this per-source, only as each one earns it.</p>
+          </div>
+        </li>
+        <li class="dp-step" style="--bar: var(--color-navy);">
+          <span class="dp-step-phase">Run</span>
+          <p class="dp-step-when">When questions outgrow the files</p>
+          <div class="dp-step-body">
+            <h4>A governed semantic layer over the warehouse</h4>
+            <p>Define metrics once so plain-language answers come back accurate instead of plausible. The warehouse and this semantic layer are the actual build. The chat on top is the quick part (the dbt benchmark: ~33% raw text-to-SQL versus 98–100% when grounded in a semantic layer). A fractional analytics engineer builds it, The Baker's Dozen operates it.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>Org model that makes it self-managed</h4>
+        <p>One named, non-technical <em>data owner</em> inside The Baker's Dozen who runs the daily habit and owns the questions, plus a <em>fractional analytics engineer</em> on retainer for the walk and run steps. They operate. The retainer builds and repairs. Nobody at the bakery has to become an engineer.</p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="cd-section" style="--bar: var(--color-navy);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">05</span><h2 class="cd-section-name">The query layer, and one honest <em>caveat</em></h2></div>
+      <div class="cd-prose">
+        <p>Options, roughly in order of when they fit:</p>
+      </div>
+      <ul class="cd-checklist">
+        <li class="cd-check" style="--bar: var(--color-teal);">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body"><h4>NotebookLM</h4><p>Point it at the Drive folder. Strong at "what does this say," weaker at math. Good for the crawl phase.</p></div>
+          <span class="cd-pill" style="--pill: var(--color-teal);">Crawl</span>
+        </li>
+        <li class="cd-check" style="--bar: var(--color-sky);">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body"><h4>Gemini in Sheets / Workspace</h4><p>Native where the data already lands. Fits if exports go into Google Sheets, which is the plan.</p></div>
+          <span class="cd-pill" style="--pill: var(--color-sky);">Crawl</span>
+        </li>
+        <li class="cd-check" style="--bar: var(--color-amber);">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body"><h4>Power BI Copilot</h4><p>The best chat surface once a clean semantic model exists. Belongs to the run phase, not before. Assumes it's on their plan.</p></div>
+          <span class="cd-pill" style="--pill: var(--color-amber);">Run</span>
+        </li>
+        <li class="cd-check" style="--bar: var(--color-purple);">
+          <span class="cd-check-box"></span>
+          <div class="cd-check-body"><h4>Claude or ChatGPT, file upload</h4><p>Ad-hoc questions over a CSV any time. No setup. Good for one-off exploration.</p></div>
+          <span class="cd-pill" style="--pill: var(--color-purple);">Any</span>
+        </li>
+      </ul>
+      <div class="cd-callout" style="--bar: var(--color-accent-red);">
+        <h4>Caveat we must say out loud</h4>
+        <p>AI doing arithmetic over many rows is still imperfect. For numbers finance actually reports on, back the model with a pivot table or a defined formula, and use the AI for exploration and plain-language access. Don't let the model be the system of record for an exact figure yet. This is the Chapter 9 trust problem, live in their business.</p>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="cd-section" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head"><span class="cd-section-num">06</span><h2 class="cd-section-name">What this changes in the <em>client docs</em></h2></div>
+      <p class="cd-section-blurb">Not done yet. This is the reasoning. The rewrite is a separate task when we greenlight it.</p>
+      <div class="cd-prose">
+        <p><strong>Session 1</strong> becomes "one place for everything" as a Drive folder of structured exports, not a warehouse to choose and buy. More honest for a no-IT org, and something they walk out already using.</p>
+        <p><strong>Prerequisites</strong> shift. The "Power BI Copilot / Fabric" line drops to optional. The real prereqs are a structured export from each source and a named data owner who'll run the daily habit.</p>
+        <p><strong>The warehouse-first framing</strong> in the current sessions and case-studies pages still holds as the destination. We're just honest that the road there starts as a folder, and only becomes a warehouse when a source's manual dump earns the connector.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Mission Control · internal architecture note</span>
+    </div>
+
+  </div>
+</body>
+</html>

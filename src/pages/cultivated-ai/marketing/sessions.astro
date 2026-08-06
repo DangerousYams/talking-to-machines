@@ -1,0 +1,256 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Generative Media Bootcamp · Session Plan · The Baker's Dozen</title>
+  <style>
+    /* ── At-a-glance map of the two sessions ── */
+    .ses-map {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+      margin: 1.75rem 0 0;
+    }
+    .ses-mapcard {
+      padding: 0.95rem 1.1rem 1.05rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ses-mapcard::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .ses-mapcard .n {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--bar);
+    }
+    .ses-mapcard h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.08rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.15rem 0 0.35rem; color: var(--color-deep);
+    }
+    .ses-mapcard p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.45;
+      color: var(--color-subtle); margin: 0;
+    }
+    /* "What you take away" note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-accent-red)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-accent-red)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-accent-red)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .ses-out p em { color: var(--color-navy); font-style: italic; }
+    .ses-out ul {
+      list-style: none; margin: 0.3rem 0 0; padding: 0;
+      font-family: var(--font-body);
+      font-size: 0.95rem; line-height: 1.55;
+      color: var(--color-deep);
+    }
+    .ses-out li {
+      padding-left: 1.05rem; position: relative;
+      margin: 0 0 0.25rem;
+    }
+    .ses-out li:last-child { margin-bottom: 0; }
+    .ses-out li::before {
+      content: '';
+      position: absolute; left: 0; top: 0.62em;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--bar, var(--color-accent-red));
+    }
+    @media print {
+      .is-red .cd-timeline li:nth-child(5) { break-before: page; }
+    }
+    /* legend */
+    .ses-legend {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem;
+      margin: 1.5rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-accent-red);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">The Baker's Dozen · Workshop 3 · session plan</p>
+    <h1 class="cd-title">Generative Media <em>Bootcamp</em></h1>
+    <p class="cd-lede">For the marketing, content and branding team. Two sessions, two hours each, on your own briefs and accounts. Hands-on from the first half hour.</p>
+    <div class="cd-rule"></div>
+
+    <div class="cd-callout" style="--bar: var(--color-accent-red);">
+      <h4>Before we meet</h4>
+      <p>Send us everything that defines The Baker's Dozen on paper: brand and voice documents, visual guidelines, past campaigns, anything you'd call the bible. If some of it only exists in someone's head, that's fine. Session 1 is where we start writing it down.</p>
+    </div>
+
+    <div class="ses-map">
+      <div class="ses-mapcard is-red" style="--bar: var(--color-accent-red);">
+        <span class="n">Session 01</span>
+        <h3>Taste, voice and the tools</h3>
+        <p>The gen media map, a brand voice that survives any typist, and a taste library the team owns.</p>
+      </div>
+      <div class="ses-mapcard is-purple" style="--bar: var(--color-purple);">
+        <span class="n">Session 02</span>
+        <h3>Making things</h3>
+        <p>Production day. Images, video, motion graphics, music and voice, all on real briefs.</p>
+      </div>
+    </div>
+
+    <div class="ses-legend">
+      <span class="cd-pill" style="--pill: var(--color-navy);">Teach · short</span>
+      <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span>
+    </div>
+
+    <!-- ════════ SESSION 1 ════════ -->
+    <section class="cd-section is-red" style="--bar: var(--color-accent-red);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 01</span>
+        <h2 class="cd-section-name">Taste, voice and <em>the tools</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Before making anything, the team builds the two assets that make AI output usable: a clear brand voice and a taste library. Along the way, the full map of what's out there.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-accent-red);">
+        <h4>Objective</h4>
+        <p>The Baker's Dozen bible and the taste recipe book both exist by the end of the session, started by the people who'll live in them.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-accent-red);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Cultivated AI recap <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">The loop, the ladder, and the two principles that matter most here: never trust one machine, and always humanize.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The lay of the land, media edition <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Image, video, music and voice tools: who's good at what and what they cost. Then the deeper cut from Workshop 1: prompting is different per medium. An image prompt describes a scene. A video prompt is a shot list. A music prompt points at references. A post prompt is voice and audience. We prompt each one live.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:35 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Brand voice, and when to skip AI <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">How to write a voice down so it survives whoever is typing. Then the sorting exercise: real examples of AI in marketing, good and bad, and the team argues over which is which. Out of that falls the list of jobs where AI shouldn't touch the work at all.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:00 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Start the bible and the recipe book <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Two documents get created in the room. The Baker's Dozen bible: what the brand is, sounds like, looks like. The taste recipe book: every time a prompt produces something you love, the prompt and settings go in. Both grow forever after today.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:30 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">How these tools work, and what to pay for <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">One simple mental model of how generation works, enough to know why results vary. Then pricing without the confusion: credits, subscriptions, and what's worth paying for at your volume.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:45 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">De-slop, applied to the brand <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">The tells of AI writing and AI images, and a kit that strips them out before anything ships. Everything the team generates from here on runs through it.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ SESSION 2 ════════ -->
+    <section class="cd-section is-purple" style="--bar: var(--color-purple);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 02</span>
+        <h2 class="cd-section-name">Making <em>things</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Production day. Every block ends with something made on a real brief: images, a clip, an overlay, a calendar that maintains itself.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>Objective</h4>
+        <p>The team leaves having produced real work with the tools, and knowing which steps of their week each tool now owns.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-purple);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Claude as the back office <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Set up a content calendar Claude maintains: it drafts, schedules and keeps the pipeline visible. The team's single place to plan the week.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:15 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Images, in detail <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Real briefs from the team's actual queue. E-commerce tiles need clean, legible type, so they get a different tool than food photography and mood shots. Everyone generates, compares, and saves the winners into the recipe book.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:45 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Video, in detail <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">What makes a generated clip feel great: subject, motion, camera, and where to cut before the seams show. We make a clip live on a brand brief and study it honestly.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:15 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Motion graphics and edits with Claude Code <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Overlays on real footage: titles, price tags, end cards. Plus the unglamorous wins: format conversions, edits and clipping, done by describing what you want. This is where Claude Code and Cowork earn their keep for a content team.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Music and voice <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Where generated music and voices fit, which tools to use, and where rights and disclosure get tricky for a brand.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:50 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Bonus: research and analysis <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Deep research, pointed at yourselves: what the internet and the answer engines say about The Baker's Dozen and its competitors, gathered while we watch.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ Takeaways ════════ -->
+    <div class="ses-out" style="--bar: var(--color-accent-red);">
+      <h4>What you take away</h4>
+      <ul>
+        <li>The Baker's Dozen bible, started and owned by the team</li>
+        <li>A taste recipe book that grows with every good result</li>
+        <li>A voice kit that de-slops everything before it ships</li>
+        <li>A content calendar that maintains itself in Claude</li>
+        <li>Images and a video clip made on real briefs, with the settings saved</li>
+        <li>A motion graphics recipe that works on any footage</li>
+        <li>A tool map with honest pricing notes</li>
+        <li>A clear list of the jobs AI doesn't touch</li>
+      </ul>
+    </div>
+
+    <!-- ════════ Notes ════════ -->
+    <section class="cd-section is-navy" style="--bar: var(--color-navy);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Notes</span>
+        <h2 class="cd-section-name">How we <em>run it</em></h2>
+      </div>
+      <div class="cd-prose">
+        <p>Everything runs on the team's own accounts, so the work and the history stay with you.</p>
+        <p>Have video generation credits ready before Session 2. Live generation eats them fast.</p>
+        <p>The week between sessions is part of the workshop: everything made as homework goes through the voice kit.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Workshop 3 · session plan</span>
+    </div>
+
+  </div>
+</body>
+</html>

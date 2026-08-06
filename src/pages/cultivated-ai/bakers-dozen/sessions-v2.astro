@@ -1,0 +1,330 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Cultivated AI · Session Plan · The Baker's Dozen</title>
+  <style>
+    /* ── At-a-glance map of the two sessions ── */
+    .ses-map {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+      margin: 1.75rem 0 0;
+    }
+    .ses-mapcard {
+      padding: 0.95rem 1.1rem 1.05rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ses-mapcard::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .ses-mapcard .n {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--bar);
+    }
+    .ses-mapcard h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.08rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.15rem 0 0.35rem; color: var(--color-deep);
+    }
+    .ses-mapcard p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.45;
+      color: var(--color-subtle); margin: 0;
+    }
+    /* "Walk out with" note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-teal)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-teal)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-teal)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .ses-out p em { color: var(--color-navy); font-style: italic; }
+    .ses-out ul { list-style: none; margin: 0; padding: 0; }
+    .ses-out li {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep);
+      position: relative; padding-left: 0.9rem; margin: 0 0 0.3rem;
+    }
+    .ses-out li:last-child { margin-bottom: 0; }
+    .ses-out li::before {
+      content: '·';
+      position: absolute; left: 0; top: 0;
+      font-weight: 700; color: var(--bar, var(--color-teal));
+    }
+    /* legend */
+    .ses-legend {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem;
+      margin: 1.5rem 0 0;
+    }
+    /* principle tags under each beat */
+    .ses-prin {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      color: var(--color-subtle);
+      margin: 6px 0 0;
+    }
+    /* the fifteen principles, two columns */
+    .ses-fifteen {
+      columns: 2;
+      column-gap: 40px;
+      list-style: none;
+      padding: 0;
+      margin: 1.1rem 0 0;
+    }
+    .ses-fifteen li {
+      font-family: var(--font-body);
+      font-size: 0.875rem; line-height: 1.5;
+      color: var(--color-deep);
+      margin-bottom: 6px;
+      break-inside: avoid;
+    }
+    .ses-fifteen .n {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--color-subtle);
+      margin-right: 8px;
+    }
+    @media (max-width: 640px) {
+      .ses-fifteen { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-amber);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">The Baker's Dozen · Workshop 1 · session plan</p>
+    <h1 class="cd-title">Cultivated <em>AI</em></h1>
+    <p class="cd-lede">Twenty people, two sessions, two hours each. Bring a laptop. We send a short questionnaire before we meet so the examples come from your work, not ours.</p>
+    <div class="cd-rule"></div>
+
+    <div class="cd-callout" style="--bar: var(--color-amber);">
+      <h4>Before we meet</h4>
+      <p>A laptop, and a Google account you can sign in with. The hands-on coding block runs on Gemini: it's the easiest way in and its free tier is the most generous. A Claude or ChatGPT login helps for everything else. The questionnaire checks all of this.</p>
+    </div>
+
+    <div class="ses-map">
+      <div class="ses-mapcard is-amber" style="--bar: var(--color-amber);">
+        <span class="n">Session 01</span>
+        <h3>How it works, and what's out there</h3>
+        <p>Why this technology matters, how it behaves, and which tools are good at what. Half of it hands-on.</p>
+      </div>
+      <div class="ses-mapcard is-teal" style="--bar: var(--color-teal);">
+        <span class="n">Session 02</span>
+        <h3>Agents, skills and a plan</h3>
+        <p>Build a browser extension, write a skill of your own, and leave with a 90-day plan started.</p>
+      </div>
+    </div>
+
+    <div class="ses-legend">
+      <span class="cd-pill" style="--pill: var(--color-navy);">Teach · short</span>
+      <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span>
+      <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss · together</span>
+      <span class="cd-pill" style="--pill: var(--color-amber);">Homework · close</span>
+    </div>
+
+    <!-- ════════ THE FIFTEEN ════════ -->
+    <section class="cd-section is-navy" style="--bar: var(--color-navy);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Reference</span>
+        <h2 class="cd-section-name">The fifteen <em>principles</em></h2>
+      </div>
+      <p class="cd-section-blurb">The whole workshop hangs off fifteen working principles. Each beat below tags the ones it touches.</p>
+
+      <ol class="ses-fifteen">
+        <li><span class="n">01</span>Learn for the AI of tomorrow</li>
+        <li><span class="n">02</span>Not technical. It's communication</li>
+        <li><span class="n">03</span>Choose → Communicate → Evaluate</li>
+        <li><span class="n">04</span>Pick the right AI for the task</li>
+        <li><span class="n">05</span>Frame the conversation, not the prompt</li>
+        <li><span class="n">06</span>Great examples beat great instructions</li>
+        <li><span class="n">07</span>Ask AI to ask you questions</li>
+        <li><span class="n">08</span>Ask AI for help with AI</li>
+        <li><span class="n">09</span>Iteration is everything. 3 to 5 passes</li>
+        <li><span class="n">10</span>Don't take the quick win</li>
+        <li><span class="n">11</span>Never trust one machine. Cross-check</li>
+        <li><span class="n">12</span>Always humanize. Deslop everything</li>
+        <li><span class="n">13</span>Conviction. Art. Sense. Judgment</li>
+        <li><span class="n">14</span>Your sessions become your SOP</li>
+        <li><span class="n">15</span>Every task = Know · Do · Show</li>
+      </ol>
+    </section>
+
+    <!-- ════════ SESSION 1 ════════ -->
+    <section class="cd-section is-amber" style="--bar: var(--color-amber);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 01</span>
+        <h2 class="cd-section-name">How it works, and what's <em>out there</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">The goal of the first two hours is comfort. Everyone leaves knowing what this technology is, why it behaves the way it does, and which tool to reach for.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-amber);">
+        <h4>Objective</h4>
+        <p>By the break, nobody in the room is afraid of the blank chat box. By the end, everyone has run real experiments with prompts, tokens, context and slop on their own laptop.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-amber);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Relax, it's not here for your job <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">AI is a transformative technology, and it works best with a person in the loop. Teach it the routine parts of your job and spend the freed-up time on the parts that need you. The path the workshop climbs: Quoter to Curator to Author to Orchestrator.</p>
+          <p class="ses-prin">Principles 01 · 02</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">How it actually works <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A language model in plain words: it predicts the next word, nothing more. That one fact explains most of what it gets right and almost everything it gets wrong.</p>
+          <p class="ses-prin">Principles 03</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:25 · 40m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Prompts, tokens, context and slop <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Four quick experiments, everyone typing. Build a strong prompt with the prompt builder. Watch a long chat lose the plot in the context window explorer, then learn when to start fresh. See what tokens cost and why shorter is often smarter. Finish by writing your own de-slop system prompt so output sounds like you, not like AI.</p>
+          <p class="ses-prin">Principles 05 · 06 · 09 · 12</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:05 · 35m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The lay of the land <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Who's good at what. The big chat models side by side on the same brief, live. Then the wider map: image, video and music tools, and services worth knowing like NotebookLM and the deep research modes in Claude and Gemini. How a prompt changes when the output is an image, a video, a post, audio or code.</p>
+          <p class="ses-prin">Principles 04 · 11</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Staying current without chasing <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Tools will keep changing under us. What holds: the principles, your examples, your saved sessions. The habit that keeps you current is a monthly conversation, as a team, about what you're each using and what's changed.</p>
+          <p class="ses-prin">Principles 01 · 13</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:50 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Homework <span class="cd-pill" style="--pill: var(--color-amber);">Homework</span></p>
+          <p class="cd-beat-desc">Between sessions: try the tools we compared, find the flavors that work for you, and talk as a team about which AI to standardise on. Revisit that conversation every month. Bring your pick to Session 2.</p>
+          <p class="ses-prin">Principles 04 · 11</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ SESSION 2 ════════ -->
+    <section class="cd-section is-teal" style="--bar: var(--color-teal);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 02</span>
+        <h2 class="cd-section-name">Agents, skills and <em>a plan</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Session 1 was about using AI. This one is about putting it to work: agents that do multi-step jobs, skills that save your best methods, and a plan for the next 90 days.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-teal);">
+        <h4>Objective</h4>
+        <p>Everyone builds a small piece of software before the break, most for the first time. Everything after builds on that confidence.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-teal);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Recap <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">What stuck from Session 1, what you tried at home, and which AI the team is leaning towards. Questions welcome.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:15 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Agents, and the age of personal software <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">An agent is AI that can take actions, not just answer. That unlocks something bigger: software you make for yourself, in an afternoon, without being a programmer. This is the biggest shift of the whole story.</p>
+          <p class="ses-prin">Principles 01 · 08</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:25 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Build a browser extension <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Everyone makes a small Chrome extension, live, by describing what they want to Gemini. It won't be perfect on the first pass, and that's the lesson: describe, look, refine, three to five rounds.</p>
+          <p class="ses-prin">Principles 07 · 08 · 09</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:45 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">What this looks like at full power <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A live tour of Claude Code: the projects it can carry, from motion graphics and video edits to websites, games and deep research reports. Not to learn today, just to see how far the same ideas stretch.</p>
+          <p class="ses-prin">Principles 01</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:55 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Skills: save your best methods <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A skill is a method you save once and reuse forever. What one looks like, where to find ready-made ones, and how a team shares a library of them.</p>
+          <p class="ses-prin">Principles 06 · 14</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:10 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Write your own skill <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Everyone picks one repeatable task from their own week and writes it as a skill. Run it, see where it falls short, improve it, run it again. The skill you leave with feeds straight into the 90-day plan.</p>
+          <p class="ses-prin">Principles 06 · 09 · 14</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:40 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Your 90-day plan <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Start it in the room, finish it as homework with the plan maker. Identify the tasks you'll hand over, the processes worth turning into skills, and get the brand voice written down so everything AI touches sounds like you. Put system prompts and plugins in place so it all runs cheap.</p>
+          <p class="ses-prin">Principles 03 · 10 · 12</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:55 · 5m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Bonus: AI on your own computer <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">A quick look at local models: AI that runs on your own hardware, private by default. Where that's heading and when it will matter for you.</p>
+          <p class="ses-prin">Principles 01</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ Takeaways ════════ -->
+    <div class="ses-out" style="--bar: var(--color-amber);">
+      <h4>What you take away</h4>
+      <ul>
+        <li>The Quoter to Curator to Author to Orchestrator ladder, and an honest sense of where you sit on it</li>
+        <li>Working knowledge of prompts, tokens, context and slop, learned by doing</li>
+        <li>A personal de-slop system prompt in your own voice</li>
+        <li>A shortlist of tools, with a monthly team habit for keeping it current</li>
+        <li>A browser extension you built yourself</li>
+        <li>A skill you wrote yourself, plus where to find and share more</li>
+        <li>A 90-day plan, started in the room and finished with the plan maker</li>
+      </ul>
+    </div>
+
+    <!-- ════════ Notes ════════ -->
+    <section class="cd-section is-navy">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Notes</span>
+        <h2 class="cd-section-name">How we <em>run it</em></h2>
+      </div>
+      <div class="cd-prose">
+        <p>Everyone needs a laptop, a Google account for Gemini, and a Claude or ChatGPT login. The questionnaire confirms this beforehand.</p>
+        <p>We pair confident people with cautious ones in the hands-on blocks. Both sides learn faster.</p>
+        <p>If a block runs long, we cut the talk, never the typing.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Workshop 1 · session plan</span>
+    </div>
+
+  </div>
+</body>
+</html>

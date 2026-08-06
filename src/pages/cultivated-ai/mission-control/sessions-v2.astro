@@ -1,0 +1,294 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Mission Control · Session Plan · The Baker's Dozen</title>
+  <style>
+    /* ── At-a-glance map of the prep pass and the two sessions ── */
+    .ses-map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin: 1.75rem 0 0;
+    }
+    .ses-mapcard {
+      padding: 0.95rem 1.1rem 1.05rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ses-mapcard::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .ses-mapcard .n {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--bar);
+    }
+    .ses-mapcard h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.08rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.15rem 0 0.35rem; color: var(--color-deep);
+    }
+    .ses-mapcard p {
+      font-family: var(--font-body);
+      font-size: 0.85rem; line-height: 1.45;
+      color: var(--color-subtle); margin: 0;
+    }
+    /* "What you take away" note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-sky)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-sky)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out.is-standalone { margin-top: 3.25rem; }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-sky)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .ses-out p em { color: var(--color-navy); font-style: italic; }
+    .ses-out ul {
+      list-style: none; margin: 0.55rem 0 0; padding: 0;
+    }
+    .ses-out li {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep);
+      padding-left: 1.05rem; position: relative;
+      margin: 0 0 0.25rem;
+    }
+    .ses-out li:last-child { margin-bottom: 0; }
+    .ses-out li::before {
+      content: '';
+      position: absolute; left: 0; top: 0.62em;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--bar, var(--color-sky));
+    }
+    /* legend */
+    .ses-legend {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem;
+      margin: 1.5rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-sky);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">The Baker's Dozen · Workshop 2 · session plan</p>
+    <h1 class="cd-title">Mission <em>Control</em></h1>
+    <p class="cd-lede">For data owners and the leadership who use the numbers. One prep pass to set up the data room, then two sessions of two hours each. We build with Claude Code and Claude Cowork, so the company needs a Claude Max plan.</p>
+    <div class="cd-rule"></div>
+
+    <div class="cd-callout" style="--bar: var(--color-sky);">
+      <h4>Before anything</h4>
+      <p>A Claude Max plan, since we'll be writing small custom apps for dashboards and querying. Read access to the data sources: Power BI, the GobbleCube exports, and the production and supply sheets. Get access granted a week before prep; requests have a way of sitting in inboxes.</p>
+    </div>
+
+    <div class="ses-map">
+      <div class="ses-mapcard is-sky" style="--bar: var(--color-sky);">
+        <span class="n">Prep</span>
+        <h3>Setting up the data room</h3>
+        <p>No cohort. Shalin and your data owner pull everything into one place.</p>
+      </div>
+      <div class="ses-mapcard is-purple" style="--bar: var(--color-purple);">
+        <span class="n">Session 01</span>
+        <h3>Answers you can trust</h3>
+        <p>Ask the data direct questions, and build the guardrails that keep answers honest.</p>
+      </div>
+      <div class="ses-mapcard is-teal" style="--bar: var(--color-teal);">
+        <span class="n">Session 02</span>
+        <h3>Putting it to work</h3>
+        <p>A real problem worked to a decision, a dashboard built live, and a test that keeps the system honest.</p>
+      </div>
+    </div>
+
+    <div class="ses-legend">
+      <span class="cd-pill" style="--pill: var(--color-navy);">Teach · short</span>
+      <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span>
+      <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss · together</span>
+      <span class="cd-pill" style="--pill: var(--color-amber);">Commit · close</span>
+    </div>
+
+    <!-- ════════ PREP ════════ -->
+    <section class="cd-section is-sky" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Prep</span>
+        <h2 class="cd-section-name">The <em>data room</em></h2>
+        <span class="cd-section-aside">half a day · no cohort</span>
+      </div>
+      <p class="cd-section-blurb">Before anyone books a room: just Shalin and your data owner, laptops open. We pull everything into one place and make sure it refreshes on its own.</p>
+
+      <ol class="cd-timeline" style="--bar: var(--color-sky);">
+        <li class="cd-beat"><span class="cd-beat-time">Step 1</span><div class="cd-beat-body">
+          <p class="cd-beat-name">See what exists</p>
+          <p class="cd-beat-desc">List every dashboard, export and sheet the company actually uses. Get read access working.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">Step 2</span><div class="cd-beat-body">
+          <p class="cd-beat-name">One place, refreshed daily</p>
+          <p class="cd-beat-desc">Pull it all together with a daily refresh. Boring plumbing on purpose; if it updates every morning without anyone thinking about it, it's working.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">Step 3</span><div class="cd-beat-body">
+          <p class="cd-beat-name">First questions</p>
+          <p class="cd-beat-desc">Ask it real questions and fix what breaks: wrong joins, missing fields, columns nobody can explain.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">Step 4</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Stage the room</p>
+          <p class="cd-beat-desc">Load the examples and set up the accounts so Session 1 starts with a data room that already answers.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ SESSION 1 ════════ -->
+    <section class="cd-section is-purple" style="--bar: var(--color-purple);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 01</span>
+        <h2 class="cd-section-name">Answers you can <em>trust</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Today the numbers arrive as dashboards and reports from GobbleCube and Power BI. This session replaces waiting for reports with asking directly, and builds the guardrails that keep the answers honest.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-purple);">
+        <h4>Objective</h4>
+        <p>By the end, everyone in the room has asked the data room a real question and checked the answer against their own instinct.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-purple);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Recap of Cultivated AI <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">The short version for anyone who missed Workshop 1: the loop of choose, communicate, evaluate, and why a person stays in it.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">How this worked before <span class="cd-pill" style="--pill: var(--color-subtle);">Discuss</span></p>
+          <p class="cd-beat-desc">Someone asks why a city dipped last week. The question waits for whoever knows Power BI, becomes an Excel export, and comes back half-answered days later. AI makes the finding and assembling nearly free. Deciding what to do about it stays with you.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:25 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Your most-asked questions <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Everyone writes down the three questions they ask most, where the answer lives today, and how long it takes to get. This list drives the rest of the workshop and becomes the test set later.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:40 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">One story from the field <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">Swiggy built exactly this for their quick-commerce business. At first the answers were right about half the time. Once they taught the AI their metric definitions, it climbed past nine in ten. The lesson travels: the dictionary does the work, not the chatbot.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:50 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The metric dictionary <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Together we define the words the company uses every day: what counts as a sale, which date field is the real one, where returns go, what a stockout means. Ten definitions, argued until one version wins. Then the honesty rules: every answer shows the numbers it used, and when the data isn't there it says so instead of guessing.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:20 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">What to ask, and what not to <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">The questions this setup answers brilliantly, the ones it answers slowly, and the ones it shouldn't touch. We turn the most-asked list from earlier into the team's golden questions.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:35 · 25m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Free play <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Everyone drives. Compare this month with last across platforms. Chart returns by product. Find which items went out of stock in which city. Draft the Monday morning summary and see how close it lands.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ SESSION 2 ════════ -->
+    <section class="cd-section is-teal" style="--bar: var(--color-teal);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Session 02</span>
+        <h2 class="cd-section-name">Putting it to <em>work</em></h2>
+        <span class="cd-section-aside">2 hours</span>
+      </div>
+      <p class="cd-section-blurb">Session 1 built trust in the answers. This one turns the data room into things the team uses every week without us.</p>
+
+      <div class="cd-callout" style="--bar: var(--color-teal);">
+        <h4>Objective</h4>
+        <p>The workshop ends with a dashboard the team built, a test that scores the system monthly, and a named owner.</p>
+      </div>
+
+      <ol class="cd-timeline" style="--bar: var(--color-teal);">
+        <li class="cd-beat"><span class="cd-beat-time">0:00 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Warm-up <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Back in the data room. What did you ask during the week, what worked, what surprised you.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:10 · 30m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">One problem, worked to a decision <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Pick a real, current problem: a slipping city, a margin leak, a stockout pattern. Work it from first question to a decision the room agrees on, with the AI doing the digging and the people doing the judging.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">0:40 · 35m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Build a dashboard <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">With Claude Code we build a small custom dashboard app around the golden questions, live. Change it on the spot when someone says "can it also show". This is the part that used to need a vendor and a quarter.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:15 · 20m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The answer key <span class="cd-pill" style="--pill: var(--color-purple);">Hands-on</span></p>
+          <p class="cd-beat-desc">Automated evals, in plain terms: twenty questions with known answers, run against the system, scored. Rerun it monthly so trust is measured, not assumed.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:35 · 15m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">The roadmap <span class="cd-pill" style="--pill: var(--color-amber);">Commit</span></p>
+          <p class="cd-beat-desc">What gets added next, in what order, and who owns the data room after we leave. Small group, full access, one habit: cross-check any surprising number before acting on it.</p>
+        </div></li>
+        <li class="cd-beat"><span class="cd-beat-time">1:50 · 10m</span><div class="cd-beat-body">
+          <p class="cd-beat-name">Bonus: showing up in AI answers <span class="cd-pill" style="--pill: var(--color-navy);">Teach</span></p>
+          <p class="cd-beat-desc">When someone asks ChatGPT for the best banana bread in Mumbai, does The Baker's Dozen come up? A quick look at how AI search picks its answers, and what nudges a brand into them.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <!-- ════════ Takeaways ════════ -->
+    <div class="ses-out is-standalone" style="--bar: var(--color-sky);">
+      <h4>What you take away</h4>
+      <ul>
+        <li>A data room with everything in one place, refreshed daily</li>
+        <li>A metric dictionary, so every answer means the same thing to everyone</li>
+        <li>Honesty rules that stop made-up numbers</li>
+        <li>A golden-question list with checked answers</li>
+        <li>A custom dashboard built in the room, changeable by the team</li>
+        <li>A twenty-question answer key that scores the system monthly</li>
+        <li>A roadmap and a named owner</li>
+        <li>A first look at showing up in AI answers</li>
+      </ul>
+    </div>
+
+    <!-- ════════ Notes ════════ -->
+    <section class="cd-section is-navy" style="--bar: var(--color-navy);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Notes</span>
+        <h2 class="cd-section-name">How we <em>run it</em></h2>
+      </div>
+      <div class="cd-prose">
+        <p><strong>Data access decides the schedule.</strong> It's the one thing that can delay the workshop, so we ask for it a week before prep.</p>
+        <p><strong>This group is small and trusted, so everyone gets full access.</strong> Permissions can come later if the room grows.</p>
+        <p><strong>Build, don't admire:</strong> every block after the recap has hands on keyboards.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Workshop 2 · session plan</span>
+    </div>
+
+  </div>
+</body>
+</html>
