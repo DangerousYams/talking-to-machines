@@ -90,6 +90,27 @@ import '../../../styles/cai-doc.css';
       display: flex; flex-wrap: wrap; gap: 0.5rem 0.6rem;
       margin: 1.5rem 0 0;
     }
+    /* fee table */
+    .ses-fee { max-width: 26rem; margin: 0.25rem 0 0.5rem; }
+    .ses-fee-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(26, 26, 46, 0.12);
+      font-family: var(--font-body);
+      font-size: 1rem; color: var(--color-deep);
+    }
+    .ses-fee-row .amt {
+      font-family: var(--font-mono);
+      font-size: 0.9rem; letter-spacing: 0.02em;
+    }
+    .ses-fee-row.is-total { border-bottom: none; font-weight: 700; }
+    .ses-fee-row.is-total .amt { color: var(--bar, var(--color-deep)); font-weight: 700; }
+    .ses-fee-note {
+      font-family: var(--font-body);
+      font-size: 0.9rem; line-height: 1.6;
+      color: var(--color-subtle);
+      margin: 0.75rem 0 0; max-width: 32rem;
+    }
   </style>
 </head>
 <body>
@@ -282,6 +303,21 @@ import '../../../styles/cai-doc.css';
         <p><strong>This group is small and trusted, so everyone gets full access.</strong> Permissions can come later if the room grows.</p>
         <p><strong>Build, don't admire:</strong> every block after the recap has hands on keyboards.</p>
       </div>
+    </section>
+
+    <!-- ════════ Fee ════════ -->
+    <section class="cd-section is-sky" style="--bar: var(--color-sky);">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Fee</span>
+        <h2 class="cd-section-name">What it <em>costs</em></h2>
+      </div>
+      <div class="ses-fee">
+        <div class="ses-fee-row"><span>Workshop fee</span><span class="amt">₹ 1,50,000</span></div>
+        <div class="ses-fee-row"><span>GST at 18%</span><span class="amt">₹ 27,000</span></div>
+        <div class="ses-fee-row is-total"><span>Total</span><span class="amt">₹ 1,77,000</span></div>
+      </div>
+      <p class="ses-fee-note">Covers the data room prep and both sessions. The Claude Max plan is a subscription on your own account, billed separately, and it stays with you after the workshop.</p>
     </section>
 
     <div class="cd-footer">
