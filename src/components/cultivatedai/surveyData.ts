@@ -24,13 +24,14 @@ export interface ChoreOption extends ColoredOption {
 export const WORLDS: readonly WorldOption[] = [
   { id: 'kitchen', label: 'Kitchen & production', icon: '🥐' },
   { id: 'ops', label: 'Operations & supply', icon: '📦' },
-  { id: 'quickcom', label: 'Quick-commerce & listings', icon: '🛵' },
+  { id: 'quickcom', label: 'Marketplace', icon: '🛵' },
   { id: 'marketing', label: 'Marketing & content', icon: '📣' },
-  { id: 'sales', label: 'Sales & growth', icon: '📈' },
+  { id: 'sales', label: 'Trade', icon: '📈' },
   { id: 'finance', label: 'Finance & accounts', icon: '🧾' },
   { id: 'people', label: 'People & admin', icon: '🤝' },
   { id: 'design', label: 'Design & creative', icon: '🎨' },
-  { id: 'tech', label: 'Tech & data', icon: '💻' },
+  { id: 'tech', label: 'MIS', icon: '💻' },
+  { id: 'legal', label: 'Legal', icon: '⚖️' },
   { id: 'leadership', label: 'Founding & leadership', icon: '🧭' },
 ];
 
@@ -69,15 +70,15 @@ export const LAPTOP_CHECKS: readonly ColoredOption[] = [
 const CHORE_COLORS = ['#16C79A', '#0EA5E9', '#7B61FF', '#E94560', '#F5A623'];
 
 const CHORES: { id: string; label: string; worlds: string[] }[] = [
-  { id: 'reports', label: 'The weekly sales report', worlds: ['sales', 'finance', 'leadership', 'ops'] },
+  { id: 'reports', label: 'The weekly sales report', worlds: ['sales', 'finance', 'leadership', 'ops', 'tech'] },
   { id: 'customer', label: 'Answering the same customer questions', worlds: ['quickcom', 'marketing', 'sales'] },
   { id: 'listings', label: 'Updating product listings', worlds: ['quickcom', 'marketing', 'ops'] },
   { id: 'captions', label: 'Writing captions & posts', worlds: ['marketing', 'design'] },
   { id: 'sheets', label: 'Keeping spreadsheets updated', worlds: ['ops', 'finance', 'sales', 'quickcom', 'tech', 'people'] },
-  { id: 'invoices', label: 'Invoices & paperwork', worlds: ['finance', 'ops', 'people'] },
+  { id: 'invoices', label: 'Invoices & paperwork', worlds: ['finance', 'ops', 'people', 'legal'] },
   { id: 'rosters', label: 'Rosters & reminders', worlds: ['people', 'kitchen', 'ops'] },
   { id: 'competitors', label: 'Checking competitor prices', worlds: ['sales', 'marketing', 'quickcom', 'leadership'] },
-  { id: 'minutes', label: 'Meeting notes & follow-ups', worlds: ['leadership', 'people', 'sales', 'marketing', 'ops', 'tech'] },
+  { id: 'minutes', label: 'Meeting notes & follow-ups', worlds: ['leadership', 'people', 'sales', 'marketing', 'ops', 'tech', 'legal'] },
   { id: 'vendors', label: 'Chasing vendors & orders', worlds: ['ops', 'kitchen', 'finance'] },
   { id: 'recipes', label: 'Writing down recipes & SOPs', worlds: ['kitchen', 'ops'] },
   { id: 'creatives', label: 'Resizing creatives for every platform', worlds: ['design', 'marketing'] },
