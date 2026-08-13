@@ -1,72 +1,14 @@
 import { useState, useRef, useEffect, type CSSProperties } from 'react';
 import { supabase } from '../../lib/supabase';
-
-/* ── Survey data ── */
-const WORLDS = [
-  { id: 'kitchen', label: 'Kitchen & production', icon: '🥐' },
-  { id: 'ops', label: 'Operations & supply', icon: '📦' },
-  { id: 'quickcom', label: 'Quick-commerce & listings', icon: '🛵' },
-  { id: 'marketing', label: 'Marketing & content', icon: '📣' },
-  { id: 'sales', label: 'Sales & growth', icon: '📈' },
-  { id: 'finance', label: 'Finance & accounts', icon: '🧾' },
-  { id: 'people', label: 'People & admin', icon: '🤝' },
-  { id: 'design', label: 'Design & creative', icon: '🎨' },
-  { id: 'tech', label: 'Tech & data', icon: '💻' },
-  { id: 'leadership', label: 'Founding & leadership', icon: '🧭' },
-];
-
-const FREQUENCIES = [
-  { id: 'daily', label: 'Pretty much every day' },
-  { id: 'weekly', label: 'A few times a week' },
-  { id: 'sometimes', label: 'Once in a while' },
-  { id: 'tried', label: 'Tried it once or twice' },
-  { id: 'never', label: "Never, and that's fine" },
-];
-
-const AI_TOOLS = [
-  { id: 'chatgpt', label: 'ChatGPT' },
-  { id: 'claude', label: 'Claude' },
-  { id: 'gemini', label: 'Gemini' },
-  { id: 'perplexity', label: 'Perplexity' },
-  { id: 'copilot', label: 'Copilot / Cursor' },
-  { id: 'midjourney', label: 'Midjourney / DALL-E' },
-  { id: 'canva', label: 'Canva AI' },
-  { id: 'notebooklm', label: 'NotebookLM' },
-  { id: 'none', label: 'None yet' },
-];
-
-const LAPTOP_CHECKS = [
-  { id: 'google', label: 'A Google account I can sign in with', color: '#16C79A' },
-  { id: 'chrome', label: 'Chrome installed', color: '#0EA5E9' },
-  { id: 'claude-login', label: 'A Claude login', color: '#7B61FF' },
-  { id: 'chatgpt-login', label: 'A ChatGPT login', color: '#7B61FF' },
-  { id: 'unsure', label: "Not sure, I'll check", color: '#F5A623' },
-  { id: 'none', label: 'None of these yet', color: '#E94560' },
-];
-
-const HANDOVER_CHORES = [
-  { id: 'reports', label: 'The weekly sales report', color: '#16C79A' },
-  { id: 'customer', label: 'Answering the same customer questions', color: '#0EA5E9' },
-  { id: 'listings', label: 'Updating product listings', color: '#7B61FF' },
-  { id: 'captions', label: 'Writing captions & posts', color: '#E94560' },
-  { id: 'sheets', label: 'Keeping spreadsheets updated', color: '#F5A623' },
-  { id: 'invoices', label: 'Invoices & paperwork', color: '#16C79A' },
-  { id: 'rosters', label: 'Rosters & reminders', color: '#0EA5E9' },
-  { id: 'competitors', label: 'Checking competitor prices', color: '#7B61FF' },
-  { id: 'minutes', label: 'Meeting notes & follow-ups', color: '#E94560' },
-  { id: 'vendors', label: 'Chasing vendors & orders', color: '#F5A623' },
-];
-
-const WORRIES = [
-  { id: 'madeup', label: 'It makes things up', color: '#E94560' },
-  { id: 'job', label: 'What it means for my job', color: '#E94560' },
-  { id: 'privacy', label: 'Where our data goes', color: '#E94560' },
-  { id: 'voice', label: 'Everything it writes sounds the same', color: '#E94560' },
-  { id: 'fast', label: 'It moves too fast to keep up', color: '#E94560' },
-  { id: 'cheating', label: 'Using it feels like cheating', color: '#E94560' },
-  { id: 'notclick', label: "I tried it and it didn't click", color: '#E94560' },
-  { id: 'excited', label: 'Nothing much. Honestly, excited', color: '#E94560' },
-];
+import {
+  WORLDS,
+  FREQUENCIES,
+  AI_TOOLS,
+  LAPTOP_CHECKS,
+  WORRIES,
+  splitChoresByWorlds,
+  type ChoreOption,
+} from './surveyData';
 
 const TOTAL_STEPS = 8;
 const DEFAULT_COHORT = 'bakers-dozen';
@@ -195,6 +137,42 @@ export default function HelloSurvey() {
 
   const toggleWorry = (id: string) => {
     setWorries(prev => prev.includes(id) ? prev.filter(w => w !== id) : [...prev, id]);
+  };
+
+  // Step 5 leads with the chores that belong to the worlds picked in step 1.
+  const { matched: matchedChores, rest: restChores } = splitChoresByWorlds(world);
+  const showChoreDivider = matchedChores.length > 0 && restChores.length > 0;
+
+  const renderChore = (h: ChoreOption, i: number) => {
+    const selected = handover.includes(h.id);
+    return (
+      <button
+        key={h.id}
+        onClick={() => toggleHandover(h.id)}
+        style={{
+          ...styles.activityCard,
+          ...(selected ? {
+            borderColor: h.color,
+            background: `linear-gradient(135deg, ${h.color}08, ${h.color}03)`,
+            boxShadow: `0 0 0 1px ${h.color}25, 0 2px 12px ${h.color}0a`,
+          } : {}),
+          animationDelay: `${i * 0.04}s`,
+        }}
+      >
+        <div style={{
+          ...styles.activityCheck,
+          background: selected ? h.color : 'transparent',
+          borderColor: selected ? h.color : 'rgba(26,26,46,0.18)',
+        }}>
+          {selected && (
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </div>
+        <span style={styles.activityLabel}>{h.label}</span>
+      </button>
+    );
   };
 
   const handleSubmit = async () => {
@@ -478,37 +456,11 @@ export default function HelloSurvey() {
               <h2 style={styles.question}>Which chores would you happily hand over forever?</h2>
               <p style={styles.hint}>These become the live demos, so pick the ones you actually do.</p>
               <div style={styles.activityList}>
-                {HANDOVER_CHORES.map((h, i) => {
-                  const selected = handover.includes(h.id);
-                  return (
-                    <button
-                      key={h.id}
-                      onClick={() => toggleHandover(h.id)}
-                      style={{
-                        ...styles.activityCard,
-                        ...(selected ? {
-                          borderColor: h.color,
-                          background: `linear-gradient(135deg, ${h.color}08, ${h.color}03)`,
-                          boxShadow: `0 0 0 1px ${h.color}25, 0 2px 12px ${h.color}0a`,
-                        } : {}),
-                        animationDelay: `${i * 0.04}s`,
-                      }}
-                    >
-                      <div style={{
-                        ...styles.activityCheck,
-                        background: selected ? h.color : 'transparent',
-                        borderColor: selected ? h.color : 'rgba(26,26,46,0.18)',
-                      }}>
-                        {selected && (
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                            <path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
-                      </div>
-                      <span style={styles.activityLabel}>{h.label}</span>
-                    </button>
-                  );
-                })}
+                {matchedChores.map((h, i) => renderChore(h, i))}
+                {showChoreDivider && (
+                  <p style={styles.choreDivider}>More from around the bakery</p>
+                )}
+                {restChores.map((h, i) => renderChore(h, matchedChores.length + i))}
               </div>
               <div style={{ marginTop: '1.25rem' }}>
                 <input
@@ -838,6 +790,15 @@ const styles: Record<string, CSSProperties> = {
     fontSize: '0.95rem',
     color: '#1A1A2E',
     lineHeight: 1.3,
+  },
+  choreDivider: {
+    fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+    fontSize: '0.62rem',
+    fontWeight: 600,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase' as const,
+    color: '#6B7280',
+    margin: '1.1rem 0 0.4rem',
   },
 
   // Single-select radio
