@@ -1,0 +1,245 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Extension ideas · Cultivated AI · The Baker's Dozen</title>
+  <style>
+    /* ── Idea cards, one per corner of the company ── */
+    .idea-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+      margin: 1.4rem 0 0;
+    }
+    .idea-card {
+      padding: 1rem 1.15rem 1.1rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      break-inside: avoid;
+    }
+    .idea-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .idea-world {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bar);
+      margin: 0;
+    }
+    .idea-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.05rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.3rem 0 0.35rem; color: var(--color-deep);
+    }
+    .idea-card > p.desc {
+      font-family: var(--font-body);
+      font-size: 0.875rem; line-height: 1.5;
+      color: var(--color-deep); margin: 0;
+    }
+    .idea-ask {
+      margin: 0.7rem 0 0;
+      padding: 0.55rem 0.7rem;
+      background: color-mix(in srgb, var(--bar) 7%, transparent);
+      border-radius: 6px;
+    }
+    .idea-ask .k {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bar); margin: 0 0 0.2rem;
+    }
+    .idea-ask p {
+      font-family: var(--font-mono);
+      font-size: 0.76rem; line-height: 1.5;
+      color: var(--color-deep); margin: 0;
+    }
+    /* build-loop steps inside the callout */
+    .loop-steps {
+      margin: 0.6rem 0 0; padding: 0 0 0 1.2rem;
+      list-style: decimal;
+    }
+    .loop-steps li::marker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--bar, var(--color-purple));
+    }
+    .loop-steps li {
+      font-family: var(--font-body);
+      font-size: 0.92rem; line-height: 1.55;
+      color: var(--color-deep); margin: 0 0 0.35rem;
+    }
+    .loop-steps li:last-child { margin-bottom: 0; }
+    .loop-steps code {
+      font-family: var(--font-mono); font-size: 0.8rem;
+      background: rgba(26,26,46,0.05);
+      padding: 0.05rem 0.3rem; border-radius: 4px;
+    }
+    /* closing note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-purple)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-purple)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-purple)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .idea-grid .idea-card:last-child { grid-column: 1 / -1; }
+    @media (max-width: 640px) {
+      .idea-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-purple);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">The Baker's Dozen · Cultivated AI · Session 2 hands-on</p>
+    <h1 class="cd-title">Extension <em>ideas</em></h1>
+    <p class="cd-lede">In Session 2 everyone builds a real Chrome extension by describing it to Gemini. Pick the idea from your corner of the company, or bring your own. None of these need an API key or a server. Each one runs entirely inside Chrome.</p>
+    <div class="cd-rule"></div>
+
+    <div class="cd-callout" style="--bar: var(--color-purple);">
+      <h4>The build loop</h4>
+      <p>Every build starts the same way: <em>"Make me a Chrome extension (Manifest V3). Give me every file, complete."</em> Then add the idea from your card, in your own words.</p>
+      <ol class="loop-steps">
+        <li>Describe what you want at gemini.google.com.</li>
+        <li>Make a folder on your desktop. Save each file exactly as Gemini names it.</li>
+        <li>Open <code>chrome://extensions</code>, switch on Developer mode, click Load unpacked, choose your folder.</li>
+        <li>Try it. Tell Gemini what to fix or change. Save, hit refresh, try again.</li>
+        <li>Expect three to five rounds. That loop is the actual lesson.</li>
+      </ol>
+    </div>
+
+    <!-- ════════ The ideas ════════ -->
+    <section class="cd-section is-purple">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Eleven ideas</span>
+        <h2 class="cd-section-name">Pick your <em>corner</em></h2>
+      </div>
+      <p class="cd-section-blurb">One idea for every corner of the company, matched to the worlds from the questionnaire. Small on purpose: each one fits inside the session with rounds to spare.</p>
+
+      <div class="idea-grid">
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🥐 Kitchen &amp; production</p>
+          <h3>Recipe scaler</h3>
+          <p class="desc">Paste an ingredient list, type how many batches you need, and every quantity rescales instantly. No more mental math at 4am.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup where I paste an ingredient list and enter a multiplier. It rewrites every line with the quantities scaled.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-sky);">
+          <p class="idea-world">📦 Operations &amp; supply</p>
+          <h3>Order message builder</h3>
+          <p class="desc">Your vendors and their usual items live in the popup. Tick what you need and it writes the WhatsApp order message, ready to copy.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup where I save vendors and their items. I tick items, enter quantities, and it builds a polite order message with a copy button.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-purple);">
+          <p class="idea-world">🛵 Marketplace</p>
+          <h3>Complaint spotter</h3>
+          <p class="desc">Highlights the words you care about (late, stale, missing, refund) on any reviews page, so problems jump out before you scroll past them.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>Highlight a list of words I choose in yellow on any page I visit, with a popup where I edit the word list.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-accent-red);">
+          <p class="idea-world">📣 Marketing &amp; content</p>
+          <h3>Caption counter &amp; hashtag stash</h3>
+          <p class="desc">A live character count for captions, plus your saved hashtag sets with one click to copy. Ends the count-by-hand era.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup with a textarea showing a live character count, plus saved hashtag groups I can manage and copy with one click.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-amber);">
+          <p class="idea-world">📈 Trade</p>
+          <h3>Quote builder</h3>
+          <p class="desc">Keep your price list in the popup. Tick products, set quantities and a discount, and it writes out a tidy quote with the total.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup that stores my price list. I tick products, enter quantities, pick a discount, and it produces a quote message with totals.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🧾 Finance &amp; accounts</p>
+          <h3>GST splitter</h3>
+          <p class="desc">Type any amount and see it with GST added at 5, 12 and 18 percent. Works backwards too: what an inclusive amount breaks into.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup where I type an amount and it shows GST added at 5%, 12% and 18%, plus the base amount if my number already includes GST.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-sky);">
+          <p class="idea-world">🤝 People &amp; admin</p>
+          <h3>Team dates reminder</h3>
+          <p class="desc">Store birthdays and work anniversaries. Chrome notifies you that morning, so nobody's day slips past unnoticed.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>Let me save names with dates, and show a Chrome notification on the morning of each one.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-purple);">
+          <p class="idea-world">🎨 Design &amp; creative</p>
+          <h3>Color grabber</h3>
+          <p class="desc">Click any pixel on any page and get its exact color code. Chrome has a built-in eyedropper; your extension just puts it to work.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup with a button that opens the browser's EyeDropper, shows the picked color's hex code, and keeps a palette of everything I've picked.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-accent-red);">
+          <p class="idea-world">💻 MIS</p>
+          <h3>Morning launcher</h3>
+          <p class="desc">One button opens every portal and dashboard you check daily, each in its own tab. The whole 9am ritual, one click.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup where I save a list of URLs, with one button that opens them all in new tabs.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-amber);">
+          <p class="idea-world">⚖️ Legal</p>
+          <h3>Clause library</h3>
+          <p class="desc">Your approved clauses and disclaimers in a searchable popup. One click copies the exact wording, every time.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>A popup where I save named text snippets, search them, and copy any snippet with one click.</p></div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🧭 Founding &amp; leadership</p>
+          <h3>Focus tab</h3>
+          <p class="desc">Replaces Chrome's new-tab page with today's one priority and a countdown to your next big date. Every new tab asks whether you're on it.</p>
+          <div class="idea-ask"><span class="k">Tell Gemini</span><p>Replace my new tab page with a big line of text I set, plus a countdown of days to a date I choose.</p></div>
+        </div>
+
+      </div>
+
+      <div class="ses-out" style="--bar: var(--color-purple);">
+        <h4>If none of these fit</h4>
+        <p>A good first build lives in one popup and saves you a minute a day. Find your minute, then describe that instead. The loop works the same for any idea.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Workshop 1 · extension ideas</span>
+    </div>
+
+  </div>
+</body>
+</html>

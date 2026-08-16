@@ -1,0 +1,273 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+import '../../../styles/cai-doc.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Skill ideas · Cultivated AI · The Baker's Dozen</title>
+  <style>
+    /* ── Idea cards, one per corner of the company ── */
+    .idea-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+      margin: 1.4rem 0 0;
+    }
+    .idea-card {
+      padding: 1rem 1.15rem 1.1rem;
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      break-inside: avoid;
+    }
+    .idea-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--bar);
+    }
+    .idea-world {
+      font-family: var(--font-mono);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bar);
+      margin: 0;
+    }
+    .idea-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800; font-size: 1.05rem;
+      letter-spacing: -0.01em; line-height: 1.15;
+      margin: 0.3rem 0 0.35rem; color: var(--color-deep);
+    }
+    .idea-card > p.desc {
+      font-family: var(--font-body);
+      font-size: 0.875rem; line-height: 1.5;
+      color: var(--color-deep); margin: 0;
+    }
+    .idea-io {
+      margin: 0.7rem 0 0;
+      padding: 0.55rem 0.7rem;
+      background: color-mix(in srgb, var(--bar) 7%, transparent);
+      border-radius: 6px;
+    }
+    .idea-io p {
+      font-family: var(--font-body);
+      font-size: 0.82rem; line-height: 1.5;
+      color: var(--color-deep); margin: 0 0 0.3rem;
+    }
+    .idea-io p:last-child { margin-bottom: 0; }
+    .idea-io .k {
+      font-family: var(--font-mono);
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bar); margin-right: 0.4rem;
+    }
+    /* anatomy steps inside the callout */
+    .loop-steps {
+      margin: 0.6rem 0 0; padding: 0 0 0 1.2rem;
+      list-style: decimal;
+    }
+    .loop-steps li::marker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--bar, var(--color-teal));
+    }
+    .loop-steps li {
+      font-family: var(--font-body);
+      font-size: 0.92rem; line-height: 1.55;
+      color: var(--color-deep); margin: 0 0 0.35rem;
+    }
+    .loop-steps li:last-child { margin-bottom: 0; }
+    /* closing note */
+    .ses-out {
+      margin: 1.4rem 0 0;
+      padding: 0.95rem 1.25rem;
+      background: color-mix(in srgb, var(--bar, var(--color-teal)) 8%, var(--color-warm-white));
+      border: 1px solid color-mix(in srgb, var(--bar, var(--color-teal)) 28%, transparent);
+      border-radius: 8px;
+    }
+    .ses-out h4 {
+      font-family: var(--font-mono);
+      font-size: 0.64rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--bar, var(--color-teal)); margin: 0 0 0.35rem;
+    }
+    .ses-out p {
+      font-family: var(--font-body); font-size: 0.95rem;
+      line-height: 1.55; color: var(--color-deep); margin: 0;
+    }
+    .idea-grid .idea-card:last-child { grid-column: 1 / -1; }
+    @media (max-width: 640px) {
+      .idea-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cd-shell" style="--doc-accent: var(--color-teal);">
+
+    <div class="cd-printhint screen-only">
+      <span class="accent">Print to PDF →</span>
+      Press <kbd>⌘ P</kbd> (or <kbd>Ctrl + P</kbd>), choose <strong>Save as PDF</strong>, background graphics <strong>on</strong>.
+    </div>
+
+    <p class="cd-eyebrow">The Baker's Dozen · Cultivated AI · Session 2 hands-on</p>
+    <h1 class="cd-title">Skill <em>ideas</em></h1>
+    <p class="cd-lede">A skill is a method you save once and reuse forever: your best way of doing one repeatable task, written down so the AI does it your way every time. In Session 2 everyone writes one. Pick the idea closest to your week, or bring your own.</p>
+    <div class="cd-rule"></div>
+
+    <div class="cd-callout" style="--bar: var(--color-teal);">
+      <h4>What a skill looks like</h4>
+      <p>Plain text, four parts. The example does the heavy lifting: <em>great examples beat great instructions.</em></p>
+      <ol class="loop-steps">
+        <li>A name, and one line on when to use it.</li>
+        <li>What you'll paste in each time (the raw material).</li>
+        <li>Your steps and rules, in order. Include the nevers and the always.</li>
+        <li>One finished example you're proud of: real input, real output.</li>
+      </ol>
+      <p style="margin-top: 0.6rem;">Save it as a Gem in Gemini, or as a Project in Claude or ChatGPT. Same idea everywhere: saved instructions the AI reads before every run.</p>
+    </div>
+
+    <!-- ════════ The ideas ════════ -->
+    <section class="cd-section is-teal">
+      <div class="cd-section-rule"></div>
+      <div class="cd-section-head">
+        <span class="cd-section-num">Eleven ideas</span>
+        <h2 class="cd-section-name">Pick your <em>chore</em></h2>
+      </div>
+      <p class="cd-section-blurb">One idea for every corner of the company, matched to the worlds from the questionnaire. Each one is a task somebody at the company already does every week by hand.</p>
+
+      <div class="idea-grid">
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🥐 Kitchen &amp; production</p>
+          <h3>SOP writer</h3>
+          <p class="desc">Turns how you actually do it into a document anyone can follow.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>A voice-note transcript or rough steps for one kitchen process.</p>
+            <p><span class="k">Get back</span>A clean numbered SOP with quantities, timings and the checks that matter.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-sky);">
+          <p class="idea-world">📦 Operations &amp; supply</p>
+          <h3>Vendor chaser</h3>
+          <p class="desc">Follow-ups that get firmer each round without burning the relationship.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>The vendor, what's pending, and how many times you've already asked.</p>
+            <p><span class="k">Get back</span>A follow-up message in your voice, matched to the round you're on.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-purple);">
+          <p class="idea-world">🛵 Marketplace</p>
+          <h3>Review responder</h3>
+          <p class="desc">Replies in brand voice, and it knows what not to answer.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>A batch of customer reviews pasted straight from the platform.</p>
+            <p><span class="k">Get back</span>A reply for each, with the ones needing a real human decision flagged instead of answered.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-accent-red);">
+          <p class="idea-world">📣 Marketing &amp; content</p>
+          <h3>Caption machine</h3>
+          <p class="desc">Your brand voice, saved once, applied every time.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>What the product is, the occasion, and one line about the photo.</p>
+            <p><span class="k">Get back</span>Three caption options with hashtags, sized for each platform.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-amber);">
+          <p class="idea-world">📈 Trade</p>
+          <h3>Quote writer</h3>
+          <p class="desc">From order details to a client-ready quote in one pass.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>The buyer, products, quantities and any special terms.</p>
+            <p><span class="k">Get back</span>A formatted quote, plus the follow-up message to send three days later.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🧾 Finance &amp; accounts</p>
+          <h3>Expense untangler</h3>
+          <p class="desc">Messy lists in, books-ready tables out.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>A pasted block of expenses or bank entries.</p>
+            <p><span class="k">Get back</span>A categorised table with GST split out and anything odd flagged for a second look.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-sky);">
+          <p class="idea-world">🤝 People &amp; admin</p>
+          <h3>Hiring kit</h3>
+          <p class="desc">One role description becomes the whole hiring toolkit.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>The role, and the three things the person must be able to do.</p>
+            <p><span class="k">Get back</span>A job post, interview questions that test those exact things, and a simple scorecard.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-purple);">
+          <p class="idea-world">🎨 Design &amp; creative</p>
+          <h3>Brief translator</h3>
+          <p class="desc">Turns "make it pop, need it Friday" into a brief you can work from.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>The vague request exactly as it arrived.</p>
+            <p><span class="k">Get back</span>A proper brief with sizes, formats and deadline, plus the questions to send back.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-accent-red);">
+          <p class="idea-world">💻 MIS</p>
+          <h3>Data cleaner</h3>
+          <p class="desc">The cleanup you repeat every week, done your way automatically.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>A pasted block of messy spreadsheet data.</p>
+            <p><span class="k">Get back</span>Cleaned rows in consistent formats, with duplicates and oddities listed separately so nothing vanishes silently.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-amber);">
+          <p class="idea-world">⚖️ Legal</p>
+          <h3>Contract summariser</h3>
+          <p class="desc">Every agreement read the same careful way.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>A contract or terms document.</p>
+            <p><span class="k">Get back</span>A plain-language summary, every date and deadline in a table, and the clauses worth a lawyer's eyes flagged.</p>
+          </div>
+        </div>
+
+        <div class="idea-card" style="--bar: var(--color-teal);">
+          <p class="idea-world">🧭 Founding &amp; leadership</p>
+          <h3>Minutes machine</h3>
+          <p class="desc">Every meeting ends with clear owners and dates.</p>
+          <div class="idea-io">
+            <p><span class="k">Feed it</span>Rough meeting notes or a transcript.</p>
+            <p><span class="k">Get back</span>Minutes with decisions, owners and deadlines, plus a drafted follow-up for each owner.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ses-out" style="--bar: var(--color-teal);">
+        <h4>The test of a task worth saving</h4>
+        <p>You do it at least weekly, and you already have one finished example that shows what good looks like. If both are true, write the skill. It feeds straight into your 90-day plan.</p>
+      </div>
+    </section>
+
+    <div class="cd-footer">
+      <span class="brand">Cultivated AI · <em>Grow, don't Chase.</em></span>
+      <span>Workshop 1 · skill ideas</span>
+    </div>
+
+  </div>
+</body>
+</html>
