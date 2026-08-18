@@ -569,10 +569,16 @@ const slides = [
     .ladder-diagram {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       gap: 1.25rem;
       margin-top: 3rem;
       flex-wrap: wrap;
+    }
+    .ladder-rung {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
     }
     .ladder-node {
       background: var(--color-warm-white);
@@ -594,6 +600,28 @@ const slides = [
       font-size: 2rem;
       color: var(--color-subtle);
       opacity: 0.5;
+      margin-top: 0.8rem;
+    }
+    .ladder-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .ladder-count.c1 { color: var(--color-amber); }
+    .ladder-count.c2 { color: var(--color-accent-red); }
+    .ladder-count.c3 { color: var(--color-purple); }
+    .ladder-count.c4 { color: var(--color-teal); }
+    .ladder-src {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-top: 1.75rem;
     }
 
     /* ══════════════════════════════════════════════════════
@@ -898,8 +926,8 @@ const slides = [
       .about-portrait { width: 240px; height: 240px; }
       .shape-grid, .exp-grid, .map-grid, .kds-grid { grid-template-columns: 1fr; gap: 1rem; }
       .deck-slide { padding: 3rem 2rem; }
-      .ladder-diagram { flex-direction: column; gap: 0.75rem; }
-      .ladder-arrow { transform: rotate(90deg); }
+      .ladder-diagram { flex-direction: column; gap: 0.75rem; align-items: center; }
+      .ladder-arrow { transform: rotate(90deg); margin-top: 0; }
       .loop-diagram { flex-direction: column; gap: 1rem; }
       .loop-arrow { transform: rotate(90deg); }
     }
@@ -1049,14 +1077,27 @@ const slides = [
         <div class="principle-label">The path this workshop climbs</div>
         <h1 class="principle-title" style="margin: 0 auto 1rem; max-width: none;">The climb.</h1>
         <div class="ladder-diagram">
-          <div class="ladder-node n1">Quoter</div>
+          <div class="ladder-rung">
+            <div class="ladder-node n1">Quoter</div>
+            <span class="ladder-count c1">14 of you</span>
+          </div>
           <span class="ladder-arrow">→</span>
-          <div class="ladder-node n2">Curator</div>
+          <div class="ladder-rung">
+            <div class="ladder-node n2">Curator</div>
+            <span class="ladder-count c2">16 of you</span>
+          </div>
           <span class="ladder-arrow">→</span>
-          <div class="ladder-node n3">Author</div>
+          <div class="ladder-rung">
+            <div class="ladder-node n3">Author</div>
+            <span class="ladder-count c3">0 · the 90-day goal</span>
+          </div>
           <span class="ladder-arrow">→</span>
-          <div class="ladder-node n4">Orchestrator</div>
+          <div class="ladder-rung">
+            <div class="ladder-node n4">Orchestrator</div>
+            <span class="ladder-count c4">0 · not yet needed</span>
+          </div>
         </div>
+        <span class="ladder-src">from your questionnaire · 30 answers</span>
         <span class="margin-note">where do you sit today?</span>
       </div>
       <div class="slide-num">05 · The climb</div>

@@ -32,7 +32,8 @@ export const slideNotes: Record<string, SlideNote> = {
     notes: `Start on time. Warm open, thank them for making the time.
 One-line frame: today is about comfort. By the break, nobody in this room is afraid of the blank chat box.
 Two hours, and half of it is hands-on. Laptops out and charged now, not later.
-Logins needed today: Google (for Gemini), plus Claude or ChatGPT. The questionnaire flagged who is missing what; help those people during the first discussion.
+Logins needed today: Google (for Gemini), plus Claude or ChatGPT.
+Login gaps from the questionnaire, six people to sort during the first discussion: Maulik (unsure what is on the laptop), Shital (nothing set up), Shailesh (browser only), Snehalkumar (Chrome only), Hitesh (Google only), Vishal (browser only).
 Transition: "Quick about me first, so you know who is talking."`,
   },
   about: {
@@ -67,6 +68,8 @@ The promise to land: in Session 2 everyone builds real software, most people for
 Key message: AI works best with a person in the loop. Teach it the routine parts of your job, and spend the freed-up time on the parts that need you.
 Ask around the room: "What is the most repetitive thing you did last week?"
 Collect three or four answers. Park them visibly. They come back in Session 2 as skill material.
+Worries from the questionnaire (30 answers): privacy 9, sounds-like-AI 4, makes-things-up 4, job worries 4, feels-like-cheating 3. 21 also ticked excited.
+Name privacy out loud; it is the biggest one. The job worry is small but real (4 people); this slide is for them.
 Principles 01 and 02.`,
   },
   ladder: {
@@ -79,7 +82,8 @@ Principles 01 and 02.`,
 - Curator: generates options, picks the best one.
 - Author: directs the work, shapes it, owns the output.
 - Orchestrator: runs several AI workers across a whole process.
-Ask people to place themselves silently. Most rooms sit between Quoter and Curator, and that is fine.
+The counts on the slide come from the questionnaire's how-often question: 16 daily users mapped to Curator, 14 occasional users (9 weekly, 5 barely or never) mapped to Quoter. Say that mapping out loud; it is a proxy, not a verdict.
+Still ask people to place themselves silently; self-placement beats my mapping.
 The 90-day goal is Author. Nobody needs to be an Orchestrator yet.`,
   },
   'next-word': {
@@ -102,7 +106,7 @@ Principle 03.`,
     title: '· Laptops open ·',
     label: '0:25 · 40m · Hands-on',
     notes: `Switch mode. Four experiments, everyone typing.
-Pair confident people with cautious ones. Both sides learn faster.
+Pair the five beginners (Maulik, Hitesh, Jaimin, Shailesh, Shital) with daily users. Keyur, Harshil and Krutagna are strong anchors.
 The widgets are on talkingtomachines.xyz; put the links where everyone can see them.
 Timing discipline: roughly ten minutes each. If a block runs long, cut the talk, never the typing.`,
   },
@@ -112,7 +116,7 @@ Timing discipline: roughly ten minutes each. If a block runs long, cut the talk,
     title: 'The four experiments',
     label: 'Keep this slide up while they work',
     notes: `Run them in order.
-1. Prompt builder: build one strong ask, block by block. Role, context, format, examples. Watch the answer improve as blocks land.
+1. Prompt builder: build one strong ask, block by block. Role, context, format, examples. Watch the answer improve as blocks land. Use a chore from their questionnaire as the example; the most-parked ones were spreadsheets (17 people), meeting minutes (14) and invoices (12).
 2. Context window explorer: watch a long chat lose the plot. The lesson is knowing when to start fresh.
 3. Token costs: what a conversation actually costs, and why shorter is often smarter.
 4. De-slop prompt: everyone writes a system prompt in their own voice, so output sounds like them and not like AI. This one they keep and use tomorrow.
@@ -125,6 +129,7 @@ Principles 05, 06, 09 and 12.`,
     label: '1:05 · 35m · Teach + live',
     notes: `Back to the screen. Same brief, three machines, live: Claude, ChatGPT, Gemini side by side.
 Pick a brief from their world. Example: "Write the launch caption for a new cookie SKU going live on Blinkit."
+Second brief if time, straight from Shivani's questionnaire answer: a firm but warm note to a difficult category manager. Half the room lives that.
 Let the room judge the three answers out loud. Which is best? Why?
 The lesson: the models have flavors. Pick per task, and when in doubt, ask one AI which AI to use.
 Principles 04 and 11.`,
@@ -140,8 +145,9 @@ How the prompt changes with the medium:
 - Video: describe the shot. Movement, duration, mood.
 - Music: describe genre, tempo and mood, then the lyric idea.
 - Deep research: describe the question, and the sources you would trust.
-NotebookLM deserves 3 minutes live if time allows: feed it your own documents and it answers from those, not from the open internet.
-Deep research: half an hour of reading done for you, with citations you can check.`,
+NotebookLM deserves 3 minutes live if time allows: feed it your own documents and it answers from those, not from the open internet. Keyur already uses it; let him vouch.
+Deep research: half an hour of reading done for you, with citations you can check.
+At the Video card, name-check Anshika and Yukti (design): both asked for 30-second-plus video with dialogue. Answer: that is the Generative Media Bootcamp; today is the map, not the deep dive.`,
   },
   hold: {
     id: 'hold',
@@ -320,6 +326,7 @@ Principles 04 and 11.`,
     label: 'End on time',
     notes: `Sell Session 2 in one line: next time, everyone in this room builds real software, most of you for the first time.
 What happens: a Chrome extension you describe into existence, a skill written from your own week, and the start of your 90-day plan.
+Two people asked for exactly this in the questionnaire: Rohan (agent creation, automation workflows) and Rajan (dashboards, analysis platforms). Tell them Session 2 is theirs.
 Ask them to bring: laptop, Google login, and the team's AI pick.
 Thank the room. End on time; it buys trust for Session 2.`,
   },
