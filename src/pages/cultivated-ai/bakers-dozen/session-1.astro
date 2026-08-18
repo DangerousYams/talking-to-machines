@@ -1,0 +1,1267 @@
+---
+export const prerender = true;
+import '../../../styles/global.css';
+
+const slides = [
+  'welcome', 'about', 'shape',
+  'relax', 'ladder', 'next-word',
+  'break-hands', 'experiments',
+  'break-land', 'wider-map',
+  'hold', 'fifteen',
+  'homework', 'closing',
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Session 1 · Cultivated AI · The Baker's Dozen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" />
+  <style>
+    /* ══════════════════════════════════════════════════════
+       Basics Session 1 deck · slide-specific styles
+       ══════════════════════════════════════════════════════ */
+    body.card-deck-page { background: var(--color-cream); }
+
+    .deck-slide {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      box-sizing: border-box;
+    }
+
+    /* Progress rail */
+    .progress-rail {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+      padding: 8px 14px;
+      background: rgba(250, 248, 245, 0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      border: 1px solid rgba(26,26,46,0.05);
+    }
+    .progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.15);
+      transition: all 0.3s ease;
+    }
+    .progress-dot.active {
+      background: var(--color-amber);
+      width: 16px;
+      border-radius: 100px;
+    }
+    .progress-dot.visited { background: rgba(26,26,46,0.35); }
+
+    /* Slide number */
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      right: 40px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* Keyboard hint (fades after interaction) */
+    .kbd-hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      opacity: 0.55;
+      z-index: 50;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .kbd-hint.hidden { opacity: 0; }
+    .kbd-hint kbd {
+      font-family: var(--font-mono);
+      background: rgba(26,26,46,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      margin: 0 2px;
+    }
+
+    /* ─── Staggered entrance ─── */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .deck-slide.is-active .stagger > * { opacity: 1; transform: translateY(0); }
+    .deck-slide.is-active .stagger > *:nth-child(1) { transition-delay: 0.1s; }
+    .deck-slide.is-active .stagger > *:nth-child(2) { transition-delay: 0.2s; }
+    .deck-slide.is-active .stagger > *:nth-child(3) { transition-delay: 0.3s; }
+    .deck-slide.is-active .stagger > *:nth-child(4) { transition-delay: 0.4s; }
+    .deck-slide.is-active .stagger > *:nth-child(5) { transition-delay: 0.5s; }
+    .deck-slide.is-active .stagger > *:nth-child(6) { transition-delay: 0.6s; }
+    .deck-slide.is-active .stagger > *:nth-child(7) { transition-delay: 0.7s; }
+    .deck-slide.is-active .stagger > *:nth-child(8) { transition-delay: 0.8s; }
+
+    /* ─── Print / export-to-PDF ─── */
+    @media print {
+      @page { size: 1600px 900px; margin: 0; }
+      html, body {
+        background: var(--color-cream) !important;
+        width: 1600px !important;
+        height: auto !important;
+      }
+      body.card-deck-page::before { display: none !important; }
+      .progress-rail, .kbd-hint { display: none !important; }
+      .card-deck-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        scroll-snap-type: none !important;
+      }
+      .card-deck-card, .deck-slide {
+        width: 1600px !important;
+        height: 900px !important;
+        scroll-snap-align: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      .card-deck-card:last-child, .deck-slide:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+      .stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      * { animation: none !important; }
+
+      /* Hide break slides + closing in the PDF export */
+      [data-slide="break-hands"],
+      [data-slide="break-land"],
+      [data-slide="closing"] { display: none !important; }
+
+      /* Force desktop layouts in Chrome's print viewport */
+      .about-grid {
+        grid-template-columns: 1.3fr 1fr !important;
+        gap: 5rem !important;
+        text-align: left !important;
+      }
+      .about-credits li { justify-content: flex-start !important; text-align: left !important; }
+      .about-portrait { width: 320px !important; height: 320px !important; }
+      .shape-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 2rem !important; }
+      .exp-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+      .map-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .ladder-diagram { flex-direction: row !important; gap: 1.25rem !important; }
+      .ladder-arrow { transform: none !important; }
+      .deck-slide { padding: 4rem 5rem !important; }
+      .slide-about { padding: 3rem 5rem 14rem !important; }
+    }
+
+    /* ─── Utilities ─── */
+    .caveat { font-family: 'Caveat', cursive; font-weight: 600; }
+    .mono-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       01 · Welcome
+       ══════════════════════════════════════════════════════ */
+    .slide-welcome {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-welcome .wordmark {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(5rem, 13vw, 11rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+    .slide-welcome .wordmark .cult { display: block; color: var(--color-deep); }
+    .slide-welcome .wordmark .ai { display: block; color: var(--color-amber); }
+    .welcome-tagline {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 2rem;
+      color: var(--color-amber);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-top: 1.5rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       02 · About
+       ══════════════════════════════════════════════════════ */
+    .slide-about {
+      padding: 3rem 5rem 14rem;
+      justify-content: center;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .about-name {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0.5rem 0 0.75rem;
+    }
+    .about-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--color-subtle);
+      margin: 0 0 2rem;
+    }
+    .about-credits {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .about-credits li {
+      display: flex;
+      gap: 14px;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+    }
+    .about-credits li:last-child { border-bottom: none; }
+    .credit-dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 0.55rem;
+    }
+    .credit-body strong {
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--color-deep);
+      font-size: 1.02rem;
+    }
+    .credit-body .credit-detail {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .about-portrait {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        0 20px 60px rgba(15,52,96,0.18),
+        0 0 0 6px var(--color-cream),
+        0 0 0 7px rgba(245,166,35,0.2);
+    }
+    .about-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.15) contrast(1.02);
+    }
+    .about-email {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-navy);
+      margin-top: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .poster-ticker {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      right: 0;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    }
+    .poster-track {
+      display: flex;
+      animation: ticker 55s linear infinite;
+      width: max-content;
+      will-change: transform;
+    }
+    .poster-track img {
+      height: 150px;
+      margin-right: 20px;
+      border-radius: 6px;
+      box-shadow: 0 8px 26px rgba(15,52,96,0.18);
+      flex-shrink: 0;
+    }
+    @keyframes ticker {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       03 · The shape (two sessions)
+       ══════════════════════════════════════════════════════ */
+    .slide-shape { justify-content: center; }
+    .shape-head { text-align: center; margin-bottom: 3rem; }
+    .shape-head h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.75rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin: 0.75rem 0 0;
+      line-height: 1.05;
+    }
+    .shape-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .shape-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: visible;
+    }
+    .shape-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+    .shape-card.s1::before { background: var(--color-amber); }
+    .shape-card.s2::before { background: var(--color-teal); }
+    .shape-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 3.5rem;
+      line-height: 1;
+      opacity: 0.12;
+      margin: 0 0 0.5rem;
+    }
+    .shape-card.s1 .shape-num { color: var(--color-amber); }
+    .shape-card.s2 .shape-num { color: var(--color-teal); }
+    .shape-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      margin: 0 0 0.75rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .shape-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+    .here-note {
+      position: absolute;
+      top: -2.3rem;
+      right: 1.25rem;
+      font-size: 1.4rem;
+      line-height: 1;
+      color: var(--color-amber);
+      transform: rotate(-3deg);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Statement slides (relax · next-word · hold)
+       ══════════════════════════════════════════════════════ */
+    .slide-principle { justify-content: center; }
+    .principle-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .principle-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1.75rem;
+    }
+    .principle-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin: 0 0 2.25rem;
+      color: var(--color-deep);
+      max-width: 22ch;
+    }
+    .principle-title .hl-red { color: var(--color-accent-red); }
+    .principle-title .hl-teal { color: var(--color-teal); }
+    .principle-title .hl-amber { color: var(--color-amber); }
+    .principle-body {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      max-width: 62ch;
+      margin: 0;
+    }
+    .principle-body em { color: var(--color-navy); }
+    .deck-slide p { max-width: none; }
+    .margin-note {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--color-amber);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-top: 2rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       05 · The ladder
+       ══════════════════════════════════════════════════════ */
+    .ladder-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+    .ladder-node {
+      background: var(--color-warm-white);
+      border: 2px solid;
+      border-radius: 100px;
+      padding: 1rem 1.75rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .ladder-node.n1 { border-color: var(--color-amber); color: var(--color-amber); }
+    .ladder-node.n2 { border-color: var(--color-accent-red); color: var(--color-accent-red); }
+    .ladder-node.n3 { border-color: var(--color-purple); color: var(--color-purple); }
+    .ladder-node.n4 { border-color: var(--color-teal); color: var(--color-teal); }
+    .ladder-arrow {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Section break slides
+       ══════════════════════════════════════════════════════ */
+    .slide-break {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .break-label {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.75rem;
+      color: var(--color-amber);
+      transform: rotate(-2deg);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .break-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+      margin: 0;
+      font-style: italic;
+    }
+    .break-title .period { font-style: normal; }
+    .slide-break.break-hands .break-label { color: var(--color-purple); }
+    .slide-break.break-hands .break-title .period { color: var(--color-purple); }
+    .slide-break.break-land .break-label { color: var(--color-sky); }
+    .slide-break.break-land .break-title .period { color: var(--color-sky); }
+
+    /* ══════════════════════════════════════════════════════
+       08 · The four experiments
+       ══════════════════════════════════════════════════════ */
+    .slide-grid { justify-content: center; }
+    .grid-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .grid-head { text-align: center; margin-bottom: 2.5rem; }
+    .grid-head h1 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      letter-spacing: -0.03em;
+      margin: 0.75rem 0 0.5rem;
+    }
+    .grid-head .sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--color-subtle);
+      font-size: 1.1rem;
+    }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .exp-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 12px;
+      padding: 1.4rem 1.5rem;
+    }
+    .exp-card .exp-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--color-purple);
+      letter-spacing: 0.15em;
+    }
+    .exp-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin: 0.4rem 0 0.4rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .exp-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       10 · The wider map
+       ══════════════════════════════════════════════════════ */
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .map-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+    }
+    .map-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+      color: var(--color-deep);
+      letter-spacing: -0.01em;
+    }
+    .map-card p {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--color-subtle);
+      margin: 0 0 0.9rem;
+    }
+    .map-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .map-pill {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid;
+      white-space: nowrap;
+      color: var(--pc);
+      border-color: color-mix(in srgb, var(--pc) 35%, transparent);
+      background: color-mix(in srgb, var(--pc) 6%, transparent);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       12 · The fifteen, one page
+       ══════════════════════════════════════════════════════ */
+    .slide-cheatsheet { justify-content: center; padding: 3rem 4rem; }
+    .cheatsheet-content {
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .cheatsheet-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(26,26,46,0.08);
+      padding-bottom: 1.25rem;
+    }
+    .cheatsheet-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0;
+      color: var(--color-deep);
+    }
+    .cheatsheet-title .accent { color: var(--color-amber); font-style: italic; }
+    .cheatsheet-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--color-subtle);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+    .cheatsheet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px 14px;
+    }
+    .cs-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.07);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.9rem;
+      min-height: 72px;
+    }
+    .cs-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      line-height: 1;
+      min-width: 2ch;
+    }
+    .cs-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.02rem;
+      line-height: 1.3;
+      color: var(--color-deep);
+    }
+    .cs-title em {
+      font-style: italic;
+      color: var(--color-navy);
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       13 · Homework
+       ══════════════════════════════════════════════════════ */
+    .slide-homework { justify-content: center; }
+    .homework-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .homework-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      color: var(--color-amber);
+      background: rgba(245,166,35,0.12);
+    }
+    .homework-title {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 7.5vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 1.5rem 0 1.5rem;
+    }
+    .homework-points {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0 0;
+    }
+    .homework-points li {
+      font-family: var(--font-body);
+      font-size: 1.35rem;
+      line-height: 1.5;
+      padding: 0.5rem 0 0.5rem 2rem;
+      position: relative;
+      color: var(--color-deep);
+    }
+    .homework-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      font-weight: 600;
+      color: var(--color-amber);
+    }
+    .homework-points em { color: var(--color-navy); }
+
+    /* ══════════════════════════════════════════════════════
+       14 · Closing
+       ══════════════════════════════════════════════════════ */
+    .slide-closing {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .closing-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--color-teal);
+      transform: rotate(-2deg);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .closing-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0.5rem 0 2rem;
+      max-width: 16ch;
+    }
+    .closing-title .accent { color: var(--color-teal); font-style: italic; }
+    .closing-footer {
+      font-family: var(--font-body);
+      color: var(--color-subtle);
+      font-style: italic;
+      margin-top: 2rem;
+      font-size: 1.05rem;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       Responsive
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+      .about-credits li { justify-content: flex-start; text-align: left; }
+      .about-portrait { width: 240px; height: 240px; }
+      .shape-grid, .exp-grid, .map-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .deck-slide { padding: 3rem 2rem; }
+      .ladder-diagram { flex-direction: column; gap: 0.75rem; }
+      .ladder-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body class="card-deck-page">
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="rail">
+    {slides.map((_, i) => <div class="progress-dot" data-idx={i}></div>)}
+  </div>
+
+  <!-- Keyboard hint -->
+  <div class="kbd-hint" id="kbd-hint">
+    <kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>space</kbd> next · <kbd>n</kbd> presenter notes
+  </div>
+
+  <!-- Deck -->
+  <div class="card-deck-container" id="deck">
+
+    <!-- ═══ 01 · Welcome ═══ -->
+    <section class="card-deck-card deck-slide slide-welcome" data-slide="welcome">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="mono-label">The Baker's Dozen · Workshop 1 · Session 1</span>
+        <h1 class="wordmark" style="margin-top: 1.5rem;">
+          <span class="cult">Cultivated</span>
+          <span class="ai">AI</span>
+        </h1>
+        <span class="welcome-tagline">Grow, don't Chase.</span>
+      </div>
+      <div class="slide-num">01 · Welcome</div>
+    </section>
+
+    <!-- ═══ 02 · About ═══ -->
+    <section class="card-deck-card deck-slide slide-about" data-slide="about">
+      <div class="about-grid stagger">
+        <div>
+          <span class="mono-label">About me</span>
+          <h1 class="about-name">Shalin Shodhan</h1>
+          <p class="about-subtitle">20 years in games &amp; film.</p>
+          <ul class="about-credits">
+            <li>
+              <span class="credit-dot" style="background: #E94560;"></span>
+              <div class="credit-body">
+                <strong>Pixar Animation Studios</strong>
+                <span class="credit-detail">6 feature films · 3 Academy Awards</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #7B61FF;"></span>
+              <div class="credit-body">
+                <strong>Electronic Arts · Spore</strong>
+                <span class="credit-detail">BAFTA Award for Technical Achievement</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #16C79A;"></span>
+              <div class="credit-body">
+                <strong>Lumosity</strong>
+                <span class="credit-detail">Principal Game Developer</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #F5A623;"></span>
+              <div class="credit-body">
+                <strong>Masala Games · Founder</strong>
+                <span class="credit-detail">Detective Dotson · Word Mess (#1 in 21 countries)</span>
+              </div>
+            </li>
+            <li>
+              <span class="credit-dot" style="background: #0EA5E9;"></span>
+              <div class="credit-body">
+                <strong>Carnegie Mellon University</strong>
+                <span class="credit-detail">MET · Entertainment Technology</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <div class="about-portrait">
+            <img src="/images/shalin.png" alt="Shalin Shodhan" />
+          </div>
+          <div class="about-email">shalin@masalagames.com</div>
+        </div>
+      </div>
+      <div class="poster-ticker">
+        <div class="poster-track">
+          <img src="/images/workshop/dotson_square.png" alt="Detective Dotson" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="Toy Story 3" />
+          <img src="/images/workshop/art_cars2.jpg" alt="Cars 2" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="Monsters University" />
+          <img src="/images/workshop/art_insideout.jpg" alt="Inside Out" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="Finding Dory" />
+          <img src="/images/workshop/spore_cover.webp" alt="Spore" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="Word Mess" />
+          <!-- duplicated for seamless loop -->
+          <img src="/images/workshop/dotson_square.png" alt="" />
+          <img src="/images/workshop/art_toystory3.jpg" alt="" />
+          <img src="/images/workshop/art_cars2.jpg" alt="" />
+          <img src="/images/workshop/art_monstersuniversity.jpg" alt="" />
+          <img src="/images/workshop/art_insideout.jpg" alt="" />
+          <img src="/images/workshop/art_findingdory.jpg" alt="" />
+          <img src="/images/workshop/spore_cover.webp" alt="" />
+          <img src="/images/workshop/art_wordmess.jpg" alt="" />
+        </div>
+      </div>
+      <div class="slide-num">02 · About</div>
+    </section>
+
+    <!-- ═══ 03 · The shape ═══ -->
+    <section class="card-deck-card deck-slide slide-shape" data-slide="shape">
+      <div class="stagger">
+        <div class="shape-head">
+          <span class="mono-label">Two sessions · two hours each</span>
+          <h1>The shape of it.</h1>
+        </div>
+        <div class="shape-grid">
+          <div class="shape-card s1">
+            <span class="here-note caveat">today</span>
+            <div class="shape-num">01</div>
+            <h3>How it works, and what's out there</h3>
+            <p>Why it matters, how it behaves, which tool for what. Half of it hands-on.</p>
+          </div>
+          <div class="shape-card s2">
+            <div class="shape-num">02</div>
+            <h3>Agents, skills and a plan</h3>
+            <p>Build a browser extension, write a skill of your own, start your 90-day plan.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">03 · The shape</div>
+    </section>
+
+    <!-- ═══ 04 · Relax ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="relax">
+      <div class="principle-content stagger">
+        <div class="principle-label">Before anything else</div>
+        <h1 class="principle-title"><span class="hl-amber">Relax.</span> It's not here for your job.</h1>
+        <p class="principle-body">Teach it the routine parts. Spend the time you get back on the parts that need <em>you</em>.</p>
+      </div>
+      <div class="slide-num">04 · Relax</div>
+    </section>
+
+    <!-- ═══ 05 · The ladder ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="ladder">
+      <div class="principle-content stagger" style="text-align: center;">
+        <div class="principle-label">The path this workshop climbs</div>
+        <h1 class="principle-title" style="margin: 0 auto 1rem; max-width: none;">The climb.</h1>
+        <div class="ladder-diagram">
+          <div class="ladder-node n1">Quoter</div>
+          <span class="ladder-arrow">→</span>
+          <div class="ladder-node n2">Curator</div>
+          <span class="ladder-arrow">→</span>
+          <div class="ladder-node n3">Author</div>
+          <span class="ladder-arrow">→</span>
+          <div class="ladder-node n4">Orchestrator</div>
+        </div>
+        <span class="margin-note">where do you sit today?</span>
+      </div>
+      <div class="slide-num">05 · The climb</div>
+    </section>
+
+    <!-- ═══ 06 · Next word ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="next-word">
+      <div class="principle-content stagger">
+        <div class="principle-label">How it actually works</div>
+        <h1 class="principle-title">It predicts the <span class="hl-amber">next word</span>. Nothing more.</h1>
+        <p class="principle-body">One fact that explains what it gets right, and almost everything it gets wrong.</p>
+      </div>
+      <div class="slide-num">06 · Next word</div>
+    </section>
+
+    <!-- ═══ 07 · Break · laptops open ═══ -->
+    <section class="card-deck-card deck-slide slide-break break-hands" data-slide="break-hands">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">Laptops open →</span>
+        <h1 class="break-title">Prompts, tokens, context and slop<span class="period">.</span></h1>
+        <p class="mono-label" style="margin-top: 2rem;">Four experiments · everyone typing</p>
+      </div>
+      <div class="slide-num">07 · Break</div>
+    </section>
+
+    <!-- ═══ 08 · The four experiments ═══ -->
+    <section class="card-deck-card deck-slide slide-grid" data-slide="experiments">
+      <div class="grid-content stagger">
+        <div class="grid-head">
+          <span class="mono-label">Hands-on · 40 minutes</span>
+          <h1>Four experiments.</h1>
+          <p class="sub">In order, about ten minutes each.</p>
+        </div>
+        <div class="exp-grid">
+          <div class="exp-card">
+            <span class="exp-num">01</span>
+            <h3>Prompt builder</h3>
+            <p>Build one strong ask, block by block. Role, context, format, examples.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-num">02</span>
+            <h3>Context window explorer</h3>
+            <p>Watch a long chat lose the plot, and learn when to start fresh.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-num">03</span>
+            <h3>What tokens cost</h3>
+            <p>See what a conversation costs, and why shorter is often smarter.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-num">04</span>
+            <h3>Your de-slop prompt</h3>
+            <p>Write a system prompt so output sounds like you, not like AI.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">08 · Experiments</div>
+    </section>
+
+    <!-- ═══ 09 · Break · lay of the land ═══ -->
+    <section class="card-deck-card deck-slide slide-break break-land" data-slide="break-land">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label">Back to the screen →</span>
+        <h1 class="break-title">The lay of the land<span class="period">.</span></h1>
+        <p class="mono-label" style="margin-top: 2rem;">Same brief · three machines · live</p>
+      </div>
+      <div class="slide-num">09 · Break</div>
+    </section>
+
+    <!-- ═══ 10 · The wider map ═══ -->
+    <section class="card-deck-card deck-slide slide-grid" data-slide="wider-map">
+      <div class="grid-content stagger">
+        <div class="grid-head">
+          <span class="mono-label">Who's good at what</span>
+          <h1>The wider map.</h1>
+        </div>
+        <div class="map-grid">
+          <div class="map-card">
+            <h3>Chat</h3>
+            <p>The daily driver. We just compared them.</p>
+            <div class="map-pills" style="--pc: var(--color-navy);">
+              <span class="map-pill">Claude</span>
+              <span class="map-pill">ChatGPT</span>
+              <span class="map-pill">Gemini</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Images</h3>
+            <p>Product shots, edits, concepts.</p>
+            <div class="map-pills" style="--pc: var(--color-accent-red);">
+              <span class="map-pill">Nano Banana</span>
+              <span class="map-pill">Midjourney</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Video</h3>
+            <p>Clips from a sentence.</p>
+            <div class="map-pills" style="--pc: var(--color-sky);">
+              <span class="map-pill">Veo</span>
+              <span class="map-pill">Sora</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Music</h3>
+            <p>Full songs from a brief.</p>
+            <div class="map-pills" style="--pc: var(--color-purple);">
+              <span class="map-pill">Suno</span>
+              <span class="map-pill">Udio</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Your documents</h3>
+            <p>Upload files, ask questions of them.</p>
+            <div class="map-pills" style="--pc: var(--color-teal);">
+              <span class="map-pill">NotebookLM</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Deep research</h3>
+            <p>Half an hour of reading, done for you.</p>
+            <div class="map-pills" style="--pc: var(--color-amber);">
+              <span class="map-pill">Claude</span>
+              <span class="map-pill">Gemini</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">10 · The map</div>
+    </section>
+
+    <!-- ═══ 11 · What holds ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="hold">
+      <div class="principle-content stagger">
+        <div class="principle-label">Staying current without chasing</div>
+        <h1 class="principle-title"><span class="hl-amber">Grow</span>, don't chase.</h1>
+        <p class="principle-body">Tools will keep changing under us. What holds: your <em>principles</em>, your <em>examples</em>, your <em>saved sessions</em>.</p>
+        <span class="margin-note">one team conversation a month</span>
+      </div>
+      <div class="slide-num">11 · What holds</div>
+    </section>
+
+    <!-- ═══ 12 · The fifteen, one page ═══ -->
+    <section class="card-deck-card deck-slide slide-cheatsheet" data-slide="fifteen">
+      <div class="cheatsheet-content stagger">
+        <div class="cheatsheet-header">
+          <h1 class="cheatsheet-title">The <span class="accent">fifteen</span>.</h1>
+          <span class="cheatsheet-sub">All of them, one page →</span>
+        </div>
+        <div class="cheatsheet-grid">
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">01</span><span class="cs-title">Learn for the AI of <em>tomorrow</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">02</span><span class="cs-title">Not technical. It's <em>communication</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0F3460;">03</span><span class="cs-title">Choose → Communicate → Evaluate.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">04</span><span class="cs-title">Pick the <em>right</em> AI for the task.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">05</span><span class="cs-title">Frame the conversation, not the prompt.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#7B61FF;">06</span><span class="cs-title">Great <em>examples</em> beat great instructions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">07</span><span class="cs-title">Ask AI to ask <em>you</em> questions.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">08</span><span class="cs-title">Ask AI for help <em>with</em> AI.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">09</span><span class="cs-title"><em>Iteration</em> is everything. 3 to 5 passes.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">10</span><span class="cs-title">Don't take the <em>quick win</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#F5A623;">11</span><span class="cs-title">Never trust <em>one</em> machine. Cross-check.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">12</span><span class="cs-title">Always <em>humanize</em>. Deslop everything.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#E94560;">13</span><span class="cs-title">Conviction. Art. Sense. <em>Judgment</em>.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#16C79A;">14</span><span class="cs-title">Your <em>sessions</em> become your SOP.</span></div>
+          <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">15</span><span class="cs-title">Every task = <em>Know</em> · <em>Do</em> · <em>Show</em>.</span></div>
+        </div>
+      </div>
+      <div class="slide-num">12 · The fifteen</div>
+    </section>
+
+    <!-- ═══ 13 · Homework ═══ -->
+    <section class="card-deck-card deck-slide slide-homework" data-slide="homework">
+      <div class="homework-content stagger">
+        <span class="homework-pill">Homework</span>
+        <h1 class="homework-title">Before Session 2.</h1>
+        <ul class="homework-points">
+          <li>Try the tools we compared. Find the ones that fit <em>your</em> work.</li>
+          <li>Talk as a team: which AI do we standardise on?</li>
+          <li>Bring your pick to Session 2.</li>
+        </ul>
+      </div>
+      <div class="slide-num">13 · Homework</div>
+    </section>
+
+    <!-- ═══ 14 · Closing ═══ -->
+    <section class="card-deck-card deck-slide slide-closing" data-slide="closing">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="closing-label">Session 2 →</span>
+        <h1 class="closing-title">Agents, skills and <span class="accent">a plan</span>.</h1>
+        <p class="principle-body" style="max-width: 560px; text-align: center;">Next time, everyone in this room builds real software.</p>
+        <div class="closing-footer">Session 1 · end.</div>
+      </div>
+      <div class="slide-num">14 · Fin</div>
+    </section>
+
+  </div>
+
+  <script is:inline>
+    // ════════════════════════════════════════════════════════
+    // Deck behavior: keyboard nav + active slide tracking
+    // ════════════════════════════════════════════════════════
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const kbdHint = document.getElementById('kbd-hint');
+      let current = 0;
+      let scrolling = false;
+
+      // ─── Presenter sync ───
+      let channel = null;
+      try { channel = new BroadcastChannel('bakers-s1'); } catch (e) {}
+
+      function broadcastSlide(idx) {
+        if (channel) channel.postMessage({ type: 'slide', index: idx });
+      }
+      if (channel) {
+        channel.addEventListener('message', (ev) => {
+          if (ev.data && ev.data.type === 'goto' && typeof ev.data.index === 'number') {
+            goTo(ev.data.index);
+          }
+          if (ev.data && ev.data.type === 'request-state') {
+            broadcastSlide(current);
+          }
+        });
+        // Heartbeat · presenter uses this to know deck is alive
+        setInterval(() => { if (channel) channel.postMessage({ type: 'ping' }); }, 1500);
+      }
+
+      function goTo(idx) {
+        idx = Math.max(0, Math.min(slides.length - 1, idx));
+        if (idx === current) return;
+        scrolling = true;
+        slides[idx].scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { scrolling = false; }, 700);
+      }
+
+      function updateActive(idx) {
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+          d.classList.toggle('visited', i < idx);
+        });
+        current = idx;
+        broadcastSlide(idx);
+      }
+
+      // IntersectionObserver · most visible slide is "active"
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1 && idx !== current) updateActive(idx);
+          }
+        });
+      }, { threshold: [0.5, 0.75, 1] });
+
+      slides.forEach((s) => io.observe(s));
+
+      // Keyboard nav
+      let hintHidden = false;
+      document.addEventListener('keydown', (e) => {
+        if (!hintHidden) {
+          kbdHint.classList.add('hidden');
+          hintHidden = true;
+        }
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+          case 'PageDown':
+          case ' ':
+            e.preventDefault();
+            goTo(current + 1);
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+          case 'PageUp':
+            e.preventDefault();
+            goTo(current - 1);
+            break;
+          case 'Home':
+            e.preventDefault();
+            goTo(0);
+            break;
+          case 'End':
+            e.preventDefault();
+            goTo(slides.length - 1);
+            break;
+          case 'n':
+          case 'N':
+            e.preventDefault();
+            window.open('/cultivated-ai/bakers-dozen/session-1/presenter', 'presenter', 'width=1100,height=800,menubar=no,toolbar=no,location=no');
+            break;
+        }
+      });
+
+      // Click dots to jump
+      dots.forEach((d, i) => {
+        d.style.cursor = 'pointer';
+        d.addEventListener('click', () => goTo(i));
+      });
+
+      // Click right side of screen to advance, left side to go back
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .progress-dot')) return;
+        if (scrolling) return;
+        const x = e.clientX;
+        const w = window.innerWidth;
+        if (x > w * 0.7) goTo(current + 1);
+        else if (x < w * 0.3) goTo(current - 1);
+      });
+
+      // Initialize
+      updateActive(0);
+    })();
+  </script>
+
+</body>
+</html>
