@@ -12,9 +12,10 @@ export interface SlideNote {
 
 export const slideOrder = [
   'welcome', 'about', 'shape',
-  'relax', 'ladder', 'next-word',
+  'relax', 'ladder',
+  'brain', 'weights', 'next-word', 'follows', 'data',
   'break-hands', 'experiments',
-  'break-land', 'wider-map',
+  'break-land', 'wider-map', 'open-weights',
   'hold',
   'p-rate', 'p-comms', 'p-loop', 'p-tool', 'p-frame', 'p-examples',
   'p-questions', 'p-recursive', 'p-iteration', 'p-settle',
@@ -69,7 +70,8 @@ Key message: AI works best with a person in the loop. Teach it the routine parts
 Ask around the room: "What is the most repetitive thing you did last week?"
 Collect three or four answers. Park them visibly. They come back in Session 2 as skill material.
 Worries from the questionnaire (30 answers): privacy 9, sounds-like-AI 4, makes-things-up 4, job worries 4, feels-like-cheating 3. 21 also ticked excited.
-Name privacy out loud; it is the biggest one. The job worry is small but real (4 people); this slide is for them.
+Name privacy out loud; it is the biggest one. Promise the answer: a dedicated slide at the end of the teach beat, twenty minutes from now.
+The job worry is small but real (4 people); this slide is for them.
 Principles 01 and 02.`,
   },
   ladder: {
@@ -86,23 +88,64 @@ The counts on the slide come from the questionnaire's how-often question: 16 dai
 Still ask people to place themselves silently; self-placement beats my mapping.
 The 90-day goal is Author. Nobody needs to be an Orchestrator yet.`,
   },
+  brain: {
+    id: 'brain',
+    num: 6,
+    title: 'It began as a sketch of the brain',
+    label: '0:10 · 15m · Teach',
+    notes: `Start the teach beat somewhere familiar: the brain.
+A neuron listens to its neighbors, weighs each signal (some voices count more), and fires or stays quiet. That is all one neuron does.
+Stack 86 billion and you get pattern recognition, memory, language, taste.
+Whiteboard moment if the room is warm: three circles, arrows into one, fire or not.
+No biology exam. The one word to keep from this slide: weighs.`,
+  },
+  weights: {
+    id: 'weights',
+    num: 7,
+    title: 'The learning lives in the weights',
+    label: 'Weights, lightly',
+    notes: `The artificial version is embarrassingly simple: a neuron is a little sum. Each input gets multiplied by a number. That number is a weight.
+Learning is nothing mystical: nudge the weights, check if the guess improved, repeat.
+Training a language model: show it the internet one chunk at a time, ask it to guess the next word, nudge trillions of weights when it is wrong. For months. That is why training costs billions and using it costs paise.
+The finished model IS the weights: one huge file of numbers. Hold that thought; it comes back in the lay of the land as "open weights".`,
+  },
   'next-word': {
     id: 'next-word',
-    num: 6,
+    num: 8,
     title: 'How it actually works',
-    label: '0:10 · 15m · Teach',
+    label: 'The punchline',
     notes: `A language model in plain words: it predicts the next word. Nothing more.
-If energy is low, do it live: type "The capital of France is" and stop. The room finishes the sentence. So does the model.
-Everything follows from that one fact:
-- Why it sounds confident: there is always a next word.
-- Why it invents facts: a likely word is not a true word.
-- Why your wording matters: different words steer it to a different neighborhood.
-No math, no jargon. If someone asks about neural networks, offer to talk at the break.
+Do it live: type "The capital of France is" and stop. The room finishes the sentence. So does the model.
+Land it, pause. The next slide picks up the consequences.
+No math, no jargon. If someone wants to go deeper on neural networks, point two slides back and offer the break.
 Principle 03.`,
+  },
+  follows: {
+    id: 'follows',
+    num: 9,
+    title: 'One fact, three consequences',
+    label: 'Tokens · context · made-up facts',
+    notes: `Three consequences, and each lands hands-on in fifteen minutes.
+- Tokens: it reads and writes in chunks, roughly three-quarters of a word each. Cost and speed are counted in chunks. The token experiment makes this real.
+- Context: the model sees one window of recent conversation, nothing else. When the window fills, the oldest lines fall out. That is why long chats drift.
+- Made-up facts: it always has a next word, even where it knows nothing. A likely word is not a true word. It is not a database; it is a very well-read improviser.
+Do not solve these here. Promise the fixes: the four experiments next, and principles 09 to 12 later.`,
+  },
+  data: {
+    id: 'data',
+    num: 10,
+    title: 'Where does my data go?',
+    label: 'Nine of you asked',
+    notes: `Nine of the thirty questionnaires raised privacy. Answer it straight, then move.
+Where a chat goes: to the model maker's servers, encrypted on the way. Not to the public internet, not to competitors.
+The real question is training: does your chat teach the next model? Free consumer plans often can. Business and API plans contractually do not. Every tool has a toggle.
+Check the current defaults the night before the session; they move every few months. Show one toggle live if time allows.
+House rule until the team standardises: nothing in a chat you would not email an outside vendor. Customer lists, unreleased numbers, contracts: business plan or keep them out.
+Bridge to plant: there is one option where data never leaves at all. It is on the map in an hour: open weights.`,
   },
   'break-hands': {
     id: 'break-hands',
-    num: 7,
+    num: 11,
     title: '· Laptops open ·',
     label: '0:25 · 40m · Hands-on',
     notes: `Switch mode. Four experiments, everyone typing.
@@ -112,7 +155,7 @@ Timing discipline: roughly ten minutes each. If a block runs long, cut the talk,
   },
   experiments: {
     id: 'experiments',
-    num: 8,
+    num: 12,
     title: 'The four experiments',
     label: 'Keep this slide up while they work',
     notes: `Run them in order.
@@ -124,7 +167,7 @@ Principles 05, 06, 09 and 12.`,
   },
   'break-land': {
     id: 'break-land',
-    num: 9,
+    num: 13,
     title: '· The lay of the land ·',
     label: '1:05 · 35m · Teach + live',
     notes: `Back to the screen. Same brief, three machines, live: Claude, ChatGPT, Gemini side by side.
@@ -136,7 +179,7 @@ Principles 04 and 11.`,
   },
   'wider-map': {
     id: 'wider-map',
-    num: 10,
+    num: 14,
     title: 'The wider map',
     label: 'Tour, not a catalog',
     notes: `Quick tour. The point is that these exist and are worth an evening each, not mastery today.
@@ -149,9 +192,21 @@ NotebookLM deserves 3 minutes live if time allows: feed it your own documents an
 Deep research: half an hour of reading done for you, with citations you can check.
 At the Video card, name-check Anshika and Yukti (design): both asked for 30-second-plus video with dialogue. Answer: that is the Generative Media Bootcamp; today is the map, not the deep dive.`,
   },
+  'open-weights': {
+    id: 'open-weights',
+    num: 15,
+    title: 'Open weights · models you can own',
+    label: 'Callback to the weights slide',
+    notes: `Callback: the model is one huge file of numbers, the weights. Some labs publish that file.
+Who: Meta (Llama), DeepSeek, Alibaba (Qwen), Google (Gemma), Mistral. Anyone can download and run them.
+Why this room should care: it is the full answer to the privacy worry (nothing leaves your machine), the per-use cost is zero, and open competition keeps every price honest.
+Honest caveats: the best closed models are still ahead for hard work, and the big open ones need serious hardware. A good laptop runs the small ones today.
+Try-at-home pointer: Ollama or LM Studio, one evening, no account needed.
+Session 2 carries a bonus beat on this: AI on your own computer. Park deep questions there.`,
+  },
   hold: {
     id: 'hold',
-    num: 11,
+    num: 16,
     title: 'Grow, don\'t chase',
     label: '1:40 · 10m · Discuss',
     notes: `The brand line, earned: tools will keep changing under us, and chasing them is a full-time job nobody here wants.
@@ -162,7 +217,7 @@ Principles 01 and 13.`,
   },
   'p-rate': {
     id: 'p-rate',
-    num: 12,
+    num: 17,
     title: 'Principle 01 · Rate of improvement',
     label: 'Recap run · 20 to 30s a slide',
     notes: `Start of the principle walk. Keep it brisk; several of these landed hands-on earlier, so name the moment and move.
@@ -171,7 +226,7 @@ So build around approach, not tools. The approach transfers. The wider map we ju
   },
   'p-comms': {
     id: 'p-comms',
-    num: 13,
+    num: 18,
     title: 'Principle 02 · Communication',
     label: 'The big reframe',
     notes: `The most important reframe of the day.
@@ -181,7 +236,7 @@ Everyone in this room can become one of those.`,
   },
   'p-loop': {
     id: 'p-loop',
-    num: 14,
+    num: 19,
     title: 'Principle 03 · The core loop',
     label: 'The spine of the fifteen',
     notes: `Every AI interaction is this loop.
@@ -190,7 +245,7 @@ Everything else on the list is a move inside one of these three buckets.`,
   },
   'p-tool': {
     id: 'p-tool',
-    num: 15,
+    num: 20,
     title: 'Principle 04 · Pick the right AI',
     label: 'Choose',
     notes: `They watched this live an hour ago: same brief, three machines, three flavors.
@@ -199,7 +254,7 @@ The meta move: when in doubt, ask one AI which AI to use. It will answer honestl
   },
   'p-frame': {
     id: 'p-frame',
-    num: 16,
+    num: 21,
     title: 'Principle 05 · Frame the conversation',
     label: 'Communicate',
     notes: `They built this in the prompt builder.
@@ -208,7 +263,7 @@ Once the frame is set, one-word follow-ups get great answers.`,
   },
   'p-examples': {
     id: 'p-examples',
-    num: 17,
+    num: 22,
     title: 'Principle 06 · Examples beat instructions',
     label: 'Communicate',
     notes: `Telling AI "make it punchier" is vague. Showing it three punchy examples calibrates it instantly.
@@ -217,7 +272,7 @@ Bakery version: paste three past captions you loved before asking for a new one.
   },
   'p-questions': {
     id: 'p-questions',
-    num: 18,
+    num: 23,
     title: 'Principle 07 · Ask AI to ask you',
     label: 'Communicate',
     notes: `The single highest-return habit: "Before you start, ask me five questions that would make your answer better."
@@ -226,7 +281,7 @@ Socratic beats one-shot. Every time.`,
   },
   'p-recursive': {
     id: 'p-recursive',
-    num: 19,
+    num: 24,
     title: 'Principle 08 · Recursion',
     label: 'Use AI on AI',
     notes: `Stuck on a prompt? Ask another AI to write a better one.
@@ -235,7 +290,7 @@ AI is trained on how to use AI. Use the machines on each other.`,
   },
   'p-iteration': {
     id: 'p-iteration',
-    num: 20,
+    num: 25,
     title: 'Principle 09 · Iteration',
     label: 'Evaluate',
     notes: `They lived this in the hands-on block; point back at it.
@@ -244,7 +299,7 @@ Each pass injects your standards. You are the quality filter.`,
   },
   'p-settle': {
     id: 'p-settle',
-    num: 21,
+    num: 26,
     title: 'Principle 10 · Don\'t take the quick win',
     label: 'Evaluate',
     notes: `Models are trained to seem helpful fast, so the first answer is optimized to be acceptable, not excellent.
@@ -253,7 +308,7 @@ The best material shows up on pass two or three.`,
   },
   'p-crosscheck': {
     id: 'p-crosscheck',
-    num: 22,
+    num: 27,
     title: 'Principle 11 · Never trust one machine',
     label: 'Evaluate',
     notes: `They watched this live in the three-machine comparison.
@@ -263,7 +318,7 @@ Five extra minutes against a confidently wrong answer.`,
   },
   'p-deslop': {
     id: 'p-deslop',
-    num: 23,
+    num: 28,
     title: 'Principle 12 · Humanize the output',
     label: 'Evaluate',
     notes: `They wrote their own de-slop prompt an hour ago; connect back to it.
@@ -273,7 +328,7 @@ Nothing ships raw.`,
   },
   'p-human': {
     id: 'p-human',
-    num: 24,
+    num: 29,
     title: 'Principle 13 · The human edge',
     label: 'Land this one slowly',
     notes: `AI can generate ten options. It cannot tell you which one is right for your brand.
@@ -282,7 +337,7 @@ Twenty years of knowing what good product looks like just became more valuable, 
   },
   'p-sop': {
     id: 'p-sop',
-    num: 25,
+    num: 30,
     title: 'Principle 14 · Sessions become SOP',
     label: 'The long game',
     notes: `The five-year bet. Your saved conversations become how the AI learns your voice, your standards, your way of working.
@@ -291,7 +346,7 @@ This is why "guard your saved sessions" sits inside Grow, don't chase.`,
   },
   'p-kds': {
     id: 'p-kds',
-    num: 26,
+    num: 31,
     title: 'Principle 15 · Know / Do / Show',
     label: 'Close the run here',
     notes: `Every AI task fits one bucket.
@@ -300,7 +355,7 @@ Picking the bucket first tells you which tool to reach for and what "good" means
   },
   fifteen: {
     id: 'fifteen',
-    num: 27,
+    num: 32,
     title: 'The fifteen, one page',
     label: 'Leave it up during discussion',
     notes: `The walk you just did, on one page. Do not read the list out again. Leave it on screen while the staying-current discussion runs.
@@ -309,7 +364,7 @@ Any one of these can eat ten minutes of debate. Allow at most one debate, then m
   },
   homework: {
     id: 'homework',
-    num: 28,
+    num: 33,
     title: 'Homework · before Session 2',
     label: '1:50 · 10m',
     notes: `Three asks, kept small on purpose:
@@ -321,7 +376,7 @@ Principles 04 and 11.`,
   },
   closing: {
     id: 'closing',
-    num: 29,
+    num: 34,
     title: 'Closing · Session 2 preview',
     label: 'End on time',
     notes: `Sell Session 2 in one line: next time, everyone in this room builds real software, most of you for the first time.
