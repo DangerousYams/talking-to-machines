@@ -7,7 +7,11 @@ const slides = [
   'relax', 'ladder', 'next-word',
   'break-hands', 'experiments',
   'break-land', 'wider-map',
-  'hold', 'fifteen',
+  'hold',
+  'p-rate', 'p-comms', 'p-loop', 'p-tool', 'p-frame', 'p-examples',
+  'p-questions', 'p-recursive', 'p-iteration', 'p-settle',
+  'p-crosscheck', 'p-deslop', 'p-human', 'p-sop', 'p-kds',
+  'fifteen',
   'homework', 'closing',
 ];
 ---
@@ -172,6 +176,9 @@ const slides = [
       .map-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
       .ladder-diagram { flex-direction: row !important; gap: 1.25rem !important; }
       .ladder-arrow { transform: none !important; }
+      .kds-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+      .loop-diagram { flex-direction: row !important; gap: 1.5rem !important; }
+      .loop-arrow { transform: none !important; }
       .deck-slide { padding: 4rem 5rem !important; }
       .slide-about { padding: 3rem 5rem 14rem !important; }
     }
@@ -435,6 +442,9 @@ const slides = [
     .principle-title .hl-red { color: var(--color-accent-red); }
     .principle-title .hl-teal { color: var(--color-teal); }
     .principle-title .hl-amber { color: var(--color-amber); }
+    .principle-title .hl-purple { color: var(--color-purple); }
+    .principle-title .hl-sky { color: var(--color-sky); }
+    .principle-title .hl-navy { color: var(--color-navy); }
     .principle-body {
       font-family: var(--font-body);
       font-size: 1.5rem;
@@ -454,6 +464,104 @@ const slides = [
       display: inline-block;
       margin-top: 2rem;
     }
+
+    /* The core loop (principle 03) */
+    .loop-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .loop-node {
+      background: var(--color-warm-white);
+      border: 2px solid;
+      border-radius: 100px;
+      padding: 1rem 1.75rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.01em;
+    }
+    .loop-node.n1 { border-color: var(--color-amber); color: var(--color-amber); }
+    .loop-node.n2 { border-color: var(--color-accent-red); color: var(--color-accent-red); }
+    .loop-node.n3 { border-color: var(--color-teal); color: var(--color-teal); }
+    .loop-arrow {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-subtle);
+      opacity: 0.5;
+    }
+
+    /* Know · Do · Show (principle 15) */
+    .kds-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .kds-card {
+      background: var(--color-warm-white);
+      border: 1px solid rgba(26,26,46,0.08);
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      position: relative;
+    }
+    .kds-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 2rem;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .kds-card.know h3 { color: var(--color-sky); }
+    .kds-card.do h3 { color: var(--color-accent-red); }
+    .kds-card.show h3 { color: var(--color-amber); }
+    .kds-card .kds-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-bottom: 1rem;
+    }
+    .kds-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--color-deep);
+      margin: 0.5rem 0 0;
+    }
+    .kds-egs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 1.1rem;
+      padding-top: 0.9rem;
+      border-top: 1px dashed rgba(26,26,46,0.1);
+    }
+    .kds-egs-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-subtle);
+      margin-right: 4px;
+      align-self: center;
+    }
+    .kds-eg {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .kds-card.know .kds-eg { color: var(--color-sky); border-color: rgba(14,165,233,0.35); background: rgba(14,165,233,0.06); }
+    .kds-card.do .kds-eg { color: var(--color-accent-red); border-color: rgba(233,69,96,0.35); background: rgba(233,69,96,0.06); }
+    .kds-card.show .kds-eg { color: var(--color-amber); border-color: rgba(245,166,35,0.4); background: rgba(245,166,35,0.07); }
 
     /* ══════════════════════════════════════════════════════
        05 · The ladder
@@ -788,10 +896,12 @@ const slides = [
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
       .about-credits li { justify-content: flex-start; text-align: left; }
       .about-portrait { width: 240px; height: 240px; }
-      .shape-grid, .exp-grid, .map-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .shape-grid, .exp-grid, .map-grid, .kds-grid { grid-template-columns: 1fr; gap: 1rem; }
       .deck-slide { padding: 3rem 2rem; }
       .ladder-diagram { flex-direction: column; gap: 0.75rem; }
       .ladder-arrow { transform: rotate(90deg); }
+      .loop-diagram { flex-direction: column; gap: 1rem; }
+      .loop-arrow { transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -1088,7 +1198,197 @@ const slides = [
       <div class="slide-num">11 · What holds</div>
     </section>
 
-    <!-- ═══ 12 · The fifteen, one page ═══ -->
+    <!-- ═══ 12 · Principle 01 · Rate of improvement ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-rate">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 01 · Rate of improvement</div>
+        <h1 class="principle-title">Learn for the AI of <span class="hl-red">tomorrow</span>.</h1>
+        <p class="principle-body">Build around <em>approach</em>, not tools.</p>
+      </div>
+      <div class="slide-num">12 · Rate</div>
+    </section>
+
+    <!-- ═══ 13 · Principle 02 · Communication ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-comms">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 02 · The real problem</div>
+        <h1 class="principle-title">Getting the most out of AI is <em>not</em> a <span class="hl-purple">technical</span> problem.</h1>
+        <p class="principle-body">It's a <em>communication</em> problem.</p>
+      </div>
+      <div class="slide-num">13 · Communication</div>
+    </section>
+
+    <!-- ═══ 14 · Principle 03 · The loop ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-loop">
+      <div class="principle-content stagger" style="text-align: center;">
+        <div class="principle-label">Principle 03 · The core loop</div>
+        <h1 class="principle-title" style="margin: 0 auto 2rem; max-width: none;">Three moves. On repeat.</h1>
+        <div class="loop-diagram">
+          <div class="loop-node n1">Choose</div>
+          <span class="loop-arrow">→</span>
+          <div class="loop-node n2">Communicate</div>
+          <span class="loop-arrow">→</span>
+          <div class="loop-node n3">Evaluate</div>
+        </div>
+      </div>
+      <div class="slide-num">14 · The loop</div>
+    </section>
+
+    <!-- ═══ 15 · Principle 04 · Right tool ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-tool">
+      <div class="principle-content stagger">
+        <div class="principle-label">Choose · Principle 04</div>
+        <h1 class="principle-title">Pick the <span class="hl-amber">right</span> AI for the task.</h1>
+        <p class="principle-body">When in doubt, <em>ask AI which AI to use.</em></p>
+      </div>
+      <div class="slide-num">15 · Choose</div>
+    </section>
+
+    <!-- ═══ 16 · Principle 05 · Frame conversations ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-frame">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 05</div>
+        <h1 class="principle-title">Don't perfect the prompt. <span class="hl-teal">Frame the conversation.</span></h1>
+        <p class="principle-body">The <em>session</em> is the unit, not the message.</p>
+      </div>
+      <div class="slide-num">16 · Frame</div>
+    </section>
+
+    <!-- ═══ 17 · Principle 06 · Examples ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-examples">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 06</div>
+        <h1 class="principle-title">Great <span class="hl-purple">examples</span> beat great instructions.</h1>
+        <p class="principle-body">Show what <em>good</em> looks like. Show what bad looks like.</p>
+      </div>
+      <div class="slide-num">17 · Examples</div>
+    </section>
+
+    <!-- ═══ 18 · Principle 07 · Ask AI to ask you ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-questions">
+      <div class="principle-content stagger">
+        <div class="principle-label">Communicate · Principle 07</div>
+        <h1 class="principle-title">Ask AI to ask <span class="hl-red">you</span> questions.</h1>
+        <p class="principle-body">Socratic beats one-shot. Every single time.</p>
+      </div>
+      <div class="slide-num">18 · Questions</div>
+    </section>
+
+    <!-- ═══ 19 · Principle 08 · Work recursively ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-recursive">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 08 · Recursion</div>
+        <h1 class="principle-title">Ask AI for help <em>with</em> <span class="hl-sky">AI</span>.</h1>
+        <p class="principle-body">Use the machines on each other.</p>
+      </div>
+      <div class="slide-num">19 · Recursive</div>
+    </section>
+
+    <!-- ═══ 20 · Principle 09 · Iteration ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-iteration">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 09</div>
+        <h1 class="principle-title">Iteration is <span class="hl-red">everything</span>.</h1>
+        <p class="principle-body">Three to five passes. Every time.</p>
+      </div>
+      <div class="slide-num">20 · Iteration</div>
+    </section>
+
+    <!-- ═══ 21 · Principle 10 · Don't settle ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-settle">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 10</div>
+        <h1 class="principle-title">AI wants to give you a <span class="hl-amber">quick win</span>. Don't take it.</h1>
+        <p class="principle-body">Push back. Ask what it's <em>holding back</em>.</p>
+      </div>
+      <div class="slide-num">21 · Don't settle</div>
+    </section>
+
+    <!-- ═══ 22 · Principle 11 · Cross-check ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-crosscheck">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 11</div>
+        <h1 class="principle-title">Never trust <span class="hl-amber">one</span> machine.</h1>
+        <p class="principle-body">Same task. <em>Three</em> models. Compare.</p>
+      </div>
+      <div class="slide-num">22 · Cross-check</div>
+    </section>
+
+    <!-- ═══ 23 · Principle 12 · Humanize / deslop ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-deslop">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 12</div>
+        <h1 class="principle-title">Always <span class="hl-teal">humanize</span> the output.</h1>
+        <p class="principle-body">Nothing ships raw. <em>Deslop</em> every time.</p>
+      </div>
+      <div class="slide-num">23 · Deslop</div>
+    </section>
+
+    <!-- ═══ 24 · Principle 13 · Human edge ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-human">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 13 · The human edge</div>
+        <h1 class="principle-title">Conviction. Art. Sense. <span class="hl-red">Judgment</span>.</h1>
+        <p class="principle-body">These come from <em>you</em>. Not the machine.</p>
+      </div>
+      <div class="slide-num">24 · Edge</div>
+    </section>
+
+    <!-- ═══ 25 · Principle 14 · Sessions → SOP ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-sop">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 14 · The long game</div>
+        <h1 class="principle-title">Your <span class="hl-teal">sessions</span> become your SOP.</h1>
+        <p class="principle-body">The <em>conversations</em> are the corpus. Guard them.</p>
+      </div>
+      <div class="slide-num">25 · SOP</div>
+    </section>
+
+    <!-- ═══ 26 · Principle 15 · Know / Do / Show ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-kds">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 15 · A mental model</div>
+        <h1 class="principle-title" style="margin-bottom: 0;">Every AI task is one of three things.</h1>
+        <div class="kds-grid">
+          <div class="kds-card know">
+            <h3>Know</h3>
+            <div class="kds-sub">Information</div>
+            <p>Research · reasoning · brainstorming. Input and output are <em>understanding</em>.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Deep Research</span>
+              <span class="kds-eg">Perplexity</span>
+              <span class="kds-eg">Claude</span>
+            </div>
+          </div>
+          <div class="kds-card do">
+            <h3>Do</h3>
+            <div class="kds-sub">Action</div>
+            <p>Agents · automations · software. Input: <em>intent</em>. Output: a thing happening.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Claude Code</span>
+              <span class="kds-eg">Codex</span>
+              <span class="kds-eg">Antigravity</span>
+            </div>
+          </div>
+          <div class="kds-card show">
+            <h3>Show</h3>
+            <div class="kds-sub">Artifact</div>
+            <p>Decks · sites · apps · videos. Input: a <em>message</em>. Output: something consumable.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">NotebookLM</span>
+              <span class="kds-eg">Nano Banana</span>
+              <span class="kds-eg">Seedance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">26 · Know · Do · Show</div>
+    </section>
+
+    <!-- ═══ 27 · The fifteen, one page ═══ -->
     <section class="card-deck-card deck-slide slide-cheatsheet" data-slide="fifteen">
       <div class="cheatsheet-content stagger">
         <div class="cheatsheet-header">
@@ -1113,10 +1413,10 @@ const slides = [
           <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">15</span><span class="cs-title">Every task = <em>Know</em> · <em>Do</em> · <em>Show</em>.</span></div>
         </div>
       </div>
-      <div class="slide-num">12 · The fifteen</div>
+      <div class="slide-num">27 · The fifteen</div>
     </section>
 
-    <!-- ═══ 13 · Homework ═══ -->
+    <!-- ═══ 28 · Homework ═══ -->
     <section class="card-deck-card deck-slide slide-homework" data-slide="homework">
       <div class="homework-content stagger">
         <span class="homework-pill">Homework</span>
@@ -1127,10 +1427,10 @@ const slides = [
           <li>Bring your pick to Session 2.</li>
         </ul>
       </div>
-      <div class="slide-num">13 · Homework</div>
+      <div class="slide-num">28 · Homework</div>
     </section>
 
-    <!-- ═══ 14 · Closing ═══ -->
+    <!-- ═══ 29 · Closing ═══ -->
     <section class="card-deck-card deck-slide slide-closing" data-slide="closing">
       <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
         <span class="closing-label">Session 2 →</span>
@@ -1138,7 +1438,7 @@ const slides = [
         <p class="principle-body" style="max-width: 560px; text-align: center;">Next time, everyone in this room builds real software.</p>
         <div class="closing-footer">Session 1 · end.</div>
       </div>
-      <div class="slide-num">14 · Fin</div>
+      <div class="slide-num">29 · Fin</div>
     </section>
 
   </div>

@@ -15,7 +15,11 @@ export const slideOrder = [
   'relax', 'ladder', 'next-word',
   'break-hands', 'experiments',
   'break-land', 'wider-map',
-  'hold', 'fifteen',
+  'hold',
+  'p-rate', 'p-comms', 'p-loop', 'p-tool', 'p-frame', 'p-examples',
+  'p-questions', 'p-recursive', 'p-iteration', 'p-settle',
+  'p-crosscheck', 'p-deslop', 'p-human', 'p-sop', 'p-kds',
+  'fifteen',
   'homework', 'closing',
 ] as const;
 
@@ -150,18 +154,156 @@ The habit that keeps a team current: one conversation a month, together, about w
 If the energy is right, assign an owner for that conversation in the room.
 Principles 01 and 13.`,
   },
+  'p-rate': {
+    id: 'p-rate',
+    num: 12,
+    title: 'Principle 01 · Rate of improvement',
+    label: 'Recap run · 20 to 30s a slide',
+    notes: `Start of the principle walk. Keep it brisk; several of these landed hands-on earlier, so name the moment and move.
+What is mediocre today is genius in six months. Model quality roughly doubles yearly; the tool list turns over monthly.
+So build around approach, not tools. The approach transfers. The wider map we just toured will look different by Session 2, and that is fine.`,
+  },
+  'p-comms': {
+    id: 'p-comms',
+    num: 13,
+    title: 'Principle 02 · Communication',
+    label: 'The big reframe',
+    notes: `The most important reframe of the day.
+When AI fails you, most of the time the ask was unclear, the context was missing, or nobody showed it what good looks like.
+Engineers are not the people best at AI. Clear communicators with strong taste are.
+Everyone in this room can become one of those.`,
+  },
+  'p-loop': {
+    id: 'p-loop',
+    num: 14,
+    title: 'Principle 03 · The core loop',
+    label: 'The spine of the fifteen',
+    notes: `Every AI interaction is this loop.
+Choose the right tool and scope. Communicate frame, context and examples. Evaluate against your own bar. Repeat.
+Everything else on the list is a move inside one of these three buckets.`,
+  },
+  'p-tool': {
+    id: 'p-tool',
+    num: 15,
+    title: 'Principle 04 · Pick the right AI',
+    label: 'Choose',
+    notes: `They watched this live an hour ago: same brief, three machines, three flavors.
+Different tasks want different tools: reasoning, speed, images, research.
+The meta move: when in doubt, ask one AI which AI to use. It will answer honestly.`,
+  },
+  'p-frame': {
+    id: 'p-frame',
+    num: 16,
+    title: 'Principle 05 · Frame the conversation',
+    label: 'Communicate',
+    notes: `They built this in the prompt builder.
+The session is the unit, not the message. Set who the AI is, what you are doing, and what success looks like.
+Once the frame is set, one-word follow-ups get great answers.`,
+  },
+  'p-examples': {
+    id: 'p-examples',
+    num: 17,
+    title: 'Principle 06 · Examples beat instructions',
+    label: 'Communicate',
+    notes: `Telling AI "make it punchier" is vague. Showing it three punchy examples calibrates it instantly.
+Works for writing voice, visuals and decisions. The model moves toward your examples.
+Bakery version: paste three past captions you loved before asking for a new one.`,
+  },
+  'p-questions': {
+    id: 'p-questions',
+    num: 18,
+    title: 'Principle 07 · Ask AI to ask you',
+    label: 'Communicate',
+    notes: `The single highest-return habit: "Before you start, ask me five questions that would make your answer better."
+It surfaces assumptions you did not know you had. You answer, and the output improves dramatically.
+Socratic beats one-shot. Every time.`,
+  },
+  'p-recursive': {
+    id: 'p-recursive',
+    num: 19,
+    title: 'Principle 08 · Recursion',
+    label: 'Use AI on AI',
+    notes: `Stuck on a prompt? Ask another AI to write a better one.
+Output went wrong? Paste it in and ask what went wrong.
+AI is trained on how to use AI. Use the machines on each other.`,
+  },
+  'p-iteration': {
+    id: 'p-iteration',
+    num: 20,
+    title: 'Principle 09 · Iteration',
+    label: 'Evaluate',
+    notes: `They lived this in the hands-on block; point back at it.
+A good result takes three to five passes, not one. Amateurs quit after one try; pros budget for the passes.
+Each pass injects your standards. You are the quality filter.`,
+  },
+  'p-settle': {
+    id: 'p-settle',
+    num: 21,
+    title: 'Principle 10 · Don\'t take the quick win',
+    label: 'Evaluate',
+    notes: `Models are trained to seem helpful fast, so the first answer is optimized to be acceptable, not excellent.
+Push back: ask for three alternatives, ask what it is holding back.
+The best material shows up on pass two or three.`,
+  },
+  'p-crosscheck': {
+    id: 'p-crosscheck',
+    num: 22,
+    title: 'Principle 11 · Never trust one machine',
+    label: 'Evaluate',
+    notes: `They watched this live in the three-machine comparison.
+When stakes are high, run the same task through two or three models.
+Where they agree, move with confidence. Where they diverge, real thinking is required.
+Five extra minutes against a confidently wrong answer.`,
+  },
+  'p-deslop': {
+    id: 'p-deslop',
+    num: 23,
+    title: 'Principle 12 · Humanize the output',
+    label: 'Evaluate',
+    notes: `They wrote their own de-slop prompt an hour ago; connect back to it.
+AI has tells: em-dashes, "crucial", "leverage", tidy three-point lists.
+The pass: read it aloud, break the rhythm, add one thing only you would know.
+Nothing ships raw.`,
+  },
+  'p-human': {
+    id: 'p-human',
+    num: 24,
+    title: 'Principle 13 · The human edge',
+    label: 'Land this one slowly',
+    notes: `AI can generate ten options. It cannot tell you which one is right for your brand.
+Taste, conviction and judgment come from you, and experience compounds harder than ever.
+Twenty years of knowing what good product looks like just became more valuable, not less.`,
+  },
+  'p-sop': {
+    id: 'p-sop',
+    num: 25,
+    title: 'Principle 14 · Sessions become SOP',
+    label: 'The long game',
+    notes: `The five-year bet. Your saved conversations become how the AI learns your voice, your standards, your way of working.
+That corpus is a moat. Do not treat sessions as throwaway.
+This is why "guard your saved sessions" sits inside Grow, don't chase.`,
+  },
+  'p-kds': {
+    id: 'p-kds',
+    num: 26,
+    title: 'Principle 15 · Know / Do / Show',
+    label: 'Close the run here',
+    notes: `Every AI task fits one bucket.
+Know: research, reasoning, understanding. Do: agents and software, which is what Session 2 builds. Show: decks, images, video, artifacts.
+Picking the bucket first tells you which tool to reach for and what "good" means.`,
+  },
   fifteen: {
     id: 'fifteen',
-    num: 12,
+    num: 27,
     title: 'The fifteen, one page',
     label: 'Leave it up during discussion',
-    notes: `Do not read the list out. Leave it on screen while the staying-current discussion runs.
+    notes: `The walk you just did, on one page. Do not read the list out again. Leave it on screen while the staying-current discussion runs.
 Tell them the printed version comes with the leave-behind, so nobody needs to photograph the screen.
 Any one of these can eat ten minutes of debate. Allow at most one debate, then move.`,
   },
   homework: {
     id: 'homework',
-    num: 13,
+    num: 28,
     title: 'Homework · before Session 2',
     label: '1:50 · 10m',
     notes: `Three asks, kept small on purpose:
@@ -173,7 +315,7 @@ Principles 04 and 11.`,
   },
   closing: {
     id: 'closing',
-    num: 14,
+    num: 29,
     title: 'Closing · Session 2 preview',
     label: 'End on time',
     notes: `Sell Session 2 in one line: next time, everyone in this room builds real software, most of you for the first time.
