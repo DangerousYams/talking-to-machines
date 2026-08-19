@@ -4,14 +4,18 @@ import { useIsMobile } from '../../hooks/useMediaQuery';
 /*
  * ContextLab, the standalone Cultivated AI context-window simulator.
  *
- * No real AI calls. A simulated chat fills a scaled-down context window so a
- * workshop room can watch tokens pile up, old messages fall out, and
- * compaction buy the chat a second life. A live cost meter prices every turn
- * against real model rates, because every turn re-sends the whole window.
+ * No real AI calls, and no free typing: two scripted demos. A simulated chat
+ * fills a scaled-down context window so a workshop room can watch tokens pile
+ * up and old messages fall out of the model's sight. The chat stream IS the
+ * window: the pinned system prompt sits at the top, a red divider marks where
+ * visibility ends, and everything above it is grayed out.
  *
- * The scripted demo ends with a recall test: the assistant either remembers
- * the price decided early in the chat, or admits it can no longer see it,
- * depending on whether that message survived in the window.
+ * Two buttons, one lesson:
+ *   Demo             → the price decided early falls out; the model forgets.
+ *   With compaction  → a mid-chat summary carries the price; it remembers.
+ *
+ * A live cost panel prices every turn against real model rates, because every
+ * turn re-sends the whole window.
  */
 
 // ---------- Palette ----------
@@ -46,15 +50,15 @@ const MODELS: ModelInfo[] = [
   { id: 'gemini', name: 'Gemini 3.1 Pro',   short: 'Gemini',  maker: 'Google',    inPrice: 2,  outPrice: 12, window: 2_000_000, color: SKY },
 ];
 
-const INR_PER_USD = 88; // approximate
+const INR_PER_USD = 95; // approximate
 
 const WINDOW_OPTIONS = [2000, 5000, 10000];
 
-const SYSTEM_PROMPT_DEFAULT =
-  'You are a marketing assistant for an artisanal bakery brand sold on quick-commerce apps. Be concrete, use plain language, and keep Indian audiences in mind.';
+const SYSTEM_PROMPT = 'You are a marketing assistant for an artisanal bakery brand sold on quick-commerce apps. Be concrete, use plain language, and keep Indian audiences in mind.';
 
 // ---------- Types ----------
 type BlockKind = 'user' | 'assistant' | 'summary';
+type DemoMode = 'plain' | 'compact';
 
 interface Block {
   id: number;
@@ -96,18 +100,9 @@ function padToTokens(base: string, target: number): string {
   return text;
 }
 
-const GENERIC_REPLIES = [
-  'Here is a first pass. The structure leads with the benefit, then the detail.',
-  'Good direction. I drafted it in a warm, direct voice, no filler.',
-  'Done. I kept the strongest line first and trimmed the rest.',
-  'Here you go. I flagged one assumption you may want to confirm.',
-  'Drafted. I leaned premium rather than playful, based on the brand so far.',
-  'Here is a tighter version, with one bolder alternative at the end.',
-];
-
 // ---------- The scripted demo ----------
 // Each step: what "you" send, and how the assistant answers.
-// The price turn is the recall target; step 15 branches on whether it survived.
+// The price turn is the recall target; the last step branches on whether it survived.
 interface ScriptStep {
   user: string;
   reply: string;
@@ -225,6 +220,8 @@ function fmtWindow(n: number): string {
   return n >= 1_000_000 ? `${n / 1_000_000}M` : `${Math.round(n / 1000)}k`;
 }
 
+const SYS_TOKENS = estimateTokens(SYSTEM_PROMPT);
+
 // ---------- Component ----------
 export default function ContextLab() {
   const isMobile = useIsMobile();
@@ -232,22 +229,20 @@ export default function ContextLab() {
   const [modelId, setModelId] = useState('sonnet');
   const [demoWindow, setDemoWindow] = useState(2000);
   const [currency, setCurrency] = useState<'usd' | 'inr'>('inr');
-  const [sysPrompt, setSysPrompt] = useState(SYSTEM_PROMPT_DEFAULT);
-  const [sysOpen, setSysOpen] = useState(false);
 
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [ledger, setLedger] = useState<LedgerEntry[]>([]);
-  const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
 
-  const [autoCompact, setAutoCompact] = useState(false);
   const [lastEvent, setLastEvent] = useState<'none' | 'dropped' | 'compacted' | 'recall-hit' | 'recall-miss'>('none');
+  const [sysOpen, setSysOpen] = useState(false);
 
   const [playing, setPlaying] = useState(false);
+  const [mode, setMode] = useState<DemoMode>('plain');
+  const modeRef = useRef<DemoMode>('plain');
   const scriptIdx = useRef(0);
   const playTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextId = useRef(1);
-  const genericIdx = useRef(0);
 
   // Synchronous mirror of `blocks` so timer callbacks and the skip loop never
   // act on a stale snapshot, and state updaters stay pure.
@@ -260,7 +255,6 @@ export default function ContextLab() {
   const transcriptRef = useRef<HTMLDivElement>(null);
 
   const model = MODELS.find((m) => m.id === modelId)!;
-  const sysTokens = estimateTokens(sysPrompt);
 
   // Inject keyframes once
   useEffect(() => {
@@ -268,11 +262,9 @@ export default function ContextLab() {
     const el = document.createElement('style');
     el.id = 'ctx-lab-styles';
     el.textContent = `
-      @keyframes ctx-block-in { from { opacity: 0; transform: translateY(8px) scaleY(0.7); } to { opacity: 1; transform: translateY(0) scaleY(1); } }
       @keyframes ctx-summary-pop { 0% { opacity: 0; transform: scale(0.92); } 60% { transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
       @keyframes ctx-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes ctx-blink { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.1; } }
-      .ctx-quiet:hover:not(:disabled) { color: #1A1A2E; }
       @media (prefers-reduced-motion: reduce) {
         .ctx-anim { animation: none !important; }
       }
@@ -293,7 +285,7 @@ export default function ContextLab() {
   // system prompt. Everything that does not fit has fallen out.
   const { liveIds, liveTokens, droppedCount } = useMemo(() => {
     const live = new Set<number>();
-    let acc = sysTokens;
+    let acc = SYS_TOKENS;
     for (let i = blocks.length - 1; i >= 0; i--) {
       const b = blocks[i];
       if (acc + b.tokens <= demoWindow) {
@@ -308,12 +300,10 @@ export default function ContextLab() {
       liveTokens: acc,
       droppedCount: blocks.filter((b) => !live.has(b.id)).length,
     };
-  }, [blocks, sysTokens, demoWindow]);
+  }, [blocks, demoWindow]);
 
   const fillPct = Math.min(100, Math.round((liveTokens / demoWindow) * 100));
   const meterColor = fillPct >= 92 ? RED : fillPct >= 65 ? AMBER : TEAL;
-
-  const liveBlocks = blocks.filter((b) => liveIds.has(b.id));
 
   // ---------- Cost math ----------
   const sessionCost = useCallback((m: ModelInfo) =>
@@ -343,7 +333,7 @@ export default function ContextLab() {
     // Fold everything still in the window except the last four blocks into
     // one summary. Messages already fallen out cannot be recovered.
     const live = new Set<number>();
-    let acc = sysTokens;
+    let acc = SYS_TOKENS;
     for (let i = current.length - 1; i >= 0; i--) {
       if (acc + current[i].tokens <= demoWindow) { acc += current[i].tokens; live.add(current[i].id); }
       else break;
@@ -371,25 +361,17 @@ export default function ContextLab() {
     const out = current.filter((b) => !folded.some((f) => f.id === b.id));
     out.splice(firstFoldedIdx, 0, summary);
     return out;
-  }, [sysTokens, demoWindow]);
-
-  const handleCompact = () => {
-    const next = compact(blocksRef.current);
-    if (next !== blocksRef.current) {
-      setLastEvent('compacted');
-      commitBlocks(next);
-    }
-  };
+  }, [demoWindow]);
 
   // ---------- Sending ----------
   // Computes the whole turn synchronously from blocksRef, so autoplay timers
   // and the skip loop always build on the latest state.
-  const appendTurn = useCallback((userText: string, replyText: string, replyTokens: number, recall?: 'hit' | 'miss') => {
+  const appendTurn = useCallback((userText: string, replyText: string, replyTokens: number) => {
     const userBlock: Block = { id: nextId.current++, kind: 'user', text: userText, tokens: estimateTokens(userText) };
     let next = [...blocksRef.current, userBlock];
 
     // Input cost: everything currently in the window, including the new message
-    let acc = sysTokens;
+    let acc = SYS_TOKENS;
     for (let i = next.length - 1; i >= 0; i--) {
       if (acc + next[i].tokens <= demoWindow) acc += next[i].tokens;
       else break;
@@ -401,13 +383,12 @@ export default function ContextLab() {
       kind: 'assistant',
       text: replyText,
       tokens: replyTokens,
-      recall,
     };
     next = [...next, assistantBlock];
 
-    // Auto-compact after the turn if the window is nearly full
-    if (autoCompact) {
-      let accNow = sysTokens;
+    // In the compaction demo, compact after the turn once the window is nearly full
+    if (modeRef.current === 'compact') {
+      let accNow = SYS_TOKENS;
       for (let i = next.length - 1; i >= 0; i--) {
         if (accNow + next[i].tokens <= demoWindow) accNow += next[i].tokens;
         else break;
@@ -422,7 +403,7 @@ export default function ContextLab() {
       }
     }
     commitBlocks(next);
-  }, [sysTokens, demoWindow, autoCompact, compact]);
+  }, [demoWindow, compact]);
 
   const runStep = useCallback((step: ScriptStep) => {
     if (step.isRecallTest) {
@@ -431,7 +412,7 @@ export default function ContextLab() {
       const userBlock: Block = { id: nextId.current++, kind: 'user', text: step.user, tokens: estimateTokens(step.user) };
       const withUser = [...blocksRef.current, userBlock];
       const live = new Set<number>();
-      let acc = sysTokens;
+      let acc = SYS_TOKENS;
       for (let i = withUser.length - 1; i >= 0; i--) {
         if (acc + withUser[i].tokens <= demoWindow) { acc += withUser[i].tokens; live.add(withUser[i].id); }
         else break;
@@ -449,7 +430,7 @@ export default function ContextLab() {
     } else {
       appendTurn(step.user, step.reply, step.replyTokens);
     }
-  }, [appendTurn, priceSurvives, sysTokens, demoWindow]);
+  }, [appendTurn, priceSurvives, demoWindow]);
 
   const playingRef = useRef(false);
 
@@ -462,22 +443,42 @@ export default function ContextLab() {
     const step = DEMO_SCRIPT[scriptIdx.current];
     scriptIdx.current += 1;
     setTyping(true);
+    // Workshop pacing: a beat of "typing", then reading time before the next turn.
     playTimer.current = setTimeout(() => {
       setTyping(false);
       runStep(step);
       playTimer.current = setTimeout(() => {
         if (playingRef.current) playNext();
-      }, 650);
-    }, 500);
+      }, 2600);
+    }, 1000);
   }, [runStep]);
 
-  const handlePlay = () => {
-    if (playingRef.current) {
-      playingRef.current = false;
-      setPlaying(false);
-      if (playTimer.current) clearTimeout(playTimer.current);
-      setTyping(false);
+  const stopTimers = () => {
+    playingRef.current = false;
+    setPlaying(false);
+    if (playTimer.current) clearTimeout(playTimer.current);
+    setTyping(false);
+  };
+
+  const clearChat = () => {
+    scriptIdx.current = 0;
+    commitBlocks([]);
+    setLedger([]);
+    setLastEvent('none');
+  };
+
+  const startDemo = (m: DemoMode) => {
+    // Pressing the running demo's button pauses it
+    if (playingRef.current && modeRef.current === m) {
+      stopTimers();
       return;
+    }
+    if (playingRef.current) stopTimers();
+    const pausedMidRun = modeRef.current === m && scriptIdx.current > 0 && scriptIdx.current < DEMO_SCRIPT.length;
+    if (!pausedMidRun) {
+      clearChat();
+      modeRef.current = m;
+      setMode(m);
     }
     playingRef.current = true;
     setPlaying(true);
@@ -485,10 +486,7 @@ export default function ContextLab() {
   };
 
   const handleSkip = () => {
-    playingRef.current = false;
-    setPlaying(false);
-    if (playTimer.current) clearTimeout(playTimer.current);
-    setTyping(false);
+    stopTimers();
     while (scriptIdx.current < DEMO_SCRIPT.length) {
       const step = DEMO_SCRIPT[scriptIdx.current];
       scriptIdx.current += 1;
@@ -497,30 +495,8 @@ export default function ContextLab() {
   };
 
   const handleReset = () => {
-    playingRef.current = false;
-    setPlaying(false);
-    if (playTimer.current) clearTimeout(playTimer.current);
-    setTyping(false);
-    scriptIdx.current = 0;
-    genericIdx.current = 0;
-    commitBlocks([]);
-    setLedger([]);
-    setLastEvent('none');
-  };
-
-  const handleSend = () => {
-    const trimmed = input.trim();
-    if (!trimmed) return;
-    setInput('');
-    const base = GENERIC_REPLIES[genericIdx.current % GENERIC_REPLIES.length];
-    genericIdx.current += 1;
-    const target = Math.min(220, Math.max(30, Math.round(estimateTokens(trimmed) * 1.8)));
-    const reply = padToTokens(base, target);
-    setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      appendTurn(trimmed, reply, estimateTokens(reply));
-    }, 450);
+    stopTimers();
+    clearChat();
   };
 
   // Track drops for the insight bar
@@ -535,11 +511,11 @@ export default function ContextLab() {
   // ---------- Insight copy ----------
   const insight = (() => {
     if (lastEvent === 'recall-miss')
-      return { color: RED, label: 'The forgetting, live', text: 'You asked about the price. That message fell out of the window, so the model honestly cannot see it. Reset, switch on auto-compact, and play again: the summary carries the price through.' };
+      return { color: RED, label: 'The forgetting, live', text: 'You asked about the price. That message fell out of the window, so the model honestly cannot see it. Now run "With compaction": a summary carries the price through and the ending changes.' };
     if (lastEvent === 'recall-hit')
-      return { color: TEAL, label: 'It remembered', text: 'The price survived, either the message is still in the window or a summary carried it. This is why compacting early beats compacting late.' };
+      return { color: TEAL, label: 'It remembered', text: 'The price survived: the compaction summary carried it inside the window. Same chat, different ending. Claude and ChatGPT do this quietly in long chats.' };
     if (lastEvent === 'compacted')
-      return { color: AMBER, label: 'Compaction', text: 'Older messages became one short summary. The window has room again, but only what the summary mentions survives. Claude and ChatGPT do this quietly in long chats.' };
+      return { color: AMBER, label: 'Compaction', text: 'Older messages just became one short summary. The window has room again, but only what the summary mentions survives.' };
     if (lastEvent === 'dropped')
       return { color: RED, label: 'Messages falling out', text: `The oldest ${droppedCount} message${droppedCount === 1 ? '' : 's'} no longer fit. The model is not being forgetful; they are simply not in the window it reads.` };
     if (fillPct > 60)
@@ -551,125 +527,126 @@ export default function ContextLab() {
   const blockColor = (b: Block) =>
     b.kind === 'user' ? NAVY : b.kind === 'summary' ? AMBER : PURPLE;
 
-  const renderGlass = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.66rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: PURPLE }}>
-          The window
-        </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.66rem', color: SUBTLE }}>
-          {fmtTok(liveTokens)} / {fmtTok(demoWindow)} tok
-        </span>
-      </div>
+  const firstLiveIdx = blocks.findIndex((b) => liveIds.has(b.id));
 
-      {/* Glass container */}
-      <div style={{
-        flex: 1, minHeight: isMobile ? 240 : 0, display: 'flex', flexDirection: 'column',
-        border: `2px solid ${INK}`, borderRadius: 14, overflow: 'hidden',
-        background: 'linear-gradient(180deg, rgba(123,97,255,0.03), rgba(26,26,46,0.02))',
-      }}>
-        {/* System prompt, pinned */}
-        <button
-          onClick={() => setSysOpen((o) => !o)}
-          style={{
-            display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer',
-            padding: '8px 12px', background: 'rgba(123,97,255,0.12)',
-            borderBottom: '1px solid rgba(123,97,255,0.2)', borderTop: 'none', borderLeft: 'none', borderRight: 'none',
-            flexShrink: 0,
-          }}
-          aria-expanded={sysOpen}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', fontWeight: 700, color: PURPLE, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              System · pinned {sysOpen ? '▾' : '▸'}
-            </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: PURPLE, opacity: 0.7 }}>{sysTokens} tok</span>
-          </div>
-          {!sysOpen && (
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: PURPLE, margin: '2px 0 0', opacity: 0.75, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {sysPrompt}
-            </p>
-          )}
-        </button>
-        {sysOpen && (
-          <textarea
-            value={sysPrompt}
-            onChange={(e) => setSysPrompt(e.target.value)}
-            rows={3}
-            style={{
-              width: '100%', boxSizing: 'border-box', padding: '8px 12px', border: 'none',
-              borderBottom: '1px solid rgba(123,97,255,0.2)', outline: 'none', resize: 'none',
-              background: 'rgba(123,97,255,0.06)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem',
-              lineHeight: 1.5, color: DEEP, flexShrink: 0,
-            }}
-            aria-label="System prompt"
-          />
-        )}
-
-        {/* Dropped chip */}
-        {droppedCount > 0 && (
-          <div style={{ padding: '4px 12px', background: 'rgba(233,69,96,0.06)', borderBottom: '1px dashed rgba(233,69,96,0.25)', flexShrink: 0 }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: RED, fontWeight: 600 }}>
-              ↑ {droppedCount} message{droppedCount === 1 ? '' : 's'} fell out
-            </span>
-          </div>
-        )}
-
-        {/* Live blocks, proportional heights */}
-        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 6, gap: 3, overflow: 'hidden' }}>
-          {liveBlocks.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '2rem 1rem', opacity: 0.35 }}>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: SUBTLE, margin: 0 }}>
-                Empty. Send something, or press Play.
-              </p>
-            </div>
-          )}
-          {liveBlocks.map((b) => {
-            const c = blockColor(b);
-            return (
-              <div
-                key={b.id}
-                className="ctx-anim"
-                title={`${b.tokens} tokens`}
-                style={{
-                  flexGrow: b.tokens, flexBasis: 0, minHeight: 15, overflow: 'hidden',
-                  borderRadius: 6, padding: '2px 8px',
-                  background: `${c}${b.kind === 'summary' ? '2A' : '14'}`,
-                  borderLeft: `3px solid ${c}`,
-                  animation: b.kind === 'summary' ? 'ctx-summary-pop 0.45s ease-out' : 'ctx-block-in 0.35s ease-out',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6,
-                }}
-              >
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: DEEP, opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {b.kind === 'summary' ? '⧉ ' : ''}{b.text}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Fill meter */}
-      <div style={{ marginTop: 10 }}>
-        <div style={{ height: 8, borderRadius: 100, background: 'rgba(26,26,46,0.07)', overflow: 'hidden' }}>
-          <div style={{ width: `${fillPct}%`, height: '100%', borderRadius: 100, background: meterColor, transition: 'width 0.4s ease, background 0.4s ease' }} />
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: meterColor, fontWeight: 700 }}>{fillPct}% full</span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: SUBTLE }}>
-            real {model.short}: {fmtWindow(model.window)} tok · {Math.round(model.window / demoWindow)}× this demo
+  const renderBlock = (b: Block) => {
+    const dropped = !liveIds.has(b.id);
+    const c = blockColor(b);
+    const isRecall = b.recall !== undefined;
+    return (
+      <div
+        key={b.id}
+        className="ctx-anim"
+        style={{
+          alignSelf: b.kind === 'user' ? 'flex-end' : 'flex-start',
+          maxWidth: '88%',
+          padding: '8px 12px', borderRadius: 12,
+          borderBottomRightRadius: b.kind === 'user' ? 4 : 12,
+          borderBottomLeftRadius: b.kind === 'user' ? 12 : 4,
+          background: dropped ? 'rgba(26,26,46,0.035)' : `${c}${b.kind === 'summary' ? '1E' : '0E'}`,
+          border: isRecall
+            ? `1.5px solid ${b.recall === 'hit' ? TEAL : RED}`
+            : b.kind === 'summary'
+              ? `1px dashed ${AMBER}66`
+              : 'none',
+          opacity: dropped ? 0.45 : 1,
+          animation: b.kind === 'summary' ? 'ctx-summary-pop 0.45s ease-out' : 'ctx-fade-in 0.3s ease-out',
+          transition: 'opacity 0.4s ease',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: dropped ? SUBTLE : c }}>
+            {b.kind === 'user' ? 'you' : b.kind === 'summary' ? '⧉ summary' : 'assistant'}
           </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: SUBTLE }}>{b.tokens} tok</span>
+          {dropped && (
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: RED }}>OUT OF WINDOW</span>
+          )}
+          {isRecall && (
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: b.recall === 'hit' ? TEAL : RED }}>
+              {b.recall === 'hit' ? 'REMEMBERED' : 'FORGOT'}
+            </span>
+          )}
         </div>
+        <p style={{
+          fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.55,
+          color: dropped ? SUBTLE : DEEP, margin: 0,
+          display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+        }}>
+          {b.text}
+        </p>
       </div>
+    );
+  };
+
+  // The red line where the model's sight begins: everything above it fell out.
+  const cutoffDivider = (
+    <div key="cutoff" style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '4px 0' }}>
+      <span style={{ flex: 1, borderTop: `2px dashed ${RED}55` }} />
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: RED, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
+        ↑ {droppedCount} message{droppedCount === 1 ? '' : 's'} out of the window · the model reads from here ↓
+      </span>
+      <span style={{ flex: 1, borderTop: `2px dashed ${RED}55` }} />
+    </div>
+  );
+
+  const renderTranscript = () => (
+    <div ref={transcriptRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 6, position: 'relative' }}>
+      {/* System prompt, pinned: it scrolls with nothing and never falls out. Click to expand. */}
+      <button
+        onClick={() => setSysOpen((o) => !o)}
+        aria-expanded={sysOpen}
+        style={{
+          position: 'sticky', top: 0, zIndex: 2, flexShrink: 0,
+          display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer',
+          background: '#EFECFE', border: `1px solid ${PURPLE}30`, borderRadius: 10,
+          padding: '7px 12px',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 700, color: PURPLE, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+            System · pinned, never falls out {sysOpen ? '▾' : '▸'}
+          </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: PURPLE, opacity: 0.7, whiteSpace: 'nowrap' }}>{SYS_TOKENS} tok</span>
+        </div>
+        <p style={{
+          fontFamily: 'var(--font-mono)', fontSize: '0.66rem', color: PURPLE, margin: '2px 0 0', opacity: 0.75,
+          overflow: 'hidden',
+          textOverflow: sysOpen ? 'clip' : 'ellipsis',
+          whiteSpace: sysOpen ? 'normal' : 'nowrap',
+          lineHeight: 1.55,
+        }} title={sysOpen ? undefined : 'Click to expand'}>
+          {SYSTEM_PROMPT}
+        </p>
+      </button>
+
+      {blocks.length === 0 && (
+        <div style={{ padding: '2.5rem 1rem', textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: SUBTLE, fontStyle: 'italic', margin: 0, lineHeight: 1.7 }}>
+            Press <strong style={{ fontStyle: 'normal' }}>Demo</strong> and watch a bakery brand plan a Diwali launch until the window overflows.<br />
+            Then press <strong style={{ fontStyle: 'normal' }}>With compaction</strong> and compare the ending.
+          </p>
+        </div>
+      )}
+      {blocks.map((b, i) => {
+        const nodes = [];
+        if (droppedCount > 0 && i === firstLiveIdx) nodes.push(cutoffDivider);
+        nodes.push(renderBlock(b));
+        return nodes;
+      })}
+      {typing && (
+        <div style={{ alignSelf: 'flex-start', padding: '10px 14px', borderRadius: 12, background: `${PURPLE}0E`, display: 'flex', gap: 5 }}>
+          {[0, 0.15, 0.3].map((d) => (
+            <span key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: PURPLE, animation: `ctx-blink 1s ease-in-out ${d}s infinite` }} />
+          ))}
+        </div>
+      )}
     </div>
   );
 
   const renderCostPanel = () => (
-    <div style={{
-      marginTop: 14, padding: '12px 14px', borderRadius: 12,
-      background: 'white', border: `1.5px solid ${INK}`,
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.66rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: SUBTLE }}>
           The bill
         </span>
@@ -685,152 +662,99 @@ export default function ContextLab() {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.7rem', fontWeight: 800, color: model.color, lineHeight: 1 }}>
+        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '2.4rem', fontWeight: 800, color: model.color, lineHeight: 1 }}>
           {money(sessionCost(model))}
         </span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE }}>
-          whole chat · {ledger.length} turn{ledger.length === 1 ? '' : 's'} · {model.name}
-        </span>
+      </div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: SUBTLE, marginTop: 8 }}>
+        whole chat · {ledger.length} turn{ledger.length === 1 ? '' : 's'} · {model.name}
       </div>
       {lastTurn && (
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, marginTop: 5 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: SUBTLE, marginTop: 4 }}>
           last turn {money(lastTurnCost)} · {fmtTok(lastTurn.inTokens)} in / {fmtTok(lastTurn.outTokens)} out
         </div>
       )}
 
-      {/* Same chat, five bills */}
-      {ledger.length > 0 && (
-        <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px dashed ${INK}` }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, marginBottom: 6 }}>same chat on every model</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {MODELS.map((m) => {
-              const cost = sessionCost(m);
-              const max = Math.max(...MODELS.map((x) => sessionCost(x)), 0.000001);
-              const isSel = m.id === modelId;
-              return (
-                <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: isSel ? DEEP : SUBTLE, fontWeight: isSel ? 700 : 400, width: 62, flexShrink: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                    {m.short}
-                  </span>
-                  <div style={{ flex: 1, height: 5, borderRadius: 100, background: 'rgba(26,26,46,0.05)', overflow: 'hidden' }}>
-                    <div style={{ width: `${Math.max(3, (cost / max) * 100)}%`, height: '100%', borderRadius: 100, background: m.color, opacity: isSel ? 1 : 0.45, transition: 'width 0.4s ease' }} />
-                  </div>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: isSel ? DEEP : SUBTLE, fontWeight: isSel ? 700 : 400, width: 72, textAlign: 'right', flexShrink: 0 }}>
-                    {money(cost)}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.68rem', fontStyle: 'italic', color: SUBTLE, marginTop: 8 }}>
-            Every turn re-sends the whole window. Long chats get pricier per message.
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  const renderTranscript = () => (
-    <div ref={transcriptRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '4px 2px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-      {blocks.length === 0 && (
-        <div style={{ padding: '2.5rem 1rem', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: SUBTLE, fontStyle: 'italic', margin: 0, lineHeight: 1.6 }}>
-            Press <strong style={{ fontStyle: 'normal' }}>Play the demo</strong> to watch a bakery brand plan a Diwali launch, or type anything below.<br />
-            No real AI, only real math.
-          </p>
-        </div>
-      )}
-      {blocks.map((b) => {
-        const dropped = !liveIds.has(b.id);
-        const c = blockColor(b);
-        const isRecall = b.recall !== undefined;
+      {/* Cost per turn: the staircase is the lesson. Each bar is one turn priced at the
+          selected model's rates; on the compaction run the bars visibly drop after the fold. */}
+      {ledger.length > 0 && (() => {
+        const turnCosts = ledger.map((e) => (e.inTokens * model.inPrice + e.outTokens * model.outPrice) / 1_000_000);
+        const peak = Math.max(...turnCosts);
         return (
-          <div
-            key={b.id}
-            className="ctx-anim"
-            style={{
-              alignSelf: b.kind === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '88%',
-              padding: '8px 12px', borderRadius: 12,
-              borderBottomRightRadius: b.kind === 'user' ? 4 : 12,
-              borderBottomLeftRadius: b.kind === 'user' ? 12 : 4,
-              background: dropped ? 'rgba(26,26,46,0.035)' : `${c}${b.kind === 'summary' ? '1E' : '0E'}`,
-              border: isRecall
-                ? `1.5px solid ${b.recall === 'hit' ? TEAL : RED}`
-                : b.kind === 'summary'
-                  ? `1px dashed ${AMBER}66`
-                  : 'none',
-              opacity: dropped ? 0.45 : 1,
-              animation: 'ctx-fade-in 0.3s ease-out',
-              transition: 'opacity 0.4s ease',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: dropped ? SUBTLE : c }}>
-                {b.kind === 'user' ? 'you' : b.kind === 'summary' ? '⧉ summary' : 'assistant'}
+          <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px dashed ${INK}`, flex: 1, minHeight: 130, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: SUBTLE, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                cost per turn
               </span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: SUBTLE }}>{b.tokens} tok</span>
-              {dropped && (
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: RED }}>OUT OF WINDOW</span>
-              )}
-              {isRecall && (
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', fontWeight: 700, color: b.recall === 'hit' ? TEAL : RED }}>
-                  {b.recall === 'hit' ? 'REMEMBERED' : 'FORGOT'}
-                </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: SUBTLE }}>
+                peak {money(peak)}
+              </span>
+            </div>
+            <div style={{ flex: 1, minHeight: 84, display: 'flex', alignItems: 'flex-end', gap: 2, borderBottom: `1px solid ${INK}` }}>
+              {turnCosts.map((c, i) => (
+                <div
+                  key={i}
+                  title={`turn ${i + 1} · ${money(c)}`}
+                  style={{
+                    flex: 1, maxWidth: 18,
+                    height: `${peak > 0 ? Math.max(5, (c / peak) * 100) : 5}%`,
+                    background: model.color,
+                    opacity: i === turnCosts.length - 1 ? 1 : 0.5,
+                    borderRadius: '3px 3px 0 0',
+                    transition: 'height 0.3s ease',
+                  }}
+                />
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: SUBTLE }}>turn 1</span>
+              {ledger.length > 1 && (
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: SUBTLE }}>turn {ledger.length}</span>
               )}
             </div>
-            <p style={{
-              fontFamily: 'var(--font-body)', fontSize: '0.82rem', lineHeight: 1.55,
-              color: dropped ? SUBTLE : DEEP, margin: 0,
-              display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-            }}>
-              {b.text}
-            </p>
           </div>
         );
-      })}
-      {typing && (
-        <div style={{ alignSelf: 'flex-start', padding: '10px 14px', borderRadius: 12, background: `${PURPLE}0E`, display: 'flex', gap: 5 }}>
-          {[0, 0.15, 0.3].map((d) => (
-            <span key={d} style={{ width: 6, height: 6, borderRadius: '50%', background: PURPLE, animation: `ctx-blink 1s ease-in-out ${d}s infinite` }} />
-          ))}
+      })()}
+
+      <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px dashed ${INK}` }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.74rem', fontStyle: 'italic', color: SUBTLE, lineHeight: 1.6 }}>
+          Every turn re-sends the whole window. Long chats get pricier per message. This demo window is {fmtTok(demoWindow)} tokens; real {model.short} carries {fmtWindow(model.window)}, about {Math.round(model.window / demoWindow).toLocaleString('en-IN')}× more.
         </div>
-      )}
+      </div>
     </div>
   );
 
-  const canCompact = liveBlocks.length > 6;
+  const midRun = scriptIdx.current > 0 && scriptIdx.current < DEMO_SCRIPT.length;
 
-  const quietBtn = (label: string, onClick: () => void, disabled?: boolean) => (
+  const demoBtn = (m: DemoMode, baseLabel: string, color: string) => {
+    const isActive = mode === m;
+    const label = playing && isActive ? '❚❚ Pause' : !playing && isActive && midRun ? '▶ Continue' : baseLabel;
+    return (
+      <button
+        onClick={() => startDemo(m)}
+        style={{
+          padding: '8px 14px', borderRadius: 100, border: 'none',
+          background: color,
+          color: 'white',
+          fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700,
+          cursor: 'pointer',
+          boxShadow: `0 6px 16px ${color}35`,
+          opacity: playing && !isActive ? 0.55 : 1,
+          transition: 'all 0.2s',
+        }}
+      >
+        {label}
+      </button>
+    );
+  };
+
+  const quietBtn = (label: string, onClick: () => void) => (
     <button
-      className="ctx-quiet"
       onClick={onClick}
-      disabled={disabled}
       style={{
         padding: '6px 2px', border: 'none', background: 'none',
         fontFamily: 'var(--font-body)', fontSize: '0.76rem', fontWeight: 600,
-        color: SUBTLE, cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.4 : 1, transition: 'color 0.15s',
-      }}
-    >
-      {label}
-    </button>
-  );
-
-  const controlBtn = (label: string, onClick: () => void, opts?: { primary?: boolean; disabled?: boolean; color?: string }) => (
-    <button
-      onClick={onClick}
-      disabled={opts?.disabled}
-      style={{
-        padding: '8px 14px', borderRadius: 100,
-        border: opts?.primary ? 'none' : `1.5px solid ${INK}`,
-        background: opts?.primary ? (opts.color ?? PURPLE) : 'white',
-        color: opts?.primary ? 'white' : opts?.disabled ? SUBTLE : DEEP,
-        fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700,
-        cursor: opts?.disabled ? 'not-allowed' : 'pointer',
-        opacity: opts?.disabled ? 0.45 : 1,
-        boxShadow: opts?.primary ? `0 6px 16px ${(opts.color ?? PURPLE)}35` : 'none',
-        transition: 'all 0.2s',
+        color: SUBTLE, cursor: 'pointer', transition: 'color 0.15s',
       }}
     >
       {label}
@@ -901,82 +825,46 @@ export default function ContextLab() {
       <div style={{
         background: 'white', border: '1px solid rgba(26,26,46,0.08)', borderRadius: 16,
         boxShadow: '0 20px 60px rgba(26,26,46,0.06)', overflow: 'hidden',
-        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 380px',
+        display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 340px',
       }}>
-        {/* Left: chat */}
+        {/* Left: the window (chat stream) */}
         <div style={{
           display: 'flex', flexDirection: 'column',
-          height: isMobile ? 420 : 560,
+          height: isMobile ? 480 : 600,
           padding: isMobile ? '1rem' : '1.25rem 1.5rem',
           borderRight: isMobile ? 'none' : '1px solid rgba(26,26,46,0.06)',
           borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none',
           minWidth: 0,
         }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 10 }}>
-            {controlBtn(playing ? 'Pause' : blocks.length === 0 ? '▶ Play the demo' : '▶ Continue demo', handlePlay, { primary: true, disabled: scriptIdx.current >= DEMO_SCRIPT.length && !playing })}
-            <button
-              onClick={() => setAutoCompact((a) => !a)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 7, padding: '4px 2px',
-                border: 'none', background: 'none', cursor: 'pointer',
-              }}
-              aria-pressed={autoCompact}
-            >
-              <span style={{
-                width: 30, height: 18, borderRadius: 100, flexShrink: 0,
-                background: autoCompact ? AMBER : 'rgba(26,26,46,0.18)',
-                position: 'relative', transition: 'background 0.2s',
-              }}>
-                <span style={{
-                  position: 'absolute', top: 2, left: autoCompact ? 14 : 2,
-                  width: 14, height: 14, borderRadius: '50%', background: 'white',
-                  boxShadow: '0 1px 3px rgba(26,26,46,0.3)', transition: 'left 0.2s',
-                }} />
-              </span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.76rem', fontWeight: 600, color: autoCompact ? '#B47708' : SUBTLE }}>
-                auto-compact
-              </span>
-            </button>
+          {/* Controls */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 12 }}>
+            {demoBtn('plain', '▶ Demo', PURPLE)}
+            {demoBtn('compact', '▶ With compaction', AMBER)}
             <span style={{ flex: 1 }} />
-            {scriptIdx.current > 0 && scriptIdx.current < DEMO_SCRIPT.length && quietBtn('Skip to end', handleSkip)}
-            {quietBtn('Compact now', handleCompact, !canCompact)}
+            {midRun && quietBtn('Skip to end', handleSkip)}
             {blocks.length > 0 && quietBtn('Reset', handleReset)}
           </div>
 
-          {renderTranscript()}
-
-          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-              placeholder="Type anything, the reply is simulated..."
-              style={{
-                flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 10,
-                border: `1px solid ${INK}`, background: CREAM,
-                fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: DEEP, outline: 'none',
-              }}
-            />
-            <button
-              onClick={handleSend}
-              disabled={!input.trim()}
-              style={{
-                padding: '11px 18px', borderRadius: 10, border: 'none',
-                background: input.trim() ? PURPLE : 'rgba(26,26,46,0.08)',
-                color: input.trim() ? 'white' : SUBTLE,
-                fontFamily: 'var(--font-mono)', fontSize: '0.72rem', fontWeight: 700,
-                cursor: input.trim() ? 'pointer' : 'default', letterSpacing: '0.03em',
-              }}
-            >
-              Send
-            </button>
+          {/* Window meter */}
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.66rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: PURPLE }}>
+                The window
+              </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.66rem', color: meterColor, fontWeight: 700 }}>
+                {fmtTok(liveTokens)} / {fmtTok(demoWindow)} tok · {fillPct}%
+              </span>
+            </div>
+            <div style={{ height: 7, borderRadius: 100, background: 'rgba(26,26,46,0.07)', overflow: 'hidden' }}>
+              <div style={{ width: `${fillPct}%`, height: '100%', borderRadius: 100, background: meterColor, transition: 'width 0.4s ease, background 0.4s ease' }} />
+            </div>
           </div>
+
+          {renderTranscript()}
         </div>
 
-        {/* Right: window + bill */}
-        <div style={{ display: 'flex', flexDirection: 'column', padding: isMobile ? '1rem' : '1.25rem 1.5rem', height: isMobile ? 'auto' : 560, boxSizing: 'border-box', minWidth: 0, background: 'rgba(248,246,243,0.5)' }}>
-          {renderGlass()}
+        {/* Right: the bill, full height */}
+        <div style={{ padding: isMobile ? '1rem' : '1.25rem 1.5rem', minWidth: 0, background: 'rgba(248,246,243,0.5)', boxSizing: 'border-box', height: isMobile ? 'auto' : 600 }}>
           {renderCostPanel()}
         </div>
       </div>
@@ -995,9 +883,13 @@ export default function ContextLab() {
         </div>
       )}
 
-      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, textAlign: 'center', marginTop: 14, letterSpacing: '0.03em' }}>
-        prices are approximate list rates, August 2026 · Rs at {INR_PER_USD}/$ · token counts estimated
-      </p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px 8px', marginTop: 14 }}>
+        {['prices are approximate list rates, August 2026', `Rs at ${INR_PER_USD}/$`, 'token counts estimated'].map((s, i) => (
+          <span key={s} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>
+            {i > 0 && <span style={{ marginRight: 8, opacity: 0.5 }}>·</span>}{s}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
