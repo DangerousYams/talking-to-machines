@@ -294,41 +294,71 @@ Other rules:
 
 // ---------- Helpers ----------
 // Word-level LCS diff. Returns chunks marked new (added in newStr) or unchanged.
+// The common prefix and suffix are stripped before the LCS so long prompts
+// (where a merge only changes a small middle) stay cheap; re-renders during
+// streaming hit the one-entry cache.
+let wordDiffCache: { o: string; n: string; r: Array<{ text: string; isNew: boolean }> } | null = null;
+
 function wordDiff(oldStr: string, newStr: string): Array<{ text: string; isNew: boolean }> {
   if (!oldStr || oldStr === newStr) return [{ text: newStr, isNew: false }];
+  if (wordDiffCache && wordDiffCache.o === oldStr && wordDiffCache.n === newStr) return wordDiffCache.r;
   const tokens = (s: string) => s.split(/(\s+)/).filter(t => t.length > 0);
   const a = tokens(oldStr);
   const b = tokens(newStr);
-  const m = a.length;
-  const n = b.length;
-  if (m * n > 200000) return [{ text: newStr, isNew: false }];
+
+  // Strip common prefix / suffix; the LCS only runs on the changed middle.
+  let start = 0;
+  while (start < a.length && start < b.length && a[start] === b[start]) start++;
+  let endA = a.length, endB = b.length;
+  while (endA > start && endB > start && a[endA - 1] === b[endB - 1]) { endA--; endB--; }
+  const ca = a.slice(start, endA);
+  const cb = b.slice(start, endB);
+  const prefix = b.slice(0, start).join('');
+  const suffix = b.slice(endB).join('');
+
+  const finish = (middle: Array<{ text: string; isNew: boolean }>) => {
+    const all: Array<{ text: string; isNew: boolean }> = [];
+    if (prefix) all.push({ text: prefix, isNew: false });
+    all.push(...middle);
+    if (suffix) all.push({ text: suffix, isNew: false });
+    const merged: typeof all = [];
+    for (const c of all) {
+      if (!c.text) continue;
+      const last = merged[merged.length - 1];
+      if (last && last.isNew === c.isNew) last.text += c.text;
+      else merged.push({ ...c });
+    }
+    wordDiffCache = { o: oldStr, n: newStr, r: merged };
+    return merged;
+  };
+
+  const m = ca.length;
+  const n = cb.length;
+  // Full-rewrite worst case: mark the whole changed middle as new rather
+  // than silently dropping the highlight.
+  if (m * n > 1_000_000) return finish([{ text: cb.join(''), isNew: true }]);
+
   const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      if (a[i - 1] === b[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
+      if (ca[i - 1] === cb[j - 1]) dp[i][j] = dp[i - 1][j - 1] + 1;
       else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
     }
   }
   const chunks: Array<{ text: string; isNew: boolean }> = [];
   let i = m, j = n;
   while (j > 0) {
-    if (i > 0 && a[i - 1] === b[j - 1]) {
-      chunks.unshift({ text: b[j - 1], isNew: false });
+    if (i > 0 && ca[i - 1] === cb[j - 1]) {
+      chunks.unshift({ text: cb[j - 1], isNew: false });
       i--; j--;
     } else if (i > 0 && dp[i - 1][j] >= dp[i][j - 1]) {
       i--;
     } else {
-      chunks.unshift({ text: b[j - 1], isNew: true });
+      chunks.unshift({ text: cb[j - 1], isNew: true });
       j--;
     }
   }
-  const merged: typeof chunks = [];
-  for (const c of chunks) {
-    const last = merged[merged.length - 1];
-    if (last && last.isNew === c.isNew) last.text += c.text;
-    else merged.push({ ...c });
-  }
-  return merged;
+  return finish(chunks);
 }
 
 // Renders prompt text with [placeholder] highlights (teal) and optional

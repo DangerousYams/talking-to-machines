@@ -4,14 +4,19 @@ import '../../../styles/global.css';
 
 const slides = [
   'welcome', 'about', 'shape',
-  'relax', 'ladder',
-  'brain', 'weights', 'next-word', 'follows', 'data',
-  'break-hands', 'experiments',
+  'relax', 'p-human', 'p-kds', 'ladder',
+  'brain', 'weights', 'next-word', 'follows',
+  'exp-context', 'data',
   'break-land', 'wider-map', 'open-weights',
   'hold',
-  'p-rate', 'p-comms', 'p-loop', 'p-tool', 'p-frame', 'p-examples',
-  'p-questions', 'p-recursive', 'p-iteration', 'p-settle',
-  'p-crosscheck', 'p-deslop', 'p-human', 'p-sop', 'p-kds',
+  'p-rate', 'p-comms', 'p-loop', 'p-tool',
+  'p-frame', 'p-examples', 'p-questions', 'p-settle',
+  'exp-prompt', 'hw-backoffice',
+  'p-recursive', 'hw-prompts',
+  'p-iteration', 'hw-images',
+  'p-crosscheck', 'hw-crosscheck',
+  'p-deslop', 'exp-deslop',
+  'p-sop',
   'fifteen',
   'homework', 'closing',
 ];
@@ -160,7 +165,6 @@ const slides = [
       * { animation: none !important; }
 
       /* Hide break slides + closing in the PDF export */
-      [data-slide="break-hands"],
       [data-slide="break-land"],
       [data-slide="closing"] { display: none !important; }
 
@@ -174,6 +178,7 @@ const slides = [
       .about-portrait { width: 320px !important; height: 320px !important; }
       .shape-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 2rem !important; }
       .exp-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+      .exp-grid.exp-solo { grid-template-columns: 1fr !important; }
       .map-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
       .ladder-diagram { flex-direction: row !important; gap: 1.25rem !important; }
       .ladder-arrow { transform: none !important; }
@@ -563,6 +568,11 @@ const slides = [
       color: var(--color-deep);
       margin: 0.5rem 0 0;
     }
+    .kds-warn {
+      font-style: italic;
+      color: var(--color-accent-red) !important;
+      font-size: 0.88rem !important;
+    }
     .kds-egs {
       display: flex;
       flex-wrap: wrap;
@@ -597,32 +607,59 @@ const slides = [
     .follow-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 2.5rem;
+      gap: 2rem;
+      margin-top: 2rem;
     }
     .follow-card {
       background: var(--color-warm-white);
       border: 1px solid rgba(26,26,46,0.08);
-      border-radius: 14px;
-      padding: 1.6rem 1.5rem;
+      border-radius: 18px;
+      padding: 2.75rem 2.25rem;
     }
     .follow-card h3 {
       font-family: var(--font-heading);
       font-weight: 800;
-      font-size: 1.6rem;
-      margin: 0 0 0.6rem;
-      letter-spacing: -0.01em;
+      font-size: 2.4rem;
+      margin: 0 0 1rem;
+      letter-spacing: -0.02em;
     }
     .follow-card h3.t-amber { color: var(--color-amber); }
     .follow-card h3.t-teal { color: var(--color-teal); }
     .follow-card h3.t-red { color: var(--color-accent-red); }
     .follow-card p {
       font-family: var(--font-body);
-      font-size: 1rem;
-      line-height: 1.55;
+      font-size: 1.3rem;
+      line-height: 1.6;
       color: var(--color-deep);
       margin: 0;
     }
+
+    /* Brain slide figure */
+    .brain-figure {
+      display: block;
+      margin: 0 auto;
+      max-height: 62vh;
+      max-width: 100%;
+      width: auto;
+      border-radius: 12px;
+      box-shadow: 0 18px 50px rgba(15,52,96,0.14);
+    }
+
+    /* Big lab link (hands-on slides) */
+    .lab-link {
+      display: inline-block;
+      margin-top: 2.5rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: clamp(1.4rem, 3vw, 2.5rem);
+      letter-spacing: -0.01em;
+      color: var(--color-amber);
+      text-decoration: none;
+      border-bottom: 4px solid rgba(245,166,35,0.35);
+      padding-bottom: 6px;
+      transition: border-color 0.2s ease;
+    }
+    .lab-link:hover { border-bottom-color: var(--color-amber); }
 
     /* Open-weights model pill row */
     .ow-pills {
@@ -720,8 +757,6 @@ const slides = [
       font-style: italic;
     }
     .break-title .period { font-style: normal; }
-    .slide-break.break-hands .break-label { color: var(--color-purple); }
-    .slide-break.break-hands .break-title .period { color: var(--color-purple); }
     .slide-break.break-land .break-label { color: var(--color-sky); }
     .slide-break.break-land .break-title .period { color: var(--color-sky); }
 
@@ -801,6 +836,7 @@ const slides = [
       letter-spacing: 0.04em;
       margin-top: 0.6rem;
     }
+    .exp-grid.exp-solo { grid-template-columns: 1fr; max-width: 560px; }
 
     /* ══════════════════════════════════════════════════════
        10 · The wider map
@@ -831,6 +867,7 @@ const slides = [
       color: var(--color-subtle);
       margin: 0 0 0.9rem;
     }
+    .map-card.map-wide { grid-column: 1 / -1; }
     .map-pills { display: flex; flex-wrap: wrap; gap: 6px; }
     .map-pill {
       font-family: var(--font-body);
@@ -1170,7 +1207,61 @@ const slides = [
       <div class="slide-num">04 · Relax</div>
     </section>
 
-    <!-- ═══ 05 · The ladder ═══ -->
+    <!-- ═══ 05 · Principle 13 · Human edge (pulled forward) ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-human">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 13 · The human edge</div>
+        <h1 class="principle-title">Conviction. Art. Sense. <span class="hl-red">Judgment</span>.</h1>
+        <p class="principle-body">These come from <em>you</em>. Not the machine.</p>
+      </div>
+      <div class="slide-num">05 · Edge</div>
+    </section>
+
+    <!-- ═══ 06 · Principle 15 · Know / Do / Show (pulled forward) ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-kds">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 15 · A mental model</div>
+        <h1 class="principle-title" style="margin-bottom: 0;">Every AI task is one of three things.</h1>
+        <div class="kds-grid">
+          <div class="kds-card know">
+            <h3>Know</h3>
+            <div class="kds-sub">Information</div>
+            <p>Research · reasoning · brainstorming. Input and output are <em>understanding</em>.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Deep Research</span>
+              <span class="kds-eg">Claude</span>
+            </div>
+          </div>
+          <div class="kds-card do">
+            <h3>Do</h3>
+            <div class="kds-sub">Transaction</div>
+            <p>Send an email · make a purchase · book, pay, post. Input: <em>intent</em>. Output: a transaction of some sort.</p>
+            <p class="kds-warn">Delegate these with the most care. A bad draft can be fixed. A bad transaction already happened.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">beware</span>
+              <span class="kds-eg">Unsupervised agents</span>
+              <span class="kds-eg">OpenClaw</span>
+            </div>
+          </div>
+          <div class="kds-card show">
+            <h3>Show</h3>
+            <div class="kds-sub">Artifact</div>
+            <p>Decks · sites · videos · <em>software</em>. Input: a message. Output: something consumable.</p>
+            <div class="kds-egs">
+              <span class="kds-egs-label">e.g.</span>
+              <span class="kds-eg">Claude</span>
+              <span class="kds-eg">NotebookLM</span>
+              <span class="kds-eg">Nano Banana</span>
+              <span class="kds-eg">Seedance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">06 · Know · Do · Show</div>
+    </section>
+
+    <!-- ═══ 07 · The ladder ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="ladder">
       <div class="principle-content stagger" style="text-align: center;">
         <div class="principle-label">The path this workshop climbs</div>
@@ -1199,44 +1290,47 @@ const slides = [
         <span class="ladder-src">from your questionnaire · 30 answers</span>
         <span class="margin-note">where do you sit today?</span>
       </div>
-      <div class="slide-num">05 · The climb</div>
+      <div class="slide-num">07 · The climb</div>
     </section>
 
-    <!-- ═══ 06 · Brain ═══ -->
+    <!-- ═══ 08 · Brain ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="brain">
-      <div class="principle-content stagger">
+      <div class="principle-content stagger" style="text-align: center;">
         <div class="principle-label">How it actually works</div>
-        <h1 class="principle-title">It began as a sketch of the <span class="hl-red">brain</span>.</h1>
-        <p class="principle-body">A neuron listens, weighs the signals, fires. Stack up billions and patterns emerge.</p>
+        <h1 class="principle-title" style="margin: 0 auto 1.25rem; max-width: none; font-size: clamp(2rem, 3.8vw, 3rem);">It began as a sketch of the <span class="hl-red">brain</span>.</h1>
+        <img
+          class="brain-figure"
+          src="/images/workshop/neurons-vs-networks.jpg"
+          alt="Neurons vs neural networks: a single neuron, connected neurons, and a multi-layer artificial neural network"
+          loading="lazy"
+        />
       </div>
-      <div class="slide-num">06 · Brain</div>
+      <div class="slide-num">08 · Brain</div>
     </section>
 
-    <!-- ═══ 07 · Weights ═══ -->
+    <!-- ═══ 09 · Weights ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="weights">
       <div class="principle-content stagger">
         <div class="principle-label">How it actually works</div>
         <h1 class="principle-title">The learning lives in the <span class="hl-purple">weights</span>.</h1>
         <p class="principle-body">Every connection is a number. Training nudges trillions of them until the guesses get good. The finished model <em>is</em> that file of numbers.</p>
       </div>
-      <div class="slide-num">07 · Weights</div>
+      <div class="slide-num">09 · Weights</div>
     </section>
 
-    <!-- ═══ 08 · Next word ═══ -->
+    <!-- ═══ 10 · Next word ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="next-word">
       <div class="principle-content stagger">
         <div class="principle-label">How it actually works</div>
         <h1 class="principle-title">It predicts the <span class="hl-amber">next word</span>. Nothing more.</h1>
-        <p class="principle-body">One fact that explains what it gets right, and almost everything it gets wrong.</p>
       </div>
-      <div class="slide-num">08 · Next word</div>
+      <div class="slide-num">10 · Next word</div>
     </section>
 
-    <!-- ═══ 09 · One fact, three consequences ═══ -->
+    <!-- ═══ 11 · One fact, three consequences ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="follows">
       <div class="principle-content stagger">
         <div class="principle-label">Why it behaves the way it does</div>
-        <h1 class="principle-title" style="margin-bottom: 0;">One fact. Three consequences.</h1>
         <div class="follow-grid">
           <div class="follow-card">
             <h3 class="t-amber">Tokens</h3>
@@ -1252,10 +1346,20 @@ const slides = [
           </div>
         </div>
       </div>
-      <div class="slide-num">09 · What follows</div>
+      <div class="slide-num">11 · What follows</div>
     </section>
 
-    <!-- ═══ 10 · Where does my data go ═══ -->
+    <!-- ═══ 12 · Hands-on · Lab 01 ═══ -->
+    <section class="card-deck-card deck-slide slide-break" data-slide="exp-context">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label" style="color: var(--color-purple);">Laptops open →</span>
+        <h1 class="break-title" style="font-style: normal;">Lab 01 · Context Explorer</h1>
+        <a class="lab-link" href="/tools/context" target="_blank" rel="noopener">talkingtomachines.xyz/tools/context</a>
+      </div>
+      <div class="slide-num">12 · Hands-on</div>
+    </section>
+
+    <!-- ═══ 13 · Where does my data go ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="data">
       <div class="principle-content stagger">
         <div class="principle-label">Nine of you asked</div>
@@ -1263,67 +1367,20 @@ const slides = [
         <p class="principle-body">To the model maker's servers, under your plan's rules. Free plans may learn from your chats. Business plans promise not to. <em>Every tool has a toggle.</em></p>
         <span class="margin-note">nothing you wouldn't email an outside vendor</span>
       </div>
-      <div class="slide-num">10 · Your data</div>
+      <div class="slide-num">13 · Your data</div>
     </section>
 
-    <!-- ═══ 11 · Break · laptops open ═══ -->
-    <section class="card-deck-card deck-slide slide-break break-hands" data-slide="break-hands">
-      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
-        <span class="break-label">Laptops open →</span>
-        <h1 class="break-title">Prompts, tokens, context and slop<span class="period">.</span></h1>
-        <p class="mono-label" style="margin-top: 2rem;">Four experiments · everyone typing</p>
-      </div>
-      <div class="slide-num">11 · Break</div>
-    </section>
-
-    <!-- ═══ 12 · The four experiments ═══ -->
-    <section class="card-deck-card deck-slide slide-grid" data-slide="experiments">
-      <div class="grid-content stagger">
-        <div class="grid-head">
-          <span class="mono-label">Hands-on · 40 minutes</span>
-          <h1>Four experiments.</h1>
-          <p class="sub">In order, about ten minutes each.</p>
-        </div>
-        <div class="exp-grid">
-          <a class="exp-card" href="/tools/prompt-builder" target="_blank" rel="noopener">
-            <span class="exp-num">01</span>
-            <h3>Prompt builder</h3>
-            <p>Build one strong ask, block by block. Role, context, format, examples.</p>
-            <span class="exp-url">talkingtomachines.xyz/tools/prompt-builder</span>
-          </a>
-          <a class="exp-card" href="/tools/context" target="_blank" rel="noopener">
-            <span class="exp-num">02</span>
-            <h3>Context window explorer</h3>
-            <p>Watch a long chat lose the plot, and learn when to start fresh.</p>
-            <span class="exp-url">talkingtomachines.xyz/tools/context</span>
-          </a>
-          <a class="exp-card" href="/tools/context" target="_blank" rel="noopener">
-            <span class="exp-num">03</span>
-            <h3>What tokens cost</h3>
-            <p>See what a conversation costs, and why shorter is often smarter.</p>
-            <span class="exp-url">same lab · switch models, watch the bill</span>
-          </a>
-          <div class="exp-card">
-            <span class="exp-num">04</span>
-            <h3>Your de-slop prompt</h3>
-            <p>Write a system prompt so output sounds like you, not like AI.</p>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">12 · Experiments</div>
-    </section>
-
-    <!-- ═══ 13 · Break · lay of the land ═══ -->
+    <!-- ═══ 14 · Break · lay of the land ═══ -->
     <section class="card-deck-card deck-slide slide-break break-land" data-slide="break-land">
       <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
         <span class="break-label">Back to the screen →</span>
         <h1 class="break-title">The lay of the land<span class="period">.</span></h1>
         <p class="mono-label" style="margin-top: 2rem;">Same brief · three machines · live</p>
       </div>
-      <div class="slide-num">13 · Break</div>
+      <div class="slide-num">14 · Break</div>
     </section>
 
-    <!-- ═══ 14 · The wider map ═══ -->
+    <!-- ═══ 15 · The wider map ═══ -->
     <section class="card-deck-card deck-slide slide-grid" data-slide="wider-map">
       <div class="grid-content stagger">
         <div class="grid-head">
@@ -1331,13 +1388,16 @@ const slides = [
           <h1>The wider map.</h1>
         </div>
         <div class="map-grid">
-          <div class="map-card">
-            <h3>Chat</h3>
-            <p>The daily driver. We just compared them.</p>
+          <div class="map-card map-wide">
+            <h3>LLM</h3>
+            <p>The daily drivers, plus the open ones from China.</p>
             <div class="map-pills" style="--pc: var(--color-navy);">
               <span class="map-pill">Claude</span>
               <span class="map-pill">ChatGPT</span>
               <span class="map-pill">Gemini</span>
+              <span class="map-pill">DeepSeek</span>
+              <span class="map-pill">Qwen</span>
+              <span class="map-pill">Kimi</span>
             </div>
           </div>
           <div class="map-card">
@@ -1345,46 +1405,55 @@ const slides = [
             <p>Product shots, edits, concepts.</p>
             <div class="map-pills" style="--pc: var(--color-accent-red);">
               <span class="map-pill">Nano Banana</span>
-              <span class="map-pill">Midjourney</span>
+              <span class="map-pill">ChatGPT Image</span>
             </div>
           </div>
           <div class="map-card">
             <h3>Video</h3>
             <p>Clips from a sentence.</p>
             <div class="map-pills" style="--pc: var(--color-sky);">
-              <span class="map-pill">Veo</span>
-              <span class="map-pill">Sora</span>
+              <span class="map-pill">Seedance 2.5</span>
+              <span class="map-pill">Kling 3</span>
             </div>
           </div>
           <div class="map-card">
-            <h3>Music</h3>
-            <p>Full songs from a brief.</p>
+            <h3>Music &amp; audio</h3>
+            <p>Songs and voices from a brief.</p>
             <div class="map-pills" style="--pc: var(--color-purple);">
               <span class="map-pill">Suno</span>
-              <span class="map-pill">Udio</span>
+              <span class="map-pill">ElevenLabs</span>
             </div>
           </div>
           <div class="map-card">
-            <h3>Your documents</h3>
-            <p>Upload files, ask questions of them.</p>
-            <div class="map-pills" style="--pc: var(--color-teal);">
-              <span class="map-pill">NotebookLM</span>
-            </div>
-          </div>
-          <div class="map-card">
-            <h3>Deep research</h3>
-            <p>Half an hour of reading, done for you.</p>
+            <h3>Product photography &amp; branding</h3>
+            <p>Pack shots, backgrounds, brand looks.</p>
             <div class="map-pills" style="--pc: var(--color-amber);">
-              <span class="map-pill">Claude</span>
-              <span class="map-pill">Gemini</span>
+              <span class="map-pill">Photoroom</span>
+              <span class="map-pill">Pomelli</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Research</h3>
+            <p>Your documents and the open web, with citations.</p>
+            <div class="map-pills" style="--pc: var(--color-teal);">
+              <span class="map-pill">Gemini Notebook</span>
+              <span class="map-pill">Perplexity</span>
+            </div>
+          </div>
+          <div class="map-card">
+            <h3>Software agents</h3>
+            <p>Describe it; they build it. Session 2 lives here.</p>
+            <div class="map-pills" style="--pc: var(--color-deep);">
+              <span class="map-pill">Claude Code</span>
+              <span class="map-pill">Codex</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="slide-num">14 · The map</div>
+      <div class="slide-num">15 · The map</div>
     </section>
 
-    <!-- ═══ 15 · Open weights ═══ -->
+    <!-- ═══ 16 · Open weights ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="open-weights">
       <div class="principle-content stagger">
         <div class="principle-label">The lay of the land · one more thing</div>
@@ -1398,10 +1467,10 @@ const slides = [
           <span class="map-pill" style="--pc: var(--color-sky);">Mistral</span>
         </div>
       </div>
-      <div class="slide-num">15 · Open weights</div>
+      <div class="slide-num">16 · Open weights</div>
     </section>
 
-    <!-- ═══ 16 · What holds ═══ -->
+    <!-- ═══ 17 · What holds ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="hold">
       <div class="principle-content stagger">
         <div class="principle-label">Staying current without chasing</div>
@@ -1409,30 +1478,30 @@ const slides = [
         <p class="principle-body">Tools will keep changing under us. What holds: your <em>principles</em>, your <em>examples</em>, your <em>saved sessions</em>.</p>
         <span class="margin-note">one team conversation a month</span>
       </div>
-      <div class="slide-num">16 · What holds</div>
+      <div class="slide-num">17 · What holds</div>
     </section>
 
-    <!-- ═══ 17 · Principle 01 · Rate of improvement ═══ -->
+    <!-- ═══ 18 · Principle 01 · Rate of improvement ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-rate">
       <div class="principle-content stagger">
         <div class="principle-label">Principle 01 · Rate of improvement</div>
         <h1 class="principle-title">Learn for the AI of <span class="hl-red">tomorrow</span>.</h1>
         <p class="principle-body">Build around <em>approach</em>, not tools.</p>
       </div>
-      <div class="slide-num">17 · Rate</div>
+      <div class="slide-num">18 · Rate</div>
     </section>
 
-    <!-- ═══ 18 · Principle 02 · Communication ═══ -->
+    <!-- ═══ 19 · Principle 02 · Communication ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-comms">
       <div class="principle-content stagger">
         <div class="principle-label">Principle 02 · The real problem</div>
         <h1 class="principle-title">Getting the most out of AI is <em>not</em> a <span class="hl-purple">technical</span> problem.</h1>
         <p class="principle-body">It's a <em>communication</em> problem.</p>
       </div>
-      <div class="slide-num">18 · Communication</div>
+      <div class="slide-num">19 · Communication</div>
     </section>
 
-    <!-- ═══ 19 · Principle 03 · The loop ═══ -->
+    <!-- ═══ 20 · Principle 03 · The loop ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-loop">
       <div class="principle-content stagger" style="text-align: center;">
         <div class="principle-label">Principle 03 · The core loop</div>
@@ -1445,164 +1514,186 @@ const slides = [
           <div class="loop-node n3">Evaluate</div>
         </div>
       </div>
-      <div class="slide-num">19 · The loop</div>
+      <div class="slide-num">20 · The loop</div>
     </section>
 
-    <!-- ═══ 20 · Principle 04 · Right tool ═══ -->
+    <!-- ═══ 21 · Principle 04 · Right tool ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-tool">
       <div class="principle-content stagger">
         <div class="principle-label">Choose · Principle 04</div>
         <h1 class="principle-title">Pick the <span class="hl-amber">right</span> AI for the task.</h1>
         <p class="principle-body">When in doubt, <em>ask AI which AI to use.</em></p>
       </div>
-      <div class="slide-num">20 · Choose</div>
+      <div class="slide-num">21 · Choose</div>
     </section>
 
-    <!-- ═══ 21 · Principle 05 · Frame conversations ═══ -->
+    <!-- ═══ 22 · Principle 05 · Frame conversations ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-frame">
       <div class="principle-content stagger">
         <div class="principle-label">Communicate · Principle 05</div>
         <h1 class="principle-title">Don't perfect the prompt. <span class="hl-teal">Frame the conversation.</span></h1>
         <p class="principle-body">The <em>session</em> is the unit, not the message.</p>
       </div>
-      <div class="slide-num">21 · Frame</div>
+      <div class="slide-num">22 · Frame</div>
     </section>
 
-    <!-- ═══ 22 · Principle 06 · Examples ═══ -->
+    <!-- ═══ 23 · Principle 06 · Examples ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-examples">
       <div class="principle-content stagger">
         <div class="principle-label">Communicate · Principle 06</div>
         <h1 class="principle-title">Great <span class="hl-purple">examples</span> beat great instructions.</h1>
         <p class="principle-body">Show what <em>good</em> looks like. Show what bad looks like.</p>
       </div>
-      <div class="slide-num">22 · Examples</div>
+      <div class="slide-num">23 · Examples</div>
     </section>
 
-    <!-- ═══ 23 · Principle 07 · Ask AI to ask you ═══ -->
+    <!-- ═══ 24 · Principle 07 · Ask AI to ask you ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-questions">
       <div class="principle-content stagger">
         <div class="principle-label">Communicate · Principle 07</div>
         <h1 class="principle-title">Ask AI to ask <span class="hl-red">you</span> questions.</h1>
         <p class="principle-body">Socratic beats one-shot. Every single time.</p>
       </div>
-      <div class="slide-num">23 · Questions</div>
+      <div class="slide-num">24 · Questions</div>
     </section>
 
-    <!-- ═══ 24 · Principle 08 · Work recursively ═══ -->
-    <section class="card-deck-card deck-slide slide-principle" data-slide="p-recursive">
-      <div class="principle-content stagger">
-        <div class="principle-label">Principle 08 · Recursion</div>
-        <h1 class="principle-title">Ask AI for help <em>with</em> <span class="hl-sky">AI</span>.</h1>
-        <p class="principle-body">Use the machines on each other.</p>
-      </div>
-      <div class="slide-num">24 · Recursive</div>
-    </section>
-
-    <!-- ═══ 25 · Principle 09 · Iteration ═══ -->
-    <section class="card-deck-card deck-slide slide-principle" data-slide="p-iteration">
-      <div class="principle-content stagger">
-        <div class="principle-label">Evaluate · Principle 09</div>
-        <h1 class="principle-title">Iteration is <span class="hl-red">everything</span>.</h1>
-        <p class="principle-body">Three to five passes. Every time.</p>
-      </div>
-      <div class="slide-num">25 · Iteration</div>
-    </section>
-
-    <!-- ═══ 26 · Principle 10 · Don't settle ═══ -->
+    <!-- ═══ 25 · Principle 10 · Don't settle ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-settle">
       <div class="principle-content stagger">
         <div class="principle-label">Evaluate · Principle 10</div>
         <h1 class="principle-title">AI wants to give you a <span class="hl-amber">quick win</span>. Don't take it.</h1>
         <p class="principle-body">Push back. Ask what it's <em>holding back</em>.</p>
       </div>
-      <div class="slide-num">26 · Don't settle</div>
+      <div class="slide-num">25 · Don't settle</div>
     </section>
 
-    <!-- ═══ 27 · Principle 11 · Cross-check ═══ -->
+    <!-- ═══ 26 · Hands-on · Lab 02 ═══ -->
+    <section class="card-deck-card deck-slide slide-break" data-slide="exp-prompt">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label" style="color: var(--color-purple);">Laptops open →</span>
+        <h1 class="break-title" style="font-style: normal;">Lab 02 · Prompt Builder</h1>
+        <a class="lab-link" href="/tools/prompt-builder" target="_blank" rel="noopener">talkingtomachines.xyz/tools/prompt-builder</a>
+      </div>
+      <div class="slide-num">26 · Hands-on</div>
+    </section>
+
+    <!-- ═══ 27 · Homework 1 · back-office prompts ═══ -->
+    <section class="card-deck-card deck-slide slide-homework" data-slide="hw-backoffice">
+      <div class="homework-content stagger">
+        <span class="homework-pill">Homework · 1 of 4</span>
+        <h1 class="homework-title">Prompt the back office.</h1>
+        <ul class="homework-points">
+          <li>Pick two chores from your own list: spreadsheets, minutes, invoices.</li>
+          <li>Build a reusable prompt for each in the <em>prompt builder</em>.</li>
+          <li>Save both. They become skill material in Session 2.</li>
+        </ul>
+      </div>
+      <div class="slide-num">27 · Homework</div>
+    </section>
+
+    <!-- ═══ 28 · Principle 08 · Work recursively ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-recursive">
+      <div class="principle-content stagger">
+        <div class="principle-label">Principle 08 · Recursion</div>
+        <h1 class="principle-title">Ask AI for help <em>with</em> <span class="hl-sky">AI</span>.</h1>
+        <p class="principle-body">Use the machines on each other.</p>
+      </div>
+      <div class="slide-num">28 · Recursive</div>
+    </section>
+
+    <!-- ═══ 29 · Homework 2 · prompts by AI ═══ -->
+    <section class="card-deck-card deck-slide slide-homework" data-slide="hw-prompts">
+      <div class="homework-content stagger">
+        <span class="homework-pill">Homework · 2 of 4</span>
+        <h1 class="homework-title">Ask AI to write your prompts.</h1>
+        <ul class="homework-points">
+          <li>Learn how different media need different prompts: an image, an Instagram post, a song, a research question, a slide show.</li>
+          <li>Ask AI to help you.</li>
+        </ul>
+        <a class="exp-url" href="/field-guide" target="_blank" rel="noopener" style="margin-top: 1.75rem; font-size: 0.85rem;">cheat codes: talkingtomachines.xyz/field-guide</a>
+      </div>
+      <div class="slide-num">29 · Homework</div>
+    </section>
+
+    <!-- ═══ 30 · Principle 09 · Iteration ═══ -->
+    <section class="card-deck-card deck-slide slide-principle" data-slide="p-iteration">
+      <div class="principle-content stagger">
+        <div class="principle-label">Evaluate · Principle 09</div>
+        <h1 class="principle-title">Iteration is <span class="hl-red">everything</span>.</h1>
+        <p class="principle-body">Three to five passes. Every time.</p>
+      </div>
+      <div class="slide-num">30 · Iteration</div>
+    </section>
+
+    <!-- ═══ 31 · Homework 3 · five images ═══ -->
+    <section class="card-deck-card deck-slide slide-homework" data-slide="hw-images">
+      <div class="homework-content stagger">
+        <span class="homework-pill">Homework · 3 of 4</span>
+        <h1 class="homework-title">One image. Five versions.</h1>
+        <ul class="homework-points">
+          <li>Pick one product shot and generate it.</li>
+          <li>Then regenerate four more times, changing one thing in the prompt each pass.</li>
+          <li>Keep the best version, and note <em>what you changed</em> to get there.</li>
+        </ul>
+      </div>
+      <div class="slide-num">31 · Homework</div>
+    </section>
+
+    <!-- ═══ 32 · Principle 11 · Cross-check ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-crosscheck">
       <div class="principle-content stagger">
         <div class="principle-label">Evaluate · Principle 11</div>
         <h1 class="principle-title">Never trust <span class="hl-amber">one</span> machine.</h1>
         <p class="principle-body">Same task. <em>Three</em> models. Compare.</p>
       </div>
-      <div class="slide-num">27 · Cross-check</div>
+      <div class="slide-num">32 · Cross-check</div>
     </section>
 
-    <!-- ═══ 28 · Principle 12 · Humanize / deslop ═══ -->
+    <!-- ═══ 33 · Homework 4 · one cross-check ═══ -->
+    <section class="card-deck-card deck-slide slide-homework" data-slide="hw-crosscheck">
+      <div class="homework-content stagger">
+        <span class="homework-pill">Homework · 4 of 4</span>
+        <h1 class="homework-title">One cross-check.</h1>
+        <ul class="homework-points">
+          <li>Same task, three machines: Claude, ChatGPT, Gemini.</li>
+          <li>Note where they agree, and where they diverge.</li>
+          <li>Let a colleague judge the winner, <em>blind</em>.</li>
+        </ul>
+      </div>
+      <div class="slide-num">33 · Homework</div>
+    </section>
+
+    <!-- ═══ 34 · Principle 12 · Humanize / deslop ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-deslop">
       <div class="principle-content stagger">
         <div class="principle-label">Evaluate · Principle 12</div>
         <h1 class="principle-title">Always <span class="hl-teal">humanize</span> the output.</h1>
         <p class="principle-body">Nothing ships raw. <em>Deslop</em> every time.</p>
       </div>
-      <div class="slide-num">28 · Deslop</div>
+      <div class="slide-num">34 · Deslop</div>
     </section>
 
-    <!-- ═══ 29 · Principle 13 · Human edge ═══ -->
-    <section class="card-deck-card deck-slide slide-principle" data-slide="p-human">
-      <div class="principle-content stagger">
-        <div class="principle-label">Principle 13 · The human edge</div>
-        <h1 class="principle-title">Conviction. Art. Sense. <span class="hl-red">Judgment</span>.</h1>
-        <p class="principle-body">These come from <em>you</em>. Not the machine.</p>
+    <!-- ═══ 35 · Hands-on · Lab 03 ═══ -->
+    <section class="card-deck-card deck-slide slide-break" data-slide="exp-deslop">
+      <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
+        <span class="break-label" style="color: var(--color-purple);">Laptops open →</span>
+        <h1 class="break-title" style="font-style: normal;">Lab 03 · De-slop Lab</h1>
+        <a class="lab-link" href="/tools/deslop" target="_blank" rel="noopener">talkingtomachines.xyz/tools/deslop</a>
       </div>
-      <div class="slide-num">29 · Edge</div>
+      <div class="slide-num">35 · Hands-on</div>
     </section>
 
-    <!-- ═══ 30 · Principle 14 · Sessions → SOP ═══ -->
+    <!-- ═══ 36 · Principle 14 · Sessions → SOP ═══ -->
     <section class="card-deck-card deck-slide slide-principle" data-slide="p-sop">
       <div class="principle-content stagger">
         <div class="principle-label">Principle 14 · The long game</div>
         <h1 class="principle-title">Your <span class="hl-teal">sessions</span> become your SOP.</h1>
         <p class="principle-body">The <em>conversations</em> are the corpus. Guard them.</p>
       </div>
-      <div class="slide-num">30 · SOP</div>
+      <div class="slide-num">36 · SOP</div>
     </section>
 
-    <!-- ═══ 31 · Principle 15 · Know / Do / Show ═══ -->
-    <section class="card-deck-card deck-slide slide-principle" data-slide="p-kds">
-      <div class="principle-content stagger">
-        <div class="principle-label">Principle 15 · A mental model</div>
-        <h1 class="principle-title" style="margin-bottom: 0;">Every AI task is one of three things.</h1>
-        <div class="kds-grid">
-          <div class="kds-card know">
-            <h3>Know</h3>
-            <div class="kds-sub">Information</div>
-            <p>Research · reasoning · brainstorming. Input and output are <em>understanding</em>.</p>
-            <div class="kds-egs">
-              <span class="kds-egs-label">e.g.</span>
-              <span class="kds-eg">Deep Research</span>
-              <span class="kds-eg">Perplexity</span>
-              <span class="kds-eg">Claude</span>
-            </div>
-          </div>
-          <div class="kds-card do">
-            <h3>Do</h3>
-            <div class="kds-sub">Action</div>
-            <p>Agents · automations · software. Input: <em>intent</em>. Output: a thing happening.</p>
-            <div class="kds-egs">
-              <span class="kds-egs-label">e.g.</span>
-              <span class="kds-eg">Claude Code</span>
-              <span class="kds-eg">Codex</span>
-              <span class="kds-eg">Antigravity</span>
-            </div>
-          </div>
-          <div class="kds-card show">
-            <h3>Show</h3>
-            <div class="kds-sub">Artifact</div>
-            <p>Decks · sites · apps · videos. Input: a <em>message</em>. Output: something consumable.</p>
-            <div class="kds-egs">
-              <span class="kds-egs-label">e.g.</span>
-              <span class="kds-eg">NotebookLM</span>
-              <span class="kds-eg">Nano Banana</span>
-              <span class="kds-eg">Seedance</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="slide-num">31 · Know · Do · Show</div>
-    </section>
-
-    <!-- ═══ 32 · The fifteen, one page ═══ -->
+    <!-- ═══ 37 · The fifteen, one page ═══ -->
     <section class="card-deck-card deck-slide slide-cheatsheet" data-slide="fifteen">
       <div class="cheatsheet-content stagger">
         <div class="cheatsheet-header">
@@ -1627,24 +1718,26 @@ const slides = [
           <div class="cs-card"><span class="cs-num" style="color:#0EA5E9;">15</span><span class="cs-title">Every task = <em>Know</em> · <em>Do</em> · <em>Show</em>.</span></div>
         </div>
       </div>
-      <div class="slide-num">32 · The fifteen</div>
+      <div class="slide-num">37 · The fifteen</div>
     </section>
 
-    <!-- ═══ 33 · Homework ═══ -->
+    <!-- ═══ 38 · Homework ═══ -->
     <section class="card-deck-card deck-slide slide-homework" data-slide="homework">
       <div class="homework-content stagger">
-        <span class="homework-pill">Homework</span>
+        <span class="homework-pill">Homework · all four</span>
         <h1 class="homework-title">Before Session 2.</h1>
         <ul class="homework-points">
-          <li>Try the tools we compared. Find the ones that fit <em>your</em> work.</li>
-          <li>Talk as a team: which AI do we standardise on?</li>
-          <li>Bring your pick to Session 2.</li>
+          <li>Two saved <em>back-office prompts</em>.</li>
+          <li>Five prompts written by AI, one per medium.</li>
+          <li>One image, five versions.</li>
+          <li>One cross-check across three machines.</li>
+          <li>And as a team: which AI do we standardise on? <em>Bring the pick.</em></li>
         </ul>
       </div>
-      <div class="slide-num">33 · Homework</div>
+      <div class="slide-num">38 · Homework</div>
     </section>
 
-    <!-- ═══ 34 · Closing ═══ -->
+    <!-- ═══ 39 · Closing ═══ -->
     <section class="card-deck-card deck-slide slide-closing" data-slide="closing">
       <div class="stagger" style="display: flex; flex-direction: column; align-items: center;">
         <span class="closing-label">Session 2 →</span>
@@ -1652,7 +1745,7 @@ const slides = [
         <p class="principle-body" style="max-width: 560px; text-align: center;">Next time, everyone in this room builds real software.</p>
         <div class="closing-footer">Session 1 · end.</div>
       </div>
-      <div class="slide-num">34 · Fin</div>
+      <div class="slide-num">39 · Fin</div>
     </section>
 
   </div>

@@ -4,7 +4,7 @@ import '../../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import GtagHead from '../../components/analytics/GtagHead.astro';
 import HeadSEO from '../../components/seo/HeadSEO.astro';
-import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
+import DeslopLab from '../../components/tools/DeslopLab';
 ---
 
 <!doctype html>
@@ -13,11 +13,11 @@ import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Prompt Builder · Cultivated AI</title>
+    <title>The De-slop Lab · Cultivated AI</title>
     <HeadSEO
-      title="The Prompt Builder · Cultivated AI"
-      description="Build one great ask. Pick a starter, fill in the blanks, stack moves from the fifteen principles, and save what works."
-      path="/tools/prompt-builder"
+      title="The De-slop Lab · Cultivated AI"
+      description="Spot the AI tells, ban them, and build a de-slop prompt in your own voice. Then watch the same text come back sounding like you."
+      path="/tools/deslop"
     />
     <GtagHead />
     <style>
@@ -32,8 +32,8 @@ import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
         position: absolute;
         inset: 0;
         background:
-          radial-gradient(ellipse 60% 50% at 18% 22%, rgba(22, 199, 154, 0.06) 0%, transparent 70%),
-          radial-gradient(ellipse 50% 50% at 85% 55%, rgba(245, 166, 35, 0.05) 0%, transparent 70%);
+          radial-gradient(ellipse 60% 50% at 18% 22%, rgba(233, 69, 96, 0.05) 0%, transparent 70%),
+          radial-gradient(ellipse 50% 50% at 85% 55%, rgba(123, 97, 255, 0.05) 0%, transparent 70%);
         pointer-events: none;
       }
       .tool-header {
@@ -56,7 +56,7 @@ import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
         font-weight: 600;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: #16C79A;
+        color: #7B61FF;
         margin-top: 0.35rem;
       }
       .tool-hero {
@@ -114,27 +114,27 @@ import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
     <div class="tool-page">
       <header class="tool-header">
         <div class="tool-logo">Cultivated AI</div>
-        <div class="tool-kicker">The Prompt Builder</div>
+        <div class="tool-kicker">The De-slop Lab</div>
       </header>
 
       <section class="tool-hero">
-        <h1>Build one great ask.</h1>
+        <h1>Sound like you.</h1>
         <p>
-          Pick a starter, fill in the blanks, then stack moves from the fifteen
-          principles. The AI rewrites your prompt live. Save what works:
-          your prompts become your SOP.
+          AI writing has tells. Spot them in a real sample, turn them into a
+          ban list, add your own voice, and watch the same text come back
+          sounding like a person. The prompt you build here is yours to keep.
         </p>
       </section>
 
       <div class="tool-main">
-        <PromptBuilderTool client:only="react" />
+        <DeslopLab client:only="react" />
       </div>
 
       <div class="tool-foot">
         <p>
           <span>Free to use</span>
-          <span>· 40 AI rewrites per device per day</span>
-          <span>· your library saves on this device only</span>
+          <span>· 40 live rewrites per device per day</span>
+          <span>· your prompt saves on this device only</span>
         </p>
       </div>
     </div>
