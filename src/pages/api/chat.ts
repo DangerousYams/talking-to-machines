@@ -54,13 +54,46 @@ const BUILDER_CLIENT_QUOTA = 40;   // per device per day
 const BUILDER_IP_QUOTA = 600;      // per IP per day, across all devices
 
 // ---------------------------------------------------------------------------
-// KV adapter — Vercel KV in prod, in-memory Map for local dev
+// KV adapter: Vercel KV in prod (in-memory fallback if unreachable), Map in dev
 // ---------------------------------------------------------------------------
 interface KVStore {
   get(key: string): Promise<string | null>;
   set(key: string, value: string, opts?: { ex?: number }): Promise<void>;
   incr(key: string): Promise<number>;
   expire(key: string, seconds: number): Promise<void>;
+}
+
+function makeMemoryKV(): KVStore {
+  const store = new Map<string, { value: string; expiresAt: number }>();
+  const counters = new Map<string, { count: number; expiresAt: number }>();
+
+  return {
+    get: async (key) => {
+      const entry = store.get(key);
+      if (!entry) return null;
+      if (Date.now() > entry.expiresAt) { store.delete(key); return null; }
+      return entry.value;
+    },
+    set: async (key, value, opts) => {
+      const ttl = opts?.ex ? opts.ex * 1000 : 86400 * 1000;
+      store.set(key, { value, expiresAt: Date.now() + ttl });
+    },
+    incr: async (key) => {
+      const entry = counters.get(key);
+      if (!entry || Date.now() > entry.expiresAt) {
+        counters.set(key, { count: 1, expiresAt: Date.now() + 86400 * 1000 });
+        return 1;
+      }
+      entry.count++;
+      return entry.count;
+    },
+    expire: async (key, seconds) => {
+      const entry = counters.get(key);
+      if (entry) entry.expiresAt = Date.now() + seconds * 1000;
+      const storeEntry = store.get(key);
+      if (storeEntry) storeEntry.expiresAt = Date.now() + seconds * 1000;
+    },
+  };
 }
 
 let kvStore: KVStore | null = null;
@@ -70,46 +103,37 @@ async function getKV(): Promise<KVStore> {
 
   const kvUrl = import.meta.env.KV_REST_API_URL || process.env.KV_REST_API_URL;
   if (kvUrl) {
-    // Use Vercel KV / Upstash Redis
     const { kv } = await import('@vercel/kv');
+    // If the Redis behind KV is unreachable, quotas degrade to per-instance
+    // memory instead of taking every AI route down with a 500.
+    const memory = makeMemoryKV();
+    let kvBroken = false;
+    const guard = <T>(real: () => Promise<T>, fallback: () => Promise<T>): Promise<T> => {
+      if (kvBroken) return fallback();
+      return real().catch((err) => {
+        if (!kvBroken) {
+          kvBroken = true;
+          console.error(
+            '[api/chat] KV unreachable, quotas fell back to in-memory:',
+            err instanceof Error ? err.message : err
+          );
+        }
+        return fallback();
+      });
+    };
     kvStore = {
-      get: (key) => kv.get<string>(key),
-      set: (key, value, opts) => kv.set(key, value, opts?.ex ? { ex: opts.ex } : undefined).then(() => {}),
-      incr: (key) => kv.incr(key),
-      expire: (key, seconds) => kv.expire(key, seconds).then(() => {}),
+      get: (key) => guard(() => kv.get<string>(key), () => memory.get(key)),
+      set: (key, value, opts) =>
+        guard(
+          () => kv.set(key, value, opts?.ex ? { ex: opts.ex } : undefined).then(() => {}),
+          () => memory.set(key, value, opts)
+        ),
+      incr: (key) => guard(() => kv.incr(key), () => memory.incr(key)),
+      expire: (key, seconds) =>
+        guard(() => kv.expire(key, seconds).then(() => {}), () => memory.expire(key, seconds)),
     };
   } else {
-    // In-memory fallback for local dev
-    const store = new Map<string, { value: string; expiresAt: number }>();
-    const counters = new Map<string, { count: number; expiresAt: number }>();
-
-    kvStore = {
-      get: async (key) => {
-        const entry = store.get(key);
-        if (!entry) return null;
-        if (Date.now() > entry.expiresAt) { store.delete(key); return null; }
-        return entry.value;
-      },
-      set: async (key, value, opts) => {
-        const ttl = opts?.ex ? opts.ex * 1000 : 86400 * 1000;
-        store.set(key, { value, expiresAt: Date.now() + ttl });
-      },
-      incr: async (key) => {
-        const entry = counters.get(key);
-        if (!entry || Date.now() > entry.expiresAt) {
-          counters.set(key, { count: 1, expiresAt: Date.now() + 86400 * 1000 });
-          return 1;
-        }
-        entry.count++;
-        return entry.count;
-      },
-      expire: async (key, seconds) => {
-        const entry = counters.get(key);
-        if (entry) entry.expiresAt = Date.now() + seconds * 1000;
-        const storeEntry = store.get(key);
-        if (storeEntry) storeEntry.expiresAt = Date.now() + seconds * 1000;
-      },
-    };
+    kvStore = makeMemoryKV();
   }
   return kvStore;
 }
