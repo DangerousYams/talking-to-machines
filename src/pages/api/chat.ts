@@ -54,7 +54,9 @@ const BUILDER_CLIENT_QUOTA = 40;   // per device per day
 const BUILDER_IP_QUOTA = 600;      // per IP per day, across all devices
 
 // ---------------------------------------------------------------------------
-// KV adapter: Vercel KV in prod (in-memory fallback if unreachable), Map in dev
+// Quota store: in-memory, per function instance. Redis was dropped (2026-08):
+// at this scale the burst limit plus Haiku pricing bound the worst case, so
+// globally shared counters are not worth a second stateful service.
 // ---------------------------------------------------------------------------
 interface KVStore {
   get(key: string): Promise<string | null>;
@@ -99,42 +101,7 @@ function makeMemoryKV(): KVStore {
 let kvStore: KVStore | null = null;
 
 async function getKV(): Promise<KVStore> {
-  if (kvStore) return kvStore;
-
-  const kvUrl = import.meta.env.KV_REST_API_URL || process.env.KV_REST_API_URL;
-  if (kvUrl) {
-    const { kv } = await import('@vercel/kv');
-    // If the Redis behind KV is unreachable, quotas degrade to per-instance
-    // memory instead of taking every AI route down with a 500.
-    const memory = makeMemoryKV();
-    let kvBroken = false;
-    const guard = <T>(real: () => Promise<T>, fallback: () => Promise<T>): Promise<T> => {
-      if (kvBroken) return fallback();
-      return real().catch((err) => {
-        if (!kvBroken) {
-          kvBroken = true;
-          console.error(
-            '[api/chat] KV unreachable, quotas fell back to in-memory:',
-            err instanceof Error ? err.message : err
-          );
-        }
-        return fallback();
-      });
-    };
-    kvStore = {
-      get: (key) => guard(() => kv.get<string>(key), () => memory.get(key)),
-      set: (key, value, opts) =>
-        guard(
-          () => kv.set(key, value, opts?.ex ? { ex: opts.ex } : undefined).then(() => {}),
-          () => memory.set(key, value, opts)
-        ),
-      incr: (key) => guard(() => kv.incr(key), () => memory.incr(key)),
-      expire: (key, seconds) =>
-        guard(() => kv.expire(key, seconds).then(() => {}), () => memory.expire(key, seconds)),
-    };
-  } else {
-    kvStore = makeMemoryKV();
-  }
+  if (!kvStore) kvStore = makeMemoryKV();
   return kvStore;
 }
 

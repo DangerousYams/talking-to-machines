@@ -53,9 +53,9 @@ Why it matters here: two years of daily, hands-on AI work across film, games, ed
   shape: {
     id: 'shape',
     num: 3,
-    title: 'The shape · two sessions',
+    title: 'Two sessions, two hours each',
     label: 'Set expectations',
-    notes: `Set the shape in 60 seconds.
+    notes: `Set expectations in 60 seconds.
 Today: how this technology works, why it behaves the way it does, and which tool to reach for. Half hands-on.
 Session 2: agents, a browser extension everyone builds themselves, a skill everyone writes, and the start of a 90-day plan.
 The promise to land: in Session 2 everyone builds real software, most people for the first time. Today earns that.`,
@@ -67,7 +67,8 @@ The promise to land: in Session 2 everyone builds real software, most people for
     label: '0:00 · 10m · Discuss',
     notes: `Discussion, not lecture. Read the room: who leans in, who crosses their arms.
 Key message: AI works best with a person in the loop. Teach it the routine parts of your job, and spend the freed-up time on the parts that need you.
-Ask around the room: "What is the most repetitive thing you did last week?"
+The table on the slide is their own questionnaire tally: the chores they said they would hand over first (spreadsheets 18, meeting notes 14, invoices 12, competitor prices 9, weekly report 9). Point at it: "You already told us what the routine parts are."
+Then ask around the room: "What is the most repetitive thing you did last week?"
 Collect three or four answers. Park them visibly. They come back in Session 2 as skill material.
 Worries from the questionnaire (30 answers): privacy 9, sounds-like-AI 4, makes-things-up 4, job worries 4, feels-like-cheating 3. 21 also ticked excited.
 Name privacy out loud; it is the biggest one. Promise the answer: a dedicated slide at the end of the teach beat, twenty minutes from now.
@@ -159,7 +160,7 @@ Timing discipline: roughly ten minutes each. If a block runs long, cut the talk,
     title: 'The four experiments',
     label: 'Keep this slide up while they work',
     notes: `Run them in order. The first three run on live tools; the cards on this slide are links, and the URLs are printed on them.
-1. Prompt builder, talkingtomachines.xyz/tools/prompt-builder. Open on their laptops, no login. Pick a starter (there are starters for minutes and invoice chasing, straight from their questionnaire: spreadsheets 17 people, minutes 14, invoices 12), fill the blanks, then stack moves. The moves are tagged with tonight's principles. Each device gets 40 AI rewrites a day, plenty for the session. Have them SAVE one prompt; it seeds principle 14, sessions become your SOP.
+1. Prompt builder, talkingtomachines.xyz/tools/prompt-builder. Open on their laptops, no login. Pick a starter (there are starters for minutes and invoice chasing, straight from their questionnaire: spreadsheets 18 people, minutes 14, invoices 12), fill the blanks, then stack moves. The moves are tagged with tonight's principles. Each device gets 40 AI rewrites a day, plenty for the session. Have them SAVE one prompt; it seeds principle 14, sessions become your SOP.
 2 and 3. The Context Lab, talkingtomachines.xyz/tools/context. One tool covers both cards. Projector script: press Play the demo and let the bakery chat run. At the end the assistant is asked what price was decided, and it forgets: the message fell out of the window. Then Reset, switch auto-compact ON, Play again: the summary carries the price through and it remembers. Point at the bill panel: same chat, five models, five prices. The chat is simulated, the token and money math is real.
 4. De-slop prompt: everyone writes a system prompt in their own voice, so output sounds like them and not like AI. This one they keep and use tomorrow. No tool for this yet; they work in their own Claude or ChatGPT.
 Principles 05, 06, 09 and 12.`,
