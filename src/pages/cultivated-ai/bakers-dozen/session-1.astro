@@ -755,6 +755,24 @@ const slides = [
       color: var(--color-subtle);
       margin: 0;
     }
+    a.exp-card {
+      display: block;
+      text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    a.exp-card:hover {
+      border-color: var(--color-purple);
+      transform: translateY(-2px);
+    }
+    .exp-url {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--color-amber);
+      letter-spacing: 0.04em;
+      margin-top: 0.6rem;
+    }
 
     /* ══════════════════════════════════════════════════════
        10 · The wider map
@@ -1227,21 +1245,24 @@ const slides = [
           <p class="sub">In order, about ten minutes each.</p>
         </div>
         <div class="exp-grid">
-          <div class="exp-card">
+          <a class="exp-card" href="/tools/prompt-builder" target="_blank" rel="noopener">
             <span class="exp-num">01</span>
             <h3>Prompt builder</h3>
             <p>Build one strong ask, block by block. Role, context, format, examples.</p>
-          </div>
-          <div class="exp-card">
+            <span class="exp-url">talkingtomachines.xyz/tools/prompt-builder</span>
+          </a>
+          <a class="exp-card" href="/tools/context" target="_blank" rel="noopener">
             <span class="exp-num">02</span>
             <h3>Context window explorer</h3>
             <p>Watch a long chat lose the plot, and learn when to start fresh.</p>
-          </div>
-          <div class="exp-card">
+            <span class="exp-url">talkingtomachines.xyz/tools/context</span>
+          </a>
+          <a class="exp-card" href="/tools/context" target="_blank" rel="noopener">
             <span class="exp-num">03</span>
             <h3>What tokens cost</h3>
             <p>See what a conversation costs, and why shorter is often smarter.</p>
-          </div>
+            <span class="exp-url">same lab · switch models, watch the bill</span>
+          </a>
           <div class="exp-card">
             <span class="exp-num">04</span>
             <h3>Your de-slop prompt</h3>

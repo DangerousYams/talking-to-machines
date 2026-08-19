@@ -1,0 +1,171 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../../components/analytics/GtagHead.astro';
+import HeadSEO from '../../components/seo/HeadSEO.astro';
+import ContextLab from '../../components/tools/ContextLab';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Context Lab · Cultivated AI</title>
+    <HeadSEO
+      title="The Context Lab · Cultivated AI"
+      description="Watch an AI chat fill its context window. Tokens, cost, forgetting, and compaction, simulated live."
+      path="/tools/context"
+    />
+    <GtagHead />
+    <style>
+      .tool-page {
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 4rem;
+      }
+      .tool-page::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 60% 50% at 20% 20%, rgba(123, 97, 255, 0.06) 0%, transparent 70%),
+          radial-gradient(ellipse 50% 50% at 85% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .tool-header {
+        text-align: center;
+        padding: 3rem 1.5rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      .tool-logo {
+        font-family: var(--font-heading);
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-deep);
+        opacity: 0.7;
+      }
+      .tool-kicker {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #7B61FF;
+        margin-top: 0.35rem;
+      }
+      .tool-hero {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 2.25rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .tool-hero h1 {
+        font-family: var(--font-heading);
+        font-size: clamp(2.1rem, 6vw, 3rem);
+        font-weight: 800;
+        color: var(--color-deep);
+        margin: 0 0 0.75rem;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .tool-hero p {
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        color: var(--color-subtle);
+        line-height: 1.65;
+        margin: 0;
+      }
+      .tool-main { position: relative; z-index: 1; }
+      .notice-grid {
+        max-width: 900px;
+        margin: 3.5rem auto 0;
+        padding: 0 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        position: relative;
+        z-index: 1;
+      }
+      .notice-card {
+        background: white;
+        border: 1px solid rgba(26, 26, 46, 0.08);
+        border-radius: 14px;
+        padding: 1.25rem 1.35rem;
+      }
+      .notice-card .n-label {
+        font-family: var(--font-mono);
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .notice-card h3 {
+        font-family: var(--font-heading);
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--color-deep);
+        margin: 0 0 0.4rem;
+      }
+      .notice-card p {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: var(--color-subtle);
+        line-height: 1.6;
+        margin: 0;
+      }
+      @media (max-width: 760px) {
+        .notice-grid { grid-template-columns: 1fr; }
+        .tool-header { padding-top: 2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tool-page">
+      <header class="tool-header">
+        <div class="tool-logo">Cultivated AI</div>
+        <div class="tool-kicker">The Context Lab</div>
+      </header>
+
+      <section class="tool-hero">
+        <h1>Watch a chat fill up.</h1>
+        <p>
+          Every AI conversation lives inside a window. See tokens pile up, watch old
+          messages fall out, and learn the trick that keeps long chats sharp.
+          The chat is simulated. The math is real.
+        </p>
+      </section>
+
+      <div class="tool-main">
+        <ContextLab client:load />
+      </div>
+
+      <section class="notice-grid">
+        <div class="notice-card">
+          <div class="n-label" style="color: #7B61FF;">01 · Tokens</div>
+          <h3>Everything costs.</h3>
+          <p>Every word you send, and every word it replies, is tokens. Every turn re-sends the whole window, so the meter climbs faster as the chat grows.</p>
+        </div>
+        <div class="notice-card">
+          <div class="n-label" style="color: #E94560;">02 · The cliff</div>
+          <h3>Old messages vanish.</h3>
+          <p>When the window fills, the oldest messages fall out. The model never announces it. Run the demo to the end and ask it about the price.</p>
+        </div>
+        <div class="notice-card">
+          <div class="n-label" style="color: #F5A623;">03 · Compaction</div>
+          <h3>A summary buys room.</h3>
+          <p>Compacting folds old messages into a short summary. Space comes back, detail quietly drops. Claude and ChatGPT do this behind the scenes.</p>
+        </div>
+      </section>
+    </div>
+    <Analytics />
+  </body>
+</html>

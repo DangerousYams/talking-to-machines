@@ -21,6 +21,7 @@ const MODEL_MAP: Record<string, string> = {
   'prompt-framer': 'claude-haiku-4-5-20251001',
   'workshop': 'claude-haiku-4-5-20251001',
   'ladder': 'claude-haiku-4-5-20251001',
+  'builder': 'claude-haiku-4-5-20251001',
 };
 const DEFAULT_MODEL = 'claude-sonnet-4-20250514';
 
@@ -40,10 +41,17 @@ const MAX_TOKENS_MAP: Record<string, number> = {
   'prompt-framer': 400,
   'workshop': 700,
   'ladder': 700,
+  'builder': 1200,
 };
 
 // Free daily allowance for the Ladder (per IP) — exercises must work logged-out
 const LADDER_FREE_QUOTA = 20;
+
+// Open Cultivated AI tools (e.g. /tools/prompt-builder): free, quota keyed on a
+// client-generated device id so a workshop room sharing one IP is not throttled
+// as a single user. Per-IP backstop bounds abuse from spoofed client ids.
+const BUILDER_CLIENT_QUOTA = 40;   // per device per day
+const BUILDER_IP_QUOTA = 600;      // per IP per day, across all devices
 
 // ---------------------------------------------------------------------------
 // KV adapter — Vercel KV in prod, in-memory Map for local dev
@@ -210,16 +218,13 @@ export const POST: APIRoute = async ({ request }) => {
     request.headers.get('x-real-ip') ||
     'unknown';
 
-  if (!checkBurstLimit(ip)) {
-    return jsonResponse({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
-  }
-
   // Parse body
   let body: {
     messages?: unknown;
     systemPrompt?: string;
     maxTokens?: number;
     source?: string;
+    clientId?: string;
   };
   try {
     body = await request.json();
@@ -227,7 +232,16 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'Invalid JSON body' }, 400);
   }
 
-  const { messages, systemPrompt, maxTokens = 1024, source } = body;
+  const { messages, systemPrompt, maxTokens = 1024, source, clientId } = body;
+  const validClientId =
+    typeof clientId === 'string' && /^[a-z0-9-]{8,64}$/i.test(clientId) ? clientId : null;
+
+  // Burst limit: keyed per device for the open builder tool (a workshop room
+  // shares one IP), per IP for everything else.
+  const burstKey = source === 'builder' && validClientId ? `c:${validClientId}` : ip;
+  if (!checkBurstLimit(burstKey)) {
+    return jsonResponse({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
+  }
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return jsonResponse({ error: 'messages array is required' }, 400);
@@ -365,6 +379,33 @@ export const POST: APIRoute = async ({ request }) => {
     if (!quota.allowed) {
       return jsonResponse(
         { error: "You've used today's free AI turns on the Ladder. Come back tomorrow, or unlock full access." },
+        429,
+        quotaHeaders(quota.remaining, quota.limit, quota.reset)
+      );
+    }
+    return proxyToClaude(apiKey, messages, systemPrompt, source, maxTokens, quotaHeaders(quota.remaining, quota.limit, quota.reset));
+  }
+
+  // -----------------------------------------------------------------------
+  // Route: builder (open Cultivated AI tools, free for everyone, Haiku).
+  // Quota keyed on the device's clientId with a per-IP daily backstop.
+  // -----------------------------------------------------------------------
+  if (source === 'builder') {
+    const ipBackstop = await checkAndIncrQuota(kv, `quota:builder:ip:${ip}`, BUILDER_IP_QUOTA);
+    if (!ipBackstop.allowed) {
+      return jsonResponse(
+        { error: 'Daily AI limit reached on this network. Resets at midnight UTC.' },
+        429,
+        quotaHeaders(0, BUILDER_CLIENT_QUOTA, ipBackstop.reset)
+      );
+    }
+    const quotaKey = validClientId
+      ? `quota:builder:c:${validClientId}`
+      : `quota:builder:anon:${ip}`;
+    const quota = await checkAndIncrQuota(kv, quotaKey, BUILDER_CLIENT_QUOTA);
+    if (!quota.allowed) {
+      return jsonResponse(
+        { error: 'Daily AI limit reached on this device. Resets at midnight UTC.' },
         429,
         quotaHeaders(quota.remaining, quota.limit, quota.reset)
       );

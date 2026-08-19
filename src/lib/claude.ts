@@ -6,13 +6,14 @@ export interface ChatMessage {
   content: string;
 }
 
-export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge' | 'project-builder' | 'socratic-smackdown' | 'break' | 'personalize' | 'workshop' | 'ladder';
+export type ChatSource = 'prompt-roast' | 'block-gen' | 'feed-challenge' | 'project-builder' | 'socratic-smackdown' | 'break' | 'personalize' | 'workshop' | 'ladder' | 'builder';
 
 export interface StreamChatOptions {
   messages: ChatMessage[];
   systemPrompt?: string;
   maxTokens?: number;
   source?: ChatSource;
+  clientId?: string;
   skipPersona?: boolean;
   onChunk: (text: string) => void;
   onDone: () => void;
@@ -56,7 +57,7 @@ function readQuotaHeaders(res: Response) {
  * Returns an AbortController so callers can cancel the request.
  */
 export function streamChat(options: StreamChatOptions): AbortController {
-  const { messages, systemPrompt, maxTokens, source, skipPersona, onChunk, onDone, onError, onQuotaUpdate } = options;
+  const { messages, systemPrompt, maxTokens, source, clientId, skipPersona, onChunk, onDone, onError, onQuotaUpdate } = options;
   const controller = new AbortController();
 
   // Short-circuit if we already know quota is exhausted — avoids loading states
@@ -82,6 +83,7 @@ export function streamChat(options: StreamChatOptions): AbortController {
 
       const bodyPayload: Record<string, unknown> = { messages, systemPrompt: finalSystemPrompt, maxTokens };
       if (source) bodyPayload.source = source;
+      if (clientId) bodyPayload.clientId = clientId;
 
       const res = await fetch('/api/chat', {
         method: 'POST',

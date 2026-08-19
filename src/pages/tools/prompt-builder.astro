@@ -1,0 +1,137 @@
+---
+export const prerender = true;
+import '../../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import GtagHead from '../../components/analytics/GtagHead.astro';
+import HeadSEO from '../../components/seo/HeadSEO.astro';
+import PromptBuilderTool from '../../components/tools/PromptBuilderTool';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Prompt Builder · Cultivated AI</title>
+    <HeadSEO
+      title="The Prompt Builder · Cultivated AI"
+      description="Build one great ask. Pick a starter, fill in the blanks, stack moves from the fifteen principles, and save what works."
+      path="/tools/prompt-builder"
+    />
+    <GtagHead />
+    <style>
+      .tool-page {
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        padding-bottom: 4rem;
+      }
+      .tool-page::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 60% 50% at 18% 22%, rgba(22, 199, 154, 0.06) 0%, transparent 70%),
+          radial-gradient(ellipse 50% 50% at 85% 55%, rgba(245, 166, 35, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .tool-header {
+        text-align: center;
+        padding: 3rem 1.5rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      .tool-logo {
+        font-family: var(--font-heading);
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-deep);
+        opacity: 0.7;
+      }
+      .tool-kicker {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #16C79A;
+        margin-top: 0.35rem;
+      }
+      .tool-hero {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 2.25rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .tool-hero h1 {
+        font-family: var(--font-heading);
+        font-size: clamp(2.1rem, 6vw, 3rem);
+        font-weight: 800;
+        color: var(--color-deep);
+        margin: 0 0 0.75rem;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .tool-hero p {
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        color: var(--color-subtle);
+        line-height: 1.65;
+        margin: 0;
+      }
+      .tool-main { position: relative; z-index: 1; }
+      .tool-foot {
+        max-width: 620px;
+        margin: 2.5rem auto 0;
+        padding: 0 1.5rem;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .tool-foot p {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        color: var(--color-subtle);
+        letter-spacing: 0.03em;
+        line-height: 1.7;
+        margin: 0;
+      }
+      @media (max-width: 640px) {
+        .tool-header { padding-top: 2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tool-page">
+      <header class="tool-header">
+        <div class="tool-logo">Cultivated AI</div>
+        <div class="tool-kicker">The Prompt Builder</div>
+      </header>
+
+      <section class="tool-hero">
+        <h1>Build one great ask.</h1>
+        <p>
+          Pick a starter, fill in the blanks, then stack moves from the fifteen
+          principles. The AI rewrites your prompt live. Save what works:
+          your prompts become your SOP.
+        </p>
+      </section>
+
+      <div class="tool-main">
+        <PromptBuilderTool client:only="react" />
+      </div>
+
+      <div class="tool-foot">
+        <p>
+          Free to use · AI rewrites draw on a shared allowance of 40 per device per day ·
+          your library saves on this device only
+        </p>
+      </div>
+    </div>
+    <Analytics />
+  </body>
+</html>

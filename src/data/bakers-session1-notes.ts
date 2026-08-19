@@ -158,11 +158,10 @@ Timing discipline: roughly ten minutes each. If a block runs long, cut the talk,
     num: 12,
     title: 'The four experiments',
     label: 'Keep this slide up while they work',
-    notes: `Run them in order.
-1. Prompt builder: build one strong ask, block by block. Role, context, format, examples. Watch the answer improve as blocks land. Use a chore from their questionnaire as the example; the most-parked ones were spreadsheets (17 people), meeting minutes (14) and invoices (12).
-2. Context window explorer: watch a long chat lose the plot. The lesson is knowing when to start fresh.
-3. Token costs: what a conversation actually costs, and why shorter is often smarter.
-4. De-slop prompt: everyone writes a system prompt in their own voice, so output sounds like them and not like AI. This one they keep and use tomorrow.
+    notes: `Run them in order. The first three run on live tools; the cards on this slide are links, and the URLs are printed on them.
+1. Prompt builder, talkingtomachines.xyz/tools/prompt-builder. Open on their laptops, no login. Pick a starter (there are starters for minutes and invoice chasing, straight from their questionnaire: spreadsheets 17 people, minutes 14, invoices 12), fill the blanks, then stack moves. The moves are tagged with tonight's principles. Each device gets 40 AI rewrites a day, plenty for the session. Have them SAVE one prompt; it seeds principle 14, sessions become your SOP.
+2 and 3. The Context Lab, talkingtomachines.xyz/tools/context. One tool covers both cards. Projector script: press Play the demo and let the bakery chat run. At the end the assistant is asked what price was decided, and it forgets: the message fell out of the window. Then Reset, switch auto-compact ON, Play again: the summary carries the price through and it remembers. Point at the bill panel: same chat, five models, five prices. The chat is simulated, the token and money math is real.
+4. De-slop prompt: everyone writes a system prompt in their own voice, so output sounds like them and not like AI. This one they keep and use tomorrow. No tool for this yet; they work in their own Claude or ChatGPT.
 Principles 05, 06, 09 and 12.`,
   },
   'break-land': {
