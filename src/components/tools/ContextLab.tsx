@@ -71,18 +71,24 @@ interface LedgerEntry { inTokens: number; outTokens: number; }
 const estimateTokens = (text: string) => Math.max(1, Math.ceil(text.length / 4));
 
 // Deterministic filler so simulated replies land near a target token count.
+// The cycle starts at a point derived from the base text, so consecutive
+// replies do not all trail off with the same sentences.
 const FILLER = [
-  'Happy to adjust the tone if this reads too formal.',
-  'I kept the wording short so it scans well on a phone.',
-  'Tell me which direction feels closest and I will build on it.',
-  'I can produce two more variations on request.',
-  'This assumes launch timing in the festive window.',
+  'Happy to tweak the tone if this reads too formal for the brand.',
+  'I kept the wording tight so it scans on a phone screen.',
+  'Tell me which direction feels closest and I will build it out.',
+  'I can draft two more variations on request.',
+  'This assumes the launch lands inside the festive window.',
   'If the numbers change, send the update and I will rework it.',
+  'The flavour names can carry more Diwali warmth if you want.',
+  'I checked it against the platform copy limits.',
+  'One more pass could make the opening line land harder.',
+  'Say the word and I will localise this for Hindi listings.',
 ];
 
 function padToTokens(base: string, target: number): string {
   let text = base;
-  let i = 0;
+  let i = base.length % FILLER.length;
   while (estimateTokens(text) < target) {
     text += ' ' + FILLER[i % FILLER.length];
     i++;
@@ -110,10 +116,10 @@ interface ScriptStep {
   isRecallTest?: boolean;
 }
 
-const SALES_DUMP = padToTokens(
-  'Pasting last month\'s city-wise sales export. Mumbai: 4,120 units, repeat rate 31%. Delhi NCR: 3,660 units, repeat 26%. Bengaluru: 3,905 units, repeat 34%. Pune: 1,480 units. Hyderabad: 1,240 units. Ahmedabad: 980 units. Top SKUs: chocolate chip dozen, almond biscotti, festive assorted. Blinkit is 44% of volume, Zepto 31%, Instamart 25%. Weekend orders spike 2.1x. Gift-note attach rate 12%.',
-  540
-);
+// The big paste is all data, never tone filler, so it reads like a real export
+// at any truncation point.
+const SALES_DUMP =
+  'Pasting last month\'s city-wise sales export. Mumbai: 4,120 units, repeat rate 31%, average order value Rs 612, peak slot 6 to 9 pm. Delhi NCR: 3,660 units, repeat 26%, AOV Rs 588, peak slot 7 to 10 pm. Bengaluru: 3,905 units, repeat 34%, AOV Rs 641, peak slot 5 to 8 pm. Pune: 1,480 units, repeat 29%, AOV Rs 570. Hyderabad: 1,240 units, repeat 27%, AOV Rs 559. Ahmedabad: 980 units, repeat 24%, AOV Rs 542. Chennai: 860 units, repeat 25%, AOV Rs 538. Kolkata: 720 units, repeat 22%, AOV Rs 525. Top SKUs by volume: chocolate chip dozen 28%, almond biscotti 19%, festive assorted 17%, oat jaggery 11%, coconut macaroon 9%, long tail for the rest. Platform split: Blinkit 44% of volume, Zepto 31%, Instamart 25%. Weekend orders spike 2.1x over the weekday baseline. Gift-note attach rate 12% overall, 19% on festive assorted. Coupon DIWA10 drove 8% of October orders. Ratings hold at 4.6 across platforms, delivery complaints under 1%, the one recurring negative is broken cookies in transit, 3% of reviews. Repeat buyers reorder on a 23-day median cycle. Cart abandonment on gift SKUs runs 9% higher than singles, mostly at the delivery-slot screen. Out-of-stock hours cost roughly 6% of potential weekend volume in Mumbai and Bengaluru. New customer share is 38% and holding. Social referral traffic doubled after the October reel series. Packaging feedback: buyers keep the ribbon box, 214 mentions. Competitor watch: two bakery brands launched festive boxes last week at Rs 449 and Rs 549. Supply notes: almond costs up 7% quarter on quarter, cashew stable, butter contracts locked till January. Kitchen capacity: 9,000 boxes a week across both units, expandable to 12,000 with weekend shifts. Delivery packaging cost per order Rs 11. Returns are negligible, under 0.4%. Customer service tickets: 61 last month, half about delivery slots, none about taste. Email list: 18,400 subscribers, 31% open rate. WhatsApp broadcast list: 6,200 opted in. Festive calendar: Dhanteras falls on a Friday this year, and the two weekends before Diwali are the peak gifting days on every platform. Last year the festive assorted box sold out four days early and we lost the final weekend.';
 
 const DEMO_SCRIPT: ScriptStep[] = [
   {
@@ -195,14 +201,10 @@ const DEMO_SCRIPT: ScriptStep[] = [
   },
 ];
 
-const RECALL_HIT = padToTokens(
-  'Rs 499 for the twelve-piece box. It clears your Rs 212 cost with room for platform commission, and stays under the Rs 500 gifting filter.',
-  70
-);
-const RECALL_MISS = padToTokens(
-  'I do not actually see a final price in the part of our conversation I can still read. The early messages have fallen out of my window. Could you remind me what we decided?',
-  75
-);
+const RECALL_HIT =
+  'Rs 499 for the twelve-piece box. It clears your Rs 212 cost with comfortable room for platform commission, and it stays under the Rs 500 gifting filter shoppers use on quick commerce. If you ever want a premium tier, a Rs 749 double-decker box is the natural next step.';
+const RECALL_MISS =
+  'I do not actually see a final price in the part of our conversation I can still read. The early messages, where we discussed costs and pricing, have fallen out of my window, so answering from what remains would be a guess. Could you remind me what we decided, and I will carry it forward from here?';
 
 // ---------- Money formatting ----------
 function fmtUsd(v: number): string {
@@ -218,6 +220,9 @@ function fmtInr(v: number): string {
 }
 function fmtTok(n: number): string {
   return n.toLocaleString('en-IN');
+}
+function fmtWindow(n: number): string {
+  return n >= 1_000_000 ? `${n / 1_000_000}M` : `${Math.round(n / 1000)}k`;
 }
 
 // ---------- Component ----------
@@ -267,6 +272,7 @@ export default function ContextLab() {
       @keyframes ctx-summary-pop { 0% { opacity: 0; transform: scale(0.92); } 60% { transform: scale(1.03); } 100% { opacity: 1; transform: scale(1); } }
       @keyframes ctx-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes ctx-blink { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.1; } }
+      .ctx-quiet:hover:not(:disabled) { color: #1A1A2E; }
       @media (prefers-reduced-motion: reduce) {
         .ctx-anim { animation: none !important; }
       }
@@ -538,7 +544,7 @@ export default function ContextLab() {
       return { color: RED, label: 'Messages falling out', text: `The oldest ${droppedCount} message${droppedCount === 1 ? '' : 's'} no longer fit. The model is not being forgetful; they are simply not in the window it reads.` };
     if (fillPct > 60)
       return { color: AMBER, label: 'Filling up', text: 'Every new message re-sends everything in the window. Watch the cost per turn climb as the chat grows.' };
-    return { color: PURPLE, label: 'How to use this', text: 'Type a message, or press Play to watch a real week of bakery chat fill the window. The chat is simulated; the token and money math is real.' };
+    return { color: PURPLE, label: 'Tokens pile up', text: 'Every message joins the window, and the whole window is re-sent with every turn. The bill panel prices that at real rates.' };
   })();
 
   // ---------- Render pieces ----------
@@ -637,7 +643,6 @@ export default function ContextLab() {
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: DEEP, opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {b.kind === 'summary' ? '⧉ ' : ''}{b.text}
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: SUBTLE, flexShrink: 0 }}>{b.tokens}</span>
               </div>
             );
           })}
@@ -652,7 +657,7 @@ export default function ContextLab() {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: meterColor, fontWeight: 700 }}>{fillPct}% full</span>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: SUBTLE }}>
-            real {model.short} window: {fmtTok(model.window)} tok ({Math.round(model.window / demoWindow)}× this demo)
+            real {model.short}: {fmtWindow(model.window)} tok · {Math.round(model.window / demoWindow)}× this demo
           </span>
         </div>
       </div>
@@ -679,26 +684,19 @@ export default function ContextLab() {
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        <div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, marginBottom: 2 }}>last turn</div>
-          <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 800, color: DEEP }}>
-            {money(lastTurnCost)}
-          </div>
-          {lastTurn && (
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE }}>
-              {fmtTok(lastTurn.inTokens)} in · {fmtTok(lastTurn.outTokens)} out
-            </div>
-          )}
-        </div>
-        <div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, marginBottom: 2 }}>whole chat · {ledger.length} turn{ledger.length === 1 ? '' : 's'}</div>
-          <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 800, color: model.color }}>
-            {money(sessionCost(model))}
-          </div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE }}>on {model.name}</div>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+        <span style={{ fontFamily: 'var(--font-heading)', fontSize: '1.7rem', fontWeight: 800, color: model.color, lineHeight: 1 }}>
+          {money(sessionCost(model))}
+        </span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE }}>
+          whole chat · {ledger.length} turn{ledger.length === 1 ? '' : 's'} · {model.name}
+        </span>
       </div>
+      {lastTurn && (
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, marginTop: 5 }}>
+          last turn {money(lastTurnCost)} · {fmtTok(lastTurn.inTokens)} in / {fmtTok(lastTurn.outTokens)} out
+        </div>
+      )}
 
       {/* Same chat, five bills */}
       {ledger.length > 0 && (
@@ -711,8 +709,8 @@ export default function ContextLab() {
               const isSel = m.id === modelId;
               return (
                 <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: isSel ? DEEP : SUBTLE, fontWeight: isSel ? 700 : 400, width: 118, flexShrink: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                    {m.name}
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: isSel ? DEEP : SUBTLE, fontWeight: isSel ? 700 : 400, width: 62, flexShrink: 0, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                    {m.short}
                   </span>
                   <div style={{ flex: 1, height: 5, borderRadius: 100, background: 'rgba(26,26,46,0.05)', overflow: 'hidden' }}>
                     <div style={{ width: `${Math.max(3, (cost / max) * 100)}%`, height: '100%', borderRadius: 100, background: m.color, opacity: isSel ? 1 : 0.45, transition: 'width 0.4s ease' }} />
@@ -737,8 +735,8 @@ export default function ContextLab() {
       {blocks.length === 0 && (
         <div style={{ padding: '2.5rem 1rem', textAlign: 'center' }}>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.88rem', color: SUBTLE, fontStyle: 'italic', margin: 0, lineHeight: 1.6 }}>
-            This chat is a simulation: no real AI, just real math.<br />
-            Press <strong style={{ fontStyle: 'normal' }}>Play the demo</strong> to watch a bakery brand plan a Diwali launch, or type anything below.
+            Press <strong style={{ fontStyle: 'normal' }}>Play the demo</strong> to watch a bakery brand plan a Diwali launch, or type anything below.<br />
+            No real AI, only real math.
           </p>
         </div>
       )}
@@ -759,7 +757,9 @@ export default function ContextLab() {
               background: dropped ? 'rgba(26,26,46,0.035)' : `${c}${b.kind === 'summary' ? '1E' : '0E'}`,
               border: isRecall
                 ? `1.5px solid ${b.recall === 'hit' ? TEAL : RED}`
-                : `1px solid ${dropped ? 'rgba(26,26,46,0.06)' : `${c}22`}`,
+                : b.kind === 'summary'
+                  ? `1px dashed ${AMBER}66`
+                  : 'none',
               opacity: dropped ? 0.45 : 1,
               animation: 'ctx-fade-in 0.3s ease-out',
               transition: 'opacity 0.4s ease',
@@ -801,6 +801,22 @@ export default function ContextLab() {
 
   const canCompact = liveBlocks.length > 6;
 
+  const quietBtn = (label: string, onClick: () => void, disabled?: boolean) => (
+    <button
+      className="ctx-quiet"
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        padding: '6px 2px', border: 'none', background: 'none',
+        fontFamily: 'var(--font-body)', fontSize: '0.76rem', fontWeight: 600,
+        color: SUBTLE, cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.4 : 1, transition: 'color 0.15s',
+      }}
+    >
+      {label}
+    </button>
+  );
+
   const controlBtn = (label: string, onClick: () => void, opts?: { primary?: boolean; disabled?: boolean; color?: string }) => (
     <button
       onClick={onClick}
@@ -825,51 +841,59 @@ export default function ContextLab() {
   return (
     <div style={{ maxWidth: 1060, margin: '0 auto', padding: isMobile ? '0 1.1rem' : '0 2rem', width: '100%', boxSizing: 'border-box' }}>
 
-      {/* Top bar: models + window size */}
+      {/* Top bar: models + window size, two segmented controls */}
       <div style={{
-        display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', justifyContent: 'space-between',
+        display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', justifyContent: 'space-between',
         marginBottom: 14,
       }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {MODELS.map((m) => {
+        <div style={{
+          display: 'inline-flex', maxWidth: '100%', overflowX: 'auto',
+          border: `1.5px solid ${INK}`, borderRadius: 100, background: 'white',
+        }}>
+          {MODELS.map((m, i) => {
             const sel = m.id === modelId;
             return (
               <button
                 key={m.id}
                 onClick={() => setModelId(m.id)}
-                title={`$${m.inPrice} in / $${m.outPrice} out per million tokens`}
+                title={`${m.name} · $${m.inPrice} in / $${m.outPrice} out per million tokens`}
                 style={{
-                  padding: '6px 12px', borderRadius: 100,
-                  border: `1.5px solid ${sel ? m.color : INK}`,
-                  background: sel ? `${m.color}12` : 'white',
+                  padding: '7px 13px', border: 'none',
+                  borderLeft: i === 0 ? 'none' : `1px solid ${INK}`,
+                  borderRadius: i === 0 ? '100px 0 0 100px' : i === MODELS.length - 1 ? '0 100px 100px 0' : 0,
+                  background: sel ? `${m.color}14` : 'transparent',
                   fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontWeight: sel ? 700 : 600,
                   color: sel ? m.color : SUBTLE, cursor: 'pointer', transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
                 }}
                 aria-pressed={sel}
               >
-                {m.name}
+                {m.name.replace('Claude ', '')}
               </button>
             );
           })}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, letterSpacing: '0.06em', textTransform: 'uppercase' }}>demo window</span>
-          {WINDOW_OPTIONS.map((w) => (
-            <button
-              key={w}
-              onClick={() => setDemoWindow(w)}
-              style={{
-                padding: '5px 10px', borderRadius: 100,
-                border: `1.5px solid ${demoWindow === w ? PURPLE : INK}`,
-                background: demoWindow === w ? `${PURPLE}12` : 'white',
-                fontFamily: 'var(--font-mono)', fontSize: '0.66rem', fontWeight: 700,
-                color: demoWindow === w ? PURPLE : SUBTLE, cursor: 'pointer',
-              }}
-              aria-pressed={demoWindow === w}
-            >
-              {fmtTok(w)}
-            </button>
-          ))}
+          <div style={{ display: 'inline-flex', border: `1.5px solid ${INK}`, borderRadius: 100, background: 'white' }}>
+            {WINDOW_OPTIONS.map((w, i) => (
+              <button
+                key={w}
+                onClick={() => setDemoWindow(w)}
+                style={{
+                  padding: '6px 11px', border: 'none',
+                  borderLeft: i === 0 ? 'none' : `1px solid ${INK}`,
+                  borderRadius: i === 0 ? '100px 0 0 100px' : i === WINDOW_OPTIONS.length - 1 ? '0 100px 100px 0' : 0,
+                  background: demoWindow === w ? `${PURPLE}14` : 'transparent',
+                  fontFamily: 'var(--font-mono)', fontSize: '0.66rem', fontWeight: 700,
+                  color: demoWindow === w ? PURPLE : SUBTLE, cursor: 'pointer',
+                }}
+                aria-pressed={demoWindow === w}
+              >
+                {fmtTok(w)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -888,24 +912,35 @@ export default function ContextLab() {
           borderBottom: isMobile ? '1px solid rgba(26,26,46,0.06)' : 'none',
           minWidth: 0,
         }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', marginBottom: 10 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 10 }}>
             {controlBtn(playing ? 'Pause' : blocks.length === 0 ? '▶ Play the demo' : '▶ Continue demo', handlePlay, { primary: true, disabled: scriptIdx.current >= DEMO_SCRIPT.length && !playing })}
-            {scriptIdx.current > 0 && scriptIdx.current < DEMO_SCRIPT.length && controlBtn('Skip to end', handleSkip)}
-            {controlBtn('Compact now', handleCompact, { disabled: !canCompact })}
             <button
               onClick={() => setAutoCompact((a) => !a)}
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 12px', borderRadius: 100,
-                border: `1.5px solid ${autoCompact ? AMBER : INK}`, background: autoCompact ? `${AMBER}12` : 'white',
-                fontFamily: 'var(--font-body)', fontSize: '0.78rem', fontWeight: 700,
-                color: autoCompact ? '#B47708' : SUBTLE, cursor: 'pointer', transition: 'all 0.2s',
+                display: 'inline-flex', alignItems: 'center', gap: 7, padding: '4px 2px',
+                border: 'none', background: 'none', cursor: 'pointer',
               }}
               aria-pressed={autoCompact}
             >
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: autoCompact ? AMBER : 'rgba(26,26,46,0.2)' }} />
-              auto-compact
+              <span style={{
+                width: 30, height: 18, borderRadius: 100, flexShrink: 0,
+                background: autoCompact ? AMBER : 'rgba(26,26,46,0.18)',
+                position: 'relative', transition: 'background 0.2s',
+              }}>
+                <span style={{
+                  position: 'absolute', top: 2, left: autoCompact ? 14 : 2,
+                  width: 14, height: 14, borderRadius: '50%', background: 'white',
+                  boxShadow: '0 1px 3px rgba(26,26,46,0.3)', transition: 'left 0.2s',
+                }} />
+              </span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.76rem', fontWeight: 600, color: autoCompact ? '#B47708' : SUBTLE }}>
+                auto-compact
+              </span>
             </button>
-            {blocks.length > 0 && controlBtn('Reset', handleReset)}
+            <span style={{ flex: 1 }} />
+            {scriptIdx.current > 0 && scriptIdx.current < DEMO_SCRIPT.length && quietBtn('Skip to end', handleSkip)}
+            {quietBtn('Compact now', handleCompact, !canCompact)}
+            {blocks.length > 0 && quietBtn('Reset', handleReset)}
           </div>
 
           {renderTranscript()}
@@ -946,17 +981,19 @@ export default function ContextLab() {
         </div>
       </div>
 
-      {/* Insight bar */}
-      <div style={{
-        marginTop: 14, padding: '12px 16px', borderRadius: 12,
-        background: `${insight.color}0C`, border: `1px solid ${insight.color}30`,
-        animation: 'ctx-fade-in 0.3s ease-out',
-      }}>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: DEEP, margin: 0, lineHeight: 1.6 }}>
-          <span style={{ fontWeight: 700, color: insight.color }}>{insight.label}: </span>
-          {insight.text}
-        </p>
-      </div>
+      {/* Insight bar, the narrator; silent until there is something to narrate */}
+      {blocks.length > 0 && (
+        <div style={{
+          marginTop: 14, padding: '12px 16px', borderRadius: 12,
+          background: `${insight.color}0C`, border: `1px solid ${insight.color}30`,
+          animation: 'ctx-fade-in 0.3s ease-out',
+        }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.85rem', color: DEEP, margin: 0, lineHeight: 1.6 }}>
+            <span style={{ fontWeight: 700, color: insight.color }}>{insight.label}: </span>
+            {insight.text}
+          </p>
+        </div>
+      )}
 
       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: SUBTLE, textAlign: 'center', marginTop: 14, letterSpacing: '0.03em' }}>
         prices are approximate list rates, August 2026 · Rs at {INR_PER_USD}/$ · token counts estimated

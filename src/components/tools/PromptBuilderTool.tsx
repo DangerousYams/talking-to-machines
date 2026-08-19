@@ -72,7 +72,7 @@ const BLOCKS: Block[] = [
   {
     id: 'role',
     label: 'Role',
-    tag: 'Communicate',
+    tag: '',
     group: 'communicate',
     color: '#E94560',
     insertion: '\n\nYou are a [describe the role you want the AI to take on, for example "senior editor at The New Yorker"].',
@@ -82,7 +82,7 @@ const BLOCKS: Block[] = [
   {
     id: 'criteria',
     label: 'Success Criteria',
-    tag: 'Communicate',
+    tag: '',
     group: 'communicate',
     color: '#16C79A',
     insertion: '\n\nHere is what a great result looks like: [describe what done looks like]. Judge your answer against this before you show me.',
@@ -92,7 +92,7 @@ const BLOCKS: Block[] = [
   {
     id: 'examples',
     label: 'Examples',
-    tag: 'Principle 06',
+    tag: 'P6',
     group: 'communicate',
     color: '#0F3460',
     insertion: '\n\nHere is an example of the quality I want:\n[paste 1 or 2 examples here]',
@@ -102,7 +102,7 @@ const BLOCKS: Block[] = [
   {
     id: 'socratic',
     label: 'Ask First',
-    tag: 'Principle 07',
+    tag: 'P7',
     group: 'communicate',
     color: '#0F3460',
     insertion: '\n\nBefore you answer, ask me 3 clarifying questions, one at a time. For each question, give me multiple-choice options (A, B, C, D) plus an "Other" option where I can type my own answer. Don\'t start until you understand what I actually need.',
@@ -112,7 +112,7 @@ const BLOCKS: Block[] = [
   {
     id: 'reasoning',
     label: 'Think Step by Step',
-    tag: 'Communicate',
+    tag: '',
     group: 'communicate',
     color: TEAL,
     insertion: '\n\nThink through this step by step before answering. Show your reasoning.',
@@ -122,7 +122,7 @@ const BLOCKS: Block[] = [
   {
     id: 'negative',
     label: 'Don\'t Do This',
-    tag: 'Communicate',
+    tag: '',
     group: 'communicate',
     color: '#E94560',
     insertion: '\n\nDo NOT [describe what you want the AI to avoid].',
@@ -132,7 +132,7 @@ const BLOCKS: Block[] = [
   {
     id: 'settle',
     label: 'Don\'t Settle',
-    tag: 'Principle 10',
+    tag: 'P10',
     group: 'evaluate',
     color: '#F5A623',
     insertion: '\n\nAfter you answer, critique your own work: what is weak, what did you hold back? Then give me one bolder alternative.',
@@ -142,7 +142,7 @@ const BLOCKS: Block[] = [
   {
     id: 'doubts',
     label: 'Show Your Doubts',
-    tag: 'Principle 11',
+    tag: 'P11',
     group: 'evaluate',
     color: '#0EA5E9',
     insertion: '\n\nEnd your answer with a short "Check me" list: anything you are not sure about, anything I should verify before relying on it.',
@@ -151,8 +151,8 @@ const BLOCKS: Block[] = [
   },
   {
     id: 'deslop',
-    label: 'Deslop',
-    tag: 'Principle 12',
+    label: 'De-slop',
+    tag: 'P12',
     group: 'evaluate',
     color: '#7B61FF',
     insertion: '\n\nWrite like a human. No filler, no em dashes, no AI-isms. Be direct.',
@@ -1166,12 +1166,14 @@ function PromptBuilderToolInner() {
           transition: 'opacity 0.2s',
         }} />
         {block.label}
-        <span style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.6rem',
-          opacity: 0.55, marginLeft: 2,
-        }}>
-          {block.tag}
-        </span>
+        {block.tag && (
+          <span style={{
+            fontFamily: 'var(--font-mono)', fontSize: '0.6rem',
+            opacity: 0.55, marginLeft: 2,
+          }}>
+            {block.tag}
+          </span>
+        )}
       </button>
     );
   };
